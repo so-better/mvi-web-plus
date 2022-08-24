@@ -1,0 +1,8 @@
+# 忽略目录
+example/
+public/
+
+# 忽略指定文件
+vite.config.js
+*.map
+demo.html

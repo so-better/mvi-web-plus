@@ -1,0 +1,140 @@
+/**
+ * 这里是对HTML里的诸多元素进行默认样式设置的
+ */
+@import './mvi-basic.less';
+
+//盒模型
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-webkit-tap-highlight-color: transparent;
+	outline: none;
+}
+
+//html与body样式设置
+html,
+body {
+	font-family: @font-family;
+	color: @font-color-default;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	//字体抗锯齿渲染
+	font-smoothing: antialiased;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	//解决浏览器自动放大字体的bug
+	text-size-adjust: none;
+	-webkit-text-size-adjust: none;
+	-moz-text-size-adjust: none;
+}
+//单独的body样式设置
+body {
+	background-color: @bg-color-default;
+	font-size: @font-size-default !important;
+	overflow: hidden;
+	line-height: 1.5;
+}
+
+//h1-h6以及p元素设置
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+	margin: 0 0 @mp-sm 0;
+	line-height: 1.5;
+}
+h1 {
+	font-size: @font-size-h1;
+}
+h2 {
+	font-size: @font-size-h2;
+}
+
+h3 {
+	font-size: @font-size-h3;
+}
+h4 {
+	font-size: @font-size-h4;
+}
+h5 {
+	font-size: @font-size-h5;
+}
+h6 {
+	font-size: @font-size-h6;
+}
+
+//a标签默认样式修改
+a {
+	text-decoration: none;
+	color: @font-color-link;
+}
+
+//pre代码标签样式设置
+pre {
+	display: block;
+	padding: @mp-sm;
+	margin: 0 0 @mp-sm;
+	font-size: @font-size-default;
+	font-family: Consolas !important;
+	line-height: 1.5;
+	color: @font-color-default;
+	background-color: #fafafa;
+	border: 1px solid @light-default;
+	border-radius: @radius-default;
+	overflow: auto;
+}
+
+code {
+	font-family: Consolas !important;
+}
+
+xmp {
+	margin: 0;
+	padding: 0;
+	white-space: pre-wrap;
+}
+
+//列表元素
+ul,
+ol {
+	margin: 0 0 @mp-md;
+	padding: @mp-xs @mp-sm @mp-xs @mp-lg;
+}
+li {
+	margin-bottom: @mp-sm;
+}
+
+//禁用状态
+[disabled] {
+	cursor: not-allowed !important;
+}
+
+blockquote {
+	display: block;
+	border-left: 0.1rem solid @light-default;
+	padding: @mp-xs @mp-sm @mp-xs @mp-md;
+	margin: 0 0 @mp-sm 0;
+	line-height: 1.5;
+	font-size: @font-size-default;
+	color: #89959c;
+	border-radius: 0;
+}
+
+hr{
+	display: block;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	margin: @mp-sm 0;
+	height: 0.02rem;
+	background-color: @bg-color-dark;
+	border: none;
+}

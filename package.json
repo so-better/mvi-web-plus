@@ -1,0 +1,35 @@
+{
+    "name": "mvi-web-plus",
+    "version": "1.5.0",
+    "private": false,
+    "type": "module",
+    "author": "lingkai",
+    "main": "lib/mvi.umd.js",
+    "module": "lib/mvi.es.js",
+    "license": "MIT",
+    "description": "一个基于Vue3的高度自定义的前端样式框架",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "dap-util": "^1.2.1",
+        "vue": "^3.2.37"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^3.0.3",
+        "vite": "^3.0.7",
+        "less": "^3.0.4",
+        "less-loader": "^5.0.0"
+    },
+    "browserslist": [
+        "> 1%",
+        "last 2 versions",
+        "not dead"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/lovelin0523/mvi-web-plus"
+    }
+}
