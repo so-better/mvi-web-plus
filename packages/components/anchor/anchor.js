@@ -49,7 +49,7 @@ class Anchor {
             this.time = 0
         }
         if (typeof this.callback != 'function') {
-            this.callback = function() {}
+            this.callback = function () {}
         }
         if (!$dap.number.isNumber(this.distance)) {
             this.distance = 0.1

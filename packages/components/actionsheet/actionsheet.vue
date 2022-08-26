@@ -127,9 +127,9 @@ export default {
         }
     },
     computed: {
-		$$el(){
-			return this.$refs.popup.$$el
-		},
+        $$el() {
+            return this.$refs.popup.$$el
+        },
         iconType() {
             return icon => {
                 let type = null

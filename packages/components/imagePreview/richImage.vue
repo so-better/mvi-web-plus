@@ -18,10 +18,6 @@ export default {
             touchDistance: 0,
             //缩放比例
             scale: 1,
-            //最大缩放
-            maxScale: 3,
-            //最小缩放
-            minScale: 0.3,
             //水平偏移值
             translateX: 0,
             //垂直偏移值
@@ -39,7 +35,9 @@ export default {
             //触摸松开时是否触发了双指操作
             isTriggerDouble: false,
             //双指松开设置的延时器
-            timer: null
+            timer: null,
+            //旋转值
+            rotate: 0
         }
     },
     props: {
@@ -57,6 +55,16 @@ export default {
         errorIcon: {
             type: [String, Object],
             default: null
+        },
+        //最大缩放值
+        maxScale: {
+            type: Number,
+            default: 3
+        },
+        //最小缩放值
+        minScale: {
+            type: Number,
+            default: 0.3
         }
     },
     emits: ['close-preview', 'disable-swiper-touch', 'enable-swiper-touch'],
@@ -67,7 +75,7 @@ export default {
         //图片样式
         imgStyle() {
             return {
-                transform: `scale(${this.scale}) translate(${this.translateX}px,${this.translateY}px)`
+                transform: `scale(${this.scale}) translate(${this.translateX}px,${this.translateY}px) rotate(${this.rotate}deg)`
             }
         }
     },
@@ -90,6 +98,36 @@ export default {
         )
     },
     methods: {
+        //左旋转图片
+        leftRotate() {
+            this.translateX = 0
+            this.translateY = 0
+            this.scale = 1
+            this.rotate -= 90
+        },
+        //右旋转图片
+        rightRotate() {
+            this.translateX = 0
+            this.translateY = 0
+            this.scale = 1
+            this.rotate += 90
+        },
+        //放大图片
+        scalePlus() {
+            if (this.scale < this.maxScale) {
+                this.translateX = 0
+                this.translateY = 0
+                this.scale = $dap.number.add(this.scale, 0.1)
+            }
+        },
+        //缩小图片
+        scaleMinus() {
+            if (this.scale > this.minScale) {
+                this.translateX = 0
+                this.translateY = 0
+                this.scale = $dap.number.subtract(this.scale, 0.1)
+            }
+        },
         //滚轮缩放图片
         scaleImageByWheel(event) {
             if (event.cancelable) {
@@ -99,19 +137,11 @@ export default {
             let deltaY = event.wheelDeltaY || -event.deltaY
             //放大图片
             if (deltaY > 0) {
-                if (this.scale < this.maxScale) {
-                    this.translateX = 0
-                    this.translateY = 0
-                    this.scale = $dap.number.add(this.scale, 0.1)
-                }
+                this.scalePlus()
             }
             //缩小图片
             else {
-                if (this.scale > this.minScale) {
-                    this.translateX = 0
-                    this.translateY = 0
-                    this.scale = $dap.number.subtract(this.scale, 0.1)
-                }
+                this.scaleMinus()
             }
         },
         //双指缩放图片
@@ -227,6 +257,7 @@ export default {
             this.scale = 1
             this.translateX = 0
             this.translateY = 0
+            this.rotate = 0
             this.enableSwiperTouch()
         },
         //判断是否执行关闭操作

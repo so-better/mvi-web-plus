@@ -2,7 +2,7 @@
     <m-overlay ref="overlay" :model-value="modelValue" color="#000" :fade="false" @showing="overlayShowing" :z-index="zIndex" :use-padding="usePadding" :mountEl="mountEl">
         <m-swiper v-if="firstShow" class="mvi-image-preview-swiper" :initial-slide="active" show-indicators ref="swiper" @change="swiperChange" :show-control="showControl" :fade="fade" :control-class="controlClass" :touchable="enableTouch">
             <m-swiper-slide v-for="(item,index) in images" :key="'image-'+index" class="mvi-preview-container">
-                <m-rich-image :ref="el=>imageRefs[index]=el" @close-preview="closeOverlay" @disable-swiper-touch="enableTouch=false" @enable-swiper-touch="enableTouch=true" :src="item" :error-icon="errorIcon" :load-icon="loadIcon"></m-rich-image>
+                <m-rich-image :ref="el=>imageRefs[index]=el" @close-preview="closeOverlay" @disable-swiper-touch="enableTouch=false" @enable-swiper-touch="enableTouch=true" :src="item" :error-icon="errorIcon" :load-icon="loadIcon" :max-scale="maxScale" :min-scale="minScale"></m-rich-image>
             </m-swiper-slide>
             <template #indicators="data">
                 <div class="mvi-image-preview-page" v-if="showPage">
@@ -13,11 +13,21 @@
                         <span v-text="data.total"></span>
                     </div>
                 </div>
-                <div v-if="$slots.descriptions || descriptions.length>0" class="mvi-image-preview-footer">
-                    <slot name="descriptions" :total="data.total" :current="data.active" v-if="$slots.descriptions">
-                    </slot>
-                    <div v-else-if="descriptions.length>0" class="mvi-image-preview-description" v-text="descriptions[data.active]"></div>
+                <div v-if="useTools || $slots.descriptions || descriptions.length>0" class="mvi-image-preview-footer">
+                    <div v-if="useTools" class="mvi-image-preview-tools">
+                        <m-icon @click="plusImage(data.active)" class="mvi-image-preview-tools-icon" type="search-plus-o" />
+                        <m-icon @click="minusImage(data.active)" class="mvi-image-preview-tools-icon" type="search-minus-o" />
+                        <m-icon @click="resetImage(data.active)" class="mvi-image-preview-tools-icon" type="double-circle" />
+                        <m-icon @click="leftRotateImage(data.active)" class="mvi-image-preview-tools-icon" type="left-rotate" />
+                        <m-icon @click="rightRotateImage(data.active)" class="mvi-image-preview-tools-icon" type="right-rotate" />
+                    </div>
+                    <div v-if="$slots.descriptions || descriptions.length>0" :class="['mvi-image-preview-description',useTools?'mvi-image-preview-description-margin':'']">
+                        <slot name="descriptions" :total="data.total" :current="data.active" v-if="$slots.descriptions">
+                        </slot>
+                        <div v-else-if="descriptions.length>0" class="mvi-image-preview-description-el" v-text="descriptions[data.active]"></div>
+                    </div>
                 </div>
+
             </template>
         </m-swiper>
 
@@ -116,6 +126,21 @@ export default {
                     size: '1rem'
                 }
             }
+        },
+        //是否使用图片工具栏
+        useTools: {
+            type: Boolean,
+            default: false
+        },
+        //最大缩放值
+        maxScale: {
+            type: Number,
+            default: 3
+        },
+        //最小缩放值
+        minScale: {
+            type: Number,
+            default: 0.3
         }
     },
     computed: {
@@ -130,6 +155,26 @@ export default {
         mRichImage
     },
     methods: {
+        //重置图片
+        resetImage(active) {
+            this.imageRefs[active].reset()
+        },
+        //放大图片
+        plusImage(active) {
+            this.imageRefs[active].scalePlus()
+        },
+        //缩小图片
+        minusImage(active) {
+            this.imageRefs[active].scaleMinus()
+        },
+        //左旋转图片
+        leftRotateImage(active) {
+            this.imageRefs[active].leftRotate()
+        },
+        //右旋转图片
+        rightRotateImage(active) {
+            this.imageRefs[active].rightRotate()
+        },
         //遮罩层显示时
         overlayShowing() {
             if (!this.firstShow) {
@@ -193,12 +238,48 @@ export default {
     position: absolute;
     left: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: #fff;
     z-index: 20;
-}
 
-.mvi-image-preview-description {
-    padding: @mp-md @mp-sm;
+    .mvi-image-preview-description {
+        display: block;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        .mvi-image-preview-description-el {
+            padding: @mp-md @mp-sm;
+        }
+
+        &.mvi-image-preview-description-margin {
+            margin-top: @mp-sm;
+        }
+    }
+
+    .mvi-image-preview-tools {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        width: fit-content;
+        margin: 0 auto;
+        padding: @mp-sm @mp-lg;
+        border-radius: 999rem;
+        margin-bottom: @mp-xs;
+
+        .mvi-image-preview-tools-icon {
+            opacity: 0.8;
+            margin-right: @mp-lg;
+            font-size: @font-size-h6;
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            &:hover {
+                opacity: 1;
+                cursor: pointer;
+            }
+        }
+    }
 }
 </style>
