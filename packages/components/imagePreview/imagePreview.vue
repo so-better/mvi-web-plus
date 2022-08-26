@@ -20,6 +20,7 @@
                         <m-icon @click="resetImage(data.active)" class="mvi-image-preview-tools-icon" type="double-circle" />
                         <m-icon @click="leftRotateImage(data.active)" class="mvi-image-preview-tools-icon" type="left-rotate" />
                         <m-icon @click="rightRotateImage(data.active)" class="mvi-image-preview-tools-icon" type="right-rotate" />
+                        <slot name="tools" v-if="$slots.tools"></slot>
                     </div>
                     <div v-if="$slots.descriptions || descriptions.length>0" :class="['mvi-image-preview-description',useTools?'mvi-image-preview-description-margin':'']">
                         <slot name="descriptions" :total="data.total" :current="data.active" v-if="$slots.descriptions">
@@ -267,17 +268,12 @@ export default {
         margin-bottom: @mp-xs;
 
         .mvi-image-preview-tools-icon {
-            opacity: 0.8;
             margin-right: @mp-lg;
             font-size: @font-size-h6;
+            cursor: pointer;
 
             &:last-child {
                 margin-right: 0;
-            }
-
-            &:hover {
-                opacity: 1;
-                cursor: pointer;
             }
         }
     }

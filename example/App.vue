@@ -1,8 +1,11 @@
 <template>
-    <m-button @click="show=!show">Modal</m-button>
-    <m-modal v-model="show" show-times title="Modal" title-ellipsis>
-        <m-button @click="show=!show" type="info" class="mvi-my-10" form-control>Modal Close</m-button>
-    </m-modal>
+    <m-button @click="show=!show">打开图片预览</m-button>
+    <m-image-preview v-model="show" use-tools :images="images" :descriptions="descriptions">
+        <template #tools>
+            <m-icon type="download"></m-icon>
+        </template>
+    </m-image-preview>
+    <m-label type="success">标签</m-label>
 </template>
 <script>
 export default {
