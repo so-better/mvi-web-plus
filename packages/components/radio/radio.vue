@@ -170,14 +170,14 @@ export default {
     align-items: center;
     position: relative;
     cursor: pointer;
-}
 
-.mvi-radio > input[type='radio'] {
-    width: 0;
-    height: 0;
-    opacity: 0;
-    border: none;
-    display: none;
+    & > input[type='radio'] {
+        width: 0;
+        height: 0;
+        opacity: 0;
+        border: none;
+        display: none;
+    }
 }
 
 .mvi-radio-item {
@@ -190,17 +190,18 @@ export default {
     padding: @mp-xs / 2;
     border: 1px solid @border-color;
     background-color: #fff;
-}
+    transition: background-color 100ms, border-color 100ms;
 
-.mvi-radio-item.mvi-radio-item-check {
-    background-color: @info-normal;
-    border-color: @info-normal;
-}
+    &.mvi-radio-item-check {
+        background-color: @info-normal;
+        border-color: @info-normal;
+    }
 
-.mvi-radio-item[disabled],
-.mvi-radio-item.mvi-radio-item-check[disabled] {
-    background-color: @bg-color-dark;
-    border-color: @border-color;
+    &[disabled],
+    &.mvi-radio-item-check[disabled] {
+        background-color: @bg-color-dark;
+        border-color: @border-color;
+    }
 }
 
 .mvi-radio-icon {
@@ -209,15 +210,15 @@ export default {
     padding: 0;
     line-height: 1;
     color: transparent;
-    transition: color 100ms;
-}
+    transition: color 300ms;
 
-.mvi-radio-icon.mvi-radio-icon-check {
-    color: #fff;
-}
+    &.mvi-radio-icon-check {
+        color: #fff;
 
-.mvi-radio-icon.mvi-radio-icon-check[disabled] {
-    color: @font-color-mute;
+        &[disabled] {
+            color: @font-color-mute;
+        }
+    }
 }
 
 .mvi-radio-label {

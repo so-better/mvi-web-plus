@@ -103,7 +103,7 @@ export default {
         //动画时间
         timeout: {
             type: Number,
-            default: 300
+            default: 200
         },
         //点击背景遮罩是否关闭
         closable: {
@@ -177,9 +177,9 @@ export default {
         }
     },
     computed: {
-		$$el(){
-			return this.$refs.overlay.$$el
-		},
+        $$el() {
+            return this.$refs.overlay.$$el
+        },
         iconType() {
             let type = 'times'
             if ($dap.common.isObject(this.timesIcon)) {
@@ -432,15 +432,19 @@ export default {
 
 .mvi-modal-times {
     position: absolute;
-    right: @mp-sm;
-    top: @mp-sm;
+    right: @mp-md;
+    top: @mp-lg + @mp-xs;
     display: flex;
     display: -webkit-flex;
     justify-content: center;
     align-items: center;
     color: @font-color-mute;
     font-size: @font-size-small;
-    cursor: pointer;
+
+    &:hover {
+        cursor: pointer;
+        opacity: 0.8;
+    }
 }
 
 .mvi-modal-content {

@@ -185,17 +185,17 @@ export default {
     cursor: pointer;
     user-select: none;
     -webkit-user-select: none;
+
+    & > input[type='checkbox'] {
+        width: 0;
+        height: 0;
+        opacity: 0;
+        border: none;
+        display: none;
+    }
 }
 
-.mvi-checkbox > input[type='checkbox'] {
-    width: 0;
-    height: 0;
-    opacity: 0;
-    border: none;
-    display: none;
-}
-
-.mvi-checkbox > .mvi-checkbox-item {
+.mvi-checkbox-item {
     display: inline-flex;
     display: -webkit-inline-flex;
     justify-content: center;
@@ -206,17 +206,18 @@ export default {
     border: 1px solid @border-color;
     border-radius: @radius-default;
     background-color: #fff;
-}
+    transition: background-color 100ms, border-color 100ms;
 
-.mvi-checkbox > .mvi-checkbox-item.mvi-checkbox-item-check {
-    background-color: @info-normal;
-    border-color: @info-normal;
-}
+    &.mvi-checkbox-item-check {
+        background-color: @info-normal;
+        border-color: @info-normal;
+    }
 
-.mvi-checkbox > .mvi-checkbox-item[disabled],
-.mvi-checkbox > .mvi-checkbox-item.mvi-checkbox-item-check[disabled] {
-    background-color: @bg-color-dark;
-    border-color: @border-color;
+    &[disabled],
+    &.mvi-checkbox-item-check[disabled] {
+        background-color: @bg-color-dark;
+        border-color: @border-color;
+    }
 }
 
 .mvi-checkbox-icon {
@@ -225,17 +226,16 @@ export default {
     padding: 0;
     line-height: 1;
     color: transparent;
-    transition: color 100ms;
-}
+    transition: color 300ms;
 
-.mvi-checkbox-icon.mvi-checkbox-icon-check {
-    color: #fff;
-}
+    &.mvi-checkbox-icon-check {
+        color: #fff;
 
-.mvi-checkbox-icon.mvi-checkbox-icon-check[disabled] {
-    color: @font-color-mute;
+        &[disabled] {
+            color: @font-color-mute;
+        }
+    }
 }
-
 .mvi-checkbox-label {
     vertical-align: middle;
     font-size: @font-size-default;

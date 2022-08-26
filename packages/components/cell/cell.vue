@@ -297,11 +297,9 @@ export default {
 }
 
 .mvi-cell-nowrap {
-    display: -webkit-box;
     text-overflow: ellipsis;
-    -webkit-box-orient: vertical;
     overflow: hidden;
-    -webkit-line-clamp: 1;
+    white-space: nowrap;
 }
 
 .mvi-cell-arrow {
