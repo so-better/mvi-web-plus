@@ -88,7 +88,7 @@ export default {
             type: [String, Object],
             default: null
         },
-        //是否原形图片
+        //是否圆形图片
         round: {
             type: Boolean,
             default: false
