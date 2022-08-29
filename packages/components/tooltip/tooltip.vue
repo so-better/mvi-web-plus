@@ -58,7 +58,7 @@ export default {
         //动画时间
         timeout: {
             type: Number,
-            default: 300
+            default: 200
         },
         //边框颜色
         borderColor: {

@@ -96,7 +96,7 @@ export default {
         //悬浮层显示与隐藏动画时长
         timeout: {
             type: Number,
-            default: 300
+            default: 200
         },
         //点击触发元素和悬浮层以外的元素是否关闭悬浮层
         closable: {

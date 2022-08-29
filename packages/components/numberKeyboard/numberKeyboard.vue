@@ -86,7 +86,7 @@ export default {
         //动画时长
         timeout: {
             type: Number,
-            default: 300
+            default: 200
         },
         //点击背景是否可关闭
         closable: {
@@ -150,9 +150,9 @@ export default {
         }
     },
     computed: {
-		$$el(){
-			return this.$refs.overlay.$$el
-		},
+        $$el() {
+            return this.$refs.overlay.$$el
+        },
         computedValue: {
             set(value) {
                 this.$emit('update:modelValue', value)

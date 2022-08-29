@@ -69,7 +69,7 @@ export default {
         //折叠或者展开的动画时长,单位ms
         timeout: {
             type: Number,
-            default: 300
+            default: 200
         }
     },
     provide() {

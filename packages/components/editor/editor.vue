@@ -67,7 +67,7 @@ export default {
                 //主体额外样式
                 wrapperClass: null,
                 //显示与隐藏动画时长
-                timeout: 300,
+                timeout: 200,
                 //是否显示三角
                 showTriangle: false,
                 //自定义动画
@@ -418,7 +418,7 @@ export default {
             //默认工具提示组件参数配置
             defaultTooltipProps: {
                 placement: 'bottom',
-                timeout: 300,
+                timeout: 200,
                 color: '#333',
                 textColor: '#fff',
                 borderColor: '#333',

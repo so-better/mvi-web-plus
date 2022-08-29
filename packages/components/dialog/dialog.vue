@@ -284,7 +284,7 @@ export default {
             if ($dap.number.isNumber(this.timeout)) {
                 return this.timeout
             } else {
-                return 300
+                return 200
             }
         },
         computedOverlayColor() {

@@ -48,7 +48,7 @@ export default {
         //动画时间
         timeout: {
             type: Number,
-            default: 300
+            default: 200
         },
         //是否显示圆角
         round: {

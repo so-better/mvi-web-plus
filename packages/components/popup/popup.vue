@@ -103,7 +103,7 @@ export default {
         //动画时长
         timeout: {
             type: Number,
-            default: 300
+            default: 200
         },
         //弹窗的位置
         placement: {
@@ -130,9 +130,9 @@ export default {
         }
     },
     computed: {
-		$$el(){
-			return this.$refs.overlay.$$el
-		},
+        $$el() {
+            return this.$refs.overlay.$$el
+        },
         iconType() {
             let type = 'times'
             if ($dap.common.isObject(this.timesIcon)) {

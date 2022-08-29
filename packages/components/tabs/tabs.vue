@@ -66,7 +66,7 @@ export default {
         //当animation为slide或者fade时的动画时长
         timeout: {
             type: Number,
-            default: 300
+            default: 200
         },
         //激活的标签标题颜色
         activeColor: {

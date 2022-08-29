@@ -906,9 +906,9 @@ export default {
                 width: @small-height / 2;
                 height: @small-height / 2;
                 position: relative;
-                transition: transform 300ms;
-                -webkit-transition: transform 300ms;
-                -moz-transition: transform 300ms;
+                transition: transform 200ms;
+                -webkit-transition: transform 200ms;
+                -moz-transition: transform 200ms;
 
                 &:hover {
                     cursor: pointer;

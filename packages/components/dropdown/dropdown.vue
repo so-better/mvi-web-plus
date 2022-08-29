@@ -77,7 +77,7 @@ export default {
         //动画时间
         timeout: {
             type: Number,
-            default: 300
+            default: 200
         },
         //是否圆角
         round: {
@@ -116,9 +116,9 @@ export default {
         }
     },
     computed: {
-		$$el(){
-			return this.$refs.popup.$$el
-		},
+        $$el() {
+            return this.$refs.popup.$$el
+        },
         selectIconType() {
             let type = 'success'
             if ($dap.common.isObject(this.selectIcon)) {

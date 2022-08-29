@@ -249,7 +249,7 @@ export default {
                 animation: this.layerProps.animation,
                 timeout: $dap.number.isNumber(this.layerProps.timeout)
                     ? this.layerProps.timeout
-                    : 300,
+                    : 200,
                 showTriangle:
                     typeof this.layerProps.showTriangle == 'boolean'
                         ? this.layerProps.showTriangle
