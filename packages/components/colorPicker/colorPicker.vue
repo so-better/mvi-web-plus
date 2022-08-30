@@ -93,6 +93,7 @@ export default {
                     mode: 'on',
                     draggableX: true,
                     draggableY: true,
+                    cursor: false,
                     beforedrag: () => {
                         this.drag = true
                         this.isDrag = true
@@ -118,6 +119,7 @@ export default {
                     mode: 'on',
                     draggableX: true,
                     draggableY: false,
+                    cursor: false,
                     beforedrag: () => {
                         this.drag = true
                         this.isDrag = true
@@ -143,6 +145,7 @@ export default {
                     mode: 'on',
                     draggableX: true,
                     draggableY: false,
+                    cursor: false,
                     beforedrag: () => {
                         this.drag = true
                         this.isDrag = true
@@ -401,6 +404,20 @@ export default {
                     resolve()
                 })
             })
+        }
+    },
+    beforeUnmount() {
+        if (this.panelDrag) {
+            this.panelDrag._setOff()
+        }
+        if (this.hueDrag) {
+            this.hueDrag._setOff()
+        }
+        if (this.alphaDrag) {
+            this.alphaDrag._setOff()
+        }
+        if (this.panelProp) {
+            this.panelProp._setOff()
         }
     }
 }

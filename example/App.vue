@@ -1,9 +1,9 @@
 <template>
-    <m-swiper loop width="7.5rem" height="4rem" ref="swiper">
-        <m-swiper-slide v-for="(item) in images">
-            <m-image :show-loading="false" :src="item"></m-image>
-        </m-swiper-slide>
-    </m-swiper>
+    <m-button @click="change">改变</m-button>
+    <div id="root" style="height: 5rem;position: relative;overflow: auto;">
+        <div style="height: 10rem;"></div>
+        <m-image v-if="show" lazy-load :src="images[0]" root="#root"></m-image>
+    </div>
 </template>
 <script>
 import Px from '../packages/components/px/px'
@@ -11,7 +11,7 @@ export default {
     data() {
         return {
             value: 0,
-            show: false,
+            show: true,
             images: [
                 'https://www.mvi-web.cn/mvi-resources/images/mvi_image_5_1652322363056.jpeg',
                 'https://www.mvi-web.cn/mvi-resources/images/mvi_image_4_1652322363040.jpeg',
@@ -43,7 +43,10 @@ export default {
     mounted() {},
     methods: {
         change(res) {
-            console.log(res)
+            this.show = !this.show
+            this.$nextTick(() => {
+                console.log(this.$dap.data.get(document.getElementById('root')))
+            })
         },
         showing(el) {
             el.querySelectorAll('.mvi-acionsheet-item').forEach(item => {

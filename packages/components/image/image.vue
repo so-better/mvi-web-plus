@@ -29,7 +29,9 @@ export default {
             //延迟加载显示的图片地址
             lazySrc: '',
             //是否正在延迟中
-            lazying: false
+            lazying: false,
+            //spy对象
+            spy: null
         }
     },
     emits: ['success', 'error'],
@@ -254,7 +256,7 @@ export default {
         lazyloadFun() {
             this.lazying = true
             //延时加载
-            let spy = new Spy(this.$el, {
+            this.spy = new Spy(this.$el, {
                 el: this.root,
                 //图片进入可视端口时加载
                 beforeEnter: el => {
@@ -262,7 +264,7 @@ export default {
                     this.lazySrc = this.src
                 }
             })
-            spy.init()
+            this.spy.init()
         },
         //图片加载成功
         loadSuccess(e) {
@@ -275,6 +277,11 @@ export default {
             this.loading = false
             this.error = true
             this.$emit('error', e.target)
+        }
+    },
+    beforeUnmount() {
+        if (this.spy) {
+            this.spy._setOff()
         }
     }
 }

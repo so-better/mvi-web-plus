@@ -137,6 +137,7 @@ export default {
             mode: 'on',
             draggableY: this.vertical && !this.disabled,
             draggableX: !this.vertical && !this.disabled,
+            cursor: false,
             drag: this.onDrag,
             dragged: () => {
                 this.$nextTick(() => {
@@ -287,6 +288,11 @@ export default {
                 this.$emit('update:modelValue', value)
                 this.$emit('change', value)
             }
+        }
+    },
+    beforeUnmount() {
+        if (this.drag) {
+            this.drag._setOff()
         }
     }
 }
