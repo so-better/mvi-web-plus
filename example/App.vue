@@ -1,16 +1,12 @@
 <template>
-    <m-button @click="change">改变</m-button>
-    <div id="root" style="height: 5rem;position: relative;overflow: auto;">
-        <div style="height: 10rem;"></div>
-        <m-image v-if="show" lazy-load :src="images[0]" root="#root"></m-image>
-    </div>
+    <m-editor v-model="value"></m-editor>
 </template>
 <script>
 import Px from '../packages/components/px/px'
 export default {
     data() {
         return {
-            value: 0,
+            value: '',
             show: true,
             images: [
                 'https://www.mvi-web.cn/mvi-resources/images/mvi_image_5_1652322363056.jpeg',

@@ -1090,8 +1090,18 @@ export default {
                     switch (item.value) {
                         case 'bold':
                             if (
-                                this.compareCss(node, 'font-weight', 'bold') ||
-                                this.compareCss(node, 'font-weight', '700')
+                                this.compareCss(
+                                    node,
+                                    'font-weight',
+                                    'bold',
+                                    false
+                                ) ||
+                                this.compareCss(
+                                    node,
+                                    'font-weight',
+                                    '700',
+                                    false
+                                )
                             ) {
                                 item.menuActive = true
                             } else {
@@ -1099,7 +1109,14 @@ export default {
                             }
                             break
                         case 'italic':
-                            if (this.compareCss(node, 'font-style', 'italic')) {
+                            if (
+                                this.compareCss(
+                                    node,
+                                    'font-style',
+                                    'italic',
+                                    false
+                                )
+                            ) {
                                 item.menuActive = true
                             } else {
                                 item.menuActive = false
@@ -1333,7 +1350,7 @@ export default {
             }
         },
         //判断某个节点是否在指定样式下，可对外提供
-        compareCss(el, cssName, cssValue) {
+        compareCss(el, cssName, cssValue, thinkParent = true) {
             if (!$dap.element.isElement(el)) {
                 return false
             }
@@ -1343,12 +1360,18 @@ export default {
             if ($dap.element.isContains(this.$refs.content, el)) {
                 if ($dap.element.getCssStyle(el, cssName) == cssValue) {
                     return true
-                } else {
-                    return this.compareCss(el.parentNode, cssName, cssValue)
                 }
-            } else {
-                return false
+                //如果考虑父元素
+                if (thinkParent) {
+                    return this.compareCss(
+                        el.parentNode,
+                        cssName,
+                        cssValue,
+                        thinkParent
+                    )
+                }
             }
+            return false
         },
         //判断某个节点是否在指定属性下，可对外提供
         compareAttribute(el, attrName, attrVal) {
@@ -1816,8 +1839,7 @@ export default {
                 margin: 0;
                 border-bottom: 1px solid @border-color;
                 border-right: 1px solid @border-color;
-                padding: @mp-xs;
-                text-align: center;
+                padding: @mp-sm;
 
                 &:last-child {
                     border-right: none;
