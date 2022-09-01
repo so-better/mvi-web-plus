@@ -891,9 +891,7 @@ export default {
     margin: 0;
 
     &::-webkit-input-placeholder,
-    &::placeholder,
-    &::-ms-input-placeholder,
-    &::-moz-placeholder {
+    &::placeholder {
         color: inherit;
         font-family: inherit;
         font-size: inherit;

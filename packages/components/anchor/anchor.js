@@ -56,7 +56,7 @@ class Anchor {
         }
 
         if ($dap.element.isElement(this.$root)) {
-            $dap.event.on(this.$el, 'click', e => {
+            $dap.event.on(this.$el, 'click.anchor', e => {
                 let scrollTop = $dap.element.getElementPoint(
                     this.$target,
                     this.$root
@@ -76,7 +76,7 @@ class Anchor {
                     })
             })
         } else {
-            $dap.event.on(this.$el, 'click', e => {
+            $dap.event.on(this.$el, 'click.anchor', e => {
                 //获取目标元素到浏览器顶部的距离
                 let scrollTop = $dap.element.getElementPoint(this.$target).top
                 $dap.element

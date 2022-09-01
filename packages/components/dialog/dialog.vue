@@ -551,10 +551,7 @@ export default {
     margin-left: 5%;
 
     &::placeholder,
-    &::-webkit-input-placeholder,
-    &:-moz-placeholder,
-    &::-moz-placeholder,
-    &:-ms-input-placeholder {
+    &::-webkit-input-placeholder {
         opacity: 0.5;
         font-family: inherit;
         font-size: inherit;

@@ -594,9 +594,7 @@ export default {
         font-size: inherit;
 
         &::-webkit-input-placeholder,
-        &::placeholder,
-        &::-moz-placeholder,
-        &:-ms-input-placeholder {
+        &::placeholder {
             color: inherit;
             font-family: inherit;
             font-size: inherit;

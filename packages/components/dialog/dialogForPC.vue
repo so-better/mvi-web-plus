@@ -525,10 +525,7 @@ export default {
     padding: 0 @mp-sm;
 
     &::placeholder,
-    &::-webkit-input-placeholder,
-    &:-moz-placeholder,
-    &::-moz-placeholder,
-    &:-ms-input-placeholder {
+    &::-webkit-input-placeholder {
         opacity: 0.5;
         font-family: inherit;
         font-size: inherit;
