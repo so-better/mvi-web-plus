@@ -1,17 +1,20 @@
 <template>
     <div :disabled="disabled || null" :class="computedClass" :style="computedStyle" @click="setActive">
-        <div class="mvi-tabbar-item-child">
-            <span class="mvi-tabbar-icon" v-if="iconType || iconUrl" :style="{marginBottom:(name?'':'0px')}">
-                <m-icon :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor" />
-            </span>
-            <span :class="['mvi-tabbar-name',(iconType || iconUrl)?'mvi-tabbar-name-small':'']" v-text="name"></span>
-        </div>
+        <m-badge :show="badge && badge.show" class="mvi-tabbar-badge" :content="badge && badge.content" :background="badge && badge.background" :color="badge && badge.color" :dot="badge && badge.dot" :placement="badge && badge.placement" :offset="badge && badge.offset">
+            <div class="mvi-tabbar-item-child">
+                <span class="mvi-tabbar-icon" v-if="iconType || iconUrl" :style="{marginBottom:(name?'':'0px')}">
+                    <m-icon :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor" />
+                </span>
+                <span :class="['mvi-tabbar-name',(iconType || iconUrl)?'mvi-tabbar-name-small':'']" v-text="name"></span>
+            </div>
+        </m-badge>
     </div>
 </template>
 
 <script>
 import $dap from 'dap-util'
 import mIcon from '../icon/icon'
+import mBadge from '../badge/badge.vue'
 export default {
     name: 'm-tabbar-item',
     inject: ['tabbar'],
@@ -40,6 +43,11 @@ export default {
         disabled: {
             type: Boolean,
             default: false
+        },
+        //徽章角标
+        badge: {
+            type: Object,
+            default: null
         }
     },
     computed: {
@@ -165,7 +173,8 @@ export default {
         }
     },
     components: {
-        mIcon
+        mIcon,
+        mBadge
     },
     methods: {
         setActive() {
@@ -238,6 +247,10 @@ export default {
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
+}
+
+.mvi-tabbar-badge {
+    width: 100%;
 }
 
 .mvi-tabbar-item-child {
