@@ -1,5 +1,5 @@
 <template>
-    <div class="mvi-circle-progress" :style="{width:size || '',height:size || ''}">
+    <div class="mvi-circle-progress" :style="progressStyle">
         <svg :viewBox="viewBox">
             <path :d="pathD" :style="trackStyle" class="mvi-circle-progress-track"></path>
             <path :d="pathD" :style="barStyle" class="mvi-circle-progress-bar"></path>
@@ -17,7 +17,6 @@ export default {
     name: 'm-circle-progress',
     data() {
         return {
-            ele: null,
             pathSize: 1000
         }
     },
@@ -39,8 +38,8 @@ export default {
         },
         //直径
         size: {
-            type: String,
-            default: null
+            type: Number,
+            default: 2
         },
         //进度颜色
         color: {
@@ -79,8 +78,8 @@ export default {
         },
         //进度条厚度
         strokeWidth: {
-            type: String,
-            default: null
+            type: Number,
+            default: 0.2
         },
         //进度条端点是否有圆角
         round: {
@@ -99,28 +98,22 @@ export default {
         }
     },
     computed: {
-        viewBox() {
-            let width = $dap.element.rem2px(0.2)
-            if ($dap.element.isElement(this.ele)) {
-                width = $dap.element.getCssStyle(
-                    this.ele.querySelector('path'),
-                    'stroke-width'
-                )
-                width = parseFloat(width)
+        progressStyle() {
+            let style = {}
+            if (this.size) {
+                style.width = this.size + 'rem'
+                style.height = this.size + 'rem'
             }
+            return style
+        },
+        viewBox() {
+            let width = $dap.element.rem2px(this.strokeWidth)
             return `0 0 ${this.pathSize + 2 * width} ${
                 this.pathSize + 2 * width
             }`
         },
         pathD() {
-            let width = $dap.element.rem2px(0.2)
-            if ($dap.element.isElement(this.ele)) {
-                width = $dap.element.getCssStyle(
-                    this.ele.querySelector('path'),
-                    'stroke-width'
-                )
-                width = parseFloat(width)
-            }
+            let width = $dap.element.rem2px(this.strokeWidth)
             return `M ${this.pathSize / 2 + width} ${
                 this.pathSize / 2 + width
             } m 0, -${this.pathSize / 2} a ${this.pathSize / 2}, ${
@@ -156,10 +149,9 @@ export default {
             if (this.color) {
                 style.stroke = this.color
             }
-            if (this.strokeWidth) {
-                style.strokeWidth = this.strokeWidth
+            if ($dap.number.isNumber(this.strokeWidth)) {
+                style.strokeWidth = this.strokeWidth + 'rem'
             }
-
             if (this.round) {
                 style.strokeLinecap = 'round'
             }
@@ -194,14 +186,11 @@ export default {
             if (this.trackColor) {
                 style.stroke = this.trackColor
             }
-            if (this.strokeWidth) {
-                style.strokeWidth = this.strokeWidth
+            if ($dap.number.isNumber(this.strokeWidth)) {
+                style.strokeWidth = this.strokeWidth + 'rem'
             }
             return style
         }
-    },
-    mounted() {
-        this.ele = this.$el
     }
 }
 </script>
@@ -212,8 +201,6 @@ export default {
 .mvi-circle-progress {
     display: inline-block;
     position: relative;
-    width: 2rem;
-    height: 2rem;
     margin: 0;
     padding: 0;
 }
@@ -227,7 +214,6 @@ export default {
 .mvi-circle-progress-track {
     fill: none;
     stroke: @bg-color-dark;
-    stroke-width: 0.2rem;
     margin: 0;
     padding: 0;
 }
@@ -235,7 +221,6 @@ export default {
 .mvi-circle-progress-bar {
     fill: none;
     stroke: @info-normal;
-    stroke-width: 0.2rem;
     margin: 0;
     padding: 0;
     stroke-linecap: square;

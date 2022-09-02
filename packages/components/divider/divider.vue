@@ -1,7 +1,9 @@
 <template>
     <div :class="['mvi-divider',dashed?'mvi-divider-dashed':'']">
         <div class="mvi-divider-left" :style="{borderColor:color || ''}"></div>
-        <slot></slot>
+        <div v-if="this.$slots.default" class="mvi-divider-center">
+            <slot></slot>
+        </div>
         <div class="mvi-divider-right" :style="{borderColor:color || ''}"></div>
     </div>
 </template>
@@ -45,7 +47,13 @@ export default {
     display: block;
     height: 0px;
     border-top: 1px solid @border-color;
-    margin-right: @mp-sm;
+}
+
+.mvi-divider-center {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0 @mp-sm;
 }
 
 .mvi-divider-right {
@@ -53,7 +61,6 @@ export default {
     display: block;
     height: 0px;
     border-top: 1px solid @border-color;
-    margin-left: @mp-sm;
 }
 
 .mvi-divider.mvi-divider-dashed > .mvi-divider-left,

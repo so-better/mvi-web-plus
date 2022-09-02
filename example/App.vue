@@ -1,5 +1,4 @@
 <template>
-    <m-tabbar @change="change" fixed v-model="index" :tabs="tabs"></m-tabbar>
     <div class="mvi-p-10">
 
     </div>
@@ -9,46 +8,21 @@ import Px from '../packages/components/px/px'
 export default {
     data() {
         return {
+            value: '',
             index: 0,
             num: 10,
-            show: true
+            show: true,
+            date: new Date()
         }
     },
-    computed: {
-        tabs() {
-            return [
-                {
-                    value: 0,
-                    name: '首页'
-                },
-                {
-                    value: 1,
-                    name: '附近',
-                    badge: {
-                        show: this.show,
-                        content: this.num,
-                        background: 'rgba(255,0,0,.72)',
-                        dot: false
-                    }
-                },
-                {
-                    value: 2,
-                    name: '关注'
-                },
-                {
-                    value: 3,
-                    name: '我的'
-                }
-            ]
-        }
-    },
-    mounted() {},
     methods: {
         change(res) {
-            if (res.value == 1) {
-                this.num = 0
-                this.show = false
-            }
+            this.$prompt({
+                title: '温馨提示',
+                message: '你已经失去连接'
+            }).then(res => {
+                console.log(res)
+            })
         }
     }
 }

@@ -7,7 +7,7 @@
         <template #default v-if="contentShow">
             <div v-if="computedMessage" v-html="computedMessage" class="mvi-dialog-content"></div>
             <div v-if="type == 'Prompt'" :class="['mvi-dialog-input',computedMessage?'mvi-dialog-input-mt':'']">
-                <input ref="input" :type="computedInput.type=='number'?'text':computedInput.type" :placeholder="computedInput.placeholder" :maxlength="computedInput.maxlength" :class="inputClass" :style="inputStyle" v-model.trim="value" @input="inputFun" @focus="inputFocus" @blur="inputBlur" />
+                <input ref="input" :type="computedInput.type=='number'?'text':computedInput.type" :placeholder="computedInput.placeholder" :maxlength="computedInput.maxlength" :class="inputClass" :style="inputStyle" v-model.trim="value" @input="inputFun" @focus="inputFocus" @blur="inputBlur" @keyup.enter="okFun" />
                 <m-icon v-if="computedInput.clearable" ref="icon" v-show="showClear" type="times-o" class="mvi-dialog-times" @click="doClear" />
             </div>
             <div class="mvi-dialog-footer">

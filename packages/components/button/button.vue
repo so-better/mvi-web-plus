@@ -1,5 +1,5 @@
 <template>
-    <Button :disabled="disabled || null" :class="buttonClass" :style="btnStyle">
+    <Button :disabled="disabled || null" :class="btnClass" :style="btnStyle">
         <slot name="loading" v-if="loading && $slots.loading"></slot>
         <template v-else-if="loading">
             <m-icon :type="iconType" :color="iconColor" :url="iconUrl" :spin="iconSpin" :size="iconSize" class="mvi-button-load-icon" />
@@ -171,7 +171,7 @@ export default {
             }
             return obj
         },
-        buttonClass() {
+        btnClass() {
             let cls = ['mvi-button']
             if (this.type) {
                 cls.push('mvi-button-' + this.type)
@@ -202,7 +202,7 @@ export default {
     components: {
         Button: {
             render() {
-                const attrs = {}
+                let attrs = {}
                 if (this.$parent.tag.toLocaleUpperCase() == 'BUTTON') {
                     attrs.type = this.$parent.nativeType
                 }

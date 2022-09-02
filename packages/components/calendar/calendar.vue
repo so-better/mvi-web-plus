@@ -14,7 +14,7 @@
             </div>
         </div>
         <!-- 月视图 -->
-        <div v-if="view=='month'" class="mvi-calendar-month">
+        <div v-else-if="view=='month'" class="mvi-calendar-month">
             <div class="mvi-calendar-month-row" v-for="(item,index) in new Array(3)" :key="'monthRow-'+index">
                 <div class="mvi-calendar-month-m" v-for="(item2,index2) in months.slice(index*4,index*4+4)" :key="'month-'+index2">
                     <div :class="['mvi-calendar-month-item',active?'mvi-calendar-active':'',monthNowClass(item2),monthCurrentClass(item2)]" v-text="item2.text" @click="onMonthClick(item2)"></div>
@@ -22,7 +22,7 @@
             </div>
         </div>
         <!-- 年视图 -->
-        <div v-if="view=='year'">
+        <div v-else-if="view=='year'">
             <div class="mvi-calendar-year-row" v-for="(item,index) in new Array(3)" :key="'yearRow'+index">
                 <div class="mvi-calendar-year-y" v-for="(item2,index2) in years.slice(index*4,index*4+4)" :key="'year-'+index2">
                     <div :class="['mvi-calendar-year-item',(item2.year >= startYear && item2.year <= endYear && active)?'mvi-calendar-active':'',yearNowClass(item2),yearCurrentClass(item2)]" v-text="item2.year" @click="onYearClick(item2)" :disabled="item2.year<startYear || item2.year>endYear || null"></div>

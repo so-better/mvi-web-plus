@@ -202,7 +202,11 @@ export default {
             `mousemove.picker_${this.uid}`,
             this.mousemove
         )
-        $dap.event.on(document.body, `mouseup.picker_${this.uid}`, this.mouseup)
+        $dap.event.on(
+            document.body,
+            `mouseup.picker_${this.uid} mouseleave.picker_${this.uid}`,
+            this.mouseup
+        )
     },
     methods: {
         //初始化

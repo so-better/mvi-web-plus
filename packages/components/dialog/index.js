@@ -57,7 +57,7 @@ const Dialog = {
     },
 
     //提示框
-    alert: function(options) {
+    alert: function (options) {
         return new Promise((resolve, reject) => {
             let opts = Dialog.initParams('alert', options)
             let mountNode = $dap.element.string2dom('<div></div>')
@@ -75,14 +75,15 @@ const Dialog = {
                 typeof this.config.globalProperties.dialogComponentWatch ==
                 'function'
             ) {
-                instance.config.globalProperties.dialogComponentWatch = this.config.globalProperties.dialogComponentWatch
+                instance.config.globalProperties.dialogComponentWatch =
+                    this.config.globalProperties.dialogComponentWatch
             }
             instance.mount(mountNode)
         })
     },
 
     //确认框
-    confirm: function(options) {
+    confirm: function (options) {
         return new Promise((resolve, reject) => {
             let opts = Dialog.initParams('confirm', options)
             let mountNode = $dap.element.string2dom('<div></div>')
@@ -100,14 +101,15 @@ const Dialog = {
                 typeof this.config.globalProperties.dialogComponentWatch ==
                 'function'
             ) {
-                instance.config.globalProperties.dialogComponentWatch = this.config.globalProperties.dialogComponentWatch
+                instance.config.globalProperties.dialogComponentWatch =
+                    this.config.globalProperties.dialogComponentWatch
             }
             instance.mount(mountNode)
         })
     },
 
     //信息输入框
-    prompt: function(options) {
+    prompt: function (options) {
         return new Promise((resolve, reject) => {
             let opts = Dialog.initParams('prompt', options)
             let mountNode = $dap.element.string2dom('<div></div>')
@@ -128,14 +130,15 @@ const Dialog = {
                 typeof this.config.globalProperties.dialogComponentWatch ==
                 'function'
             ) {
-                instance.config.globalProperties.dialogComponentWatch = this.config.globalProperties.dialogComponentWatch
+                instance.config.globalProperties.dialogComponentWatch =
+                    this.config.globalProperties.dialogComponentWatch
             }
             instance.mount(mountNode)
         })
     },
 
     //pc端提示框
-    Alert: function(options) {
+    Alert: function (options) {
         return new Promise((resolve, reject) => {
             let opts = Dialog.initParams('Alert', options)
             let mountNode = $dap.element.string2dom('<div></div>')
@@ -153,14 +156,15 @@ const Dialog = {
                 typeof this.config.globalProperties.dialogComponentWatch ==
                 'function'
             ) {
-                instance.config.globalProperties.dialogComponentWatch = this.config.globalProperties.dialogComponentWatch
+                instance.config.globalProperties.dialogComponentWatch =
+                    this.config.globalProperties.dialogComponentWatch
             }
             instance.mount(mountNode)
         })
     },
 
     //pc端确认框
-    Confirm: function(options) {
+    Confirm: function (options) {
         return new Promise((resolve, reject) => {
             let opts = Dialog.initParams('Confirm', options)
             let mountNode = $dap.element.string2dom('<div></div>')
@@ -178,14 +182,15 @@ const Dialog = {
                 typeof this.config.globalProperties.dialogComponentWatch ==
                 'function'
             ) {
-                instance.config.globalProperties.dialogComponentWatch = this.config.globalProperties.dialogComponentWatch
+                instance.config.globalProperties.dialogComponentWatch =
+                    this.config.globalProperties.dialogComponentWatch
             }
             instance.mount(mountNode)
         })
     },
 
     //pc端信息输入框
-    Prompt: function(options) {
+    Prompt: function (options) {
         return new Promise((resolve, reject) => {
             let opts = Dialog.initParams('Prompt', options)
             let mountNode = $dap.element.string2dom('<div></div>')
@@ -206,7 +211,8 @@ const Dialog = {
                 typeof this.config.globalProperties.dialogComponentWatch ==
                 'function'
             ) {
-                instance.config.globalProperties.dialogComponentWatch = this.config.globalProperties.dialogComponentWatch
+                instance.config.globalProperties.dialogComponentWatch =
+                    this.config.globalProperties.dialogComponentWatch
             }
             instance.mount(mountNode)
         })
