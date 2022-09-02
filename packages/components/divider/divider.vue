@@ -34,7 +34,6 @@ export default {
     display: -webkit-flex;
     justify-content: space-between;
     align-items: center;
-    font-size: @font-size-small;
     color: @font-color-mute;
     user-select: none;
     -ms-user-select: none;

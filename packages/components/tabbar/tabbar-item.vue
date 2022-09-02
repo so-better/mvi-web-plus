@@ -1,6 +1,6 @@
 <template>
     <div :disabled="disabled || null" :class="computedClass" :style="computedStyle" @click="setActive">
-        <m-badge :show="badge && badge.show" class="mvi-tabbar-badge" :content="badge && badge.content" :background="badge && badge.background" :color="badge && badge.color" :dot="badge && badge.dot" :placement="badge && badge.placement" :offset="badge && badge.offset">
+        <m-badge :show="badge?.show" class="mvi-tabbar-badge" :content="badge?.content" :background="badge?.background" :color="badge?.color" :dot="badge?.dot" :placement="badge?.placement" :offset="badge?.offset">
             <div class="mvi-tabbar-item-child">
                 <span class="mvi-tabbar-icon" v-if="iconType || iconUrl" :style="{marginBottom:(name?'':'0px')}">
                     <m-icon :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor" />

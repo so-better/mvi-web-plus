@@ -1,29 +1,27 @@
 <template>
-    <div class="mvi-p-10">
-
-    </div>
+    <m-list v-model:loading="loading" loading-icon="load-e" v-model:error="error">
+        <m-cell-group>
+            <m-cell v-for="(item,index) in new Array(20)" :title="'单元格'+index"></m-cell>
+        </m-cell-group>
+    </m-list>
 </template>
 <script>
 import Px from '../packages/components/px/px'
 export default {
     data() {
         return {
-            value: '',
-            index: 0,
-            num: 10,
-            show: true,
-            date: new Date()
+            error: false,
+            loading: true
         }
     },
+    mounted() {
+        setTimeout(() => {
+            this.loading = false
+            this.error = true
+        }, 1000)
+    },
     methods: {
-        change(res) {
-            this.$prompt({
-                title: '温馨提示',
-                message: '你已经失去连接'
-            }).then(res => {
-                console.log(res)
-            })
-        }
+        change(res) {}
     }
 }
 </script>

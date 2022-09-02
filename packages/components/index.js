@@ -58,6 +58,7 @@ import page from './page'
 import loadingBar from './loadingBar'
 import picker from './picker'
 import transitionSlide from './transitionSlide'
+import list from './list'
 //以下为专门针对PC端使用时设计的组件
 import layer from './layer'
 import select from './select'
@@ -134,5 +135,6 @@ export default {
     field,
     grid,
     transitionSlide,
-    form
+    form,
+    list
 }
