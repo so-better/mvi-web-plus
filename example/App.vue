@@ -1,13 +1,7 @@
 <template>
-    <m-pull-refresh v-model="refresh" @refresh="change">
-        <m-list ref="list" :finished="finished" v-model:loading="loading" loading-icon="load-e" v-model:error="error" @load="loadMore" immediate-load>
-            <m-cell border v-for="(item,index) in list" :title="'单元格'+index"></m-cell>
-            <template #loading>
-                <m-icon type="load-c" spin size=".4rem"></m-icon>
-            </template>
-        </m-list>
-    </m-pull-refresh>
-
+    <m-tooltip trigger="hover" placement="right-end" title="打开一个Modal">
+        <m-button>Button</m-button>
+    </m-tooltip>
 </template>
 <script>
 export default {
@@ -17,6 +11,7 @@ export default {
             loading: false,
             refresh: false,
             list: [],
+            active: 1,
             finished: false
         }
     },
