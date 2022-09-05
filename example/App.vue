@@ -1,27 +1,50 @@
 <template>
-    <m-list v-model:loading="loading" loading-icon="load-e" v-model:error="error">
-        <m-cell-group>
-            <m-cell v-for="(item,index) in new Array(20)" :title="'单元格'+index"></m-cell>
-        </m-cell-group>
-    </m-list>
+    <m-pull-refresh v-model="refresh" @refresh="change">
+        <m-list ref="list" :finished="finished" v-model:loading="loading" loading-icon="load-e" v-model:error="error" @load="loadMore" immediate-load>
+            <m-cell border v-for="(item,index) in list" :title="'单元格'+index"></m-cell>
+            <template #loading>
+                <m-icon type="load-c" spin size=".4rem"></m-icon>
+            </template>
+        </m-list>
+    </m-pull-refresh>
+
 </template>
 <script>
-import Px from '../packages/components/px/px'
 export default {
     data() {
         return {
             error: false,
-            loading: true
+            loading: false,
+            refresh: false,
+            list: [],
+            finished: false
         }
     },
-    mounted() {
-        setTimeout(() => {
-            this.loading = false
-            this.error = true
-        }, 1000)
-    },
     methods: {
-        change(res) {}
+        change(res) {
+            setTimeout(() => {
+                this.list = []
+                this.list = new Array(30)
+                this.refresh = false
+                this.loading = false
+                this.error = false
+                this.finished = false
+                this.$msgbox('刷新成功')
+            }, 1000)
+        },
+        loadMore() {
+            setTimeout(() => {
+                this.loading = false
+                this.error = false
+                this.list = [...this.list, ...new Array(30)]
+                if (this.list.length > 100) {
+                    this.finished = true
+                }
+                this.$nextTick(() => {
+                    this.$refs.list.initScrollBottom()
+                })
+            }, 2000)
+        }
     }
 }
 </script>

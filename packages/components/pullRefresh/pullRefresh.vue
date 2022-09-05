@@ -1,12 +1,14 @@
 <template>
     <div class="mvi-pull-refresh">
-        <div ref="wrapper" class="mvi-pull-refresh-wrapper" @touchstart="startPull" @touchmove="onPull" @touchend="pulled" @mousedown="startPull2" :style="wrapperStyle">
+        <div ref="container" class="mvi-pull-refresh-container" :style="containerStyle">
             <div ref="el" class="mvi-pull-refresh-el" :style="elStyle">
                 <slot name="el" v-if="$slots.el" :status="status"></slot>
                 <m-icon v-if="!$slots.el" :type="icon.type" :spin="icon.spin" :url="icon.url" :size="icon.size" :color="icon.color" />
                 <span v-if="!$slots.el" class="mvi-pull-refresh-text" v-text="message"></span>
             </div>
-            <slot></slot>
+            <div ref="wrapper" class="mvi-pull-refresh-wrapper" @touchstart="startPull" @touchmove="onPull" @touchend="pulled" @mousedown="startPull2" :style="wrapperStyle">
+                <slot></slot>
+            </div>
         </div>
     </div>
 </template>
@@ -21,6 +23,8 @@ export default {
         return {
             //刷新元素高度
             elHeight: 0,
+            //组件高度
+            rootHeight: 0,
             //计数点
             amount: 0,
             //计数点最大值
@@ -115,10 +119,15 @@ export default {
         }
     },
     computed: {
-        wrapperStyle() {
+        containerStyle() {
             let style = {}
             style.height = `calc(100% + ${this.elHeight}px)`
             style.transform = `translateY(${this.translateY}px)`
+            return style
+        },
+        wrapperStyle() {
+            let style = {}
+            style.height = this.rootHeight + 'px'
             if (this.disableScroll) {
                 style.overflowY = 'hidden'
             }
@@ -326,10 +335,9 @@ export default {
         }
     },
     mounted() {
-        //设置元素高度
-        this.elHeight = this.$refs.el.offsetHeight
-        //设置初始的偏移值
-        this.translateY = -this.elHeight
+        //初始高度和偏移值设置
+        this.initHeight()
+        //事件设置
         $dap.event.on(
             document.body,
             `mousemove.pullRefresh_${this.uid}`,
@@ -347,6 +355,15 @@ export default {
         }
     },
     methods: {
+        //初始高度和偏移值设置
+        initHeight() {
+            //设置元素高度
+            this.elHeight = this.$refs.el.offsetHeight
+            //设置组件高度
+            this.rootHeight = this.$el.offsetHeight
+            //设置初始的偏移值
+            this.translateY = -this.elHeight
+        },
         //开始下拉(移动端)
         startPull(event) {
             if (this.disabled) {
@@ -431,7 +448,6 @@ export default {
             let move = endY - this.startY //每一次移动的偏移量
             let totalMove = endY - this.firstStartY //距离第一次触摸时的偏移量
             this.startY = endY
-
             //总偏移量小于0为向上滑动，元素向下滚动，不执行刷新
             if (totalMove <= 0) {
                 this.firstStartY = this.startY
@@ -507,16 +523,16 @@ export default {
                 this.$emit('refresh')
                 //非触摸下拉的
                 if (!this.hasTouch) {
-                    this.$refs.wrapper.style.transition = 'transform 300ms'
-                    this.$refs.wrapper.style.webkitTransition =
+                    this.$refs.container.style.transition = 'transform 300ms'
+                    this.$refs.container.style.webkitTransition =
                         'transform 300ms'
                     //触发浏览器重绘刷新
-                    const width = this.$refs.wrapper.offsetWidth
+                    const width = this.$refs.container.offsetWidth
                     this.translateY =
                         $dap.element.rem2px(this.distance) - this.elHeight
                     setTimeout(() => {
-                        this.$refs.wrapper.style.transition = ''
-                        this.$refs.wrapper.style.webkitTransition = ''
+                        this.$refs.container.style.transition = ''
+                        this.$refs.container.style.webkitTransition = ''
                     }, 300)
                 }
             }
@@ -524,14 +540,14 @@ export default {
             else {
                 this.amount = 0
                 this.hasTouch = false
-                this.$refs.wrapper.style.transition = 'transform 300ms'
-                this.$refs.wrapper.style.webkitTransition = 'transform 300ms'
+                this.$refs.container.style.transition = 'transform 300ms'
+                this.$refs.container.style.webkitTransition = 'transform 300ms'
                 //触发浏览器重绘刷新
-                const width = this.$refs.wrapper.offsetWidth
+                const width = this.$refs.container.offsetWidth
                 this.translateY = -this.elHeight
                 setTimeout(() => {
-                    this.$refs.wrapper.style.transition = ''
-                    this.$refs.wrapper.style.webkitTransition = ''
+                    this.$refs.container.style.transition = ''
+                    this.$refs.container.style.webkitTransition = ''
                     this.status = 0
                     this.disableScroll = false
                 }, 300)
@@ -567,25 +583,32 @@ export default {
     position: relative;
     overflow: hidden;
 
+    .mvi-pull-refresh-container {
+        display: block;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
     .mvi-pull-refresh-wrapper {
         display: block;
         position: relative;
         width: 100%;
         overflow-x: hidden;
         overflow-y: auto;
+    }
 
-        .mvi-pull-refresh-el {
-            display: flex;
-            display: -webkit-flex;
-            justify-content: center;
-            align-items: center;
-            color: @font-color-sub;
-            width: 100%;
-            padding: @mp-lg 0;
+    .mvi-pull-refresh-el {
+        display: flex;
+        display: -webkit-flex;
+        justify-content: center;
+        align-items: center;
+        color: @font-color-sub;
+        width: 100%;
+        padding: @mp-lg 0;
 
-            .mvi-pull-refresh-text {
-                margin-left: @mp-xs;
-            }
+        .mvi-pull-refresh-text {
+            margin-left: @mp-xs;
         }
     }
 }

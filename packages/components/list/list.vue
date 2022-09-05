@@ -1,27 +1,46 @@
 <template>
     <div class="mvi-list">
         <slot></slot>
-        <div v-if="loading" class="mvi-list-loading">
-            <m-icon class="mvi-list-loading-icon" v-if="loadingIcon" :color="loadingColor" :type="loadingIcon" spin />
-            <span :style="loadingStyle">{{loadingText}}</span>
+        <div v-if="finished" class="mvi-list-finished">
+            <slot name="finished" v-if="$slots.finished"></slot>
+            <span v-else>{{finishedText}}</span>
+        </div>
+        <div v-else-if="loading" class="mvi-list-loading">
+            <slot name="loading" v-if="$slots.loading"></slot>
+            <span v-else>{{loadingText}}</span>
         </div>
         <div v-else-if="error" @click="doLoad" class="mvi-list-error">
-            <m-icon class="mvi-list-error-icon" v-if="errorIcon" :color="errorColor" :type="errorIcon" />
-            <span :style="errorStyle">{{errorText}}</span>
+            <slot name="error" v-if="$slots.error"></slot>
+            <span v-else>{{errorText}}</span>
         </div>
     </div>
 </template>
 
 <script>
+import $dap from 'dap-util'
+import Scroll from '../scroll/scroll'
 export default {
     name: 'm-list',
-    emits: ['load', 'update:loading', 'update:error', 'update:finished'],
+    emits: ['load', 'update:loading', 'update:error'],
+    data() {
+        return {
+            //监听滚动的对象
+            scrollObj: null
+        }
+    },
     props: {
+        //是否加载状态
         loading: {
             type: Boolean,
             default: false
         },
+        //是否错误状态
         error: {
+            type: Boolean,
+            default: false
+        },
+        //是否完成状态
+        finished: {
             type: Boolean,
             default: false
         },
@@ -30,60 +49,65 @@ export default {
             type: String,
             default: '正在加载'
         },
-        //加载图标
-        loadingIcon: {
-            type: String,
-            default: null
-        },
-        //加载字体颜色
-        loadingColor: {
-            type: String,
-            default: null
-        },
         //错误文案
         errorText: {
             type: String,
             default: '数据加载失败'
         },
-        //错误图标
-        errorIcon: {
+        //完成文案
+        finishedText: {
             type: String,
-            default: null
+            default: '没有更多了'
         },
-        //错误字体颜色
-        errorColor: {
-            type: String,
-            default: null
-        },
-        //是否已经完成
-        finished: {
+        //初始化是否触发一次load
+        immediateLoad: {
             type: Boolean,
             default: false
         }
     },
-    computed: {
-        errorStyle() {
-            let style = {}
-            if (this.errorColor) {
-                style.color = this.errorColor
-            }
-            return style
-        },
-        loadingStyle() {
-            let style = {}
-            if (this.loadingColor) {
-                style.color = this.loadingColor
-            }
-            return style
+    mounted() {
+        if (this.immediateLoad) {
+            this.doLoad()
         }
     },
     methods: {
+        //监听滚动元素到底部
+        initScrollBottom() {
+            const el = this.getScrollEl(this.$el)
+            if (!el) {
+                return
+            }
+            if (this.scrollObj) {
+                return
+            }
+            this.scrollObj = new Scroll(el, {
+                bottom: () => {
+                    if (this.finished || this.loading || this.error) {
+                        return
+                    }
+                    this.doLoad()
+                }
+            })
+            this.scrollObj.init()
+        },
         //执行加载函数
         doLoad() {
+            if (this.finished) {
+                return
+            }
             this.$emit('update:loading', true)
             this.$emit('update:error', false)
-            this.$emit('update:finished', false)
             this.$emit('load')
+        },
+        //获取最近的滚动容器
+        getScrollEl(el) {
+            if (!el) {
+                return null
+            }
+            if ($dap.element.getScrollHeight(el) > el.clientHeight) {
+                return el
+            }
+            return this.getScrollEl(el.parentNode)
         }
     }
 }
@@ -100,13 +124,9 @@ export default {
         justify-content: center;
         align-items: center;
         width: 100%;
-        padding: @mp-lg;
+        padding: @mp-md;
         font-size: @font-size-default;
         color: @font-color-mute;
-
-        .mvi-list-loading-icon {
-            margin-right: @mp-xs;
-        }
     }
 
     .mvi-list-error {
@@ -114,13 +134,19 @@ export default {
         justify-content: center;
         align-items: center;
         width: 100%;
-        padding: @mp-lg;
+        padding: @mp-md;
         font-size: @font-size-default;
         color: @font-color-mute;
+    }
 
-        .mvi-list-error-icon {
-            margin-right: @mp-xs;
-        }
+    .mvi-list-finished {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding: @mp-md;
+        font-size: @font-size-default;
+        color: @font-color-mute;
     }
 }
 </style>
