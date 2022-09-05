@@ -13,6 +13,10 @@
             <slot name="error" v-if="$slots.error"></slot>
             <span v-else>{{errorText}}</span>
         </div>
+        <div v-else-if="content || $slots.content" @click="doLoad" class="mvi-list-content">
+            <slot name="content" v-if="$slots.content"></slot>
+            <span v-else>{{content}}</span>
+        </div>
     </div>
 </template>
 
@@ -63,6 +67,11 @@ export default {
         immediateLoad: {
             type: Boolean,
             default: false
+        },
+        //content内容
+        content: {
+            type: String,
+            default: '点我加载更多'
         }
     },
     mounted() {
@@ -119,27 +128,10 @@ export default {
     display: block;
     width: 100%;
 
-    .mvi-list-loading {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        padding: @mp-md;
-        font-size: @font-size-default;
-        color: @font-color-mute;
-    }
-
-    .mvi-list-error {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        padding: @mp-md;
-        font-size: @font-size-default;
-        color: @font-color-mute;
-    }
-
-    .mvi-list-finished {
+    .mvi-list-loading,
+    .mvi-list-finished,
+    .mvi-list-error,
+    .mvi-list-content {
         display: flex;
         justify-content: center;
         align-items: center;
