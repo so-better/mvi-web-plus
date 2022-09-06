@@ -1,5 +1,5 @@
 <template>
-    <m-modal ref="modal" :model-value="show" :footer-padding="false" @hide="modalHide" @hidding="modalHidding" @hidden="modalHidden" :width="computedWidth" :z-index="computedZIndex" :radius="computedRadius" :use-padding="computedUsePadding" :animation="computedAnimation" @show="modalShow" @showing="modalShowing" @shown="modalShown" :timeout="computedTimeout" :overlay-color="computedOverlayColor" :mount-el="computedMountEl">
+    <m-modal ref="modal" v-model="show" :footer-padding="false" @hide="modalHide" @hidding="modalHidding" @hidden="modalHidden" :width="computedWidth" :z-index="computedZIndex" :radius="computedRadius" :use-padding="computedUsePadding" :animation="computedAnimation" @show="modalShow" @showing="modalShowing" @shown="modalShown" :timeout="computedTimeout" :overlay-color="computedOverlayColor" :mount-el="computedMountEl">
         <template v-if="computedTitle || (computedIos && computedMessage)" #title>
             <div v-html="computedTitle" v-if="computedTitle" class="mvi-dialog-title"></div>
             <div v-if="computedMessage && computedIos" v-html="computedMessage" class="mvi-dialog-ios-content"></div>
@@ -114,18 +114,16 @@ export default {
             type: String,
             default: null
         },
+        //是否点击遮罩可关闭
+        closable: {
+            type: Boolean,
+            default: false
+        },
         //弹窗移除方法
         remove: {
             type: Function,
             default: function () {
                 return function () {}
-            }
-        },
-        //应用实例
-        app: {
-            type: Object,
-            default: function () {
-                return {}
             }
         }
     },
@@ -371,7 +369,21 @@ export default {
             this.setDefaultValue()
         }
     },
+    mounted() {
+        $dap.event.on(this.$$el, 'click.dialog', this.overlayClick)
+    },
     methods: {
+        //点击遮罩层关闭
+        overlayClick(event) {
+            if (!this.closable) {
+                return
+            }
+            if (event.target != event.currentTarget) {
+                return
+            }
+            this.show = false
+            this.ok = false
+        },
         //设置输入框默认值
         setDefaultValue() {
             let value = this.computedInput.value

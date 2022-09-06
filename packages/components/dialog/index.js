@@ -18,6 +18,7 @@ const Dialog = {
             opts.timeout = options.timeout
             opts.overlayColor = options.overlayColor
             opts.mountEl = options.mountEl
+            opts.closable = options.closable
             if (type == 'alert' || type == 'confirm' || type == 'prompt') {
                 opts.btnText = options.btnText
                 opts.btnColor = options.btnColor

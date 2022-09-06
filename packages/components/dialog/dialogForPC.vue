@@ -107,6 +107,11 @@ export default {
             type: String,
             default: null
         },
+        //是否点击遮罩可关闭
+        closable: {
+            type: Boolean,
+            default: false
+        },
         //弹窗移除方法
         remove: {
             type: Function,
@@ -341,7 +346,21 @@ export default {
             this.setDefaultValue()
         }
     },
+    mounted() {
+        $dap.event.on(this.$$el, 'click.dialog', this.overlayClick)
+    },
     methods: {
+        //点击遮罩层关闭
+        overlayClick(event) {
+            if (!this.closable) {
+                return
+            }
+            if (event.target != event.currentTarget) {
+                return
+            }
+            this.show = false
+            this.ok = false
+        },
         //设置输入框默认值
         setDefaultValue() {
             let value = this.computedInput.value
@@ -398,11 +417,7 @@ export default {
         //取消
         cancelFun() {
             this.show = false
-            if (this.type == 'Alert') {
-                this.ok = true
-            } else {
-                this.ok = false
-            }
+            this.ok = false
         },
         //模态框隐藏前
         modalHide(el) {
