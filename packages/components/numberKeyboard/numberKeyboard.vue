@@ -2,20 +2,22 @@
     <m-overlay ref="overlay" :model-value="show" @show="overlayShow" @hide="overlayHide" :z-index="zIndex" :color="overlayColor" :timeout="timeout" @click.self="hide" :mount-el="mountEl" :use-padding="usePadding">
         <transition name="mvi-keyboard" @before-enter="beforeEnter" @after-enter="afterEnter" @before-leave="beforeLeave" @after-leave="afterLeave" @leave="leave" @enter="enter">
             <div ref="keyboard" class="mvi-number-keyboard" v-if="firstShow" v-show="keyboardShow" :style="boardStyle" v-bind="$attrs">
-                <div class="mvi-number-keyboard-left">
-                    <template v-for="(item,index) in numbers">
-                        <div :class="leftNumberClass(item)" :key="'number-'+index" v-text="item" @click="numberClick(item)" v-if="showDecimal?true:(item != '.')" :data-decimal="''+showDecimal">
-                        </div>
-                    </template>
-                </div>
-                <div class="mvi-number-keyboard-right" v-if="showComplete || showDelete">
-                    <div :disabled="deleteDisabeld || null" :class="deleteBtnClass" @click="deleteClick" v-if="showDelete">
-                        <slot name="delete" v-if="$slots.delete"></slot>
-                        <span v-text="deleteText" v-else></span>
+                <div class="mvi-number-keyboard-wrapper">
+                    <div class="mvi-number-keyboard-left">
+                        <template v-for="(item,index) in computedNumbers">
+                            <div :class="leftNumberClass(item,index)" v-text="item" @click="numberClick(item)">
+                            </div>
+                        </template>
                     </div>
-                    <div :disabled="(promiseEmpty?null:completeDisabled || null)" :class="completeBtnClass" @click="completeClick" v-if="showComplete">
-                        <slot name="complete" v-if="$slots.complete"></slot>
-                        <span v-text="completeText"></span>
+                    <div class="mvi-number-keyboard-right" v-if="showComplete || showDelete">
+                        <div :disabled="deleteDisabeld || null" :class="deleteBtnClass" @click="deleteClick" v-if="showDelete">
+                            <slot name="delete" v-if="$slots.delete"></slot>
+                            <span v-text="deleteText" v-else></span>
+                        </div>
+                        <div :disabled="(promiseEmpty?null:completeDisabled || null)" :class="completeBtnClass" @click="completeClick" v-if="showComplete">
+                            <slot name="complete" v-if="$slots.complete"></slot>
+                            <span v-text="completeText"></span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -35,7 +37,20 @@ export default {
             //键盘是否显示
             keyboardShow: false,
             //键盘按键
-            numbers: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.']
+            numbers: [
+                '1',
+                '2',
+                '3',
+                '4',
+                '5',
+                '6',
+                '7',
+                '8',
+                '9',
+                'X',
+                '.',
+                '0'
+            ]
         }
     },
     emits: [
@@ -136,7 +151,7 @@ export default {
         //遮罩层颜色
         overlayColor: {
             type: String,
-            default: 'rgba(0,10,20,.2)'
+            default: 'rgba(0,10,20,0.2)'
         },
         //是否考虑滚动条
         usePadding: {
@@ -145,6 +160,16 @@ export default {
         },
         //是否进行数字校准
         calibration: {
+            type: Boolean,
+            default: false
+        },
+        //是否为身份证输入键盘
+        showX: {
+            type: Boolean,
+            default: false
+        },
+        //是否随即键盘
+        random: {
             type: Boolean,
             default: false
         }
@@ -187,10 +212,15 @@ export default {
             }
         },
         leftNumberClass() {
-            return item => {
+            return (item, index) => {
                 let cls = ['mvi-number-keyboard-left-number']
-                if (item == 0) {
-                    cls.push('mvi-number-keyboard-number-zero')
+                //最后一个数值键盘宽度不一致
+                if (index == this.computedNumbers.length - 1) {
+                    if (this.showX || this.showDecimal) {
+                        cls.push('mvi-number-keyboard-half')
+                    } else {
+                        cls.push('mvi-number-keyboard-full')
+                    }
                 }
                 if (this.active) {
                     cls.push('mvi-number-keyboard-active')
@@ -200,9 +230,6 @@ export default {
         },
         deleteBtnClass() {
             let cls = ['mvi-number-keyboard-delete']
-            if (this.showDelete && !this.showComplete) {
-                cls.push('mvi-number-keyboard-hide')
-            }
             if (this.deleteClass) {
                 cls.push(this.deleteClass)
             }
@@ -213,9 +240,6 @@ export default {
         },
         completeBtnClass() {
             let cls = ['mvi-number-keyboard-complete']
-            if (this.showComplete && !this.showDelete) {
-                cls.push('mvi-number-keyboard-hide')
-            }
             if (this.completeClass) {
                 cls.push(this.completeClass)
             }
@@ -226,12 +250,48 @@ export default {
                 cls.push('mvi-number-keyboard-active')
             }
             return cls
+        },
+        showKeyBoard() {
+            return item => {
+                if (item == 'X') {
+                    return this.showX
+                }
+                if (item == '.') {
+                    return this.showDecimal && !this.showX
+                }
+                return true
+            }
+        },
+        computedNumbers() {
+            let numbers = this.numbers.filter(item => {
+                return this.showKeyBoard(item)
+            })
+            if (this.random) {
+                let arr = []
+                let length = numbers.length
+                for (let i = 0; i < length; i++) {
+                    arr.push(this.getRandomNumber(arr))
+                }
+                return arr
+            }
+            return numbers
         }
     },
     components: {
         mOverlay
     },
     methods: {
+        //获取一个随机键盘值
+        getRandomNumber(arr) {
+            let numbers = this.numbers.filter(item => {
+                return this.showKeyBoard(item)
+            })
+            let index = Math.floor(Math.random() * numbers.length)
+            if (arr.includes(numbers[index])) {
+                return this.getRandomNumber(arr)
+            }
+            return numbers[index]
+        },
         //遮罩层显示前
         overlayShow(el) {
             if (!this.firstShow) {
@@ -352,9 +412,7 @@ export default {
 @import '../../css/mvi-basic.less';
 
 .mvi-number-keyboard {
-    display: flex;
-    display: -webkit-flex;
-    justify-content: space-between;
+    display: block;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -363,6 +421,16 @@ export default {
     background-color: #fff;
     user-select: none;
     -webkit-user-select: none;
+    font-size: @font-size-h6;
+    box-shadow: @boxshadow;
+}
+
+.mvi-number-keyboard-wrapper {
+    display: flex;
+    display: -webkit-flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 4.8rem;
 }
 
 .mvi-number-keyboard-left {
@@ -374,69 +442,68 @@ export default {
     -ms-flex-wrap: wrap;
     -webkit-flex-wrap: wrap;
     flex: 1;
-}
+    height: 100%;
 
-.mvi-number-keyboard-left-number {
-    position: relative;
-    display: flex;
-    display: -webkit-flex;
-    justify-content: center;
-    align-items: center;
-    width: calc(~'1/3 * 100%');
-    height: 1.2rem;
-    border-top: 1px solid @border-color;
-    border-right: 1px solid @border-color;
-    margin: 0;
-    padding: 0;
-    font-weight: bold;
-    cursor: pointer;
-}
+    .mvi-number-keyboard-left-number {
+        position: relative;
+        display: flex;
+        display: -webkit-flex;
+        justify-content: center;
+        align-items: center;
+        width: calc(~'1/3 * 100%');
+        height: 1.2rem;
+        border-top: 1px solid @border-color;
+        border-right: 1px solid @border-color;
+        margin: 0;
+        padding: 0;
+        font-weight: bold;
+        cursor: pointer;
 
-.mvi-number-keyboard-left-number.mvi-number-keyboard-number-zero {
-    width: calc(~'2/3 * 100%');
-}
-
-.mvi-number-keyboard-left-number.mvi-number-keyboard-number-zero[data-decimal='false'] {
-    width: 100%;
+        &.mvi-number-keyboard-half {
+            width: calc(~'2/3 * 100%');
+        }
+        &.mvi-number-keyboard-full {
+            width: 100%;
+        }
+    }
 }
 
 .mvi-number-keyboard-right {
-    display: block;
+    display: flex;
+    display: -webkit-flex;
+    justify-content: flex-start;
+    flex-direction: column;
     height: 100%;
     width: 2.1rem;
-}
 
-.mvi-number-keyboard-delete {
-    position: relative;
-    display: flex;
-    display: -webkit-flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 2.4rem;
-    background-color: @bg-color-dark;
-    font-weight: bold;
-    cursor: pointer;
-    border-top: 1px solid @border-color;
-}
+    .mvi-number-keyboard-delete {
+        position: relative;
+        display: flex;
+        display: -webkit-flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        flex: 1;
+        background-color: @bg-color-dark;
+        font-weight: bold;
+        cursor: pointer;
+        border-top: 1px solid @border-color;
+    }
 
-.mvi-number-keyboard-complete {
-    position: relative;
-    display: flex;
-    display: -webkit-flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 2.4rem;
-    background-color: @primary-normal;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    border-top: 1px solid @border-color;
-}
-
-.mvi-number-keyboard-hide {
-    height: 4.8rem;
+    .mvi-number-keyboard-complete {
+        position: relative;
+        display: flex;
+        display: -webkit-flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        flex: 1;
+        background-color: @primary-normal;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+        border-top: 1px solid @border-color;
+    }
 }
 
 .mvi-keyboard-enter-from,
