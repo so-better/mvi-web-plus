@@ -2,21 +2,30 @@
     <m-overlay ref="overlay" :model-value="show" @show="overlayShow" @hide="overlayHide" :z-index="zIndex" :color="overlayColor" :timeout="timeout" @click.self="hide" :mount-el="mountEl" :use-padding="usePadding">
         <transition name="mvi-keyboard" @before-enter="beforeEnter" @after-enter="afterEnter" @before-leave="beforeLeave" @after-leave="afterLeave" @leave="leave" @enter="enter">
             <div ref="keyboard" class="mvi-number-keyboard" v-if="firstShow" v-show="keyboardShow" :style="boardStyle" v-bind="$attrs">
-                <div class="mvi-number-keyboard-wrapper">
+                <div v-if="!border && (title || $slots.title)" :class="['mvi-number-keyboard-title',border?'mvi-number-keyboard-border':'']">
+                    <slot v-if="$slots.title"></slot>
+                    <span v-else-if="title">{{title}}</span>
+                </div>
+                <div :class="['mvi-number-keyboard-wrapper',border?'':'mvi-number-keyboard-border']">
                     <div class="mvi-number-keyboard-left">
                         <template v-for="(item,index) in computedNumbers">
-                            <div :class="leftNumberClass(item,index)" v-text="item" @click="numberClick(item)">
+                            <div :class="leftNumberClass(item,index)">
+                                <div @click="numberClick(item)" :class="leftNumberElClass(item,index)">{{item}}</div>
                             </div>
                         </template>
                     </div>
                     <div class="mvi-number-keyboard-right" v-if="showComplete || showDelete">
-                        <div :disabled="deleteDisabeld || null" :class="deleteBtnClass" @click="deleteClick" v-if="showDelete">
-                            <slot name="delete" v-if="$slots.delete"></slot>
-                            <span v-text="deleteText" v-else></span>
+                        <div :class="deleteBtnClass" v-if="showDelete">
+                            <div :disabled="deleteDisabeld || null" :class="deleteBtnElClass" @click="deleteClick">
+                                <slot name="delete" v-if="$slots.delete"></slot>
+                                <span v-text="deleteText" v-else></span>
+                            </div>
                         </div>
-                        <div :disabled="(promiseEmpty?null:completeDisabled || null)" :class="completeBtnClass" @click="completeClick" v-if="showComplete">
-                            <slot name="complete" v-if="$slots.complete"></slot>
-                            <span v-text="completeText"></span>
+                        <div :class="completeBtnClass" v-if="showComplete">
+                            <div :disabled="(promiseEmpty?null:completeDisabled || null)" :class="completeBtnElClass" @click="completeClick">
+                                <slot name="complete" v-if="$slots.complete"></slot>
+                                <span v-text="completeText"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -172,6 +181,16 @@ export default {
         random: {
             type: Boolean,
             default: false
+        },
+        //标题
+        title: {
+            type: String,
+            default: null
+        },
+        //是否显示边框
+        border: {
+            type: Boolean,
+            default: false
         }
     },
     computed: {
@@ -222,6 +241,15 @@ export default {
                         cls.push('mvi-number-keyboard-full')
                     }
                 }
+                if (this.border) {
+                    cls.push('mvi-number-keyboard-border')
+                }
+                return cls
+            }
+        },
+        leftNumberElClass() {
+            return (item, index) => {
+                let cls = ['mvi-number-keyboard-left-number-el']
                 if (this.active) {
                     cls.push('mvi-number-keyboard-active')
                 }
@@ -230,6 +258,13 @@ export default {
         },
         deleteBtnClass() {
             let cls = ['mvi-number-keyboard-delete']
+            if (this.border) {
+                cls.push('mvi-number-keyboard-border')
+            }
+            return cls
+        },
+        deleteBtnElClass() {
+            let cls = ['mvi-number-keyboard-delete-el']
             if (this.deleteClass) {
                 cls.push(this.deleteClass)
             }
@@ -240,6 +275,14 @@ export default {
         },
         completeBtnClass() {
             let cls = ['mvi-number-keyboard-complete']
+
+            if (this.border) {
+                cls.push('mvi-number-keyboard-border')
+            }
+            return cls
+        },
+        completeBtnElClass() {
+            let cls = ['mvi-number-keyboard-complete-el']
             if (this.completeClass) {
                 cls.push(this.completeClass)
             }
@@ -425,12 +468,25 @@ export default {
     box-shadow: @boxshadow;
 }
 
+.mvi-number-keyboard-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: @mp-sm @mp-sm 0 @mp-sm;
+    font-size: @font-size-default;
+    color: @font-color-sub;
+}
+
 .mvi-number-keyboard-wrapper {
     display: flex;
     display: -webkit-flex;
     justify-content: space-between;
     width: 100%;
     height: 4.8rem;
+
+    &.mvi-number-keyboard-border {
+        padding: @mp-sm;
+    }
 }
 
 .mvi-number-keyboard-left {
@@ -445,19 +501,36 @@ export default {
     height: 100%;
 
     .mvi-number-keyboard-left-number {
-        position: relative;
-        display: flex;
-        display: -webkit-flex;
-        justify-content: center;
-        align-items: center;
+        display: block;
         width: calc(~'1/3 * 100%');
-        height: 1.2rem;
-        border-top: 1px solid @border-color;
-        border-right: 1px solid @border-color;
+        height: calc(~'1/4 * 100%');
         margin: 0;
-        padding: 0;
-        font-weight: bold;
-        cursor: pointer;
+        padding: @mp-xs;
+
+        & > .mvi-number-keyboard-left-number-el {
+            position: relative;
+            display: flex;
+            display: -webkit-flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            background-color: @bg-color-default;
+            border-radius: @radius-default;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        &.mvi-number-keyboard-border {
+            border-top: 1px solid @border-color;
+            border-right: 1px solid @border-color;
+            padding: 0;
+
+            & > .mvi-number-keyboard-left-number-el {
+                background-color: transparent;
+                border-radius: 0;
+            }
+        }
 
         &.mvi-number-keyboard-half {
             width: calc(~'2/3 * 100%');
@@ -477,32 +550,67 @@ export default {
     width: 2.1rem;
 
     .mvi-number-keyboard-delete {
-        position: relative;
-        display: flex;
-        display: -webkit-flex;
-        justify-content: center;
-        align-items: center;
+        display: block;
         width: 100%;
         flex: 1;
-        background-color: @bg-color-dark;
-        font-weight: bold;
-        cursor: pointer;
-        border-top: 1px solid @border-color;
+        padding: @mp-xs;
+
+        & > .mvi-number-keyboard-delete-el {
+            position: relative;
+            display: flex;
+            display: -webkit-flex;
+            justify-content: center;
+            align-items: center;
+            background-color: @bg-color-dark;
+            font-weight: bold;
+            cursor: pointer;
+            height: 100%;
+            width: 100%;
+            border-radius: @radius-default;
+        }
+
+        &.mvi-number-keyboard-border {
+            border-top: 1px solid @border-color;
+            padding: 0;
+
+            & > .mvi-number-keyboard-delete-el {
+                border-radius: 0;
+            }
+        }
     }
 
     .mvi-number-keyboard-complete {
-        position: relative;
-        display: flex;
-        display: -webkit-flex;
-        justify-content: center;
-        align-items: center;
+        display: block;
         width: 100%;
         flex: 1;
-        background-color: @primary-normal;
-        color: #fff;
-        font-weight: bold;
-        cursor: pointer;
-        border-top: 1px solid @border-color;
+        padding: @mp-xs;
+
+        & > .mvi-number-keyboard-complete-el {
+            position: relative;
+            display: flex;
+            display: -webkit-flex;
+            justify-content: center;
+            align-items: center;
+            background-color: @bg-color-dark;
+            font-weight: bold;
+            cursor: pointer;
+            height: 100%;
+            width: 100%;
+            background-color: @primary-normal;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: @radius-default;
+        }
+
+        &.mvi-number-keyboard-border {
+            border-top: 1px solid @border-color;
+            padding: 0;
+
+            & > .mvi-number-keyboard-complete-el {
+                border-radius: 0;
+            }
+        }
     }
 }
 
@@ -515,8 +623,8 @@ export default {
     .mvi-active();
 }
 
-.mvi-number-keyboard-delete[disabled]::before,
-.mvi-number-keyboard-complete[disabled]::before {
+.mvi-number-keyboard-delete > div[disabled]::before,
+.mvi-number-keyboard-complete > div[disabled]::before {
     content: ' ';
     position: absolute;
     top: 0;
