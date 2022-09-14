@@ -28,7 +28,7 @@ export default {
         //动画时间
         timeout: {
             type: Number,
-            default: 400
+            default: 200
         }
     },
     watch: {
