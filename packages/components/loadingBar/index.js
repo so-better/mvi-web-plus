@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import $dap from 'dap-util'
-import LoadingBarComponent from './loadingBar'
+import LoadingBarComponent from './loadingBar.vue'
 
 const LoadingBar = {
     //初始化参数

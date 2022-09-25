@@ -1,4 +1,4 @@
-import picker from './picker'
+import picker from './picker.vue'
 
 picker.install = app => {
     app.component(picker.name, picker)

@@ -36,8 +36,8 @@
 
 <script>
 import $dap from 'dap-util'
-import mIcon from '../icon/icon'
-import mDateNativePicker from '../dateNativePicker/dateNativePicker'
+import mIcon from '../icon/icon.vue'
+import mDateNativePicker from '../dateNativePicker/dateNativePicker.vue'
 export default {
     name: 'm-input',
     data() {

@@ -1,4 +1,4 @@
-import circleProgress from './circleProgress'
+import circleProgress from './circleProgress.vue'
 
 circleProgress.install = app => {
     app.component(circleProgress.name, circleProgress)

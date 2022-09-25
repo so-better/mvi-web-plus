@@ -27,8 +27,8 @@
 
 <script>
 import $dap from 'dap-util'
-import mOverlay from '../overlay/overlay'
-import mIcon from '../icon/icon'
+import mOverlay from '../overlay/overlay.vue'
+import mIcon from '../icon/icon.vue'
 export default {
     name: 'm-modal',
     data() {

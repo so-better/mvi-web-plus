@@ -1,4 +1,4 @@
-import pullRefresh from './pullRefresh'
+import pullRefresh from './pullRefresh.vue'
 
 pullRefresh.install = app => {
     app.component(pullRefresh.name, pullRefresh)

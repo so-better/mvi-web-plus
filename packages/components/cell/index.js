@@ -1,5 +1,5 @@
-import cell from './cell'
-import cellGroup from './cell-group'
+import cell from './cell.vue'
+import cellGroup from './cell-group.vue'
 
 cell.install = app => {
     app.component(cellGroup.name, cellGroup)

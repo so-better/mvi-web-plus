@@ -23,7 +23,7 @@
 <script>
 import { getCurrentInstance } from 'vue'
 import $dap from 'dap-util'
-import mLoading from '../loading/loading'
+import mLoading from '../loading/loading.vue'
 export default {
     name: 'm-picker',
     data() {

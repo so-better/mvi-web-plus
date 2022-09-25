@@ -1,4 +1,4 @@
-import panel from './panel'
+import panel from './panel.vue'
 
 panel.install = app => {
     app.component(panel.name, panel)

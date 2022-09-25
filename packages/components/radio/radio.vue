@@ -11,7 +11,7 @@
 
 <script>
 import $dap from 'dap-util'
-import mIcon from '../icon/icon'
+import mIcon from '../icon/icon.vue'
 export default {
     name: 'm-radio',
     emits: ['update:modelValue', 'change'],

@@ -15,7 +15,7 @@
 
 <script>
 import $dap from 'dap-util'
-import editorItem from './editor-item'
+import editorItem from './editor-item.vue'
 import Observe from '../observe/observe'
 //不实现激活状态的菜单项
 const unactiveMenus = [

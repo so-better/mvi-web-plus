@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import $dap from 'dap-util'
-import ToastComponent from './toast'
+import ToastComponent from './toast.vue'
 
 const Toast = {
     //初始化参数

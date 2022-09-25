@@ -1,4 +1,4 @@
-import editor from './editor'
+import editor from './editor.vue'
 
 editor.install = app => {
     app.component(editor.name, editor)

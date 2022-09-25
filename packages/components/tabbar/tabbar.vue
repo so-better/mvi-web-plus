@@ -6,7 +6,7 @@
 
 <script>
 import $dap from 'dap-util'
-import mTabItem from './tabbar-item'
+import mTabItem from './tabbar-item.vue'
 export default {
     name: 'm-tabbar',
     components: {

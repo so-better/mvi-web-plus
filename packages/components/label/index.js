@@ -1,4 +1,4 @@
-import label from './label'
+import label from './label.vue'
 
 label.install = app => {
     app.component(label.name, label)

@@ -101,12 +101,12 @@
 import { getCurrentInstance } from 'vue'
 import $dap from 'dap-util'
 import Upload from '../upload/upload'
-import mTooltip from '../tooltip/tooltip'
-import mIcon from '../icon/icon'
-import mLayer from '../layer/layer'
-import mTabs from '../tabs/tabs'
-import mTab from '../tabs/tab'
-import mCheckbox from '../checkbox/checkbox'
+import mTooltip from '../tooltip/tooltip.vue'
+import mIcon from '../icon/icon.vue'
+import mLayer from '../layer/layer.vue'
+import mTabs from '../tabs/tabs.vue'
+import mTab from '../tabs/tab.vue'
+import mCheckbox from '../checkbox/checkbox.vue'
 export default {
     name: 'm-editor-item',
     props: {

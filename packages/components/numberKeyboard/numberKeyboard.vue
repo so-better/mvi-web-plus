@@ -36,7 +36,7 @@
 
 <script>
 import $dap from 'dap-util'
-import mOverlay from '../overlay/overlay'
+import mOverlay from '../overlay/overlay.vue'
 export default {
     name: 'm-number-keyboard',
     data() {

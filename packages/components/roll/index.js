@@ -1,4 +1,4 @@
-import roll from './roll'
+import roll from './roll.vue'
 
 roll.install = app => {
     app.component(roll.name, roll)

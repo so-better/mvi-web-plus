@@ -23,9 +23,9 @@
 
 <script>
 import $dap from 'dap-util'
-import mPopup from '../popup/popup'
-import mLoading from '../loading/loading'
-import mIcon from '../icon/icon'
+import mPopup from '../popup/popup.vue'
+import mLoading from '../loading/loading.vue'
+import mIcon from '../icon/icon.vue'
 export default {
     name: 'm-actionsheet',
     emits: ['update:modelValue', 'select'],

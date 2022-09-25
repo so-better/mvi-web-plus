@@ -20,9 +20,9 @@
 
 <script>
 import $dap from 'dap-util'
-import mModal from '../modal/modal'
-import mIcon from '../icon/icon'
-import mButton from '../button/button'
+import mModal from '../modal/modal.vue'
+import mIcon from '../icon/icon.vue'
+import mButton from '../button/button.vue'
 export default {
     name: 'm-dialog-pc',
     data() {

@@ -1,4 +1,4 @@
-import search from './search'
+import search from './search.vue'
 
 search.install = app => {
     app.component(search.name, search)

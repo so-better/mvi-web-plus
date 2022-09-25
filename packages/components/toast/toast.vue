@@ -12,9 +12,9 @@
 
 <script>
 import $dap from 'dap-util'
-import mOverlay from '../overlay/overlay'
-import mLoading from '../loading/loading'
-import mIcon from '../icon/icon'
+import mOverlay from '../overlay/overlay.vue'
+import mLoading from '../loading/loading.vue'
+import mIcon from '../icon/icon.vue'
 export default {
     name: 'm-toast',
     data() {
@@ -92,9 +92,9 @@ export default {
         }
     },
     computed: {
-		$$el(){
-			return this.$refs.overlay.$$el
-		},
+        $$el() {
+            return this.$refs.overlay.$$el
+        },
         computedUsePadding() {
             if (typeof this.usePadding == 'boolean') {
                 return this.usePadding

@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import $dap from 'dap-util'
-import msgBoxComponent from './msgbox'
+import msgBoxComponent from './msgbox.vue'
 
 const MsgBox = {
     //初始化参数

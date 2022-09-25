@@ -1,4 +1,4 @@
-import slider from './slider'
+import slider from './slider.vue'
 
 slider.install = app => {
     app.component(slider.name, slider)

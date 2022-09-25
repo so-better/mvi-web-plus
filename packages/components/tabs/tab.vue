@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { getCurrentInstance, inject } from 'vue'
+import { getCurrentInstance } from 'vue'
 import $dap from 'dap-util'
 export default {
     name: 'm-tab',

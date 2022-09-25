@@ -23,8 +23,8 @@
 
 <script>
 import $dap from 'dap-util'
-import mModal from '../modal/modal'
-import mIcon from '../icon/icon'
+import mModal from '../modal/modal.vue'
+import mIcon from '../icon/icon.vue'
 export default {
     name: 'm-dialog',
     data() {

@@ -13,8 +13,8 @@
 <script>
 import { getCurrentInstance } from 'vue'
 import $dap from 'dap-util'
-import mCell from '../cell/cell'
-import mTransitionSlide from '../transitionSlide/transitionSlide'
+import mCell from '../cell/cell.vue'
+import mTransitionSlide from '../transitionSlide/transitionSlide.vue'
 export default {
     name: 'm-collapse-item',
     data() {

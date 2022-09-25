@@ -1,4 +1,4 @@
-import select from './select'
+import select from './select.vue'
 select.install = app => {
     app.component(select.name, select)
 }

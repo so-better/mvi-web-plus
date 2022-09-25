@@ -1,4 +1,4 @@
-import layer from './layer'
+import layer from './layer.vue'
 
 layer.install = app => {
     app.component(layer.name, layer)

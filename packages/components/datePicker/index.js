@@ -1,4 +1,4 @@
-import datePicker from './datePicker'
+import datePicker from './datePicker.vue'
 
 datePicker.install = app => {
     app.component(datePicker.name, datePicker)

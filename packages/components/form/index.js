@@ -1,4 +1,4 @@
-import form from './form'
+import form from './form.vue'
 import formEl from './form-el.vue'
 
 form.install = app => {

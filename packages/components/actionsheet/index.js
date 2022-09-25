@@ -1,4 +1,4 @@
-import actionSheet from './actionsheet'
+import actionSheet from './actionsheet.vue'
 
 actionSheet.install = app => {
     app.component(actionSheet.name, actionSheet)

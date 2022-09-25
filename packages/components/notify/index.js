@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import $dap from 'dap-util'
-import NotifyComponent from './notify'
+import NotifyComponent from './notify.vue'
 
 const Notify = {
     //初始化参数

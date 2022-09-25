@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import mIcon from '../icon/icon'
+import mIcon from '../icon/icon.vue'
 export default {
     name: 'm-label',
     data() {

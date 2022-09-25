@@ -4,9 +4,6 @@ import path from 'path'
 
 export default defineConfig({
     plugins: [vue()],
-    resolve: {
-        extensions: ['.js', '.json', '.vue']
-    },
     build: {
         outDir: 'lib',
         minify: 'terser',

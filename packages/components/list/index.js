@@ -1,4 +1,4 @@
-import list from './list'
+import list from './list.vue'
 
 list.install = app => {
     app.component(list.name, list)

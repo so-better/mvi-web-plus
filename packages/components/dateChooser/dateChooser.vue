@@ -37,9 +37,9 @@
 <script>
 import { getCurrentInstance } from 'vue'
 import $dap from 'dap-util'
-import mLayer from '../layer/layer'
-import mIcon from '../icon/icon'
-import mCalendar from '../calendar/calendar'
+import mLayer from '../layer/layer.vue'
+import mIcon from '../icon/icon.vue'
+import mCalendar from '../calendar/calendar.vue'
 export default {
     name: 'm-date-chooser',
     data() {

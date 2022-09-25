@@ -13,7 +13,7 @@
 
 <script>
 import $dap from 'dap-util'
-import mIcon from '../icon/icon'
+import mIcon from '../icon/icon.vue'
 import mBadge from '../badge/badge.vue'
 export default {
     name: 'm-tabbar-item',

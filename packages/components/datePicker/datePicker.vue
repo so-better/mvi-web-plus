@@ -6,7 +6,7 @@
 
 <script>
 import $dap from 'dap-util'
-import mPicker from '../picker/picker'
+import mPicker from '../picker/picker.vue'
 export default {
     name: 'm-date-picker',
     emits: ['update:modelValue', 'confirm', 'cancel', 'change'],

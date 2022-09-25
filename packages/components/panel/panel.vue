@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import mTransitionSlide from '../transitionSlide/transitionSlide'
+import mTransitionSlide from '../transitionSlide/transitionSlide.vue'
 export default {
     name: 'm-panel',
     data() {

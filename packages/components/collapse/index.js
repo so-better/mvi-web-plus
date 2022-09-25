@@ -1,5 +1,5 @@
-import collapse from './collapse'
-import collapseItem from './collapse-item'
+import collapse from './collapse.vue'
+import collapseItem from './collapse-item.vue'
 
 collapse.install = app => {
     app.component(collapse.name, collapse)

@@ -16,8 +16,8 @@
 
 <script>
 import $dap from 'dap-util'
-import mIcon from '../icon/icon'
-import mPopup from '../popup/popup'
+import mIcon from '../icon/icon.vue'
+import mPopup from '../popup/popup.vue'
 export default {
     name: 'm-dropdown',
     data() {

@@ -23,8 +23,8 @@
 <script>
 import { getCurrentInstance } from 'vue'
 import $dap from 'dap-util'
-import mIcon from '../icon/icon'
-import mLayer from '../layer/layer'
+import mIcon from '../icon/icon.vue'
+import mLayer from '../layer/layer.vue'
 export default {
     name: 'm-autocomplete',
     data() {

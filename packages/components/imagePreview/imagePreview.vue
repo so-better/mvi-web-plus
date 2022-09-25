@@ -36,10 +36,10 @@
 </template>
 
 <script>
-import mOverlay from '../overlay/overlay'
+import mOverlay from '../overlay/overlay.vue'
 import mSwiper from '../swiper/swiper.vue'
-import mSwiperSlide from '../swiper/swiper-slide'
-import mRichImage from './richImage'
+import mSwiperSlide from '../swiper/swiper-slide.vue'
+import mRichImage from './richImage.vue'
 export default {
     name: 'm-image-preview',
     data() {

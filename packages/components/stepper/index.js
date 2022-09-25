@@ -1,4 +1,4 @@
-import stepper from './stepper'
+import stepper from './stepper.vue'
 
 stepper.install = app => {
     app.component(stepper.name, stepper)

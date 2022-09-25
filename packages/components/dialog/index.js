@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import $dap from 'dap-util'
-import dialogComponent from './dialog'
-import dialogForPCComponent from './dialogForPC'
+import dialogComponent from './dialog.vue'
+import dialogForPCComponent from './dialogForPC.vue'
 
 const Dialog = {
     //初始化参数

@@ -1,4 +1,4 @@
-import divider from './divider'
+import divider from './divider.vue'
 
 divider.install = app => {
     app.component(divider.name, divider)

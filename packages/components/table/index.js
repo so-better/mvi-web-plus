@@ -1,4 +1,4 @@
-import table from './table'
+import table from './table.vue'
 
 table.install = app => {
     app.component(table.name, table)

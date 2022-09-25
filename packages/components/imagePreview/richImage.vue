@@ -7,7 +7,7 @@
 <script>
 import { getCurrentInstance } from 'vue'
 import $dap from 'dap-util'
-import mImage from '../image/image'
+import mImage from '../image/image.vue'
 export default {
     name: 'm-rich-image',
     data() {

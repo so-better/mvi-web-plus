@@ -1,4 +1,4 @@
-import overlay from './overlay'
+import overlay from './overlay.vue'
 
 overlay.install = app => {
     app.component(overlay.name, overlay)

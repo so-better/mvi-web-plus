@@ -58,9 +58,9 @@
 <script>
 import { getCurrentInstance } from 'vue'
 import $dap from 'dap-util'
-import mCheckbox from '../checkbox/checkbox'
-import mIcon from '../icon/icon'
-import mLoading from '../loading/loading'
+import mCheckbox from '../checkbox/checkbox.vue'
+import mIcon from '../icon/icon.vue'
+import mLoading from '../loading/loading.vue'
 export default {
     name: 'm-table',
     emits: ['cell-click', 'check', 'sort-desc', 'sort-asc'],
