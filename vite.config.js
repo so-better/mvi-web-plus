@@ -22,12 +22,14 @@ export default defineConfig({
                 }
             }
         },
-        sourcemap: false //是否构建source map 文件
+        //是否构建source map 文件
+        sourcemap: false
     },
     css: {
         preprocessorOptions: {
             less: {
-                javascriptEnabled: true // 使用 less 编写样式的 UI 库（如 antd）时建议加入这个设置
+                // 使用 less 编写样式的 UI 库（如 antd）时建议加入这个设置
+                javascriptEnabled: true
             }
         }
     },
