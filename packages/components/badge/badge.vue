@@ -129,6 +129,7 @@ export default {
         line-height: 1;
         min-width: 0.34rem;
         height: 0.34rem;
+        z-index: 40;
 
         &[data-placement='top-right'] {
             left: auto;
