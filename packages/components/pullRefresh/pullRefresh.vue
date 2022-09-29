@@ -531,8 +531,10 @@ export default {
                     this.translateY =
                         $dap.element.rem2px(this.distance) - this.elHeight
                     setTimeout(() => {
-                        this.$refs.container.style.transition = ''
-                        this.$refs.container.style.webkitTransition = ''
+                        if (this.$refs.container) {
+                            this.$refs.container.style.transition = ''
+                            this.$refs.container.style.webkitTransition = ''
+                        }
                     }, 300)
                 }
             }
@@ -546,8 +548,10 @@ export default {
                 const width = this.$refs.container.offsetWidth
                 this.translateY = -this.elHeight
                 setTimeout(() => {
-                    this.$refs.container.style.transition = ''
-                    this.$refs.container.style.webkitTransition = ''
+                    if (this.$refs.container) {
+                        this.$refs.container.style.transition = ''
+                        this.$refs.container.style.webkitTransition = ''
+                    }
                     this.status = 0
                     this.disableScroll = false
                 }, 300)
