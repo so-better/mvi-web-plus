@@ -4,7 +4,7 @@
             <m-icon type="minus" />
         </div>
         <div :disabled="disabled || disabledInput || null" :class="['mvi-stepper-input',border?'mvi-stepper-border':'']" :style="inputStyle" v-if="showInput">
-            <input ref="input" v-model="realValue" :disabled="disabled || disabledInput || null" type="text" @blur="changeValue" @keyup.enter="changeValue" :style="inputElStyle">
+            <input ref="input" v-model="realValue" :disabled="disabled || disabledInput || null" type="text" @blur="changeValue" @keyup.enter="changeValue" :style="inputElStyle" inputmode="numeric">
         </div>
         <div :disabled="disabledPlus || arrivalMax || disabled || null" :class="plusClass" v-if="showPlus" :style="plusStyle" @click="doPlus">
             <m-icon type="plus" />

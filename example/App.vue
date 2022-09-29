@@ -6,7 +6,7 @@
     </m-skeleton> -->
     {{value}}
     <div class="mvi-p-4">
-        <m-slider v-model="value"></m-slider>
+        <m-stepper v-model="value"></m-stepper>
     </div>
 </template>
 <script>
