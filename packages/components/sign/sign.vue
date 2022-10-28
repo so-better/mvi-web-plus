@@ -1,9 +1,10 @@
 <template>
-    <canvas class="mvi-sign" @mousedown="canvasMouseDown" @mousemove="canvasMouseMove" @mouseup="canvasMouseUp" @touchstart="canvasTouchStart" @touchmove="canvasTouchMove" @touchend="canvasTouchEnd" />
+    <canvas class="mvi-sign" @mousedown="canvasMouseDown" @touchstart="canvasTouchStart" @touchmove="canvasTouchMove" @touchend="canvasTouchEnd" @mouseleave="canvasMouseLeave" @mouseenter="canvasMouseEnter" />
 </template>
 
 <script>
 import $dap from 'dap-util'
+import { getCurrentInstance } from 'vue'
 export default {
     name: 'm-sign',
     props: {
@@ -26,7 +27,15 @@ export default {
     data() {
         return {
             //是否正在签名
-            drawing: false
+            drawing: false,
+            //鼠标是否在canvas中
+            inCanvas: false
+        }
+    },
+    setup() {
+        const instance = getCurrentInstance()
+        return {
+            uid: instance.uid
         }
     },
     mounted() {
@@ -50,10 +59,23 @@ export default {
                 $dap.element.getCssStyle(this.$el, 'height')
             )
             this.clear()
+            //添加鼠标移动事件
+            $dap.event.on(
+                document.body,
+                `mousemove.sign_${this.uid}`,
+                this.canvasMouseMove
+            )
+            //添加鼠标松开事件
+            $dap.event.on(
+                document.body,
+                `mouseup.sign_${this.uid} mouseleave.sign_${this.uid}`,
+                this.canvasMouseUp
+            )
         },
         //鼠标按下
         canvasMouseDown(e) {
             this.drawing = true
+            this.inCanvas = true
             const ctx = this.$el.getContext('2d')
             const rect = $dap.element.getElementBounding(this.$el)
             ctx.beginPath()
@@ -61,7 +83,7 @@ export default {
         },
         //鼠标移动
         canvasMouseMove(e) {
-            if (this.drawing) {
+            if (this.drawing && this.inCanvas) {
                 const ctx = this.$el.getContext('2d')
                 const rect = $dap.element.getElementBounding(this.$el)
                 ctx.lineTo(e.pageX - rect.left, e.pageY - rect.top)
@@ -75,6 +97,24 @@ export default {
             this.drawing = false
             const ctx = this.$el.getContext('2d')
             ctx.closePath()
+        },
+        //鼠标进入canvas区域
+        canvasMouseEnter(e) {
+            if (this.drawing) {
+                this.inCanvas = true
+                const ctx = this.$el.getContext('2d')
+                const rect = $dap.element.getElementBounding(this.$el)
+                ctx.beginPath()
+                ctx.moveTo(e.pageX - rect.left, e.pageY - rect.top)
+            }
+        },
+        //鼠标离开canvas区域
+        canvasMouseLeave(e) {
+            if (this.drawing) {
+                const ctx = this.$el.getContext('2d')
+                ctx.closePath()
+                this.inCanvas = false
+            }
         },
         //触摸按下
         canvasTouchStart(e) {
@@ -119,6 +159,13 @@ export default {
             const url = this.$el.toDataURL('image/png')
             return url
         }
+    },
+    beforeUnmount() {
+        //移除添加在body上的鼠标事件
+        $dap.event.off(
+            document.body,
+            `mousemove.sign_${this.uid} mouseup.sign_${this.uid} mouseleave.sign_${this.uid}`
+        )
     }
 }
 </script>
@@ -130,5 +177,9 @@ export default {
     height: 100%;
     user-select: none;
     -webkit-user-select: none;
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 </style>

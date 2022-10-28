@@ -408,7 +408,7 @@ export default {
                 this.swiperMouseUp
             )
         }
-        $dap.event.on(window, `resize.swiper_${this._uid}`, this.resizeChange)
+        $dap.event.on(window, `resize.swiper_${this.uid}`, this.resizeChange)
     },
     methods: {
         //窗口大小变化时更新swiper
@@ -1033,7 +1033,7 @@ export default {
                 `mousemove.swiper_${this.uid} mouseup.swiper_${this.uid}`
             )
         }
-        $dap.event.off(window, `resize.swiper_${this._uid}`)
+        $dap.event.off(window, `resize.swiper_${this.uid}`)
     }
 }
 </script>

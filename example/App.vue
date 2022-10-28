@@ -2,8 +2,8 @@
     <div class="mvi-mb-4">
         <m-button @click="clear">清除画布</m-button>
     </div>
-    <div style="width:6rem;height:6rem;margin-left: 1rem;">
-        <m-sign color="#f30" ref="sign" :background="background"></m-sign>
+    <div style="width:100%;height:6rem;">
+        <m-sign :width="2" color="#f30" ref="sign" :background="background"></m-sign>
     </div>
 </template>
 <script>
