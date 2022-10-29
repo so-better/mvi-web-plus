@@ -2,33 +2,33 @@
     <div :class="fieldClass" :disabled="disabled || null" :data-type="type">
         <div class="mvi-field-prepend" v-if="(prependIconType || prependIconUrl || $slots.prepend) && type!='textarea'" :style="prependStyle" @click="prependClick">
             <slot v-if="$slots.prepend" name="prepend"></slot>
-            <m-icon v-else-if="prependIconType || prependIconUrl" :type="prependIconType" :url="prependIconUrl" :spin="prependIconSpin" :size="prependIconSize" :color="prependIconColor" />
+            <Icon v-else-if="prependIconType || prependIconUrl" :type="prependIconType" :url="prependIconUrl" :spin="prependIconSpin" :size="prependIconSize" :color="prependIconColor" />
         </div>
         <div :class="fieldBodyClass" :style="fieldBodyStyle">
             <div class="mvi-field-prefix" v-if="(prefixIconType || prefixIconUrl || $slots.prefix) && type!='textarea'" @click="prefixClick">
                 <slot v-if="$slots.prefix" name="prefix"></slot>
-                <m-icon v-else-if="prefixIconType || prefixIconUrl" :type="prefixIconType" :url="prefixIconUrl" :spin="prefixIconSpin" :size="prefixIconSize" :color="prefixIconColor" />
+                <Icon v-else-if="prefixIconType || prefixIconUrl" :type="prefixIconType" :url="prefixIconUrl" :spin="prefixIconSpin" :size="prefixIconSize" :color="prefixIconColor" />
             </div>
             <textarea ref="textarea" v-if="type=='textarea'" :disabled="disabled || null" :readonly="readonly || null" class="mvi-field-input" :style="inputStyle" :placeholder="placeholder" v-model="realValue" autocomplete="off" @focus="inputFocus" @blur="inputBlur" :maxlength="maxlength" :name="name" :autofocus="autofocus" :rows="rowsFilter" @input="input"></textarea>
             <input v-else ref="input" :disabled="disabled || null" :readonly="readonly || null" class="mvi-field-input" :style="inputStyle" :type="computedType" :placeholder="placeholder" v-model="realValue" autocomplete="off" :inputmode="computedInputMode" @focus="inputFocus" @blur="inputBlur" :maxlength="maxlength" :name="name" :autofocus="autofocus" @input="input">
             <div class="mvi-field-clear" @click="doClear" v-if="clearable && type!='textarea'" v-show="showClearIcon" :style="clearStyle">
-                <m-icon type="times-o" />
+                <Icon type="times-o" />
             </div>
             <div class="mvi-field-suffix" v-if="(suffixIconType || suffixIconUrl || $slots.suffix) && type!='textarea'" @click="suffixClick">
                 <slot v-if="$slots.suffix" name="suffix"></slot>
-                <m-icon v-else-if="suffixIconType || suffixIconUrl" :type="suffixIconType" :url="suffixIconUrl" :spin="suffixIconSpin" :size="suffixIconSize" :color="suffixIconColor" />
+                <Icon v-else-if="suffixIconType || suffixIconUrl" :type="suffixIconType" :url="suffixIconUrl" :spin="suffixIconSpin" :size="suffixIconSize" :color="suffixIconColor" />
             </div>
         </div>
         <div class="mvi-field-append" v-if="(appendIconType || appendIconUrl || $slots.append) && type!='textarea'" :style="appendStyle" @click="appendClick">
             <slot v-if="$slots.append" name="append"></slot>
-            <m-icon v-else-if="appendIconType || appendIconUrl" :type="appendIconType" :url="appendIconUrl" :spin="appendIconSpin" :size="appendIconSize" :color="appendIconColor" />
+            <Icon v-else-if="appendIconType || appendIconUrl" :type="appendIconType" :url="appendIconUrl" :spin="appendIconSpin" :size="appendIconSize" :color="appendIconColor" />
         </div>
     </div>
 </template>
 
 <script>
-import $dap from 'dap-util'
-import mIcon from '../icon/icon.vue'
+import { Dap } from '../dap'
+import { Icon } from '../icon'
 export default {
     name: 'm-field',
     emits: [
@@ -131,7 +131,7 @@ export default {
             type: String,
             default: null,
             validator(value) {
-                return $dap.common.matchingText(value, 'hex')
+                return Dap.common.matchingText(value, 'hex')
             }
         },
         //前置背景色
@@ -289,7 +289,7 @@ export default {
             if (this.focus) {
                 if (this.activeColor) {
                     style.borderColor = this.activeColor
-                    const rgb = $dap.color.hex2rgb(this.activeColor)
+                    const rgb = Dap.color.hex2rgb(this.activeColor)
                     style.boxShadow = `0 0 0.16rem rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.5)`
                 }
             } else {
@@ -352,7 +352,7 @@ export default {
         //前置图标类型
         prependIconType() {
             let type = null
-            if ($dap.common.isObject(this.prepend)) {
+            if (Dap.common.isObject(this.prepend)) {
                 if (typeof this.prepend.type == 'string') {
                     type = this.prepend.type
                 }
@@ -364,7 +364,7 @@ export default {
         //前置图标url
         prependIconUrl() {
             let url = null
-            if ($dap.common.isObject(this.prepend)) {
+            if (Dap.common.isObject(this.prepend)) {
                 if (typeof this.prepend.url == 'string') {
                     url = this.prepend.url
                 }
@@ -374,7 +374,7 @@ export default {
         //前置图标旋转
         prependIconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.prepend)) {
+            if (Dap.common.isObject(this.prepend)) {
                 if (typeof this.prepend.spin == 'boolean') {
                     spin = this.prepend.spin
                 }
@@ -384,7 +384,7 @@ export default {
         //前置图标大小
         prependIconSize() {
             let size = null
-            if ($dap.common.isObject(this.prepend)) {
+            if (Dap.common.isObject(this.prepend)) {
                 if (typeof this.prepend.size == 'string') {
                     size = this.prepend.size
                 }
@@ -394,7 +394,7 @@ export default {
         //前置图标颜色
         prependIconColor() {
             let color = null
-            if ($dap.common.isObject(this.prepend)) {
+            if (Dap.common.isObject(this.prepend)) {
                 if (typeof this.prepend.color == 'string') {
                     color = this.prepend.color
                 }
@@ -404,7 +404,7 @@ export default {
         //后置图标类型
         appendIconType() {
             let type = null
-            if ($dap.common.isObject(this.append)) {
+            if (Dap.common.isObject(this.append)) {
                 if (typeof this.append.type == 'string') {
                     type = this.append.type
                 }
@@ -416,7 +416,7 @@ export default {
         //后置图标url
         appendIconUrl() {
             let url = null
-            if ($dap.common.isObject(this.append)) {
+            if (Dap.common.isObject(this.append)) {
                 if (typeof this.append.url == 'string') {
                     url = this.append.url
                 }
@@ -426,7 +426,7 @@ export default {
         //后置图标旋转
         appendIconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.append)) {
+            if (Dap.common.isObject(this.append)) {
                 if (typeof this.append.spin == 'boolean') {
                     spin = this.append.spin
                 }
@@ -436,7 +436,7 @@ export default {
         //后置图标大小
         appendIconSize() {
             let size = null
-            if ($dap.common.isObject(this.append)) {
+            if (Dap.common.isObject(this.append)) {
                 if (typeof this.append.size == 'string') {
                     size = this.append.size
                 }
@@ -446,7 +446,7 @@ export default {
         //后置图标颜色
         appendIconColor() {
             let color = null
-            if ($dap.common.isObject(this.append)) {
+            if (Dap.common.isObject(this.append)) {
                 if (typeof this.append.color == 'string') {
                     color = this.append.color
                 }
@@ -456,7 +456,7 @@ export default {
         //前缀图标类型
         prefixIconType() {
             let type = null
-            if ($dap.common.isObject(this.prefix)) {
+            if (Dap.common.isObject(this.prefix)) {
                 if (typeof this.prefix.type == 'string') {
                     type = this.prefix.type
                 }
@@ -468,7 +468,7 @@ export default {
         //前缀图标url
         prefixIconUrl() {
             let url = null
-            if ($dap.common.isObject(this.prefix)) {
+            if (Dap.common.isObject(this.prefix)) {
                 if (typeof this.prefix.url == 'string') {
                     url = this.prefix.url
                 }
@@ -478,7 +478,7 @@ export default {
         //前缀图标旋转
         prefixIconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.prefix)) {
+            if (Dap.common.isObject(this.prefix)) {
                 if (typeof this.prefix.spin == 'boolean') {
                     spin = this.prefix.spin
                 }
@@ -488,7 +488,7 @@ export default {
         //前缀图标大小
         prefixIconSize() {
             let size = null
-            if ($dap.common.isObject(this.prefix)) {
+            if (Dap.common.isObject(this.prefix)) {
                 if (typeof this.prefix.size == 'string') {
                     size = this.prefix.size
                 }
@@ -498,7 +498,7 @@ export default {
         //前缀图标颜色
         prefixIconColor() {
             let color = null
-            if ($dap.common.isObject(this.prefix)) {
+            if (Dap.common.isObject(this.prefix)) {
                 if (typeof this.prefix.color == 'string') {
                     color = this.prefix.color
                 }
@@ -508,7 +508,7 @@ export default {
         //后缀图标类型
         suffixIconType() {
             let type = null
-            if ($dap.common.isObject(this.suffix)) {
+            if (Dap.common.isObject(this.suffix)) {
                 if (typeof this.suffix.type == 'string') {
                     type = this.suffix.type
                 }
@@ -520,7 +520,7 @@ export default {
         //后缀图标url
         suffixIconUrl() {
             let url = null
-            if ($dap.common.isObject(this.suffix)) {
+            if (Dap.common.isObject(this.suffix)) {
                 if (typeof this.suffix.url == 'string') {
                     url = this.suffix.url
                 }
@@ -530,7 +530,7 @@ export default {
         //后缀图标旋转
         suffixIconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.suffix)) {
+            if (Dap.common.isObject(this.suffix)) {
                 if (typeof this.suffix.spin == 'boolean') {
                     spin = this.suffix.spin
                 }
@@ -540,7 +540,7 @@ export default {
         //后缀图标大小
         suffixIconSize() {
             let size = null
-            if ($dap.common.isObject(this.suffix)) {
+            if (Dap.common.isObject(this.suffix)) {
                 if (typeof this.suffix.size == 'string') {
                     size = this.suffix.size
                 }
@@ -550,7 +550,7 @@ export default {
         //后缀图标颜色
         suffixIconColor() {
             let color = null
-            if ($dap.common.isObject(this.suffix)) {
+            if (Dap.common.isObject(this.suffix)) {
                 if (typeof this.suffix.color == 'string') {
                     color = this.suffix.color
                 }
@@ -560,13 +560,13 @@ export default {
         //文本域的rows
         rowsFilter() {
             let rows = this.rows
-            if ($dap.common.isObject(this.autosize)) {
-                if ($dap.number.isNumber(this.autosize.minRows)) {
+            if (Dap.common.isObject(this.autosize)) {
+                if (Dap.number.isNumber(this.autosize.minRows)) {
                     if (this.rows < this.autosize.minRows) {
                         rows = this.autosize.minRows
                     }
                 }
-                if ($dap.number.isNumber(this.autosize.maxRows)) {
+                if (Dap.number.isNumber(this.autosize.maxRows)) {
                     if (this.rows > this.autosize.maxRows) {
                         rows = this.autosize.maxRows
                     }
@@ -600,7 +600,7 @@ export default {
         }
     },
     components: {
-        mIcon
+        Icon
     },
     watch: {
         realValue(newValue) {
@@ -608,7 +608,7 @@ export default {
                 if (
                     this.$refs.textarea &&
                     (this.autosize == true ||
-                        $dap.common.isObject(this.autosize))
+                        Dap.common.isObject(this.autosize))
                 ) {
                     this.autosizeSet()
                 }
@@ -632,7 +632,7 @@ export default {
     mounted() {
         if (this.$refs.textarea) {
             this.setMaxMinHeight()
-            if (this.autosize == true || $dap.common.isObject(this.autosize)) {
+            if (this.autosize == true || Dap.common.isObject(this.autosize)) {
                 this.autosizeSet()
             }
         }
@@ -644,48 +644,48 @@ export default {
             this.$refs.textarea.style.height = 'auto'
             this.$refs.textarea.scrollTop = 0
             this.$refs.textarea.style.height =
-                $dap.element.getScrollHeight(this.$refs.textarea) + 'px'
+                Dap.element.getScrollHeight(this.$refs.textarea) + 'px'
         },
         //行数转为高度
         rows2Height(rows) {
             let lineHeight = Math.floor(
                 parseFloat(
-                    $dap.element.getCssStyle(this.$refs.textarea, 'line-height')
+                    Dap.element.getCssStyle(this.$refs.textarea, 'line-height')
                 )
             )
             return rows * lineHeight
         },
         //设置最大高度和最小高度
         setMaxMinHeight() {
-            if ($dap.common.isObject(this.autosize)) {
-                if ($dap.number.isNumber(this.autosize.maxRows)) {
+            if (Dap.common.isObject(this.autosize)) {
+                if (Dap.number.isNumber(this.autosize.maxRows)) {
                     let maxHeight =
                         this.rows2Height(this.autosize.maxRows) +
                         parseFloat(
-                            $dap.element.getCssStyle(
+                            Dap.element.getCssStyle(
                                 this.$refs.textarea,
                                 'padding-top'
                             )
                         ) +
                         parseFloat(
-                            $dap.element.getCssStyle(
+                            Dap.element.getCssStyle(
                                 this.$refs.textarea,
                                 'padding-bottom'
                             )
                         )
                     this.$refs.textarea.style.maxHeight = maxHeight + 'px'
                 }
-                if ($dap.number.isNumber(this.autosize.minRows)) {
+                if (Dap.number.isNumber(this.autosize.minRows)) {
                     let minHeight =
                         this.rows2Height(this.autosize.minRows) +
                         parseFloat(
-                            $dap.element.getCssStyle(
+                            Dap.element.getCssStyle(
                                 this.$refs.textarea,
                                 'padding-top'
                             )
                         ) +
                         parseFloat(
-                            $dap.element.getCssStyle(
+                            Dap.element.getCssStyle(
                                 this.$refs.textarea,
                                 'padding-bottom'
                             )

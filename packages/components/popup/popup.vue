@@ -1,11 +1,11 @@
 <template>
-    <m-overlay ref="overlay" :model-value="modelValue" @show="overlayShow" @hide="overlayHide" :use-padding="usePadding" :z-index="zIndex" @click.self="hide" :color="overlayColor || null" :timeout="timeout" :mount-el="mountEl">
+    <Overlay ref="overlay" :model-value="modelValue" @show="overlayShow" @hide="overlayHide" :use-padding="usePadding" :z-index="zIndex" @click.self="hide" :color="overlayColor || null" :timeout="timeout" :mount-el="mountEl">
         <transition :name="'mvi-slide-'+placement" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @before-leave="beforeLeave" @leave="leave" @after-leave="afterLeave">
             <!-- 弹出层 -->
             <div v-if="firstShow" v-show="popupShow" :class="popupClass" :style="popupStyle" v-bind="$attrs">
                 <!-- 关闭图标 -->
                 <div v-if="showTimes" :class="['mvi-popup-times','mvi-popup-times-'+timesPlacement]">
-                    <m-icon @click="hidePopup" :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor" />
+                    <Icon @click="hidePopup" :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor" />
                 </div>
                 <!-- 正文内容 -->
                 <div :class="['mvi-popup-content',showTimes?'mvi-popup-content-padding':'']">
@@ -13,13 +13,13 @@
                 </div>
             </div>
         </transition>
-    </m-overlay>
+    </Overlay>
 </template>
 
 <script>
-import $dap from 'dap-util'
-import mOverlay from '../overlay/overlay.vue'
-import mIcon from '../icon/icon.vue'
+import { Dap } from '../dap'
+import { Overlay } from '../overlay'
+import { Icon } from '../icon'
 export default {
     name: 'm-popup',
     data() {
@@ -135,7 +135,7 @@ export default {
         },
         iconType() {
             let type = 'times'
-            if ($dap.common.isObject(this.timesIcon)) {
+            if (Dap.common.isObject(this.timesIcon)) {
                 if (typeof this.timesIcon.type == 'string') {
                     type = this.timesIcon.type
                 }
@@ -146,7 +146,7 @@ export default {
         },
         iconUrl() {
             let url = null
-            if ($dap.common.isObject(this.timesIcon)) {
+            if (Dap.common.isObject(this.timesIcon)) {
                 if (typeof this.timesIcon.url == 'string') {
                     url = this.timesIcon.url
                 }
@@ -155,7 +155,7 @@ export default {
         },
         iconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.timesIcon)) {
+            if (Dap.common.isObject(this.timesIcon)) {
                 if (typeof this.timesIcon.spin == 'boolean') {
                     spin = this.timesIcon.spin
                 }
@@ -164,7 +164,7 @@ export default {
         },
         iconSize() {
             let size = null
-            if ($dap.common.isObject(this.timesIcon)) {
+            if (Dap.common.isObject(this.timesIcon)) {
                 if (typeof this.timesIcon.size == 'string') {
                     size = this.timesIcon.size
                 }
@@ -173,7 +173,7 @@ export default {
         },
         iconColor() {
             let color = null
-            if ($dap.common.isObject(this.timesIcon)) {
+            if (Dap.common.isObject(this.timesIcon)) {
                 if (typeof this.timesIcon.color == 'string') {
                     color = this.timesIcon.color
                 }
@@ -221,7 +221,7 @@ export default {
             if (this.color) {
                 style.color = this.color
             }
-            if ($dap.number.isNumber(this.zIndex)) {
+            if (Dap.number.isNumber(this.zIndex)) {
                 style.zIndex = this.zIndex + 10
             }
             style.transition = 'all ' + this.timeout + 'ms'
@@ -232,8 +232,8 @@ export default {
         }
     },
     components: {
-        mIcon,
-        mOverlay
+        Icon,
+        Overlay
     },
     methods: {
         //遮罩层显示前
@@ -261,10 +261,10 @@ export default {
         //弹出层显示前
         beforeEnter(el) {
             //解决v-if和v-show作用在同一元素上时触发两次钩子函数的bug
-            if ($dap.data.get(el, 'mvi-popup-beforeEnter-trigger')) {
+            if (Dap.data.get(el, 'mvi-popup-beforeEnter-trigger')) {
                 return
             }
-            $dap.data.set(el, 'mvi-popup-beforeEnter-trigger', true)
+            Dap.data.set(el, 'mvi-popup-beforeEnter-trigger', true)
 
             this.$emit('show', el)
             if (typeof this.popupComponentWatch == 'function') {
@@ -274,10 +274,10 @@ export default {
         //弹出层显示时
         enter(el) {
             //解决v-if和v-show作用在同一元素上时触发两次钩子函数的bug
-            if ($dap.data.get(el, 'mvi-popup-enter-trigger')) {
+            if (Dap.data.get(el, 'mvi-popup-enter-trigger')) {
                 return
             }
-            $dap.data.set(el, 'mvi-popup-enter-trigger', true)
+            Dap.data.set(el, 'mvi-popup-enter-trigger', true)
 
             this.$emit('showing', el)
             if (typeof this.popupComponentWatch == 'function') {
@@ -294,8 +294,8 @@ export default {
         //弹出层隐藏前
         beforeLeave(el) {
             //清除标记
-            $dap.data.remove(el, 'mvi-popup-beforeEnter-trigger')
-            $dap.data.remove(el, 'mvi-popup-enter-trigger')
+            Dap.data.remove(el, 'mvi-popup-beforeEnter-trigger')
+            Dap.data.remove(el, 'mvi-popup-enter-trigger')
 
             this.$emit('hide', el)
             if (typeof this.popupComponentWatch == 'function') {

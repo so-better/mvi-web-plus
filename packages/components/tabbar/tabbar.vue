@@ -1,16 +1,16 @@
 <template>
     <div :class="['mvi-tabbar',border?'mvi-tabbar-border':'',fixed?'mvi-tabbar-fixed':'']" :style="tabbarStyle">
-        <m-tabbar-item v-for="(item,index) in tabs" :key="'tab-'+index" :name="item.name" :value="item.value" :icon="item.icon" :disabled="item.disabled" :badge="item.badge" :route="item.route" :style="tabbarItemStyle(index)"></m-tabbar-item>
+        <TabbarItem v-for="(item,index) in tabs" :key="'tab-'+index" :name="item.name" :value="item.value" :icon="item.icon" :disabled="item.disabled" :badge="item.badge" :route="item.route" :style="tabbarItemStyle(index)"></TabbarItem>
     </div>
 </template>
 
 <script>
-import $dap from 'dap-util'
-import mTabItem from './tabbar-item.vue'
+import { Dap } from '../dap'
+import TabbarItem from './tabbar-item.vue'
 export default {
     name: 'm-tabbar',
     components: {
-        'm-tabbar-item': mTabItem
+        TabbarItem
     },
     emits: ['item-click', 'update:modelValue', 'change'],
     provide() {
@@ -84,7 +84,7 @@ export default {
         },
         tabbarStyle() {
             let style = {}
-            if (this.fixed && $dap.number.isNumber(this.zIndex)) {
+            if (this.fixed && Dap.number.isNumber(this.zIndex)) {
                 style.zIndex = this.zIndex
             }
             if (this.flex) {

@@ -1,7 +1,7 @@
-import panel from './panel.vue'
+import Panel from './panel.vue'
 
-panel.install = app => {
-    app.component(panel.name, panel)
+Panel.install = app => {
+    app.component(Panel.name, Panel)
 }
 
-export default panel
+export { Panel, Panel as default }

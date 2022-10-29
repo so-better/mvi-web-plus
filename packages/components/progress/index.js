@@ -1,7 +1,7 @@
-import progress from './progress.vue'
+import Progress from './progress.vue'
 
-progress.install = app => {
-    app.component(progress.name, progress)
+Progress.install = app => {
+    app.component(Progress.name, Progress)
 }
 
-export default progress
+export { Progress, Progress as default }

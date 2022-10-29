@@ -1,7 +1,7 @@
-import loading from './loading.vue'
+import Loading from './loading.vue'
 
-loading.install = app => {
-    app.component(loading.name, loading)
+Loading.install = app => {
+    app.component(Loading.name, Loading)
 }
 
-export default loading
+export { Loading, Loading as default }

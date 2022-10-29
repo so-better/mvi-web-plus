@@ -1,7 +1,7 @@
-import divider from './divider.vue'
+import Divider from './divider.vue'
 
-divider.install = app => {
-    app.component(divider.name, divider)
+Divider.install = app => {
+    app.component(Divider.name, Divider)
 }
 
-export default divider
+export { Divider, Divider as default }

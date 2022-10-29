@@ -1,7 +1,7 @@
-import skeleton from './skeleton.vue'
+import Skeleton from './skeleton.vue'
 
-skeleton.install = app => {
-    app.component(skeleton.name, skeleton)
+Skeleton.install = app => {
+    app.component(Skeleton.name, Skeleton)
 }
 
-export default skeleton
+export { Skeleton, Skeleton as default }

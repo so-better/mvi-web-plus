@@ -3,15 +3,15 @@
         <span v-if="labelPlacement=='left' && label" :disabled="disabled || null" class="mvi-checkbox-label" :data-placement="labelPlacement" v-text="label" :style="labelStyle"></span>
         <input @change="change" :value="value" :disabled="disabled || null" :checked="check" type="checkbox" :name="name" />
         <span :disabled="disabled || null" :class="['mvi-checkbox-item',check?'mvi-checkbox-item-check':'']" :style="checkboxStyle">
-            <m-icon :disabled="disabled || null" :color="iconColor" :size="iconSize" :type="iconType" :class="['mvi-checkbox-icon',check?'mvi-checkbox-icon-check':'']" />
+            <Icon :disabled="disabled || null" :color="iconColor" :size="iconSize" :type="iconType" :class="['mvi-checkbox-icon',check?'mvi-checkbox-icon-check':'']" />
         </span>
         <span v-if="labelPlacement=='right' && label" :disabled="disabled || null" class="mvi-checkbox-label" :data-placement="labelPlacement" v-text="label" :style="labelStyle"></span>
     </label>
 </template>
 
 <script>
-import $dap from 'dap-util'
-import mIcon from '../icon/icon.vue'
+import { Dap } from '../dap'
+import { Icon } from '../icon'
 export default {
     name: 'm-checkbox',
     emits: ['update:modelValue', 'change'],
@@ -81,7 +81,7 @@ export default {
                 return null
             }
             let color = null
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.color == 'string') {
                     color = this.icon.color
                 }
@@ -90,7 +90,7 @@ export default {
         },
         iconSize() {
             let size = null
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.size == 'string') {
                     size = this.icon.size
                 }
@@ -99,7 +99,7 @@ export default {
         },
         iconType() {
             let type = 'success'
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.type == 'string') {
                     type = this.icon.type
                 }
@@ -136,7 +136,7 @@ export default {
             } else if (Array.isArray(this.modelValue)) {
                 //数组中是否已包含此复选框的值
                 return this.modelValue.some(item => {
-                    return $dap.common.equal(item, this.value)
+                    return Dap.common.equal(item, this.value)
                 })
             } else {
                 return false
@@ -144,7 +144,7 @@ export default {
         }
     },
     components: {
-        mIcon
+        Icon
     },
     methods: {
         change(event) {
@@ -157,7 +157,7 @@ export default {
                 //取消且包含
                 else if (this.check) {
                     arr = arr.filter(item => {
-                        return !$dap.common.equal(item, this.value)
+                        return !Dap.common.equal(item, this.value)
                     })
                 }
                 this.$emit('update:modelValue', arr)

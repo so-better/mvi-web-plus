@@ -2,7 +2,7 @@
     <div :class="navbarClass" :style="'z-index:'+(fixed?zIndex:'')">
         <div @click="leftClick" :class="['mvi-navbar-left',leftClass || '']" :style="leftStyle" v-if="leftIconType||leftIconUrl||$slots.left||leftText">
             <slot name="left" v-if="$slots.left"></slot>
-            <m-icon :class="[leftText?'mvi-navbar-left-icon':'']" v-if="(leftIconType||leftIconUrl) && !$slots.left" :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" :color="leftIconColor" />
+            <Icon :class="[leftText?'mvi-navbar-left-icon':'']" v-if="(leftIconType||leftIconUrl) && !$slots.left" :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" :color="leftIconColor" />
             <span class="mvi-navbar-left-text" v-if="leftText && !$slots.left" v-text="leftText"></span>
         </div>
         <div @click="titleClick" class="mvi-navbar-center" :style="centerStyle" v-if="$slots.title||title">
@@ -14,14 +14,14 @@
         <div @click="rightClick" :class="['mvi-navbar-right',rightClass || '']" :style="rightStyle" v-if="rightIconType||rightIconUrl||$slots.right||rightText">
             <slot name="right" v-if="$slots.right"></slot>
             <span class="mvi-navbar-right-text" v-if="rightText && !$slots.right" v-text="rightText"></span>
-            <m-icon :class="[rightText?'mvi-navbar-right-icon':'']" v-if="(rightIconType||rightIconSpin) && !$slots.right" :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize" :color="rightIconColor" />
+            <Icon :class="[rightText?'mvi-navbar-right-icon':'']" v-if="(rightIconType||rightIconSpin) && !$slots.right" :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize" :color="rightIconColor" />
         </div>
     </div>
 </template>
 
 <script>
-import $dap from 'dap-util'
-import mIcon from '../icon/icon.vue'
+import { Dap } from '../dap'
+import { Icon } from '../icon'
 export default {
     name: 'm-navbar',
     props: {
@@ -117,7 +117,7 @@ export default {
         },
         leftIconType() {
             let type = null
-            if ($dap.common.isObject(this.leftIcon)) {
+            if (Dap.common.isObject(this.leftIcon)) {
                 if (typeof this.leftIcon.type == 'string') {
                     type = this.leftIcon.type
                 }
@@ -128,7 +128,7 @@ export default {
         },
         leftIconUrl() {
             let url = null
-            if ($dap.common.isObject(this.leftIcon)) {
+            if (Dap.common.isObject(this.leftIcon)) {
                 if (typeof this.leftIcon.url == 'string') {
                     url = this.leftIcon.url
                 }
@@ -137,7 +137,7 @@ export default {
         },
         leftIconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.leftIcon)) {
+            if (Dap.common.isObject(this.leftIcon)) {
                 if (typeof this.leftIcon.spin == 'boolean') {
                     spin = this.leftIcon.spin
                 }
@@ -146,7 +146,7 @@ export default {
         },
         leftIconSize() {
             let size = null
-            if ($dap.common.isObject(this.leftIcon)) {
+            if (Dap.common.isObject(this.leftIcon)) {
                 if (typeof this.leftIcon.size == 'string') {
                     size = this.leftIcon.size
                 }
@@ -155,7 +155,7 @@ export default {
         },
         leftIconColor() {
             let color = null
-            if ($dap.common.isObject(this.leftIcon)) {
+            if (Dap.common.isObject(this.leftIcon)) {
                 if (typeof this.leftIcon.color == 'string') {
                     color = this.leftIcon.color
                 }
@@ -164,7 +164,7 @@ export default {
         },
         rightIconType() {
             let type = null
-            if ($dap.common.isObject(this.rightIcon)) {
+            if (Dap.common.isObject(this.rightIcon)) {
                 if (typeof this.rightIcon.type == 'string') {
                     type = this.rightIcon.type
                 }
@@ -175,7 +175,7 @@ export default {
         },
         rightIconUrl() {
             let url = null
-            if ($dap.common.isObject(this.rightIcon)) {
+            if (Dap.common.isObject(this.rightIcon)) {
                 if (typeof this.rightIcon.url == 'string') {
                     url = this.rightIcon.url
                 }
@@ -184,7 +184,7 @@ export default {
         },
         rightIconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.rightIcon)) {
+            if (Dap.common.isObject(this.rightIcon)) {
                 if (typeof this.rightIcon.spin == 'boolean') {
                     spin = this.rightIcon.spin
                 }
@@ -193,7 +193,7 @@ export default {
         },
         rightIconSize() {
             let size = null
-            if ($dap.common.isObject(this.rightIcon)) {
+            if (Dap.common.isObject(this.rightIcon)) {
                 if (typeof this.rightIcon.size == 'string') {
                     size = this.rightIcon.size
                 }
@@ -202,7 +202,7 @@ export default {
         },
         rightIconColor() {
             let color = null
-            if ($dap.common.isObject(this.rightIcon)) {
+            if (Dap.common.isObject(this.rightIcon)) {
                 if (typeof this.rightIcon.color == 'string') {
                     color = this.rightIcon.color
                 }
@@ -239,7 +239,7 @@ export default {
         }
     },
     components: {
-        mIcon
+        Icon
     },
     methods: {
         leftClick() {

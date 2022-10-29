@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import $dap from 'dap-util'
-import Scroll from '../scroll/scroll'
+import { Dap } from '../dap'
+import { Scroll } from '../scroll'
 export default {
     name: 'm-list',
     emits: ['load', 'update:loading', 'update:error'],
@@ -113,7 +113,7 @@ export default {
             if (!el) {
                 return null
             }
-            if ($dap.element.getScrollHeight(el) > el.clientHeight) {
+            if (Dap.element.getScrollHeight(el) > el.clientHeight) {
                 return el
             }
             return this.getScrollEl(el.parentNode)

@@ -10,12 +10,12 @@
                     <tr>
                         <th :ref="el=>headThs[index]=el" :class="tableHeaderThClass" v-for="(item, index) in columnsData" :key="'table-column-' + index">
                             <div>
-                                <m-checkbox v-if="item.key == 'checkbox'" :icon="{size:'0.24rem',type:item.iconType || 'success',color:item.iconColor || null}" :class="item.value ? 'mvi-table-checkbox' : ''" v-model="selectAll" @change="allSelect" :fill-color="item.fillColor || null" :label="item.value || ''">
-                                </m-checkbox>
+                                <Checkbox v-if="item.key == 'checkbox'" :icon="{size:'0.24rem',type:item.iconType || 'success',color:item.iconColor || null}" :class="item.value ? 'mvi-table-checkbox' : ''" v-model="selectAll" @change="allSelect" :fill-color="item.fillColor || null" :label="item.value || ''">
+                                </Checkbox>
                                 <span v-else-if="item.value" v-html="item.value"></span>
                                 <span class="mvi-table-sortable" v-if="item.sortable">
-                                    <m-icon @click="sortAsc($event, item)" :class="['mvi-table-sortable-icon', item.key == sortBy && sortMethod == 'asc' ? 'mvi-table-sortable-icon-active' : '']" :type="sortIcon && sortIcon.length == 2 && sortIcon[0] ? sortIcon[0] : 'caret-up'" :color="sortActiveColor ? (item.key == sortBy && sortMethod == 'asc' ? sortActiveColor : null) : null" />
-                                    <m-icon @click="sortDesc($event, item)" :class="['mvi-table-sortable-icon', item.key == sortBy && sortMethod == 'desc' ? 'mvi-table-sortable-icon-active' : '']" :type="sortIcon && sortIcon.length == 2 && sortIcon[1] ? sortIcon[1] : 'caret-down'" :color="sortActiveColor ? (item.key == sortBy && sortMethod == 'desc' ? sortActiveColor : null) : null" />
+                                    <Icon @click="sortAsc($event, item)" :class="['mvi-table-sortable-icon', item.key == sortBy && sortMethod == 'asc' ? 'mvi-table-sortable-icon-active' : '']" :type="sortIcon && sortIcon.length == 2 && sortIcon[0] ? sortIcon[0] : 'caret-up'" :color="sortActiveColor ? (item.key == sortBy && sortMethod == 'asc' ? sortActiveColor : null) : null" />
+                                    <Icon @click="sortDesc($event, item)" :class="['mvi-table-sortable-icon', item.key == sortBy && sortMethod == 'desc' ? 'mvi-table-sortable-icon-active' : '']" :type="sortIcon && sortIcon.length == 2 && sortIcon[1] ? sortIcon[1] : 'caret-down'" :color="sortActiveColor ? (item.key == sortBy && sortMethod == 'desc' ? sortActiveColor : null) : null" />
                                 </span>
                             </div>
                         </th>
@@ -26,7 +26,7 @@
         </div>
         <div v-if="loading" class="mvi-table-loading">
             <div>
-                <m-loading color="#c8c9cc" size="0.3rem"></m-loading>
+                <Loading color="#c8c9cc" size="0.3rem"></Loading>
                 <div class="mvi-table-loading-text" v-html="loadText"></div>
             </div>
         </div>
@@ -44,7 +44,7 @@
 								item2.className || '',
 								cellClass(item, index, item2, index2) || ''
 							]" v-for="(item2, index2) in columnsData" :key="'table-column-data-' + index2" @click="cellClick($event, item, index, item2, index2)">
-                            <m-checkbox v-if="item2.key == 'checkbox'" :icon="{size:'0.24rem',type:item2.iconType || 'success',color:item2.iconColor || null}" v-model="checkRows" :value="index" @change="selectCheck" :fill-color="item2.fillColor || null" :disabled="item.checkDisabled"></m-checkbox>
+                            <Checkbox v-if="item2.key == 'checkbox'" :icon="{size:'0.24rem',type:item2.iconType || 'success',color:item2.iconColor || null}" v-model="checkRows" :value="index" @change="selectCheck" :fill-color="item2.fillColor || null" :disabled="item.checkDisabled"></Checkbox>
                             <slot name="custom" :row="item" :column="item2" :row-index="index" :column-index="index2" v-if="item2.key == 'custom' && $slots.custom"></slot>
                             <span v-else v-html="textFilter(item, item2)"></span>
                         </td>
@@ -57,10 +57,10 @@
 
 <script>
 import { getCurrentInstance } from 'vue'
-import $dap from 'dap-util'
-import mCheckbox from '../checkbox/checkbox.vue'
-import mIcon from '../icon/icon.vue'
-import mLoading from '../loading/loading.vue'
+import { Dap } from '../dap'
+import { Checkbox } from '../checkbox'
+import { Icon } from '../icon'
+import { Loading } from '../loading'
 export default {
     name: 'm-table',
     emits: ['cell-click', 'check', 'sort-desc', 'sort-asc'],
@@ -234,9 +234,9 @@ export default {
         }
     },
     components: {
-        mIcon,
-        mCheckbox,
-        mLoading
+        Icon,
+        Checkbox,
+        Loading
     },
     watch: {
         data(newValue) {
@@ -262,7 +262,7 @@ export default {
     },
     mounted() {
         this.columnsAlign()
-        $dap.event.on(window, `resize.table_${this.uid}`, this.columnsAlign)
+        Dap.event.on(window, `resize.table_${this.uid}`, this.columnsAlign)
     },
     methods: {
         //重置排序状态
@@ -284,7 +284,7 @@ export default {
             if (this.$refs.body) {
                 //判断表格主体是否含有滚动条，与表头对齐设置
                 this.isScroll =
-                    $dap.element.getScrollHeight(this.$refs.body) >
+                    Dap.element.getScrollHeight(this.$refs.body) >
                     this.$refs.body.clientHeight
                 if (this.isScroll) {
                     this.scrollWidth =
@@ -379,8 +379,8 @@ export default {
             } else {
                 this.sortData = this.sortData.sort(function (a, b) {
                     if (
-                        $dap.number.isNumber(a[column.key]) &&
-                        $dap.number.isNumber(b[column.key])
+                        Dap.number.isNumber(a[column.key]) &&
+                        Dap.number.isNumber(b[column.key])
                     ) {
                         return a[column.key] - b[column.key]
                     }
@@ -403,8 +403,8 @@ export default {
             } else {
                 this.sortData = this.sortData.sort(function (a, b) {
                     if (
-                        $dap.number.isNumber(a[column.key]) &&
-                        $dap.number.isNumber(b[column.key])
+                        Dap.number.isNumber(a[column.key]) &&
+                        Dap.number.isNumber(b[column.key])
                     ) {
                         return b[column.key] - a[column.key]
                     }
@@ -431,7 +431,7 @@ export default {
         }
     },
     beforeUnmount() {
-        $dap.event.off(window, `resize.table_${this.uid}`)
+        Dap.event.off(window, `resize.table_${this.uid}`)
     }
 }
 </script>

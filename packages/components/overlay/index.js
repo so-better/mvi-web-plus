@@ -1,7 +1,7 @@
-import overlay from './overlay.vue'
+import Overlay from './overlay.vue'
 
-overlay.install = app => {
-    app.component(overlay.name, overlay)
+Overlay.install = app => {
+    app.component(Overlay.name, Overlay)
 }
 
-export default overlay
+export { Overlay, Overlay as default }

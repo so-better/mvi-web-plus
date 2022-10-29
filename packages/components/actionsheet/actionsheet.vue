@@ -1,31 +1,31 @@
 <template>
-    <m-popup ref="popup" :model-value="modelValue" @overlay-click="hide" :overlay-color="overlayColor" :z-index="zIndex" :timeout="timeout" placement="bottom" :round="round" :use-padding="usePadding" :mount-el="mountEl">
+    <Popup ref="popup" :model-value="modelValue" @overlay-click="hide" :overlay-color="overlayColor" :z-index="zIndex" :timeout="timeout" placement="bottom" :round="round" :use-padding="usePadding" :mount-el="mountEl">
         <div class="mvi-acionsheet">
             <div class="mvi-acionsheet-title" v-if="title" :style="{color:titleColor || ''}">
                 <span v-text="title"></span>
             </div>
             <div class="mvi-acionsheet-list">
                 <div :class="itemClass(item)" v-for="(item,index) in options" :style="itemStyle(item)" :key="'action-'+index" :disabled="itemDisabled(item) || null" @click="doSelect(item,index)">
-                    <m-loading :size="(size=='large'?'0.4rem':'0.36rem')" color="#bbb" v-if="(item.loading || false)"></m-loading>
+                    <Loading :size="(size=='large'?'0.4rem':'0.36rem')" color="#bbb" v-if="(item.loading || false)"></Loading>
                     <div class="mvi-acionsheet-content" v-else-if="item.label||item.sub || iconType(item.icon) || iconUrl(item.icon)">
-                        <m-icon data-placement="left" v-if="(iconType(item.icon) || iconUrl(item.icon)) && item.placement!='right'" :type="iconType(item.icon)" :url="iconUrl(item.icon)" :spin="iconSpin(item.icon)" :size="iconSize(item.icon)" :color="iconColor(item.icon)" />
+                        <Icon data-placement="left" v-if="(iconType(item.icon) || iconUrl(item.icon)) && item.placement!='right'" :type="iconType(item.icon)" :url="iconUrl(item.icon)" :spin="iconSpin(item.icon)" :size="iconSize(item.icon)" :color="iconColor(item.icon)" />
                         <span v-if="item.label" class="mvi-actionsheet-item-label" v-text="item.label"></span>
                         <span v-if="item.sub" class="mvi-acionsheet-item-sub" v-text="item.sub"></span>
-                        <m-icon data-placement="right" v-if="(iconType(item.icon) || iconUrl(item.icon)) && item.placement=='right'" :type="iconType(item.icon)" :url="iconUrl(item.icon)" :spin="iconSpin(item.icon)" :size="iconSize(item.icon)" :color="iconColor(item.icon)" />
+                        <Icon data-placement="right" v-if="(iconType(item.icon) || iconUrl(item.icon)) && item.placement=='right'" :type="iconType(item.icon)" :url="iconUrl(item.icon)" :spin="iconSpin(item.icon)" :size="iconSize(item.icon)" :color="iconColor(item.icon)" />
                     </div>
                 </div>
             </div>
             <div class="mvi-acionsheet-divider"></div>
             <div :class="['mvi-acionsheet-button',active?'mvi-acionsheet-active':'']" v-if="showCancel" v-text="cancelText" @click="doCancel" :style="{color:cancelColor || ''}"></div>
         </div>
-    </m-popup>
+    </Popup>
 </template>
 
 <script>
-import $dap from 'dap-util'
-import mPopup from '../popup/popup.vue'
-import mLoading from '../loading/loading.vue'
-import mIcon from '../icon/icon.vue'
+import { Dap } from '../dap'
+import { Popup } from '../popup'
+import { Loading } from '../loading'
+import { Icon } from '../icon'
 export default {
     name: 'm-actionsheet',
     emits: ['update:modelValue', 'select'],
@@ -133,7 +133,7 @@ export default {
         iconType() {
             return icon => {
                 let type = null
-                if ($dap.common.isObject(icon)) {
+                if (Dap.common.isObject(icon)) {
                     if (typeof icon.type == 'string') {
                         type = icon.type
                     }
@@ -146,7 +146,7 @@ export default {
         iconUrl() {
             return icon => {
                 let url = null
-                if ($dap.common.isObject(icon)) {
+                if (Dap.common.isObject(icon)) {
                     if (typeof icon.url == 'string') {
                         url = icon.url
                     }
@@ -157,7 +157,7 @@ export default {
         iconSpin() {
             return icon => {
                 let spin = false
-                if ($dap.common.isObject(icon)) {
+                if (Dap.common.isObject(icon)) {
                     if (typeof icon.spin == 'boolean') {
                         spin = icon.spin
                     }
@@ -168,7 +168,7 @@ export default {
         iconSize() {
             return icon => {
                 let size = null
-                if ($dap.common.isObject(icon)) {
+                if (Dap.common.isObject(icon)) {
                     if (typeof icon.size == 'string') {
                         size = icon.size
                     }
@@ -179,7 +179,7 @@ export default {
         iconColor() {
             return icon => {
                 let color = null
-                if ($dap.common.isObject(icon)) {
+                if (Dap.common.isObject(icon)) {
                     if (typeof icon.color == 'string') {
                         color = icon.color
                     }
@@ -227,9 +227,9 @@ export default {
         }
     },
     components: {
-        mIcon,
-        mLoading,
-        mPopup
+        Icon,
+        Loading,
+        Popup
     },
     methods: {
         //点击遮罩关闭

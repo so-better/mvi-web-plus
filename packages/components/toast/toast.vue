@@ -1,20 +1,20 @@
 <template>
-    <m-overlay ref="overlay" :color="computedOverlayColor" @hidden="toastHidden" :model-value="show" :use-padding="computedUsePadding" :zIndex="computedZIndex" fade :mount-el="computedMountEl" @shown="toastShown">
+    <Overlay ref="overlay" :color="computedOverlayColor" @hidden="toastHidden" :model-value="show" :use-padding="computedUsePadding" :zIndex="computedZIndex" fade :mount-el="computedMountEl" @shown="toastShown">
         <div :class="['mvi-toast',computedMessage?'':'mvi-toast-iconless']" :style="toastStyle" v-bind="$attrs">
             <div class="mvi-toast-icon">
-                <m-loading :color="computedColor || '#fff'" v-if="computedType=='loading' && (!computedIcon.type && !computedIcon.url)" :type="0" :size="computedIcon.size" />
-                <m-icon v-else :type="computedIcon.type" :url="computedIcon.url" :spin="computedIcon.spin" :size="computedIcon.size" :color="computedIcon.color" />
+                <Loading :color="computedColor || '#fff'" v-if="computedType=='loading' && (!computedIcon.type && !computedIcon.url)" :type="0" :size="computedIcon.size" />
+                <Icon v-else :type="computedIcon.type" :url="computedIcon.url" :spin="computedIcon.spin" :size="computedIcon.size" :color="computedIcon.color" />
             </div>
             <div v-if="computedMessage" class="mvi-toast-message" v-html="computedMessage"></div>
         </div>
-    </m-overlay>
+    </Overlay>
 </template>
 
 <script>
-import $dap from 'dap-util'
-import mOverlay from '../overlay/overlay.vue'
-import mLoading from '../loading/loading.vue'
-import mIcon from '../icon/icon.vue'
+import { Dap } from '../dap'
+import { Overlay } from '../overlay'
+import { Loading } from '../loading'
+import { Icon } from '../icon'
 export default {
     name: 'm-toast',
     data() {
@@ -120,7 +120,7 @@ export default {
             }
             if (typeof this.icon == 'string' && this.icon) {
                 icon.type = this.icon
-            } else if ($dap.common.isObject(this.icon)) {
+            } else if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.type == 'string' && this.icon.type) {
                     icon.type = this.icon.type
                 }
@@ -142,21 +142,21 @@ export default {
         computedMessage() {
             if (typeof this.message == 'string') {
                 return this.message
-            } else if ($dap.common.isObject(this.message)) {
+            } else if (Dap.common.isObject(this.message)) {
                 return JSON.stringify(this.message)
             } else {
                 return String(this.message)
             }
         },
         computedTimeout() {
-            if ($dap.number.isNumber(this.timeout) && this.timeout > 0) {
+            if (Dap.number.isNumber(this.timeout) && this.timeout > 0) {
                 return this.timeout
             } else {
                 return -1
             }
         },
         computedZIndex() {
-            if ($dap.number.isNumber(this.zIndex)) {
+            if (Dap.number.isNumber(this.zIndex)) {
                 return this.zIndex
             } else {
                 return 1100
@@ -214,9 +214,9 @@ export default {
         }
     },
     components: {
-        mIcon,
-        mLoading,
-        mOverlay
+        Icon,
+        Loading,
+        Overlay
     },
     mounted() {
         this.init(this)

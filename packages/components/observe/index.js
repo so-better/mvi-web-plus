@@ -1,4 +1,4 @@
-import $dap from 'dap-util'
+import { Dap } from '../dap'
 import Observe from './observe'
 
 Observe.install = app => {
@@ -6,7 +6,7 @@ Observe.install = app => {
     app.directive('observe', {
         mounted(el, binding) {
             let options = {}
-            if ($dap.common.isObject(binding.value)) {
+            if (Dap.common.isObject(binding.value)) {
                 Object.assign(options, binding.value)
             }
             let observe = new Observe(el, options)
@@ -15,4 +15,4 @@ Observe.install = app => {
     })
 }
 
-export default Observe
+export { Observe, Observe as default }

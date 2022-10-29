@@ -1,7 +1,7 @@
-import input from './input.vue'
+import Input from './input.vue'
 
-input.install = app => {
-    app.component(input.name, input)
+Input.install = app => {
+    app.component(Input.name, Input)
 }
 
-export default input
+export { Input, Input as default }

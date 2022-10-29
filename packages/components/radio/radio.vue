@@ -3,15 +3,15 @@
         <span :disabled="disabled || null" v-if="label && labelPlacement=='left'" class="mvi-radio-label" :data-placement="labelPlacement" v-text="label" :style="labelStyle"></span>
         <input @change="change" :value="value" :disabled="disabled || null" :checked="check" type="radio" :name="name" />
         <span :disabled="disabled || null" :class="['mvi-radio-item',check?'mvi-radio-item-check':'']" :style="radioStyle">
-            <m-icon :disabled="disabled || null" :color="iconColor" :size="iconSize" :type="iconType" :class="['mvi-radio-icon',check?'mvi-radio-icon-check':'']" />
+            <Icon :disabled="disabled || null" :color="iconColor" :size="iconSize" :type="iconType" :class="['mvi-radio-icon',check?'mvi-radio-icon-check':'']" />
         </span>
         <span :disabled="disabled || null" v-if="label && labelPlacement == 'right'" class="mvi-radio-label" :data-placement="labelPlacement" v-text="label" :style="labelStyle"></span>
     </label>
 </template>
 
 <script>
-import $dap from 'dap-util'
-import mIcon from '../icon/icon.vue'
+import { Dap } from '../dap'
+import { Icon } from '../icon'
 export default {
     name: 'm-radio',
     emits: ['update:modelValue', 'change'],
@@ -91,7 +91,7 @@ export default {
                 return null
             }
             let color = null
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.color == 'string') {
                     color = this.icon.color
                 }
@@ -100,7 +100,7 @@ export default {
         },
         iconSize() {
             let size = null
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.size == 'string') {
                     size = this.icon.size
                 }
@@ -109,7 +109,7 @@ export default {
         },
         iconType() {
             let type = 'success'
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.type == 'string') {
                     type = this.icon.type
                 }
@@ -134,12 +134,12 @@ export default {
             if (typeof this.modelValue == 'boolean') {
                 return this.modelValue
             } else {
-                return $dap.common.equal(this.modelValue, this.value)
+                return Dap.common.equal(this.modelValue, this.value)
             }
         }
     },
     components: {
-        mIcon
+        Icon
     },
     methods: {
         change(event) {

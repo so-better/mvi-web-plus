@@ -2,29 +2,29 @@
     <div :data-id="'mvi-autocomplete-'+uid" :class="autocompleteClass" :disabled="disabled || null">
         <div :class="targetClass" :style="targetStyle" :data-id="'mvi-autocomplete-target-'+uid" ref="target">
             <div @click="leftClick" v-if="leftIconType || leftIconUrl" class="mvi-autocomplete-left-icon">
-                <m-icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" :color="leftIconColor" />
+                <Icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" :color="leftIconColor" />
             </div>
             <input ref="input" @input="input" v-model="realValue" type="text" :placeholder="placeholder" :style="inputStyle" :name="name" @focus="inputFocus" @blur="inputBlur" :disabled="disabled || null" autocomplete="off" />
             <div @click="doClear" v-if="clearable" v-show="showClearIcon" class="mvi-autocomplete-clear" :style="clearStyle">
-                <m-icon type="times-o" />
+                <Icon type="times-o" />
             </div>
             <div class="mvi-autocomplete-right-icon" v-if="rightIconType || rightIconUrl" @click="rightClick">
-                <m-icon :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize" :color="rightIconColor" />
+                <Icon :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize" :color="rightIconColor" />
             </div>
         </div>
-        <m-layer :model-value="show" :target="`[data-id='mvi-autocomplete-target-${uid}']`" :root="`[data-id='mvi-autocomplete-${uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :fixed="layerRealProps.fixed" :z-index="layerRealProps.zIndex" :fixed-auto="layerRealProps.fixedAuto" ref="layer" :wrapper-class="layerRealProps.wrapperClass" :animation="layerRealProps.animation" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :timeout="layerRealProps.timeout" :closable="false" :show-triangle="layerRealProps.showTriangle" :border-color="layerRealProps.borderColor" :background="layerRealProps.background" @showing="layerShow">
+        <Layer :model-value="show" :target="`[data-id='mvi-autocomplete-target-${uid}']`" :root="`[data-id='mvi-autocomplete-${uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :fixed="layerRealProps.fixed" :z-index="layerRealProps.zIndex" :fixed-auto="layerRealProps.fixedAuto" ref="layer" :wrapper-class="layerRealProps.wrapperClass" :animation="layerRealProps.animation" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :timeout="layerRealProps.timeout" :closable="false" :show-triangle="layerRealProps.showTriangle" :border-color="layerRealProps.borderColor" :background="layerRealProps.background" @showing="layerShow">
             <div class="mvi-autocomplete-menu" :style="menuStyle" ref="menu">
                 <div class="mvi-autocomplete-list" v-for="(item,index) in computedFilter" v-text="item" @click="doSelect(item)" @mouseenter="listEnter" @mouseleave="listLeave" :key="'mvi-autocomplete-list-'+index"></div>
             </div>
-        </m-layer>
+        </Layer>
     </div>
 </template>
 
 <script>
 import { getCurrentInstance } from 'vue'
-import $dap from 'dap-util'
-import mIcon from '../icon/icon.vue'
-import mLayer from '../layer/layer.vue'
+import { Dap } from '../dap'
+import { Icon } from '../icon'
+import { Layer } from '../layer'
 export default {
     name: 'm-autocomplete',
     data() {
@@ -83,7 +83,7 @@ export default {
             type: String,
             default: null,
             validator(value) {
-                return $dap.common.matchingText(value, 'hex')
+                return Dap.common.matchingText(value, 'hex')
             }
         },
         //过滤方法
@@ -153,8 +153,8 @@ export default {
         }
     },
     components: {
-        mIcon,
-        mLayer
+        Icon,
+        Layer
     },
     setup() {
         const instance = getCurrentInstance()
@@ -168,7 +168,7 @@ export default {
         },
         leftIconType() {
             let type = null
-            if ($dap.common.isObject(this.leftIcon)) {
+            if (Dap.common.isObject(this.leftIcon)) {
                 if (typeof this.leftIcon.type == 'string') {
                     type = this.leftIcon.type
                 }
@@ -179,7 +179,7 @@ export default {
         },
         leftIconUrl() {
             let url = null
-            if ($dap.common.isObject(this.leftIcon)) {
+            if (Dap.common.isObject(this.leftIcon)) {
                 if (typeof this.leftIcon.url == 'string') {
                     url = this.leftIcon.url
                 }
@@ -188,7 +188,7 @@ export default {
         },
         leftIconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.leftIcon)) {
+            if (Dap.common.isObject(this.leftIcon)) {
                 if (typeof this.leftIcon.spin == 'boolean') {
                     spin = this.leftIcon.spin
                 }
@@ -197,7 +197,7 @@ export default {
         },
         leftIconSize() {
             let size = null
-            if ($dap.common.isObject(this.leftIcon)) {
+            if (Dap.common.isObject(this.leftIcon)) {
                 if (typeof this.leftIcon.size == 'string') {
                     size = this.leftIcon.size
                 }
@@ -206,7 +206,7 @@ export default {
         },
         leftIconColor() {
             let color = null
-            if ($dap.common.isObject(this.leftIcon)) {
+            if (Dap.common.isObject(this.leftIcon)) {
                 if (typeof this.leftIcon.color == 'string') {
                     color = this.leftIcon.color
                 }
@@ -215,7 +215,7 @@ export default {
         },
         rightIconType() {
             let type = null
-            if ($dap.common.isObject(this.rightIcon)) {
+            if (Dap.common.isObject(this.rightIcon)) {
                 if (typeof this.rightIcon.type == 'string') {
                     type = this.rightIcon.type
                 }
@@ -226,7 +226,7 @@ export default {
         },
         rightIconUrl() {
             let url = null
-            if ($dap.common.isObject(this.rightIcon)) {
+            if (Dap.common.isObject(this.rightIcon)) {
                 if (typeof this.rightIcon.url == 'string') {
                     url = this.rightIcon.url
                 }
@@ -235,7 +235,7 @@ export default {
         },
         rightIconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.rightIcon)) {
+            if (Dap.common.isObject(this.rightIcon)) {
                 if (typeof this.rightIcon.spin == 'boolean') {
                     spin = this.rightIcon.spin
                 }
@@ -244,7 +244,7 @@ export default {
         },
         rightIconSize() {
             let size = null
-            if ($dap.common.isObject(this.rightIcon)) {
+            if (Dap.common.isObject(this.rightIcon)) {
                 if (typeof this.rightIcon.size == 'string') {
                     size = this.rightIcon.size
                 }
@@ -253,7 +253,7 @@ export default {
         },
         rightIconColor() {
             let color = null
-            if ($dap.common.isObject(this.rightIcon)) {
+            if (Dap.common.isObject(this.rightIcon)) {
                 if (typeof this.rightIcon.color == 'string') {
                     color = this.rightIcon.color
                 }
@@ -321,7 +321,7 @@ export default {
             let style = {}
             if (this.activeColor && this.focus) {
                 style.borderColor = this.activeColor
-                const rgb = $dap.color.hex2rgb(this.activeColor)
+                const rgb = Dap.color.hex2rgb(this.activeColor)
                 style.boxShadow = `0 0 0.16rem rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.5)`
             }
             return style
@@ -357,7 +357,7 @@ export default {
                         ? this.layerProps.fixedAuto
                         : false,
                 width: this.layerProps.width,
-                zIndex: $dap.number.isNumber(this.layerProps.zIndex)
+                zIndex: Dap.number.isNumber(this.layerProps.zIndex)
                     ? this.layerProps.zIndex
                     : 400,
                 offset: this.layerProps.offset
@@ -365,7 +365,7 @@ export default {
                     : '0.1rem',
                 wrapperClass: this.layerProps.wrapperClass,
                 animation: this.layerProps.animation,
-                timeout: $dap.number.isNumber(this.layerProps.timeout)
+                timeout: Dap.number.isNumber(this.layerProps.timeout)
                     ? this.layerProps.timeout
                     : 200,
                 showTriangle:
@@ -409,12 +409,12 @@ export default {
         },
         listEnter(e) {
             if (this.hoverClass) {
-                $dap.element.addClass(e.currentTarget, this.hoverClass)
+                Dap.element.addClass(e.currentTarget, this.hoverClass)
             }
         },
         listLeave(e) {
             if (this.hoverClass) {
-                $dap.element.removeClass(e.currentTarget, this.hoverClass)
+                Dap.element.removeClass(e.currentTarget, this.hoverClass)
             }
         },
         input() {

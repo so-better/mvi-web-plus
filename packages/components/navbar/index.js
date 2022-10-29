@@ -1,7 +1,7 @@
-import navbar from './navbar.vue'
+import Navbar from './navbar.vue'
 
-navbar.install = app => {
-    app.component(navbar.name, navbar)
+Navbar.install = app => {
+    app.component(Navbar.name, Navbar)
 }
 
-export default navbar
+export { Navbar, Navbar as default }

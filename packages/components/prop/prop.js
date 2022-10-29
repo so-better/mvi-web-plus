@@ -1,4 +1,4 @@
-import $dap from 'dap-util'
+import { Dap } from '../dap'
 /**
  * 高度比例系数
  */
@@ -23,14 +23,14 @@ class Prop {
             return
         }
         this.hasInit = true
-        if (!$dap.element.isElement(this.$el)) {
+        if (!Dap.element.isElement(this.$el)) {
             throw new TypeError('The bound element is not a node element')
         }
         if (typeof this.ratio != 'number' || isNaN(this.ratio)) {
             this.ratio = 0
         }
         this._set()
-        $dap.event.on(window, `resize.prop_${this.guid}`, e => {
+        Dap.event.on(window, `resize.prop_${this.guid}`, e => {
             this._set()
         })
     }
@@ -39,7 +39,7 @@ class Prop {
     _set() {
         //宽度
         this.width = Number(
-            parseFloat($dap.element.getCssStyle(this.$el, 'width')).toFixed(2)
+            parseFloat(Dap.element.getCssStyle(this.$el, 'width')).toFixed(2)
         )
         //比例系数乘以宽度获得高度
         this.height = this.width * this.ratio
@@ -48,15 +48,15 @@ class Prop {
 
     //移除绑定在window的事件
     _setOff() {
-        $dap.event.off(window, `resize.prop_${this.guid}`)
+        Dap.event.off(window, `resize.prop_${this.guid}`)
     }
 
     //生成唯一值
     _createGuid() {
         //获取当前guid，不存在则从0开始
-        let guid = $dap.data.get(document.body, 'mvi-directives-prop-guid') || 0
+        let guid = Dap.data.get(document.body, 'mvi-directives-prop-guid') || 0
         guid++
-        $dap.data.set(document.body, 'mvi-directives-prop-guid', guid)
+        Dap.data.set(document.body, 'mvi-directives-prop-guid', guid)
         return guid
     }
 }

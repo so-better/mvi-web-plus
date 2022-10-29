@@ -1,7 +1,7 @@
-import triangle from './triangle.vue'
+import Triangle from './triangle.vue'
 
-triangle.install = app => {
-    app.component(triangle.name, triangle)
+Triangle.install = app => {
+    app.component(Triangle.name, Triangle)
 }
 
-export default triangle
+export { Triangle, Triangle as default }

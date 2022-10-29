@@ -1,11 +1,11 @@
 <template>
-    <m-overlay ref="overlay" :model-value="modelValue" @show="overlayShow" @hide="overlayHide" :use-padding="usePadding" :z-index="zIndex" @click.self="hide" :color="overlayColor" :timeout="timeout" :mount-el="mountEl">
+    <Overlay ref="overlay" :model-value="modelValue" @show="overlayShow" @hide="overlayHide" :use-padding="usePadding" :z-index="zIndex" @click.self="hide" :color="overlayColor" :timeout="timeout" :mount-el="mountEl">
         <div ref="modal" class="mvi-modal" :style="modalStyle">
             <transition :name="'mvi-modal-'+animation" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @before-leave="beforeLeave" @leave="leave" @after-leave="afterLeave">
                 <!-- 弹出层 -->
                 <div v-if="firstShow" v-show="modalShow" class="mvi-modal-wrapper" ref="wrapper" :style="wrapperStyle" v-bind="$attrs">
                     <div class="mvi-modal-times" @click="hideModal" v-if="showTimes && (iconType || iconUrl)">
-                        <m-icon :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor" />
+                        <Icon :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor" />
                     </div>
                     <div ref="header" :class="titleCls" v-if="$slots.title || title" :style="headerStyle">
                         <slot name="title" v-if="$slots.title"></slot>
@@ -22,13 +22,13 @@
                 </div>
             </transition>
         </div>
-    </m-overlay>
+    </Overlay>
 </template>
 
 <script>
-import $dap from 'dap-util'
-import mOverlay from '../overlay/overlay.vue'
-import mIcon from '../icon/icon.vue'
+import { Dap } from '../dap'
+import { Overlay } from '../overlay'
+import { Icon } from '../icon'
 export default {
     name: 'm-modal',
     data() {
@@ -182,7 +182,7 @@ export default {
         },
         iconType() {
             let type = 'times'
-            if ($dap.common.isObject(this.timesIcon)) {
+            if (Dap.common.isObject(this.timesIcon)) {
                 if (typeof this.timesIcon.type == 'string') {
                     type = this.timesIcon.type
                 }
@@ -193,7 +193,7 @@ export default {
         },
         iconUrl() {
             let url = null
-            if ($dap.common.isObject(this.timesIcon)) {
+            if (Dap.common.isObject(this.timesIcon)) {
                 if (typeof this.timesIcon.url == 'string') {
                     url = this.timesIcon.url
                 }
@@ -202,7 +202,7 @@ export default {
         },
         iconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.timesIcon)) {
+            if (Dap.common.isObject(this.timesIcon)) {
                 if (typeof this.timesIcon.spin == 'boolean') {
                     spin = this.timesIcon.spin
                 }
@@ -211,7 +211,7 @@ export default {
         },
         iconSize() {
             let size = null
-            if ($dap.common.isObject(this.timesIcon)) {
+            if (Dap.common.isObject(this.timesIcon)) {
                 if (typeof this.timesIcon.size == 'string') {
                     size = this.timesIcon.size
                 }
@@ -220,7 +220,7 @@ export default {
         },
         iconColor() {
             let color = null
-            if ($dap.common.isObject(this.timesIcon)) {
+            if (Dap.common.isObject(this.timesIcon)) {
                 if (typeof this.timesIcon.color == 'string') {
                     color = this.timesIcon.color
                 }
@@ -270,8 +270,8 @@ export default {
         }
     },
     components: {
-        mIcon,
-        mOverlay
+        Icon,
+        Overlay
     },
     watch: {
         fullScreen(newValue) {
@@ -324,10 +324,10 @@ export default {
         //弹出层显示前
         beforeEnter(el) {
             //解决v-if和v-show作用在同一元素上时触发两次钩子函数的bug
-            if ($dap.data.get(el, 'mvi-modal-beforeEnter-trigger')) {
+            if (Dap.data.get(el, 'mvi-modal-beforeEnter-trigger')) {
                 return
             }
-            $dap.data.set(el, 'mvi-modal-beforeEnter-trigger', true)
+            Dap.data.set(el, 'mvi-modal-beforeEnter-trigger', true)
             this.$emit('show', el)
             if (typeof this.modalComponentWatch == 'function') {
                 this.modalComponentWatch.apply(this, ['show', el])
@@ -336,10 +336,10 @@ export default {
         //弹出层显示时
         enter(el) {
             //解决v-if和v-show作用在同一元素上时触发两次钩子函数的bug
-            if ($dap.data.get(el, 'mvi-modal-enter-trigger')) {
+            if (Dap.data.get(el, 'mvi-modal-enter-trigger')) {
                 return
             }
-            $dap.data.set(el, 'mvi-modal-enter-trigger', true)
+            Dap.data.set(el, 'mvi-modal-enter-trigger', true)
             this.modalSize()
             this.$emit('showing', el)
             if (typeof this.modalComponentWatch == 'function') {
@@ -356,8 +356,8 @@ export default {
         //弹出层隐藏前
         beforeLeave(el) {
             //清除标记
-            $dap.data.remove(el, 'mvi-modal-beforeEnter-trigger')
-            $dap.data.remove(el, 'mvi-modal-enter-trigger')
+            Dap.data.remove(el, 'mvi-modal-beforeEnter-trigger')
+            Dap.data.remove(el, 'mvi-modal-enter-trigger')
 
             this.$emit('hide', el)
             if (typeof this.modalComponentWatch == 'function') {

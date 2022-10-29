@@ -1,11 +1,11 @@
-import $dap from 'dap-util'
+import { Dap } from '../dap'
 /**
  * 滚动侦听
  */
 class Spy {
     constructor(element, options) {
         this.$el = element
-        if (!$dap.common.isObject(options)) {
+        if (!Dap.common.isObject(options)) {
             options = {}
         }
         this.$root = options.el
@@ -34,24 +34,24 @@ class Spy {
         if (typeof this.$root == 'string' && this.$root) {
             this.$root = document.documentElement.querySelector(this.$root)
         }
-        if (!$dap.element.isElement(this.$root)) {
+        if (!Dap.element.isElement(this.$root)) {
             this.$root = document.body
         }
         if (typeof this.beforeEnter != 'function') {
-            this.beforeEnter = function() {}
+            this.beforeEnter = function () {}
         }
         if (typeof this.enter != 'function') {
-            this.enter = function() {}
+            this.enter = function () {}
         }
         if (typeof this.beforeLeave != 'function') {
-            this.beforeLeave = function() {}
+            this.beforeLeave = function () {}
         }
         if (typeof this.leave != 'function') {
-            this.leave = function() {}
+            this.leave = function () {}
         }
         //给滚动容器添加监听事件
         this._scrollHandler()
-        $dap.event.on(this.$root, `scroll.spy_${this.guid}`, e => {
+        Dap.event.on(this.$root, `scroll.spy_${this.guid}`, e => {
             this._scrollHandler()
         })
     }
@@ -59,8 +59,8 @@ class Spy {
     //侦听处理
     _scrollHandler() {
         //获取容器元素是否含有滚动条
-        let overflowX = $dap.element.getCssStyle(this.$root, 'overflow-x')
-        let overflowY = $dap.element.getCssStyle(this.$root, 'overflow-y')
+        let overflowX = Dap.element.getCssStyle(this.$root, 'overflow-x')
+        let overflowY = Dap.element.getCssStyle(this.$root, 'overflow-y')
         let hasScrollX = overflowX == 'auto' || overflowX == 'scroll'
         let hasScrollY = overflowY == 'auto' || overflowY == 'scroll'
         //元素左侧距离滚动容器左侧的可视距离,即不包含自身宽度
@@ -176,15 +176,15 @@ class Spy {
 
     //移除滚动容器监听事件
     _setOff() {
-        $dap.event.off(this.$root, `scroll.spy_${this.guid}`)
+        Dap.event.off(this.$root, `scroll.spy_${this.guid}`)
     }
 
     //生成唯一值
     _createGuid() {
         //获取当前guid，不存在则从0开始
-        let guid = $dap.data.get(document.body, 'mvi-directives-spy-guid') || 0
+        let guid = Dap.data.get(document.body, 'mvi-directives-spy-guid') || 0
         guid++
-        $dap.data.set(document.body, 'mvi-directives-spy-guid', guid)
+        Dap.data.set(document.body, 'mvi-directives-spy-guid', guid)
         return guid
     }
 }

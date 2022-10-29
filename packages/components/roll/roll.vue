@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import $dap from 'dap-util'
+import { Dap } from '../dap'
 export default {
     name: 'm-roll',
     data() {
@@ -97,7 +97,7 @@ export default {
         containerStyle() {
             let style = {}
             if (this.rollEl) {
-                style.height = $dap.element.getCssStyle(this.rollEl, 'height')
+                style.height = Dap.element.getCssStyle(this.rollEl, 'height')
             }
             return style
         }
@@ -130,7 +130,7 @@ export default {
                 return
             }
             this.status = 0
-            let placement = $dap.element.getElementPoint(
+            let placement = Dap.element.getElementPoint(
                 this.$refs.roll,
                 this.$el
             )
@@ -233,7 +233,7 @@ export default {
                 return
             }
             this.status = 1
-            let placement = $dap.element.getElementPoint(
+            let placement = Dap.element.getElementPoint(
                 this.$refs.roll,
                 this.$el
             )

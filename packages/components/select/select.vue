@@ -3,27 +3,27 @@
         <div @mouseenter="hoverIn" @mouseleave="hoverOut" :data-id="'mvi-select-target-' + uid" :class="targetClass" :style="targetStyle" ref="target" @click="trigger" :disabled="disabled || null">
             <span :class="['mvi-select-label',selectLabel ? '' : 'mvi-select-label-placeholder']" :data-placeholder="placeholder" v-html="selectLabel"></span>
             <!-- 清除图标 -->
-            <m-icon @click="doClear" class="mvi-clear-icon" type="times-o" v-if="clearable" v-show="showClearIcon"></m-icon>
+            <Icon @click="doClear" class="mvi-clear-icon" type="times-o" v-if="clearable" v-show="showClearIcon" />
             <!-- 下拉图标 -->
-            <m-icon v-show="!clearable || !showClearIcon" :class="iconClass" :type="icon" />
+            <Icon v-show="!clearable || !showClearIcon" :class="iconClass" :type="icon" />
         </div>
-        <m-layer v-model="focus" :target="`[data-id='mvi-select-target-${uid}']`" :root="`[data-id='mvi-select-${uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :fixed="layerRealProps.fixed" :fixed-auto="layerRealProps.fixedAuto" :z-index="layerRealProps.zIndex" closable :show-triangle="layerRealProps.showTriangle" :wrapper-class="layerRealProps.wrapperClass" :animation="layerRealProps.animation" :timeout="layerRealProps.timeout" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :border-color="layerRealProps.borderColor" :background="layerRealProps.background" @showing="layerShow" ref="layer">
+        <Layer v-model="focus" :target="`[data-id='mvi-select-target-${uid}']`" :root="`[data-id='mvi-select-${uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :fixed="layerRealProps.fixed" :fixed-auto="layerRealProps.fixedAuto" :z-index="layerRealProps.zIndex" closable :show-triangle="layerRealProps.showTriangle" :wrapper-class="layerRealProps.wrapperClass" :animation="layerRealProps.animation" :timeout="layerRealProps.timeout" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :border-color="layerRealProps.borderColor" :background="layerRealProps.background" @showing="layerShow" ref="layer">
             <div class="mvi-select-menu" ref="menu" :style="menuStyle">
                 <div :class="['mvi-option','mvi-option-' + size]" @click="optionClick(item)" @mouseenter="mouseEnter($event, item)" @mouseleave="mouseLeave($event, item)" v-for="(item, index) in options" :key="'mvi-select-option-' + index" :disabled="item.disabled || null">
                     <div class="mvi-option-value" v-html="item.label"></div>
-                    <m-icon v-if="isSelect(item)" :type="selectedIconType" :spin="selectedIconSpin" :size="selectedIconSize" :url="selectedIconUrl" :color="selectedIconColor" />
+                    <Icon v-if="isSelect(item)" :type="selectedIconType" :spin="selectedIconSpin" :size="selectedIconSize" :url="selectedIconUrl" :color="selectedIconColor" />
                 </div>
             </div>
-        </m-layer>
+        </Layer>
         <input type="hidden" :value="formData" :name="name" />
     </div>
 </template>
 
 <script>
 import { getCurrentInstance } from 'vue'
-import $dap from 'dap-util'
-import mIcon from '../icon/icon.vue'
-import mLayer from '../layer/layer.vue'
+import { Dap } from '../dap'
+import { Icon } from '../icon'
+import { Layer } from '../layer'
 export default {
     name: 'm-select',
     emits: ['update:modelValue', 'change', 'clear'],
@@ -86,7 +86,7 @@ export default {
             type: String,
             default: null,
             validator(value) {
-                return $dap.common.matchingText(value, 'hex')
+                return Dap.common.matchingText(value, 'hex')
             }
         },
         //是否禁用
@@ -185,7 +185,7 @@ export default {
             let style = {}
             if (this.activeColor && this.focus) {
                 style.borderColor = this.activeColor
-                const rgb = $dap.color.hex2rgb(this.activeColor)
+                const rgb = Dap.color.hex2rgb(this.activeColor)
                 style.boxShadow = `0 0 0.16rem rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.5)`
             }
             return style
@@ -203,7 +203,7 @@ export default {
                 this.options.forEach((item, index) => {
                     if (Array.isArray(this.modelValue)) {
                         let flag = this.modelValue.some(i => {
-                            return $dap.common.equal(i, item.value)
+                            return Dap.common.equal(i, item.value)
                         })
                         if (flag) {
                             labels.push(item.label)
@@ -218,7 +218,7 @@ export default {
             } else {
                 let label = ''
                 this.options.forEach((item, index) => {
-                    if ($dap.common.equal(this.modelValue, item.value)) {
+                    if (Dap.common.equal(this.modelValue, item.value)) {
                         label = item.label
                     }
                 })
@@ -233,7 +233,7 @@ export default {
             return item => {
                 if (this.multiple) {
                     let flag = this.modelValue.some(i => {
-                        return $dap.common.equal(i, item.value)
+                        return Dap.common.equal(i, item.value)
                     })
                     return this.showSelectIcon && flag
                 }
@@ -242,7 +242,7 @@ export default {
         },
         selectedIconType() {
             let type = 'success'
-            if ($dap.common.isObject(this.selectedIcon)) {
+            if (Dap.common.isObject(this.selectedIcon)) {
                 if (typeof this.selectedIcon.type == 'string') {
                     type = this.selectedIcon.type
                 }
@@ -253,7 +253,7 @@ export default {
         },
         selectedIconSize() {
             let size = null
-            if ($dap.common.isObject(this.selectedIcon)) {
+            if (Dap.common.isObject(this.selectedIcon)) {
                 if (typeof this.selectedIcon.size == 'string') {
                     size = this.selectedIcon.size
                 }
@@ -262,7 +262,7 @@ export default {
         },
         selectedIconUrl() {
             let url = null
-            if ($dap.common.isObject(this.selectedIcon)) {
+            if (Dap.common.isObject(this.selectedIcon)) {
                 if (typeof this.selectedIcon.url == 'string') {
                     url = this.selectedIcon.url
                 }
@@ -271,7 +271,7 @@ export default {
         },
         selectedIconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.selectedIcon)) {
+            if (Dap.common.isObject(this.selectedIcon)) {
                 if (typeof this.selectedIcon.spin == 'boolean') {
                     spin = this.selectedIcon.spin
                 }
@@ -280,7 +280,7 @@ export default {
         },
         selectedIconColor() {
             let color = null
-            if ($dap.common.isObject(this.selectedIcon)) {
+            if (Dap.common.isObject(this.selectedIcon)) {
                 if (typeof this.selectedIcon.color == 'string') {
                     color = this.selectedIcon.color
                 }
@@ -320,7 +320,7 @@ export default {
                         ? this.layerProps.fixedAuto
                         : false,
                 width: this.layerProps.width,
-                zIndex: $dap.number.isNumber(this.layerProps.zIndex)
+                zIndex: Dap.number.isNumber(this.layerProps.zIndex)
                     ? this.layerProps.zIndex
                     : 400,
                 offset: this.layerProps.offset
@@ -328,7 +328,7 @@ export default {
                     : '0.1rem',
                 wrapperClass: this.layerProps.wrapperClass,
                 animation: this.layerProps.animation,
-                timeout: $dap.number.isNumber(this.layerProps.timeout)
+                timeout: Dap.number.isNumber(this.layerProps.timeout)
                     ? this.layerProps.timeout
                     : 200,
                 showTriangle:
@@ -349,8 +349,8 @@ export default {
         }
     },
     components: {
-        mLayer,
-        mIcon
+        Layer,
+        Icon
     },
     methods: {
         //鼠标移入下拉选框
@@ -396,7 +396,7 @@ export default {
                 return
             }
             if (this.hoverClass) {
-                $dap.element.addClass(e.currentTarget, this.hoverClass)
+                Dap.element.addClass(e.currentTarget, this.hoverClass)
             }
         },
         //鼠标移出选项
@@ -405,7 +405,7 @@ export default {
                 return
             }
             if (this.hoverClass) {
-                $dap.element.removeClass(e.currentTarget, this.hoverClass)
+                Dap.element.removeClass(e.currentTarget, this.hoverClass)
             }
         },
         //点击选项
@@ -419,11 +419,11 @@ export default {
                     throw new TypeError('modelValue should be an array')
                 }
                 let flag = arr.some(tmp => {
-                    return $dap.common.equal(tmp, item.value)
+                    return Dap.common.equal(tmp, item.value)
                 })
                 if (flag) {
                     arr = arr.filter(tmp => {
-                        return !$dap.common.equal(tmp, item.value)
+                        return !Dap.common.equal(tmp, item.value)
                     })
                 } else {
                     arr.push(item.value)
@@ -433,7 +433,7 @@ export default {
                     'change',
                     this.options.filter(tmp => {
                         return arr.some(tmp2 => {
-                            return $dap.common.equal(tmp.value, tmp2)
+                            return Dap.common.equal(tmp.value, tmp2)
                         })
                     })
                 )

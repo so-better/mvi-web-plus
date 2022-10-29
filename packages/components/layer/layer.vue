@@ -2,7 +2,7 @@
     <transition :name="animation || 'mvi-layer'" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @leave="leave" @before-leave="beforeLeave" @after-leave="afterLeave">
         <div v-if="firstShow" v-show="layerShow" :class="['mvi-layer',fixed?'mvi-layer-fixed':'']" :style="layerStyle">
             <div :class="wrapperCls" :style="wrapperStyle">
-                <m-triangle v-if="showTriangle" ref="triangle" class="mvi-layer-triangle" :placement="trianglePlacement" :background="background" :border-color="(border&&borderColor?borderColor:background)" size="0.14rem"></m-triangle>
+                <Triangle v-if="showTriangle" ref="triangle" class="mvi-layer-triangle" :placement="trianglePlacement" :background="background" :border-color="(border&&borderColor?borderColor:background)" size="0.14rem"></Triangle>
                 <slot></slot>
             </div>
         </div>
@@ -11,8 +11,8 @@
 
 <script>
 import { getCurrentInstance } from 'vue'
-import $dap from 'dap-util'
-import mTriangle from '../triangle/triangle.vue'
+import { Dap } from '../dap'
+import { Triangle } from '../triangle'
 export default {
     name: 'm-layer',
     data() {
@@ -140,7 +140,7 @@ export default {
         }
     },
     components: {
-        mTriangle
+        Triangle
     },
     watch: {
         placement(newValue) {
@@ -217,7 +217,7 @@ export default {
         },
         layerStyle() {
             let style = {}
-            if ($dap.number.isNumber(this.zIndex)) {
+            if (Dap.number.isNumber(this.zIndex)) {
                 style.zIndex = this.zIndex
             }
             if (this.timeout) {
@@ -280,8 +280,8 @@ export default {
             this.layerShow = this.modelValue
         }
         //添加事件
-        $dap.event.on(window, `resize.layer_${this.uid}`, this.resizeSet)
-        $dap.event.on(window, `click.layer_${this.uid}`, this.hideLayer)
+        Dap.event.on(window, `resize.layer_${this.uid}`, this.resizeSet)
+        Dap.event.on(window, `click.layer_${this.uid}`, this.hideLayer)
     },
     methods: {
         //窗口变化时处理
@@ -298,7 +298,7 @@ export default {
         autoAdjust() {
             //获取绑定元素位置
             let $target = this.getTargetEl()
-            let point = $dap.element.getElementBounding($target)
+            let point = Dap.element.getElementBounding($target)
             this.realPlacement = this.placement
             if (this.placement == 'bottom') {
                 //如果底部距离不够
@@ -1086,8 +1086,8 @@ export default {
         hideLayer(event) {
             if (this.layerShow && this.firstShow && this.closable) {
                 if (
-                    $dap.element.isContains(this.$el, event.target) ||
-                    $dap.element.isContains(this.getTargetEl(), event.target)
+                    Dap.element.isContains(this.$el, event.target) ||
+                    Dap.element.isContains(this.getTargetEl(), event.target)
                 ) {
                     return
                 }
@@ -1097,10 +1097,10 @@ export default {
         //悬浮层显示前
         beforeEnter(el) {
             //解决v-if和v-show作用在同一元素上时触发两次钩子函数的bug
-            if ($dap.data.get(el, 'mvi-layer-beforeEnter-trigger')) {
+            if (Dap.data.get(el, 'mvi-layer-beforeEnter-trigger')) {
                 return
             }
-            $dap.data.set(el, 'mvi-layer-beforeEnter-trigger', true)
+            Dap.data.set(el, 'mvi-layer-beforeEnter-trigger', true)
 
             this.$emit('show', el)
             if (typeof this.layerComponentWatch == 'function') {
@@ -1110,10 +1110,10 @@ export default {
         //悬浮层显示时
         enter(el) {
             //解决v-if和v-show作用在同一元素上时触发两次钩子函数的bug
-            if ($dap.data.get(el, 'mvi-layer-enter-trigger')) {
+            if (Dap.data.get(el, 'mvi-layer-enter-trigger')) {
                 return
             }
-            $dap.data.set(el, 'mvi-layer-enter-trigger', true)
+            Dap.data.set(el, 'mvi-layer-enter-trigger', true)
 
             this.$nextTick(() => {
                 this.$emit('showing', el)
@@ -1140,8 +1140,8 @@ export default {
         //悬浮层隐藏前
         beforeLeave(el) {
             //清除标记
-            $dap.data.remove(el, 'mvi-layer-beforeEnter-trigger')
-            $dap.data.remove(el, 'mvi-layer-enter-trigger')
+            Dap.data.remove(el, 'mvi-layer-beforeEnter-trigger')
+            Dap.data.remove(el, 'mvi-layer-enter-trigger')
 
             this.$emit('hide', el)
             if (typeof this.layerComponentWatch == 'function') {
@@ -1164,7 +1164,7 @@ export default {
         },
         //重置位置
         reset() {
-            if (!$dap.element.isElement(this.$el)) {
+            if (!Dap.element.isElement(this.$el)) {
                 return
             }
             //设置offset
@@ -1198,14 +1198,14 @@ export default {
             }
             let $target = this.getTargetEl()
             let $root = this.getRootEl()
-            let pt = $dap.element.getElementPoint($target, $root)
+            let pt = Dap.element.getElementPoint($target, $root)
             if (this.fixed) {
                 if (this.fixedAuto) {
                     let flag = true
                     let element = $target.offsetParent
                     while (flag && element) {
                         if (
-                            $dap.element.getCssStyle(element, 'transform') !=
+                            Dap.element.getCssStyle(element, 'transform') !=
                             'none'
                         ) {
                             flag = false
@@ -1213,9 +1213,9 @@ export default {
                             element = element.offsetParent
                         }
                     }
-                    pt = $dap.element.getElementPoint($target, element)
+                    pt = Dap.element.getElementPoint($target, element)
                 } else {
-                    pt = $dap.element.getElementBounding($target)
+                    pt = Dap.element.getElementBounding($target)
                 }
             }
             if (
@@ -1443,7 +1443,7 @@ export default {
         }
     },
     beforeUnmount() {
-        $dap.event.off(
+        Dap.event.off(
             window,
             `resize.layer_${this.uid} click.layer_${this.uid}`
         )

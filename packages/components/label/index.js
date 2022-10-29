@@ -1,7 +1,7 @@
-import label from './label.vue'
+import Label from './label.vue'
 
-label.install = app => {
-    app.component(label.name, label)
+Label.install = app => {
+    app.component(Label.name, Label)
 }
 
-export default label
+export { Label, Label as default }

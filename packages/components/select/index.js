@@ -1,6 +1,6 @@
-import select from './select.vue'
-select.install = app => {
-    app.component(select.name, select)
+import Select from './select.vue'
+Select.install = app => {
+    app.component(Select.name, Select)
 }
 
-export default select
+export { Select, Select as default }

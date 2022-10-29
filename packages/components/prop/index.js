@@ -1,5 +1,5 @@
 import Prop from './prop'
-import $dap from 'dap-util'
+import { Dap } from '../dap'
 
 Prop.install = app => {
     //高度比例系数指令
@@ -8,11 +8,11 @@ Prop.install = app => {
             let prop = new Prop(el, binding.value)
             prop.init()
             //将对象记录在元素里
-            $dap.data.set(el, 'directive:prop', prop)
+            Dap.data.set(el, 'directive:prop', prop)
         },
         beforeUnmount(el, binding) {
             //获取对象
-            let prop = $dap.data.get(el, 'directive:prop')
+            let prop = Dap.data.get(el, 'directive:prop')
             if (prop) {
                 //移除绑定在window上的事件
                 prop._setOff()
@@ -21,4 +21,4 @@ Prop.install = app => {
     })
 }
 
-export default Prop
+export { Prop, Prop as default }

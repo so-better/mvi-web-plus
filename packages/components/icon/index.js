@@ -1,5 +1,5 @@
-import icon from './icon.vue'
-icon.install = app => {
-    app.component(icon.name, icon)
+import Icon from './icon.vue'
+Icon.install = app => {
+    app.component(Icon.name, Icon)
 }
-export default icon
+export { Icon, Icon as default }

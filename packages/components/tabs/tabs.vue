@@ -6,9 +6,9 @@
             <div v-if="type=='default'" class="mvi-tabs-slider" :style="sliderStyle"></div>
             <!-- 选项卡头部卡片 -->
             <div :data-type="type" :class="headerClass(item,index)" v-for="(item,index) in children" :key="'header-'+index" @click="clickHeader(item,index)" :style="headerStyle(item,index)" :disabled="item.disabled || null">
-                <m-icon v-if="item.placement=='left' && item.iconType || item.iconUrl" :class="['mvi-tab-icon',item.title?'mvi-tab-icon-left':'']" :type="item.iconType" :url="item.iconUrl" :spin="item.iconSpin" :size="item.iconSize" :color="item.iconColor"></m-icon>
+                <Icon v-if="item.placement=='left' && item.iconType || item.iconUrl" :class="['mvi-tab-icon',item.title?'mvi-tab-icon-left':'']" :type="item.iconType" :url="item.iconUrl" :spin="item.iconSpin" :size="item.iconSize" :color="item.iconColor" />
                 <span class="mvi-tab-header-text" v-html="item.title" v-if="item.title"></span>
-                <m-icon v-if="item.placement=='right' && item.iconType || item.iconUrl" :class="['mvi-tab-icon',item.title?'mvi-tab-icon-right':'']" :type="item.iconType" :url="item.iconUrl" :spin="item.iconSpin" :size="item.iconSize" :color="item.iconColor"></m-icon>
+                <Icon v-if="item.placement=='right' && item.iconType || item.iconUrl" :class="['mvi-tab-icon',item.title?'mvi-tab-icon-right':'']" :type="item.iconType" :url="item.iconUrl" :spin="item.iconSpin" :size="item.iconSize" :color="item.iconColor" />
             </div>
         </div>
         <div class="mvi-tabs-content" ref="content">
@@ -19,8 +19,8 @@
 
 <script>
 import { getCurrentInstance } from 'vue'
-import $dap from 'dap-util'
-import mIcon from '../icon/icon.vue'
+import { Dap } from '../dap'
+import { Icon } from '../icon'
 export default {
     name: 'm-tabs',
     data() {
@@ -221,7 +221,7 @@ export default {
         }
     },
     components: {
-        mIcon
+        Icon
     },
     created() {
         this.current = this.modelValue
@@ -244,7 +244,7 @@ export default {
             }, 100)
         })
         this.setHeight()
-        $dap.event.on(window, `resize.tabs_${this.uid}`, this.setHeight)
+        Dap.event.on(window, `resize.tabs_${this.uid}`, this.setHeight)
     },
     methods: {
         //设置面板高度
@@ -288,19 +288,19 @@ export default {
         //设置滑动条
         setSlider() {
             this.slideWidth = parseFloat(
-                $dap.element.getCssStyle(
+                Dap.element.getCssStyle(
                     this.$refs.headers.querySelector('.mvi-tab-header-active'),
                     'width'
                 )
             )
-            this.slideLeft = $dap.element.getElementPoint(
+            this.slideLeft = Dap.element.getElementPoint(
                 this.$refs.headers.querySelector('.mvi-tab-header-active'),
                 this.$refs.headers
             ).left
         }
     },
     beforeUnmount() {
-        $dap.event.off(window, `resize.tabs_${this.uid}`)
+        Dap.event.off(window, `resize.tabs_${this.uid}`)
     }
 }
 </script>

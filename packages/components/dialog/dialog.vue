@@ -1,5 +1,5 @@
 <template>
-    <m-modal ref="modal" v-model="show" :footer-padding="false" @hide="modalHide" @hidding="modalHidding" @hidden="modalHidden" :width="computedWidth" :z-index="computedZIndex" :radius="computedRadius" :use-padding="computedUsePadding" :animation="computedAnimation" @show="modalShow" @showing="modalShowing" @shown="modalShown" :timeout="computedTimeout" :overlay-color="computedOverlayColor" :mount-el="computedMountEl">
+    <Modal ref="modal" v-model="show" :footer-padding="false" @hide="modalHide" @hidding="modalHidding" @hidden="modalHidden" :width="computedWidth" :z-index="computedZIndex" :radius="computedRadius" :use-padding="computedUsePadding" :animation="computedAnimation" @show="modalShow" @showing="modalShowing" @shown="modalShown" :timeout="computedTimeout" :overlay-color="computedOverlayColor" :mount-el="computedMountEl">
         <template v-if="computedTitle || (computedIos && computedMessage)" #title>
             <div v-html="computedTitle" v-if="computedTitle" class="mvi-dialog-title"></div>
             <div v-if="computedMessage && computedIos" v-html="computedMessage" class="mvi-dialog-ios-content"></div>
@@ -8,7 +8,7 @@
             <div v-if="!computedIos && computedMessage" v-html="computedMessage" class="mvi-dialog-content"></div>
             <div v-if="type == 'prompt'" :class="['mvi-dialog-input', !computedIos && computedMessage ? 'mvi-dialog-input-mt' : '']">
                 <input ref="input" :type="computedInput.type == 'number'?'text':computedInput.type" :placeholder="computedInput.placeholder" :maxlength="computedInput.maxlength" :class="inputClass" :style="inputStyle" v-model.trim="value" @input="inputFun" @focus="inputFocus" @blur="inputBlur" :inputmode="inputMode" />
-                <m-icon v-if="computedInput.clearable" ref="icon" v-show="showClear" type="times-o" class="mvi-dialog-times" @click="doClear" />
+                <Icon v-if="computedInput.clearable" ref="icon" v-show="showClear" type="times-o" class="mvi-dialog-times" @click="doClear" />
             </div>
         </template>
         <template #footer>
@@ -18,13 +18,13 @@
                 </div>
             </div>
         </template>
-    </m-modal>
+    </Modal>
 </template>
 
 <script>
-import $dap from 'dap-util'
-import mModal from '../modal/modal.vue'
-import mIcon from '../icon/icon.vue'
+import { Dap } from '../dap'
+import { Modal } from '../modal'
+import { Icon } from '../icon'
 export default {
     name: 'm-dialog',
     data() {
@@ -141,7 +141,7 @@ export default {
         computedMessage() {
             if (typeof this.message == 'string') {
                 return this.message
-            } else if ($dap.common.isObject(this.message)) {
+            } else if (Dap.common.isObject(this.message)) {
                 return JSON.stringify(this.message)
             } else {
                 return String(this.message)
@@ -219,7 +219,7 @@ export default {
                 align: 'left',
                 value: ''
             }
-            if ($dap.common.isObject(this.input)) {
+            if (Dap.common.isObject(this.input)) {
                 if (typeof this.input.placeholder == 'string') {
                     input.placeholder = this.input.placeholder
                 }
@@ -229,7 +229,7 @@ export default {
                 if (typeof this.input.autofocus == 'boolean') {
                     input.autofocus = this.input.autofocus
                 }
-                if ($dap.number.isNumber(this.input.maxlength)) {
+                if (Dap.number.isNumber(this.input.maxlength)) {
                     input.maxlength = this.input.maxlength
                 }
                 if (typeof this.input.clearable == 'boolean') {
@@ -243,7 +243,7 @@ export default {
                 }
                 if (
                     typeof this.input.value == 'string' ||
-                    $dap.number.isNumber(this.input.value)
+                    Dap.number.isNumber(this.input.value)
                 ) {
                     input.value = this.input.value.toString()
                 }
@@ -251,7 +251,7 @@ export default {
             return input
         },
         computedZIndex() {
-            if ($dap.number.isNumber(this.zIndex)) {
+            if (Dap.number.isNumber(this.zIndex)) {
                 return this.zIndex
             } else {
                 return 1000
@@ -279,7 +279,7 @@ export default {
             }
         },
         computedTimeout() {
-            if ($dap.number.isNumber(this.timeout)) {
+            if (Dap.number.isNumber(this.timeout)) {
                 return this.timeout
             } else {
                 return 200
@@ -360,8 +360,8 @@ export default {
         }
     },
     components: {
-        mIcon,
-        mModal
+        Icon,
+        Modal
     },
     created() {
         //输入框存在时设置默认值
@@ -370,7 +370,7 @@ export default {
         }
     },
     mounted() {
-        $dap.event.on(this.$$el, 'click.dialog', this.overlayClick)
+        Dap.event.on(this.$$el, 'click.dialog', this.overlayClick)
     },
     methods: {
         //点击遮罩层关闭

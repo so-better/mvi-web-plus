@@ -1,12 +1,12 @@
 import { createApp } from 'vue'
-import $dap from 'dap-util'
-import msgBoxComponent from './msgbox.vue'
+import { Dap } from '../dap'
+import MsgboxComponent from './msgbox.vue'
 
-const MsgBox = {
+const Msgbox = {
     //初始化参数
     initParams: options => {
         let opts = {}
-        if ($dap.common.isObject(options)) {
+        if (Dap.common.isObject(options)) {
             opts.message = options.message
             opts.timeout = options.timeout
             opts.animation = options.animation
@@ -22,10 +22,10 @@ const MsgBox = {
     //弹窗调用
     msgbox: options => {
         return new Promise((resolve, reject) => {
-            let opts = MsgBox.initParams(options)
-            let mountNode = $dap.element.string2dom('<div></div>')
+            let opts = Msgbox.initParams(options)
+            let mountNode = Dap.element.string2dom('<div></div>')
             document.body.appendChild(mountNode)
-            const instance = createApp(msgBoxComponent, {
+            const instance = createApp(MsgboxComponent, {
                 ...opts,
                 remove: () => {
                     instance.unmount()
@@ -39,9 +39,9 @@ const MsgBox = {
 
     //注册函数
     install: app => {
-        app.config.globalProperties.$msgbox = MsgBox.msgbox
-        app.provide('$msgbox', MsgBox.msgbox)
+        app.config.globalProperties.$msgbox = Msgbox.msgbox
+        app.provide('$msgbox', Msgbox.msgbox)
     }
 }
 
-export default MsgBox
+export { Msgbox, Msgbox as default }

@@ -1,23 +1,23 @@
 <template>
-    <m-popup ref="popup" :model-value="show" @overlay-click="hide" :overlay-color="overlayColor" :z-index="zIndex" :timeout="timeout" :placement="placement" :round="round" :use-padding="usePadding" :mount-el="mountEl">
+    <Popup ref="popup" :model-value="show" @overlay-click="hide" :overlay-color="overlayColor" :z-index="zIndex" :timeout="timeout" :placement="placement" :round="round" :use-padding="usePadding" :mount-el="mountEl">
         <div class="mvi-dropdown">
             <div :disabled="itemDisabled(item) || null" :class="dropdownItemClass(item, index)" v-for="(item, index) in options" :key="'item-'+index" @click="doSelect(item, index)" :style="dropdownItemStyle(item, index)">
                 <div class="mvi-dropdown-item-label">
-                    <m-icon v-if="item.icon" :type="iconType(item.icon)" :url="iconUrl(item.icon)" :spin="iconSpin(item.icon)" class="mvi-dropdown-icon" :size="iconSize(item.icon)" :color="iconColor(item.icon)" />
+                    <Icon v-if="item.icon" :type="iconType(item.icon)" :url="iconUrl(item.icon)" :spin="iconSpin(item.icon)" class="mvi-dropdown-icon" :size="iconSize(item.icon)" :color="iconColor(item.icon)" />
                     <span class="mvi-dropdown-label-text" v-text="item.label || ''"></span>
                 </div>
                 <div v-if="equalValue(item, index)" class="mvi-dropdown-item-checked" :data-placement="placement">
-                    <m-icon :type="selectIconType" :url="selectIconUrl" :spin="selectIconSpin" :size="selectIconSize" :color="selectIconColor" />
+                    <Icon :type="selectIconType" :url="selectIconUrl" :spin="selectIconSpin" :size="selectIconSize" :color="selectIconColor" />
                 </div>
             </div>
         </div>
-    </m-popup>
+    </Popup>
 </template>
 
 <script>
-import $dap from 'dap-util'
-import mIcon from '../icon/icon.vue'
-import mPopup from '../popup/popup.vue'
+import { Dap } from '../dap'
+import { Icon } from '../icon'
+import { Popup } from '../popup'
 export default {
     name: 'm-dropdown',
     data() {
@@ -121,7 +121,7 @@ export default {
         },
         selectIconType() {
             let type = 'success'
-            if ($dap.common.isObject(this.selectIcon)) {
+            if (Dap.common.isObject(this.selectIcon)) {
                 if (typeof this.selectIcon.type == 'string') {
                     type = this.selectIcon.type
                 }
@@ -132,7 +132,7 @@ export default {
         },
         selectIconUrl() {
             let url = null
-            if ($dap.common.isObject(this.selectIcon)) {
+            if (Dap.common.isObject(this.selectIcon)) {
                 if (typeof this.selectIcon.url == 'string') {
                     url = this.selectIcon.url
                 }
@@ -141,7 +141,7 @@ export default {
         },
         selectIconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.selectIcon)) {
+            if (Dap.common.isObject(this.selectIcon)) {
                 if (typeof this.selectIcon.spin == 'boolean') {
                     spin = this.selectIcon.spin
                 }
@@ -150,7 +150,7 @@ export default {
         },
         selectIconSize() {
             let size = null
-            if ($dap.common.isObject(this.selectIcon)) {
+            if (Dap.common.isObject(this.selectIcon)) {
                 if (typeof this.selectIcon.size == 'string') {
                     size = this.selectIcon.size
                 }
@@ -159,7 +159,7 @@ export default {
         },
         selectIconColor() {
             let color = null
-            if ($dap.common.isObject(this.selectIcon)) {
+            if (Dap.common.isObject(this.selectIcon)) {
                 if (typeof this.selectIcon.color == 'string') {
                     color = this.selectIcon.color
                 }
@@ -169,7 +169,7 @@ export default {
         iconType() {
             return icon => {
                 let type = null
-                if ($dap.common.isObject(icon)) {
+                if (Dap.common.isObject(icon)) {
                     if (typeof icon.type == 'string') {
                         type = icon.type
                     }
@@ -182,7 +182,7 @@ export default {
         iconUrl() {
             return icon => {
                 let url = null
-                if ($dap.common.isObject(icon)) {
+                if (Dap.common.isObject(icon)) {
                     if (typeof icon.url == 'string') {
                         url = icon.url
                     }
@@ -193,7 +193,7 @@ export default {
         iconSpin() {
             return icon => {
                 let spin = false
-                if ($dap.common.isObject(icon)) {
+                if (Dap.common.isObject(icon)) {
                     if (typeof icon.spin == 'boolean') {
                         spin = icon.spin
                     }
@@ -204,7 +204,7 @@ export default {
         iconSize() {
             return icon => {
                 let size = null
-                if ($dap.common.isObject(icon)) {
+                if (Dap.common.isObject(icon)) {
                     if (typeof icon.size == 'string') {
                         size = icon.size
                     }
@@ -215,7 +215,7 @@ export default {
         iconColor() {
             return icon => {
                 let color = null
-                if ($dap.common.isObject(icon)) {
+                if (Dap.common.isObject(icon)) {
                     if (typeof icon.color == 'string') {
                         color = icon.color
                     }
@@ -229,7 +229,7 @@ export default {
                 if (item.value === undefined || item.value === null) {
                     return this.modelValue === index
                 }
-                return $dap.common.equal(this.modelValue, item.value)
+                return Dap.common.equal(this.modelValue, item.value)
             }
         },
         itemDisabled() {
@@ -278,8 +278,8 @@ export default {
         }
     },
     components: {
-        mIcon,
-        mPopup
+        Icon,
+        Popup
     },
     mounted() {
         this.oldIndex = this.modelValue
@@ -302,7 +302,7 @@ export default {
             }
             //点击的是已选择的选项
             if (
-                $dap.common.equal(
+                Dap.common.equal(
                     this.valueFilter(item.value, index),
                     this.oldIndex
                 )

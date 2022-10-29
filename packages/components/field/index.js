@@ -1,7 +1,7 @@
-import field from './field.vue'
+import Field from './field.vue'
 
-field.install = app => {
-    app.component(field.name, field)
+Field.install = app => {
+    app.component(Field.name, Field)
 }
 
-export default field
+export { Field, Field as default }

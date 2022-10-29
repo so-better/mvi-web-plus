@@ -3,14 +3,14 @@
         <div v-if="label" :class="['mvi-search-label',labelClass || '']" v-text="label"></div>
         <div :class="['mvi-search-input-container',round?'mvi-search-input-round':'']" :style="{backgroundColor:background || '',color:color || ''}">
             <div v-if="leftIconType || leftIconUrl" class="mvi-search-left-icon" @click="leftClick">
-                <m-icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" :color="leftIconColor" />
+                <Icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" :color="leftIconColor" />
             </div>
             <input ref="input" class="mvi-search-input" :type="computedType" @keypress.enter="doSearch" autocomplete="off" :placeholder="placeholder" :maxlength="maxlength" :autofocus="autofocus" :disabled="disabled || null" :readonly="readonly || null" :inputmode="computedInputMode" v-model="realValue" @input="searchInput" @focus="getFocus" @blur="getBlur" :style="inputStyle">
             <div v-if="clearable" class="mvi-search-clear" @click="clearInput" v-show="showClear">
-                <m-icon type="times-o" />
+                <Icon type="times-o" />
             </div>
             <div v-if="rightIconType || rightIconUrl" class="mvi-search-right-icon" @click="rightClick">
-                <m-icon :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize" :color="rightIconColor" />
+                <Icon :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize" :color="rightIconColor" />
             </div>
         </div>
         <div v-if="showCancel" v-text="cancelText" :class="['mvi-search-cancel',cancelClass || '']" @click="doCancel"></div>
@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import $dap from 'dap-util'
-import mIcon from '../icon/icon.vue'
+import { Dap } from '../dap'
+import { Icon } from '../icon'
 export default {
     name: 'm-search',
     emits: [
@@ -173,7 +173,7 @@ export default {
         },
         leftIconType() {
             let type = null
-            if ($dap.common.isObject(this.leftIcon)) {
+            if (Dap.common.isObject(this.leftIcon)) {
                 if (typeof this.leftIcon.type == 'string') {
                     type = this.leftIcon.type
                 }
@@ -184,7 +184,7 @@ export default {
         },
         leftIconUrl() {
             let url = null
-            if ($dap.common.isObject(this.leftIcon)) {
+            if (Dap.common.isObject(this.leftIcon)) {
                 if (typeof this.leftIcon.url == 'string') {
                     url = this.leftIcon.url
                 }
@@ -193,7 +193,7 @@ export default {
         },
         leftIconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.leftIcon)) {
+            if (Dap.common.isObject(this.leftIcon)) {
                 if (typeof this.leftIcon.spin == 'boolean') {
                     spin = this.leftIcon.spin
                 }
@@ -202,7 +202,7 @@ export default {
         },
         leftIconSize() {
             let size = null
-            if ($dap.common.isObject(this.leftIcon)) {
+            if (Dap.common.isObject(this.leftIcon)) {
                 if (typeof this.leftIcon.size == 'string') {
                     size = this.leftIcon.size
                 }
@@ -211,7 +211,7 @@ export default {
         },
         leftIconColor() {
             let color = null
-            if ($dap.common.isObject(this.leftIcon)) {
+            if (Dap.common.isObject(this.leftIcon)) {
                 if (typeof this.leftIcon.color == 'string') {
                     color = this.leftIcon.color
                 }
@@ -220,7 +220,7 @@ export default {
         },
         rightIconType() {
             let type = null
-            if ($dap.common.isObject(this.rightIcon)) {
+            if (Dap.common.isObject(this.rightIcon)) {
                 if (typeof this.rightIcon.type == 'string') {
                     type = this.rightIcon.type
                 }
@@ -231,7 +231,7 @@ export default {
         },
         rightIconUrl() {
             let url = null
-            if ($dap.common.isObject(this.rightIcon)) {
+            if (Dap.common.isObject(this.rightIcon)) {
                 if (typeof this.rightIcon.url == 'string') {
                     url = this.rightIcon.url
                 }
@@ -240,7 +240,7 @@ export default {
         },
         rightIconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.rightIcon)) {
+            if (Dap.common.isObject(this.rightIcon)) {
                 if (typeof this.rightIcon.spin == 'boolean') {
                     spin = this.rightIcon.spin
                 }
@@ -249,7 +249,7 @@ export default {
         },
         rightIconSize() {
             let size = null
-            if ($dap.common.isObject(this.rightIcon)) {
+            if (Dap.common.isObject(this.rightIcon)) {
                 if (typeof this.rightIcon.size == 'string') {
                     size = this.rightIcon.size
                 }
@@ -258,7 +258,7 @@ export default {
         },
         rightIconColor() {
             let color = null
-            if ($dap.common.isObject(this.rightIcon)) {
+            if (Dap.common.isObject(this.rightIcon)) {
                 if (typeof this.rightIcon.color == 'string') {
                     color = this.rightIcon.color
                 }
@@ -319,7 +319,7 @@ export default {
         }
     },
     components: {
-        mIcon
+        Icon
     },
     methods: {
         //输入框获取焦点

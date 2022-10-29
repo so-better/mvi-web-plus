@@ -1,7 +1,7 @@
-import image from './image.vue'
+import Image from './image.vue'
 
-image.install = app => {
-    app.component(image.name, image)
+Image.install = app => {
+    app.component(Image.name, Image)
 }
 
-export default image
+export { Image, Image as default }

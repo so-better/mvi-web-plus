@@ -1,7 +1,7 @@
-import roll from './roll.vue'
+import Roll from './roll.vue'
 
-roll.install = app => {
-    app.component(roll.name, roll)
+Roll.install = app => {
+    app.component(Roll.name, Roll)
 }
 
-export default roll
+export { Roll, Roll as default }

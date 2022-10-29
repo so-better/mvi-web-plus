@@ -3,21 +3,21 @@
         <!-- 加载中 -->
         <div v-if="(loading || lazying)&&showLoading" class="mvi-image-loading">
             <slot name="loading" v-if="$slots.loading"></slot>
-            <m-icon v-else :type="loadIconType" :url="loadIconUrl" :spin="loadIconSpin" :size="loadIconSize" :color="loadIconColor" />
+            <Icon v-else :type="loadIconType" :url="loadIconUrl" :spin="loadIconSpin" :size="loadIconSize" :color="loadIconColor" />
         </div>
         <!-- 加载失败 -->
         <div v-else-if="error&&showError" class="mvi-image-error" ref="error">
             <slot name="error" v-if="$slots.error"></slot>
-            <m-icon v-else :type="errorIconType" :url="errorIconUrl" :spin="errorIconSpin" :size="errorIconSize" :color="errorIconColor" />
+            <Icon v-else :type="errorIconType" :url="errorIconUrl" :spin="errorIconSpin" :size="errorIconSize" :color="errorIconColor" />
         </div>
         <!-- 加载成功 -->
         <img @load="loadSuccess" @error="loadError" :src="computedSrc" :alt="showError?'':alt" :class="imgClass">
     </div>
 </template>
 <script>
-import $dap from 'dap-util'
-import Spy from '../spy/spy'
-import mIcon from '../icon/icon.vue'
+import { Dap } from '../dap'
+import { Spy } from '../spy'
+import { Icon } from '../icon'
 export default {
     name: 'm-image',
     data() {
@@ -109,7 +109,7 @@ export default {
     computed: {
         loadIconType() {
             let type = 'image-alt'
-            if ($dap.common.isObject(this.loadIcon)) {
+            if (Dap.common.isObject(this.loadIcon)) {
                 if (typeof this.loadIcon.type == 'string') {
                     type = this.loadIcon.type
                 }
@@ -120,7 +120,7 @@ export default {
         },
         loadIconUrl() {
             let url = null
-            if ($dap.common.isObject(this.loadIcon)) {
+            if (Dap.common.isObject(this.loadIcon)) {
                 if (typeof this.loadIcon.url == 'string') {
                     url = this.loadIcon.url
                 }
@@ -129,7 +129,7 @@ export default {
         },
         loadIconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.loadIcon)) {
+            if (Dap.common.isObject(this.loadIcon)) {
                 if (typeof this.loadIcon.spin == 'boolean') {
                     spin = this.loadIcon.spin
                 }
@@ -138,7 +138,7 @@ export default {
         },
         loadIconSize() {
             let size = null
-            if ($dap.common.isObject(this.loadIcon)) {
+            if (Dap.common.isObject(this.loadIcon)) {
                 if (typeof this.loadIcon.size == 'string') {
                     size = this.loadIcon.size
                 }
@@ -147,7 +147,7 @@ export default {
         },
         loadIconColor() {
             let color = null
-            if ($dap.common.isObject(this.loadIcon)) {
+            if (Dap.common.isObject(this.loadIcon)) {
                 if (typeof this.loadIcon.color == 'string') {
                     color = this.loadIcon.color
                 }
@@ -156,7 +156,7 @@ export default {
         },
         errorIconType() {
             let type = 'image-error'
-            if ($dap.common.isObject(this.errorIcon)) {
+            if (Dap.common.isObject(this.errorIcon)) {
                 if (typeof this.errorIcon.type == 'string') {
                     type = this.errorIcon.type
                 }
@@ -167,7 +167,7 @@ export default {
         },
         errorIconUrl() {
             let url = null
-            if ($dap.common.isObject(this.errorIcon)) {
+            if (Dap.common.isObject(this.errorIcon)) {
                 if (typeof this.errorIcon.url == 'string') {
                     url = this.errorIcon.url
                 }
@@ -176,7 +176,7 @@ export default {
         },
         errorIconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.errorIcon)) {
+            if (Dap.common.isObject(this.errorIcon)) {
                 if (typeof this.errorIcon.spin == 'boolean') {
                     spin = this.errorIcon.spin
                 }
@@ -185,7 +185,7 @@ export default {
         },
         errorIconSize() {
             let size = null
-            if ($dap.common.isObject(this.errorIcon)) {
+            if (Dap.common.isObject(this.errorIcon)) {
                 if (typeof this.errorIcon.size == 'string') {
                     size = this.errorIcon.size
                 }
@@ -194,7 +194,7 @@ export default {
         },
         errorIconColor() {
             let color = null
-            if ($dap.common.isObject(this.errorIcon)) {
+            if (Dap.common.isObject(this.errorIcon)) {
                 if (typeof this.errorIcon.color == 'string') {
                     color = this.errorIcon.color
                 }
@@ -239,7 +239,7 @@ export default {
         }
     },
     components: {
-        mIcon
+        Icon
     },
     watch: {
         computedSrc(newValue, oldValue) {

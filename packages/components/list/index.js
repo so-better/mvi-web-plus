@@ -1,7 +1,7 @@
-import list from './list.vue'
+import List from './list.vue'
 
-list.install = app => {
-    app.component(list.name, list)
+List.install = app => {
+    app.component(List.name, List)
 }
 
-export default list
+export { List, List as default }

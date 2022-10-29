@@ -1,7 +1,7 @@
-import dropdown from './dropdown.vue'
+import Dropdown from './dropdown.vue'
 
-dropdown.install = app => {
-    app.component(dropdown.name, dropdown)
+Dropdown.install = app => {
+    app.component(Dropdown.name, Dropdown)
 }
 
-export default dropdown
+export { Dropdown, Dropdown as default }

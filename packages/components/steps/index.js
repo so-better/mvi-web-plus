@@ -1,9 +1,7 @@
-import steps from './steps.vue'
-import step from './step.vue'
+import Steps from './steps.vue'
 
-steps.install = app => {
-    app.component(steps.name, steps)
-    app.component(step.name, step)
+Steps.install = app => {
+    app.component(Steps.name, Steps)
 }
 
-export default steps
+export { Steps, Steps as default }

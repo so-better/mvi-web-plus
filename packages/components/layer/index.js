@@ -1,7 +1,7 @@
-import layer from './layer.vue'
+import Layer from './layer.vue'
 
-layer.install = app => {
-    app.component(layer.name, layer)
+Layer.install = app => {
+    app.component(Layer.name, Layer)
 }
 
-export default layer
+export { Layer, Layer as default }

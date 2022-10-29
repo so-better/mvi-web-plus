@@ -1,7 +1,7 @@
-import popup from './popup.vue'
+import Popup from './popup.vue'
 
-popup.install = app => {
-    app.component(popup.name, popup)
+Popup.install = app => {
+    app.component(Popup.name, Popup)
 }
 
-export default popup
+export { Popup, Popup as default }

@@ -1,4 +1,4 @@
-import $dap from 'dap-util'
+import { Dap } from '../dap'
 /**
  * 实现监听元素的属性变更
  */
@@ -6,7 +6,7 @@ class Observe {
     constructor(el, options) {
         //监听的元素
         this.$el = el
-        if (!$dap.common.isObject(options)) {
+        if (!Dap.common.isObject(options)) {
             options = {}
         }
         //是否监听元素属性变更
@@ -45,10 +45,10 @@ class Observe {
                 this.attributeNames = []
             }
             if (typeof this.attributesChange != 'function') {
-                this.attributesChange = function() {}
+                this.attributesChange = function () {}
             }
             if (typeof this.childNodesChange != 'function') {
-                this.childNodesChange = function() {}
+                this.childNodesChange = function () {}
             }
 
             let MutationObserver =
@@ -77,12 +77,12 @@ class Observe {
                         this.childList
                     ) {
                         for (let node of mutationList[i].addedNodes) {
-                            if ($dap.element.isElement(node)) {
+                            if (Dap.element.isElement(node)) {
                                 this.childNodesChange.apply(this, [node, null])
                             }
                         }
                         for (let node of mutationList[i].removedNodes) {
-                            if ($dap.element.isElement(node)) {
+                            if (Dap.element.isElement(node)) {
                                 this.childNodesChange.apply(this, [null, node])
                             }
                         }

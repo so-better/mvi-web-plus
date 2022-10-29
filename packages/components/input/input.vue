@@ -9,7 +9,7 @@
         <!-- 左侧图标 -->
         <div @click="leftClick" class="mvi-input-left-icon" v-if="$slots.left || leftIconUrl || leftIconType">
             <slot name="left" v-if="$slots.left"></slot>
-            <m-icon v-else-if="leftIconUrl || leftIconType" :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" :color="leftIconColor" />
+            <Icon v-else-if="leftIconUrl || leftIconType" :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" :color="leftIconColor" />
         </div>
         <!-- 左侧文本 -->
         <div :class="['mvi-input-label',labelClass || '']" v-if="label" :style="labelStyle"><span v-text="label"></span></div>
@@ -19,25 +19,25 @@
         <input v-else :type="inputType" :inputmode="computedInputMode" :placeholder="placeholder" :maxlength="isDatePicker ? -1 : maxlength" :disabled="disabled || null" :readonly="readonly || isDatePicker || null" :autofocus="autofocus" class="mvi-input" v-model="realValue" @click="callDate" @input="input" ref="input" :name="name" :style="inputStyle" @focus="getFocus" @blur="getBlur" autocomplete="off" />
         <!-- 清除图标 -->
         <div @click="doClearValue" class="mvi-input-clear-icon" v-if="clearable" v-show="showClear">
-            <m-icon type="times-o" />
+            <Icon type="times-o" />
         </div>
         <!-- 右侧图标 -->
         <div @click="rightClick" class="mvi-input-right-icon" v-if="$slots.right || (rightIconUrl || rightIconType)">
             <slot name="right" v-if="$slots.right"></slot>
-            <m-icon v-else-if="rightIconUrl || rightIconType" ref="rightIcon" :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize" :color="rightIconColor" />
+            <Icon v-else-if="rightIconUrl || rightIconType" ref="rightIcon" :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize" :color="rightIconColor" />
         </div>
         <!-- 显示文字长度限制 -->
         <div v-if="showWordLimit && maxlength > 0" class="mvi-input-words">{{ realValue.length }}/{{ maxlength }}</div>
         <!-- 日期 -->
-        <m-date-native-picker v-if="isDatePicker" ref="datepicker" :type="dateType" v-model="realDate">
-        </m-date-native-picker>
+        <DateNativePicker v-if="isDatePicker" ref="datepicker" :type="dateType" v-model="realDate">
+        </DateNativePicker>
     </div>
 </template>
 
 <script>
-import $dap from 'dap-util'
-import mIcon from '../icon/icon.vue'
-import mDateNativePicker from '../dateNativePicker/dateNativePicker.vue'
+import { Dap } from '../dap'
+import { Icon } from '../icon'
+import { DateNativePicker } from '../date-native-picker'
 export default {
     name: 'm-input',
     data() {
@@ -183,10 +183,10 @@ export default {
             type: [Boolean, Object],
             default: false,
             validator(value) {
-                if ($dap.common.isObject(value)) {
+                if (Dap.common.isObject(value)) {
                     if (
-                        $dap.number.isNumber(value.minRows) &&
-                        $dap.number.isNumber(value.maxRows)
+                        Dap.number.isNumber(value.minRows) &&
+                        Dap.number.isNumber(value.maxRows)
                     ) {
                         if (value.minRows > value.maxRows) {
                             return false
@@ -240,7 +240,7 @@ export default {
         },
         leftIconType() {
             let type = null
-            if ($dap.common.isObject(this.leftIcon)) {
+            if (Dap.common.isObject(this.leftIcon)) {
                 if (typeof this.leftIcon.type == 'string') {
                     type = this.leftIcon.type
                 }
@@ -251,7 +251,7 @@ export default {
         },
         leftIconUrl() {
             let url = null
-            if ($dap.common.isObject(this.leftIcon)) {
+            if (Dap.common.isObject(this.leftIcon)) {
                 if (typeof this.leftIcon.url == 'string') {
                     url = this.leftIcon.url
                 }
@@ -260,7 +260,7 @@ export default {
         },
         leftIconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.leftIcon)) {
+            if (Dap.common.isObject(this.leftIcon)) {
                 if (typeof this.leftIcon.spin == 'boolean') {
                     spin = this.leftIcon.spin
                 }
@@ -269,7 +269,7 @@ export default {
         },
         leftIconSize() {
             let size = null
-            if ($dap.common.isObject(this.leftIcon)) {
+            if (Dap.common.isObject(this.leftIcon)) {
                 if (typeof this.leftIcon.size == 'string') {
                     size = this.leftIcon.size
                 }
@@ -278,7 +278,7 @@ export default {
         },
         leftIconColor() {
             let color = null
-            if ($dap.common.isObject(this.leftIcon)) {
+            if (Dap.common.isObject(this.leftIcon)) {
                 if (typeof this.leftIcon.color == 'string') {
                     color = this.leftIcon.color
                 }
@@ -287,7 +287,7 @@ export default {
         },
         rightIconType() {
             let type = null
-            if ($dap.common.isObject(this.rightIcon)) {
+            if (Dap.common.isObject(this.rightIcon)) {
                 if (typeof this.rightIcon.type == 'string') {
                     type = this.rightIcon.type
                 }
@@ -298,7 +298,7 @@ export default {
         },
         rightIconUrl() {
             let url = null
-            if ($dap.common.isObject(this.rightIcon)) {
+            if (Dap.common.isObject(this.rightIcon)) {
                 if (typeof this.rightIcon.url == 'string') {
                     url = this.rightIcon.url
                 }
@@ -307,7 +307,7 @@ export default {
         },
         rightIconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.rightIcon)) {
+            if (Dap.common.isObject(this.rightIcon)) {
                 if (typeof this.rightIcon.spin == 'boolean') {
                     spin = this.rightIcon.spin
                 }
@@ -316,7 +316,7 @@ export default {
         },
         rightIconSize() {
             let size = null
-            if ($dap.common.isObject(this.rightIcon)) {
+            if (Dap.common.isObject(this.rightIcon)) {
                 if (typeof this.rightIcon.size == 'string') {
                     size = this.rightIcon.size
                 }
@@ -325,7 +325,7 @@ export default {
         },
         rightIconColor() {
             let color = null
-            if ($dap.common.isObject(this.rightIcon)) {
+            if (Dap.common.isObject(this.rightIcon)) {
                 if (typeof this.rightIcon.color == 'string') {
                     color = this.rightIcon.color
                 }
@@ -402,13 +402,13 @@ export default {
         //文本域的rows
         rowsFilter() {
             let rows = this.rows
-            if ($dap.common.isObject(this.autosize)) {
-                if ($dap.number.isNumber(this.autosize.minRows)) {
+            if (Dap.common.isObject(this.autosize)) {
+                if (Dap.number.isNumber(this.autosize.minRows)) {
                     if (this.rows < this.autosize.minRows) {
                         rows = this.autosize.minRows
                     }
                 }
-                if ($dap.number.isNumber(this.autosize.maxRows)) {
+                if (Dap.number.isNumber(this.autosize.maxRows)) {
                     if (this.rows > this.autosize.maxRows) {
                         rows = this.autosize.maxRows
                     }
@@ -454,13 +454,13 @@ export default {
         }
     },
     components: {
-        mIcon,
-        mDateNativePicker
+        Icon,
+        DateNativePicker
     },
     mounted() {
         if (this.$refs.textarea) {
             this.setMaxMinHeight()
-            if (this.autosize == true || $dap.common.isObject(this.autosize)) {
+            if (this.autosize == true || Dap.common.isObject(this.autosize)) {
                 this.autosizeSet()
             }
         }
@@ -469,7 +469,7 @@ export default {
         realValue(newValue) {
             if (
                 this.$refs.textarea &&
-                (this.autosize == true || $dap.common.isObject(this.autosize))
+                (this.autosize == true || Dap.common.isObject(this.autosize))
             ) {
                 this.autosizeSet()
             }
@@ -489,7 +489,7 @@ export default {
                 if (
                     this.$refs.textarea &&
                     (this.autosize == true ||
-                        $dap.common.isObject(this.autosize))
+                        Dap.common.isObject(this.autosize))
                 ) {
                     this.autosizeSet()
                 }
@@ -561,25 +561,25 @@ export default {
             this.$refs.textarea.style.height = 'auto'
             this.$refs.textarea.scrollTop = 0
             this.$refs.textarea.style.height =
-                $dap.element.getScrollHeight(this.$refs.textarea) + 'px'
+                Dap.element.getScrollHeight(this.$refs.textarea) + 'px'
         },
         //行数转为高度
         rows2Height(rows) {
             let lineHeight = Math.floor(
                 parseFloat(
-                    $dap.element.getCssStyle(this.$refs.textarea, 'line-height')
+                    Dap.element.getCssStyle(this.$refs.textarea, 'line-height')
                 )
             )
             return rows * lineHeight
         },
         //设置最大高度和最小高度
         setMaxMinHeight() {
-            if ($dap.common.isObject(this.autosize)) {
-                if ($dap.number.isNumber(this.autosize.maxRows)) {
+            if (Dap.common.isObject(this.autosize)) {
+                if (Dap.number.isNumber(this.autosize.maxRows)) {
                     let maxHeight = this.rows2Height(this.autosize.maxRows)
                     this.$refs.textarea.style.maxHeight = maxHeight + 'px'
                 }
-                if ($dap.number.isNumber(this.autosize.minRows)) {
+                if (Dap.number.isNumber(this.autosize.minRows)) {
                     let minHeight = this.rows2Height(this.autosize.minRows)
                     this.$refs.textarea.style.minHeight = minHeight + 'px'
                 }

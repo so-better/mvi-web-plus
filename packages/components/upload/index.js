@@ -1,4 +1,4 @@
-import $dap from 'dap-util'
+import { Dap } from '../dap'
 import Upload from './upload'
 
 Upload.install = app => {
@@ -6,10 +6,10 @@ Upload.install = app => {
     app.directive('upload', {
         mounted(el, binding) {
             let options = {}
-            if ($dap.common.isObject(binding.value)) {
+            if (Dap.common.isObject(binding.value)) {
                 Object.assign(options, binding.value)
             }
-            if ($dap.common.isObject(binding.modifiers)) {
+            if (Dap.common.isObject(binding.modifiers)) {
                 Object.assign(options, binding.modifiers)
             }
             let upload = new Upload(el, options)
@@ -18,4 +18,4 @@ Upload.install = app => {
     })
 }
 
-export default Upload
+export { Upload, Upload as default }

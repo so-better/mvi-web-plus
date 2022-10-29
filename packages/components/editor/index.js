@@ -1,7 +1,7 @@
-import editor from './editor.vue'
+import Editor from './editor.vue'
 
-editor.install = app => {
-    app.component(editor.name, editor)
+Editor.install = app => {
+    app.component(Editor.name, Editor)
 }
 
-export default editor
+export { Editor, Editor as default }

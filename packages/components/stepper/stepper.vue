@@ -1,20 +1,20 @@
 <template>
     <div :class="'mvi-stepper mvi-stepper-'+size">
         <div :disabled="disabledMinus || arrivalMin || disabled || null" :class="minusClass" v-if="showMinus" :style="minusStyle" @click="doMinus">
-            <m-icon type="minus" />
+            <Icon type="minus" />
         </div>
         <div :disabled="disabled || disabledInput || null" :class="['mvi-stepper-input',border?'mvi-stepper-border':'']" :style="inputStyle" v-if="showInput">
             <input ref="input" v-model="realValue" :disabled="disabled || disabledInput || null" type="text" @blur="changeValue" @keyup.enter="changeValue" :style="inputElStyle" inputmode="numeric">
         </div>
         <div :disabled="disabledPlus || arrivalMax || disabled || null" :class="plusClass" v-if="showPlus" :style="plusStyle" @click="doPlus">
-            <m-icon type="plus" />
+            <Icon type="plus" />
         </div>
     </div>
 </template>
 
 <script>
-import $dap from 'dap-util'
-import mIcon from '../icon/icon.vue'
+import { Dap } from '../dap'
+import { Icon } from '../icon'
 export default {
     name: 'm-stepper',
     emits: ['update:modelValue'],
@@ -215,7 +215,7 @@ export default {
         }
     },
     components: {
-        mIcon
+        Icon
     },
     methods: {
         //减法
@@ -229,7 +229,7 @@ export default {
             if (this.arrivalMin) {
                 return
             }
-            this.realValue = $dap.number.subtract(this.realValue, this.step)
+            this.realValue = Dap.number.subtract(this.realValue, this.step)
         },
         //加法
         doPlus() {
@@ -242,7 +242,7 @@ export default {
             if (this.arrivalMax) {
                 return
             }
-            this.realValue = $dap.number.add(this.realValue, this.step)
+            this.realValue = Dap.number.add(this.realValue, this.step)
         },
         //输入框修改值
         changeValue() {

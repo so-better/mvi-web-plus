@@ -1,5 +1,6 @@
-import tabbar from './tabbar.vue'
-tabbar.install = app => {
-    app.component(tabbar.name, tabbar)
+import Tabbar from './tabbar.vue'
+
+Tabbar.install = app => {
+    app.component(Tabbar.name, Tabbar)
 }
-export default tabbar
+export { Tabbar, Tabbar as default }

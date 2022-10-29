@@ -1,9 +1,7 @@
-import swiper from './swiper.vue'
-import swiperSlide from './swiper-slide.vue'
+import Swiper from './swiper.vue'
 
-swiper.install = app => {
-    app.component(swiper.name, swiper)
-    app.component(swiperSlide.name, swiperSlide)
+Swiper.install = app => {
+    app.component(Swiper.name, Swiper)
 }
 
-export default swiper
+export { Swiper, Swiper as default }

@@ -3,18 +3,18 @@
         <div @click="clickShowTooltip" @mouseenter="hoverShowTooltip" @mouseleave="hoverHideToolTip" class="mvi-tooltip-toggle" ref="toggle" :data-id="'mvi-tooltip-target-' + uid">
             <slot></slot>
         </div>
-        <m-layer v-model="show" :offset="offset" :background="color" border :border-color="borderColor" closable :show-triangle="showTriangle" :z-index="zIndex" :target="`[data-id='mvi-tooltip-target-${uid}']`" :root="`[data-id='mvi-tooltip-${uid}']`" :placement="placement" :fixed="fixed" :fixed-auto="fixedAuto" :width="width" :timeout="timeout" :animation="animation || 'mvi-tooltip'" :shadow="false">
+        <Layer v-model="show" :offset="offset" :background="color" border :border-color="borderColor" closable :show-triangle="showTriangle" :z-index="zIndex" :target="`[data-id='mvi-tooltip-target-${uid}']`" :root="`[data-id='mvi-tooltip-${uid}']`" :placement="placement" :fixed="fixed" :fixed-auto="fixedAuto" :width="width" :timeout="timeout" :animation="animation || 'mvi-tooltip'" :shadow="false">
             <div class="mvi-tooltip-content" ref="content" :style="contentStyle">
                 <slot v-if="$slots.title" name="title"></slot>
                 <span v-else v-text="title"></span>
             </div>
-        </m-layer>
+        </Layer>
     </div>
 </template>
 
 <script>
 import { getCurrentInstance } from 'vue'
-import mLayer from '../layer/layer.vue'
+import { Layer } from '../layer'
 export default {
     name: 'm-tooltip',
     data() {
@@ -136,7 +136,7 @@ export default {
         }
     },
     components: {
-        mLayer
+        Layer
     },
     setup() {
         const instance = getCurrentInstance()

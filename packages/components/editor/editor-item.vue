@@ -1,60 +1,60 @@
 <template>
     <div class="mvi-eitor-item" :data-id="`mvi-editor-root-${uid}-${value}`">
-        <m-tooltip v-if="editor.useTooltip && editor.defaultTooltips[value]" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow)" :title="editor.defaultTooltips[value]" trigger="hover" :placement="editor.defaultTooltipProps.placement" :timeout="editor.defaultTooltipProps.timeout" :color="editor.defaultTooltipProps.color" :text-color="editor.defaultTooltipProps.textColor" :border-color="editor.defaultTooltipProps.borderColor" :offset="editor.defaultTooltipProps.offset" :z-index="editor.defaultTooltipProps.zIndex" :fixed="editor.defaultTooltipProps.fixed" :fixed-auto="editor.defaultTooltipProps.fixedAuto" :width="editor.defaultTooltipProps.width" :animation="editor.defaultTooltipProps.animation" :show-triangle="editor.defaultTooltipProps.showTriangle">
+        <Tooltip v-if="editor.useTooltip && editor.defaultTooltips[value]" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow)" :title="editor.defaultTooltips[value]" trigger="hover" :placement="editor.defaultTooltipProps.placement" :timeout="editor.defaultTooltipProps.timeout" :color="editor.defaultTooltipProps.color" :text-color="editor.defaultTooltipProps.textColor" :border-color="editor.defaultTooltipProps.borderColor" :offset="editor.defaultTooltipProps.offset" :z-index="editor.defaultTooltipProps.zIndex" :fixed="editor.defaultTooltipProps.fixed" :fixed-auto="editor.defaultTooltipProps.fixedAuto" :width="editor.defaultTooltipProps.width" :animation="editor.defaultTooltipProps.animation" :show-triangle="editor.defaultTooltipProps.showTriangle">
             <div class="mvi-editor-target" @click="targetTrigger" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow) || null" :data-id="`mvi-editor-target-${uid}-${value}`" :style="editorTargetStyle">
                 <i v-if="editor.computedMenuIcons[value].custom" :class="editor.computedMenuIcons[value].value"></i>
-                <m-icon v-else :type="editor.computedMenuIcons[value].value" />
+                <Icon v-else :type="editor.computedMenuIcons[value].value" />
             </div>
-        </m-tooltip>
+        </Tooltip>
         <div v-else class="mvi-editor-target" @click="targetTrigger" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow) || null" :data-id="`mvi-editor-target-${uid}-${value}`" :style="editorTargetStyle">
             <i v-if="editor.computedMenuIcons[value].custom" :class="editor.computedMenuIcons[value].value"></i>
-            <m-icon v-else :type="editor.computedMenuIcons[value].value" />
+            <Icon v-else :type="editor.computedMenuIcons[value].value" />
         </div>
-        <m-layer v-model="layerShow" ref="layer" :placement="editor.defaultLayerProps.placement" :z-index="editor.defaultLayerProps.zIndex" :fixed="editor.defaultLayerProps.fixed" :fixed-auto="editor.defaultLayerProps.fixedAuto" :offset="editor.defaultLayerProps.offset" :wrapper-class="editor.defaultLayerProps.wrapperClass" :timeout="editor.defaultLayerProps.timeout" :show-triangle="editor.defaultLayerProps.showTriangle" :animation="editor.defaultLayerProps.animation" :shadow="editor.defaultLayerProps.shadow" :border="editor.defaultLayerProps.border" :border-color="editor.defaultLayerProps.borderColor" background="#fff" :closable="editor.trigger=='click'" :target="`[data-id='mvi-editor-target-${uid}-${value}']`" :root="`[data-id='mvi-editor-root-${uid}-${value}']`">
+        <Layer v-model="layerShow" ref="layer" :placement="editor.defaultLayerProps.placement" :z-index="editor.defaultLayerProps.zIndex" :fixed="editor.defaultLayerProps.fixed" :fixed-auto="editor.defaultLayerProps.fixedAuto" :offset="editor.defaultLayerProps.offset" :wrapper-class="editor.defaultLayerProps.wrapperClass" :timeout="editor.defaultLayerProps.timeout" :show-triangle="editor.defaultLayerProps.showTriangle" :animation="editor.defaultLayerProps.animation" :shadow="editor.defaultLayerProps.shadow" :border="editor.defaultLayerProps.border" :border-color="editor.defaultLayerProps.borderColor" background="#fff" :closable="editor.trigger=='click'" :target="`[data-id='mvi-editor-target-${uid}-${value}']`" :root="`[data-id='mvi-editor-root-${uid}-${value}']`">
             <div class="mvi-editor-layer">
                 <!-- 插入图片或者视频 -->
                 <div class="mvi-editor-medias" v-if="value == 'image' || value == 'video' ">
-                    <m-tabs v-model="tabIndex" flex="flex-start" offset="0.4rem" :active-color="editor.activeColor" inactive-color="#808080">
-                        <m-tab v-for="(item,index) in menu" :title="item.label" :key="'mvi-editor-media-tab-'+index">
+                    <Tabs v-model="tabIndex" flex="flex-start" offset="0.4rem" :active-color="editor.activeColor" inactive-color="#808080">
+                        <Tab v-for="(item,index) in menu" :title="item.label" :key="'mvi-editor-media-tab-'+index">
                             <div :ref="el=>uploadElArray[index] = el" class="mvi-editor-upload" v-if="item.value == 'upload'">
-                                <m-icon type='upload-square' />
+                                <Icon type='upload-square' />
                             </div>
                             <div v-if="item.value == 'remote'" class="mvi-editor-remote">
                                 <input class="mvi-editor-remote-input" @focus="inputFocus" @blur="inputBlur" v-model.trim="remoteUrl" :placeholder="value=='image'?'图片链接':'视频链接'" type="text" />
                                 <div class="mvi-editor-remote-insert" :style="activeColorStyle" @click="insertRemote">插入
                                 </div>
                             </div>
-                        </m-tab>
-                    </m-tabs>
+                        </Tab>
+                    </Tabs>
                 </div>
                 <!-- 插入链接 -->
                 <div v-else-if="value == 'link'" class="mvi-editor-links">
-                    <m-tabs flex="flex-start" offset="0.4rem" :active-color="editor.activeColor" inactive-color="#808080">
-                        <m-tab :title="menu[0].label">
+                    <Tabs flex="flex-start" offset="0.4rem" :active-color="editor.activeColor" inactive-color="#808080">
+                        <Tab :title="menu[0].label">
                             <div v-if="menu[0].value == 'link'" class="mvi-editor-link">
                                 <input ref="linkText" class="mvi-editor-link-input" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkText" placeholder="链接文字" type="text" />
                                 <input ref="linkUrl" class="mvi-editor-link-input" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkUrl" placeholder="链接地址" type="text">
                                 <div class="mvi-editor-link-footer">
-                                    <m-checkbox label="新窗口打开" label-placement="right" icon-size="0.24rem" label-size="0.24rem" label-color="#808080" :fill-color="editor.activeColor" v-model="linkTarget"></m-checkbox>
+                                    <Checkbox label="新窗口打开" label-placement="right" icon-size="0.24rem" label-size="0.24rem" label-color="#808080" :fill-color="editor.activeColor" v-model="linkTarget"></Checkbox>
                                     <div class="mvi-editor-link-operation">
                                         <span class="mvi-editor-link-delete" v-if="menuActive" @click="deleteLink">删除链接</span>
                                         <span class="mvi-editor-link-insert" :style="activeColorStyle" @click="insertLink">插入</span>
                                     </div>
                                 </div>
                             </div>
-                        </m-tab>
-                    </m-tabs>
+                        </Tab>
+                    </Tabs>
                 </div>
                 <!-- 设置颜色 -->
                 <div class="mvi-editor-colors" v-else-if="value == 'foreColor' || value == 'backColor'">
-                    <m-tooltip :disabled="!(item.label && editor.useTooltip)" trigger="hover" :title="item.label" v-for="(item,index) in menu" :key="'mvi-editor-color-'+index" :placement="editor.defaultTooltipProps.placement" :timeout="editor.defaultTooltipProps.timeout" :color="editor.defaultTooltipProps.color" :text-color="editor.defaultTooltipProps.textColor" :border-color="editor.defaultTooltipProps.borderColor" :offset="editor.defaultTooltipProps.offset" :z-index="editor.defaultTooltipProps.zIndex" :fixed="editor.defaultTooltipProps.fixed" :width="editor.defaultTooltipProps.width" :wrapper-class="editor.defaultTooltipProps.wrapperClass" :animation="editor.defaultTooltipProps.animation" class="mvi-editor-color">
+                    <Tooltip :disabled="!(item.label && editor.useTooltip)" trigger="hover" :title="item.label" v-for="(item,index) in menu" :key="'mvi-editor-color-'+index" :placement="editor.defaultTooltipProps.placement" :timeout="editor.defaultTooltipProps.timeout" :color="editor.defaultTooltipProps.color" :text-color="editor.defaultTooltipProps.textColor" :border-color="editor.defaultTooltipProps.borderColor" :offset="editor.defaultTooltipProps.offset" :z-index="editor.defaultTooltipProps.zIndex" :fixed="editor.defaultTooltipProps.fixed" :width="editor.defaultTooltipProps.width" :wrapper-class="editor.defaultTooltipProps.wrapperClass" :animation="editor.defaultTooltipProps.animation" class="mvi-editor-color">
                         <span @click="doSelect(item)" class="mvi-editor-color-el" :style="{backgroundColor:item.value}"></span>
-                    </m-tooltip>
+                    </Tooltip>
                 </div>
                 <!-- 插入表格 -->
                 <div v-else-if="value == 'table'" class="mvi-editor-tables">
-                    <m-tabs flex="flex-start" offset="0.4rem" :active-color="editor.activeColor" inactive-color="#808080">
-                        <m-tab :title="menuActive?'编辑表格':menu[0].label">
+                    <Tabs flex="flex-start" offset="0.4rem" :active-color="editor.activeColor" inactive-color="#808080">
+                        <Tab :title="menuActive?'编辑表格':menu[0].label">
                             <div v-if="menu[0].value == 'table'" class="mvi-editor-table">
                                 <div class="mvi-editor-table-edit" v-if="menuActive">
                                     <span @click="addTableRow" class="mvi-editor-table-add" :style="activeColorStyle">增加行</span>
@@ -71,21 +71,21 @@
                                     <span class="mvi-editor-table-insert" :style="activeColorStyle" v-else @click="insertTable">插入</span>
                                 </div>
                             </div>
-                        </m-tab>
-                    </m-tabs>
+                        </Tab>
+                    </Tabs>
                 </div>
                 <!-- 其他 -->
                 <div v-else>
                     <div class="mvi-editor-el" v-for="(item,index) in menu" @click="doSelect(item,index)" :key="'mvi-editor-el-'+index">
                         <template v-if="item.icon">
                             <i class="mvi-editor-el-icon" v-if="item.icon.custom" :class="item.icon.value"></i>
-                            <m-icon v-else class="mvi-editor-el-icon" :type="item.icon.value" />
+                            <Icon v-else class="mvi-editor-el-icon" :type="item.icon.value" />
                         </template>
                         <span v-text="item.label"></span>
                     </div>
                 </div>
             </div>
-        </m-layer>
+        </Layer>
         <!-- table模板 -->
         <table v-if="value == 'table'" style="display: none;" ref="table" class="mvi-editor-table-demo" cellpadding="0" cellspacing="0" mvi-editor-insert-table>
             <tbody mvi-editor-insert-table>
@@ -99,14 +99,14 @@
 
 <script>
 import { getCurrentInstance } from 'vue'
-import $dap from 'dap-util'
-import Upload from '../upload/upload'
-import mTooltip from '../tooltip/tooltip.vue'
-import mIcon from '../icon/icon.vue'
-import mLayer from '../layer/layer.vue'
-import mTabs from '../tabs/tabs.vue'
-import mTab from '../tabs/tab.vue'
-import mCheckbox from '../checkbox/checkbox.vue'
+import { Dap } from '../dap'
+import { Upload } from '../upload'
+import { Tooltip } from '../tooltip'
+import { Icon } from '../icon'
+import { Layer } from '../layer'
+import { Tabs } from '../tabs'
+import { Tab } from '../tab'
+import { Checkbox } from '../checkbox'
 export default {
     name: 'm-editor-item',
     props: {
@@ -211,7 +211,7 @@ export default {
                     //使用base64
                     if (this.editor.useBase64) {
                         files.forEach(file => {
-                            $dap.file.dataFileToBase64(file).then(base64 => {
+                            Dap.file.dataFileToBase64(file).then(base64 => {
                                 if (this.value == 'image') {
                                     this.editor.insertImage(base64)
                                 } else {
@@ -255,17 +255,17 @@ export default {
         }
     },
     components: {
-        mTooltip,
-        mIcon,
-        mLayer,
-        mTabs,
-        mTab,
-        mCheckbox
+        Tooltip,
+        Icon,
+        Layer,
+        Tabs,
+        Tab,
+        Checkbox
     },
     mounted() {
         if (this.editor.trigger == 'hover') {
-            $dap.event.on(this.$el, 'mouseenter.editor', this.showLayer)
-            $dap.event.on(this.$el, 'mouseleave.editor', this.hideLayer)
+            Dap.event.on(this.$el, 'mouseenter.editor', this.showLayer)
+            Dap.event.on(this.$el, 'mouseleave.editor', this.hideLayer)
         }
     },
     methods: {
@@ -512,7 +512,7 @@ export default {
             if (!this.linkText) {
                 this.linkText = this.linkUrl
             }
-            let link = $dap.element.string2dom(
+            let link = Dap.element.string2dom(
                 `<a href="${this.linkUrl}">${this.linkText}</a>`
             )
             if (this.linkTarget) {
@@ -588,14 +588,8 @@ export default {
                 return
             }
             if (
-                !$dap.common.matchingText(
-                    this.tableRows.toString(),
-                    'number'
-                ) ||
-                !$dap.common.matchingText(
-                    this.tableColumns.toString(),
-                    'number'
-                )
+                !Dap.common.matchingText(this.tableRows.toString(), 'number') ||
+                !Dap.common.matchingText(this.tableColumns.toString(), 'number')
             ) {
                 this.hideLayer()
                 return
@@ -617,14 +611,14 @@ export default {
             //tbody
             else if (this.editor.compareTag(node, 'tbody')) {
                 let tbody = this.editor.getCompareTag(node, 'tbody')
-                let children = $dap.element.children(tbody, 'tr')
+                let children = Dap.element.children(tbody, 'tr')
                 this.copyRowAppend(children[children.length - 1])
             }
             //table
             else if (this.editor.compareTag(node, 'table')) {
                 let table = this.editor.getCompareTag(node, 'table')
-                let tbody = $dap.element.children(table, 'tbody')[0]
-                let children = $dap.element.children(tbody, 'tr')
+                let tbody = Dap.element.children(table, 'tbody')[0]
+                let children = Dap.element.children(tbody, 'tr')
                 this.copyRowAppend(children[children.length - 1])
             }
             this.editor.updateHtmlText()
@@ -642,14 +636,14 @@ export default {
             //tbody
             else if (this.editor.compareTag(node, 'tbody')) {
                 let tbody = this.editor.getCompareTag(node, 'tbody')
-                let children = $dap.element.children(tbody, 'tr')
+                let children = Dap.element.children(tbody, 'tr')
                 children[children.length - 1].remove()
             }
             //table
             else if (this.editor.compareTag(node, 'table')) {
                 let table = this.editor.getCompareTag(node, 'table')
-                let tbody = $dap.element.children(table, 'tbody')[0]
-                let children = $dap.element.children(tbody, 'tr')
+                let tbody = Dap.element.children(table, 'tbody')[0]
+                let children = Dap.element.children(tbody, 'tr')
                 children[children.length - 1].remove()
             }
             this.editor.updateHtmlText()
@@ -664,18 +658,18 @@ export default {
                 this.copyColumnAppend(td)
             } else if (this.editor.compareTag(node, 'tr')) {
                 let tr = this.editor.getCompareTag(node, 'tr')
-                let children = $dap.element.children(tr, 'td')
+                let children = Dap.element.children(tr, 'td')
                 this.copyColumnAppend(children[children.length - 1])
             } else if (this.editor.compareTag(node, 'tbody')) {
                 let tbody = this.editor.getCompareTag(node, 'tbody')
-                let tr = $dap.element.children(tbody, 'tr')[0]
-                let childrenTd = $dap.element.children(tr, 'td')
+                let tr = Dap.element.children(tbody, 'tr')[0]
+                let childrenTd = Dap.element.children(tr, 'td')
                 this.copyColumnAppend(childrenTd[childrenTd.length - 1])
             } else if (this.editor.compareTag(node, 'table')) {
                 let table = this.editor.getCompareTag(node, 'table')
-                let tbody = $dap.element.children(table, 'tbody')[0]
-                let tr = $dap.element.children(tbody, 'tr')[0]
-                let childrenTd = $dap.element.children(tr, 'td')
+                let tbody = Dap.element.children(table, 'tbody')[0]
+                let tr = Dap.element.children(tbody, 'tr')[0]
+                let childrenTd = Dap.element.children(tr, 'td')
                 this.copyColumnAppend(childrenTd[childrenTd.length - 1])
             }
             this.editor.updateHtmlText()
@@ -690,18 +684,18 @@ export default {
                 this.removeColumn(td)
             } else if (this.editor.compareTag(node, 'tr')) {
                 let tr = this.editor.getCompareTag(node, 'tr')
-                let children = $dap.element.children(tr, 'td')
+                let children = Dap.element.children(tr, 'td')
                 this.removeColumn(children[children.length - 1])
             } else if (this.editor.compareTag(node, 'tbody')) {
                 let tbody = this.editor.getCompareTag(node, 'tbody')
-                let tr = $dap.element.children(tbody, 'tr')[0]
-                let childrenTd = $dap.element.children(tr, 'td')
+                let tr = Dap.element.children(tbody, 'tr')[0]
+                let childrenTd = Dap.element.children(tr, 'td')
                 this.removeColumn(childrenTd[childrenTd.length - 1])
             } else if (this.editor.compareTag(node, 'table')) {
                 let table = this.editor.getCompareTag(node, 'table')
-                let tbody = $dap.element.children(table, 'tbody')[0]
-                let tr = $dap.element.children(tbody, 'tr')[0]
-                let childrenTd = $dap.element.children(tr, 'td')
+                let tbody = Dap.element.children(table, 'tbody')[0]
+                let tr = Dap.element.children(tbody, 'tr')[0]
+                let childrenTd = Dap.element.children(tr, 'td')
                 this.removeColumn(childrenTd[childrenTd.length - 1])
             }
             this.editor.updateHtmlText()
@@ -724,7 +718,7 @@ export default {
         //在指定节点后插入节点
         insertNodeAfter(newNode, targetNode) {
             let parent = targetNode.parentNode
-            let children = $dap.element.children(parent)
+            let children = Dap.element.children(parent)
             if (children[children.length - 1] == targetNode) {
                 parent.appendChild(newNode)
             } else {
@@ -743,11 +737,11 @@ export default {
         copyColumnAppend(column) {
             //该列在父元素中的序列
             let index = [].indexOf.call(
-                $dap.element.children(column.parentNode, column.tagName),
+                Dap.element.children(column.parentNode, column.tagName),
                 column
             )
             column.parentNode.parentNode.querySelectorAll('tr').forEach(tr => {
-                let td = $dap.element.children(tr, 'td')[index]
+                let td = Dap.element.children(tr, 'td')[index]
                 let newColumn = td.cloneNode(true)
                 newColumn.innerHTML = '<br>'
                 this.insertNodeAfter(newColumn, td)
@@ -757,11 +751,11 @@ export default {
         removeColumn(column) {
             //该列在父元素中的序列
             let index = [].indexOf.call(
-                $dap.element.children(column.parentNode, column.tagName),
+                Dap.element.children(column.parentNode, column.tagName),
                 column
             )
             column.parentNode.parentNode.querySelectorAll('tr').forEach(tr => {
-                let td = $dap.element.children(tr, 'td')[index]
+                let td = Dap.element.children(tr, 'td')[index]
                 td.remove()
             })
         },
@@ -772,15 +766,15 @@ export default {
             let pre = null
             let innerHTML = ''
             for (let i = 0; i < pres.length; i++) {
-                if ($dap.element.isContains(pres[i], node)) {
+                if (Dap.element.isContains(pres[i], node)) {
                     pre = pres[i]
                     innerHTML = pre.innerHTML
                     break
                 }
             }
-            let pEl = $dap.element.string2dom('<p>' + innerHTML + '</p>')
+            let pEl = Dap.element.string2dom('<p>' + innerHTML + '</p>')
             if (pEl instanceof HTMLCollection) {
-                pEl = $dap.element.string2dom('<div>' + innerHTML + '</div>')
+                pEl = Dap.element.string2dom('<div>' + innerHTML + '</div>')
             }
             this.insertNodeAfter(pEl, pre)
             pre.remove()
@@ -799,15 +793,15 @@ export default {
             let blockquote = null
             let innerHTML = ''
             for (let i = 0; i < blockquotes.length; i++) {
-                if ($dap.element.isContains(blockquotes[i], node)) {
+                if (Dap.element.isContains(blockquotes[i], node)) {
                     blockquote = blockquotes[i]
                     innerHTML = blockquote.innerHTML
                     break
                 }
             }
-            let pEl = $dap.element.string2dom('<p>' + innerHTML + '</p>')
+            let pEl = Dap.element.string2dom('<p>' + innerHTML + '</p>')
             if (pEl instanceof HTMLCollection) {
-                pEl = $dap.element.string2dom('<div>' + innerHTML + '</div>')
+                pEl = Dap.element.string2dom('<div>' + innerHTML + '</div>')
             }
             this.insertNodeAfter(pEl, blockquote)
             blockquote.remove()
@@ -821,7 +815,7 @@ export default {
     },
     beforeUnmount() {
         if (this.editor.trigger == 'hover') {
-            $dap.event.off(this.$el, 'mouseenter.editor mouseleave.editor')
+            Dap.event.off(this.$el, 'mouseenter.editor mouseleave.editor')
         }
     }
 }

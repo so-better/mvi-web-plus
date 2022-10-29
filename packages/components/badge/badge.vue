@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import $dap from 'dap-util'
+import { Dap } from '../dap'
 export default {
     name: 'm-badge',
     props: {
@@ -97,8 +97,7 @@ export default {
             return style
         },
         badgeShow() {
-            const badgeExist =
-                $dap.number.isNumber(this.content) || this.content
+            const badgeExist = Dap.number.isNumber(this.content) || this.content
             if (badgeExist && this.show) {
                 return true
             }

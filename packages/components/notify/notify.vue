@@ -3,7 +3,7 @@
         <transition name="mvi-notify" @after-leave="afterLeave" @after-enter="afterEnter">
             <div v-show="show" :class="['mvi-notify','mvi-notify-'+computedType]" :style="notifyStyle">
                 <div class="mvi-notify-content">
-                    <m-icon v-if="iconType || iconUrl" :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor" />
+                    <Icon v-if="iconType || iconUrl" :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor" />
                     <span v-text="computedMessage"></span>
                 </div>
             </div>
@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import $dap from 'dap-util'
-import mIcon from '../icon/icon.vue'
+import { Dap } from '../dap'
+import { Icon } from '../icon'
 export default {
     name: 'm-notify',
     data() {
@@ -89,7 +89,7 @@ export default {
         computedMessage() {
             if (typeof this.message == 'string') {
                 return this.message
-            } else if ($dap.common.isObject(this.message)) {
+            } else if (Dap.common.isObject(this.message)) {
                 return JSON.stringify(this.message)
             } else {
                 return String(this.message)
@@ -113,7 +113,7 @@ export default {
         },
         //自定义zIndex
         computedZIndex() {
-            if ($dap.number.isNumber(this.zIndex)) {
+            if (Dap.number.isNumber(this.zIndex)) {
                 return this.zIndex
             } else {
                 return 1100
@@ -121,7 +121,7 @@ export default {
         },
         //自动关闭时间
         computedTimeout() {
-            if ($dap.number.isNumber(this.timeout) && this.timeout > 0) {
+            if (Dap.number.isNumber(this.timeout) && this.timeout > 0) {
                 return this.timeout
             } else {
                 return 1500
@@ -130,7 +130,7 @@ export default {
         //图标类型
         iconType() {
             let type = null
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.type == 'string') {
                     type = this.icon.type
                 }
@@ -142,7 +142,7 @@ export default {
         //图标url
         iconUrl() {
             let url = null
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.url == 'string') {
                     url = this.icon.url
                 }
@@ -152,7 +152,7 @@ export default {
         //图标是否旋转
         iconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.spin == 'boolean') {
                     spin = this.icon.spin
                 }
@@ -162,7 +162,7 @@ export default {
         //图标大小
         iconSize() {
             let size = null
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.size == 'string') {
                     size = this.icon.size
                 }
@@ -172,7 +172,7 @@ export default {
         //图标颜色
         iconColor() {
             let color = null
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.color == 'string') {
                     color = this.icon.color
                 }
@@ -193,7 +193,7 @@ export default {
         }
     },
     components: {
-        mIcon
+        Icon
     },
     mounted() {
         this.show = true

@@ -1,12 +1,12 @@
 import { createApp } from 'vue'
-import $dap from 'dap-util'
+import { Dap } from '../dap'
 import NotifyComponent from './notify.vue'
 
 const Notify = {
     //初始化参数
     initParams: options => {
         let opts = {}
-        if ($dap.common.isObject(options)) {
+        if (Dap.common.isObject(options)) {
             opts.type = options.type
             opts.message = options.message
             opts.timeout = options.timeout
@@ -29,7 +29,7 @@ const Notify = {
                 Notify.$el.remove()
             }
             let opts = Notify.initParams(options)
-            let mountNode = $dap.element.string2dom('<div></div>')
+            let mountNode = Dap.element.string2dom('<div></div>')
             document.body.appendChild(mountNode)
             const instance = createApp(NotifyComponent, {
                 ...opts,
@@ -67,4 +67,4 @@ const Notify = {
     }
 }
 
-export default Notify
+export { Notify, Notify as default }

@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import $dap from 'dap-util'
-import Drag from '../drag/drag'
+import { Dap } from '../dap'
+import { Drag } from '../drag'
 export default {
     name: 'm-slider',
     data() {
@@ -98,9 +98,9 @@ export default {
             if (this.activeColor) {
                 style.backgroundColor = this.activeColor
             }
-            let percent = $dap.number.divide(
-                $dap.number.subtract(this.modelValue, this.min),
-                $dap.number.subtract(this.max, this.min)
+            let percent = Dap.number.divide(
+                Dap.number.subtract(this.modelValue, this.min),
+                Dap.number.subtract(this.max, this.min)
             )
             if (this.vertical) {
                 style.height = `calc(${percent} * 100%)`
@@ -184,19 +184,19 @@ export default {
             this.isdrag = true
             if (this.vertical) {
                 let top = res.placement.top
-                let value = $dap.number.add(
-                    $dap.number.mutiply(
-                        $dap.number.divide(
-                            $dap.number.add(
+                let value = Dap.number.add(
+                    Dap.number.mutiply(
+                        Dap.number.divide(
+                            Dap.number.add(
                                 top,
-                                $dap.number.divide(
+                                Dap.number.divide(
                                     this.$refs.btn.offsetHeight,
                                     2
                                 )
                             ),
                             this.$el.offsetHeight
                         ),
-                        $dap.number.subtract(this.max, this.min)
+                        Dap.number.subtract(this.max, this.min)
                     ),
                     this.min
                 )
@@ -204,19 +204,16 @@ export default {
                 this.$emit('change', value)
             } else {
                 let left = res.placement.left
-                let value = $dap.number.add(
-                    $dap.number.mutiply(
-                        $dap.number.divide(
-                            $dap.number.add(
+                let value = Dap.number.add(
+                    Dap.number.mutiply(
+                        Dap.number.divide(
+                            Dap.number.add(
                                 left,
-                                $dap.number.divide(
-                                    this.$refs.btn.offsetWidth,
-                                    2
-                                )
+                                Dap.number.divide(this.$refs.btn.offsetWidth, 2)
                             ),
                             this.$el.offsetWidth
                         ),
-                        $dap.number.subtract(this.max - this.min)
+                        Dap.number.subtract(this.max - this.min)
                     ),
                     this.min
                 )
@@ -229,28 +226,28 @@ export default {
             if (this.vertical) {
                 this.$refs.btn.style.left = '50%'
                 this.$refs.btn.style.top =
-                    $dap.number.subtract(
-                        $dap.number.mutiply(
-                            $dap.number.divide(
-                                $dap.number.subtract(this.modelValue, this.min),
-                                $dap.number.subtract(this.max - this.min)
+                    Dap.number.subtract(
+                        Dap.number.mutiply(
+                            Dap.number.divide(
+                                Dap.number.subtract(this.modelValue, this.min),
+                                Dap.number.subtract(this.max - this.min)
                             ),
                             this.$el.offsetHeight
                         ),
-                        $dap.number.divide(this.$refs.btn.offsetHeight, 2)
+                        Dap.number.divide(this.$refs.btn.offsetHeight, 2)
                     ) + 'px'
             } else {
                 this.$refs.btn.style.top = '50%'
                 this.$refs.btn.style.left =
-                    $dap.number.subtract(
-                        $dap.number.mutiply(
-                            $dap.number.divide(
-                                $dap.number.subtract(this.modelValue, this.min),
-                                $dap.number.subtract(this.max - this.min)
+                    Dap.number.subtract(
+                        Dap.number.mutiply(
+                            Dap.number.divide(
+                                Dap.number.subtract(this.modelValue, this.min),
+                                Dap.number.subtract(this.max - this.min)
                             ),
                             this.$el.offsetWidth
                         ),
-                        $dap.number.divide(this.$refs.btn.offsetWidth, 2)
+                        Dap.number.divide(this.$refs.btn.offsetWidth, 2)
                     ) + 'px'
             }
         },
@@ -262,15 +259,15 @@ export default {
             if (this.isdrag) {
                 return
             }
-            if ($dap.element.isContains(this.$refs.btn, event.target)) {
+            if (Dap.element.isContains(this.$refs.btn, event.target)) {
                 return
             }
             if (this.vertical) {
                 let top = event.offsetY
-                let value = $dap.number.add(
-                    $dap.number.mutiply(
-                        $dap.number.divide(top, this.$el.offsetHeight),
-                        $dap.number.subtract(this.max, this.min)
+                let value = Dap.number.add(
+                    Dap.number.mutiply(
+                        Dap.number.divide(top, this.$el.offsetHeight),
+                        Dap.number.subtract(this.max, this.min)
                     ),
                     this.min
                 )
@@ -278,10 +275,10 @@ export default {
                 this.$emit('change', value)
             } else {
                 let left = event.offsetX
-                let value = $dap.number.add(
-                    $dap.number.mutiply(
-                        $dap.number.divide(left, this.$el.offsetWidth),
-                        $dap.number.subtract(this.max, this.min)
+                let value = Dap.number.add(
+                    Dap.number.mutiply(
+                        Dap.number.divide(left, this.$el.offsetWidth),
+                        Dap.number.subtract(this.max, this.min)
                     ),
                     this.min
                 )

@@ -1,4 +1,4 @@
-import $dap from 'dap-util'
+import { Dap } from '../dap'
 /**
  * 文件上传
  */
@@ -6,7 +6,7 @@ class Upload {
     constructor(element, options) {
         //组件容器
         this.$el = element
-        if (!$dap.common.isObject(options)) {
+        if (!Dap.common.isObject(options)) {
             options = {}
         }
         //文件上传元素
@@ -51,22 +51,22 @@ class Upload {
             return
         }
         this.hasInit = true
-        if (!$dap.element.isElement(this.$el)) {
+        if (!Dap.element.isElement(this.$el)) {
             throw new TypeError('The upload element is not specified')
         }
         if (!(this.allowedFileType instanceof Array)) {
             this.allowedFileType = []
         }
-        if (!$dap.number.isNumber(this.minSize) || this.minSize <= 0) {
+        if (!Dap.number.isNumber(this.minSize) || this.minSize <= 0) {
             this.minSize = -1
         }
-        if (!$dap.number.isNumber(this.maxSize) || this.maxSize <= 0) {
+        if (!Dap.number.isNumber(this.maxSize) || this.maxSize <= 0) {
             this.maxSize = -1
         }
-        if (!$dap.number.isNumber(this.maxLength) || this.maxLength <= 0) {
+        if (!Dap.number.isNumber(this.maxLength) || this.maxLength <= 0) {
             this.maxLength = -1
         }
-        if (!$dap.number.isNumber(this.minLength) || this.minLength <= 0) {
+        if (!Dap.number.isNumber(this.minLength) || this.minLength <= 0) {
             this.minLength = -1
         }
         if (typeof this.multiple != 'boolean') {
@@ -82,19 +82,19 @@ class Upload {
             this.disabled = false
         }
         if (typeof this.error != 'function') {
-            this.error = function() {}
+            this.error = function () {}
         }
         if (typeof this.select != 'function') {
-            this.select = function() {}
+            this.select = function () {}
         }
         if (typeof this.ready != 'function') {
-            this.ready = function() {}
+            this.ready = function () {}
         }
         if (typeof this.extra != 'object') {
             this.extra = {}
         }
         //生成input[type='file']元素
-        this.$selectInput = $dap.element.string2dom("<input type='file' />")
+        this.$selectInput = Dap.element.string2dom("<input type='file' />")
         if (this.accept === 'rar') {
             this.$selectInput.setAttribute(
                 'accept',
@@ -240,9 +240,8 @@ class Upload {
             //转为小写
             suffix = suffix.toLocaleLowerCase()
             for (let i = 0; i < this.allowedFileType.length; i++) {
-                this.allowedFileType[i] = this.allowedFileType[
-                    i
-                ].toLocaleLowerCase()
+                this.allowedFileType[i] =
+                    this.allowedFileType[i].toLocaleLowerCase()
             }
             return this.allowedFileType.includes(suffix)
         }

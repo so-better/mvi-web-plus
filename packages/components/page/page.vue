@@ -1,11 +1,11 @@
 <template>
     <div class="mvi-page">
         <div v-if="firstText || firstIconType || firstIconUrl" :disabled="modelValue==1 || null" @click="pageFirst" :class="['mvi-page-first',(active&&modelValue!=1)?'mvi-page-active':'']" :style="{color:(modelValue==1?'':color || '')}">
-            <m-icon :class="['mvi-page-icon',firstText?'mvi-page-margin-right':'']" v-if="firstIconType || firstIconUrl" :type="firstIconType" :url="firstIconUrl" :spin="firstIconSpin" :size="firstIconSize" :color="firstIconColor" />
+            <Icon :class="['mvi-page-icon',firstText?'mvi-page-margin-right':'']" v-if="firstIconType || firstIconUrl" :type="firstIconType" :url="firstIconUrl" :spin="firstIconSpin" :size="firstIconSize" :color="firstIconColor" />
             <span v-if="firstText" v-text="firstText"></span>
         </div>
         <div v-if="prevText || prevIconType || prevIconUrl" :disabled="modelValue==1 || null" @click="pagePrev" :class="['mvi-page-prev',(active&&modelValue!=1)?'mvi-page-active':'']" :style="{color:(modelValue==1?'':color || '')}">
-            <m-icon :class="['mvi-page-icon',prevText?'mvi-page-margin-right':'']" v-if="prevIconType|| prevIconUrl" :type="prevIconType" :url="prevIconUrl" :size="prevIconSize" :spin="prevIconSpin" :color="prevIconColor" />
+            <Icon :class="['mvi-page-icon',prevText?'mvi-page-margin-right':'']" v-if="prevIconType|| prevIconUrl" :type="prevIconType" :url="prevIconUrl" :size="prevIconSize" :spin="prevIconSpin" :color="prevIconColor" />
             <span v-if="prevText" v-text="prevText"></span>
         </div>
         <div class="mvi-page-numbers">
@@ -25,18 +25,18 @@
         </div>
         <div v-if="nextText || nextIconType || nextIconUrl" :disabled="modelValue==total || null" @click="pageNext" :class="['mvi-page-next',(active&&modelValue!=total)?'mvi-page-active':'']" :style="{color:modelValue==total?'':(color || '')}">
             <span v-if="nextText" v-text="nextText"></span>
-            <m-icon :class="['mvi-page-icon',nextText?'mvi-page-margin-left':'']" v-if="nextIconType|| nextIconUrl" :type="nextIconType" :url="nextIconUrl" :size="nextIconSize" :spin="nextIconSpin" :color="nextIconColor" />
+            <Icon :class="['mvi-page-icon',nextText?'mvi-page-margin-left':'']" v-if="nextIconType|| nextIconUrl" :type="nextIconType" :url="nextIconUrl" :size="nextIconSize" :spin="nextIconSpin" :color="nextIconColor" />
         </div>
         <div v-if="lastText || lastIconType || lastIconUrl" :disabled="modelValue==total || null" @click="pageLast" :class="['mvi-page-last',(active&&modelValue!=total)?'mvi-page-active':'']" :style="{color:(modelValue==total?'':color || '')}">
             <span v-if="lastText" v-text="lastText"></span>
-            <m-icon :class="['mvi-page-icon',lastText?'mvi-page-margin-left':'']" v-if="lastIconType || lastIconUrl" :type="lastIconType" :url="lastIconUrl" :size="lastIconSize" :spin="lastIconSpin" :color="lastIconColor" />
+            <Icon :class="['mvi-page-icon',lastText?'mvi-page-margin-left':'']" v-if="lastIconType || lastIconUrl" :type="lastIconType" :url="lastIconUrl" :size="lastIconSize" :spin="lastIconSpin" :color="lastIconColor" />
         </div>
     </div>
 </template>
 
 <script>
-import $dap from 'dap-util'
-import mIcon from '../icon/icon.vue'
+import { Dap } from '../dap'
+import { Icon } from '../icon'
 export default {
     name: 'm-page',
     data() {
@@ -126,7 +126,7 @@ export default {
                 let style = {}
                 if (this.modelValue == item) {
                     if (this.el) {
-                        style.color = $dap.element.getCssStyle(
+                        style.color = Dap.element.getCssStyle(
                             this.el,
                             'background-color'
                         )
@@ -164,7 +164,7 @@ export default {
         },
         firstIconType() {
             let type = 'angle-double-left'
-            if ($dap.common.isObject(this.firstIcon)) {
+            if (Dap.common.isObject(this.firstIcon)) {
                 if (typeof this.firstIcon.type == 'string') {
                     type = this.firstIcon.type
                 }
@@ -175,7 +175,7 @@ export default {
         },
         firstIconUrl() {
             let url = null
-            if ($dap.common.isObject(this.firstIcon)) {
+            if (Dap.common.isObject(this.firstIcon)) {
                 if (typeof this.firstIcon.url == 'string') {
                     url = this.firstIcon.url
                 }
@@ -184,7 +184,7 @@ export default {
         },
         firstIconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.firstIcon)) {
+            if (Dap.common.isObject(this.firstIcon)) {
                 if (typeof this.firstIcon.spin == 'boolean') {
                     spin = this.firstIcon.spin
                 }
@@ -193,7 +193,7 @@ export default {
         },
         firstIconSize() {
             let size = null
-            if ($dap.common.isObject(this.firstIcon)) {
+            if (Dap.common.isObject(this.firstIcon)) {
                 if (typeof this.firstIcon.size == 'string') {
                     size = this.firstIcon.size
                 }
@@ -202,7 +202,7 @@ export default {
         },
         firstIconColor() {
             let color = null
-            if ($dap.common.isObject(this.firstIcon)) {
+            if (Dap.common.isObject(this.firstIcon)) {
                 if (typeof this.firstIcon.color == 'string') {
                     color = this.firstIcon.color
                 }
@@ -211,7 +211,7 @@ export default {
         },
         lastIconType() {
             let type = 'angle-double-right'
-            if ($dap.common.isObject(this.lastIcon)) {
+            if (Dap.common.isObject(this.lastIcon)) {
                 if (typeof this.lastIcon.type == 'string') {
                     type = this.lastIcon.type
                 }
@@ -222,7 +222,7 @@ export default {
         },
         lastIconUrl() {
             let url = null
-            if ($dap.common.isObject(this.lastIcon)) {
+            if (Dap.common.isObject(this.lastIcon)) {
                 if (typeof this.lastIcon.url == 'string') {
                     url = this.lastIcon.url
                 }
@@ -231,7 +231,7 @@ export default {
         },
         lastIconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.lastIcon)) {
+            if (Dap.common.isObject(this.lastIcon)) {
                 if (typeof this.lastIcon.spin == 'boolean') {
                     spin = this.lastIcon.spin
                 }
@@ -240,7 +240,7 @@ export default {
         },
         lastIconSize() {
             let size = null
-            if ($dap.common.isObject(this.lastIcon)) {
+            if (Dap.common.isObject(this.lastIcon)) {
                 if (typeof this.lastIcon.size == 'string') {
                     size = this.lastIcon.size
                 }
@@ -249,7 +249,7 @@ export default {
         },
         lastIconColor() {
             let color = null
-            if ($dap.common.isObject(this.lastIcon)) {
+            if (Dap.common.isObject(this.lastIcon)) {
                 if (typeof this.lastIcon.color == 'string') {
                     color = this.lastIcon.color
                 }
@@ -258,7 +258,7 @@ export default {
         },
         prevIconType() {
             let type = 'angle-left'
-            if ($dap.common.isObject(this.prevIcon)) {
+            if (Dap.common.isObject(this.prevIcon)) {
                 if (typeof this.prevIcon.type == 'string') {
                     type = this.prevIcon.type
                 }
@@ -269,7 +269,7 @@ export default {
         },
         prevIconUrl() {
             let url = null
-            if ($dap.common.isObject(this.prevIcon)) {
+            if (Dap.common.isObject(this.prevIcon)) {
                 if (typeof this.prevIcon.url == 'string') {
                     url = this.prevIcon.url
                 }
@@ -278,7 +278,7 @@ export default {
         },
         prevIconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.prevIcon)) {
+            if (Dap.common.isObject(this.prevIcon)) {
                 if (typeof this.prevIcon.spin == 'boolean') {
                     spin = this.prevIcon.spin
                 }
@@ -287,7 +287,7 @@ export default {
         },
         prevIconSize() {
             let size = null
-            if ($dap.common.isObject(this.prevIcon)) {
+            if (Dap.common.isObject(this.prevIcon)) {
                 if (typeof this.prevIcon.size == 'string') {
                     size = this.prevIcon.size
                 }
@@ -296,7 +296,7 @@ export default {
         },
         prevIconColor() {
             let color = null
-            if ($dap.common.isObject(this.prevIcon)) {
+            if (Dap.common.isObject(this.prevIcon)) {
                 if (typeof this.prevIcon.color == 'string') {
                     color = this.prevIcon.color
                 }
@@ -305,7 +305,7 @@ export default {
         },
         nextIconType() {
             let type = 'angle-right'
-            if ($dap.common.isObject(this.nextIcon)) {
+            if (Dap.common.isObject(this.nextIcon)) {
                 if (typeof this.nextIcon.type == 'string') {
                     type = this.nextIcon.type
                 }
@@ -316,7 +316,7 @@ export default {
         },
         nextIconUrl() {
             let url = null
-            if ($dap.common.isObject(this.nextIcon)) {
+            if (Dap.common.isObject(this.nextIcon)) {
                 if (typeof this.nextIcon.url == 'string') {
                     url = this.nextIcon.url
                 }
@@ -325,7 +325,7 @@ export default {
         },
         nextIconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.nextIcon)) {
+            if (Dap.common.isObject(this.nextIcon)) {
                 if (typeof this.nextIcon.spin == 'boolean') {
                     spin = this.nextIcon.spin
                 }
@@ -334,7 +334,7 @@ export default {
         },
         nextIconSize() {
             let size = null
-            if ($dap.common.isObject(this.nextIcon)) {
+            if (Dap.common.isObject(this.nextIcon)) {
                 if (typeof this.nextIcon.size == 'string') {
                     size = this.nextIcon.size
                 }
@@ -343,7 +343,7 @@ export default {
         },
         nextIconColor() {
             let color = null
-            if ($dap.common.isObject(this.nextIcon)) {
+            if (Dap.common.isObject(this.nextIcon)) {
                 if (typeof this.nextIcon.color == 'string') {
                     color = this.nextIcon.color
                 }
@@ -352,7 +352,7 @@ export default {
         }
     },
     components: {
-        mIcon
+        Icon
     },
     mounted() {
         this.el = this.$el

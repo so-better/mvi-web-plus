@@ -1,7 +1,7 @@
-import modal from './modal.vue'
+import Modal from './modal.vue'
 
-modal.install = app => {
-    app.component(modal.name, modal)
+Modal.install = app => {
+    app.component(Modal.name, Modal)
 }
 
-export default modal
+export { Modal, Modal as default }

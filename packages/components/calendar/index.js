@@ -1,7 +1,7 @@
-import calendar from './calendar.vue'
+import Calendar from './calendar.vue'
 
-calendar.install = app => {
-    app.component(calendar.name, calendar)
+Calendar.install = app => {
+    app.component(Calendar.name, Calendar)
 }
 
-export default calendar
+export { Calendar, Calendar as default }

@@ -1,7 +1,7 @@
-import slider from './slider.vue'
+import Slider from './slider.vue'
 
-slider.install = app => {
-    app.component(slider.name, slider)
+Slider.install = app => {
+    app.component(Slider.name, Slider)
 }
 
-export default slider
+export { Slider, Slider as default }

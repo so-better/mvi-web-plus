@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import $dap from 'dap-util'
+import { Dap } from '../dap'
 export default {
     name: 'm-steps',
     data() {
@@ -54,7 +54,7 @@ export default {
     computed: {
         activeIconType() {
             let type = 'success-o'
-            if ($dap.common.isObject(this.activeIcon)) {
+            if (Dap.common.isObject(this.activeIcon)) {
                 if (typeof this.activeIcon.type == 'string') {
                     type = this.activeIcon.type
                 }
@@ -65,7 +65,7 @@ export default {
         },
         activeIconUrl() {
             let url = null
-            if ($dap.common.isObject(this.activeIcon)) {
+            if (Dap.common.isObject(this.activeIcon)) {
                 if (typeof this.activeIcon.url == 'string') {
                     url = this.activeIcon.url
                 }
@@ -74,7 +74,7 @@ export default {
         },
         activeIconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.activeIcon)) {
+            if (Dap.common.isObject(this.activeIcon)) {
                 if (typeof this.activeIcon.spin == 'boolean') {
                     spin = this.activeIcon.spin
                 }
@@ -83,7 +83,7 @@ export default {
         },
         activeIconSize() {
             let size = null
-            if ($dap.common.isObject(this.activeIcon)) {
+            if (Dap.common.isObject(this.activeIcon)) {
                 if (typeof this.activeIcon.size == 'string') {
                     size = this.activeIcon.size
                 }
@@ -92,7 +92,7 @@ export default {
         },
         activeIconColor() {
             let color = null
-            if ($dap.common.isObject(this.activeIcon)) {
+            if (Dap.common.isObject(this.activeIcon)) {
                 if (typeof this.activeIcon.color == 'string') {
                     color = this.activeIcon.color
                 }
@@ -101,7 +101,7 @@ export default {
         },
         inactiveIconType() {
             let type = null
-            if ($dap.common.isObject(this.inactiveIcon)) {
+            if (Dap.common.isObject(this.inactiveIcon)) {
                 if (typeof this.inactiveIcon.type == 'string') {
                     type = this.inactiveIcon.type
                 }
@@ -112,7 +112,7 @@ export default {
         },
         inactiveIconUrl() {
             let url = null
-            if ($dap.common.isObject(this.inactiveIcon)) {
+            if (Dap.common.isObject(this.inactiveIcon)) {
                 if (typeof this.inactiveIcon.url == 'string') {
                     url = this.inactiveIcon.url
                 }
@@ -121,7 +121,7 @@ export default {
         },
         inactiveIconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.inactiveIcon)) {
+            if (Dap.common.isObject(this.inactiveIcon)) {
                 if (typeof this.inactiveIcon.spin == 'boolean') {
                     spin = this.inactiveIcon.spin
                 }
@@ -130,7 +130,7 @@ export default {
         },
         inactiveIconSize() {
             let size = null
-            if ($dap.common.isObject(this.inactiveIcon)) {
+            if (Dap.common.isObject(this.inactiveIcon)) {
                 if (typeof this.inactiveIcon.size == 'string') {
                     size = this.inactiveIcon.size
                 }
@@ -139,7 +139,7 @@ export default {
         },
         inactiveIconColor() {
             let color = null
-            if ($dap.common.isObject(this.inactiveIcon)) {
+            if (Dap.common.isObject(this.inactiveIcon)) {
                 if (typeof this.inactiveIcon.color == 'string') {
                     color = this.inactiveIcon.color
                 }

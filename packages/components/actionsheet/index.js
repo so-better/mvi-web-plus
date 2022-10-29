@@ -1,7 +1,6 @@
-import actionSheet from './actionsheet.vue'
-
-actionSheet.install = app => {
-    app.component(actionSheet.name, actionSheet)
+import Actionsheet from './actionsheet.vue'
+Actionsheet.install = app => {
+    app.component(Actionsheet.name, Actionsheet)
 }
 
-export default actionSheet
+export { Actionsheet, Actionsheet as default }

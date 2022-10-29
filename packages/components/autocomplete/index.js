@@ -1,7 +1,7 @@
-import autocomplete from './autocomplete.vue'
+import Autocomplete from './autocomplete.vue'
 
-autocomplete.install = app => {
-    app.component(autocomplete.name, autocomplete)
+Autocomplete.install = app => {
+    app.component(Autocomplete.name, Autocomplete)
 }
 
-export default autocomplete
+export { Autocomplete, Autocomplete as default }

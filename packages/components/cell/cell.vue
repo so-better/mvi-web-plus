@@ -1,7 +1,7 @@
 <template>
     <div :class="cellClass">
         <div class="mvi-cell-item">
-            <m-icon class="mvi-cell-icon" v-if="iconType||iconUrl" :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor" />
+            <Icon class="mvi-cell-icon" v-if="iconType||iconUrl" :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor" />
             <div :class="['mvi-cell-title',noWrap?'mvi-cell-nowrap':'']">
                 <slot name="title" v-if="$slots.title"></slot>
                 <span v-else v-text="title" :class="titleClass || ''"></span>
@@ -10,7 +10,7 @@
                 <slot name="content" v-if="$slots.content"></slot>
                 <span v-else-if="content" v-text="content" :class="contentClass || ''"></span>
             </div>
-            <m-icon class="mvi-cell-arrow" v-if="arrowType||arrowUrl" :type="arrowType" :url="arrowUrl" :spin="arrowSpin" :size="arrowSize" :color="arrowColor" />
+            <Icon class="mvi-cell-arrow" v-if="arrowType||arrowUrl" :type="arrowType" :url="arrowUrl" :spin="arrowSpin" :size="arrowSize" :color="arrowColor" />
         </div>
         <div :class="['mvi-cell-label',labelClass || '']" v-if="label || $slots.label" :style="labelTextStyle">
             <slot name="label" v-if="$slots.label"></slot>
@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import $dap from 'dap-util'
-import mIcon from '../icon/icon.vue'
+import { Dap } from '../dap'
+import { Icon } from '../icon'
 export default {
     name: 'm-cell',
     props: {
@@ -89,7 +89,7 @@ export default {
     computed: {
         iconType() {
             let type = null
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.type == 'string') {
                     type = this.icon.type
                 }
@@ -100,7 +100,7 @@ export default {
         },
         iconUrl() {
             let url = null
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.url == 'string') {
                     url = this.icon.url
                 }
@@ -109,7 +109,7 @@ export default {
         },
         iconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.spin == 'boolean') {
                     spin = this.icon.spin
                 }
@@ -118,7 +118,7 @@ export default {
         },
         iconSize() {
             let size = null
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.size == 'string') {
                     size = this.icon.size
                 }
@@ -127,7 +127,7 @@ export default {
         },
         iconColor() {
             let color = null
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.color == 'string') {
                     color = this.icon.color
                 }
@@ -136,7 +136,7 @@ export default {
         },
         arrowType() {
             let type = null
-            if ($dap.common.isObject(this.arrow)) {
+            if (Dap.common.isObject(this.arrow)) {
                 if (typeof this.arrow.type == 'string') {
                     type = this.arrow.type
                 }
@@ -147,7 +147,7 @@ export default {
         },
         arrowUrl() {
             let url = null
-            if ($dap.common.isObject(this.arrow)) {
+            if (Dap.common.isObject(this.arrow)) {
                 if (typeof this.arrow.url == 'string') {
                     url = this.arrow.url
                 }
@@ -156,7 +156,7 @@ export default {
         },
         arrowSpin() {
             let spin = false
-            if ($dap.common.isObject(this.arrow)) {
+            if (Dap.common.isObject(this.arrow)) {
                 if (typeof this.arrow.spin == 'boolean') {
                     spin = this.arrow.spin
                 }
@@ -165,7 +165,7 @@ export default {
         },
         arrowSize() {
             let size = null
-            if ($dap.common.isObject(this.arrow)) {
+            if (Dap.common.isObject(this.arrow)) {
                 if (typeof this.arrow.size == 'string') {
                     size = this.arrow.size
                 }
@@ -174,7 +174,7 @@ export default {
         },
         arrowColor() {
             let color = null
-            if ($dap.common.isObject(this.arrow)) {
+            if (Dap.common.isObject(this.arrow)) {
                 if (typeof this.arrow.color == 'string') {
                     color = this.arrow.color
                 }
@@ -227,7 +227,7 @@ export default {
         }
     },
     components: {
-        mIcon
+        Icon
     }
 }
 </script>

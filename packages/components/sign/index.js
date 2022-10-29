@@ -1,6 +1,6 @@
-import sign from './sign.vue'
-sign.install = app => {
-    app.component(sign.name, sign)
+import Sign from './sign.vue'
+Sign.install = app => {
+    app.component(Sign.name, Sign)
 }
 
-export default sign
+export { Sign, Sign as default }

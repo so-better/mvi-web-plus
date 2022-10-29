@@ -1,20 +1,20 @@
 <template>
     <div :disabled="disabled || null" :class="computedClass" :style="computedStyle" @click="setActive">
-        <m-badge :show="badge?.show" class="mvi-tabbar-badge" :content="badge?.content" :background="badge?.background" :color="badge?.color" :dot="badge?.dot" :placement="badge?.placement" :offset="badge?.offset">
+        <Badge :show="badge?.show" class="mvi-tabbar-badge" :content="badge?.content" :background="badge?.background" :color="badge?.color" :dot="badge?.dot" :placement="badge?.placement" :offset="badge?.offset">
             <div class="mvi-tabbar-item-child">
                 <span class="mvi-tabbar-icon" v-if="iconType || iconUrl" :style="{marginBottom:(name?'':'0px')}">
-                    <m-icon :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor" />
+                    <Icon :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor" />
                 </span>
                 <span :class="['mvi-tabbar-name',(iconType || iconUrl)?'mvi-tabbar-name-small':'']" v-text="name"></span>
             </div>
-        </m-badge>
+        </Badge>
     </div>
 </template>
 
 <script>
-import $dap from 'dap-util'
-import mIcon from '../icon/icon.vue'
-import mBadge from '../badge/badge.vue'
+import { Dap } from '../dap'
+import { Icon } from '../icon'
+import { Badge } from '../badge'
 export default {
     name: 'm-tabbar-item',
     inject: ['tabbar'],
@@ -53,7 +53,7 @@ export default {
     computed: {
         iconType() {
             let type = null
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.type == 'string') {
                     type = this.icon.type
                 }
@@ -64,7 +64,7 @@ export default {
         },
         iconUrl() {
             let url = null
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.url == 'string') {
                     url = this.icon.url
                 }
@@ -73,7 +73,7 @@ export default {
         },
         iconSpin() {
             let spin = false
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.spin == 'boolean') {
                     spin = this.icon.spin
                 }
@@ -82,7 +82,7 @@ export default {
         },
         iconSize() {
             let size = null
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.size == 'string') {
                     size = this.icon.size
                 }
@@ -91,7 +91,7 @@ export default {
         },
         iconColor() {
             let color = null
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.color == 'string') {
                     color = this.icon.color
                 }
@@ -100,13 +100,13 @@ export default {
         },
         computedClass() {
             let cls = ['mvi-tabbar-item']
-            if ($dap.common.equal(this.value, this.tabbar.modelValue)) {
+            if (Dap.common.equal(this.value, this.tabbar.modelValue)) {
                 cls.push('mvi-tabbar-item-active')
             }
             if (
                 this.tabbar.active &&
                 !this.disabled &&
-                !$dap.common.equal(this.value, this.tabbar.modelValue)
+                !Dap.common.equal(this.value, this.tabbar.modelValue)
             ) {
                 cls.push('mvi-tabbar-active')
             }
@@ -115,7 +115,7 @@ export default {
         computedStyle() {
             let style = {}
             //激活
-            if ($dap.common.equal(this.value, this.tabbar.modelValue)) {
+            if (Dap.common.equal(this.value, this.tabbar.modelValue)) {
                 if (this.tabbar.activeColor) {
                     style.color = this.tabbar.activeColor
                 }
@@ -135,7 +135,7 @@ export default {
                 route = {
                     path: this.route
                 }
-            } else if ($dap.common.isObject(this.route)) {
+            } else if (Dap.common.isObject(this.route)) {
                 //路径
                 if (typeof this.route.path == 'string' && this.route.path) {
                     route.path = this.route.path
@@ -145,13 +145,13 @@ export default {
                     route.name = this.route.name
                 }
                 //路由参数
-                if ($dap.common.isObject(this.route.query)) {
+                if (Dap.common.isObject(this.route.query)) {
                     route.query = this.route.query
                 } else {
                     route.query = {}
                 }
                 //动态路由参数
-                if ($dap.common.isObject(this.route.params)) {
+                if (Dap.common.isObject(this.route.params)) {
                     route.params = this.route.params
                 } else {
                     route.params = {}
@@ -173,8 +173,8 @@ export default {
         }
     },
     components: {
-        mIcon,
-        mBadge
+        Icon,
+        Badge
     },
     methods: {
         setActive() {
@@ -182,7 +182,7 @@ export default {
             if (this.disabled) {
                 return
             }
-            if ($dap.common.equal(this.tabbar.modelValue, this.value)) {
+            if (Dap.common.equal(this.tabbar.modelValue, this.value)) {
                 return
             }
             //如果路由存在

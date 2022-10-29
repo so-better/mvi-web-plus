@@ -2,8 +2,8 @@
     <div class="mvi-editor">
         <div ref="menus" class="mvi-editor-menus" :style="{ border: border ? '' : 'none' }" v-if="showMenus" :disabled="disabled || null">
             <template v-for="(item,index) in computedMenuIndex">
-                <m-editor-item v-if="showMenuItem(item[0])" :value="item[0]" :menu="computedMenus[item[0]]" :ref="el=>menuRefs[index]=el" :key="'mvi-editor-menu-' + index">
-                </m-editor-item>
+                <EditorItem v-if="showMenuItem(item[0])" :value="item[0]" :menu="computedMenus[item[0]]" :ref="el=>menuRefs[index]=el" :key="'mvi-editor-menu-' + index">
+                </EditorItem>
             </template>
         </div>
         <div ref="body" class="mvi-editor-body">
@@ -14,9 +14,9 @@
 </template>
 
 <script>
-import $dap from 'dap-util'
-import editorItem from './editor-item.vue'
-import Observe from '../observe/observe'
+import { Dap } from '../dap'
+import { Observe } from '../observe'
+import EditorItem from './editor-item.vue'
 //不实现激活状态的菜单项
 const unactiveMenus = [
     'undo',
@@ -689,7 +689,7 @@ export default {
             type: String,
             default: '#0b73de',
             validator(value) {
-                return $dap.common.matchingText(value, 'hex')
+                return Dap.common.matchingText(value, 'hex')
             }
         },
         //纯文本粘贴
@@ -747,7 +747,7 @@ export default {
                     let newArray = []
                     this.defaultMenus[key].forEach(item => {
                         if (
-                            $dap.common.isObject(item) &&
+                            Dap.common.isObject(item) &&
                             item.label &&
                             item.value
                         ) {
@@ -755,7 +755,7 @@ export default {
                                 label: item.label,
                                 value: item.value
                             }
-                            if ($dap.common.isObject(item.icon)) {
+                            if (Dap.common.isObject(item.icon)) {
                                 obj.icon = {
                                     custom: item.icon.custom,
                                     value: item.icon.value
@@ -772,7 +772,7 @@ export default {
                             newArray.push(obj)
                         } else if (
                             typeof item == 'string' ||
-                            $dap.number.isNumber(item)
+                            Dap.number.isNumber(item)
                         ) {
                             newArray.push({
                                 label: item,
@@ -849,7 +849,7 @@ export default {
             let menuIcons = {}
             Object.keys(this.defaultMenuIcons).forEach(key => {
                 //是对象
-                if ($dap.common.isObject(this.defaultMenuIcons[key])) {
+                if (Dap.common.isObject(this.defaultMenuIcons[key])) {
                     menuIcons[key] = {
                         custom: this.defaultMenuIcons[key].custom,
                         value: this.defaultMenuIcons[key].value
@@ -870,7 +870,7 @@ export default {
         }
     },
     components: {
-        mEditorItem: editorItem
+        EditorItem
     },
     mounted() {
         //初始化
@@ -980,7 +980,7 @@ export default {
             if (this.videoClass) {
                 style.push(this.videoClass)
             }
-            let video = $dap.element.string2dom(
+            let video = Dap.element.string2dom(
                 `<video src="${url}" class="${style.join(' ')}"></video>`
             )
             if (this.defaultVideoShowProps.muted) {
@@ -1066,7 +1066,7 @@ export default {
                 return null
             }
             let node = this.range.commonAncestorContainer
-            if ($dap.element.isElement(node)) {
+            if (Dap.element.isElement(node)) {
                 return node
             } else {
                 return node.parentNode
@@ -1220,7 +1220,7 @@ export default {
             }
             if (this.border && this.activeColor && this.$refs.content) {
                 this.$refs.content.style.borderColor = this.activeColor
-                const rgb = $dap.color.hex2rgb(this.activeColor)
+                const rgb = Dap.color.hex2rgb(this.activeColor)
                 this.$refs.content.style.boxShadow = `0 0 0.16rem rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.5)`
             }
             this.changeActive()
@@ -1333,13 +1333,13 @@ export default {
         },
         //判断某个节点是否在指定标签下，可对外提供
         compareTag(el, tag) {
-            if (!$dap.element.isElement(el)) {
+            if (!Dap.element.isElement(el)) {
                 return false
             }
             if (!this.$refs.content) {
                 return false
             }
-            if ($dap.element.isContains(this.$refs.content, el)) {
+            if (Dap.element.isContains(this.$refs.content, el)) {
                 if (el.tagName.toLocaleUpperCase() == tag.toLocaleUpperCase()) {
                     return true
                 } else {
@@ -1351,14 +1351,14 @@ export default {
         },
         //判断某个节点是否在指定样式下，可对外提供
         compareCss(el, cssName, cssValue, thinkParent = true) {
-            if (!$dap.element.isElement(el)) {
+            if (!Dap.element.isElement(el)) {
                 return false
             }
             if (!this.$refs.content) {
                 return false
             }
-            if ($dap.element.isContains(this.$refs.content, el)) {
-                if ($dap.element.getCssStyle(el, cssName) == cssValue) {
+            if (Dap.element.isContains(this.$refs.content, el)) {
+                if (Dap.element.getCssStyle(el, cssName) == cssValue) {
                     return true
                 }
                 //如果考虑父元素
@@ -1375,13 +1375,13 @@ export default {
         },
         //判断某个节点是否在指定属性下，可对外提供
         compareAttribute(el, attrName, attrVal) {
-            if (!$dap.element.isElement(el)) {
+            if (!Dap.element.isElement(el)) {
                 return false
             }
             if (!this.$refs.content) {
                 return false
             }
-            if ($dap.element.isContains(this.$refs.content, el)) {
+            if (Dap.element.isContains(this.$refs.content, el)) {
                 if (el.hasAttribute(attrName)) {
                     if (attrVal) {
                         if (el.getAttribute(attrName) === attrVal) {
@@ -1403,13 +1403,13 @@ export default {
         },
         //根据标签名获取某个节点，可对外提供
         getCompareTag(el, tag) {
-            if (!$dap.element.isElement(el)) {
+            if (!Dap.element.isElement(el)) {
                 return null
             }
             if (!this.$refs.content) {
                 return null
             }
-            if ($dap.element.isContains(this.$refs.content, el)) {
+            if (Dap.element.isContains(this.$refs.content, el)) {
                 if (el.tagName.toLocaleUpperCase() == tag.toLocaleUpperCase()) {
                     return el
                 } else {
@@ -1421,14 +1421,14 @@ export default {
         },
         //根据css获取某个节点，可对外提供
         getCompareTagForCss(el, cssName, cssValue) {
-            if (!$dap.element.isElement(el)) {
+            if (!Dap.element.isElement(el)) {
                 return null
             }
             if (!this.$refs.content) {
                 return null
             }
-            if ($dap.element.isContains(this.$refs.content, el)) {
-                if ($dap.element.getCssStyle(el, cssName) == cssValue) {
+            if (Dap.element.isContains(this.$refs.content, el)) {
+                if (Dap.element.getCssStyle(el, cssName) == cssValue) {
                     return el
                 } else {
                     return this.getCompareTagForCss(
@@ -1443,13 +1443,13 @@ export default {
         },
         //根据属性或者属性值获取某个节点，可对外提供
         getCompareTagForAttribute(el, attrName, attrVal) {
-            if (!$dap.element.isElement(el)) {
+            if (!Dap.element.isElement(el)) {
                 return null
             }
             if (!this.$refs.content) {
                 return null
             }
-            if ($dap.element.isContains(this.$refs.content, el)) {
+            if (Dap.element.isContains(this.$refs.content, el)) {
                 if (el.hasAttribute(attrName)) {
                     if (attrVal) {
                         if (el.getAttribute(attrName) === attrVal) {
@@ -1496,7 +1496,7 @@ export default {
                 this.text = this.$refs.content.innerText
             } else if (this.$refs.codeView) {
                 this.html = this.$refs.codeView.innerText
-                let el = $dap.element.string2dom(
+                let el = Dap.element.string2dom(
                     `<div>${this.$refs.codeView.innerText}</div>`
                 )
                 this.text = el.innerText
@@ -1587,7 +1587,7 @@ export default {
                             }
                             //使用base64
                             if (this.useBase64) {
-                                $dap.file.dataFileToBase64(file).then(url => {
+                                Dap.file.dataFileToBase64(file).then(url => {
                                     if (isImage) {
                                         this.insertImage(url)
                                     } else if (isVideo) {

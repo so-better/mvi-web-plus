@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import $dap from 'dap-util'
+import { Dap } from '../dap'
 export default {
     name: 'm-calendar',
     props: {
@@ -77,7 +77,7 @@ export default {
                 }
                 return value.every(item => {
                     return (
-                        $dap.number.isNumber(item) ||
+                        Dap.number.isNumber(item) ||
                         (typeof item == 'string' && item)
                     )
                 })
@@ -95,7 +95,7 @@ export default {
                 }
                 return value.every(item => {
                     return (
-                        $dap.number.isNumber(item) ||
+                        Dap.number.isNumber(item) ||
                         (typeof item == 'string' && item)
                     )
                 })
@@ -184,7 +184,7 @@ export default {
         //显示在日期面板上的日期数组
         days() {
             //获取指定日期的总天数
-            let total = $dap.date.getDays(
+            let total = Dap.date.getDays(
                 this.modelValue.getFullYear(),
                 this.modelValue.getMonth() + 1
             )
@@ -202,7 +202,7 @@ export default {
             let week = fd.getDay() //获取1号是周几
             let pd = fd
             for (let i = 0; i < week; i++) {
-                let prevDate = $dap.date.getDateBefore(pd, 1) //获取前一天
+                let prevDate = Dap.date.getDateBefore(pd, 1) //获取前一天
                 arr.unshift({
                     date: prevDate,
                     now: false,
@@ -215,7 +215,7 @@ export default {
             let ld = this.getSpecifiedDate(total)
             let length = arr.length
             for (let i = length; i < 35; i++) {
-                let nextDate = $dap.date.getDateAfter(ld, 1) //获取后一天
+                let nextDate = Dap.date.getDateAfter(ld, 1) //获取后一天
                 arr.push({
                     date: nextDate,
                     now: false,
@@ -238,7 +238,7 @@ export default {
                     ) {
                         cls.push(this.currentClass)
                     } else if (
-                        $dap.common.isObject(this.currentClass) &&
+                        Dap.common.isObject(this.currentClass) &&
                         typeof this.currentClass.year == 'string' &&
                         this.currentClass.year
                     ) {
@@ -262,7 +262,7 @@ export default {
                     ) {
                         cls.push(this.currentClass)
                     } else if (
-                        $dap.common.isObject(this.currentClass) &&
+                        Dap.common.isObject(this.currentClass) &&
                         typeof this.currentClass.month == 'string' &&
                         this.currentClass.month
                     ) {
@@ -286,7 +286,7 @@ export default {
                     ) {
                         cls.push(this.currentClass)
                     } else if (
-                        $dap.common.isObject(this.currentClass) &&
+                        Dap.common.isObject(this.currentClass) &&
                         typeof this.currentClass.date == 'string' &&
                         this.currentClass.date
                     ) {
@@ -307,7 +307,7 @@ export default {
                     if (typeof this.nowClass == 'string' && this.nowClass) {
                         cls.push(this.nowClass)
                     } else if (
-                        $dap.common.isObject(this.nowClass) &&
+                        Dap.common.isObject(this.nowClass) &&
                         typeof this.nowClass.year == 'string' &&
                         this.nowClass.year
                     ) {
@@ -328,7 +328,7 @@ export default {
                     if (typeof this.nowClass == 'string' && this.nowClass) {
                         cls.push(this.nowClass)
                     } else if (
-                        $dap.common.isObject(this.nowClass) &&
+                        Dap.common.isObject(this.nowClass) &&
                         typeof this.nowClass.month == 'string' &&
                         this.nowClass.month
                     ) {
@@ -349,7 +349,7 @@ export default {
                     if (typeof this.nowClass == 'string') {
                         cls.push(this.nowClass)
                     } else if (
-                        $dap.common.isObject(this.nowClass) &&
+                        Dap.common.isObject(this.nowClass) &&
                         typeof this.nowClass.date == 'string' &&
                         this.nowClass.date
                     ) {

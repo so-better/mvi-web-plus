@@ -1,4 +1,4 @@
-import $dap from 'dap-util'
+import { Dap } from '../dap'
 import Px from './px'
 
 Px.install = app => {
@@ -6,10 +6,10 @@ Px.install = app => {
     app.directive('px', {
         mounted(el, binding) {
             let options = {}
-            if ($dap.common.isObject(binding.value)) {
+            if (Dap.common.isObject(binding.value)) {
                 Object.assign(options, binding.value)
             }
-            if ($dap.common.isObject(binding.modifiers)) {
+            if (Dap.common.isObject(binding.modifiers)) {
                 Object.assign(options, binding.modifiers)
             }
             if (binding.arg) {
@@ -21,4 +21,4 @@ Px.install = app => {
     })
 }
 
-export default Px
+export { Px, Px as default }

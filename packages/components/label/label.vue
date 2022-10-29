@@ -3,7 +3,7 @@
         <div v-if="show" :class="labelClass" :style="labelStyle">
             <slot></slot>
             <span class="mvi-label-closable" @click="closeLabel">
-                <m-icon type="times" />
+                <Icon type="times" />
             </span>
         </div>
     </transition>
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import mIcon from '../icon/icon.vue'
+import { Icon } from '../icon'
 export default {
     name: 'm-label',
     data() {
@@ -121,7 +121,7 @@ export default {
         }
     },
     components: {
-        mIcon
+        Icon
     },
     methods: {
         closeLabel() {

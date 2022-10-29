@@ -1,5 +1,5 @@
-import button from './button.vue'
-button.install = app => {
-    app.component(button.name, button)
+import Button from './button.vue'
+Button.install = app => {
+    app.component(Button.name, Button)
 }
-export default button
+export { Button, Button as default }

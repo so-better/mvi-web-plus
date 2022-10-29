@@ -1,4 +1,4 @@
-import $dap from 'dap-util'
+import { Dap } from '../dap'
 import Scroll from './scroll'
 
 Scroll.install = app => {
@@ -6,7 +6,7 @@ Scroll.install = app => {
     app.directive('scroll', {
         mounted(el, binding) {
             let options = {}
-            if ($dap.common.isObject(binding.value)) {
+            if (Dap.common.isObject(binding.value)) {
                 Object.assign(options, binding.value)
             }
             let scroll = new Scroll(el, options)
@@ -15,4 +15,4 @@ Scroll.install = app => {
     })
 }
 
-export default Scroll
+export { Scroll, Scroll as default }

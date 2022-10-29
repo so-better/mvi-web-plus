@@ -1,7 +1,7 @@
-import search from './search.vue'
+import Search from './search.vue'
 
-search.install = app => {
-    app.component(search.name, search)
+Search.install = app => {
+    app.component(Search.name, Search)
 }
 
-export default search
+export { Search, Search as default }

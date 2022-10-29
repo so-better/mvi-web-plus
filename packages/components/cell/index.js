@@ -1,9 +1,7 @@
-import cell from './cell.vue'
-import cellGroup from './cell-group.vue'
+import Cell from './cell.vue'
 
-cell.install = app => {
-    app.component(cellGroup.name, cellGroup)
-    app.component(cell.name, cell)
+Cell.install = app => {
+    app.component(Cell.name, Cell)
 }
 
-export default cell
+export { Cell, Cell as default }

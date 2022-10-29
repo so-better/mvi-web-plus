@@ -4,7 +4,7 @@
             <slot name="title" v-if="$slots.title"></slot>
             <span v-else v-text="title"></span>
         </div>
-        <m-transition-slide v-if="$slots.default || content || $slots.footer || footer" :expand="expand" @before-slide-down="beforeSlideDown" @slide-up="slideUp">
+        <TransitionSlide v-if="$slots.default || content || $slots.footer || footer" :expand="expand" @before-slide-down="beforeSlideDown" @slide-up="slideUp">
             <div :class="contentCls" v-if="$slots.default || content">
                 <slot v-if="$slots.default"></slot>
                 <span v-else v-text="content"></span>
@@ -13,12 +13,12 @@
                 <slot name="footer" v-if="$slots.footer"></slot>
                 <span v-else v-text="footer"></span>
             </div>
-        </m-transition-slide>
+        </TransitionSlide>
     </div>
 </template>
 
 <script>
-import mTransitionSlide from '../transitionSlide/transitionSlide.vue'
+import { TransitionSlide } from '../transition-slide'
 export default {
     name: 'm-panel',
     data() {
@@ -152,7 +152,7 @@ export default {
         }
     },
     components: {
-        mTransitionSlide
+        TransitionSlide
     },
     methods: {
         //点击面板标题触发

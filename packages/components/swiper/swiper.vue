@@ -13,18 +13,18 @@
             </template>
         </div>
         <div :class="controlsClass" v-if="showControl" :style="controlStyle(0)" @click="slidePrev">
-            <m-icon type="angle-left" />
+            <Icon type="angle-left" />
         </div>
         <div :class="controlsClass" v-if="showControl" :style="controlStyle(1)" @click="slideNext">
-            <m-icon type="angle-right" />
+            <Icon type="angle-right" />
         </div>
     </div>
 </template>
 
 <script>
 import { getCurrentInstance } from 'vue'
-import $dap from 'dap-util'
-import mIcon from '../icon/icon.vue'
+import { Dap } from '../dap'
+import { Icon } from '../icon'
 export default {
     name: 'm-swiper',
     data() {
@@ -194,17 +194,17 @@ export default {
                 if (this.height) {
                     //设置了height变量
                     if (this.height.includes('rem')) {
-                        width = $dap.element.rem2px(parseFloat(this.height))
+                        width = Dap.element.rem2px(parseFloat(this.height))
                     } else if (this.height.includes('px')) {
                         width = parseFloat(this.height)
                     } else if (this.elm) {
                         width = parseFloat(
-                            $dap.element.getCssStyle(this.elm, 'height')
+                            Dap.element.getCssStyle(this.elm, 'height')
                         )
                     }
                 } else if (this.elm) {
                     width = parseFloat(
-                        $dap.element.getCssStyle(this.elm, 'height')
+                        Dap.element.getCssStyle(this.elm, 'height')
                     )
                 }
             } else {
@@ -212,17 +212,17 @@ export default {
                 if (this.width) {
                     //设置了width变量
                     if (this.width.includes('rem')) {
-                        width = $dap.element.rem2px(parseFloat(this.width))
+                        width = Dap.element.rem2px(parseFloat(this.width))
                     } else if (this.width.includes('px')) {
                         width = parseFloat(this.width)
                     } else if (this.elm) {
                         width = parseFloat(
-                            $dap.element.getCssStyle(this.elm, 'width')
+                            Dap.element.getCssStyle(this.elm, 'width')
                         )
                     }
                 } else if (this.elm) {
                     width = parseFloat(
-                        $dap.element.getCssStyle(this.elm, 'width')
+                        Dap.element.getCssStyle(this.elm, 'width')
                     )
                 }
             }
@@ -233,11 +233,11 @@ export default {
             let index = 0
             if (this.totalMove <= 0) {
                 index = this.mathNext(
-                    Math.abs($dap.number.divide(this.transform, this.slideSize))
+                    Math.abs(Dap.number.divide(this.transform, this.slideSize))
                 )
             } else {
                 index = this.mathPrev(
-                    Math.abs($dap.number.divide(this.transform, this.slideSize))
+                    Math.abs(Dap.number.divide(this.transform, this.slideSize))
                 )
             }
             if (index > this.children.length - 1) {
@@ -346,7 +346,7 @@ export default {
         }
     },
     components: {
-        mIcon
+        Icon
     },
     watch: {
         autoplay(newValue, oldValue) {
@@ -397,24 +397,24 @@ export default {
                 })
             }
             this.setDefaultSlide()
-            $dap.event.on(
+            Dap.event.on(
                 document.body,
                 `mousemove.swiper_${this.uid}`,
                 this.swiperMouseMove
             )
-            $dap.event.on(
+            Dap.event.on(
                 document.body,
                 `mouseup.swiper_${this.uid}`,
                 this.swiperMouseUp
             )
         }
-        $dap.event.on(window, `resize.swiper_${this.uid}`, this.resizeChange)
+        Dap.event.on(window, `resize.swiper_${this.uid}`, this.resizeChange)
     },
     methods: {
         //窗口大小变化时更新swiper
         resizeChange() {
             this.sizeCounts++
-            this.transform = -$dap.number.mutiply(
+            this.transform = -Dap.number.mutiply(
                 this.activeIndex,
                 this.slideSize
             )
@@ -484,9 +484,9 @@ export default {
             if (this.totalMove > 0) {
                 if (this.transform >= 0) {
                     this.amounts++
-                    this.transform = $dap.number.add(
+                    this.transform = Dap.number.add(
                         this.transform,
-                        $dap.number.divide(move, this.amounts)
+                        Dap.number.divide(move, this.amounts)
                     )
                     this.start = end
                     return
@@ -496,22 +496,22 @@ export default {
             else {
                 if (
                     this.transform <=
-                    -$dap.number.mutiply(
+                    -Dap.number.mutiply(
                         this.children.length - 1,
                         this.slideSize
                     )
                 ) {
                     this.amounts++
-                    this.transform = $dap.number.add(
+                    this.transform = Dap.number.add(
                         this.transform,
-                        $dap.number.divide(move, this.amounts)
+                        Dap.number.divide(move, this.amounts)
                     )
                     this.start = end
                     return
                 }
             }
             this.start = end
-            this.transform = $dap.number.add(this.transform, move)
+            this.transform = Dap.number.add(this.transform, move)
         },
         //触摸结束(非fade)
         swiperTouchEnd(event) {
@@ -522,7 +522,7 @@ export default {
                 return
             }
             this.addTransition().then(() => {
-                this.transform = -$dap.number.mutiply(
+                this.transform = -Dap.number.mutiply(
                     this.activeIndex,
                     this.slideSize
                 )
@@ -584,9 +584,9 @@ export default {
             if (this.totalMove > 0) {
                 if (this.transform >= 0) {
                     this.amounts++
-                    this.transform = $dap.number.add(
+                    this.transform = Dap.number.add(
                         this.transform,
-                        $dap.number.divide(move, this.amounts)
+                        Dap.number.divide(move, this.amounts)
                     )
                     this.start = end
                     return
@@ -596,22 +596,22 @@ export default {
             else {
                 if (
                     this.transform <=
-                    -$dap.number.mutiply(
+                    -Dap.number.mutiply(
                         this.children.length - 1,
                         this.slideSize
                     )
                 ) {
                     this.amounts++
-                    this.transform = $dap.number.add(
+                    this.transform = Dap.number.add(
                         this.transform,
-                        $dap.number.divide(move, this.amounts)
+                        Dap.number.divide(move, this.amounts)
                     )
                     this.start = end
                     return
                 }
             }
             this.start = end
-            this.transform = $dap.number.add(this.transform, move)
+            this.transform = Dap.number.add(this.transform, move)
         },
         //鼠标松开(非fade)
         swiperMouseUp(event) {
@@ -626,7 +626,7 @@ export default {
             }
             this.mouseDown = false
             this.addTransition().then(() => {
-                this.transform = -$dap.number.mutiply(
+                this.transform = -Dap.number.mutiply(
                     this.activeIndex,
                     this.slideSize
                 )
@@ -645,7 +645,7 @@ export default {
                     return
                 }
                 this.removeTransition().then(() => {
-                    this.transform = -$dap.number.mutiply(
+                    this.transform = -Dap.number.mutiply(
                         this.computedInitalSlide,
                         this.slideSize
                     )
@@ -692,7 +692,7 @@ export default {
                     //循环模式下如果滑动到最后一张，则跳到第二张
                     if (
                         this.transform ==
-                        -$dap.number.mutiply(
+                        -Dap.number.mutiply(
                             this.children.length - 1,
                             this.slideSize
                         )
@@ -722,7 +722,7 @@ export default {
                     //循环模式下如果滑动到第一张，则跳到倒数第二张
                     else if (this.transform == 0) {
                         this.removeTransition().then(() => {
-                            this.transform = -$dap.number.mutiply(
+                            this.transform = -Dap.number.mutiply(
                                 this.children.length - 2,
                                 this.slideSize
                             )
@@ -809,7 +809,7 @@ export default {
                 } else {
                     if (
                         this.transform <=
-                        -$dap.number.mutiply(
+                        -Dap.number.mutiply(
                             this.children.length - 1,
                             this.slideSize
                         )
@@ -824,7 +824,7 @@ export default {
                         this.timer = null
                     }
                     this.addTransition().then(() => {
-                        this.transform = $dap.number.subtract(
+                        this.transform = Dap.number.subtract(
                             this.transform,
                             this.slideSize
                         )
@@ -893,7 +893,7 @@ export default {
                         this.timer = null
                     }
                     this.addTransition().then(() => {
-                        this.transform = $dap.number.add(
+                        this.transform = Dap.number.add(
                             this.transform,
                             this.slideSize
                         )
@@ -910,7 +910,7 @@ export default {
         //+1取整(非fade)
         mathNext(number) {
             const num = Math.floor(number) //取整
-            const floor = $dap.number.subtract(number, num) //取小数部分
+            const floor = Dap.number.subtract(number, num) //取小数部分
             if (floor >= 0.25) {
                 return num + 1
             } else {
@@ -920,7 +920,7 @@ export default {
         //-1取整(非fade)
         mathPrev(number) {
             const num = Math.floor(number) //取整
-            const floor = $dap.number.subtract(number, num) //取小数
+            const floor = Dap.number.subtract(number, num) //取小数
             if (floor <= 0.75) {
                 return num
             } else {
@@ -969,9 +969,9 @@ export default {
                             this.timer = null
                         }
                         this.addTransition().then(() => {
-                            this.transform = $dap.number.add(
+                            this.transform = Dap.number.add(
                                 this.transform,
-                                $dap.number.mutiply(
+                                Dap.number.mutiply(
                                     this.oldIndex - index,
                                     this.slideSize
                                 )
@@ -987,7 +987,7 @@ export default {
                         //下N张
                         if (
                             this.transform <=
-                            -$dap.number.mutiply(
+                            -Dap.number.mutiply(
                                 this.children.length - 1,
                                 this.slideSize
                             )
@@ -1002,9 +1002,9 @@ export default {
                             this.timer = null
                         }
                         this.addTransition().then(() => {
-                            this.transform = $dap.number.subtract(
+                            this.transform = Dap.number.subtract(
                                 this.transform,
-                                $dap.number.mutiply(
+                                Dap.number.mutiply(
                                     index - this.oldIndex,
                                     this.slideSize
                                 )
@@ -1028,12 +1028,12 @@ export default {
         }
         //非fade模式下
         if (!this.fade) {
-            $dap.event.off(
+            Dap.event.off(
                 document.body,
                 `mousemove.swiper_${this.uid} mouseup.swiper_${this.uid}`
             )
         }
-        $dap.event.off(window, `resize.swiper_${this.uid}`)
+        Dap.event.off(window, `resize.swiper_${this.uid}`)
     }
 }
 </script>

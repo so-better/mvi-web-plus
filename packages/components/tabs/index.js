@@ -1,8 +1,6 @@
-import tabs from './tabs.vue'
-import tab from './tab.vue'
-tabs.install = app => {
-    app.component(tabs.name, tabs)
-    app.component(tab.name, tab)
+import Tabs from './tabs.vue'
+Tabs.install = app => {
+    app.component(Tabs.name, Tabs)
 }
 
-export default tabs
+export { Tabs, Tabs as default }

@@ -1,7 +1,7 @@
-import badge from './badge.vue'
+import Badge from './badge.vue'
 
-badge.install = app => {
-    app.component(badge.name, badge)
+Badge.install = app => {
+    app.component(Badge.name, Badge)
 }
 
-export default badge
+export { Badge, Badge as default }

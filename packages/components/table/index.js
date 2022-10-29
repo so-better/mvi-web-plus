@@ -1,7 +1,7 @@
-import table from './table.vue'
+import Table from './table.vue'
 
-table.install = app => {
-    app.component(table.name, table)
+Table.install = app => {
+    app.component(Table.name, Table)
 }
 
-export default table
+export { Table, Table as default }

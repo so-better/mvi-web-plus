@@ -1,15 +1,15 @@
 <template>
     <label :class="['mvi-switch',modelValue?'mvi-switch-checked':'']" :style="switchStyle" :disabled="disabled || null">
         <span :class="['mvi-switch-el',modelValue?'mvi-switch-el-checked':'']" :style="elStyle">
-            <m-icon v-if="loading && !disabled" :type="iconType" :spin="iconSpin" :url="iconUrl" :size="iconSize" :color="iconColor" />
+            <Icon v-if="loading && !disabled" :type="iconType" :spin="iconSpin" :url="iconUrl" :size="iconSize" :color="iconColor" />
         </span>
         <input @change="change" type="checkbox" :checked="modelValue" :disabled="disabled || loading || null" />
     </label>
 </template>
 
 <script>
-import $dap from 'dap-util'
-import mIcon from '../icon/icon.vue'
+import { Dap } from '../dap'
+import { Icon } from '../icon'
 export default {
     name: 'm-switch',
     emits: ['update:modelValue', 'change'],
@@ -51,7 +51,7 @@ export default {
         }
     },
     components: {
-        mIcon
+        Icon
     },
     methods: {
         //更改状态
@@ -64,7 +64,7 @@ export default {
     computed: {
         iconType() {
             let type = 'load-e'
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.type == 'string') {
                     type = this.icon.type
                 }
@@ -75,7 +75,7 @@ export default {
         },
         iconUrl() {
             let url = null
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.url == 'string') {
                     url = this.icon.url
                 }
@@ -84,7 +84,7 @@ export default {
         },
         iconSpin() {
             let spin = true
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.spin == 'boolean') {
                     spin = this.icon.spin
                 }
@@ -93,7 +93,7 @@ export default {
         },
         iconSize() {
             let size = null
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.size == 'string') {
                     size = this.icon.size
                 }
@@ -102,7 +102,7 @@ export default {
         },
         iconColor() {
             let color = null
-            if ($dap.common.isObject(this.icon)) {
+            if (Dap.common.isObject(this.icon)) {
                 if (typeof this.icon.color == 'string') {
                     color = this.icon.color
                 }

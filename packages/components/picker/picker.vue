@@ -1,7 +1,7 @@
 <template>
     <div class="mvi-picker">
         <div class="mvi-picker-loading" v-if="loading" :style="loadingStyle">
-            <m-loading size="0.5rem" color="#ddd"></m-loading>
+            <Loading size="0.5rem" color="#ddd"></Loading>
         </div>
         <div v-if="showToolbar && !loading" class="mvi-picker-toolbar">
             <div :class="['mvi-picker-toolbar-cancel', cancelClass || '']" v-text="cancelText" @click="doCancel"></div>
@@ -22,8 +22,8 @@
 
 <script>
 import { getCurrentInstance } from 'vue'
-import $dap from 'dap-util'
-import mLoading from '../loading/loading.vue'
+import { Dap } from '../dap'
+import { Loading } from '../loading'
 export default {
     name: 'm-picker',
     data() {
@@ -120,12 +120,12 @@ export default {
             if (this.selectHeight.includes('px')) {
                 return parseFloat(this.selectHeight)
             } else if (this.selectHeight.includes('rem')) {
-                return $dap.element.rem2px(parseFloat(this.selectHeight))
+                return Dap.element.rem2px(parseFloat(this.selectHeight))
             }
         },
         loadingStyle() {
             let style = {}
-            style.height = `calc(${$dap.number.mutiply(
+            style.height = `calc(${Dap.number.mutiply(
                 this.computedHeight,
                 this.visibleCounts
             )}px + 0.88rem)`
@@ -133,7 +133,7 @@ export default {
         },
         contentStyle() {
             let style = {}
-            style.height = `${$dap.number.mutiply(
+            style.height = `${Dap.number.mutiply(
                 this.computedHeight,
                 this.visibleCounts
             )}px`
@@ -177,9 +177,9 @@ export default {
             if (this.selectHeight) {
                 style.backgroundSize =
                     '100% ' +
-                    $dap.number.mutiply(
+                    Dap.number.mutiply(
                         this.computedHeight,
-                        $dap.number.divide(this.visibleCounts - 1, 2)
+                        Dap.number.divide(this.visibleCounts - 1, 2)
                     ) +
                     'px'
             }
@@ -187,7 +187,7 @@ export default {
         }
     },
     components: {
-        mLoading
+        Loading
     },
     setup() {
         const instance = getCurrentInstance()
@@ -197,12 +197,12 @@ export default {
     },
     mounted() {
         this.init()
-        $dap.event.on(
+        Dap.event.on(
             document.body,
             `mousemove.picker_${this.uid}`,
             this.mousemove
         )
-        $dap.event.on(
+        Dap.event.on(
             document.body,
             `mouseup.picker_${this.uid} mouseleave.picker_${this.uid}`,
             this.mouseup
@@ -220,11 +220,11 @@ export default {
         },
         //滑动临界值
         crisis(index) {
-            let max = $dap.number.divide(this.visibleCounts - 1, 2)
-            max = $dap.number.mutiply(max, this.computedHeight)
-            let min = -$dap.number.divide(this.visibleCounts - 1, 2)
-            min = $dap.number.mutiply(min, this.computedHeight)
-            min += $dap.number.mutiply(
+            let max = Dap.number.divide(this.visibleCounts - 1, 2)
+            max = Dap.number.mutiply(max, this.computedHeight)
+            let min = -Dap.number.divide(this.visibleCounts - 1, 2)
+            min = Dap.number.mutiply(min, this.computedHeight)
+            min += Dap.number.mutiply(
                 this.visibleCounts - this.computedOptions[index].values.length,
                 this.computedHeight
             )
@@ -236,10 +236,10 @@ export default {
         //根据offset计算序列
         getActive(value) {
             let num = Math.abs(
-                $dap.number.divide(
+                Dap.number.divide(
                     value -
-                        $dap.number.mutiply(
-                            $dap.number.divide(this.visibleCounts - 1, 2),
+                        Dap.number.mutiply(
+                            Dap.number.divide(this.visibleCounts - 1, 2),
                             this.computedHeight
                         ),
                     this.computedHeight
@@ -249,9 +249,9 @@ export default {
         },
         //根据序列计算offset
         getOffset(index) {
-            return $dap.number.mutiply(
-                $dap.number.subtract(
-                    $dap.number.divide(this.visibleCounts - 1, 2),
+            return Dap.number.mutiply(
+                Dap.number.subtract(
+                    Dap.number.divide(this.visibleCounts - 1, 2),
                     index
                 ),
                 this.computedHeight
@@ -403,13 +403,11 @@ export default {
                         if (moveTotal > 0) {
                             this.offsets[this.columnIndex] =
                                 this.offsets[this.columnIndex] +
-                                ($dap.element.rem2px(10) * totalTimeStamp) /
-                                    1000
+                                (Dap.element.rem2px(10) * totalTimeStamp) / 1000
                         } else {
                             this.offsets[this.columnIndex] =
                                 this.offsets[this.columnIndex] -
-                                ($dap.element.rem2px(10) * totalTimeStamp) /
-                                    1000
+                                (Dap.element.rem2px(10) * totalTimeStamp) / 1000
                         }
                         return this.addTransition(this.columnIndex, 300)
                     })
@@ -441,13 +439,11 @@ export default {
                         if (moveTotal > 0) {
                             this.offsets[this.columnIndex] =
                                 this.offsets[this.columnIndex] +
-                                ($dap.element.rem2px(10) * totalTimeStamp) /
-                                    1000
+                                (Dap.element.rem2px(10) * totalTimeStamp) / 1000
                         } else {
                             this.offsets[this.columnIndex] =
                                 this.offsets[this.columnIndex] -
-                                ($dap.element.rem2px(10) * totalTimeStamp) /
-                                    1000
+                                (Dap.element.rem2px(10) * totalTimeStamp) / 1000
                         }
                         return this.addTransition(this.columnIndex, 300)
                     })
@@ -520,7 +516,7 @@ export default {
         }
     },
     beforeUnmount() {
-        $dap.event.off(
+        Dap.event.off(
             document.body,
             `mousemove.picker_${this.uid} mouseup.picker_${this.uid}`
         )
