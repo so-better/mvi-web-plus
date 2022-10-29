@@ -2,6 +2,7 @@
     "name": "mvi-web-plus",
     "version": "1.5.21",
     "private": false,
+    "sideEffects": false,
     "type": "module",
     "author": "lingkai",
     "main": "lib/mvi.umd.js",
