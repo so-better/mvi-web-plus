@@ -1,6 +1,6 @@
 {
     "name": "mvi-web-plus",
-    "version": "1.6.0",
+    "version": "1.6.2",
     "private": false,
     "sideEffects": false,
     "type": "module",
@@ -14,7 +14,7 @@
         "lib": "vite build"
     },
     "dependencies": {
-        "dap-util": "^1.2.2",
+        "dap-util": "^1.2.5",
         "vue": "^3.2.37"
     },
     "devDependencies": {
