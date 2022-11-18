@@ -73,8 +73,11 @@ const Dialog = {
             })
             //将页面应用实例的监听事件传递给当前弹窗组件的应用实例
             if (
+                this &&
+                this.config &&
+                this.config.globalProperties &&
                 typeof this.config.globalProperties.dialogComponentWatch ==
-                'function'
+                    'function'
             ) {
                 instance.config.globalProperties.dialogComponentWatch =
                     this.config.globalProperties.dialogComponentWatch
@@ -99,8 +102,11 @@ const Dialog = {
             })
             //将页面应用实例的监听事件传递给当前弹窗组件的应用实例
             if (
+                this &&
+                this.config &&
+                this.config.globalProperties &&
                 typeof this.config.globalProperties.dialogComponentWatch ==
-                'function'
+                    'function'
             ) {
                 instance.config.globalProperties.dialogComponentWatch =
                     this.config.globalProperties.dialogComponentWatch
@@ -128,8 +134,11 @@ const Dialog = {
             })
             //将页面应用实例的监听事件传递给当前弹窗组件的应用实例
             if (
+                this &&
+                this.config &&
+                this.config.globalProperties &&
                 typeof this.config.globalProperties.dialogComponentWatch ==
-                'function'
+                    'function'
             ) {
                 instance.config.globalProperties.dialogComponentWatch =
                     this.config.globalProperties.dialogComponentWatch
@@ -154,8 +163,11 @@ const Dialog = {
             })
             //将页面应用实例的监听事件传递给当前弹窗组件的应用实例
             if (
+                this &&
+                this.config &&
+                this.config.globalProperties &&
                 typeof this.config.globalProperties.dialogComponentWatch ==
-                'function'
+                    'function'
             ) {
                 instance.config.globalProperties.dialogComponentWatch =
                     this.config.globalProperties.dialogComponentWatch
@@ -180,8 +192,11 @@ const Dialog = {
             })
             //将页面应用实例的监听事件传递给当前弹窗组件的应用实例
             if (
+                this &&
+                this.config &&
+                this.config.globalProperties &&
                 typeof this.config.globalProperties.dialogComponentWatch ==
-                'function'
+                    'function'
             ) {
                 instance.config.globalProperties.dialogComponentWatch =
                     this.config.globalProperties.dialogComponentWatch
@@ -209,8 +224,11 @@ const Dialog = {
             })
             //将页面应用实例的监听事件传递给当前弹窗组件的应用实例
             if (
+                this &&
+                this.config &&
+                this.config.globalProperties &&
                 typeof this.config.globalProperties.dialogComponentWatch ==
-                'function'
+                    'function'
             ) {
                 instance.config.globalProperties.dialogComponentWatch =
                     this.config.globalProperties.dialogComponentWatch

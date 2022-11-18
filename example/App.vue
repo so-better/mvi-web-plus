@@ -7,6 +7,7 @@
     </div>
 </template>
 <script>
+import { Dialog } from '../packages'
 export default {
     data() {
         return {
@@ -16,7 +17,7 @@ export default {
     methods: {
         clear() {
             //console.log(this.$refs.sign.getImage())
-            this.$refs.sign.clear()
+            Dialog.alert('hello')
         }
     }
 }
