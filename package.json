@@ -1,8 +1,10 @@
 {
     "name": "mvi-web-plus",
-    "version": "1.6.4",
+    "version": "1.6.5",
     "private": false,
-    "sideEffects": false,
+    "sideEffects": [
+        "*.css"
+    ],
     "type": "module",
     "author": "lingkai",
     "main": "lib/mvi.umd.js",
