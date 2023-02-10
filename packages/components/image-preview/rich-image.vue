@@ -93,7 +93,7 @@ export default {
         )
         Dap.event.on(
             document.documentElement,
-            `mouseup.richImage_${this.uid} mouseleave.richImage_${this.uid}`,
+            `mouseup.richImage_${this.uid}`,
             this.imageMouseUp
         )
     },
@@ -388,7 +388,7 @@ export default {
     beforeUnmount() {
         Dap.event.off(
             document.documentElement,
-            `mousemove.richImage_${this.uid} mouseup.richImage_${this.uid} mouseleave.richImage_${this.uid}`
+            `mousemove.richImage_${this.uid} mouseup.richImage_${this.uid}`
         )
     }
 }

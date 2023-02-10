@@ -1,25 +1,19 @@
 <template>
-    <div class="mvi-mb-4">
-        <m-button @click="clear">清除画布</m-button>
-    </div>
-    <div style="width:100%;height:6rem;">
-        <m-sign :width="2" color="#f30" ref="sign" :background="background"></m-sign>
+    <div class="mvi-p-10">
+        <div style="width:2rem;height:2rem;border: 1px solid #ccc;" v-ripple>
+        </div>
+        <m-button @click="show=!show" v-ripple>按钮</m-button>
     </div>
 </template>
 <script>
-import { Dialog } from '../packages'
 export default {
     data() {
         return {
-            background: '#fff'
+            show: true
         }
     },
-    methods: {
-        clear() {
-            //console.log(this.$refs.sign.getImage())
-            Dialog.alert('hello')
-        }
-    }
+    mounted() {},
+    methods: {}
 }
 </script>
 <style lang="less">

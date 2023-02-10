@@ -198,13 +198,13 @@ export default {
     mounted() {
         this.init()
         Dap.event.on(
-            document.body,
+            document.documentElement,
             `mousemove.picker_${this.uid}`,
             this.mousemove
         )
         Dap.event.on(
-            document.body,
-            `mouseup.picker_${this.uid} mouseleave.picker_${this.uid}`,
+            document.documentElement,
+            `mouseup.picker_${this.uid}`,
             this.mouseup
         )
     },
@@ -517,7 +517,7 @@ export default {
     },
     beforeUnmount() {
         Dap.event.off(
-            document.body,
+            document.documentElement,
             `mousemove.picker_${this.uid} mouseup.picker_${this.uid}`
         )
     }

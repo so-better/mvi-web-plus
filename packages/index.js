@@ -14,6 +14,7 @@ import { Spy } from './components/spy'
 import { Observe } from './components/observe'
 import { Upload } from './components/upload'
 import { Px } from './components/px'
+import { Ripple } from './components/ripple'
 /***** 组件 *****/
 import { Button } from './components/button'
 import { Icon } from './components/icon'
@@ -95,6 +96,7 @@ export * from './components/spy'
 export * from './components/observe'
 export * from './components/upload'
 export * from './components/px'
+export * from './components/ripple'
 export * from './components/button'
 export * from './components/icon'
 export * from './components/cell'
@@ -176,6 +178,7 @@ const install = app => {
         Observe,
         Upload,
         Px,
+        Ripple,
         Button,
         Icon,
         Cell,
@@ -251,7 +254,7 @@ const install = app => {
 }
 
 /***** 版本号 *****/
-const version = '1.6.8'
+const version = '1.6.9'
 
 const stdin_default = {
     install,

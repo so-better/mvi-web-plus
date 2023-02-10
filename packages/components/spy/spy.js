@@ -30,6 +30,10 @@ class Spy {
         }
         this.hasInit = true
 
+        if (!Dap.element.isElement(this.$el)) {
+            throw new TypeError('The bound element is not a node element')
+        }
+
         //初始化参数
         if (typeof this.$root == 'string' && this.$root) {
             this.$root = document.documentElement.querySelector(this.$root)

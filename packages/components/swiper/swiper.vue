@@ -398,12 +398,12 @@ export default {
             }
             this.setDefaultSlide()
             Dap.event.on(
-                document.body,
+                document.documentElement,
                 `mousemove.swiper_${this.uid}`,
                 this.swiperMouseMove
             )
             Dap.event.on(
-                document.body,
+                document.documentElement,
                 `mouseup.swiper_${this.uid}`,
                 this.swiperMouseUp
             )
@@ -1029,7 +1029,7 @@ export default {
         //非fade模式下
         if (!this.fade) {
             Dap.event.off(
-                document.body,
+                document.documentElement,
                 `mousemove.swiper_${this.uid} mouseup.swiper_${this.uid}`
             )
         }

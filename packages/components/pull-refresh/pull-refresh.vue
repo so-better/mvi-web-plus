@@ -339,12 +339,12 @@ export default {
         this.initHeight()
         //事件设置
         Dap.event.on(
-            document.body,
+            document.documentElement,
             `mousemove.pullRefresh_${this.uid}`,
             this.onPull2
         )
         Dap.event.on(
-            document.body,
+            document.documentElement,
             `mouseup.pullRefresh_${this.uid}`,
             this.pulled2
         )
@@ -570,7 +570,7 @@ export default {
     },
     beforeUnmount() {
         Dap.event.off(
-            document.body,
+            document.documentElement,
             `mousemove.pullRefresh_${this.uid} mouseup.pullRefresh_${this.uid}`
         )
     }

@@ -71,6 +71,12 @@ class Resize {
             return
         }
         this.hasInit = true
+
+        if (!Dap.element.isElement(this.$el)) {
+            throw new TypeError(
+                'The element that needs to be resized is not a node element'
+            )
+        }
         if (typeof this.draggableX != 'boolean') {
             this.draggableX = true
         }
@@ -1094,7 +1100,7 @@ class Resize {
         )
         Dap.event.on(
             document.documentElement,
-            `mouseup.resize_${this.guid} mouseleave.resize_${this.guid}`,
+            `mouseup.resize_${this.guid}`,
             e => {
                 this._leave(e)
             }
@@ -1105,7 +1111,7 @@ class Resize {
     _setOff() {
         Dap.event.off(
             document.documentElement,
-            `mousemove.resize_${this.guid} mouseup.resize_${this.guid} mouseleave.resize_${this.guid}`
+            `mousemove.resize_${this.guid} mouseup.resize_${this.guid}`
         )
     }
 

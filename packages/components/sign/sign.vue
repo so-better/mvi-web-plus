@@ -61,14 +61,14 @@ export default {
             this.clear()
             //添加鼠标移动事件
             Dap.event.on(
-                document.body,
+                document.documentElement,
                 `mousemove.sign_${this.uid}`,
                 this.canvasMouseMove
             )
             //添加鼠标松开事件
             Dap.event.on(
-                document.body,
-                `mouseup.sign_${this.uid} mouseleave.sign_${this.uid}`,
+                document.documentElement,
+                `mouseup.sign_${this.uid}`,
                 this.canvasMouseUp
             )
         },
@@ -161,10 +161,10 @@ export default {
         }
     },
     beforeUnmount() {
-        //移除添加在body上的鼠标事件
+        //移除添加在documentElement上的鼠标事件
         Dap.event.off(
-            document.body,
-            `mousemove.sign_${this.uid} mouseup.sign_${this.uid} mouseleave.sign_${this.uid}`
+            document.documentElement,
+            `mousemove.sign_${this.uid} mouseup.sign_${this.uid}`
         )
     }
 }

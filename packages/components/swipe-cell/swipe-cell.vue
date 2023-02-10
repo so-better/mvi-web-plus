@@ -67,12 +67,12 @@ export default {
     },
     mounted() {
         Dap.event.on(
-            document.body,
+            document.documentElement,
             `mousemove.swipeCell_${this.uid}`,
             this.cellMouseMove
         )
         Dap.event.on(
-            document.body,
+            document.documentElement,
             `mouseup.swipeCell_${this.uid}`,
             this.cellMouseUp
         )
@@ -347,7 +347,7 @@ export default {
     },
     beforeUnmount() {
         Dap.event.off(
-            document.body,
+            document.documentElement,
             `mousemove.swipeCell_${this.uid} mouseup.swipeCell_${this.uid}`
         )
     }

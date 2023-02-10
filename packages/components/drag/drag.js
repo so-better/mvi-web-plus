@@ -230,40 +230,44 @@ class Drag {
             ])
         })
         //鼠标移动
-        Dap.event.on(document.body, `mousemove.drag_${this.guid}`, e => {
-            if (this.draggable) {
-                if (!this.draggableX && !this.draggableY) {
-                    return
-                }
-                let left = e.pageX - this.pageX
-                let top = e.pageY - this.pageY
-                if (this.draggableX) {
-                    this.$el.style.left = left + 'px'
-                }
-                if (this.draggableY) {
-                    this.$el.style.top = top + 'px'
-                }
-                this._resize()
-                if (this.draggableX || this.draggableY) {
-                    //监听事件
-                    this.drag.apply(this, [
-                        {
-                            event: e,
-                            target: this.$el,
-                            container: this.$container,
-                            placement: Dap.element.getElementPoint(
-                                this.$el,
-                                this.$container
-                            )
-                        }
-                    ])
+        Dap.event.on(
+            document.documentElement,
+            `mousemove.drag_${this.guid}`,
+            e => {
+                if (this.draggable) {
+                    if (!this.draggableX && !this.draggableY) {
+                        return
+                    }
+                    let left = e.pageX - this.pageX
+                    let top = e.pageY - this.pageY
+                    if (this.draggableX) {
+                        this.$el.style.left = left + 'px'
+                    }
+                    if (this.draggableY) {
+                        this.$el.style.top = top + 'px'
+                    }
+                    this._resize()
+                    if (this.draggableX || this.draggableY) {
+                        //监听事件
+                        this.drag.apply(this, [
+                            {
+                                event: e,
+                                target: this.$el,
+                                container: this.$container,
+                                placement: Dap.element.getElementPoint(
+                                    this.$el,
+                                    this.$container
+                                )
+                            }
+                        ])
+                    }
                 }
             }
-        })
+        )
         //鼠标松开后，拖拽状态更改为false，触发监听事件
         Dap.event.on(
-            document.body,
-            `mouseup.drag_${this.guid} mouseleave.drag_${this.guid}`,
+            document.documentElement,
+            `mouseup.drag_${this.guid}`,
             e => {
                 if (this.draggable) {
                     if (!this.draggableX && !this.draggableY) {
@@ -290,11 +294,11 @@ class Drag {
         )
     }
 
-    //移除该指令绑定在body上的事件
+    //移除该指令绑定在documentElement上的事件
     _setOff() {
         Dap.event.off(
-            document.body,
-            `mousemove.drag_${this.guid} mouseup.drag_${this.guid} mouseleave.drag_${this.guid}`
+            document.documentElement,
+            `mousemove.drag_${this.guid} mouseup.drag_${this.guid}`
         )
     }
 

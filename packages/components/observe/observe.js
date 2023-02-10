@@ -31,6 +31,13 @@ class Observe {
             return
         }
         this.hasInit = true
+
+        if (!Dap.element.isElement(this.$el)) {
+            throw new TypeError(
+                'The element that needs to be observed is not a node element'
+            )
+        }
+
         try {
             if (typeof this.attributes != 'boolean') {
                 this.attributes = false
