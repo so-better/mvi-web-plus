@@ -1,15 +1,16 @@
 <template>
     <div class="mvi-p-10">
-        <div style="width:2rem;height:2rem;border: 1px solid #ccc;" v-ripple>
-        </div>
-        <m-button @click="show=!show" v-ripple>按钮</m-button>
+        <m-field suffix="user" size="small" round clearable v-model="value"></m-field>
+        <m-field suffix="user" size="medium" round clearable v-model="value"></m-field>
+        <m-field suffix="user" size="large" round clearable v-model="value"></m-field>
     </div>
 </template>
 <script>
 export default {
     data() {
         return {
-            show: true
+            show: true,
+            value: ''
         }
     },
     mounted() {},

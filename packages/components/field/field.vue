@@ -801,7 +801,8 @@ export default {
         .mvi-field-prepend,
         .mvi-field-append,
         .mvi-field-prefix,
-        .mvi-field-suffix {
+        .mvi-field-suffix,
+        .mvi-field-clear {
             padding: 0 @mp-sm;
         }
     }
@@ -825,7 +826,8 @@ export default {
         .mvi-field-prepend,
         .mvi-field-append,
         .mvi-field-prefix,
-        .mvi-field-suffix {
+        .mvi-field-suffix,
+        .mvi-field-clear {
             padding: 0 @mp-md;
         }
     }
@@ -849,7 +851,8 @@ export default {
         .mvi-field-prepend,
         .mvi-field-append,
         .mvi-field-prefix,
-        .mvi-field-suffix {
+        .mvi-field-suffix,
+        .mvi-field-clear {
             padding: 0 @mp-lg;
         }
     }
@@ -922,7 +925,6 @@ export default {
 
     .mvi-field-clear {
         opacity: 0.6;
-        padding: 0 @mp-sm;
     }
 
     .mvi-field-prefix {
