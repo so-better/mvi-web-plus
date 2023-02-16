@@ -1,6 +1,8 @@
 <template>
     <div class="mvi-p-2">
-        <div style="position: absolute;width:3rem;height:3rem;border: 1px solid #ddd;" v-ripple></div>
+        <m-field size="large" prepend="search" placeholder="搜索..."></m-field>
+        <m-field size="medium" placeholder="搜索..."></m-field>
+        <m-field size="small" placeholder="搜索..."></m-field>
     </div>
 </template>
 <script>

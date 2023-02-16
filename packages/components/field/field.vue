@@ -814,12 +814,12 @@ export default {
             height: @medium-height;
 
             .mvi-field-input {
-                padding: 0 @mp-sm;
+                padding: 0 @mp-md;
             }
         }
 
         &[data-type='textarea'] .mvi-field-input {
-            padding: @mp-sm;
+            padding: 0 @mp-md;
             line-height: 0.44rem;
         }
 
@@ -839,12 +839,12 @@ export default {
             height: @large-height;
 
             .mvi-field-input {
-                padding: 0 @mp-sm;
+                padding: 0 @mp-lg;
             }
         }
 
         &[data-type='textarea'] .mvi-field-input {
-            padding: @mp-sm;
+            padding: 0 @mp-lg;
             line-height: 0.56rem;
         }
 
