@@ -1,8 +1,6 @@
 <template>
-    <div class="mvi-p-10">
-        <m-field suffix="user" size="small" round clearable v-model="value"></m-field>
-        <m-field suffix="user" size="medium" round clearable v-model="value"></m-field>
-        <m-field suffix="user" size="large" round clearable v-model="value"></m-field>
+    <div class="mvi-p-2">
+        <div style="position: absolute;width:3rem;height:3rem;border: 1px solid #ddd;" v-ripple></div>
     </div>
 </template>
 <script>

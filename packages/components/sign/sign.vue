@@ -128,6 +128,9 @@ export default {
         },
         //触摸移动
         canvasTouchMove(e) {
+            if (e.cancelable) {
+                e.preventDefault()
+            }
             const ctx = this.$el.getContext('2d')
             const rect = Dap.element.getElementBounding(this.$el)
             ctx.lineTo(
