@@ -1,8 +1,6 @@
 <template>
     <div class="mvi-p-2">
-        <m-field size="large" prepend="search" placeholder="搜索..."></m-field>
-        <m-field size="medium" placeholder="搜索..."></m-field>
-        <m-field size="small" placeholder="搜索..."></m-field>
+        <div v-ripple="{duration:1000,color:'red'}" class="a"></div>
     </div>
 </template>
 <script>
@@ -25,5 +23,14 @@ html {
 #app {
     height: 100%;
     overflow: auto;
+}
+
+.a {
+    display: block;
+    width:7rem;
+    height:7rem;
+    border-radius:1rem;
+    background-color:#eee;
+    position:absolute;
 }
 </style>

@@ -59,8 +59,8 @@ class Ripple {
             this.$el.style.position = 'relative'
         }
 
-        //鼠标按下
-        Dap.event.on(this.$el, 'mousedown.ripple', e => {
+        //鼠标按下或者手指按下函数
+        const downFn = (pageX, pageY) => {
             //禁用
             if (this.disabled) {
                 return
@@ -68,7 +68,7 @@ class Ripple {
             //创建水波纹父元素
             const rippleContainer = this._createRippleContainer()
             //创建水波纹元素
-            const rippleEl = this._createRippleElement(e.pageX, e.pageY)
+            const rippleEl = this._createRippleElement(pageX, pageY)
             //添加到指定的元素
             this.$el.appendChild(rippleContainer)
             rippleContainer.appendChild(rippleEl)
@@ -86,17 +86,36 @@ class Ripple {
                     this._endDeal(rippleContainer)
                 }, this.duration)
             }, this.delay)
-        })
+        }
 
-        //鼠标松开或者移出页面
-        Dap.event.on(document.documentElement, `mouseup.ripple_${this.guid}`, e => {
+        //鼠标松开或者移出页面或者手指松开函数
+        const upFn = () => {
             if (this.rippleContainers.length) {
                 this.rippleContainers.forEach(rippleContainer => {
-                    Dap.data.set(rippleContainer, 'ripple-mouseup', true)
+                    Dap.data.set(rippleContainer, 'ripple-up', true)
                     this._endDeal(rippleContainer)
                 })
             }
+        }
+
+        //鼠标按下
+        Dap.event.on(this.$el, 'mousedown.ripple', e => {
+            downFn(e.pageX, e.pageY)
         })
+
+        //手指触摸
+        Dap.event.on(this.$el, 'touchstart.ripple', e => {
+            if (e.cancelable) {
+                e.preventDefault()
+            }
+            downFn(e.targetTouches[0].pageX, e.targetTouches[0].pageY)
+        })
+
+        //鼠标松开或者移出页面
+        Dap.event.on(document.documentElement, `mouseup.ripple_${this.guid}`, upFn)
+
+        //手指松开
+        Dap.event.on(this.$el, `touchend.ripple`, upFn)
     }
 
     //移除documentElement上的拖动事件
@@ -106,9 +125,9 @@ class Ripple {
 
     //动画完成处理
     _endDeal(rippleContainer) {
-        const rippleMouseup = Dap.data.get(rippleContainer, 'ripple-mouseup')
+        const rippleUp = Dap.data.get(rippleContainer, 'ripple-up')
         const rippleAnimationEnd = Dap.data.get(rippleContainer, 'ripple-animation-end')
-        if (rippleMouseup && rippleAnimationEnd) {
+        if (rippleUp && rippleAnimationEnd) {
             //透明度消失时间
             const destoryDuration = 100
             //水波纹元素
@@ -165,6 +184,8 @@ class Ripple {
         el.style.borderRadius = Dap.element.getCssStyle(this.$el, 'border-radius')
         el.style.overflow = 'hidden'
         el.style.pointerEvents = 'none'
+        //解决移动端子元素存在transform动画时border-radius失效的问题
+        el.style.transform = 'rotate(0deg)'
         return el
     }
 
