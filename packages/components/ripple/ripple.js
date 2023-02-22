@@ -55,11 +55,7 @@ class Ripple {
         if (typeof this.disabled != 'boolean') {
             this.disabled = false
         }
-        if (
-            Dap.element.getCssStyle(this.$el, 'position') != 'relative' ||
-            Dap.element.getCssStyle(this.$el, 'position') != 'absolute' ||
-            Dap.element.getCssStyle(this.$el, 'position') != 'fixed'
-        ) {
+        if (Dap.element.getCssStyle(this.$el, 'position') != 'relative' && Dap.element.getCssStyle(this.$el, 'position') != 'absolute' && Dap.element.getCssStyle(this.$el, 'position') != 'fixed') {
             this.$el.style.position = 'relative'
         }
 
@@ -93,18 +89,14 @@ class Ripple {
         })
 
         //鼠标松开或者移出页面
-        Dap.event.on(
-            document.documentElement,
-            `mouseup.ripple_${this.guid}`,
-            e => {
-                if (this.rippleContainers.length) {
-                    this.rippleContainers.forEach(rippleContainer => {
-                        Dap.data.set(rippleContainer, 'ripple-mouseup', true)
-                        this._endDeal(rippleContainer)
-                    })
-                }
+        Dap.event.on(document.documentElement, `mouseup.ripple_${this.guid}`, e => {
+            if (this.rippleContainers.length) {
+                this.rippleContainers.forEach(rippleContainer => {
+                    Dap.data.set(rippleContainer, 'ripple-mouseup', true)
+                    this._endDeal(rippleContainer)
+                })
             }
-        )
+        })
     }
 
     //移除documentElement上的拖动事件
@@ -115,10 +107,7 @@ class Ripple {
     //动画完成处理
     _endDeal(rippleContainer) {
         const rippleMouseup = Dap.data.get(rippleContainer, 'ripple-mouseup')
-        const rippleAnimationEnd = Dap.data.get(
-            rippleContainer,
-            'ripple-animation-end'
-        )
+        const rippleAnimationEnd = Dap.data.get(rippleContainer, 'ripple-animation-end')
         if (rippleMouseup && rippleAnimationEnd) {
             //透明度消失时间
             const destoryDuration = 100
@@ -173,10 +162,7 @@ class Ripple {
         el.style.width = Dap.element.getCssStyle(this.$el, 'width')
         el.style.height = Dap.element.getCssStyle(this.$el, 'height')
         el.style.background = 'transparent'
-        el.style.borderRadius = Dap.element.getCssStyle(
-            this.$el,
-            'border-radius'
-        )
+        el.style.borderRadius = Dap.element.getCssStyle(this.$el, 'border-radius')
         el.style.overflow = 'hidden'
         el.style.pointerEvents = 'none'
         return el
@@ -209,17 +195,9 @@ class Ripple {
     //生成唯一值
     _createGuid() {
         //获取当前guid，不存在则从0开始
-        let guid =
-            Dap.data.get(
-                document.documentElement,
-                'mvi-directives-ripple-guid'
-            ) || 0
+        let guid = Dap.data.get(document.documentElement, 'mvi-directives-ripple-guid') || 0
         guid++
-        Dap.data.set(
-            document.documentElement,
-            'mvi-directives-ripple-guid',
-            guid
-        )
+        Dap.data.set(document.documentElement, 'mvi-directives-ripple-guid', guid)
         return guid
     }
 }
