@@ -1,9 +1,8 @@
 <template>
     <div class="mvi-editor">
         <div ref="menus" class="mvi-editor-menus" :style="{ border: border ? '' : 'none' }" v-if="showMenus" :disabled="disabled || null">
-            <template v-for="(item,index) in computedMenuIndex">
-                <EditorItem v-if="showMenuItem(item[0])" :value="item[0]" :menu="computedMenus[item[0]]" :ref="el=>menuRefs[index]=el" :key="'mvi-editor-menu-' + index">
-                </EditorItem>
+            <template v-for="(item, index) in computedMenuIndex">
+                <EditorItem v-if="showMenuItem(item[0])" :value="item[0]" :menu="computedMenus[item[0]]" :ref="el => (menuRefs[index] = el)" :key="'mvi-editor-menu-' + index"> </EditorItem>
             </template>
         </div>
         <div ref="body" class="mvi-editor-body">
@@ -16,24 +15,9 @@
 <script>
 import { Dap } from '../dap'
 import { Observe } from '../observe'
+import { Msgbox } from '../msgbox'
 import EditorItem from './editor-item.vue'
-//不实现激活状态的菜单项
-const unactiveMenus = [
-    'undo',
-    'redo',
-    'removeFormat',
-    'selectAll',
-    'divider',
-    'tag',
-    'fontFamily',
-    'fontSize',
-    'foreColor',
-    'backColor',
-    'list',
-    'justify',
-    'image',
-    'video'
-]
+import defaultConfig from './editor-config'
 export default {
     name: 'm-editor',
     data() {
@@ -135,215 +119,17 @@ export default {
                 //上标
                 superscript: true,
                 //字体
-                fontFamily: [
-                    'PingFang SC',
-                    'Helvetica Neue',
-                    'kaiTi',
-                    'Microsoft YaHei',
-                    'Arial',
-                    'sans-serif'
-                ],
+                fontFamily: defaultConfig.fontFamily,
                 //字号
-                fontSize: [
-                    {
-                        label: '12px',
-                        value: '0.24rem'
-                    },
-                    {
-                        label: '14px',
-                        value: '0.28rem'
-                    },
-                    {
-                        label: '16px',
-                        value: '0.32rem'
-                    },
-                    {
-                        label: '20px',
-                        value: '0.4rem'
-                    },
-                    {
-                        label: '28px',
-                        value: '0.56rem'
-                    },
-                    {
-                        label: '36px',
-                        value: '0.72rem'
-                    },
-                    {
-                        label: '48px',
-                        value: '0.96rem'
-                    }
-                ],
+                fontSize: defaultConfig.fontSize,
                 //字体颜色
-                foreColor: [
-                    '#000000',
-                    '#505050',
-                    '#808080',
-                    '#BBBBBB',
-                    '#CCCCCC',
-                    '#EEEEEE',
-                    '#F7F7F7',
-                    '#FFFFFF',
-                    '#EC1A0A',
-                    '#FF9900',
-                    '#FFFF00',
-                    '#07C160',
-                    '#00FFFF',
-                    '#0B73DE',
-                    '#9C00FF',
-                    '#FF00FF',
-                    '#F7C6CE',
-                    '#FFE7CE',
-                    '#FFEFC6',
-                    '#D6EFD6',
-                    '#CEDEE7',
-                    '#CEE7F7',
-                    '#D6D6E7',
-                    '#E7D6DE',
-                    '#E79C9C',
-                    '#FFC69C',
-                    '#FFE79C',
-                    '#B5D6A5',
-                    '#A5C6CE',
-                    '#9CC6EF',
-                    '#B5A5D6',
-                    '#D6A5BD',
-                    '#e45649',
-                    '#F7AD6B',
-                    '#FFD663',
-                    '#94BD7B',
-                    '#73A5AD',
-                    '#6BADDE',
-                    '#8C7BC6',
-                    '#C67BA5',
-                    '#CE0000',
-                    '#E79439',
-                    '#EFC631',
-                    '#50a14f',
-                    '#4A7B8C',
-                    '#03A8F3',
-                    '#634AA5',
-                    '#A54A7B',
-                    '#9C0000',
-                    '#B56308',
-                    '#BD9400',
-                    '#397B21',
-                    '#104A5A',
-                    '#085294',
-                    '#311873',
-                    '#731842',
-                    '#630000',
-                    '#7B3900',
-                    '#986801',
-                    '#295218',
-                    '#083139',
-                    '#003163',
-                    '#21104A',
-                    '#4A1031'
-                ],
+                foreColor: defaultConfig.foreColor,
                 //背景色
-                backColor: [
-                    '#000000',
-                    '#505050',
-                    '#808080',
-                    '#BBBBBB',
-                    '#CCCCCC',
-                    '#EEEEEE',
-                    '#F7F7F7',
-                    '#FFFFFF',
-                    '#EC1A0A',
-                    '#FF9900',
-                    '#FFFF00',
-                    '#07C160',
-                    '#00FFFF',
-                    '#0B73DE',
-                    '#9C00FF',
-                    '#FF00FF',
-                    '#F7C6CE',
-                    '#FFE7CE',
-                    '#FFEFC6',
-                    '#D6EFD6',
-                    '#CEDEE7',
-                    '#CEE7F7',
-                    '#D6D6E7',
-                    '#E7D6DE',
-                    '#E79C9C',
-                    '#FFC69C',
-                    '#FFE79C',
-                    '#B5D6A5',
-                    '#A5C6CE',
-                    '#9CC6EF',
-                    '#B5A5D6',
-                    '#D6A5BD',
-                    '#E76363',
-                    '#F7AD6B',
-                    '#FFD663',
-                    '#94BD7B',
-                    '#73A5AD',
-                    '#6BADDE',
-                    '#8C7BC6',
-                    '#C67BA5',
-                    '#CE0000',
-                    '#E79439',
-                    '#EFC631',
-                    '#6BA54A',
-                    '#4A7B8C',
-                    '#03A8F3',
-                    '#634AA5',
-                    '#A54A7B',
-                    '#9C0000',
-                    '#B56308',
-                    '#BD9400',
-                    '#397B21',
-                    '#104A5A',
-                    '#085294',
-                    '#311873',
-                    '#731842',
-                    '#630000',
-                    '#7B3900',
-                    '#846300',
-                    '#295218',
-                    '#083139',
-                    '#003163',
-                    '#21104A',
-                    '#4A1031'
-                ],
+                backColor: defaultConfig.backColor,
                 //列表
-                list: [
-                    {
-                        label: '有序列表',
-                        value: 'ol',
-                        icon: 'ol'
-                    },
-                    {
-                        label: '无序列表',
-                        value: 'ul',
-                        icon: 'ul'
-                    }
-                ],
+                list: defaultConfig.list,
                 //对齐方式
-                justify: [
-                    {
-                        label: '左对齐',
-                        value: 'left',
-                        icon: 'align-left'
-                    },
-                    {
-                        label: '居中对齐',
-                        value: 'center',
-                        icon: 'align-center'
-                    },
-                    {
-                        label: '右对齐',
-                        value: 'right',
-                        icon: 'align-right'
-                    },
-                    {
-                        label: '两端对齐',
-                        value: 'justify',
-                        icon: 'align-justify'
-                    }
-                ],
+                justify: defaultConfig.justify,
                 //引用
                 quote: true,
                 //链接
@@ -435,18 +221,7 @@ export default {
                 //是否多选
                 multiple: false,
                 //限定格式
-                allowedFileType: [
-                    'jpg',
-                    'png',
-                    'JPG',
-                    'PNG',
-                    'JPEG',
-                    'jpeg',
-                    'gif',
-                    'GIF',
-                    'jfif',
-                    'JFIF'
-                ],
+                allowedFileType: defaultConfig.allowedImageType,
                 //限制类型
                 accept: 'image',
                 //限制单个图片最小值，单位kb
@@ -463,7 +238,7 @@ export default {
                 //是否多选
                 multiple: false,
                 //限定格式
-                allowedFileType: ['mp4', 'MP4', 'avi', 'AVI', 'WAV', 'wav'],
+                allowedFileType: defaultConfig.allowedVideoType,
                 //限制类型
                 accept: 'video',
                 //限制单个视频最小值，单位kb
@@ -544,16 +319,7 @@ export default {
             }
         }
     },
-    emits: [
-        'update:modelValue',
-        'upload-image',
-        'upload-video',
-        'custom',
-        'blur',
-        'focus',
-        'input',
-        'file-paste'
-    ],
+    emits: ['update:modelValue', 'upload-image', 'upload-video', 'custom', 'blur', 'focus', 'input', 'file-paste'],
     props: {
         //值
         modelValue: {
@@ -677,7 +443,7 @@ export default {
                 return {}
             }
         },
-        //激活判定
+        //自定义菜单的激活判定
         customActive: {
             type: Function,
             default: function () {
@@ -713,6 +479,11 @@ export default {
         videoClass: {
             type: String,
             default: null
+        },
+        //段落分隔符
+        paragraphSeparator: {
+            type: String,
+            default: 'p'
         }
     },
     computed: {
@@ -746,11 +517,7 @@ export default {
                 if (Array.isArray(this.defaultMenus[key])) {
                     let newArray = []
                     this.defaultMenus[key].forEach(item => {
-                        if (
-                            Dap.common.isObject(item) &&
-                            item.label &&
-                            item.value
-                        ) {
+                        if (Dap.common.isObject(item) && item.label && item.value) {
                             let obj = {
                                 label: item.label,
                                 value: item.value
@@ -760,20 +527,14 @@ export default {
                                     custom: item.icon.custom,
                                     value: item.icon.value
                                 }
-                            } else if (
-                                typeof item.icon == 'string' &&
-                                item.icon
-                            ) {
+                            } else if (typeof item.icon == 'string' && item.icon) {
                                 obj.icon = {
                                     custom: false,
                                     value: item.icon
                                 }
                             }
                             newArray.push(obj)
-                        } else if (
-                            typeof item == 'string' ||
-                            Dap.number.isNumber(item)
-                        ) {
+                        } else if (typeof item == 'string' || Dap.number.isNumber(item)) {
                             newArray.push({
                                 label: item,
                                 value: item
@@ -795,12 +556,7 @@ export default {
             if (this.autoHeight) {
                 cls.push('mvi-editor-content-auto')
             }
-            if (
-                this.html == '<p><br></p>' ||
-                this.html == '' ||
-                this.html == '<br>' ||
-                this.html == '<p></p>'
-            ) {
+            if (this.html == '<p><br></p>' || this.html == '' || this.html == '<br>' || this.html == '<p></p>') {
                 cls.push('mvi-editor-content-empty')
             }
             return cls
@@ -894,49 +650,25 @@ export default {
         //初始化
         init() {
             //将自定义菜单项序列配置与默认配置整合
-            this.defaultMenuIndex = this.initOption(
-                this.defaultMenuIndex,
-                this.menuIndex
-            )
+            this.defaultMenuIndex = this.initOption(this.defaultMenuIndex, this.menuIndex)
             //将自定义的菜单项浮层配置与默认配置整合
-            this.defaultLayerProps = this.initOption(
-                this.defaultLayerProps,
-                this.layerProps
-            )
+            this.defaultLayerProps = this.initOption(this.defaultLayerProps, this.layerProps)
             //将自定义的菜单栏配置与默认配置整合
             this.defaultMenus = this.initOption(this.defaultMenus, this.menus)
             //将自定义的提示内容与默认提示整合
-            this.defaultTooltips = this.initOption(
-                this.defaultTooltips,
-                this.tooltips
-            )
+            this.defaultTooltips = this.initOption(this.defaultTooltips, this.tooltips)
             //将自定义的工具提示组件参数与默认工具提示组件参数整合
-            this.defaultTooltipProps = this.initOption(
-                this.defaultTooltipProps,
-                this.tooltipProps
-            )
+            this.defaultTooltipProps = this.initOption(this.defaultTooltipProps, this.tooltipProps)
             //将自定义上传图片配置参数与默认上传图片配置参数整合
-            this.defaultUploadImageProps = this.initOption(
-                this.defaultUploadImageProps,
-                this.uploadImageProps
-            )
+            this.defaultUploadImageProps = this.initOption(this.defaultUploadImageProps, this.uploadImageProps)
             //将自定义上传视频配置参数与默认上传视频配置参数整合
-            this.defaultUploadVideoProps = this.initOption(
-                this.defaultUploadVideoProps,
-                this.uploadVideoProps
-            )
+            this.defaultUploadVideoProps = this.initOption(this.defaultUploadVideoProps, this.uploadVideoProps)
             //将自定义的视频配置参数与默认的视频配置参数整合
-            this.defaultVideoShowProps = this.initOption(
-                this.defaultVideoShowProps,
-                this.videoShowProps
-            )
+            this.defaultVideoShowProps = this.initOption(this.defaultVideoShowProps, this.videoShowProps)
             //将自定义的菜单项图标配置与默认的菜单项图标配置整合
-            this.defaultMenuIcons = this.initOption(
-                this.defaultMenuIcons,
-                this.menuIcons
-            )
+            this.defaultMenuIcons = this.initOption(this.defaultMenuIcons, this.menuIcons)
             //定义段落分隔符
-            document.execCommand('defaultParagraphSeparator', false, 'p')
+            document.execCommand('defaultParagraphSeparator', false, this.paragraphSeparator)
             //使用css
             document.execCommand('styleWithCSS', false, true)
             //初始化赋值
@@ -948,9 +680,7 @@ export default {
                 this.collapseToEnd()
             }
             if (this.defaultMenus.fontSize.length > 7) {
-                throw new Error(
-                    'The maximum length of fontSize cannot exceed 7'
-                )
+                throw new Error('The maximum length of fontSize cannot exceed 7')
             }
         },
         //对外提供的用以插入图片的api
@@ -980,9 +710,7 @@ export default {
             if (this.videoClass) {
                 style.push(this.videoClass)
             }
-            let video = Dap.element.string2dom(
-                `<video src="${url}" class="${style.join(' ')}"></video>`
-            )
+            let video = Dap.element.string2dom(`<video src="${url}" class="${style.join(' ')}"></video>`)
             if (this.defaultVideoShowProps.muted) {
                 video.setAttribute('muted', 'muted')
             }
@@ -1089,78 +817,42 @@ export default {
                 if (item) {
                     switch (item.value) {
                         case 'bold':
-                            if (
-                                this.compareCss(
-                                    node,
-                                    'font-weight',
-                                    'bold',
-                                    false
-                                ) ||
-                                this.compareCss(
-                                    node,
-                                    'font-weight',
-                                    '700',
-                                    false
-                                )
-                            ) {
+                            if (this.compareCss(node, 'font-weight', 'bold', false) || this.compareCss(node, 'font-weight', '700', false)) {
                                 item.menuActive = true
                             } else {
                                 item.menuActive = false
                             }
                             break
                         case 'italic':
-                            if (
-                                this.compareCss(
-                                    node,
-                                    'font-style',
-                                    'italic',
-                                    false
-                                )
-                            ) {
+                            if (this.compareCss(node, 'font-style', 'italic', false)) {
                                 item.menuActive = true
                             } else {
                                 item.menuActive = false
                             }
                             break
                         case 'underline':
-                            if (
-                                this.compareCss(
-                                    node,
-                                    'text-decoration-line',
-                                    'underline'
-                                )
-                            ) {
+                            if (this.compareCss(node, 'text-decoration-line', 'underline')) {
                                 item.menuActive = true
                             } else {
                                 item.menuActive = false
                             }
                             break
                         case 'strikeThrough':
-                            if (
-                                this.compareCss(
-                                    node,
-                                    'text-decoration-line',
-                                    'line-through'
-                                )
-                            ) {
+                            if (this.compareCss(node, 'text-decoration-line', 'line-through')) {
                                 item.menuActive = true
                             } else {
                                 item.menuActive = false
                             }
                             break
                         case 'subscript':
-                            if (
-                                this.compareCss(node, 'vertical-align', 'sub')
-                            ) {
+                            if (this.compareCss(node, 'vertical-align', 'sub')) {
                                 item.menuActive = true
                             } else {
                                 item.menuActive = false
                             }
                             break
                         case 'superscript':
-                            if (
-                                this.compareCss(node, 'vertical-align', 'super')
-                            ) {
+                            if (this.compareCss(node, 'vertical-align', 'super')) {
                                 item.menuActive = true
                             } else {
                                 item.menuActive = false
@@ -1203,12 +895,11 @@ export default {
                             break
                         default:
                             //如果不是自定义的菜单项，则不激活
-                            if (unactiveMenus.includes(item.value)) {
+                            if (defaultConfig.unactiveMenus.includes(item.value)) {
                                 item.menuActive = false
                                 return
                             }
-                            item.menuActive =
-                                this.customActive(item.value, node) || false
+                            item.menuActive = this.customActive(item.value, node) || false
                     }
                 }
             })
@@ -1310,17 +1001,9 @@ export default {
                 event.preventDefault()
                 let node = this.getSelectNode()
                 if (this.compareCss(node, 'font-family', 'Consolas')) {
-                    document.execCommand(
-                        'insertHtml',
-                        false,
-                        '&nbsp;&nbsp;&nbsp;&nbsp;'
-                    )
+                    document.execCommand('insertHtml', false, '&nbsp;&nbsp;&nbsp;&nbsp;')
                 } else {
-                    document.execCommand(
-                        'insertHtml',
-                        false,
-                        '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
-                    )
+                    document.execCommand('insertHtml', false, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;')
                 }
             }
         },
@@ -1363,12 +1046,7 @@ export default {
                 }
                 //如果考虑父元素
                 if (thinkParent) {
-                    return this.compareCss(
-                        el.parentNode,
-                        cssName,
-                        cssValue,
-                        thinkParent
-                    )
+                    return this.compareCss(el.parentNode, cssName, cssValue, thinkParent)
                 }
             }
             return false
@@ -1391,11 +1069,7 @@ export default {
                     }
                     return true
                 } else {
-                    return this.compareAttribute(
-                        el.parentNode,
-                        attrName,
-                        attrVal
-                    )
+                    return this.compareAttribute(el.parentNode, attrName, attrVal)
                 }
             } else {
                 return false
@@ -1431,11 +1105,7 @@ export default {
                 if (Dap.element.getCssStyle(el, cssName) == cssValue) {
                     return el
                 } else {
-                    return this.getCompareTagForCss(
-                        el.parentNode,
-                        cssName,
-                        cssValue
-                    )
+                    return this.getCompareTagForCss(el.parentNode, cssName, cssValue)
                 }
             } else {
                 return null
@@ -1459,11 +1129,7 @@ export default {
                     }
                     return el
                 } else {
-                    return this.getCompareTagForAttribute(
-                        el.parentNode,
-                        attrName,
-                        attrVal
-                    )
+                    return this.getCompareTagForAttribute(el.parentNode, attrName, attrVal)
                 }
             } else {
                 return null
@@ -1471,11 +1137,7 @@ export default {
         },
         //获取经过处理的modelValue值
         getValue() {
-            if (
-                this.modelValue == '' ||
-                this.modelValue == '<br>' ||
-                this.modelValue == '<p></p>'
-            ) {
+            if (this.modelValue == '' || this.modelValue == '<br>' || this.modelValue == '<p></p>') {
                 return '<p><br></p>'
             } else {
                 return String(this.modelValue)
@@ -1496,9 +1158,7 @@ export default {
                 this.text = this.$refs.content.innerText
             } else if (this.$refs.codeView) {
                 this.html = this.$refs.codeView.innerText
-                let el = Dap.element.string2dom(
-                    `<div>${this.$refs.codeView.innerText}</div>`
-                )
+                let el = Dap.element.string2dom(`<div>${this.$refs.codeView.innerText}</div>`)
                 this.text = el.innerText
             }
         },
@@ -1524,62 +1184,30 @@ export default {
                 if (clip.files.length > 0) {
                     event.preventDefault()
                     for (let file of clip.files) {
-                        const isImage = this.judgeSuffix(
-                            file.name,
-                            this.defaultUploadImageProps.allowedFileType
-                        )
-                        const isVideo = this.judgeSuffix(
-                            file.name,
-                            this.defaultUploadVideoProps.allowedFileType
-                        )
+                        const isImage = this.judgeSuffix(file.name, this.defaultUploadImageProps.allowedFileType)
+                        const isVideo = this.judgeSuffix(file.name, this.defaultUploadVideoProps.allowedFileType)
                         //是图片或者视频
                         if (isImage || isVideo) {
-                            const minSize = isImage
-                                ? this.defaultUploadImageProps.minSize
-                                : this.defaultUploadVideoProps.minSize
-                            const maxSize = isImage
-                                ? this.defaultUploadImageProps.maxSize
-                                : this.defaultUploadVideoProps.maxSize
+                            const minSize = isImage ? this.defaultUploadImageProps.minSize : this.defaultUploadVideoProps.minSize
+                            const maxSize = isImage ? this.defaultUploadImageProps.maxSize : this.defaultUploadVideoProps.maxSize
                             //判断文件大小
                             if (file.size / 1024 > maxSize && maxSize > 0) {
-                                if (
-                                    typeof this.uploadImageError == 'function'
-                                ) {
-                                    this.uploadImageError(
-                                        102,
-                                        '文件' +
-                                            file.name +
-                                            '超出文件最大值限定',
-                                        file
-                                    )
+                                if (typeof this.uploadImageError == 'function') {
+                                    this.uploadImageError(102, '文件' + file.name + '超出文件最大值限定', file)
                                 } else {
-                                    this.$msgbox({
-                                        message:
-                                            '文件' +
-                                            file.name +
-                                            '超出文件最大值限定',
+                                    Msgbox.msgbox({
+                                        message: '文件' + file.name + '超出文件最大值限定',
                                         animation: 'scale'
                                     })
                                 }
                                 return
                             }
                             if (file.size / 1024 < minSize && minSize > 0) {
-                                if (
-                                    typeof this.uploadImageError == 'function'
-                                ) {
-                                    this.uploadImageError(
-                                        103,
-                                        '文件' +
-                                            file.name +
-                                            '没有达到文件最小值限定',
-                                        file
-                                    )
+                                if (typeof this.uploadImageError == 'function') {
+                                    this.uploadImageError(103, '文件' + file.name + '没有达到文件最小值限定', file)
                                 } else {
-                                    this.$msgbox({
-                                        message:
-                                            '文件' +
-                                            file.name +
-                                            '没有达到文件最小值限定',
+                                    Msgbox.msgbox({
+                                        message: '文件' + file.name + '没有达到文件最小值限定',
                                         animation: 'scale'
                                     })
                                 }
@@ -1664,32 +1292,25 @@ export default {
                         const fontSize = addNode.style.fontSize
                         switch (fontSize) {
                             case 'x-small':
-                                addNode.style.fontSize =
-                                    this.defaultMenus.fontSize[0].value
+                                addNode.style.fontSize = this.defaultMenus.fontSize[0].value
                                 break
                             case 'small':
-                                addNode.style.fontSize =
-                                    this.defaultMenus.fontSize[1].value
+                                addNode.style.fontSize = this.defaultMenus.fontSize[1].value
                                 break
                             case 'medium':
-                                addNode.style.fontSize =
-                                    this.defaultMenus.fontSize[2].value
+                                addNode.style.fontSize = this.defaultMenus.fontSize[2].value
                                 break
                             case 'large':
-                                addNode.style.fontSize =
-                                    this.defaultMenus.fontSize[3].value
+                                addNode.style.fontSize = this.defaultMenus.fontSize[3].value
                                 break
                             case 'x-large':
-                                addNode.style.fontSize =
-                                    this.defaultMenus.fontSize[4].value
+                                addNode.style.fontSize = this.defaultMenus.fontSize[4].value
                                 break
                             case 'xx-large':
-                                addNode.style.fontSize =
-                                    this.defaultMenus.fontSize[5].value
+                                addNode.style.fontSize = this.defaultMenus.fontSize[5].value
                                 break
                             case 'xxx-large':
-                                addNode.style.fontSize =
-                                    this.defaultMenus.fontSize[6].value
+                                addNode.style.fontSize = this.defaultMenus.fontSize[6].value
                                 break
                             default:
                                 break

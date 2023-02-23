@@ -1,28 +1,23 @@
 <template>
     <div class="mvi-eitor-item" :data-id="`mvi-editor-root-${uid}-${value}`">
-        <Tooltip v-if="editor.useTooltip && editor.defaultTooltips[value]" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow)" :title="editor.defaultTooltips[value]" trigger="hover" :placement="editor.defaultTooltipProps.placement" :timeout="editor.defaultTooltipProps.timeout" :color="editor.defaultTooltipProps.color" :text-color="editor.defaultTooltipProps.textColor" :border-color="editor.defaultTooltipProps.borderColor" :offset="editor.defaultTooltipProps.offset" :z-index="editor.defaultTooltipProps.zIndex" :fixed="editor.defaultTooltipProps.fixed" :fixed-auto="editor.defaultTooltipProps.fixedAuto" :width="editor.defaultTooltipProps.width" :animation="editor.defaultTooltipProps.animation" :show-triangle="editor.defaultTooltipProps.showTriangle">
-            <div class="mvi-editor-target" @click="targetTrigger" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow) || null" :data-id="`mvi-editor-target-${uid}-${value}`" :style="editorTargetStyle">
+        <Tooltip :disabled="!editor.useTooltip || !editor.defaultTooltips[value] || editor.disabled || (value != 'codeView' && editor.codeViewShow)" :title="editor.defaultTooltips[value]" trigger="hover" :placement="editor.defaultTooltipProps.placement" :timeout="editor.defaultTooltipProps.timeout" :color="editor.defaultTooltipProps.color" :text-color="editor.defaultTooltipProps.textColor" :border-color="editor.defaultTooltipProps.borderColor" :offset="editor.defaultTooltipProps.offset" :z-index="editor.defaultTooltipProps.zIndex" :fixed="editor.defaultTooltipProps.fixed" :fixed-auto="editor.defaultTooltipProps.fixedAuto" :width="editor.defaultTooltipProps.width" :animation="editor.defaultTooltipProps.animation" :show-triangle="editor.defaultTooltipProps.showTriangle">
+            <div class="mvi-editor-target" @click="targetTrigger" :disabled="editor.disabled || (value != 'codeView' && editor.codeViewShow) || null" :data-id="`mvi-editor-target-${uid}-${value}`" :style="editorTargetStyle">
                 <i v-if="editor.computedMenuIcons[value].custom" :class="editor.computedMenuIcons[value].value"></i>
                 <Icon v-else :type="editor.computedMenuIcons[value].value" />
             </div>
         </Tooltip>
-        <div v-else class="mvi-editor-target" @click="targetTrigger" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow) || null" :data-id="`mvi-editor-target-${uid}-${value}`" :style="editorTargetStyle">
-            <i v-if="editor.computedMenuIcons[value].custom" :class="editor.computedMenuIcons[value].value"></i>
-            <Icon v-else :type="editor.computedMenuIcons[value].value" />
-        </div>
-        <Layer v-model="layerShow" ref="layer" :placement="editor.defaultLayerProps.placement" :z-index="editor.defaultLayerProps.zIndex" :fixed="editor.defaultLayerProps.fixed" :fixed-auto="editor.defaultLayerProps.fixedAuto" :offset="editor.defaultLayerProps.offset" :wrapper-class="editor.defaultLayerProps.wrapperClass" :timeout="editor.defaultLayerProps.timeout" :show-triangle="editor.defaultLayerProps.showTriangle" :animation="editor.defaultLayerProps.animation" :shadow="editor.defaultLayerProps.shadow" :border="editor.defaultLayerProps.border" :border-color="editor.defaultLayerProps.borderColor" background="#fff" :closable="editor.trigger=='click'" :target="`[data-id='mvi-editor-target-${uid}-${value}']`" :root="`[data-id='mvi-editor-root-${uid}-${value}']`">
+        <Layer v-model="layerShow" ref="layer" :placement="editor.defaultLayerProps.placement" :z-index="editor.defaultLayerProps.zIndex" :fixed="editor.defaultLayerProps.fixed" :fixed-auto="editor.defaultLayerProps.fixedAuto" :offset="editor.defaultLayerProps.offset" :wrapper-class="editor.defaultLayerProps.wrapperClass" :timeout="editor.defaultLayerProps.timeout" :show-triangle="editor.defaultLayerProps.showTriangle" :animation="editor.defaultLayerProps.animation" :shadow="editor.defaultLayerProps.shadow" :border="editor.defaultLayerProps.border" :border-color="editor.defaultLayerProps.borderColor" background="#fff" :closable="editor.trigger == 'click'" :target="`[data-id='mvi-editor-target-${uid}-${value}']`" :root="`[data-id='mvi-editor-root-${uid}-${value}']`">
             <div class="mvi-editor-layer">
                 <!-- 插入图片或者视频 -->
-                <div class="mvi-editor-medias" v-if="value == 'image' || value == 'video' ">
+                <div class="mvi-editor-medias" v-if="value == 'image' || value == 'video'">
                     <Tabs v-model="tabIndex" flex="flex-start" offset="0.4rem" :active-color="editor.activeColor" inactive-color="#808080">
-                        <Tab v-for="(item,index) in menu" :title="item.label" :key="'mvi-editor-media-tab-'+index">
-                            <div :ref="el=>uploadElArray[index] = el" class="mvi-editor-upload" v-if="item.value == 'upload'">
-                                <Icon type='upload-square' />
+                        <Tab v-for="(item, index) in menu" :title="item.label" :key="'mvi-editor-media-tab-' + index">
+                            <div :ref="el => (uploadElArray[index] = el)" class="mvi-editor-upload" v-if="item.value == 'upload'">
+                                <Icon type="upload-square" />
                             </div>
                             <div v-if="item.value == 'remote'" class="mvi-editor-remote">
-                                <input class="mvi-editor-remote-input" @focus="inputFocus" @blur="inputBlur" v-model.trim="remoteUrl" :placeholder="value=='image'?'图片链接':'视频链接'" type="text" />
-                                <div class="mvi-editor-remote-insert" :style="activeColorStyle" @click="insertRemote">插入
-                                </div>
+                                <input class="mvi-editor-remote-input" @focus="inputFocus" @blur="inputBlur" v-model.trim="remoteUrl" :placeholder="value == 'image' ? '图片链接' : '视频链接'" type="text" />
+                                <div class="mvi-editor-remote-insert" :style="activeColorStyle" @click="insertRemote">插入</div>
                             </div>
                         </Tab>
                     </Tabs>
@@ -33,9 +28,9 @@
                         <Tab :title="menu[0].label">
                             <div v-if="menu[0].value == 'link'" class="mvi-editor-link">
                                 <input ref="linkText" class="mvi-editor-link-input" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkText" placeholder="链接文字" type="text" />
-                                <input ref="linkUrl" class="mvi-editor-link-input" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkUrl" placeholder="链接地址" type="text">
+                                <input ref="linkUrl" class="mvi-editor-link-input" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkUrl" placeholder="链接地址" type="text" />
                                 <div class="mvi-editor-link-footer">
-                                    <Checkbox label="新窗口打开" label-placement="right" icon-size="0.24rem" label-size="0.24rem" label-color="#808080" :fill-color="editor.activeColor" v-model="linkTarget"></Checkbox>
+                                    <Checkbox label="新窗口打开" label-placement="right" icon-size="0.24rem" label-size="0.24rem" label-color="#808080" :fill-color="editor.activeColor" v-model="linkTarget"> </Checkbox>
                                     <div class="mvi-editor-link-operation">
                                         <span class="mvi-editor-link-delete" v-if="menuActive" @click="deleteLink">删除链接</span>
                                         <span class="mvi-editor-link-insert" :style="activeColorStyle" @click="insertLink">插入</span>
@@ -47,14 +42,14 @@
                 </div>
                 <!-- 设置颜色 -->
                 <div class="mvi-editor-colors" v-else-if="value == 'foreColor' || value == 'backColor'">
-                    <Tooltip :disabled="!(item.label && editor.useTooltip)" trigger="hover" :title="item.label" v-for="(item,index) in menu" :key="'mvi-editor-color-'+index" :placement="editor.defaultTooltipProps.placement" :timeout="editor.defaultTooltipProps.timeout" :color="editor.defaultTooltipProps.color" :text-color="editor.defaultTooltipProps.textColor" :border-color="editor.defaultTooltipProps.borderColor" :offset="editor.defaultTooltipProps.offset" :z-index="editor.defaultTooltipProps.zIndex" :fixed="editor.defaultTooltipProps.fixed" :width="editor.defaultTooltipProps.width" :wrapper-class="editor.defaultTooltipProps.wrapperClass" :animation="editor.defaultTooltipProps.animation" class="mvi-editor-color">
-                        <span @click="doSelect(item)" class="mvi-editor-color-el" :style="{backgroundColor:item.value}"></span>
+                    <Tooltip :disabled="!(item.label && editor.useTooltip)" trigger="hover" :title="item.label" v-for="(item, index) in menu" :key="'mvi-editor-color-' + index" :placement="editor.defaultTooltipProps.placement" :timeout="editor.defaultTooltipProps.timeout" :color="editor.defaultTooltipProps.color" :text-color="editor.defaultTooltipProps.textColor" :border-color="editor.defaultTooltipProps.borderColor" :offset="editor.defaultTooltipProps.offset" :z-index="editor.defaultTooltipProps.zIndex" :fixed="editor.defaultTooltipProps.fixed" :width="editor.defaultTooltipProps.width" :wrapper-class="editor.defaultTooltipProps.wrapperClass" :animation="editor.defaultTooltipProps.animation" class="mvi-editor-color">
+                        <span @click="doSelect(item)" class="mvi-editor-color-el" :style="{ backgroundColor: item.value }"></span>
                     </Tooltip>
                 </div>
                 <!-- 插入表格 -->
                 <div v-else-if="value == 'table'" class="mvi-editor-tables">
                     <Tabs flex="flex-start" offset="0.4rem" :active-color="editor.activeColor" inactive-color="#808080">
-                        <Tab :title="menuActive?'编辑表格':menu[0].label">
+                        <Tab :title="menuActive ? '编辑表格' : menu[0].label">
                             <div v-if="menu[0].value == 'table'" class="mvi-editor-table">
                                 <div class="mvi-editor-table-edit" v-if="menuActive">
                                     <span @click="addTableRow" class="mvi-editor-table-add" :style="activeColorStyle">增加行</span>
@@ -62,10 +57,7 @@
                                     <span @click="addTableColumn" class="mvi-editor-table-add" :style="activeColorStyle">增加列</span>
                                     <span @click="removeTableColumn" class="mvi-editor-table-delete">删除列</span>
                                 </div>
-                                <div class="mvi-editor-table-create" v-else>
-                                    创建<input ref="rowsInput" class="mvi-editor-table-input" @focus="inputFocus" @blur="inputBlur" v-model.trim.number="tableRows" />
-                                    行<input ref="columnsInput" class="mvi-editor-table-input" @focus="inputFocus" @blur="inputBlur" v-model.trim.number="tableColumns" />列的表格
-                                </div>
+                                <div class="mvi-editor-table-create" v-else>创建<input ref="rowsInput" class="mvi-editor-table-input" @focus="inputFocus" @blur="inputBlur" v-model.trim.number="tableRows" /> 行<input ref="columnsInput" class="mvi-editor-table-input" @focus="inputFocus" @blur="inputBlur" v-model.trim.number="tableColumns" />列的表格</div>
                                 <div class="mvi-editor-table-footer">
                                     <span class="mvi-editor-table-delete" v-if="menuActive" @click="deleteTable">删除表格</span>
                                     <span class="mvi-editor-table-insert" :style="activeColorStyle" v-else @click="insertTable">插入</span>
@@ -76,7 +68,7 @@
                 </div>
                 <!-- 其他 -->
                 <div v-else>
-                    <div class="mvi-editor-el" v-for="(item,index) in menu" @click="doSelect(item,index)" :key="'mvi-editor-el-'+index">
+                    <div class="mvi-editor-el" v-for="(item, index) in menu" @click="doSelect(item, index)" :key="'mvi-editor-el-' + index">
                         <template v-if="item.icon">
                             <i class="mvi-editor-el-icon" v-if="item.icon.custom" :class="item.icon.value"></i>
                             <Icon v-else class="mvi-editor-el-icon" :type="item.icon.value" />
@@ -87,10 +79,10 @@
             </div>
         </Layer>
         <!-- table模板 -->
-        <table v-if="value == 'table'" style="display: none;" ref="table" class="mvi-editor-table-demo" cellpadding="0" cellspacing="0" mvi-editor-insert-table>
+        <table v-if="value == 'table'" style="display: none" ref="table" class="mvi-editor-table-demo" cellpadding="0" cellspacing="0" mvi-editor-insert-table>
             <tbody mvi-editor-insert-table>
-                <tr v-for="item in tableRows" mvi-editor-insert-table :key="'tr-'+item">
-                    <td v-for="el in tableColumns" :key="'td-'+el" mvi-editor-insert-table><br></td>
+                <tr v-for="item in tableRows" mvi-editor-insert-table :key="'tr-' + item">
+                    <td v-for="el in tableColumns" :key="'td-' + el" mvi-editor-insert-table><br /></td>
                 </tr>
             </tbody>
         </table>
@@ -107,6 +99,7 @@ import { Layer } from '../layer'
 import { Tabs } from '../tabs'
 import { Tab } from '../tab'
 import { Checkbox } from '../checkbox'
+import { Msgbox } from '../msgbox'
 export default {
     name: 'm-editor-item',
     props: {
@@ -178,34 +171,13 @@ export default {
         //上传文件配置
         uploadOptions() {
             return {
-                allowedFileType:
-                    this.value == 'image'
-                        ? this.editor.defaultUploadImageProps.allowedFileType
-                        : this.editor.defaultUploadVideoProps.allowedFileType,
-                multiple:
-                    this.value == 'image'
-                        ? this.editor.defaultUploadImageProps.multiple
-                        : this.editor.defaultUploadVideoProps.multiple,
-                accept:
-                    this.value == 'image'
-                        ? this.editor.defaultUploadImageProps.accept
-                        : this.editor.defaultUploadVideoProps.accept,
-                minSize:
-                    this.value == 'image'
-                        ? this.editor.defaultUploadImageProps.minSize
-                        : this.editor.defaultUploadVideoProps.minSize,
-                maxSize:
-                    this.value == 'image'
-                        ? this.editor.defaultUploadImageProps.maxSize
-                        : this.editor.defaultUploadVideoProps.maxSize,
-                minLength:
-                    this.value == 'image'
-                        ? this.editor.defaultUploadImageProps.minLength
-                        : this.editor.defaultUploadVideoProps.minLength,
-                maxLength:
-                    this.value == 'image'
-                        ? this.editor.defaultUploadImageProps.maxLength
-                        : this.editor.defaultUploadVideoProps.maxLength,
+                allowedFileType: this.value == 'image' ? this.editor.defaultUploadImageProps.allowedFileType : this.editor.defaultUploadVideoProps.allowedFileType,
+                multiple: this.value == 'image' ? this.editor.defaultUploadImageProps.multiple : this.editor.defaultUploadVideoProps.multiple,
+                accept: this.value == 'image' ? this.editor.defaultUploadImageProps.accept : this.editor.defaultUploadVideoProps.accept,
+                minSize: this.value == 'image' ? this.editor.defaultUploadImageProps.minSize : this.editor.defaultUploadVideoProps.minSize,
+                maxSize: this.value == 'image' ? this.editor.defaultUploadImageProps.maxSize : this.editor.defaultUploadVideoProps.maxSize,
+                minLength: this.value == 'image' ? this.editor.defaultUploadImageProps.minLength : this.editor.defaultUploadVideoProps.minLength,
+                maxLength: this.value == 'image' ? this.editor.defaultUploadImageProps.maxLength : this.editor.defaultUploadVideoProps.maxLength,
                 select: files => {
                     this.editor.restoreRange()
                     //使用base64
@@ -234,7 +206,7 @@ export default {
                         if (typeof this.editor.uploadImageError == 'function') {
                             this.editor.uploadImageError(state, message, file)
                         } else {
-                            this.$msgbox({
+                            Msgbox.msgbox({
                                 message: message,
                                 animation: 'scale'
                             })
@@ -243,7 +215,7 @@ export default {
                         if (typeof this.editor.uploadVideoError == 'function') {
                             this.editor.uploadVideoError(state, message, file)
                         } else {
-                            this.$msgbox({
+                            Msgbox.msgbox({
                                 message: message,
                                 animation: 'scale'
                             })
@@ -353,10 +325,7 @@ export default {
                             this.linkInsertSet()
                         } else if (this.value == 'table') {
                             this.tableInsertSet()
-                        } else if (
-                            this.value == 'image' ||
-                            this.value == 'video'
-                        ) {
+                        } else if (this.value == 'image' || this.value == 'video') {
                             this.uploadSet()
                         }
                     }
@@ -406,8 +375,7 @@ export default {
                         document.execCommand('selectAll')
                         break
                     case 'divider': //分割线
-                        document.execCommand('insertHorizontalRule')
-                        document.execCommand('insertHtml', false, '<p><br></p>')
+                        document.execCommand('insertHtml', false, '<hr><p><br></p>')
                         break
                     case 'bold': //加粗
                         document.execCommand('bold')
@@ -431,30 +399,24 @@ export default {
                         if (this.menuActive) {
                             this.removeBlock()
                         } else {
-                            document.execCommand(
-                                'formatBlock',
-                                false,
-                                'blockquote'
-                            )
+                            document.execCommand('insertHtml', false, '<blockquote><br></blockquote><p><br></p>')
                         }
                         break
                     case 'code': //代码
                         if (this.menuActive) {
                             this.removeCode()
                         } else {
-                            document.execCommand('formatBlock', false, 'pre')
+                            document.execCommand('insertHtml', false, '<pre><br></pre><p><br></p>')
                         }
                         break
                     case 'codeView': //显示源码
                         this.editor.codeViewShow = !this.editor.codeViewShow
                         this.$nextTick(() => {
                             if (this.editor.codeViewShow) {
-                                this.editor.$refs.codeView.innerText =
-                                    this.editor.html
+                                this.editor.$refs.codeView.innerText = this.editor.html
                                 this.editor.collapseToEnd()
                             } else {
-                                this.editor.$refs.content.innerHTML =
-                                    this.editor.html
+                                this.editor.$refs.content.innerHTML = this.editor.html
                                 this.editor.collapseToEnd()
                                 this.editor.changeActive()
                             }
@@ -492,10 +454,7 @@ export default {
         uploadSet() {
             if (this.uploadElArray.length > 0) {
                 for (let i = 0; i < this.uploadElArray.length; i++) {
-                    let upload = new Upload(
-                        this.uploadElArray[i],
-                        this.uploadOptions
-                    )
+                    let upload = new Upload(this.uploadElArray[i], this.uploadOptions)
                     upload.init()
                 }
             }
@@ -512,9 +471,7 @@ export default {
             if (!this.linkText) {
                 this.linkText = this.linkUrl
             }
-            let link = Dap.element.string2dom(
-                `<a href="${this.linkUrl}">${this.linkText}</a>`
-            )
+            let link = Dap.element.string2dom(`<a href="${this.linkUrl}">${this.linkText}</a>`)
             if (this.linkTarget) {
                 link.setAttribute('target', '_blank')
             }
@@ -587,17 +544,14 @@ export default {
                 this.hideLayer()
                 return
             }
-            if (
-                !Dap.common.matchingText(this.tableRows.toString(), 'number') ||
-                !Dap.common.matchingText(this.tableColumns.toString(), 'number')
-            ) {
+            if (!Dap.common.matchingText(this.tableRows.toString(), 'number') || !Dap.common.matchingText(this.tableColumns.toString(), 'number')) {
                 this.hideLayer()
                 return
             }
             let table = this.$refs.table.cloneNode(true)
             table.style.display = ''
             this.editor.restoreRange()
-            document.execCommand('insertHtml', false, table.outerHTML)
+            document.execCommand('insertHtml', false, `${table.outerHTML}<p><br></p>`)
             this.hideLayer()
         },
         //增加行
@@ -736,10 +690,7 @@ export default {
         //复制表格列进行增加
         copyColumnAppend(column) {
             //该列在父元素中的序列
-            let index = [].indexOf.call(
-                Dap.element.children(column.parentNode, column.tagName),
-                column
-            )
+            let index = [].indexOf.call(Dap.element.children(column.parentNode, column.tagName), column)
             column.parentNode.parentNode.querySelectorAll('tr').forEach(tr => {
                 let td = Dap.element.children(tr, 'td')[index]
                 let newColumn = td.cloneNode(true)
@@ -750,10 +701,7 @@ export default {
         //根据表格列删除指定的一列
         removeColumn(column) {
             //该列在父元素中的序列
-            let index = [].indexOf.call(
-                Dap.element.children(column.parentNode, column.tagName),
-                column
-            )
+            let index = [].indexOf.call(Dap.element.children(column.parentNode, column.tagName), column)
             column.parentNode.parentNode.querySelectorAll('tr').forEach(tr => {
                 let td = Dap.element.children(tr, 'td')[index]
                 td.remove()
@@ -788,8 +736,7 @@ export default {
         //删除引用
         removeBlock() {
             let node = this.editor.getSelectNode()
-            let blockquotes =
-                this.editor.$refs.content.querySelectorAll('blockquote')
+            let blockquotes = this.editor.$refs.content.querySelectorAll('blockquote')
             let blockquote = null
             let innerHTML = ''
             for (let i = 0; i < blockquotes.length; i++) {
