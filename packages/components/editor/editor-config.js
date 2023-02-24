@@ -77,5 +77,35 @@ const list = [
 const allowedImageType = ['jpg', 'png', 'JPG', 'PNG', 'JPEG', 'jpeg', 'gif', 'GIF', 'jfif', 'JFIF', 'webp', 'WEBP']
 //上传视频的后缀格式默认配置
 const allowedVideoType = ['mp4', 'MP4', 'avi', 'AVI', 'WAV', 'wav']
-
-export default { unactiveMenus, backColor, foreColor, fontSize, justify, fontFamily, list, allowedImageType, allowedVideoType }
+//默认标签配置
+const tag = [
+    {
+        label: 'H1',
+        value: 'h1'
+    },
+    {
+        label: 'H2',
+        value: 'h2'
+    },
+    {
+        label: 'H3',
+        value: 'h3'
+    },
+    {
+        label: 'H4',
+        value: 'h4'
+    },
+    {
+        label: 'H5',
+        value: 'h5'
+    },
+    {
+        label: 'H6',
+        value: 'h6'
+    },
+    {
+        label: '段落',
+        value: 'p'
+    }
+]
+export default { unactiveMenus, backColor, foreColor, fontSize, justify, fontFamily, list, allowedImageType, allowedVideoType, tag }

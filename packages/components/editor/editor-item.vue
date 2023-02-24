@@ -400,6 +400,7 @@ export default {
                             this.removeBlock()
                         } else {
                             document.execCommand('insertHtml', false, '<blockquote><br></blockquote><p><br></p>')
+                            this.editor.collapseToEnd(this.editor.range.commonAncestorContainer.previousSibling)
                         }
                         break
                     case 'code': //代码
@@ -407,6 +408,7 @@ export default {
                             this.removeCode()
                         } else {
                             document.execCommand('insertHtml', false, '<pre><br></pre><p><br></p>')
+                            this.editor.collapseToEnd(this.editor.range.commonAncestorContainer.previousSibling)
                         }
                         break
                     case 'codeView': //显示源码
@@ -552,6 +554,7 @@ export default {
             table.style.display = ''
             this.editor.restoreRange()
             document.execCommand('insertHtml', false, `${table.outerHTML}<p><br></p>`)
+            this.editor.collapseToEnd(this.editor.range.commonAncestorContainer.previousSibling)
             this.hideLayer()
         },
         //增加行
@@ -561,19 +564,27 @@ export default {
             if (this.editor.compareTag(node, 'tr')) {
                 let tr = this.editor.getCompareTag(node, 'tr')
                 this.copyRowAppend(tr)
+                //光标设置到增加的那一行上
+                this.editor.collapseToEnd(Dap.element.children(tr.nextSibling, 'td')[0])
             }
             //tbody
             else if (this.editor.compareTag(node, 'tbody')) {
                 let tbody = this.editor.getCompareTag(node, 'tbody')
                 let children = Dap.element.children(tbody, 'tr')
-                this.copyRowAppend(children[children.length - 1])
+                let tr = children[children.length - 1]
+                this.copyRowAppend(tr)
+                //光标设置到增加的那一行上
+                this.editor.collapseToEnd(Dap.element.children(tr.nextSibling, 'td')[0])
             }
             //table
             else if (this.editor.compareTag(node, 'table')) {
                 let table = this.editor.getCompareTag(node, 'table')
                 let tbody = Dap.element.children(table, 'tbody')[0]
                 let children = Dap.element.children(tbody, 'tr')
-                this.copyRowAppend(children[children.length - 1])
+                let tr = children[children.length - 1]
+                this.copyRowAppend(tr)
+                //光标设置到增加的那一行上
+                this.editor.collapseToEnd(Dap.element.children(tr.nextSibling, 'td')[0])
             }
             this.editor.updateHtmlText()
             this.editor.updateValue()
@@ -585,20 +596,54 @@ export default {
             //tr
             if (this.editor.compareTag(node, 'tr')) {
                 let tr = this.editor.getCompareTag(node, 'tr')
+                //光标设置到删除的那一行之前
+                let parentNode = tr.parentNode
+                let previousSibling = tr.previousSibling
                 tr.remove()
+                if (previousSibling) {
+                    this.editor.collapseToEnd(Dap.element.children(previousSibling, 'td')[0])
+                } else {
+                    let firstTr = Dap.element.children(parentNode, 'tr')[0]
+                    if (firstTr) {
+                        this.editor.collapseToEnd(Dap.element.children(firstTr, 'td')[0])
+                    }
+                }
             }
             //tbody
             else if (this.editor.compareTag(node, 'tbody')) {
                 let tbody = this.editor.getCompareTag(node, 'tbody')
                 let children = Dap.element.children(tbody, 'tr')
-                children[children.length - 1].remove()
+                //光标设置到删除的那一行之前
+                let parentNode = tr.parentNode
+                let previousSibling = tr.previousSibling
+                tr.remove()
+                if (previousSibling) {
+                    this.editor.collapseToEnd(Dap.element.children(previousSibling, 'td')[0])
+                } else {
+                    let firstTr = Dap.element.children(parentNode, 'tr')[0]
+                    if (firstTr) {
+                        this.editor.collapseToEnd(Dap.element.children(firstTr, 'td')[0])
+                    }
+                }
             }
             //table
             else if (this.editor.compareTag(node, 'table')) {
                 let table = this.editor.getCompareTag(node, 'table')
                 let tbody = Dap.element.children(table, 'tbody')[0]
                 let children = Dap.element.children(tbody, 'tr')
-                children[children.length - 1].remove()
+                let tr = children[children.length - 1]
+                //光标设置到删除的那一行之前
+                let parentNode = tr.parentNode
+                let previousSibling = tr.previousSibling
+                tr.remove()
+                if (previousSibling) {
+                    this.editor.collapseToEnd(Dap.element.children(previousSibling, 'td')[0])
+                } else {
+                    let firstTr = Dap.element.children(parentNode, 'tr')[0]
+                    if (firstTr) {
+                        this.editor.collapseToEnd(Dap.element.children(firstTr, 'td')[0])
+                    }
+                }
             }
             this.editor.updateHtmlText()
             this.editor.updateValue()
@@ -610,21 +655,32 @@ export default {
             if (this.editor.compareTag(node, 'td')) {
                 let td = this.editor.getCompareTag(node, 'td')
                 this.copyColumnAppend(td)
+                //光标设置到增加的那一列上
+                this.editor.collapseToEnd(td.nextSibling)
             } else if (this.editor.compareTag(node, 'tr')) {
                 let tr = this.editor.getCompareTag(node, 'tr')
                 let children = Dap.element.children(tr, 'td')
-                this.copyColumnAppend(children[children.length - 1])
+                let td = children[children.length - 1]
+                this.copyColumnAppend(td)
+                //光标设置到增加的那一列上
+                this.editor.collapseToEnd(td.nextSibling)
             } else if (this.editor.compareTag(node, 'tbody')) {
                 let tbody = this.editor.getCompareTag(node, 'tbody')
                 let tr = Dap.element.children(tbody, 'tr')[0]
                 let childrenTd = Dap.element.children(tr, 'td')
-                this.copyColumnAppend(childrenTd[childrenTd.length - 1])
+                let td = childrenTd[childrenTd.length - 1]
+                this.copyColumnAppend(td)
+                //光标设置到增加的那一列上
+                this.editor.collapseToEnd(td.nextSibling)
             } else if (this.editor.compareTag(node, 'table')) {
                 let table = this.editor.getCompareTag(node, 'table')
                 let tbody = Dap.element.children(table, 'tbody')[0]
                 let tr = Dap.element.children(tbody, 'tr')[0]
                 let childrenTd = Dap.element.children(tr, 'td')
-                this.copyColumnAppend(childrenTd[childrenTd.length - 1])
+                let td = childrenTd[childrenTd.length - 1]
+                this.copyColumnAppend(td)
+                //光标设置到增加的那一列上
+                this.editor.collapseToEnd(td.nextSibling)
             }
             this.editor.updateHtmlText()
             this.editor.updateValue()
@@ -635,22 +691,66 @@ export default {
             let node = this.editor.getSelectNode()
             if (this.editor.compareTag(node, 'td')) {
                 let td = this.editor.getCompareTag(node, 'td')
+                //光标设置到删除的那一列之前
+                let parentNode = td.parentNode
+                let previousSibling = td.previousSibling
                 this.removeColumn(td)
+                if (previousSibling) {
+                    this.editor.collapseToEnd(previousSibling)
+                } else {
+                    let firstTd = Dap.element.children(parentNode, 'td')[0]
+                    if (firstTd) {
+                        this.editor.collapseToEnd(firstTd)
+                    }
+                }
             } else if (this.editor.compareTag(node, 'tr')) {
                 let tr = this.editor.getCompareTag(node, 'tr')
                 let children = Dap.element.children(tr, 'td')
-                this.removeColumn(children[children.length - 1])
+                let td = children[children.length - 1]
+                //光标设置到删除的那一列之前
+                let previousSibling = td.previousSibling
+                this.removeColumn(td)
+                if (previousSibling) {
+                    this.editor.collapseToEnd(previousSibling)
+                } else {
+                    let firstTd = Dap.element.children(tr, 'td')[0]
+                    if (firstTd) {
+                        this.editor.collapseToEnd(firstTd)
+                    }
+                }
             } else if (this.editor.compareTag(node, 'tbody')) {
                 let tbody = this.editor.getCompareTag(node, 'tbody')
                 let tr = Dap.element.children(tbody, 'tr')[0]
                 let childrenTd = Dap.element.children(tr, 'td')
-                this.removeColumn(childrenTd[childrenTd.length - 1])
+                let td = childrenTd[childrenTd.length - 1]
+                //光标设置到删除的那一列之前
+                let previousSibling = td.previousSibling
+                this.removeColumn(td)
+                if (previousSibling) {
+                    this.editor.collapseToEnd(previousSibling)
+                } else {
+                    let firstTd = Dap.element.children(tr, 'td')[0]
+                    if (firstTd) {
+                        this.editor.collapseToEnd(firstTd)
+                    }
+                }
             } else if (this.editor.compareTag(node, 'table')) {
                 let table = this.editor.getCompareTag(node, 'table')
                 let tbody = Dap.element.children(table, 'tbody')[0]
                 let tr = Dap.element.children(tbody, 'tr')[0]
                 let childrenTd = Dap.element.children(tr, 'td')
-                this.removeColumn(childrenTd[childrenTd.length - 1])
+                let td = childrenTd[childrenTd.length - 1]
+                //光标设置到删除的那一列之前
+                let previousSibling = td.previousSibling
+                this.removeColumn(td)
+                if (previousSibling) {
+                    this.editor.collapseToEnd(previousSibling)
+                } else {
+                    let firstTd = Dap.element.children(tr, 'td')[0]
+                    if (firstTd) {
+                        this.editor.collapseToEnd(firstTd)
+                    }
+                }
             }
             this.editor.updateHtmlText()
             this.editor.updateValue()

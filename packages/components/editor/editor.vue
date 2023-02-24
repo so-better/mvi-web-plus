@@ -76,36 +76,7 @@ export default {
                 //分割线
                 divider: true,
                 //标签
-                tag: [
-                    {
-                        label: 'H1',
-                        value: 'h1'
-                    },
-                    {
-                        label: 'H2',
-                        value: 'h2'
-                    },
-                    {
-                        label: 'H3',
-                        value: 'h3'
-                    },
-                    {
-                        label: 'H4',
-                        value: 'h4'
-                    },
-                    {
-                        label: 'H5',
-                        value: 'h5'
-                    },
-                    {
-                        label: 'H6',
-                        value: 'h6'
-                    },
-                    {
-                        label: '段落',
-                        value: 'p'
-                    }
-                ],
+                tag: defaultConfig.tag,
                 //加粗
                 bold: true,
                 //斜体
@@ -766,21 +737,43 @@ export default {
                 selection.addRange(this.range)
             }
         },
-        //将编辑区域光标移至最后，可对外提供
-        collapseToEnd() {
+        //将编辑区域光标移至指定节点最后，可对外提供
+        collapseToEnd(node) {
             if (this.disabled) {
                 return
             }
             let el = null
-            if (this.$refs.content) {
-                el = this.$refs.content
-            } else if (this.$refs.codeView) {
-                el = this.$refs.codeView
+            if (node) {
+                el = node
+            } else {
+                if (this.$refs.content) {
+                    el = this.$refs.content
+                } else if (this.$refs.codeView) {
+                    el = this.$refs.codeView
+                }
             }
-            el.focus()
             let selection = window.getSelection()
             selection.selectAllChildren(el)
             selection.collapseToEnd()
+        },
+        //将编辑区域光标移至指定节点最前，可对外提供
+        collapseToStart(node) {
+            if (this.disabled) {
+                return
+            }
+            let el = null
+            if (node) {
+                el = node
+            } else {
+                if (this.$refs.content) {
+                    el = this.$refs.content
+                } else if (this.$refs.codeView) {
+                    el = this.$refs.codeView
+                }
+            }
+            let selection = window.getSelection()
+            selection.selectAllChildren(el)
+            selection.collapseToStart()
         },
         //根据选区获取节点，可对外提供
         getSelectNode() {
