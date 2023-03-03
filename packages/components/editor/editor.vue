@@ -450,11 +450,6 @@ export default {
 		videoClass: {
 			type: String,
 			default: null
-		},
-		//段落分隔符
-		paragraphSeparator: {
-			type: String,
-			default: 'p'
 		}
 	},
 	computed: {
@@ -639,7 +634,7 @@ export default {
 			//将自定义的菜单项图标配置与默认的菜单项图标配置整合
 			this.defaultMenuIcons = this.initOption(this.defaultMenuIcons, this.menuIcons)
 			//定义段落分隔符
-			document.execCommand('defaultParagraphSeparator', false, this.paragraphSeparator)
+			document.execCommand('defaultParagraphSeparator', false, 'p')
 			//使用css
 			document.execCommand('styleWithCSS', false, true)
 			//初始化赋值
