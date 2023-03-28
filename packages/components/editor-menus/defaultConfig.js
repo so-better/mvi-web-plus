@@ -118,12 +118,13 @@ export default [
 				label: '默认字体',
 				value: ''
 			},
-			'PingFang SC',
-			'Helvetica Neue',
-			'kaiTi',
-			'Microsoft YaHei',
+			'黑体',
+			'仿宋',
+			'楷体',
+			'宋体',
+			'微软雅黑',
 			'Arial',
-			'sans-serif'
+			'Consolas'
 		],
 		index: 0
 	},

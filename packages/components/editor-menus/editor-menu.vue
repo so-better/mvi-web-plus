@@ -47,13 +47,19 @@
 			:target="`[data-id='mvi-editor-menu-target-${uid}-${options.key}']`"
 			:root="`[data-id='mvi-editor-menu-${uid}-${options.key}']`">
 			<div class="mvi-editor-menu-layer">
-				<editorTag :tag="layerElTag(item)" :disabled="item.disabled || null" class="mvi-editor-menu-layer-el" v-for="item in options.data">
-					<template v-if="item.icon">
-						<i class="mvi-editor-menu-icon" v-if="item.icon.custom" :class="item.icon.value"></i>
-						<Icon v-else class="mvi-editor-menu-icon" :type="item.icon.value" />
-					</template>
-					<span v-text="item.label"></span>
-				</editorTag>
+				<!-- 字体颜色 -->
+				<template v-if="options.key == 'foreColor'"></template>
+				<!-- 背景色 -->
+				<template v-else-if="options.key == 'backColor'"></template>
+				<template v-else>
+					<editorTag :tag="layerElTag(item)" :style="layerElStyle(item)" :disabled="item.disabled || null" class="mvi-editor-menu-layer-el" v-for="item in options.data">
+						<template v-if="item.icon">
+							<i class="mvi-editor-menu-icon" v-if="item.icon.custom" :class="item.icon.value"></i>
+							<Icon v-else class="mvi-editor-menu-icon" :type="item.icon.value" />
+						</template>
+						<span v-text="item.label"></span>
+					</editorTag>
+				</template>
 			</div>
 		</Layer>
 	</div>
@@ -142,6 +148,16 @@ export default {
 					return item.value
 				}
 				return 'div'
+			}
+		},
+		//浮层项的样式
+		layerElStyle() {
+			return item => {
+				let style = {}
+				if (this.options.key == 'fontFamily') {
+					style.fontFamily = item.value
+				}
+				return style
 			}
 		},
 		//菜单项样式
