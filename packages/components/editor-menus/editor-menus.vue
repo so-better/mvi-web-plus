@@ -1,7 +1,11 @@
 <template>
 	<div class="mvi-editor-menus" :style="{ border: border ? '' : 'none' }" :disabled="disabled ? disabled : null">
 		<template v-for="item in menus">
-			<editorMenu v-if="showMenu(item)" :options="item"></editorMenu>
+			<editorMenu v-if="showMenu(item)" :options="item">
+				<template #layer v-if="isLayerMenu(item) && item.customLayer && $slots.layer">
+					<slot name="layer" :options="item"></slot>
+				</template>
+			</editorMenu>
 		</template>
 	</div>
 </template>
@@ -136,11 +140,12 @@ export default {
 		//工具提示组件配置
 		combinedTooltipProps() {
 			return this.initOption(defaultTooltipProps, this.tooltipProps)
-		}
-	},
-	provide() {
-		return {
-			editorMenusInstance: this
+		},
+		//是否弹出式菜单
+		isLayerMenu() {
+			return item => {
+				return Array.isArray(item.data) && item.data.length
+			}
 		}
 	},
 	methods: {

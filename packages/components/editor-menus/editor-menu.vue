@@ -1,21 +1,6 @@
 <template>
 	<div class="mvi-editor-menu" :data-id="`mvi-editor-menu-${uid}-${options.key}`">
-		<Tooltip
-			:disabled="disabledToolTip || null"
-			:title="options.name"
-			trigger="hover"
-			:placement="editorMenusInstance.combinedTooltipProps.placement"
-			:timeout="editorMenusInstance.combinedTooltipProps.timeout"
-			:color="editorMenusInstance.combinedTooltipProps.color"
-			:text-color="editorMenusInstance.combinedTooltipProps.textColor"
-			:border-color="editorMenusInstance.combinedTooltipProps.borderColor"
-			:offset="editorMenusInstance.combinedTooltipProps.offset"
-			:z-index="editorMenusInstance.combinedTooltipProps.zIndex"
-			:fixed="editorMenusInstance.combinedTooltipProps.fixed"
-			:fixed-auto="editorMenusInstance.combinedTooltipProps.fixedAuto"
-			:width="editorMenusInstance.combinedTooltipProps.width"
-			:animation="editorMenusInstance.combinedTooltipProps.animation"
-			:show-triangle="editorMenusInstance.combinedTooltipProps.showTriangle">
+		<Tooltip :disabled="disabledToolTip || null" :title="options.name" trigger="hover" :placement="$parent.combinedTooltipProps.placement" :timeout="$parent.combinedTooltipProps.timeout" :color="$parent.combinedTooltipProps.color" :text-color="$parent.combinedTooltipProps.textColor" :border-color="$parent.combinedTooltipProps.borderColor" :offset="$parent.combinedTooltipProps.offset" :z-index="$parent.combinedTooltipProps.zIndex" :fixed="$parent.combinedTooltipProps.fixed" :fixed-auto="$parent.combinedTooltipProps.fixedAuto" :width="$parent.combinedTooltipProps.width" :animation="$parent.combinedTooltipProps.animation" :show-triangle="$parent.combinedTooltipProps.showTriangle">
 			<div class="mvi-editor-menu-target" @click="targetTrigger" :disabled="disabledMenu || null" :data-id="`mvi-editor-menu-target-${uid}-${options.key}`" @mouseenter="showLayer(true)" @mouseleave="hideLayer(true)" :style="editorTargetStyle">
 				<span class="mvi-editor-menu-value" v-if="isValueMenu">{{ selectVal.label }}</span>
 				<template v-else-if="options.icon">
@@ -29,21 +14,21 @@
 			v-if="isLayerMenu"
 			v-model="layerShow"
 			ref="layer"
-			:placement="editorMenusInstance.combinedLayerProps.placement"
-			:z-index="editorMenusInstance.combinedLayerProps.zIndex"
-			:fixed="editorMenusInstance.combinedLayerProps.fixed"
-			:fixed-auto="editorMenusInstance.combinedLayerProps.fixedAuto"
-			:offset="editorMenusInstance.combinedLayerProps.offset"
-			:wrapper-class="editorMenusInstance.combinedLayerProps.wrapperClass"
-			:timeout="editorMenusInstance.combinedLayerProps.timeout"
-			:show-triangle="editorMenusInstance.combinedLayerProps.showTriangle"
-			:animation="editorMenusInstance.combinedLayerProps.animation"
-			:shadow="editorMenusInstance.combinedLayerProps.shadow"
-			:border="editorMenusInstance.combinedLayerProps.border"
-			:border-color="editorMenusInstance.combinedLayerProps.borderColor"
-			:background="editorMenusInstance.combinedLayerProps.background"
-			:width="editorMenusInstance.combinedLayerProps.width"
-			:closable="editorMenusInstance.trigger == 'click'"
+			:placement="$parent.combinedLayerProps.placement"
+			:z-index="$parent.combinedLayerProps.zIndex"
+			:fixed="$parent.combinedLayerProps.fixed"
+			:fixed-auto="$parent.combinedLayerProps.fixedAuto"
+			:offset="$parent.combinedLayerProps.offset"
+			:wrapper-class="$parent.combinedLayerProps.wrapperClass"
+			:timeout="$parent.combinedLayerProps.timeout"
+			:show-triangle="$parent.combinedLayerProps.showTriangle"
+			:animation="$parent.combinedLayerProps.animation"
+			:shadow="$parent.combinedLayerProps.shadow"
+			:border="$parent.combinedLayerProps.border"
+			:border-color="$parent.combinedLayerProps.borderColor"
+			:background="$parent.combinedLayerProps.background"
+			:width="$parent.combinedLayerProps.width"
+			:closable="$parent.trigger == 'click'"
 			:target="`[data-id='mvi-editor-menu-target-${uid}-${options.key}']`"
 			:root="`[data-id='mvi-editor-menu-${uid}-${options.key}']`">
 			<div class="mvi-editor-menu-layer">
@@ -51,6 +36,9 @@
 				<template v-if="options.key == 'foreColor'"></template>
 				<!-- 背景色 -->
 				<template v-else-if="options.key == 'backColor'"></template>
+				<!-- 自定义弹出层内容 -->
+				<slot name="layer" v-else-if="$slots.layer"></slot>
+				<!-- 普通弹出层 -->
 				<template v-else>
 					<editorTag :tag="layerElTag(item)" :style="layerElStyle(item)" :disabled="item.disabled || null" class="mvi-editor-menu-layer-el" v-for="item in options.data">
 						<template v-if="item.icon">
@@ -106,7 +94,6 @@ export default {
 			uid: instance.uid
 		}
 	},
-	inject: ['editorMenusInstance'],
 	computed: {
 		//是否禁用工具提示
 		disabledToolTip() {
@@ -121,7 +108,7 @@ export default {
 		},
 		//是否禁用菜单项
 		disabledMenu() {
-			if (this.editorMenusInstance.disabled) {
+			if (this.$parent.disabled) {
 				return true
 			}
 			if (this.options.disabled) {
@@ -195,7 +182,7 @@ export default {
 		}
 	},
 	created() {
-		Bus.on(`mvi-editor-${this.editorMenusInstance.name}`, data => {
+		Bus.on(`mvi-editor-${this.$parent.name}`, data => {
 			this.editorInstance = data
 		})
 	},
@@ -207,7 +194,7 @@ export default {
 			}
 			//如果是弹出式菜单
 			if (this.isLayerMenu) {
-				if (this.editorMenusInstance.trigger == 'click') {
+				if (this.$parent.trigger == 'click') {
 					if (this.layerShow) {
 						this.hideLayer()
 					} else {
@@ -224,7 +211,7 @@ export default {
 			if (this.disabledMenu) {
 				return
 			}
-			if (judgeHover && this.editorMenusInstance.trigger != 'hover') {
+			if (judgeHover && this.$parent.trigger != 'hover') {
 				return
 			}
 			if (this.isLayerMenu) {
@@ -237,7 +224,7 @@ export default {
 			if (this.disabledMenu) {
 				return
 			}
-			if (judgeHover && this.editorMenusInstance.trigger != 'hover') {
+			if (judgeHover && this.$parent.trigger != 'hover') {
 				return
 			}
 			if (this.isLayerMenu) {
