@@ -1,4 +1,4 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import { Editor } from '../packages'
-createApp(App).use(Editor).mount('#app')
+import mvi from '../packages'
+createApp(App).use(mvi).mount('#app')

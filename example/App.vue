@@ -1,6 +1,7 @@
 <template>
 	<div class="mvi-p-2">
-		<m-editor :menu-icons="{ act: 'user' }" :menu-index="{ act: 1 }" :menus="{ codeView: true, act: actMenu }" v-model="value" height="8rem"> </m-editor>
+		<m-editor-menus border ref="editorMenus"></m-editor-menus>
+		<m-editor border placeholder="请输入内容" v-model="value" ref="editor"></m-editor>
 	</div>
 </template>
 <script>
@@ -8,17 +9,7 @@ export default {
 	data() {
 		return {
 			show: true,
-			value: ``,
-			actMenu: [
-				{
-					label: 'aaaa',
-					value: '0'
-				},
-				{
-					label: 'bbbb',
-					value: '1'
-				}
-			]
+			value: '<p>使用autofocus可以使<span style="color:#ff3300;">编辑器在初始化</span>完成后自动获取焦点</p><p>使用autofocus可以使编辑器在初始化完成后自动获取焦点</p><p>使用autofocus可以使编辑器在初始化完成后自动获取焦点</p>'
 		}
 	},
 	mounted() {},

@@ -80,6 +80,7 @@ import { Autocomplete } from './components/autocomplete'
 import { DateChooser } from './components/date-chooser'
 import { Field } from './components/field'
 import { Editor } from './components/editor'
+import { EditorMenus } from './components/editor-menus'
 import { Row } from './components/row'
 import { Col } from './components/col'
 import { Form } from './components/form'
@@ -160,6 +161,7 @@ export * from './components/autocomplete'
 export * from './components/date-chooser'
 export * from './components/field'
 export * from './components/editor'
+export * from './components/editor-menus'
 export * from './components/row'
 export * from './components/col'
 export * from './components/form'
@@ -242,6 +244,7 @@ const install = app => {
 		DateChooser,
 		Field,
 		Editor,
+		EditorMenus,
 		Row,
 		Col,
 		Form,
