@@ -1,12 +1,17 @@
 <template>
 	<div class="m-editor">
-		<div v-if="codeViewShow" ref="codeView" v-text="initalHtml" key="code" :contenteditable="!disabled || null" :style="codeViewStyle" :class="codeViewClass" @blur="codeViewBlur" @focus="codeViewFocus" @input="codeViewInput"></div>
-		<div v-else ref="content" v-html="initalHtml" key="content" :contenteditable="!disabled || null" :style="contentStyle" :class="contentClass" @blur="contentBlur" @focus="contentFocus" @click="changeActive" @input="contentInput" :data-placeholder="placeholder"></div>
+		<div v-if="codeViewShow" ref="codeView" v-text="initalHtml" key="code" :contenteditable="!disabled || null" :style="codeViewStyle" :class="codeViewClass" @blur="codeViewBlur" @focus="codeViewFocus" @input="codeViewInput" @paste="codeViewPaste"></div>
+		<div v-else ref="content" v-html="initalHtml" key="content" :contenteditable="!disabled || null" :style="contentStyle" :class="contentClass" :data-placeholder="placeholder" @blur="contentBlur" @focus="contentFocus" @click="changeActive" @input="contentInput" @paste="contentPaste"></div>
 	</div>
 </template>
 <script>
 import { Dap } from '../dap'
 import Bus from '../../js/Bus'
+import defaultVideoShowProps from './defaultVideoShowProps'
+import defaultUploadImageProps from './defaultUploadImageProps'
+import defaultUploadVideoProps from './defaultUploadVideoProps'
+import { Msgbox } from '../msgbox'
+import { Observe } from '../observe'
 export default {
 	name: 'm-editor',
 	props: {
@@ -72,13 +77,6 @@ export default {
 			type: String,
 			default: null
 		},
-		//自定义菜单的激活判定
-		customActive: {
-			type: Function,
-			default: function () {
-				return false
-			}
-		},
 		//激活颜色设定
 		activeColor: {
 			type: String,
@@ -86,11 +84,40 @@ export default {
 			validator(value) {
 				return Dap.common.matchingText(value, 'hex')
 			}
+		},
+		//本地上传文件是否使用base64
+		useBase64: {
+			type: Boolean,
+			default: true
+		},
+		//自定义上传图片配置
+		uploadImageProps: {
+			type: Object,
+			default: function () {
+				return {}
+			}
+		},
+		//自定义上传视频配置
+		uploadVideoProps: {
+			type: Object,
+			default: function () {
+				return {}
+			}
+		},
+		//自定义上传图片出错回调
+		uploadImageError: {
+			type: Function
+		},
+		//自定义上传视频出错回调
+		uploadVideoError: {
+			type: Function
 		}
 	},
-	emits: ['update:modelValue', 'blur', 'focus', 'input', 'file-paste'],
+	emits: ['update:modelValue', 'blur', 'focus', 'input', 'file-paste', 'upload-image', 'upload-video'],
 	data() {
 		return {
+			//菜单栏实例
+			editorMenusInstance: null,
 			//选区
 			range: null,
 			//源码是否显示
@@ -159,10 +186,24 @@ export default {
 				}
 			}
 			return style
+		},
+		//视频显示设置
+		combinedVideoShowProps() {
+			return this.initOption(defaultVideoShowProps, this.videoShowProps)
+		},
+		//上传图片配置
+		combinedUploadImageProps() {
+			return this.initOption(defaultUploadImageProps, this.uploadImageProps)
+		},
+		//上传视频配置
+		combinedUploadVideoProps() {
+			return this.initOption(defaultUploadVideoProps, this.uploadVideoProps)
 		}
 	},
 	watch: {
+		//监听modelValue
 		modelValue() {
+			//如果是外界赋值导致的更新
 			if (!this.isModelChange) {
 				if (this.$refs.content) {
 					this.$refs.content.innerHTML = this.getValue()
@@ -171,11 +212,30 @@ export default {
 				}
 				this.updateHtmlText()
 			}
+		},
+		//监听代码视图切换标识
+		codeViewShow(newValue) {
+			this.$nextTick(() => {
+				if (newValue) {
+					this.$refs.codeView.innerText = this.html
+					this.collapseToEnd()
+				} else {
+					this.$refs.content.innerHTML = this.html
+					this.collapseToEnd()
+					this.changeActive()
+				}
+			})
 		}
+	},
+	created() {
+		Bus.emit(`mvi-editor-${this.name}`, this)
+		Bus.on(`mvi-editor-menus-${this.name}`, data => {
+			this.editorMenusInstance = data
+			this.domListener()
+		})
 	},
 	mounted() {
 		this.init()
-		Bus.emit(`mvi-editor-${this.name}`, this)
 	},
 	methods: {
 		//初始化
@@ -193,6 +253,13 @@ export default {
 			if (this.autofocus) {
 				this.collapseToEnd()
 			}
+		},
+		//初始化对象参数方法
+		initOption(defaultObj, propObj) {
+			let obj = {}
+			Object.assign(obj, defaultObj)
+			Object.assign(obj, propObj)
+			return obj
 		},
 		//编辑区域获取焦点
 		contentFocus() {
@@ -301,6 +368,145 @@ export default {
 			} else {
 				return String(this.modelValue)
 			}
+		},
+		//代码视图粘贴事件
+		codeViewPaste(event) {
+			event.preventDefault()
+			let clip = (event.originalEvent || event).clipboardData
+			let text = clip.getData('text/plain') || ''
+			if (text !== '') {
+				document.execCommand('insertText', false, text)
+			}
+		},
+		//编辑器粘贴事件
+		contentPaste(event) {
+			let clip = (event.originalEvent || event).clipboardData
+			let text = clip.getData('text/plain') || ''
+			if (this.pasteText) {
+				event.preventDefault()
+				if (text !== '') {
+					document.execCommand('insertText', false, text)
+				}
+			} else {
+				if (clip.files.length > 0) {
+					event.preventDefault()
+					for (let file of clip.files) {
+						const isImage = this.judgePasteFileSuffix(file.name, this.combinedUploadImageProps.allowedFileType)
+						const isVideo = this.judgePasteFileSuffix(file.name, this.combinedUploadVideoProps.allowedFileType)
+						//是图片或者视频
+						if (isImage || isVideo) {
+							const minSize = isImage ? this.combinedUploadImageProps.minSize : this.combinedUploadVideoProps.minSize
+							const maxSize = isImage ? this.combinedUploadVideoProps.maxSize : this.combinedUploadVideoProps.maxSize
+							//判断文件大小
+							if (file.size / 1024 > maxSize && maxSize > 0) {
+								if (typeof this.uploadImageError == 'function') {
+									this.uploadImageError(102, '文件' + file.name + '超出文件最大值限定', file)
+								} else {
+									Msgbox.msgbox({
+										message: '文件' + file.name + '超出文件最大值限定',
+										animation: 'scale'
+									})
+								}
+								return
+							}
+							if (file.size / 1024 < minSize && minSize > 0) {
+								if (typeof this.uploadImageError == 'function') {
+									this.uploadImageError(103, '文件' + file.name + '没有达到文件最小值限定', file)
+								} else {
+									Msgbox.msgbox({
+										message: '文件' + file.name + '没有达到文件最小值限定',
+										animation: 'scale'
+									})
+								}
+								return
+							}
+							//使用base64
+							if (this.useBase64) {
+								Dap.file.dataFileToBase64(file).then(url => {
+									if (isImage) {
+										this.insertImage(url)
+									} else if (isVideo) {
+										this.insertVideo(url)
+									}
+								})
+							}
+							//自定义上传
+							else {
+								if (isImage) {
+									this.$emit('upload-image', [file])
+								} else if (isVideo) {
+									this.$emit('upload-video', [file])
+								}
+							}
+						}
+						//其他文件
+						else {
+							this.$emit('file-paste', file)
+						}
+					}
+				}
+			}
+		},
+		//判断粘贴文件后缀是否符合
+		judgePasteFileSuffix(fileName, allowedFileType) {
+			//获取文件后缀
+			let suffix = fileName.substr(fileName.lastIndexOf('.') + 1)
+			if (allowedFileType.length == 0) {
+				return true
+			} else {
+				//转为小写
+				suffix = suffix.toLocaleLowerCase()
+				for (let i = 0; i < allowedFileType.length; i++) {
+					allowedFileType[i] = allowedFileType[i].toLocaleLowerCase()
+				}
+				return allowedFileType.includes(suffix)
+			}
+		},
+		//监听dom设置字体
+		domListener() {
+			if (!this.$refs.content) {
+				return
+			}
+			const observe = new Observe(this.$refs.content, {
+				attributes: false,
+				childList: true,
+				subtree: true,
+				childNodesChange: addNode => {
+					if (addNode) {
+						const fontSizeMenu = this.editorMenusInstance.menus.find(menu => {
+							return menu.key == 'fontSize'
+						})
+						console.log(fontSizeMenu)
+						const fontSize = addNode.style.fontSize
+						switch (fontSize) {
+							case 'x-small':
+								addNode.style.fontSize = '14px'
+								break
+							case 'small':
+								addNode.style.fontSize = '14px'
+								break
+							case 'medium':
+								addNode.style.fontSize = '14px'
+								break
+							case 'large':
+								addNode.style.fontSize = '14px'
+								break
+							case 'x-large':
+								addNode.style.fontSize = '14px'
+								break
+							case 'xx-large':
+								addNode.style.fontSize = '14px'
+								break
+							case 'xxx-large':
+								addNode.style.fontSize = '14px'
+								break
+							default:
+								break
+						}
+					}
+				}
+			})
+			observe.init()
 		},
 		//api：改变菜单项激活状态
 		changeActive() {
@@ -541,6 +747,88 @@ export default {
 				let el = Dap.element.string2dom(`<div>${this.$refs.codeView.innerText}</div>`)
 				this.text = el.innerText
 			}
+		},
+		//api：插入HTML片段
+		insertHtml(html) {
+			if (this.disabled) {
+				return
+			}
+			if (!this.$refs.content) {
+				return
+			}
+			if (!html) {
+				return
+			}
+			document.execCommand('insertHtml', false, html)
+		},
+		//api：插入文本
+		insertText(text) {
+			if (this.disabled) {
+				return
+			}
+			if (!this.$refs.content) {
+				return
+			}
+			if (!text) {
+				return
+			}
+			document.execCommand('insertText', false, text)
+		},
+		//api：插入图片
+		insertImage(url) {
+			if (this.disabled) {
+				return
+			}
+			if (!this.$refs.content) {
+				return
+			}
+			const style = ['mvi-editor-image']
+			if (this.imageClass) {
+				style.push(this.imageClass)
+			}
+			const imgHtml = `<img src="${url}" class="${style.join(' ')}" />`
+			document.execCommand('insertHtml', false, imgHtml)
+		},
+		//api：插入视频
+		insertVideo(url) {
+			if (this.disabled) {
+				return
+			}
+			if (!this.$refs.content) {
+				return
+			}
+			const style = ['mvi-editor-video']
+			if (this.videoClass) {
+				style.push(this.videoClass)
+			}
+			let video = Dap.element.string2dom(`<video src="${url}" class="${style.join(' ')}"></video>`)
+			if (this.combinedVideoProps.muted) {
+				video.setAttribute('muted', 'muted')
+			}
+			if (this.combinedVideoProps.loop) {
+				video.setAttribute('loop', 'loop')
+			}
+			if (this.combinedVideoProps.controls) {
+				video.setAttribute('controls', 'controls')
+			}
+			if (this.combinedVideoProps.autoplay) {
+				video.setAttribute('autoplay', 'autoplay')
+			}
+			document.execCommand('insertHtml', false, video.outerHTML)
+		},
+		//api：清除内容
+		empty() {
+			if (this.disabled) {
+				return
+			}
+			if (this.$refs.content) {
+				this.$refs.content.innerHTML = '<p><br></p>'
+			} else if (this.$refs.codeView) {
+				this.$refs.codeView.innerText = '<p><br></p>'
+			}
+			this.updateHtmlText()
+			this.updateValue()
+			this.collapseToEnd()
 		}
 	}
 }
@@ -611,6 +899,63 @@ export default {
 		line-height: inherit;
 		vertical-align: middle;
 		cursor: text;
+	}
+}
+
+:deep(.mvi-editor-image) {
+	display: inline-block;
+	width: auto;
+	height: auto;
+	max-width: 100%;
+}
+
+:deep(.mvi-editor-video) {
+	display: inline-block;
+	width: auto;
+	height: auto;
+	max-width: 100%;
+}
+
+/* 表格demo样式 */
+:deep(.mvi-editor-table-demo) {
+	width: 100%;
+	border: 1px solid @border-color;
+	margin: 0;
+	padding: 0;
+	font-size: @font-size-default;
+	color: @font-color-default;
+	border-collapse: collapse;
+	margin-bottom: @mp-sm;
+
+	tbody {
+		margin: 0;
+		padding: 0;
+
+		tr {
+			margin: 0;
+			padding: 0;
+
+			&:first-child {
+				background-color: @bg-color-dark;
+
+				td {
+					font-weight: bold;
+				}
+			}
+
+			td {
+				font-size: @font-size-default;
+				color: @font-color-default;
+				margin: 0;
+				border-bottom: 1px solid @border-color;
+				border-right: 1px solid @border-color;
+				padding: @mp-sm;
+
+				&:last-child {
+					border-right: none;
+				}
+			}
+		}
 	}
 }
 </style>

@@ -55,9 +55,8 @@ export default [
 	{
 		key: 'selectAll',
 		name: '全选',
-		icon: 'check-square',
+		icon: 'check-o',
 		data: true,
-		value: null,
 		index: 0
 	},
 	{
@@ -112,31 +111,15 @@ export default [
 	{
 		key: 'fontFamily',
 		name: '字体',
-		value: '',
-		data: [
-			{
-				label: '默认字体',
-				value: ''
-			},
-			'黑体',
-			'仿宋',
-			'楷体',
-			'宋体',
-			'微软雅黑',
-			'Arial',
-			'Consolas'
-		],
+		value: '微软雅黑',
+		data: ['黑体', '仿宋', '楷体', '宋体', '微软雅黑', 'Arial', 'Consolas'],
 		index: 0
 	},
 	{
 		key: 'fontSize',
 		name: '字号',
-		value: '',
+		value: '0.28rem',
 		data: [
-			{
-				label: '默认字号',
-				value: ''
-			},
 			{
 				label: '12px',
 				value: '0.24rem'

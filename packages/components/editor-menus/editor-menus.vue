@@ -18,7 +18,7 @@ import defaultTooltipProps from './defaultTooltipProps'
 import editorMenu from './editor-menu.vue'
 export default {
 	name: 'm-editor-menus',
-	emits: ['upload-image', 'upload-video', 'custom'],
+	emits: ['custom'],
 	props: {
 		//名字
 		name: {
@@ -59,32 +59,12 @@ export default {
 				return {}
 			}
 		},
-		//本地上传文件是否使用base64
-		useBase64: {
-			type: Boolean,
-			default: true
-		},
-		//自定义上传图片配置
-		uploadImageProps: {
-			type: Object,
+		//自定义菜单的激活判定
+		customActive: {
+			type: Function,
 			default: function () {
-				return {}
+				return false
 			}
-		},
-		//自定义上传视频配置
-		uploadVideoProps: {
-			type: Object,
-			default: function () {
-				return {}
-			}
-		},
-		//自定义上传图片出错回调
-		uploadImageError: {
-			type: Function
-		},
-		//自定义上传视频出错回调
-		uploadVideoError: {
-			type: Function
 		}
 	},
 	data() {
@@ -151,6 +131,7 @@ export default {
 		}
 	},
 	created() {
+		Bus.emit(`mvi-editor-menus-${this.name}`, this)
 		Bus.on(`mvi-editor-${this.name}`, data => {
 			this.editorInstance = data
 		})

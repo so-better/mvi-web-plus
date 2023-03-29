@@ -41,17 +41,17 @@
 					</div>
 				</div>
 				<!-- 表格 -->
-				<template v-if="options.key == 'table'">
-					<div class="mvi-editor-menu-table" v-for="item in tableParams.groups">
-						<div @click="confirmTableSize(el)" @mouseenter="changeTableSize(el)" :class="['mvi-editor-menu-table-cell', el.inside ? 'active' : '']" v-for="el in item"></div>
+				<div class="mvi-editor-menu-table" v-else-if="options.key == 'table'">
+					<div class="mvi-editor-menu-table-groups" v-for="item in tableParams.groups">
+						<div @click="confirmTableSize(el)" @mouseenter="changeTableSize(el)" :class="['mvi-editor-menu-table-group', el.inside ? 'active' : '']" v-for="el in item"></div>
 					</div>
 					<div v-if="tableParams.size.length" class="mvi-editor-menu-table-size">{{ tableParams.size[0] }} × {{ tableParams.size[1] }}</div>
-				</template>
+				</div>
 				<!-- 自定义弹出层内容 -->
 				<slot name="layer" v-else-if="$slots.layer"></slot>
 				<!-- 普通弹出层 -->
 				<template v-else>
-					<editorTag :tag="layerElTag(item)" :style="layerElStyle(item)" :disabled="item.disabled || null" class="mvi-editor-menu-layer-el" v-for="item in options.data">
+					<editorTag :tag="layerElTag(item)" :style="layerElStyle(item)" :disabled="item.disabled || null" class="mvi-editor-menu-layer-el" v-for="(item, index) in options.data" @click="selectLayerItem(item, index)">
 						<template v-if="item.icon">
 							<i class="mvi-editor-menu-icon" v-if="item.icon.custom" :class="item.icon.value"></i>
 							<Icon v-else class="mvi-editor-menu-icon" :type="item.icon.value" />
@@ -72,10 +72,7 @@ import { Upload } from '../upload'
 import { Tooltip } from '../tooltip'
 import { Icon } from '../icon'
 import { Layer } from '../layer'
-import { Tabs } from '../tabs'
-import { Tab } from '../tab'
 import { Checkbox } from '../checkbox'
-import { Msgbox } from '../msgbox'
 export default {
 	name: 'm-editor-menu',
 	props: {
@@ -211,8 +208,6 @@ export default {
 		Tooltip,
 		Icon,
 		Layer,
-		Tabs,
-		Tab,
 		Checkbox,
 		editorTag
 	},
@@ -236,6 +231,103 @@ export default {
 		})
 	},
 	methods: {
+		//点击浮层选项
+		selectLayerItem(dataItem, index) {
+			if (this.disabledMenu) {
+				return
+			}
+			//恢复选区
+			this.editorInstance.restoreRange()
+			//执行
+			this.handler(dataItem, index)
+			//隐藏浮层
+			this.hideLayer()
+		},
+		//执行富文本操作
+		handler(dataItem, index) {
+			// 撤回/恢复/清除格式/全选/加粗/斜体/下划线/删除线/下标/上标
+			if (['undo', 'redo', 'removeFormat', 'selectAll', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript'].includes(this.options.key)) {
+				document.execCommand(this.options.key)
+				return
+			}
+			//插入分隔线
+			if (this.options.key == 'divider') {
+				document.execCommand('insertHtml', false, '<hr><p><br></p>')
+				return
+			}
+			//设置字体
+			if (this.options.key == 'fontFamily') {
+				document.execCommand('fontName', false, dataItem.value)
+				return
+			}
+			//设置字号
+			if (this.options.key == 'fontSize') {
+				document.execCommand('fontSize', false, index + 1)
+				return
+			}
+			//设置文字颜色
+			if (this.options.key == 'foreColor') {
+				return
+			}
+			//设置背景颜色
+			if (this.options.key == 'backColor') {
+				return
+			}
+			//插入有序列表
+			if (this.options.key == 'ol') {
+				document.execCommand('insertOrderedList')
+				return
+			}
+			//插入无序列表
+			if (this.options.key == 'ul') {
+				document.execCommand('insertUnorderedList')
+				return
+			}
+			//对齐方式
+			if (this.options.key == 'justify') {
+				return
+			}
+			//引用
+			if (this.options.key == 'quote') {
+				if (this.active) {
+					this.removeBlock()
+				} else {
+					document.execCommand('formatBlock', false, 'blockquote')
+				}
+			}
+			//插入链接
+			if (this.options.key == 'link') {
+				return
+			}
+			//插入图片
+			if (this.options.key == 'image') {
+				return
+			}
+			//插入视频
+			if (this.options.key == 'video') {
+				return
+			}
+			//插入表格
+			if (this.options.key == 'table') {
+				return
+			}
+			//插入代码
+			if (this.options.key == 'code') {
+				if (this.active) {
+					this.removeCode()
+				} else {
+					document.execCommand('formatBlock', false, 'pre')
+				}
+				return
+			}
+			//设置源码显示
+			if (this.options.key == 'codeView') {
+				this.editorInstance.codeViewShow = !this.editorInstance.codeViewShow
+				return
+			}
+			//自定义菜单操作
+			this.editor.$emit('custom', this.options)
+		},
 		//菜单项点击
 		targetTrigger() {
 			if (this.disabledMenu) {
@@ -253,6 +345,10 @@ export default {
 			}
 			//如果是普通菜单则直接作用
 			else {
+				//恢复选区
+				this.editorInstance.restoreRange()
+				//执行操作
+				this.handler()
 			}
 		},
 		//显示浮层
@@ -280,6 +376,7 @@ export default {
 				this.layerShow = false
 			}
 		},
+		//初始化创建表格单元格数组
 		initTableGroups() {
 			const arr = new Array()
 			for (let i = 0; i < 10; i++) {
@@ -331,7 +428,7 @@ export default {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
-	height: @small-height;
+	height: @mini-height;
 	color: @font-color-default;
 	font-size: @font-size-default;
 	margin: 0;
@@ -427,45 +524,50 @@ export default {
 	}
 
 	.mvi-editor-menu-table {
-		display: flex;
-		display: -webkit-flex;
-		justify-content: flex-start;
-		align-items: center;
-		padding: 0 @mp-xs;
-
-		&:first-of-type > .mvi-editor-menu-table-cell {
-			border-top: 1px solid @border-color;
-		}
-
-		.mvi-editor-menu-table-cell {
-			display: block;
-			width: @mini-height / 2;
-			height: @mini-height / 2;
-			border-right: 1px solid @border-color;
-			border-bottom: 1px solid @border-color;
-
-			&:first-child {
-				border-left: 1px solid @border-color;
-			}
-
-			&:hover {
-				cursor: pointer;
-			}
-
-			&.active {
-				background-color: @bg-color-dark;
-			}
-		}
-	}
-
-	.mvi-editor-menu-table-size {
 		display: block;
-		width: 100%;
-		text-align: center;
-		font-size: @font-size-small;
-		color: @font-color-sub;
-		margin-top: @mp-xs;
-		line-height: 1;
+		padding: @mp-xs 0;
+
+		.mvi-editor-menu-table-groups {
+			display: flex;
+			display: -webkit-flex;
+			justify-content: flex-start;
+			align-items: center;
+			padding: 0 @mp-sm;
+
+			&:first-of-type > .mvi-editor-menu-table-group {
+				border-top: 1px solid @border-color;
+			}
+
+			.mvi-editor-menu-table-group {
+				display: block;
+				width: @mini-height / 2;
+				height: @mini-height / 2;
+				border-right: 1px solid @border-color;
+				border-bottom: 1px solid @border-color;
+
+				&:first-child {
+					border-left: 1px solid @border-color;
+				}
+
+				&:hover {
+					cursor: pointer;
+				}
+
+				&.active {
+					background-color: @bg-color-dark;
+				}
+			}
+		}
+
+		.mvi-editor-menu-table-size {
+			display: block;
+			width: 100%;
+			text-align: center;
+			font-size: @font-size-small;
+			color: @font-color-sub;
+			margin-top: @mp-sm;
+			line-height: 1;
+		}
 	}
 }
 </style>

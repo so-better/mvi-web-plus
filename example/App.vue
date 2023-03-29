@@ -1,6 +1,6 @@
 <template>
 	<div class="mvi-p-2">
-		<m-editor-menus border ref="editorMenus"></m-editor-menus>
+		<m-editor-menus :config="[{ key: 'codeView', name: '显示源码', icon: 'eye', data: true, index: 0 }]" border ref="editorMenus"></m-editor-menus>
 		<m-editor border placeholder="请输入内容" v-model="value" ref="editor"></m-editor>
 	</div>
 </template>
