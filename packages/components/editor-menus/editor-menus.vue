@@ -131,9 +131,9 @@ export default {
 		}
 	},
 	created() {
-		Bus.emit(`mvi-editor-menus-${this.name}`, this)
 		Bus.on(`mvi-editor-${this.name}`, data => {
 			this.editorInstance = data
+			this.editorInstance.editorMenusInstance = this
 		})
 	},
 	methods: {

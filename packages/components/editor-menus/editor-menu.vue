@@ -248,47 +248,38 @@ export default {
 			// 撤回/恢复/清除格式/全选/加粗/斜体/下划线/删除线/下标/上标
 			if (['undo', 'redo', 'removeFormat', 'selectAll', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript'].includes(this.options.key)) {
 				document.execCommand(this.options.key)
-				return
 			}
 			//插入分隔线
-			if (this.options.key == 'divider') {
+			else if (this.options.key == 'divider') {
 				document.execCommand('insertHtml', false, '<hr><p><br></p>')
-				return
 			}
 			//设置字体
-			if (this.options.key == 'fontFamily') {
+			else if (this.options.key == 'fontFamily') {
 				document.execCommand('fontName', false, dataItem.value)
-				return
 			}
 			//设置字号
-			if (this.options.key == 'fontSize') {
+			else if (this.options.key == 'fontSize') {
 				document.execCommand('fontSize', false, index + 1)
-				return
 			}
 			//设置文字颜色
-			if (this.options.key == 'foreColor') {
-				return
+			else if (this.options.key == 'foreColor') {
 			}
 			//设置背景颜色
-			if (this.options.key == 'backColor') {
-				return
+			else if (this.options.key == 'backColor') {
 			}
 			//插入有序列表
-			if (this.options.key == 'ol') {
+			else if (this.options.key == 'ol') {
 				document.execCommand('insertOrderedList')
-				return
 			}
 			//插入无序列表
-			if (this.options.key == 'ul') {
+			else if (this.options.key == 'ul') {
 				document.execCommand('insertUnorderedList')
-				return
 			}
 			//对齐方式
-			if (this.options.key == 'justify') {
-				return
+			else if (this.options.key == 'justify') {
 			}
 			//引用
-			if (this.options.key == 'quote') {
+			else if (this.options.key == 'quote') {
 				if (this.active) {
 					this.removeBlock()
 				} else {
@@ -296,37 +287,45 @@ export default {
 				}
 			}
 			//插入链接
-			if (this.options.key == 'link') {
-				return
+			else if (this.options.key == 'link') {
 			}
 			//插入图片
-			if (this.options.key == 'image') {
-				return
+			else if (this.options.key == 'image') {
 			}
 			//插入视频
-			if (this.options.key == 'video') {
-				return
+			else if (this.options.key == 'video') {
 			}
 			//插入表格
-			if (this.options.key == 'table') {
-				return
+			else if (this.options.key == 'table') {
 			}
 			//插入代码
-			if (this.options.key == 'code') {
+			else if (this.options.key == 'code') {
 				if (this.active) {
 					this.removeCode()
 				} else {
 					document.execCommand('formatBlock', false, 'pre')
 				}
-				return
 			}
 			//设置源码显示
-			if (this.options.key == 'codeView') {
+			else if (this.options.key == 'codeView') {
 				this.editorInstance.codeViewShow = !this.editorInstance.codeViewShow
-				return
 			}
-			//自定义菜单操作
-			this.editor.$emit('custom', this.options)
+			//弹出式菜单自定义菜单操作
+			else if (dataItem && index) {
+				this.$parent.$emit('custom', {
+					options: { ...this.options },
+					item: { ...dataItem },
+					index: index
+				})
+			}
+			//普通菜单下触发自定义操作
+			else {
+				this.$parent.$emit('custom', { ...this.options })
+			}
+
+			if (this.isValueMenu && dataItem && index) {
+				this.selectVal = { ...dataItem }
+			}
 		},
 		//菜单项点击
 		targetTrigger() {

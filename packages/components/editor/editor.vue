@@ -229,13 +229,10 @@ export default {
 	},
 	created() {
 		Bus.emit(`mvi-editor-${this.name}`, this)
-		Bus.on(`mvi-editor-menus-${this.name}`, data => {
-			this.editorMenusInstance = data
-			this.domListener()
-		})
 	},
 	mounted() {
 		this.init()
+		this.domListener()
 	},
 	methods: {
 		//初始化
@@ -467,6 +464,9 @@ export default {
 			if (!this.$refs.content) {
 				return
 			}
+			if (!this.editorMenusInstance) {
+				return
+			}
 			const observe = new Observe(this.$refs.content, {
 				attributes: false,
 				childList: true,
@@ -476,32 +476,33 @@ export default {
 						const fontSizeMenu = this.editorMenusInstance.menus.find(menu => {
 							return menu.key == 'fontSize'
 						})
-						console.log(fontSizeMenu)
-						const fontSize = addNode.style.fontSize
-						switch (fontSize) {
-							case 'x-small':
-								addNode.style.fontSize = '14px'
-								break
-							case 'small':
-								addNode.style.fontSize = '14px'
-								break
-							case 'medium':
-								addNode.style.fontSize = '14px'
-								break
-							case 'large':
-								addNode.style.fontSize = '14px'
-								break
-							case 'x-large':
-								addNode.style.fontSize = '14px'
-								break
-							case 'xx-large':
-								addNode.style.fontSize = '14px'
-								break
-							case 'xxx-large':
-								addNode.style.fontSize = '14px'
-								break
-							default:
-								break
+						if (fontSizeMenu && fontSizeMenu.data && fontSizeMenu.data.length) {
+							const fontSize = addNode.style.fontSize
+							switch (fontSize) {
+								case 'x-small':
+									addNode.style.fontSize = fontSizeMenu.data[0]?.value
+									break
+								case 'small':
+									addNode.style.fontSize = fontSizeMenu.data[1]?.value
+									break
+								case 'medium':
+									addNode.style.fontSize = fontSizeMenu.data[2]?.value
+									break
+								case 'large':
+									addNode.style.fontSize = fontSizeMenu.data[3]?.value
+									break
+								case 'x-large':
+									addNode.style.fontSize = fontSizeMenu.data[4]?.value
+									break
+								case 'xx-large':
+									addNode.style.fontSize = fontSizeMenu.data[5]?.value
+									break
+								case 'xxx-large':
+									addNode.style.fontSize = fontSizeMenu.data[6]?.value
+									break
+								default:
+									break
+							}
 						}
 					}
 				}
