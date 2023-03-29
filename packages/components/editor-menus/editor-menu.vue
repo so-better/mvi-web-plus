@@ -187,7 +187,6 @@ export default {
 					style.color = this.$parent.editorInstance.activeColor
 				}
 			}
-
 			return style
 		},
 		//颜色选取板每个颜色块的样式
@@ -273,7 +272,7 @@ export default {
 			//引用
 			else if (this.options.key == 'quote') {
 				if (this.active) {
-					this.removeBlock()
+					
 				} else {
 					document.execCommand('formatBlock', false, 'blockquote')
 				}
@@ -293,7 +292,7 @@ export default {
 			//插入代码
 			else if (this.options.key == 'code') {
 				if (this.active) {
-					this.removeCode()
+					
 				} else {
 					document.execCommand('formatBlock', false, 'pre')
 				}
@@ -302,7 +301,7 @@ export default {
 			else if (this.options.key == 'codeView') {
 				this.$parent.editorInstance.codeViewShow = !this.$parent.editorInstance.codeViewShow
 			}
-			//弹出式菜单自定义菜单操作
+			//弹出式菜单触发自定义操作
 			else if (dataItem) {
 				this.$parent.$emit('custom', {
 					options: { ...this.options },
@@ -310,13 +309,9 @@ export default {
 					index: index
 				})
 			}
-			//普通菜单下触发自定义操作
+			//普通菜单触发自定义操作
 			else {
 				this.$parent.$emit('custom', { ...this.options })
-			}
-
-			if (this.isValueMenu && dataItem) {
-				this.selectVal = { ...dataItem }
 			}
 		},
 		//菜单项点击

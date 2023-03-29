@@ -15,6 +15,7 @@ import defaultConfig from './defaultConfig'
 import defaultLayerProps from './defaultLayerProps'
 import defaultTooltipProps from './defaultTooltipProps'
 import editorMenu from './editor-menu.vue'
+import { Observe } from '../observe'
 export default {
 	name: 'm-editor-menus',
 	emits: ['custom'],
@@ -177,6 +178,56 @@ export default {
 				return data
 			}
 			return false
+		},
+		//监听编辑区域富文本内容中的dom
+		editorContentDomMonitor() {
+			if (!this.editorInstance) {
+				return
+			}
+            if(!this.editorInstance.$refs.content){
+                return
+            }
+			const observe = new Observe(this.editorInstance.$refs.content, {
+				attributes: false,
+				childList: true,
+				subtree: true,
+				childNodesChange: addNode => {
+					if (addNode) {
+						const fontSizeMenu = this.menus.find(menu => {
+							return menu.key == 'fontSize'
+						})
+						if (fontSizeMenu && fontSizeMenu.data && fontSizeMenu.data.length) {
+							const fontSize = addNode.style.fontSize
+							switch (fontSize) {
+								case 'x-small':
+									addNode.style.fontSize = fontSizeMenu.data[0]?.value
+									break
+								case 'small':
+									addNode.style.fontSize = fontSizeMenu.data[1]?.value
+									break
+								case 'medium':
+									addNode.style.fontSize = fontSizeMenu.data[2]?.value
+									break
+								case 'large':
+									addNode.style.fontSize = fontSizeMenu.data[3]?.value
+									break
+								case 'x-large':
+									addNode.style.fontSize = fontSizeMenu.data[4]?.value
+									break
+								case 'xx-large':
+									addNode.style.fontSize = fontSizeMenu.data[5]?.value
+									break
+								case 'xxx-large':
+									addNode.style.fontSize = fontSizeMenu.data[6]?.value
+									break
+								default:
+									break
+							}
+						}
+					}
+				}
+			})
+			observe.init()
 		}
 	}
 }

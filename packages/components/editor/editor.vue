@@ -10,7 +10,6 @@ import defaultVideoShowProps from './defaultVideoShowProps'
 import defaultUploadImageProps from './defaultUploadImageProps'
 import defaultUploadVideoProps from './defaultUploadVideoProps'
 import { Msgbox } from '../msgbox'
-import { Observe } from '../observe'
 export default {
 	name: 'm-editor',
 	props: {
@@ -110,8 +109,6 @@ export default {
 	emits: ['update:modelValue', 'blur', 'focus', 'input', 'file-paste', 'upload-image', 'upload-video'],
 	data() {
 		return {
-			//菜单栏实例
-			editorMenusInstance: null,
 			//选区
 			range: null,
 			//源码是否显示
@@ -197,7 +194,7 @@ export default {
 	watch: {
 		//监听modelValue
 		modelValue() {
-			//如果是外界赋值导致的更新
+			//如果是组件外部赋值导致的更新
 			if (!this.isModelChange) {
 				if (this.$refs.content) {
 					this.$refs.content.innerHTML = this.getValue()
@@ -223,7 +220,6 @@ export default {
 	},
 	mounted() {
 		this.init()
-		this.domListener()
 	},
 	methods: {
 		//初始化
@@ -450,56 +446,6 @@ export default {
 				return allowedFileType.includes(suffix)
 			}
 		},
-		//监听dom设置字体
-		domListener() {
-			if (!this.$refs.content) {
-				return
-			}
-			if (!this.editorMenusInstance) {
-				return
-			}
-			const observe = new Observe(this.$refs.content, {
-				attributes: false,
-				childList: true,
-				subtree: true,
-				childNodesChange: addNode => {
-					if (addNode) {
-						const fontSizeMenu = this.editorMenusInstance.menus.find(menu => {
-							return menu.key == 'fontSize'
-						})
-						if (fontSizeMenu && fontSizeMenu.data && fontSizeMenu.data.length) {
-							const fontSize = addNode.style.fontSize
-							switch (fontSize) {
-								case 'x-small':
-									addNode.style.fontSize = fontSizeMenu.data[0]?.value
-									break
-								case 'small':
-									addNode.style.fontSize = fontSizeMenu.data[1]?.value
-									break
-								case 'medium':
-									addNode.style.fontSize = fontSizeMenu.data[2]?.value
-									break
-								case 'large':
-									addNode.style.fontSize = fontSizeMenu.data[3]?.value
-									break
-								case 'x-large':
-									addNode.style.fontSize = fontSizeMenu.data[4]?.value
-									break
-								case 'xx-large':
-									addNode.style.fontSize = fontSizeMenu.data[5]?.value
-									break
-								case 'xxx-large':
-									addNode.style.fontSize = fontSizeMenu.data[6]?.value
-									break
-								default:
-									break
-							}
-						}
-					}
-				}
-			})
-			observe.init()
-		},
 		//api：改变菜单项激活状态
 		changeActive() {
 			if (this.disabled) {
@@ -664,7 +610,7 @@ export default {
 			}
 			return false
 		},
-		//api：根据标签名获取某个节点
+		//api：从当前节点起向上查找指定标签的节点
 		getCompareTag(el, tagName) {
 			if (!Dap.element.isElement(el)) {
 				return null
@@ -682,7 +628,7 @@ export default {
 				return null
 			}
 		},
-		//api：根据css获取某个节点
+		//api：从当前节点起向上查找拥有某个css样式的节点
 		getCompareTagForCss(el, cssName, cssValue) {
 			if (!Dap.element.isElement(el)) {
 				return null
@@ -698,7 +644,7 @@ export default {
 			}
 			return null
 		},
-		//api：根据属性或者属性值获取某个节点
+		//api：从当前节点起向上查找拥有某个属性或者属性值的节点
 		getCompareTagForAttribute(el, attrName, attrVal) {
 			if (!Dap.element.isElement(el)) {
 				return null
@@ -794,16 +740,16 @@ export default {
 				style.push(this.videoClass)
 			}
 			let video = Dap.element.string2dom(`<video src="${url}" class="${style.join(' ')}"></video>`)
-			if (this.combinedVideoProps.muted) {
+			if (this.combinedVideoShowProps.muted) {
 				video.setAttribute('muted', 'muted')
 			}
-			if (this.combinedVideoProps.loop) {
+			if (this.combinedVideoShowProps.loop) {
 				video.setAttribute('loop', 'loop')
 			}
-			if (this.combinedVideoProps.controls) {
+			if (this.combinedVideoShowProps.controls) {
 				video.setAttribute('controls', 'controls')
 			}
-			if (this.combinedVideoProps.autoplay) {
+			if (this.combinedVideoShowProps.autoplay) {
 				video.setAttribute('autoplay', 'autoplay')
 			}
 			document.execCommand('insertHtml', false, video.outerHTML)
@@ -824,8 +770,11 @@ export default {
 		},
         //api：注册菜单栏实例
         use(instance) {
+            //把编辑器实例传给菜单栏组件
             instance.editorInstance = this
-            this.editorMenusInstance = instance
+            //菜单栏启用dom监听
+            instance.editorContentDomMonitor()
+            
         }
 	}
 }
