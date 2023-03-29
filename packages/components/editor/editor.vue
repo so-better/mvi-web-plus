@@ -1,7 +1,7 @@
 <template>
 	<div class="m-editor">
 		<div v-if="codeViewShow" ref="codeView" v-text="initalHtml" key="code" :contenteditable="!disabled || null" :style="codeViewStyle" :class="codeViewClass" @blur="codeViewBlur" @focus="codeViewFocus" @input="codeViewInput"></div>
-		<div v-else ref="content" v-html="initalHtml" key="content" :contenteditable="!disabled || null" :style="contentStyle" :class="contentClass" @blur="contentBlur" @focus="contentFocus" @input="contentInput" :data-placeholder="placeholder"></div>
+		<div v-else ref="content" v-html="initalHtml" key="content" :contenteditable="!disabled || null" :style="contentStyle" :class="contentClass" @blur="contentBlur" @focus="contentFocus" @click="changeActive" @input="contentInput" :data-placeholder="placeholder"></div>
 	</div>
 </template>
 <script>

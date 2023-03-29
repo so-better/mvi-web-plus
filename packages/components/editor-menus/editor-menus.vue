@@ -1,5 +1,5 @@
 <template>
-	<div class="mvi-editor-menus" :style="{ border: border ? '' : 'none' }" :disabled="disabled ? disabled : null">
+	<div class="mvi-editor-menus" :style="{ border: border ? '' : 'none' }">
 		<template v-for="item in menus">
 			<editorMenu v-if="showMenu(item)" :options="item">
 				<template #layer v-if="isLayerMenu(item) && item.customLayer && $slots.layer">
@@ -11,6 +11,7 @@
 </template>
 <script>
 import { Dap } from '../dap'
+import Bus from '../../js/Bus'
 import defaultConfig from './defaultConfig'
 import defaultLayerProps from './defaultLayerProps'
 import defaultTooltipProps from './defaultTooltipProps'
@@ -23,11 +24,6 @@ export default {
 		name: {
 			type: String,
 			default: 'editor'
-		},
-		//是否禁用
-		disabled: {
-			type: Boolean,
-			default: false
 		},
 		//是否显示边框
 		border: {
@@ -91,6 +87,12 @@ export default {
 			type: Function
 		}
 	},
+	data() {
+		return {
+			//编辑器实例
+			editorInstance: null
+		}
+	},
 	components: {
 		editorMenu
 	},
@@ -105,13 +107,13 @@ export default {
 			menus = [...menus, ...this.config]
 			menus = menus.map(item => {
 				let obj = { ...item }
-				//菜单data初始化
+				//初始化菜单data
 				obj.data = this.initMenuData(obj.data)
-				//菜单图标初始化
+				//初始化菜单图标
 				obj.icon = this.initMenuIcon(obj.icon)
-				//菜单是否禁用初始化
+				//初始化菜单是否禁用
 				obj.disabled = Boolean(obj.disabled)
-				//菜单序列初始化
+				//初始化菜单序列
 				if (!Dap.number.isNumber(obj.index)) {
 					obj.index = 0
 				}
@@ -127,7 +129,7 @@ export default {
 				if (typeof item.data == 'boolean') {
 					return item.data
 				}
-				if (Array.isArray(item.data) && item.data.length) {
+				if (Array.isArray(item.data)) {
 					return true
 				}
 				return false
@@ -144,9 +146,14 @@ export default {
 		//是否弹出式菜单
 		isLayerMenu() {
 			return item => {
-				return Array.isArray(item.data) && item.data.length
+				return Array.isArray(item.data)
 			}
 		}
+	},
+	created() {
+		Bus.on(`mvi-editor-${this.name}`, data => {
+			this.editorInstance = data
+		})
 	},
 	methods: {
 		//初始化对象参数方法

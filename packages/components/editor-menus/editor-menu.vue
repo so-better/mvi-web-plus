@@ -32,10 +32,21 @@
 			:target="`[data-id='mvi-editor-menu-target-${uid}-${options.key}']`"
 			:root="`[data-id='mvi-editor-menu-${uid}-${options.key}']`">
 			<div class="mvi-editor-menu-layer">
-				<!-- 字体颜色 -->
-				<template v-if="options.key == 'foreColor'"></template>
-				<!-- 背景色 -->
-				<template v-else-if="options.key == 'backColor'"></template>
+				<!-- 字体颜色、背景色 -->
+				<div v-if="options.key == 'foreColor' || options.key == 'backColor'" class="mvi-editor-menu-colors">
+					<div :style="menuColorStyle(item)" class="mvi-editor-menu-color" v-for="item in options.data">
+						<Tooltip :disabled="disabledColorToolTip(item)" trigger="hover" :title="item.label" :placement="$parent.combinedTooltipProps.placement" :timeout="$parent.combinedTooltipProps.timeout" :color="$parent.combinedTooltipProps.color" :text-color="$parent.combinedTooltipProps.textColor" :border-color="$parent.combinedTooltipProps.borderColor" :offset="$parent.combinedTooltipProps.offset" :z-index="$parent.combinedTooltipProps.zIndex" :fixed="$parent.combinedTooltipProps.fixed" :fixed-auto="$parent.combinedTooltipProps.fixedAuto" :width="$parent.combinedTooltipProps.width" :animation="$parent.combinedTooltipProps.animation" :show-triangle="$parent.combinedTooltipProps.showTriangle" block>
+							<div :style="{ backgroundColor: item.value }" class="mvi-editor-menu-color-el"></div>
+						</Tooltip>
+					</div>
+				</div>
+				<!-- 表格 -->
+				<template v-if="options.key == 'table'">
+					<div class="mvi-editor-menu-table" v-for="item in tableParams.groups">
+						<div @click="confirmTableSize(el)" @mouseenter="changeTableSize(el)" :class="['mvi-editor-menu-table-cell', el.inside ? 'active' : '']" v-for="el in item"></div>
+					</div>
+					<div v-if="tableParams.size.length" class="mvi-editor-menu-table-size">{{ tableParams.size[0] }} × {{ tableParams.size[1] }}</div>
+				</template>
 				<!-- 自定义弹出层内容 -->
 				<slot name="layer" v-else-if="$slots.layer"></slot>
 				<!-- 普通弹出层 -->
@@ -81,11 +92,18 @@ export default {
 			//编辑器实例
 			editorInstance: null,
 			//已选值
-			selectVal: null,
+			selectVal: {},
 			//浮层是否打开
 			layerShow: false,
 			//菜单项是否激活状态
-			active: false
+			active: false,
+			//表格相关初始化参数
+			tableParams: {
+				//表格大小，如[5,5]
+				size: [],
+				//表格创建规格
+				groups: this.initTableGroups()
+			}
 		}
 	},
 	setup() {
@@ -95,6 +113,19 @@ export default {
 		}
 	},
 	computed: {
+		//是否禁用颜色面板的工具提示
+		disabledColorToolTip() {
+			return item => {
+				//label没有值
+				if (!item.label) {
+					return true
+				}
+				if (this.disabledMenu) {
+					return true
+				}
+				return false
+			}
+		},
 		//是否禁用工具提示
 		disabledToolTip() {
 			//没有name属性
@@ -108,25 +139,31 @@ export default {
 		},
 		//是否禁用菜单项
 		disabledMenu() {
-			if (this.$parent.disabled) {
+			if (!this.editorInstance) {
+				return true
+			}
+			if (this.editorInstance.disabled) {
+				return true
+			}
+			if (!this.editorInstance.range) {
 				return true
 			}
 			if (this.options.disabled) {
 				return true
 			}
-			//显示源码的情况下
-			if (this.options.key != 'codeView' && this.editorInstance && this.editorInstance.codeViewShow) {
+			//显示源码的情况下除源码菜单项其他菜单项都禁用
+			if (this.options.key != 'codeView' && this.editorInstance.codeViewShow) {
 				return true
 			}
 			return false
 		},
-		//是否是显示已选值的菜单
+		//是否为显示已选值的菜单
 		isValueMenu() {
 			return this.options.hasOwnProperty('value') && this.isLayerMenu
 		},
-		//是否弹出式菜单
+		//是否为弹出式菜单
 		isLayerMenu() {
-			return Array.isArray(this.options.data) && this.options.data.length
+			return Array.isArray(this.options.data)
 		},
 		//浮层项的标签
 		layerElTag() {
@@ -158,6 +195,16 @@ export default {
 			}
 
 			return style
+		},
+		//颜色选取板每个颜色块的样式
+		menuColorStyle() {
+			return item => {
+				let style = {}
+				if (this.editorInstance && this.active && this.selectVal.value == item.value && this.editorInstance.activeColor) {
+					style.borderColor = this.editorInstance.activeColor
+				}
+				return style
+			}
 		}
 	},
 	components: {
@@ -174,9 +221,11 @@ export default {
 			immediate: true,
 			handler: function (newVal) {
 				if (newVal) {
-					this.selectVal = this.options.data.find(item => {
-						return item.value == this.options.value
-					})
+					//如果是显示已选值的菜单项，需要初始化设置已选值
+					this.selectVal =
+						this.options.data.find(item => {
+							return item.value == this.options.value
+						}) || {}
 				}
 			}
 		}
@@ -230,6 +279,44 @@ export default {
 			if (this.isLayerMenu) {
 				this.layerShow = false
 			}
+		},
+		initTableGroups() {
+			const arr = new Array()
+			for (let i = 0; i < 10; i++) {
+				let o = new Array()
+				for (let j = 0; j < 10; j++) {
+					o.push({
+						x: j + 1,
+						y: i + 1,
+						inside: false //是否被选中
+					})
+				}
+				arr.push(o)
+			}
+			return arr
+		},
+		//改变表格大小
+		changeTableSize(data) {
+			this.tableParams.size = [data.x, data.y]
+			for (let i in this.tableParams.groups) {
+				const group = this.tableParams.groups[i]
+				for (let j in group) {
+					if (group[j].x <= data.x && group[j].y <= data.y) {
+						this.tableParams.groups[i][j].inside = true
+					} else {
+						this.tableParams.groups[i][j].inside = false
+					}
+				}
+			}
+		},
+		//确认表格大小
+		confirmTableSize(data) {
+			//创建表格
+			//...
+
+			this.tableParams.size = []
+			this.tableParams.groups = this.initTableGroups()
+			this.hideLayer()
 		}
 	}
 }
@@ -303,6 +390,82 @@ export default {
 			opacity: 0.6;
 			background-color: #fff;
 		}
+	}
+
+	.mvi-editor-menu-colors {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-start;
+		flex-wrap: wrap;
+		width: calc(@small-height * 4 + @mp-xs * 10 + 16px);
+		padding: 0 @mp-xs;
+
+		.mvi-editor-menu-color {
+			display: block;
+			padding: @mp-xs / 2;
+			border: 1px solid transparent;
+			border-radius: @radius-default / 2;
+
+			.mvi-editor-menu-color-el {
+				display: block;
+				width: @small-height / 2;
+				height: @small-height / 2;
+				border: 1px solid @border-color;
+				border-radius: @radius-default / 2;
+				position: relative;
+				transition: transform 200ms;
+				-webkit-transition: transform 200ms;
+				-moz-transition: transform 200ms;
+
+				&:hover {
+					cursor: pointer;
+					transform: translate3d(0, 0, 0) scale(1.2);
+					z-index: 2;
+				}
+			}
+		}
+	}
+
+	.mvi-editor-menu-table {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-start;
+		align-items: center;
+		padding: 0 @mp-xs;
+
+		&:first-of-type > .mvi-editor-menu-table-cell {
+			border-top: 1px solid @border-color;
+		}
+
+		.mvi-editor-menu-table-cell {
+			display: block;
+			width: @mini-height / 2;
+			height: @mini-height / 2;
+			border-right: 1px solid @border-color;
+			border-bottom: 1px solid @border-color;
+
+			&:first-child {
+				border-left: 1px solid @border-color;
+			}
+
+			&:hover {
+				cursor: pointer;
+			}
+
+			&.active {
+				background-color: @bg-color-dark;
+			}
+		}
+	}
+
+	.mvi-editor-menu-table-size {
+		display: block;
+		width: 100%;
+		text-align: center;
+		font-size: @font-size-small;
+		color: @font-color-sub;
+		margin-top: @mp-xs;
+		line-height: 1;
 	}
 }
 </style>

@@ -242,12 +242,14 @@ export default [
 		icon: 'image',
 		data: [
 			{
-				label: '本地上传',
-				value: 'upload'
+				label: '网络图片',
+				value: 'remote',
+				icon: 'image'
 			},
 			{
-				label: '网络图片',
-				value: 'remote'
+				label: '本地上传',
+				value: 'upload',
+				icon: 'upload-square'
 			}
 		],
 		index: 0
@@ -258,12 +260,14 @@ export default [
 		icon: 'video',
 		data: [
 			{
-				label: '本地上传',
-				value: 'upload'
+				label: '网络视频',
+				value: 'remote',
+				icon: 'video'
 			},
 			{
-				label: '网络视频',
-				value: 'remote'
+				label: '本地上传',
+				value: 'upload',
+				icon: 'upload-square'
 			}
 		],
 		index: 0
@@ -272,7 +276,7 @@ export default [
 		key: 'table',
 		name: '插入表格',
 		icon: 'table-alt',
-		data: true,
+		data: [],
 		index: 0
 	},
 	{

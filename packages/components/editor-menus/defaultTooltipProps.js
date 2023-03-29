@@ -10,6 +10,6 @@ export default {
 	fixed: false,
 	fixedAuto: false,
 	width: null,
-	animation: null,
-	showTriangle: true
+	showTriangle: true,
+	animation: null
 }
