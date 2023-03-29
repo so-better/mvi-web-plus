@@ -11,7 +11,6 @@
 </template>
 <script>
 import { Dap } from '../dap'
-import Bus from '../../js/Bus'
 import defaultConfig from './defaultConfig'
 import defaultLayerProps from './defaultLayerProps'
 import defaultTooltipProps from './defaultTooltipProps'
@@ -20,11 +19,6 @@ export default {
 	name: 'm-editor-menus',
 	emits: ['custom'],
 	props: {
-		//名字
-		name: {
-			type: String,
-			default: 'editor'
-		},
 		//是否显示边框
 		border: {
 			type: Boolean,
@@ -129,12 +123,6 @@ export default {
 				return Array.isArray(item.data)
 			}
 		}
-	},
-	created() {
-		Bus.on(`mvi-editor-${this.name}`, data => {
-			this.editorInstance = data
-			this.editorInstance.editorMenusInstance = this
-		})
 	},
 	methods: {
 		//初始化对象参数方法

@@ -6,7 +6,6 @@
 </template>
 <script>
 import { Dap } from '../dap'
-import Bus from '../../js/Bus'
 import defaultVideoShowProps from './defaultVideoShowProps'
 import defaultUploadImageProps from './defaultUploadImageProps'
 import defaultUploadVideoProps from './defaultUploadVideoProps'
@@ -15,11 +14,6 @@ import { Observe } from '../observe'
 export default {
 	name: 'm-editor',
 	props: {
-		//名字
-		name: {
-			type: String,
-			default: 'editor'
-		},
 		//值
 		modelValue: {
 			type: [String, Number],
@@ -226,9 +220,6 @@ export default {
 				}
 			})
 		}
-	},
-	created() {
-		Bus.emit(`mvi-editor-${this.name}`, this)
 	},
 	mounted() {
 		this.init()
@@ -830,7 +821,12 @@ export default {
 			this.updateHtmlText()
 			this.updateValue()
 			this.collapseToEnd()
-		}
+		},
+        //api：注册菜单栏实例
+        use(instance) {
+            instance.editorInstance = this
+            this.editorMenusInstance = instance
+        }
 	}
 }
 </script>

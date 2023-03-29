@@ -1,6 +1,6 @@
 <template>
 	<div class="mvi-p-2">
-		<m-editor-menus :config="[{ key: 'codeView', name: '显示源码', icon: 'eye', data: true, index: 0 }]" border ref="editorMenus"></m-editor-menus>
+		<m-editor-menus :config="[{ key: 'codeView', name: '显示源码', icon: 'eye', data: show, index: 1 }]" border ref="editorMenus"></m-editor-menus>
 		<m-editor border placeholder="请输入内容" v-model="value" ref="editor"></m-editor>
 	</div>
 </template>
@@ -12,7 +12,9 @@ export default {
 			value: '<p>使用autofocus可以使<span style="color:#ff3300;">编辑器在初始化</span>完成后自动获取焦点</p><p>使用autofocus可以使编辑器在初始化完成后自动获取焦点</p><p>使用autofocus可以使编辑器在初始化完成后自动获取焦点</p>'
 		}
 	},
-	mounted() {},
+	mounted() {
+        this.$refs.editor.use(this.$refs.editorMenus)
+    },
 	methods: {}
 }
 </script>

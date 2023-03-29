@@ -65,7 +65,6 @@
 </template>
 <script>
 import { getCurrentInstance } from 'vue'
-import Bus from '../../js/Bus'
 import editorTag from './editor-tag.vue'
 import { Dap } from '../dap'
 import { Upload } from '../upload'
@@ -86,8 +85,6 @@ export default {
 	},
 	data() {
 		return {
-			//编辑器实例
-			editorInstance: null,
 			//已选值
 			selectVal: {},
 			//浮层是否打开
@@ -136,20 +133,20 @@ export default {
 		},
 		//是否禁用菜单项
 		disabledMenu() {
-			if (!this.editorInstance) {
+			if (!this.$parent.editorInstance) {
 				return true
 			}
-			if (this.editorInstance.disabled) {
+			if (this.$parent.editorInstance.disabled) {
 				return true
 			}
-			if (!this.editorInstance.range) {
+			if (!this.$parent.editorInstance.range) {
 				return true
 			}
 			if (this.options.disabled) {
 				return true
 			}
 			//显示源码的情况下除源码菜单项其他菜单项都禁用
-			if (this.options.key != 'codeView' && this.editorInstance.codeViewShow) {
+			if (this.options.key != 'codeView' && this.$parent.editorInstance.codeViewShow) {
 				return true
 			}
 			return false
@@ -184,10 +181,10 @@ export default {
 		//菜单项样式
 		editorTargetStyle() {
 			let style = {}
-			if (this.editorInstance && this.active) {
+			if (this.$parent.editorInstance && this.active) {
 				style.opacity = 1
-				if (this.editorInstance.activeColor) {
-					style.color = this.editorInstance.activeColor
+				if (this.$parent.editorInstance.activeColor) {
+					style.color = this.$parent.editorInstance.activeColor
 				}
 			}
 
@@ -197,8 +194,8 @@ export default {
 		menuColorStyle() {
 			return item => {
 				let style = {}
-				if (this.editorInstance && this.active && this.selectVal.value == item.value && this.editorInstance.activeColor) {
-					style.borderColor = this.editorInstance.activeColor
+				if (this.$parent.editorInstance && this.active && this.selectVal.value == item.value && this.$parent.editorInstance.activeColor) {
+					style.borderColor = this.$parent.editorInstance.activeColor
 				}
 				return style
 			}
@@ -225,11 +222,6 @@ export default {
 			}
 		}
 	},
-	created() {
-		Bus.on(`mvi-editor-${this.$parent.name}`, data => {
-			this.editorInstance = data
-		})
-	},
 	methods: {
 		//点击浮层选项
 		selectLayerItem(dataItem, index) {
@@ -237,7 +229,7 @@ export default {
 				return
 			}
 			//恢复选区
-			this.editorInstance.restoreRange()
+			this.$parent.editorInstance.restoreRange()
 			//执行
 			this.handler(dataItem, index)
 			//隐藏浮层
@@ -308,10 +300,10 @@ export default {
 			}
 			//设置源码显示
 			else if (this.options.key == 'codeView') {
-				this.editorInstance.codeViewShow = !this.editorInstance.codeViewShow
+				this.$parent.editorInstance.codeViewShow = !this.$parent.editorInstance.codeViewShow
 			}
 			//弹出式菜单自定义菜单操作
-			else if (dataItem && index) {
+			else if (dataItem) {
 				this.$parent.$emit('custom', {
 					options: { ...this.options },
 					item: { ...dataItem },
@@ -323,7 +315,7 @@ export default {
 				this.$parent.$emit('custom', { ...this.options })
 			}
 
-			if (this.isValueMenu && dataItem && index) {
+			if (this.isValueMenu && dataItem) {
 				this.selectVal = { ...dataItem }
 			}
 		},
@@ -345,7 +337,7 @@ export default {
 			//如果是普通菜单则直接作用
 			else {
 				//恢复选区
-				this.editorInstance.restoreRange()
+				this.$parent.editorInstance.restoreRange()
 				//执行操作
 				this.handler()
 			}
