@@ -799,7 +799,7 @@ export default {
 			if (wrap) {
 				const selectNodes = this.getSelectNodes()
 				if (selectNodes.length) {
-					const blockEl = selectNodes[0]
+					const blockEl = this.getCompareTag(selectNodes[0], blockTag)
 					const pEl = Dap.element.string2dom('<p><br></p>')
 					this.insertNodeAfter(pEl, blockEl)
 					if (focus) {
