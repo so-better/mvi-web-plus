@@ -1,6 +1,6 @@
 export default [
 	{
-		key: 'tag',
+		key: 'title',
 		name: '标题',
 		value: 'p',
 		data: [
@@ -49,13 +49,6 @@ export default [
 		key: 'removeFormat',
 		name: '清除格式',
 		icon: 'clear',
-		data: true,
-		index: 0
-	},
-	{
-		key: 'selectAll',
-		name: '全选',
-		icon: 'check-o',
 		data: true,
 		index: 0
 	},
@@ -112,7 +105,18 @@ export default [
 		key: 'fontFamily',
 		name: '字体',
 		value: '微软雅黑',
-		data: ['黑体', '仿宋', '楷体', '宋体', '微软雅黑', 'Arial', 'Consolas'],
+		data: [
+			{
+				label: '默认字体',
+				value: '微软雅黑'
+			},
+			'黑体',
+			'仿宋',
+			'楷体',
+			'宋体',
+			'Arial',
+			'Consolas'
+		],
 		index: 0
 	},
 	{
@@ -121,12 +125,12 @@ export default [
 		value: '0.28rem',
 		data: [
 			{
-				label: '12px',
-				value: '0.24rem'
+				label: '默认字号',
+				value: '0.28rem'
 			},
 			{
-				label: '14px',
-				value: '0.28rem'
+				label: '12px',
+				value: '0.24rem'
 			},
 			{
 				label: '16px',
@@ -184,22 +188,22 @@ export default [
 		data: [
 			{
 				label: '左对齐',
-				value: 'left',
+				value: 'justifyLeft',
 				icon: 'align-left'
 			},
 			{
 				label: '居中对齐',
-				value: 'center',
+				value: 'justifyCenter',
 				icon: 'align-center'
 			},
 			{
 				label: '右对齐',
-				value: 'right',
+				value: 'justifyRight',
 				icon: 'align-right'
 			},
 			{
 				label: '两端对齐',
-				value: 'justify',
+				value: 'justifyFull',
 				icon: 'align-justify'
 			}
 		],

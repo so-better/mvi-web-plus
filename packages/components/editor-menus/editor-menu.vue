@@ -34,9 +34,9 @@
 			<div class="mvi-editor-menu-layer">
 				<!-- 字体颜色、背景色 -->
 				<div v-if="options.key == 'foreColor' || options.key == 'backColor'" class="mvi-editor-menu-colors">
-					<div :style="menuColorStyle(item)" class="mvi-editor-menu-color" v-for="item in options.data">
+					<div :style="menuColorStyle(item)" class="mvi-editor-menu-color" v-for="(item, index) in options.data">
 						<Tooltip :disabled="disabledColorToolTip(item)" trigger="hover" :title="item.label" :placement="$parent.combinedTooltipProps.placement" :timeout="$parent.combinedTooltipProps.timeout" :color="$parent.combinedTooltipProps.color" :text-color="$parent.combinedTooltipProps.textColor" :border-color="$parent.combinedTooltipProps.borderColor" :offset="$parent.combinedTooltipProps.offset" :z-index="$parent.combinedTooltipProps.zIndex" :fixed="$parent.combinedTooltipProps.fixed" :fixed-auto="$parent.combinedTooltipProps.fixedAuto" :width="$parent.combinedTooltipProps.width" :animation="$parent.combinedTooltipProps.animation" :show-triangle="$parent.combinedTooltipProps.showTriangle" block>
-							<div :style="{ backgroundColor: item.value }" class="mvi-editor-menu-color-el"></div>
+							<div :style="{ backgroundColor: item.value }" @click="selectLayerItem(item, index)" class="mvi-editor-menu-color-el"></div>
 						</Tooltip>
 					</div>
 				</div>
@@ -51,12 +51,13 @@
 				<slot name="layer" v-else-if="$slots.layer"></slot>
 				<!-- 普通弹出层 -->
 				<template v-else>
-					<editorTag :tag="layerElTag(item)" :style="layerElStyle(item)" :disabled="item.disabled || null" class="mvi-editor-menu-layer-el" v-for="(item, index) in options.data" @click="selectLayerItem(item, index)">
+					<editorTag :tag="layerElTag(item)" :style="layerElStyle(item)" :disabled="item.disabled || null" :class="['mvi-editor-menu-layer-el', active && item.value == selectVal.value ? 'active' : '']" v-for="(item, index) in options.data" @click="selectLayerItem(item, index)">
 						<template v-if="item.icon">
-							<i class="mvi-editor-menu-icon" v-if="item.icon.custom" :class="item.icon.value"></i>
-							<Icon v-else class="mvi-editor-menu-icon" :type="item.icon.value" />
+							<i class="mvi-editor-menu-layer-icon" v-if="item.icon.custom" :class="item.icon.value"></i>
+							<Icon v-else class="mvi-editor-menu-layer-icon" :type="item.icon.value" />
 						</template>
 						<span v-text="item.label"></span>
+						<Icon class="mvi-editor-menu-layer-active-icon" v-if="active && item.value == selectVal.value" type="success"></Icon>
 					</editorTag>
 				</template>
 			</div>
@@ -66,6 +67,7 @@
 <script>
 import { getCurrentInstance } from 'vue'
 import editorTag from './editor-tag.vue'
+import unactiveMenus from './unActiveMenu'
 import { Dap } from '../dap'
 import { Upload } from '../upload'
 import { Tooltip } from '../tooltip'
@@ -162,7 +164,7 @@ export default {
 		//浮层项的标签
 		layerElTag() {
 			return item => {
-				if (this.options.key == 'tag') {
+				if (this.options.key == 'title') {
 					return item.value
 				}
 				return 'div'
@@ -181,7 +183,7 @@ export default {
 		//菜单项样式
 		editorTargetStyle() {
 			let style = {}
-			if (this.$parent.editorInstance && this.active) {
+			if (this.$parent.editorInstance && this.active && !unactiveMenus.includes(this.options.key)) {
 				style.opacity = 1
 				if (this.$parent.editorInstance.activeColor) {
 					style.color = this.$parent.editorInstance.activeColor
@@ -213,10 +215,7 @@ export default {
 			handler: function (newVal) {
 				if (newVal) {
 					//如果是显示已选值的菜单项，需要初始化设置已选值
-					this.selectVal =
-						this.options.data.find(item => {
-							return item.value == this.options.value
-						}) || {}
+					this.initSelectVal()
 				}
 			}
 		}
@@ -225,6 +224,9 @@ export default {
 		//点击浮层选项
 		selectLayerItem(dataItem, index) {
 			if (this.disabledMenu) {
+				return
+			}
+			if (dataItem.disabled) {
 				return
 			}
 			//恢复选区
@@ -236,13 +238,17 @@ export default {
 		},
 		//执行富文本操作
 		handler(dataItem, index) {
-			// 撤回/恢复/清除格式/全选/加粗/斜体/下划线/删除线/下标/上标
-			if (['undo', 'redo', 'removeFormat', 'selectAll', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript'].includes(this.options.key)) {
+			// 撤回/恢复/清除格式/加粗/斜体/下划线/删除线/下标/上标
+			if (['undo', 'redo', 'removeFormat', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript'].includes(this.options.key)) {
 				document.execCommand(this.options.key)
+			}
+			//插入标题
+			else if (this.options.key == 'title') {
+				this.$parent.editorInstance.insertBlock(dataItem.value)
 			}
 			//插入分隔线
 			else if (this.options.key == 'divider') {
-				document.execCommand('insertHtml', false, '<hr><p><br></p>')
+				this.$parent.editorInstance.insertHtml('<hr>', true)
 			}
 			//设置字体
 			else if (this.options.key == 'fontFamily') {
@@ -254,9 +260,11 @@ export default {
 			}
 			//设置文字颜色
 			else if (this.options.key == 'foreColor') {
+				document.execCommand('foreColor', false, dataItem.value)
 			}
 			//设置背景颜色
 			else if (this.options.key == 'backColor') {
+				document.execCommand('backColor', false, dataItem.value)
 			}
 			//插入有序列表
 			else if (this.options.key == 'ol') {
@@ -268,13 +276,14 @@ export default {
 			}
 			//对齐方式
 			else if (this.options.key == 'justify') {
+				document.execCommand(dataItem.value)
 			}
 			//引用
 			else if (this.options.key == 'quote') {
 				if (this.active) {
-					
+					this.removeBlockQuote()
 				} else {
-					document.execCommand('formatBlock', false, 'blockquote')
+					this.$parent.editorInstance.insertBlock('blockquote', true, true)
 				}
 			}
 			//插入链接
@@ -292,9 +301,8 @@ export default {
 			//插入代码
 			else if (this.options.key == 'code') {
 				if (this.active) {
-					
 				} else {
-					document.execCommand('formatBlock', false, 'pre')
+					document.execCommand('insertBlock', false, 'pre')
 				}
 			}
 			//设置源码显示
@@ -362,6 +370,15 @@ export default {
 				this.layerShow = false
 			}
 		},
+		//初始化seletVal和active
+		initSelectVal() {
+			this.selectVal = this.options.data.find(item => {
+				return item.value == this.options.value
+			})
+			if (this.selectVal) {
+				this.active = true
+			}
+		},
 		//初始化创建表格单元格数组
 		initTableGroups() {
 			const arr = new Array()
@@ -400,6 +417,34 @@ export default {
 			this.tableParams.size = []
 			this.tableParams.groups = this.initTableGroups()
 			this.hideLayer()
+		},
+		//删除引用
+		removeBlockQuote() {
+			let nodes = this.$parent.editorInstance.getSelectNodes()
+			if (nodes.length != 1) {
+				return
+			}
+			const blockquote = this.$parent.editorInstance.getCompareTag(nodes[0], 'blockquote')
+			let pEl = Dap.element.string2dom('<p>' + blockquote.innerHTML + '</p>')
+			if (!Dap.element.isElement(pEl)) {
+				return
+			}
+			this.insertNodeAfter(pEl, blockquote)
+			blockquote.remove()
+			this.$parent.editorInstance.collapseToEnd(pEl)
+			this.active = false
+			this.$parent.editorInstance.updateHtmlText()
+			this.$parent.editorInstance.updateValue()
+		},
+		//在指定节点后插入节点
+		insertNodeAfter(newNode, targetNode) {
+			let parent = targetNode.parentNode
+			let children = Dap.element.children(parent)
+			if (children[children.length - 1] == targetNode) {
+				parent.appendChild(newNode)
+			} else {
+				parent.insertBefore(newNode, targetNode.nextSibling)
+			}
 		}
 	}
 }
@@ -465,13 +510,24 @@ export default {
 			cursor: pointer;
 			background-color: @bg-color-default;
 		}
-		.mvi-editor-menu-icon {
+		.mvi-editor-menu-layer-icon {
 			margin-right: @mp-xs;
 		}
 
 		&[disabled] {
 			opacity: 0.6;
 			background-color: #fff;
+		}
+		&.active {
+			opacity: 1;
+			background-color: @bg-color-default;
+		}
+
+		.mvi-editor-menu-layer-active-icon {
+			font-size: @font-size-default;
+			margin-left: @mp-xs;
+			font-weight: normal;
+			opacity: 0.8;
 		}
 	}
 

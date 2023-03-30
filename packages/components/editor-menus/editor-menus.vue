@@ -1,7 +1,7 @@
 <template>
 	<div class="mvi-editor-menus" :style="{ border: border ? '' : 'none' }">
-		<template v-for="item in menus">
-			<editorMenu v-if="showMenu(item)" :options="item">
+		<template v-for="(item, index) in menus">
+			<editorMenu v-if="showMenu(item)" :options="item" :ref="el => (menuRefs[index] = el)">
 				<template #layer v-if="isLayerMenu(item) && item.customLayer && $slots.layer">
 					<slot name="layer" :options="item"></slot>
 				</template>
@@ -65,7 +65,9 @@ export default {
 	data() {
 		return {
 			//编辑器实例
-			editorInstance: null
+			editorInstance: null,
+			//菜单项数组
+			menuRefs: []
 		}
 	},
 	components: {
@@ -122,6 +124,12 @@ export default {
 		isLayerMenu() {
 			return item => {
 				return Array.isArray(item.data)
+			}
+		},
+		//是否为显示已选值的菜单
+		isValueMenu() {
+			return item => {
+				return item.hasOwnProperty('value') && this.isLayerMenu(item)
 			}
 		}
 	},
@@ -184,9 +192,9 @@ export default {
 			if (!this.editorInstance) {
 				return
 			}
-            if(!this.editorInstance.$refs.content){
-                return
-            }
+			if (!this.editorInstance.$refs.content) {
+				return
+			}
 			const observe = new Observe(this.editorInstance.$refs.content, {
 				attributes: false,
 				childList: true,
@@ -223,11 +231,196 @@ export default {
 								default:
 									break
 							}
+							this.editorInstance.changeActive()
 						}
 					}
 				}
 			})
 			observe.init()
+		},
+		//设置菜单项的激活状态函数
+		changeActiveJudgeFn() {
+			let nodes = this.editorInstance.getSelectNodes()
+			if (!nodes.length) {
+				return
+			}
+			for (let menu of this.menuRefs) {
+				//弹出式菜单
+				if (this.isLayerMenu(menu.options)) {
+					//显示已选值的弹出式菜单
+					if (this.isValueMenu(menu.options)) {
+						//设置标题激活状态
+						if (menu.options.key == 'title') {
+							for (let dataItem of menu.options.data) {
+								if (document.queryCommandValue('formatBlock').toLocaleLowerCase() == dataItem.value.toLocaleLowerCase()) {
+									menu.active = true
+									menu.selectVal = { ...dataItem }
+									break
+								}
+								menu.initSelectVal()
+							}
+						}
+						//设置字体激活状态
+						else if (menu.options.key == 'fontFamily') {
+							for (let dataItem of menu.options.data) {
+								if (document.queryCommandValue('fontName') == dataItem.value) {
+									menu.active = true
+									menu.selectVal = { ...dataItem }
+									break
+								}
+								menu.initSelectVal()
+							}
+						}
+						//设置字号激活状态
+						else if (menu.options.key == 'fontSize') {
+							for (let dataItem of menu.options.data) {
+								let value = dataItem.value
+								if (value.endsWith('rem')) {
+									const number = Number.parseFloat(value)
+									if (Dap.number.isNumber(number)) {
+										value = Dap.element.rem2px(number) + 'px'
+									}
+								}
+								let flag = nodes.every(node => {
+									return this.editorInstance.compareCss(node, 'font-size', value, false)
+								})
+								if (flag) {
+									menu.active = true
+									menu.selectVal = { ...dataItem }
+									break
+								}
+								menu.initSelectVal()
+							}
+						}
+					}
+					//普通的弹出式菜单
+					else {
+						//设置字体颜色激活状态
+						if (menu.options.key == 'foreColor') {
+							for (let dataItem of menu.options.data) {
+								let value = dataItem.value
+								//如果是十六进制颜色
+								if (Dap.common.matchingText(value, 'hex')) {
+									let rgbVal = Dap.color.hex2rgb(value)
+									value = `rgb(${rgbVal[0]}, ${rgbVal[1]}, ${rgbVal[2]})`
+								}
+								if (document.queryCommandValue('foreColor') == value) {
+									menu.active = true
+									menu.selectVal = { ...dataItem }
+									break
+								}
+								menu.active = false
+								menu.selectVal = {}
+							}
+						}
+						//设置背景色激活状态
+						else if (menu.options.key == 'backColor') {
+							for (let dataItem of menu.options.data) {
+								let value = dataItem.value
+								//如果是十六进制颜色
+								if (Dap.common.matchingText(value, 'hex')) {
+									let rgbVal = Dap.color.hex2rgb(value)
+									value = `rgb(${rgbVal[0]}, ${rgbVal[1]}, ${rgbVal[2]})`
+								}
+								if (document.queryCommandValue('backColor') == value) {
+									menu.active = true
+									menu.selectVal = { ...dataItem }
+									break
+								}
+								menu.active = false
+								menu.selectVal = {}
+							}
+						}
+						//设置对齐方式激活状态
+						else if (menu.options.key == 'justify') {
+							for (let dataItem of menu.options.data) {
+								if (document.queryCommandState(dataItem.value)) {
+									menu.active = true
+									menu.selectVal = { ...dataItem }
+									break
+								}
+								menu.active = false
+								menu.selectVal = {}
+							}
+						}
+					}
+				}
+				//普通菜单
+				else {
+					//设置加粗激活状态
+					if (menu.options.key == 'bold') {
+						if (document.queryCommandState('bold')) {
+							menu.active = true
+						} else {
+							menu.active = false
+						}
+					}
+					//设置斜体激活状态
+					else if (menu.options.key == 'italic') {
+						if (document.queryCommandState('italic')) {
+							menu.active = true
+						} else {
+							menu.active = false
+						}
+					}
+					//设置下划线激活状态
+					else if (menu.options.key == 'underline') {
+						if (document.queryCommandState('underline')) {
+							menu.active = true
+						} else {
+							menu.active = false
+						}
+					}
+					//设置删除线激活状态
+					else if (menu.options.key == 'strikeThrough') {
+						if (document.queryCommandState('strikeThrough')) {
+							menu.active = true
+						} else {
+							menu.active = false
+						}
+					}
+					//设置下标激活状态
+					else if (menu.options.key == 'subscript') {
+						if (document.queryCommandState('subscript')) {
+							menu.active = true
+						} else {
+							menu.active = false
+						}
+					}
+					//设置上标激活状态
+					else if (menu.options.key == 'superscript') {
+						if (document.queryCommandState('superscript')) {
+							menu.active = true
+						} else {
+							menu.active = false
+						}
+					}
+					//设置有序列表激活状态
+					else if (menu.options.key == 'ol') {
+						if (document.queryCommandState('insertOrderedList')) {
+							menu.active = true
+						} else {
+							menu.active = false
+						}
+					}
+					//设置无序列表激活状态
+					else if (menu.options.key == 'ul') {
+						if (document.queryCommandState('insertUnorderedList')) {
+							menu.active = true
+						} else {
+							menu.active = false
+						}
+					}
+					//设置引用激活状态
+					else if (menu.options.key == 'quote') {
+						if (document.queryCommandValue('formatBlock').toLocaleLowerCase() == 'blockquote') {
+							menu.active = true
+						} else {
+							menu.active = false
+						}
+					}
+				}
+			}
 		}
 	}
 }

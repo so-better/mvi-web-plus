@@ -1,5 +1,6 @@
 <template>
 	<div class="mvi-p-2">
+		{{ value }}
 		<m-editor-menus :config="[{ key: 'codeView', name: '显示源码', icon: 'eye', data: show, index: 1 }]" border ref="editorMenus"></m-editor-menus>
 		<m-editor border placeholder="请输入内容" v-model="value" ref="editor"></m-editor>
 	</div>
@@ -13,8 +14,8 @@ export default {
 		}
 	},
 	mounted() {
-        this.$refs.editor.use(this.$refs.editorMenus)
-    },
+		this.$refs.editor.use(this.$refs.editorMenus)
+	},
 	methods: {}
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
 	<div class="m-editor">
 		<div v-if="codeViewShow" ref="codeView" v-text="initalHtml" key="code" :contenteditable="!disabled || null" :style="codeViewStyle" :class="codeViewClass" @blur="codeViewBlur" @focus="codeViewFocus" @input="codeViewInput" @paste="codeViewPaste"></div>
-		<div v-else ref="content" v-html="initalHtml" key="content" :contenteditable="!disabled || null" :style="contentStyle" :class="contentClass" :data-placeholder="placeholder" @blur="contentBlur" @focus="contentFocus" @click="changeActive" @input="contentInput" @paste="contentPaste"></div>
+		<div v-else ref="content" v-html="initalHtml" key="content" :contenteditable="!disabled || null" :style="contentStyle" :class="contentClass" :data-placeholder="placeholder" @blur="contentBlur" @focus="contentFocus" @input="contentInput" @paste="contentPaste" @click="changeActive" @keyup="changeActive"></div>
 	</div>
 </template>
 <script>
@@ -120,7 +120,9 @@ export default {
 			//text内容
 			text: '',
 			//是否双向绑定改变值
-			isModelChange: false
+			isModelChange: false,
+			//激活菜单项的具体判定函数
+			changeActiveJudgeFn: null
 		}
 	},
 	computed: {
@@ -258,7 +260,6 @@ export default {
 				const rgb = Dap.color.hex2rgb(this.activeColor)
 				this.$refs.content.style.boxShadow = `0 0 0.16rem rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.5)`
 			}
-			this.changeActive()
 			this.$nextTick(() => {
 				this.$emit('focus', {
 					html: this.html,
@@ -446,6 +447,23 @@ export default {
 				return allowedFileType.includes(suffix)
 			}
 		},
+		//获取元素节点，如果自身不是则向上访问
+		getNodeByElement(ele) {
+			if (Dap.element.isElement(ele)) {
+				return ele
+			}
+			return this.getNodeByElement(ele.parentElement)
+		},
+		//在指定节点后插入节点
+		insertNodeAfter(newNode, targetNode) {
+			let parent = targetNode.parentNode
+			let children = Dap.element.children(parent)
+			if (children[children.length - 1] == targetNode) {
+				parent.appendChild(newNode)
+			} else {
+				parent.insertBefore(newNode, targetNode.nextSibling)
+			}
+		},
 		//api：改变菜单项激活状态
 		changeActive() {
 			if (this.disabled) {
@@ -455,6 +473,9 @@ export default {
 				return
 			}
 			this.saveRange()
+			if (typeof this.changeActiveJudgeFn == 'function') {
+				this.changeActiveJudgeFn()
+			}
 		},
 		//api：清除内容
 		empty() {
@@ -536,22 +557,25 @@ export default {
 			selection.collapseToStart()
 		},
 		//api：根据选区获取节点
-		getSelectNode() {
+		getSelectNodes() {
 			if (this.disabled) {
-				return null
+				return []
 			}
 			if (!this.range) {
-				return null
+				return []
 			}
 			if (!this.$refs.content) {
-				return null
+				return []
 			}
-			let node = this.range.commonAncestorContainer
-			if (Dap.element.isElement(node)) {
-				return node
-			} else {
-				return node.parentNode
+			const startNode = this.getNodeByElement(this.range.startContainer)
+			const endNode = this.getNodeByElement(this.range.endContainer)
+			if (startNode == endNode) {
+				if (this.$refs.content == startNode) {
+					return []
+				}
+				return [startNode]
 			}
+			return [startNode, endNode]
 		},
 		//api：判断某个节点是否在指定标签下
 		compareTag(el, tagName) {
@@ -686,8 +710,8 @@ export default {
 				this.text = el.innerText
 			}
 		},
-		//api：插入HTML片段
-		insertHtml(html) {
+		//api：插入HTML片段，会删除选中部分
+		insertHtml(html, wrap, focus) {
 			if (this.disabled) {
 				return
 			}
@@ -697,9 +721,23 @@ export default {
 			if (!html) {
 				return
 			}
+			//将需要插入的html转为DOM，用作后续的判断
+			const dom = Dap.element.string2dom(html)
+			//如果在插入html后需要换行
+			if (wrap) {
+				html = `${html}<p><br></p>`
+			}
+			//插入html
 			document.execCommand('insertHtml', false, html)
+			//如果插入html后需要换行并且存在选择器并且插入的html是一个DOM，则设置光标位置在插入的HTML里
+			if (wrap && focus && Dap.element.isElement(dom)) {
+				const selectNodes = this.getSelectNodes()
+				if (selectNodes.length) {
+					this.collapseToEnd(selectNodes[0].previousElementSibling)
+				}
+			}
 		},
-		//api：插入文本
+		//api：插入文本，会删除选中部分
 		insertText(text) {
 			if (this.disabled) {
 				return
@@ -712,7 +750,7 @@ export default {
 			}
 			document.execCommand('insertText', false, text)
 		},
-		//api：插入图片
+		//api：插入图片，会删除选中部分
 		insertImage(url) {
 			if (this.disabled) {
 				return
@@ -725,9 +763,9 @@ export default {
 				style.push(this.imageClass)
 			}
 			const imgHtml = `<img src="${url}" class="${style.join(' ')}" />`
-			document.execCommand('insertHtml', false, imgHtml)
+			this.insertHtml(imgHtml)
 		},
-		//api：插入视频
+		//api：插入视频，会删除选中部分
 		insertVideo(url) {
 			if (this.disabled) {
 				return
@@ -752,30 +790,33 @@ export default {
 			if (this.combinedVideoShowProps.autoplay) {
 				video.setAttribute('autoplay', 'autoplay')
 			}
-			document.execCommand('insertHtml', false, video.outerHTML)
+			this.insertHtml(video.outerHTML)
 		},
-		//api：清除内容
-		empty() {
-			if (this.disabled) {
-				return
+		//更换当前选择的行的块元素，如果已经存在块元素则会替换
+		insertBlock(blockTag, wrap, focus) {
+			document.execCommand('formatBlock', false, blockTag)
+			//在插入后换行
+			if (wrap) {
+				const selectNodes = this.getSelectNodes()
+				if (selectNodes.length) {
+					const blockEl = selectNodes[0]
+					const pEl = Dap.element.string2dom('<p><br></p>')
+					this.insertNodeAfter(pEl, blockEl)
+					if (focus) {
+						this.collapseToEnd(blockEl)
+					}
+				}
 			}
-			if (this.$refs.content) {
-				this.$refs.content.innerHTML = '<p><br></p>'
-			} else if (this.$refs.codeView) {
-				this.$refs.codeView.innerText = '<p><br></p>'
-			}
-			this.updateHtmlText()
-			this.updateValue()
-			this.collapseToEnd()
 		},
-        //api：注册菜单栏实例
-        use(instance) {
-            //把编辑器实例传给菜单栏组件
-            instance.editorInstance = this
-            //菜单栏启用dom监听
-            instance.editorContentDomMonitor()
-            
-        }
+		//api：注册菜单栏实例
+		use(instance) {
+			//把编辑器实例传给菜单栏组件
+			instance.editorInstance = this
+			//菜单栏启用dom监听
+			instance.editorContentDomMonitor()
+			//菜单栏设置菜单项的激活状态函数
+			this.changeActiveJudgeFn = instance.changeActiveJudgeFn
+		}
 	}
 }
 </script>
