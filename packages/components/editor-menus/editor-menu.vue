@@ -1,7 +1,7 @@
 <template>
 	<div class="mvi-editor-menu" :data-id="`mvi-editor-menu-${uid}-${options.key}`">
 		<Tooltip :disabled="disabledToolTip || null" :title="options.name" trigger="hover" :placement="$parent.combinedTooltipProps.placement" :timeout="$parent.combinedTooltipProps.timeout" :color="$parent.combinedTooltipProps.color" :text-color="$parent.combinedTooltipProps.textColor" :border-color="$parent.combinedTooltipProps.borderColor" :offset="$parent.combinedTooltipProps.offset" :z-index="$parent.combinedTooltipProps.zIndex" :fixed="$parent.combinedTooltipProps.fixed" :fixed-auto="$parent.combinedTooltipProps.fixedAuto" :width="$parent.combinedTooltipProps.width" :animation="$parent.combinedTooltipProps.animation" :show-triangle="$parent.combinedTooltipProps.showTriangle">
-			<div class="mvi-editor-menu-target" @click="targetTrigger" :disabled="disabledMenu || null" :data-id="`mvi-editor-menu-target-${uid}-${options.key}`" @mouseenter="showLayer(true)" @mouseleave="hideLayer(true)" :style="editorTargetStyle">
+			<div class="mvi-editor-menu-target" @click="targetTrigger" :disabled="disabledMenu || null" :data-id="`mvi-editor-menu-target-${uid}-${options.key}`" @mouseenter="targetHover('enter', $event)" @mouseleave="targetHover('leave', $event)" :style="editorTargetStyle">
 				<span class="mvi-editor-menu-value" v-if="isValueMenu">{{ selectVal.label }}</span>
 				<template v-else-if="options.icon">
 					<i v-if="options.icon.custom" :class="options.icon.value"></i>
@@ -51,7 +51,7 @@
 				<slot name="layer" v-else-if="$slots.layer"></slot>
 				<!-- 普通弹出层 -->
 				<template v-else>
-					<editorTag :tag="layerElTag(item)" :style="layerElStyle(item)" :disabled="item.disabled || null" :class="['mvi-editor-menu-layer-el', active && item.value == selectVal.value ? 'active' : '']" v-for="(item, index) in options.data" @click="selectLayerItem(item, index)">
+					<editorTag :tag="layerElTag(item)" :style="layerElStyle(item)" :disabled="item.disabled || null" :class="['mvi-editor-menu-layer-el', layerActiveClass(item)]" v-for="(item, index) in options.data" @click="selectLayerItem(item, index)" @mouseenter="layerItemHover('enter', item, $event)" @mouseleave="layerItemHover('leave', item, $event)">
 						<template v-if="item.icon">
 							<i class="mvi-editor-menu-layer-icon" v-if="item.icon.custom" :class="item.icon.value"></i>
 							<Icon v-else class="mvi-editor-menu-layer-icon" :type="item.icon.value" />
@@ -200,6 +200,15 @@ export default {
 				}
 				return style
 			}
+		},
+		//浮层选项激活样式类
+		layerActiveClass() {
+			return dataItem => {
+				if (this.active && dataItem.value == this.selectVal.value) {
+					return dataItem.activeClass || this.$parent.layerActiveClass || 'active'
+				}
+				return ''
+			}
 		}
 	},
 	components: {
@@ -345,25 +354,65 @@ export default {
 				this.handler()
 			}
 		},
-		//显示浮层
-		showLayer(judgeHover) {
+		//菜单项悬浮
+		targetHover(type, event) {
 			if (this.disabledMenu) {
 				return
 			}
-			if (judgeHover && this.$parent.trigger != 'hover') {
+			if (type == 'enter') {
+				if (this.options.hoverClass) {
+					Dap.element.addClass(event.currentTarget, this.options.hoverClass)
+				} else if (this.$parent.hoverClass) {
+					Dap.element.addClass(event.currentTarget, this.$parent.hoverClass)
+				}
+				if (this.$parent.trigger == 'hover') {
+					this.showLayer()
+				}
+			} else if (type == 'leave') {
+				if (this.options.hoverClass) {
+					Dap.element.removeClass(event.currentTarget, this.options.hoverClass)
+				} else if (this.$parent.hoverClass) {
+					Dap.element.removeClass(event.currentTarget, this.$parent.hoverClass)
+				}
+				if (this.$parent.trigger == 'hover') {
+					this.hideLayer()
+				}
+			}
+		},
+		//浮层选项悬浮效果设置
+		layerItemHover(type, dataItem, event) {
+			if (this.disabledMenu) {
+				return
+			}
+			if (dataItem.disabled) {
+				return
+			}
+			if (type == 'enter') {
+				if (dataItem.hoverClass) {
+					Dap.element.addClass(event.currentTarget, dataItem.hoverClass)
+				} else if (this.$parent.layerHoverClass) {
+					Dap.element.addClass(event.currentTarget, this.$parent.layerHoverClass)
+				}
+			} else if (type == 'leave') {
+				if (dataItem.hoverClass) {
+					Dap.element.removeClass(event.currentTarget, dataItem.hoverClass)
+				} else if (this.$parent.layerHoverClass) {
+					Dap.element.removeClass(event.currentTarget, this.$parent.layerHoverClass)
+				}
+			}
+		},
+		//显示浮层
+		showLayer() {
+			if (this.disabledMenu) {
 				return
 			}
 			if (this.isLayerMenu) {
 				this.layerShow = true
-				this.$nextTick(() => {})
 			}
 		},
 		//隐藏浮层
-		hideLayer(judgeHover) {
+		hideLayer() {
 			if (this.disabledMenu) {
-				return
-			}
-			if (judgeHover && this.$parent.trigger != 'hover') {
 				return
 			}
 			if (this.isLayerMenu) {
@@ -460,8 +509,6 @@ export default {
 	justify-content: flex-start;
 	align-items: center;
 	height: @mini-height;
-	color: @font-color-default;
-	font-size: @font-size-default;
 	margin: 0;
 	padding: 0 @mp-sm;
 	transition: color 200ms;
@@ -477,6 +524,7 @@ export default {
 
 	&[disabled] {
 		opacity: 0.6;
+		background-color: transparent;
 	}
 
 	.mvi-editor-menu-value {
@@ -491,7 +539,6 @@ export default {
 .mvi-editor-menu-layer {
 	display: block;
 	padding: @mp-xs 0;
-	font-size: @font-size-default;
 
 	.mvi-editor-menu-layer-el {
 		display: flex;
@@ -500,8 +547,6 @@ export default {
 		padding: @mp-sm @mp-lg;
 		margin: 0;
 		white-space: nowrap;
-		color: @font-color-default;
-		background-color: #fff;
 		text-align: center;
 		opacity: 0.8;
 
@@ -516,7 +561,7 @@ export default {
 
 		&[disabled] {
 			opacity: 0.6;
-			background-color: #fff;
+			background-color: transparent;
 		}
 		&.active {
 			opacity: 1;
@@ -524,7 +569,6 @@ export default {
 		}
 
 		.mvi-editor-menu-layer-active-icon {
-			font-size: @font-size-default;
 			margin-left: @mp-xs;
 			font-weight: normal;
 			opacity: 0.8;

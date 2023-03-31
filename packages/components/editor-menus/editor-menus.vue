@@ -20,6 +20,21 @@ export default {
 	name: 'm-editor-menus',
 	emits: ['custom'],
 	props: {
+		//弹出式菜单浮层选项激活效果
+		layerActiveClass: {
+			type: String,
+			default: null
+		},
+		//弹出式菜单浮层选项悬浮效果
+		layerHoverClass: {
+			type: String,
+			default: null
+		},
+		//菜单项悬浮效果
+		hoverClass: {
+			type: String,
+			default: null
+		},
 		//是否显示边框
 		border: {
 			type: Boolean,
@@ -169,14 +184,18 @@ export default {
 							label: item,
 							value: item,
 							icon: null,
-							disabled: false
+							disabled: false,
+							hoverClass: null,
+							activeClass: null
 						})
 					} else if (Dap.common.isObject(item)) {
 						newData.push({
 							label: item.label,
 							value: item.value,
 							icon: this.initMenuIcon(item.icon),
-							disabled: Boolean(item.disabled)
+							disabled: Boolean(item.disabled),
+							hoverClass: item.hoverClass,
+							activeClass: item.activeClass
 						})
 					}
 				})
@@ -419,6 +438,14 @@ export default {
 							menu.active = false
 						}
 					}
+					//设置代码视图激活状态
+					else if (menu.options.key == 'codeView') {
+						if (this.editorInstance.codeViewShow) {
+							menu.active = true
+						} else {
+							menu.active = false
+						}
+					}
 				}
 			}
 		}
@@ -434,9 +461,11 @@ export default {
 	flex-wrap: wrap;
 	width: 100%;
 	background-color: #fff;
+	color: @font-color-default;
 	margin-bottom: @mp-sm;
 	border: 1px solid @border-color;
 	border-radius: @radius-default;
 	padding: @mp-xs @mp-sm;
+	font-size: @font-size-default;
 }
 </style>
