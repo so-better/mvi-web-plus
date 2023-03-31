@@ -460,6 +460,9 @@ export default {
 		},
 		//判断是否清除range
 		judgeClearRange(e) {
+			if (!this.editorInstance) {
+				return
+			}
 			//如果是在编辑器内或者菜单栏内不清除
 			if (Dap.element.isContains(this.$el, e.target) || Dap.element.isContains(this.editorInstance.$el, e.target)) {
 				return
