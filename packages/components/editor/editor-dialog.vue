@@ -13,7 +13,7 @@ export default {
 		options: {
 			type: Object,
 			default: function () {
-				return {}
+				return null
 			}
 		},
 		//弹层位置

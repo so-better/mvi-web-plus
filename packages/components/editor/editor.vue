@@ -1,7 +1,7 @@
 <template>
 	<div class="mvi-editor">
 		<div v-if="codeViewShow" ref="codeView" v-text="initalHtml" key="code" :contenteditable="!disabled || null" :style="codeViewStyle" :class="codeViewClass" @blur="codeViewBlur" @focus="codeViewFocus" @input="codeViewInput" @paste="codeViewPaste"></div>
-		<div v-else ref="content" v-html="initalHtml" key="content" :contenteditable="!disabled || null" :style="contentStyle" :class="contentClass" :data-placeholder="placeholder" @blur="contentBlur" @focus="contentFocus" @input="contentInput" @paste="contentPaste" @click="changeActive" @keyup="contentKeyup" @mouseup="contentMouseUp"></div>
+		<div v-else ref="content" v-html="initalHtml" key="content" :contenteditable="!disabled || null" :style="contentStyle" :class="contentClass" :data-placeholder="placeholder" @blur="contentBlur" @focus="contentFocus" @input="contentInput" @paste="contentPaste" @keyup="changeActive" @click="changeActive"></div>
 		<!-- 跟随式弹层 -->
 		<editorDialog v-model="dialogShow" :points="dialogPoints" :options="menuOptions"></editorDialog>
 	</div>
@@ -131,7 +131,7 @@ export default {
 			//跟随式弹出显示
 			dialogShow: false,
 			//跟随式弹层参数
-			menuOptions: {},
+			menuOptions: null,
 			//跟随式弹层位置
 			dialogPoints: [0, 0]
 		}
@@ -263,26 +263,16 @@ export default {
 		},
 		//打开跟随式弹层
 		openDialog(options) {
-			console.log(1)
 			if (!this.useMenus) {
 				return
 			}
-			//点击菜单项的
 			if (options) {
+				this.menuOptions = options
+				this.dialogShow = true
+			} else {
+				this.menuOptions = null
+				this.dialogShow = true
 			}
-			//选区的
-			else {
-			}
-			this.menuOptions = options
-			this.dialogShow = true
-		},
-		//编辑区域松开键盘
-		contentKeyup() {
-			this.changeActive()
-		},
-		//编辑区域松开鼠标
-		contentMouseUp() {
-			console.log(this.range)
 		},
 		//编辑区域获取焦点
 		contentFocus() {
@@ -299,13 +289,13 @@ export default {
 			}
 			setTimeout(() => {
 				this.changeActive()
-			}, 0)
-			this.$nextTick(() => {
-				this.$emit('focus', {
-					html: this.html,
-					text: this.text
+				this.$nextTick(() => {
+					this.$emit('focus', {
+						html: this.html,
+						text: this.text
+					})
 				})
-			})
+			}, 0)
 		},
 		//编辑区域失去焦点
 		contentBlur() {
@@ -319,6 +309,7 @@ export default {
 				this.$refs.content.style.borderColor = ''
 				this.$refs.content.style.boxShadow = ''
 			}
+			this.changeActive()
 			this.$nextTick(() => {
 				this.$emit('blur', {
 					html: this.html,
@@ -831,7 +822,7 @@ export default {
 			}
 			this.insertHtml(video.outerHTML)
 		},
-		//更换当前选择的行的块元素，如果已经存在块元素则会替换
+		//api：更换当前选择的行的块元素，如果已经存在块元素则会替换
 		insertBlock(blockTag, wrap, focus) {
 			document.execCommand('formatBlock', false, blockTag)
 			//在插入后换行

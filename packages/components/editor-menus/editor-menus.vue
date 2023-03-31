@@ -1,5 +1,5 @@
 <template>
-	<div class="mvi-editor-menus" :style="{ border: border ? '' : 'none' }">
+	<div class="mvi-editor-menus" @mousedown="$event => $event.preventDefault()" :style="{ border: border ? '' : 'none' }">
 		<template v-for="(item, index) in menus">
 			<editorMenu v-if="showMenu(item)" :options="item" :ref="el => (menuRefs[index] = el)">
 				<template #layer v-if="isLayerMenu(item) && item.customLayer && $slots.layer">
