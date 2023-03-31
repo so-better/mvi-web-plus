@@ -183,6 +183,9 @@ export default {
 		//菜单项样式
 		editorTargetStyle() {
 			let style = {}
+			if (this.disabledMenu) {
+				return style
+			}
 			if (this.$parent.editorInstance && this.active && !unactiveMenus.includes(this.options.key)) {
 				style.opacity = 1
 				if (this.$parent.editorInstance.activeColor) {
@@ -297,6 +300,7 @@ export default {
 			}
 			//插入链接
 			else if (this.options.key == 'link') {
+				this.$parent.editorInstance.openDialog(this.options)
 			}
 			//插入图片
 			else if (this.options.key == 'image') {
@@ -478,22 +482,12 @@ export default {
 			if (!Dap.element.isElement(pEl)) {
 				return
 			}
-			this.insertNodeAfter(pEl, blockquote)
+			this.$parent.editorInstance.insertNodeAfter(pEl, blockquote)
 			blockquote.remove()
 			this.$parent.editorInstance.collapseToEnd(pEl)
 			this.active = false
 			this.$parent.editorInstance.updateHtmlText()
 			this.$parent.editorInstance.updateValue()
-		},
-		//在指定节点后插入节点
-		insertNodeAfter(newNode, targetNode) {
-			let parent = targetNode.parentNode
-			let children = Dap.element.children(parent)
-			if (children[children.length - 1] == targetNode) {
-				parent.appendChild(newNode)
-			} else {
-				parent.insertBefore(newNode, targetNode.nextSibling)
-			}
 		}
 	}
 }

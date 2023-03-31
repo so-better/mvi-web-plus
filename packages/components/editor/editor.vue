@@ -1,7 +1,9 @@
 <template>
-	<div class="m-editor">
+	<div class="mvi-editor">
 		<div v-if="codeViewShow" ref="codeView" v-text="initalHtml" key="code" :contenteditable="!disabled || null" :style="codeViewStyle" :class="codeViewClass" @blur="codeViewBlur" @focus="codeViewFocus" @input="codeViewInput" @paste="codeViewPaste"></div>
-		<div v-else ref="content" v-html="initalHtml" key="content" :contenteditable="!disabled || null" :style="contentStyle" :class="contentClass" :data-placeholder="placeholder" @blur="contentBlur" @focus="contentFocus" @input="contentInput" @paste="contentPaste" @click="changeActive" @keyup="changeActive"></div>
+		<div v-else ref="content" v-html="initalHtml" key="content" :contenteditable="!disabled || null" :style="contentStyle" :class="contentClass" :data-placeholder="placeholder" @blur="contentBlur" @focus="contentFocus" @input="contentInput" @paste="contentPaste" @click="changeActive" @keyup="contentKeyup" @mouseup="contentMouseUp"></div>
+		<!-- 跟随式弹层 -->
+		<editorDialog v-model="dialogShow" :points="dialogPoints" :options="menuOptions"></editorDialog>
 	</div>
 </template>
 <script>
@@ -9,6 +11,7 @@ import { Dap } from '../dap'
 import defaultVideoShowProps from './defaultVideoShowProps'
 import defaultUploadImageProps from './defaultUploadImageProps'
 import defaultUploadVideoProps from './defaultUploadVideoProps'
+import editorDialog from './editor-dialog.vue'
 import { Msgbox } from '../msgbox'
 export default {
 	name: 'm-editor',
@@ -109,6 +112,8 @@ export default {
 	emits: ['update:modelValue', 'blur', 'focus', 'input', 'file-paste', 'upload-image', 'upload-video'],
 	data() {
 		return {
+			//是否使用菜单栏
+			useMenus: false,
 			//选区
 			range: null,
 			//源码是否显示
@@ -122,7 +127,13 @@ export default {
 			//是否双向绑定改变值
 			isModelChange: false,
 			//激活菜单项的具体判定函数
-			changeActiveJudgeFn: null
+			changeActiveJudgeFn: null,
+			//跟随式弹出显示
+			dialogShow: false,
+			//跟随式弹层参数
+			menuOptions: {},
+			//跟随式弹层位置
+			dialogPoints: [0, 0]
 		}
 	},
 	computed: {
@@ -193,6 +204,9 @@ export default {
 			return this.initOption(defaultUploadVideoProps, this.uploadVideoProps)
 		}
 	},
+	components: {
+		editorDialog
+	},
 	watch: {
 		//监听modelValue
 		modelValue() {
@@ -235,10 +249,10 @@ export default {
 			//更新html和text
 			this.$nextTick(() => {
 				this.updateHtmlText()
+				if (this.autofocus) {
+					this.collapseToEnd()
+				}
 			})
-			if (this.autofocus) {
-				this.collapseToEnd()
-			}
 		},
 		//初始化对象参数方法
 		initOption(defaultObj, propObj) {
@@ -246,6 +260,29 @@ export default {
 			Object.assign(obj, defaultObj)
 			Object.assign(obj, propObj)
 			return obj
+		},
+		//打开跟随式弹层
+		openDialog(options) {
+			console.log(1)
+			if (!this.useMenus) {
+				return
+			}
+			//点击菜单项的
+			if (options) {
+			}
+			//选区的
+			else {
+			}
+			this.menuOptions = options
+			this.dialogShow = true
+		},
+		//编辑区域松开键盘
+		contentKeyup() {
+			this.changeActive()
+		},
+		//编辑区域松开鼠标
+		contentMouseUp() {
+			console.log(this.range)
 		},
 		//编辑区域获取焦点
 		contentFocus() {
@@ -260,6 +297,9 @@ export default {
 				const rgb = Dap.color.hex2rgb(this.activeColor)
 				this.$refs.content.style.boxShadow = `0 0 0.16rem rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.5)`
 			}
+			setTimeout(() => {
+				this.changeActive()
+			}, 0)
 			this.$nextTick(() => {
 				this.$emit('focus', {
 					html: this.html,
@@ -279,7 +319,6 @@ export default {
 				this.$refs.content.style.borderColor = ''
 				this.$refs.content.style.boxShadow = ''
 			}
-			this.changeActive()
 			this.$nextTick(() => {
 				this.$emit('blur', {
 					html: this.html,
@@ -810,12 +849,17 @@ export default {
 		},
 		//api：注册菜单栏实例
 		use(instance) {
+			if (this.useMenus) {
+				throw new Error('The editor has already used a menu bar and cannot be used repeatedly')
+			}
 			//把编辑器实例传给菜单栏组件
 			instance.editorInstance = this
 			//菜单栏启用dom监听
 			instance.editorContentDomMonitor()
 			//菜单栏设置菜单项的激活状态函数
 			this.changeActiveJudgeFn = instance.changeActiveJudgeFn
+			//更新useMenus标识
+			this.useMenus = true
 		}
 	}
 }

@@ -10,6 +10,7 @@
 	</div>
 </template>
 <script>
+import { getCurrentInstance } from 'vue'
 import { Dap } from '../dap'
 import defaultConfig from './defaultConfig'
 import defaultLayerProps from './defaultLayerProps'
@@ -77,6 +78,12 @@ export default {
 			}
 		}
 	},
+	setup() {
+		const instance = getCurrentInstance()
+		return {
+			uid: instance.uid
+		}
+	},
 	data() {
 		return {
 			//编辑器实例
@@ -129,11 +136,17 @@ export default {
 		},
 		//浮层组件配置
 		combinedLayerProps() {
-			return this.initOption(defaultLayerProps, this.layerProps)
+			if (!this.editorInstance) {
+				return defaultLayerProps
+			}
+			return this.editorInstance.initOption(defaultLayerProps, this.layerProps)
 		},
 		//工具提示组件配置
 		combinedTooltipProps() {
-			return this.initOption(defaultTooltipProps, this.tooltipProps)
+			if (!this.editorInstance) {
+				return defaultTooltipProps
+			}
+			return this.editorInstance.initOption(defaultTooltipProps, this.tooltipProps)
 		},
 		//是否弹出式菜单
 		isLayerMenu() {
@@ -148,14 +161,10 @@ export default {
 			}
 		}
 	},
+	mounted() {
+		Dap.event.on(document.documentElement, `mousedown.editor_${this.uid}`, this.judgeClearRange)
+	},
 	methods: {
-		//初始化对象参数方法
-		initOption(defaultObj, propObj) {
-			let obj = {}
-			Object.assign(obj, defaultObj)
-			Object.assign(obj, propObj)
-			return obj
-		},
 		//初始化菜单图标
 		initMenuIcon(icon) {
 			//icon属性初始化
@@ -448,7 +457,18 @@ export default {
 					}
 				}
 			}
+		},
+		//判断是否清除range
+		judgeClearRange(e) {
+			//如果是在编辑器内或者菜单栏内不清除
+			if (Dap.element.isContains(this.$el, e.target) || Dap.element.isContains(this.editorInstance.$el, e.target)) {
+				return
+			}
+			this.editorInstance.range = null
 		}
+	},
+	beforeUnmount() {
+		Dap.event.off(document.documentElement, `mousedown.editor_${this.uid}`)
 	}
 }
 </script>
