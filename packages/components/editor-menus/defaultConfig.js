@@ -228,14 +228,14 @@ export default [
 		icon: 'video',
 		data: [
 			{
-				label: '网络视频',
-				value: 'remote',
-				icon: 'video'
-			},
-			{
 				label: '本地上传',
 				value: 'upload',
 				icon: 'upload-square'
+			},
+			{
+				label: '网络视频',
+				value: 'remote',
+				icon: 'video'
 			}
 		]
 	},
