@@ -1,5 +1,5 @@
 <template>
-	<div class="mvi-editor-menus" @mousedown="$event => $event.preventDefault()" :style="{ border: border ? '' : 'none' }">
+	<div class="mvi-editor-menus" :style="{ border: border ? '' : 'none' }">
 		<template v-for="(item, index) in menus">
 			<editorMenu v-if="showMenu(item)" :options="item" :ref="el => (menuRefs[index] = el)">
 				<template #layer v-if="isLayerMenu(item) && item.customLayer && $slots.layer">
@@ -270,8 +270,8 @@ export default {
 		},
 		//设置菜单项的激活状态函数
 		changeActiveJudgeFn() {
-			let nodes = this.editorInstance.getSelectNodes()
-			if (!nodes.length) {
+			let node = this.editorInstance.getSelectNode()
+			if (!node) {
 				return
 			}
 			for (let menu of this.menuRefs) {
@@ -311,10 +311,7 @@ export default {
 										value = Dap.element.rem2px(number) + 'px'
 									}
 								}
-								let flag = nodes.every(node => {
-									return this.editorInstance.compareCss(node, 'font-size', value, false)
-								})
-								if (flag) {
+								if (this.editorInstance.compareCss(node, 'font-size', value, false)) {
 									menu.active = true
 									menu.selectVal = { ...dataItem }
 									break
@@ -371,6 +368,14 @@ export default {
 								}
 								menu.active = false
 								menu.selectVal = {}
+							}
+						}
+						//设置链接激活状态
+						else if (menu.options.key == 'link') {
+							if (this.editorInstance.compareTag(node, 'a')) {
+								menu.active = true
+							} else {
+								menu.active = false
 							}
 						}
 					}

@@ -30,7 +30,8 @@
 			:width="$parent.combinedLayerProps.width"
 			:closable="$parent.trigger == 'click'"
 			:target="`[data-id='mvi-editor-menu-target-${uid}-${options.key}']`"
-			:root="`[data-id='mvi-editor-menu-${uid}-${options.key}']`">
+			:root="`[data-id='mvi-editor-menu-${uid}-${options.key}']`"
+			@showing="layerShowing">
 			<div class="mvi-editor-menu-layer">
 				<!-- 字体颜色、背景色 -->
 				<div v-if="options.key == 'foreColor' || options.key == 'backColor'" class="mvi-editor-menu-colors">
@@ -46,6 +47,32 @@
 						<div @click="confirmTableSize(el)" @mouseenter="changeTableSize(el)" :class="['mvi-editor-menu-table-group', el.inside ? 'active' : '']" v-for="el in item"></div>
 					</div>
 					<div v-if="tableParams.size.length" class="mvi-editor-menu-table-size">{{ tableParams.size[0] }} × {{ tableParams.size[1] }}</div>
+				</div>
+				<!-- 链接 -->
+				<div class="mvi-editor-menu-link" v-else-if="options.key == 'link'">
+					<input ref="linkText" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.text" placeholder="链接文字" type="text" />
+					<input ref="linkUrl" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.url" placeholder="链接地址" type="text" />
+					<div class="mvi-editor-menu-link-footer">
+						<Checkbox label="新窗口打开" label-placement="right" :icon="{ size: '0.24rem' }" label-size="0.28rem" label-color="#808080" :fill-color="$parent.editorInstance.activeColor" v-model="linkParams.target"> </Checkbox>
+						<div class="mvi-editor-menu-link-operation">
+							<span class="mvi-editor-menu-link-delete" v-if="active" @click="deleteLink">删除链接</span>
+							<span class="mvi-editor-menu-link-insert" :style="activeColorStyle" @click="insertLink">插入</span>
+						</div>
+					</div>
+				</div>
+				<!-- 图片或者视频 -->
+				<div class="mvi-editor-menu-media" v-else-if="options.key == 'image' || options.key == 'video'">
+					<Tabs v-model="mediaParams.tabIndex" flex="flex-start" offset="0.4rem" :active-color="$parent.editorInstance.activeColor" inactive-color="#808080">
+						<Tab v-for="(item, index) in options.data" :title="item.label">
+							<div :ref="el => (mediaParams.elArray[index] = el)" class="mvi-editor-menu-media-upload" v-if="item.value == 'upload'">
+								<Icon type="upload-square" />
+							</div>
+							<div v-if="item.value == 'remote'" class="mvi-editor-menu-media-remote">
+								<input @focus="inputFocus" @blur="inputBlur" v-model.trim="mediaParams.remoteUrl" :placeholder="options.key == 'image' ? '图片链接' : '视频链接'" type="text" />
+								<div class="mvi-editor-menu-media-remote-insert" :style="activeColorStyle" @click="insertRemote">插入</div>
+							</div>
+						</Tab>
+					</Tabs>
 				</div>
 				<!-- 自定义弹出层内容 -->
 				<slot name="layer" v-else-if="$slots.layer"></slot>
@@ -66,6 +93,7 @@
 </template>
 <script>
 import { getCurrentInstance } from 'vue'
+import unactiveMenus from './unactiveMenus'
 import editorTag from './editor-tag.vue'
 import { Dap } from '../dap'
 import { Upload } from '../upload'
@@ -73,6 +101,8 @@ import { Tooltip } from '../tooltip'
 import { Icon } from '../icon'
 import { Layer } from '../layer'
 import { Checkbox } from '../checkbox'
+import { Tab } from '../tab'
+import { Tabs } from '../tabs'
 export default {
 	name: 'm-editor-menu',
 	props: {
@@ -98,6 +128,24 @@ export default {
 				size: [],
 				//表格创建规格
 				groups: this.initTableGroups()
+			},
+			//链接相关参数
+			linkParams: {
+				//插入的链接
+				url: '',
+				//链接内容
+				text: '',
+				//链接是否在新窗口打开
+				target: false
+			},
+			//图片或者视频参数
+			mediaParams: {
+				//选项卡值
+				tabIndex: 0,
+				//上传元素数组
+				elArray: [],
+				//远程地址
+				remoteUrl: ''
 			}
 		}
 	},
@@ -185,7 +233,7 @@ export default {
 			if (this.disabledMenu) {
 				return style
 			}
-			if (this.$parent.editorInstance && this.active && !this.isLayerMenu) {
+			if (this.active && !unactiveMenus.includes(this.options.key)) {
 				style.opacity = 1
 				if (this.$parent.editorInstance.activeColor) {
 					style.color = this.$parent.editorInstance.activeColor
@@ -197,7 +245,10 @@ export default {
 		menuColorStyle() {
 			return item => {
 				let style = {}
-				if (this.$parent.editorInstance && this.active && this.selectVal.value == item.value && this.$parent.editorInstance.activeColor) {
+				if (this.disabledMenu) {
+					return style
+				}
+				if (this.active && this.selectVal.value == item.value && this.$parent.editorInstance.activeColor) {
 					style.borderColor = this.$parent.editorInstance.activeColor
 				}
 				return style
@@ -211,6 +262,77 @@ export default {
 				}
 				return ''
 			}
+		},
+		//激活颜色设置
+		activeColorStyle() {
+			let style = {}
+			if (this.disabledMenu) {
+				return style
+			}
+			if (this.$parent.editorInstance.activeColor) {
+				style.color = this.$parent.editorInstance.activeColor
+			}
+			return style
+		},
+		//上传文件配置
+		uploadOptions() {
+			let options = {}
+			if (!this.$parent.editorInstance) {
+				return options
+			}
+			if (this.options.key == 'image') {
+				options = this.$parent.editorInstance.combinedUploadImageProps
+			} else if (this.options.key == 'video') {
+				options = this.$parent.editorInstance.combinedUploadVideoProps
+			}
+			return {
+				...options,
+				select: files => {
+					this.$parent.editorInstance.restoreRange()
+					//使用base64
+					if (this.$parent.editorInstance.useBase64) {
+						files.forEach(file => {
+							Dap.file.dataFileToBase64(file).then(base64 => {
+								if (this.options.key == 'image') {
+									this.$parent.editorInstance.insertImage(base64)
+								} else if (this.options.key == 'video') {
+									this.$parent.editorInstance.insertVideo(base64)
+								}
+							})
+						})
+					} else {
+						//自定义一个事件，让开发者自定义上传
+						if (this.options.key == 'image') {
+							this.$parent.editorInstance.$emit('upload-image', files)
+						} else if (this.options.key == 'video') {
+							this.$parent.editorInstance.$emit('upload-video', files)
+						}
+					}
+					this.hideLayer()
+				},
+				error: (state, message, file) => {
+					if (this.options.key == 'image') {
+						if (typeof this.$parent.editorInstance.uploadImageError == 'function') {
+							this.$parent.editorInstance.uploadImageError(state, message, file)
+						} else {
+							Msgbox.msgbox({
+								message: message,
+								animation: 'scale'
+							})
+						}
+					} else if (this.options.key == 'video') {
+						if (typeof this.$parent.editorInstance.uploadVideoError == 'function') {
+							this.$parent.editorInstance.uploadVideoError(state, message, file)
+						} else {
+							Msgbox.msgbox({
+								message: message,
+								animation: 'scale'
+							})
+						}
+					}
+					this.hideLayer()
+				}
+			}
 		}
 	},
 	components: {
@@ -218,6 +340,8 @@ export default {
 		Icon,
 		Layer,
 		Checkbox,
+		Tabs,
+		Tab,
 		editorTag
 	},
 	watch: {
@@ -232,6 +356,65 @@ export default {
 		}
 	},
 	methods: {
+		//浮层显示时
+		layerShowing() {
+			if (this.options.key == 'link') {
+				this.initLinkParams()
+			} else if (this.options.key == 'image' || this.options.key == 'video') {
+				this.initUploadParams()
+			}
+		},
+		//上传初始化设置
+		initUploadParams() {
+			this.mediaParams.tabIndex = 0
+			this.mediaParams.remoteUrl = ''
+			if (this.mediaParams.elArray.length > 0) {
+				for (let i = 0; i < this.mediaParams.elArray.length; i++) {
+					let upload = new Upload(this.mediaParams.elArray[i], this.uploadOptions)
+					upload.init()
+				}
+			}
+		},
+		//链接初始化设置值
+		initLinkParams() {
+			//激活状态
+			if (this.active) {
+				let node = this.$parent.editorInstance.getSelectNode()
+				let a = this.$parent.editorInstance.getCompareTag(node, 'a')
+				//初始化赋值
+				this.linkParams.url = a.getAttribute('href')
+				//初始化赋值
+				this.linkParams.text = a.innerText
+				//初始化赋值
+				this.linkParams.target = a.hasAttribute('target')
+				this.$nextTick(() => {
+					this.$refs.linkText.focus()
+				})
+			} else {
+				this.linkParams.url = ''
+				this.linkParams.target = false
+				let text = this.$parent.editorInstance.range.toString()
+				if (text) {
+					this.linkParams.text = text
+					this.$refs.linkUrl.focus()
+				} else {
+					this.linkParams.text = ''
+					this.$refs.linkText.focus()
+				}
+			}
+		},
+		//输入框获取焦点
+		inputFocus(event) {
+			if (this.$parent.editorInstance.activeColor) {
+				event.currentTarget.style.borderColor = this.$parent.editorInstance.activeColor
+			}
+		},
+		//输入框失去焦点
+		inputBlur(event) {
+			if (this.$parent.editorInstance.activeColor) {
+				event.currentTarget.style.borderColor = ''
+			}
+		},
 		//点击浮层选项
 		selectLayerItem(dataItem, index) {
 			if (this.disabledMenu) {
@@ -296,19 +479,6 @@ export default {
 				} else {
 					this.$parent.editorInstance.insertBlock('blockquote', this.options.insertWrap)
 				}
-			}
-			//插入链接
-			else if (this.options.key == 'link') {
-				this.$parent.editorInstance.openDialog(this.options)
-			}
-			//插入图片
-			else if (this.options.key == 'image') {
-			}
-			//插入视频
-			else if (this.options.key == 'video') {
-			}
-			//插入表格
-			else if (this.options.key == 'table') {
 			}
 			//插入代码
 			else if (this.options.key == 'code') {
@@ -471,11 +641,14 @@ export default {
 		},
 		//删除引用
 		removeBlockQuote() {
-			let nodes = this.$parent.editorInstance.getSelectNodes()
-			if (nodes.length != 1) {
+			if (this.disabledMenu) {
 				return
 			}
-			const blockquote = this.$parent.editorInstance.getCompareTag(nodes[0], 'blockquote')
+			let node = this.$parent.editorInstance.getSelectNode()
+			if (!node) {
+				return
+			}
+			const blockquote = this.$parent.editorInstance.getCompareTag(node, 'blockquote')
 			let pEl = Dap.element.string2dom('<p>' + blockquote.innerHTML + '</p>')
 			if (!Dap.element.isElement(pEl)) {
 				return
@@ -486,6 +659,69 @@ export default {
 			this.active = false
 			this.$parent.editorInstance.updateHtmlText()
 			this.$parent.editorInstance.updateValue()
+		},
+		//插入链接
+		insertLink() {
+			if (this.disabledMenu) {
+				return
+			}
+			if (!this.linkParams.url) {
+				this.hideLayer()
+				return
+			}
+			if (!this.linkParams.text) {
+				this.linkParams.text = this.linkParams.url
+			}
+			let link = Dap.element.string2dom(`<a href="${this.linkParams.url}">${this.linkParams.text}</a>`)
+			if (this.linkParams.target) {
+				link.setAttribute('target', '_blank')
+			}
+			//恢复选区
+			this.$parent.editorInstance.restoreRange()
+			if (this.active) {
+				let node = this.$parent.editorInstance.getSelectNode()
+				if (node && this.$parent.editorInstance.compareTag(node, 'a')) {
+					let a = this.$parent.editorInstance.getCompareTag(node, 'a')
+					a.remove()
+				}
+			}
+			this.$parent.editorInstance.insertHtml(link.outerHTML, false)
+			this.hideLayer()
+		},
+		//删除链接
+		deleteLink() {
+			if (this.disabledMenu) {
+				return
+			}
+			this.$parent.editorInstance.restoreRange()
+			let node = this.$parent.editorInstance.getSelectNode()
+			if (this.$parent.editorInstance.compareTag(node, 'a')) {
+				let a = this.$parent.editorInstance.getCompareTag(node, 'a')
+				if (a) {
+					a.remove()
+					this.active = false
+				}
+			}
+			this.$parent.editorInstance.updateHtmlText()
+			this.$parent.editorInstance.updateValue()
+			this.hideLayer()
+		},
+		//插入远程图片或者视频
+		insertRemote() {
+			if (this.disabledMenu) {
+				return
+			}
+			if (!this.mediaParams.remoteUrl) {
+				this.hideLayer()
+				return
+			}
+			this.$parent.editorInstance.restoreRange()
+			if (this.options.key == 'image') {
+				this.$parent.editorInstance.insertImage(this.mediaParams.remoteUrl)
+			} else if (this.options.key == 'video') {
+				this.$parent.editorInstance.insertVideo(this.mediaParams.remoteUrl)
+			}
+			this.hideLayer()
 		}
 	}
 }
@@ -645,6 +881,133 @@ export default {
 			color: @font-color-sub;
 			margin-top: @mp-sm;
 			line-height: 1;
+		}
+	}
+
+	.mvi-editor-menu-link {
+		display: block;
+		padding: @mp-xs @mp-sm;
+		width: 5rem;
+
+		input {
+			appearance: none;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			display: block;
+			width: 100%;
+			margin: 0;
+			padding: @mp-xs;
+			border: none;
+			border-bottom: 1px solid @border-color;
+			font-size: @font-size-default;
+			color: @font-color-default;
+			line-height: 1.5;
+			margin-bottom: @mp-sm;
+			transition: border-color 400ms;
+			-moz-transition: border-color 400ms;
+			-webkit-transition: border-color 400ms;
+
+			&::-webkit-input-placeholder,
+			&::placeholder {
+				color: inherit;
+				font-family: inherit;
+				font-size: inherit;
+				opacity: 0.5;
+				vertical-align: middle;
+			}
+		}
+
+		.mvi-editor-menu-link-footer {
+			display: flex;
+			display: -webkit-flex;
+			justify-content: space-between;
+			align-items: center;
+			width: 100%;
+			padding-top: @mp-xs;
+
+			.mvi-editor-menu-link-operation {
+				display: flex;
+				justify-content: flex-start;
+				align-items: center;
+
+				.mvi-editor-menu-link-delete {
+					opacity: 0.8;
+					margin-right: @mp-md;
+
+					&:hover {
+						opacity: 1;
+						cursor: pointer;
+					}
+				}
+
+				.mvi-editor-menu-link-insert:hover {
+					cursor: pointer;
+				}
+			}
+		}
+	}
+
+	.mvi-editor-menu-media {
+		display: block;
+		width: 5rem;
+
+		.mvi-editor-menu-media-upload {
+			display: block;
+			width: 100%;
+			padding: @mp-sm 0;
+			font-size: 0.72rem;
+			opacity: 0.8;
+			text-align: center;
+
+			&:hover {
+				cursor: pointer;
+				opacity: 1;
+			}
+		}
+
+		.mvi-editor-menu-media-remote {
+			display: block;
+			width: 100%;
+			padding: @mp-sm @mp-sm @mp-xs @mp-sm;
+
+			input {
+				appearance: none;
+				-webkit-appearance: none;
+				-moz-appearance: none;
+				display: block;
+				width: 100%;
+				margin: 0;
+				padding: @mp-xs;
+				border: none;
+				border-bottom: 1px solid @border-color;
+				font-size: @font-size-default;
+				color: @font-color-default;
+				line-height: 1.5;
+				margin-bottom: @mp-sm;
+				transition: border-color 400ms;
+				-moz-transition: border-color 400ms;
+				-webkit-transition: border-color 400ms;
+
+				&::-webkit-input-placeholder,
+				&::placeholder {
+					color: inherit;
+					font-family: inherit;
+					font-size: inherit;
+					opacity: 0.5;
+					vertical-align: middle;
+				}
+			}
+
+			.mvi-editor-menu-media-remote-insert {
+				display: block;
+				width: 100%;
+				padding-top: @mp-sm;
+				text-align: right;
+
+				&:hover {
+					cursor: pointer;
+				}
+			}
 		}
 	}
 }

@@ -203,7 +203,7 @@ export default [
 		key: 'link',
 		name: '插入链接',
 		icon: 'link',
-		data: true
+		data: []
 	},
 	{
 		key: 'image',
@@ -211,14 +211,14 @@ export default [
 		icon: 'image',
 		data: [
 			{
-				label: '网络图片',
-				value: 'remote',
-				icon: 'image'
-			},
-			{
 				label: '本地上传',
 				value: 'upload',
 				icon: 'upload-square'
+			},
+			{
+				label: '网络图片',
+				value: 'remote',
+				icon: 'image'
 			}
 		]
 	},
