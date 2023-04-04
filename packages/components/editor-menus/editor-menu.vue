@@ -255,7 +255,7 @@ export default {
 			}
 			//插入标题
 			else if (this.options.key == 'title') {
-				this.$parent.editorInstance.insertBlock(dataItem.value)
+				this.$parent.editorInstance.insertBlock(dataItem.value, this.options.insertWrap)
 			}
 			//插入分隔线
 			else if (this.options.key == 'divider') {
@@ -294,7 +294,7 @@ export default {
 				if (this.active) {
 					this.removeBlockQuote()
 				} else {
-					this.$parent.editorInstance.insertBlock('blockquote', true, true)
+					this.$parent.editorInstance.insertBlock('blockquote', this.options.insertWrap)
 				}
 			}
 			//插入链接
@@ -314,7 +314,6 @@ export default {
 			else if (this.options.key == 'code') {
 				if (this.active) {
 				} else {
-					document.execCommand('insertBlock', false, 'pre')
 				}
 			}
 			//设置源码显示

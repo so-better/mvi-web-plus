@@ -8,11 +8,13 @@
 </template>
 <script>
 import { Dap } from '../dap'
+import elementFormat from './elementFormat'
 import defaultVideoShowProps from './defaultVideoShowProps'
 import defaultUploadImageProps from './defaultUploadImageProps'
 import defaultUploadVideoProps from './defaultUploadVideoProps'
 import editorDialog from './editor-dialog.vue'
 import { Msgbox } from '../msgbox'
+import { Observe } from '../observe'
 export default {
 	name: 'm-editor',
 	props: {
@@ -236,6 +238,7 @@ export default {
 	},
 	mounted() {
 		this.init()
+		this.contentDomMonitor()
 	},
 	methods: {
 		//初始化
@@ -494,6 +497,24 @@ export default {
 				parent.insertBefore(newNode, targetNode.nextSibling)
 			}
 		},
+		//监听富文本编辑器中的dom
+		contentDomMonitor() {
+			if (!this.$refs.content) {
+				return
+			}
+			const observe = new Observe(this.$refs.content, {
+				attributes: false,
+				childList: true,
+				subtree: true,
+				childNodesChange: addNode => {
+					if (addNode) {
+						elementFormat(addNode)
+					}
+				}
+			})
+			observe.init()
+		},
+
 		//api：改变菜单项激活状态
 		changeActive() {
 			if (this.disabled) {
@@ -741,7 +762,7 @@ export default {
 			}
 		},
 		//api：插入HTML片段，会删除选中部分
-		insertHtml(html, wrap, focus) {
+		insertHtml(html, wrap) {
 			if (this.disabled) {
 				return
 			}
@@ -760,7 +781,7 @@ export default {
 			//插入html
 			document.execCommand('insertHtml', false, html)
 			//如果插入html后需要换行并且存在选择器并且插入的html是一个DOM，则设置光标位置在插入的HTML里
-			if (wrap && focus && Dap.element.isElement(dom)) {
+			if (wrap && Dap.element.isElement(dom)) {
 				const selectNodes = this.getSelectNodes()
 				if (selectNodes.length) {
 					this.collapseToEnd(selectNodes[0].previousElementSibling)
@@ -823,7 +844,7 @@ export default {
 			this.insertHtml(video.outerHTML)
 		},
 		//api：更换当前选择的行的块元素，如果已经存在块元素则会替换
-		insertBlock(blockTag, wrap, focus) {
+		insertBlock(blockTag, wrap) {
 			document.execCommand('formatBlock', false, blockTag)
 			//在插入后换行
 			if (wrap) {
@@ -832,9 +853,7 @@ export default {
 					const blockEl = this.getCompareTag(selectNodes[0], blockTag)
 					const pEl = Dap.element.string2dom('<p><br></p>')
 					this.insertNodeAfter(pEl, blockEl)
-					if (focus) {
-						this.collapseToEnd(blockEl)
-					}
+					this.collapseToEnd(blockEl)
 				}
 			}
 		},
@@ -924,6 +943,7 @@ export default {
 	}
 }
 
+//图片样式
 :deep(.mvi-editor-image) {
 	display: inline-block;
 	width: auto;
@@ -931,6 +951,7 @@ export default {
 	max-width: 100%;
 }
 
+//视频样式
 :deep(.mvi-editor-video) {
 	display: inline-block;
 	width: auto;
@@ -938,7 +959,7 @@ export default {
 	max-width: 100%;
 }
 
-/* 表格demo样式 */
+//表格demo样式
 :deep(.mvi-editor-table-demo) {
 	width: 100%;
 	border: 1px solid @border-color;
@@ -979,5 +1000,29 @@ export default {
 			}
 		}
 	}
+}
+
+//引用样式
+:deep(blockquote.mvi-editor-blockquote) {
+	display: block;
+	border-left: 0.1rem solid @light-default;
+	padding: @mp-xs @mp-sm @mp-xs @mp-md;
+	margin: 0 0 @mp-sm 0;
+	line-height: 1.5;
+	font-size: @font-size-default;
+	color: @font-color-sub;
+	border-radius: 0;
+}
+
+//hr样式
+:deep(hr.mvi-editor-hr) {
+	display: block;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	margin: @mp-sm 0;
+	height: 0.02rem;
+	background-color: @bg-color-dark;
+	border: none;
 }
 </style>

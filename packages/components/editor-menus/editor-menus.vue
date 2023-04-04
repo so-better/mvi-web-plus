@@ -116,6 +116,8 @@ export default {
 				if (!Dap.number.isNumber(obj.index)) {
 					obj.index = 0
 				}
+				//初始化inertWrap
+				obj.insertWrap = Boolean(obj.insertWrap)
 				return obj
 			})
 			return menus.sort((a, b) => {
@@ -215,7 +217,7 @@ export default {
 			}
 			return false
 		},
-		//监听编辑区域富文本内容中的dom
+		//监听编辑区域富文本内容中的dom：更新字号大小
 		editorContentDomMonitor() {
 			if (!this.editorInstance) {
 				return
