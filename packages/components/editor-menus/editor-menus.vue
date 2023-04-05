@@ -193,23 +193,13 @@ export default {
 					if (typeof item == 'string' && item) {
 						newData.push({
 							label: item,
-							value: item,
-							icon: null,
-							disabled: false,
-							hoverClass: null,
-							activeClass: null,
-							placeholder: null
+							value: item
 						})
 					} else if (Dap.common.isObject(item)) {
-						newData.push({
-							label: item.label,
-							value: item.value,
-							icon: this.initMenuIcon(item.icon),
-							disabled: Boolean(item.disabled),
-							hoverClass: item.hoverClass,
-							activeClass: item.activeClass,
-							placeholder: item.placeholder
-						})
+						let o = { ...item }
+						o.icon = this.initMenuIcon(item.icon)
+						o.disabled = Boolean(item.disabled)
+						newData.push(o)
 					}
 				})
 				return newData
