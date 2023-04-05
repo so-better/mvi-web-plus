@@ -226,7 +226,6 @@ export default {
 	},
 	mounted() {
 		this.init()
-		this.contentDomMonitor()
 	},
 	methods: {
 		//初始化
@@ -235,6 +234,8 @@ export default {
 			document.execCommand('defaultParagraphSeparator', false, 'p')
 			//使用css
 			document.execCommand('styleWithCSS', false, true)
+			//设置dom监听
+			this.contentDomMonitor()
 			//初始化赋值
 			this.initalHtml = this.getValue()
 			//更新html和text

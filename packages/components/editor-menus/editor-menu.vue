@@ -50,26 +50,32 @@
 				</div>
 				<!-- 链接 -->
 				<div class="mvi-editor-menu-link" v-else-if="options.key == 'link'">
-					<input ref="linkText" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.text" placeholder="链接文字" type="text" />
-					<input ref="linkUrl" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.url" placeholder="链接地址" type="text" />
-					<div class="mvi-editor-menu-link-footer">
-						<Checkbox label="新窗口打开" label-placement="right" :icon="{ size: '0.24rem' }" label-size="0.28rem" label-color="#808080" :fill-color="$parent.editorInstance.activeColor" v-model="linkParams.target"> </Checkbox>
-						<div class="mvi-editor-menu-link-operation">
-							<span class="mvi-editor-menu-link-delete" v-if="active" @click="deleteLink">删除链接</span>
-							<span class="mvi-editor-menu-link-insert" :style="activeColorStyle" @click="insertLink">插入</span>
-						</div>
-					</div>
+					<Tabs v-model="linkParams.tabIndex" flex="flex-start" offset="0.4rem" :active-color="$parent.editorInstance.activeColor" inactive-color="#808080">
+						<Tab :disabled="options.data[0].disabled" v-if="options.data[0]" :title="options.data[0].label" :icon="options.data[0].icon?.value">
+							<div class="mvi-editor-menu-link-wrap">
+								<input :disabled="options.data[0].disabled" ref="linkText" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.text" :placeholder="linkPlaceholder[0]" type="text" />
+								<input :disabled="options.data[0].disabled" ref="linkUrl" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.url" :placeholder="linkPlaceholder[1]" type="text" />
+								<div class="mvi-editor-menu-link-footer">
+									<Checkbox :disabled="options.data[0].disabled" label="新窗口打开" label-placement="right" :icon="{ size: '0.24rem' }" label-size="0.28rem" label-color="#808080" :fill-color="$parent.editorInstance.activeColor" v-model="linkParams.target"> </Checkbox>
+									<div class="mvi-editor-menu-link-operation">
+										<span :disabled="options.data[0].disabled || null" class="mvi-editor-menu-link-delete" v-if="active" @click="deleteLink">删除链接</span>
+										<span :disabled="options.data[0].disabled || null" class="mvi-editor-menu-link-insert" :style="activeColorStyle" @click="insertLink">插入</span>
+									</div>
+								</div>
+							</div>
+						</Tab>
+					</Tabs>
 				</div>
 				<!-- 图片或者视频 -->
 				<div class="mvi-editor-menu-media" v-else-if="options.key == 'image' || options.key == 'video'">
-					<Tabs v-model="mediaParams.tabIndex" flex="flex-start" offset="0.4rem" :active-color="$parent.editorInstance.activeColor" inactive-color="#808080">
-						<Tab v-for="(item, index) in options.data" :title="item.label">
-							<div :ref="el => (mediaParams.elArray[index] = el)" class="mvi-editor-menu-media-upload" v-if="item.value == 'upload'">
+					<Tabs @change="tabChange" v-model="mediaParams.tabIndex" flex="flex-start" offset="0.4rem" :active-color="$parent.editorInstance.activeColor" inactive-color="#808080">
+						<Tab :disabled="item.disabled" v-for="item in options.data" :title="item.label" :icon="item.icon?.value">
+							<div :disabled="item.disabled || null" class="mvi-editor-menu-media-upload" v-if="item.value == 'upload'">
 								<Icon type="upload-square" />
 							</div>
-							<div v-if="item.value == 'remote'" class="mvi-editor-menu-media-remote">
-								<input @focus="inputFocus" @blur="inputBlur" v-model.trim="mediaParams.remoteUrl" :placeholder="options.key == 'image' ? '图片链接' : '视频链接'" type="text" />
-								<div class="mvi-editor-menu-media-remote-insert" :style="activeColorStyle" @click="insertRemote">插入</div>
+							<div v-else-if="item.value == 'remote'" class="mvi-editor-menu-media-remote">
+								<input :disabled="item.disabled || null" @focus="inputFocus" @blur="inputBlur" v-model.trim="mediaParams.remoteUrl" :placeholder="mediaPlaceholder(item)" type="text" />
+								<div :disabled="item.disabled || null" class="mvi-editor-menu-media-remote-insert" :style="activeColorStyle" @click="insertRemote">插入</div>
 							</div>
 						</Tab>
 					</Tabs>
@@ -103,6 +109,7 @@ import { Layer } from '../layer'
 import { Checkbox } from '../checkbox'
 import { Tab } from '../tab'
 import { Tabs } from '../tabs'
+import { Msgbox } from '../msgbox'
 export default {
 	name: 'm-editor-menu',
 	props: {
@@ -131,6 +138,8 @@ export default {
 			},
 			//链接相关参数
 			linkParams: {
+				//选项卡值
+				tabIndex: 0,
 				//插入的链接
 				url: '',
 				//链接内容
@@ -142,8 +151,6 @@ export default {
 			mediaParams: {
 				//选项卡值
 				tabIndex: 0,
-				//上传元素数组
-				elArray: [],
 				//远程地址
 				remoteUrl: ''
 			}
@@ -333,6 +340,30 @@ export default {
 					this.hideLayer()
 				}
 			}
+		},
+		//插入链接的两个输入框的placeholder值
+		linkPlaceholder() {
+			if (this.options.key == 'link' && this.options.data && this.options.data.length) {
+				const placeholder = this.options.data[0].placeholder
+				if (Array.isArray(placeholder)) {
+					return [placeholder[0] || '链接文本', placeholder[1] || '链接地址']
+				}
+			}
+			return ['链接文本', '链接地址']
+		},
+		//插入视频和图片时输入框的placeholder值
+		mediaPlaceholder() {
+			return dataItem => {
+				if (typeof dataItem.placeholder == 'string' && dataItem.placeholder) {
+					return dataItem.placeholder
+				}
+				if (this.options.key == 'image') {
+					return '图片链接'
+				}
+				if (this.options.key == 'video') {
+					return '视频链接'
+				}
+			}
 		}
 	},
 	components: {
@@ -356,6 +387,22 @@ export default {
 		}
 	},
 	methods: {
+		//tab切换时
+		tabChange() {
+			this.$nextTick(() => {
+				//是否禁用上传
+				let disabled = this.options.data.some(item => {
+					return item.disabled && item.value == 'upload'
+				})
+				const elements = this.$el.querySelectorAll('.mvi-editor-menu-media-upload')
+				if (elements.length) {
+					for (let i = 0; i < elements.length; i++) {
+						let upload = new Upload(elements[i], { ...this.uploadOptions, disabled: disabled })
+						upload.init()
+					}
+				}
+			})
+		},
 		//浮层显示时
 		layerShowing() {
 			if (this.options.key == 'link') {
@@ -368,15 +415,21 @@ export default {
 		initUploadParams() {
 			this.mediaParams.tabIndex = 0
 			this.mediaParams.remoteUrl = ''
-			if (this.mediaParams.elArray.length > 0) {
-				for (let i = 0; i < this.mediaParams.elArray.length; i++) {
-					let upload = new Upload(this.mediaParams.elArray[i], this.uploadOptions)
+			//是否禁用上传
+			let disabled = this.options.data.some(item => {
+				return item.disabled && item.value == 'upload'
+			})
+			const elements = this.$el.querySelectorAll('.mvi-editor-menu-media-upload')
+			if (elements.length) {
+				for (let i = 0; i < elements.length; i++) {
+					let upload = new Upload(elements[i], { ...this.uploadOptions, disabled: disabled })
 					upload.init()
 				}
 			}
 		},
 		//链接初始化设置值
 		initLinkParams() {
+			this.linkParams.tabIndex = 0
 			//激活状态
 			if (this.active) {
 				let node = this.$parent.editorInstance.getSelectNode()
@@ -665,6 +718,9 @@ export default {
 			if (this.disabledMenu) {
 				return
 			}
+			if (this.options.data && this.options.data[0] && this.options.data[0].disabled) {
+				return
+			}
 			if (!this.linkParams.url) {
 				this.hideLayer()
 				return
@@ -693,6 +749,9 @@ export default {
 			if (this.disabledMenu) {
 				return
 			}
+			if (this.options.data && this.options.data[0] && this.options.data[0].disabled) {
+				return
+			}
 			this.$parent.editorInstance.restoreRange()
 			let node = this.$parent.editorInstance.getSelectNode()
 			if (this.$parent.editorInstance.compareTag(node, 'a')) {
@@ -709,6 +768,13 @@ export default {
 		//插入远程图片或者视频
 		insertRemote() {
 			if (this.disabledMenu) {
+				return
+			}
+			//是否禁用
+			let disabled = this.options.data.some(item => {
+				return item.disabled && item.value == 'remote'
+			})
+			if (disabled) {
 				return
 			}
 			if (!this.mediaParams.remoteUrl) {
@@ -886,62 +952,82 @@ export default {
 
 	.mvi-editor-menu-link {
 		display: block;
-		padding: @mp-xs @mp-sm;
+		padding: @mp-xs 0;
 		width: 5rem;
 
-		input {
-			appearance: none;
-			-webkit-appearance: none;
-			-moz-appearance: none;
+		.mvi-editor-menu-link-wrap {
 			display: block;
-			width: 100%;
-			margin: 0;
-			padding: @mp-xs;
-			border: none;
-			border-bottom: 1px solid @border-color;
-			font-size: @font-size-default;
-			color: @font-color-default;
-			line-height: 1.5;
-			margin-bottom: @mp-sm;
-			transition: border-color 400ms;
-			-moz-transition: border-color 400ms;
-			-webkit-transition: border-color 400ms;
+			padding: @mp-sm;
 
-			&::-webkit-input-placeholder,
-			&::placeholder {
-				color: inherit;
-				font-family: inherit;
-				font-size: inherit;
-				opacity: 0.5;
-				vertical-align: middle;
-			}
-		}
+			input {
+				appearance: none;
+				-webkit-appearance: none;
+				-moz-appearance: none;
+				display: block;
+				width: 100%;
+				margin: 0;
+				padding: @mp-xs;
+				border: none;
+				border-bottom: 1px solid @border-color;
+				font-size: @font-size-default;
+				color: @font-color-default;
+				line-height: 1.5;
+				margin-bottom: @mp-sm;
+				transition: border-color 400ms;
+				-moz-transition: border-color 400ms;
+				-webkit-transition: border-color 400ms;
 
-		.mvi-editor-menu-link-footer {
-			display: flex;
-			display: -webkit-flex;
-			justify-content: space-between;
-			align-items: center;
-			width: 100%;
-			padding-top: @mp-xs;
-
-			.mvi-editor-menu-link-operation {
-				display: flex;
-				justify-content: flex-start;
-				align-items: center;
-
-				.mvi-editor-menu-link-delete {
-					opacity: 0.8;
-					margin-right: @mp-md;
-
-					&:hover {
-						opacity: 1;
-						cursor: pointer;
-					}
+				&::-webkit-input-placeholder,
+				&::placeholder {
+					color: inherit;
+					font-family: inherit;
+					font-size: inherit;
+					opacity: 0.5;
+					vertical-align: middle;
 				}
 
-				.mvi-editor-menu-link-insert:hover {
-					cursor: pointer;
+				&[disabled] {
+					background-color: transparent;
+					opacity: 0.8;
+				}
+			}
+
+			.mvi-editor-menu-link-footer {
+				display: flex;
+				display: -webkit-flex;
+				justify-content: space-between;
+				align-items: center;
+				width: 100%;
+				padding-top: @mp-xs 0;
+
+				.mvi-editor-menu-link-operation {
+					display: flex;
+					justify-content: flex-start;
+					align-items: center;
+
+					.mvi-editor-menu-link-delete {
+						opacity: 0.8;
+						margin-right: @mp-md;
+
+						&:not([disabled]):hover {
+							opacity: 1;
+							cursor: pointer;
+						}
+
+						&[disabled] {
+							opacity: 0.5;
+						}
+					}
+
+					.mvi-editor-menu-link-insert {
+						&:hover {
+							cursor: pointer;
+						}
+
+						&[disabled] {
+							opacity: 0.5;
+						}
+					}
 				}
 			}
 		}
@@ -959,9 +1045,13 @@ export default {
 			opacity: 0.8;
 			text-align: center;
 
-			&:hover {
+			&:not([disabled]):hover {
 				cursor: pointer;
 				opacity: 1;
+			}
+
+			&[disabled] {
+				opacity: 0.5;
 			}
 		}
 
@@ -996,6 +1086,11 @@ export default {
 					opacity: 0.5;
 					vertical-align: middle;
 				}
+
+				&[disabled] {
+					background-color: transparent;
+					opacity: 0.8;
+				}
 			}
 
 			.mvi-editor-menu-media-remote-insert {
@@ -1006,6 +1101,10 @@ export default {
 
 				&:hover {
 					cursor: pointer;
+				}
+
+				&[disabled] {
+					opacity: 0.5;
 				}
 			}
 		}

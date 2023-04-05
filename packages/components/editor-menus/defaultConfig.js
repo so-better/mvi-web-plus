@@ -203,7 +203,12 @@ export default [
 		key: 'link',
 		name: '插入链接',
 		icon: 'link',
-		data: []
+		data: [
+			{
+				label: '插入链接',
+				value: 'link'
+			}
+		]
 	},
 	{
 		key: 'image',
@@ -212,13 +217,11 @@ export default [
 		data: [
 			{
 				label: '本地上传',
-				value: 'upload',
-				icon: 'upload-square'
+				value: 'upload'
 			},
 			{
 				label: '网络图片',
-				value: 'remote',
-				icon: 'image'
+				value: 'remote'
 			}
 		]
 	},
@@ -229,13 +232,11 @@ export default [
 		data: [
 			{
 				label: '本地上传',
-				value: 'upload',
-				icon: 'upload-square'
+				value: 'upload'
 			},
 			{
 				label: '网络视频',
-				value: 'remote',
-				icon: 'video'
+				value: 'remote'
 			}
 		]
 	},

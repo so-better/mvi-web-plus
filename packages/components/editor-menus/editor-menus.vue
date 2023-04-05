@@ -197,7 +197,8 @@ export default {
 							icon: null,
 							disabled: false,
 							hoverClass: null,
-							activeClass: null
+							activeClass: null,
+							placeholder: null
 						})
 					} else if (Dap.common.isObject(item)) {
 						newData.push({
@@ -206,7 +207,8 @@ export default {
 							icon: this.initMenuIcon(item.icon),
 							disabled: Boolean(item.disabled),
 							hoverClass: item.hoverClass,
-							activeClass: item.activeClass
+							activeClass: item.activeClass,
+							placeholder: item.placeholder
 						})
 					}
 				})
