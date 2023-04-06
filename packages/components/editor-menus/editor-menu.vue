@@ -66,7 +66,7 @@
 					<input ref="linkText" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.text" :placeholder="linkPlaceholder[0]" type="text" />
 					<input ref="linkUrl" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.url" :placeholder="linkPlaceholder[1]" type="text" />
 					<div class="mvi-editor-menu-link-footer">
-						<Checkbox :label="options.newWindoText ? options.newWindoText : '新窗口打开'" label-placement="right" :icon="{ size: '0.24rem' }" label-size="0.28rem" label-color="#808080" :fill-color="$parent.editorInstance.activeColor" v-model="linkParams.target"> </Checkbox>
+						<Checkbox :label="options.newWindowText ? options.newWindowText : '新窗口打开'" label-placement="right" :icon="{ size: '0.24rem' }" label-size="0.28rem" label-color="#808080" :fill-color="$parent.editorInstance.activeColor" v-model="linkParams.target"> </Checkbox>
 						<div class="mvi-editor-menu-link-operation">
 							<span class="mvi-editor-menu-link-delete" v-if="active" @click="deleteLink">{{ options.deleteText ? options.deleteText : '删除链接' }}</span>
 							<span class="mvi-editor-menu-link-insert" :style="activeColorStyle" @click="insertLink">{{ options.insertText ? options.insertText : '插入' }}</span>
