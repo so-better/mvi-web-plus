@@ -91,3 +91,18 @@ export const initTableGroups = () => {
 	}
 	return arr
 }
+
+/**
+ * 判断html内容是否元素节点
+ * @param { * } dom
+ * @returns boolean
+ */
+export const isNotHtml = dom => {
+	if (Dap.element.isElement(dom)) {
+		return false
+	}
+	if (dom instanceof HTMLCollection && dom.length > 0) {
+		return false
+	}
+	return true
+}

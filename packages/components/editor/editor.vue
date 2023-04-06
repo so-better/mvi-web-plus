@@ -5,10 +5,9 @@
 	</div>
 </template>
 <script>
-import { judgeFileSuffix, initOption, getValue, getNodeByElement, insertNodeAfter } from './util'
+import { judgeFileSuffix, initOption, getValue, getNodeByElement, insertNodeAfter, isNotHtml } from './util'
 import { Dap } from '../dap'
 import elementFormat from './elementFormat'
-import defaultVideoShowProps from './defaultVideoShowProps'
 import defaultUploadImageProps from './defaultUploadImageProps'
 import defaultUploadVideoProps from './defaultUploadVideoProps'
 import { Msgbox } from '../msgbox'
@@ -56,16 +55,6 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		//上传图片显示样式
-		imageClass: {
-			type: String,
-			default: null
-		},
-		//上传视频显示样式
-		videoClass: {
-			type: String,
-			default: null
-		},
 		//激活颜色设定
 		activeColor: {
 			type: String,
@@ -78,13 +67,6 @@ export default {
 		useBase64: {
 			type: Boolean,
 			default: true
-		},
-		//自定义视频显示设置
-		videoShowProps: {
-			type: Object,
-			default: function () {
-				return {}
-			}
 		},
 		//自定义上传图片配置
 		uploadImageProps: {
@@ -184,10 +166,6 @@ export default {
 				}
 			}
 			return style
-		},
-		//视频显示设置
-		combinedVideoShowProps() {
-			return initOption(defaultVideoShowProps, this.videoShowProps)
 		},
 		//上传图片配置
 		combinedUploadImageProps() {
@@ -438,7 +416,7 @@ export default {
 				subtree: true,
 				childNodesChange: addNode => {
 					if (addNode) {
-						elementFormat(addNode)
+						elementFormat(addNode, this)
 					}
 				}
 			})
@@ -695,7 +673,11 @@ export default {
 				return
 			}
 			//将需要插入的html转为DOM，用作后续的判断
-			const dom = Dap.element.string2dom(html)
+			let dom = Dap.element.string2dom(html)
+			//如果是纯文本字符串，则外面加上个span
+			if (isNotHtml(dom)) {
+				html = `<span>${html}</span>`
+			}
 			//如果在插入html后需要换行
 			if (wrap) {
 				html = `${html}<p><br></p>`
@@ -731,11 +713,7 @@ export default {
 			if (!this.$refs.content) {
 				return
 			}
-			const style = ['mvi-editor-image']
-			if (this.imageClass) {
-				style.push(this.imageClass)
-			}
-			const imgHtml = `<img src="${url}" class="${style.join(' ')}" />`
+			const imgHtml = `<img src="${url}" />`
 			this.insertHtml(imgHtml)
 		},
 		//api：插入视频，会删除选中部分
@@ -746,24 +724,8 @@ export default {
 			if (!this.$refs.content) {
 				return
 			}
-			const style = ['mvi-editor-video']
-			if (this.videoClass) {
-				style.push(this.videoClass)
-			}
-			let video = Dap.element.string2dom(`<video src="${url}" class="${style.join(' ')}"></video>`)
-			if (this.combinedVideoShowProps.muted) {
-				video.setAttribute('muted', 'muted')
-			}
-			if (this.combinedVideoShowProps.loop) {
-				video.setAttribute('loop', 'loop')
-			}
-			if (this.combinedVideoShowProps.controls) {
-				video.setAttribute('controls', 'controls')
-			}
-			if (this.combinedVideoShowProps.autoplay) {
-				video.setAttribute('autoplay', 'autoplay')
-			}
-			this.insertHtml(video.outerHTML)
+			const videoHtml = `<video src="${url}"></video>`
+			this.insertHtml(videoHtml, true)
 		},
 		//api：更换当前选择的行的块元素，如果已经存在块元素则会替换
 		insertBlock(blockTag, wrap) {
@@ -875,7 +837,7 @@ export default {
 
 //视频样式
 :deep(.mvi-editor-video) {
-	display: inline-block;
+	display: block;
 	width: auto;
 	height: auto;
 	max-width: 100%;

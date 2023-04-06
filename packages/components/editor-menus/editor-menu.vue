@@ -747,8 +747,10 @@ export default {
 			if (this.$parent.editorInstance.compareTag(node, 'a')) {
 				let a = this.$parent.editorInstance.getCompareTag(node, 'a')
 				if (a) {
+					let innerHTML = a.innerHTML
 					a.remove()
 					this.active = false
+					this.$parent.editorInstance.insertHtml(innerHTML)
 				}
 			}
 			this.$parent.editorInstance.updateHtmlText()
