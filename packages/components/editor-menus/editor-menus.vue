@@ -12,6 +12,7 @@
 <script>
 import { getCurrentInstance } from 'vue'
 import { Dap } from '../dap'
+import { initOption } from '../editor/util'
 import defaultConfig from './defaultConfig'
 import defaultLayerProps from './defaultLayerProps'
 import defaultTooltipProps from './defaultTooltipProps'
@@ -141,14 +142,14 @@ export default {
 			if (!this.editorInstance) {
 				return defaultLayerProps
 			}
-			return this.editorInstance.initOption(defaultLayerProps, this.layerProps)
+			return initOption(defaultLayerProps, this.layerProps)
 		},
 		//工具提示组件配置
 		combinedTooltipProps() {
 			if (!this.editorInstance) {
 				return defaultTooltipProps
 			}
-			return this.editorInstance.initOption(defaultTooltipProps, this.tooltipProps)
+			return initOption(defaultTooltipProps, this.tooltipProps)
 		},
 		//是否弹出式菜单
 		isLayerMenu() {

@@ -5,6 +5,7 @@
 	</div>
 </template>
 <script>
+import { judgeFileSuffix, initOption, getValue, getNodeByElement, insertNodeAfter } from './util'
 import { Dap } from '../dap'
 import elementFormat from './elementFormat'
 import defaultVideoShowProps from './defaultVideoShowProps'
@@ -50,13 +51,6 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		//自定义视频显示设置
-		videoShowProps: {
-			type: Object,
-			default: function () {
-				return {}
-			}
-		},
 		//纯文本粘贴
 		pasteText: {
 			type: Boolean,
@@ -84,6 +78,13 @@ export default {
 		useBase64: {
 			type: Boolean,
 			default: true
+		},
+		//自定义视频显示设置
+		videoShowProps: {
+			type: Object,
+			default: function () {
+				return {}
+			}
 		},
 		//自定义上传图片配置
 		uploadImageProps: {
@@ -186,26 +187,26 @@ export default {
 		},
 		//视频显示设置
 		combinedVideoShowProps() {
-			return this.initOption(defaultVideoShowProps, this.videoShowProps)
+			return initOption(defaultVideoShowProps, this.videoShowProps)
 		},
 		//上传图片配置
 		combinedUploadImageProps() {
-			return this.initOption(defaultUploadImageProps, this.uploadImageProps)
+			return initOption(defaultUploadImageProps, this.uploadImageProps)
 		},
 		//上传视频配置
 		combinedUploadVideoProps() {
-			return this.initOption(defaultUploadVideoProps, this.uploadVideoProps)
+			return initOption(defaultUploadVideoProps, this.uploadVideoProps)
 		}
 	},
 	watch: {
 		//监听modelValue
-		modelValue() {
+		modelValue(newVal) {
 			//如果是组件外部赋值导致的更新
 			if (!this.isModelChange) {
 				if (this.$refs.content) {
-					this.$refs.content.innerHTML = this.getValue()
+					this.$refs.content.innerHTML = getValue(newVal)
 				} else if (this.$refs.codeView) {
-					this.$refs.codeView.innerText = this.getValue()
+					this.$refs.codeView.innerText = getValue(newVal)
 				}
 				this.updateHtmlText()
 			}
@@ -237,7 +238,7 @@ export default {
 			//设置dom监听
 			this.contentDomMonitor()
 			//初始化赋值
-			this.initalHtml = this.getValue()
+			this.initalHtml = getValue(this.modelValue)
 			//更新html和text
 			this.$nextTick(() => {
 				this.updateHtmlText()
@@ -245,38 +246,6 @@ export default {
 					this.collapseToEnd()
 				}
 			})
-		},
-		//初始化对象参数方法
-		initOption(defaultObj, propObj) {
-			let obj = {}
-			Object.assign(obj, defaultObj)
-			Object.assign(obj, propObj)
-			return obj
-		},
-		//获取经过处理的modelValue值
-		getValue() {
-			if (this.modelValue == '' || this.modelValue == '<br>' || this.modelValue == '<p></p>') {
-				return '<p><br></p>'
-			} else {
-				return String(this.modelValue)
-			}
-		},
-		//获取元素节点，如果自身不是则向上访问
-		getNodeByElement(ele) {
-			if (Dap.element.isElement(ele)) {
-				return ele
-			}
-			return this.getNodeByElement(ele.parentElement)
-		},
-		//在指定节点后插入节点
-		insertNodeAfter(newNode, targetNode) {
-			let parent = targetNode.parentNode
-			let children = Dap.element.children(parent)
-			if (children[children.length - 1] == targetNode) {
-				parent.appendChild(newNode)
-			} else {
-				parent.insertBefore(newNode, targetNode.nextSibling)
-			}
 		},
 		//编辑区域获取焦点
 		contentFocus() {
@@ -402,8 +371,8 @@ export default {
 				if (clip.files.length > 0) {
 					event.preventDefault()
 					for (let file of clip.files) {
-						const isImage = this.judgePasteFileSuffix(file.name, this.combinedUploadImageProps.allowedFileType)
-						const isVideo = this.judgePasteFileSuffix(file.name, this.combinedUploadVideoProps.allowedFileType)
+						const isImage = judgeFileSuffix(file.name, this.combinedUploadImageProps.allowedFileType)
+						const isVideo = judgeFileSuffix(file.name, this.combinedUploadVideoProps.allowedFileType)
 						//是图片或者视频
 						if (isImage || isVideo) {
 							const minSize = isImage ? this.combinedUploadImageProps.minSize : this.combinedUploadVideoProps.minSize
@@ -456,21 +425,6 @@ export default {
 						}
 					}
 				}
-			}
-		},
-		//判断粘贴文件后缀是否符合
-		judgePasteFileSuffix(fileName, allowedFileType) {
-			//获取文件后缀
-			let suffix = fileName.substr(fileName.lastIndexOf('.') + 1)
-			if (allowedFileType.length == 0) {
-				return true
-			} else {
-				//转为小写
-				suffix = suffix.toLocaleLowerCase()
-				for (let i = 0; i < allowedFileType.length; i++) {
-					allowedFileType[i] = allowedFileType[i].toLocaleLowerCase()
-				}
-				return allowedFileType.includes(suffix)
 			}
 		},
 		//监听富文本编辑器中的dom
@@ -594,7 +548,7 @@ export default {
 			if (!this.$refs.content) {
 				return null
 			}
-			return this.getNodeByElement(this.range.commonAncestorContainer)
+			return getNodeByElement(this.range.commonAncestorContainer)
 		},
 		//api：判断某个节点是否在指定标签下
 		compareTag(el, tagName) {
@@ -820,7 +774,7 @@ export default {
 				if (selectNode) {
 					const blockEl = this.getCompareTag(selectNode, blockTag)
 					const pEl = Dap.element.string2dom('<p><br></p>')
-					this.insertNodeAfter(pEl, blockEl)
+					insertNodeAfter(pEl, blockEl)
 					this.collapseToEnd(blockEl)
 				}
 			}

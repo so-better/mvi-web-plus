@@ -99,6 +99,7 @@
 </template>
 <script>
 import { getCurrentInstance } from 'vue'
+import { insertNodeAfter, initTableGroups } from '../editor/util'
 import unactiveMenus from './unactiveMenus'
 import editorTag from './editor-tag.vue'
 import { Dap } from '../dap'
@@ -134,7 +135,7 @@ export default {
 				//表格大小，如[5,5]
 				size: [],
 				//表格创建规格
-				groups: this.initTableGroups()
+				groups: initTableGroups()
 			},
 			//链接相关参数
 			linkParams: {
@@ -409,6 +410,8 @@ export default {
 				this.initLinkParams()
 			} else if (this.options.key == 'image' || this.options.key == 'video') {
 				this.initUploadParams()
+			} else if (this.options.key == 'table') {
+				this.initTableParams()
 			}
 		},
 		//上传初始化设置
@@ -455,6 +458,11 @@ export default {
 					this.$refs.linkText.focus()
 				}
 			}
+		},
+		//表格初始化设置
+		initTableParams() {
+			this.tableParams.size = []
+			this.tableParams.groups = initTableGroups()
 		},
 		//输入框获取焦点
 		inputFocus(event) {
@@ -653,22 +661,6 @@ export default {
 				this.active = true
 			}
 		},
-		//初始化创建表格单元格数组
-		initTableGroups() {
-			const arr = new Array()
-			for (let i = 0; i < 10; i++) {
-				let o = new Array()
-				for (let j = 0; j < 10; j++) {
-					o.push({
-						x: j + 1,
-						y: i + 1,
-						inside: false //是否被选中
-					})
-				}
-				arr.push(o)
-			}
-			return arr
-		},
 		//改变表格大小
 		changeTableSize(data) {
 			this.tableParams.size = [data.x, data.y]
@@ -688,8 +680,6 @@ export default {
 			//创建表格
 			//...
 
-			this.tableParams.size = []
-			this.tableParams.groups = this.initTableGroups()
 			this.hideLayer()
 		},
 		//删除引用
@@ -706,7 +696,7 @@ export default {
 			if (!Dap.element.isElement(pEl)) {
 				return
 			}
-			this.$parent.editorInstance.insertNodeAfter(pEl, blockquote)
+			insertNodeAfter(pEl, blockquote)
 			blockquote.remove()
 			this.$parent.editorInstance.collapseToEnd(pEl)
 			this.active = false
