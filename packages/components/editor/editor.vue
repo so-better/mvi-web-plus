@@ -6,8 +6,9 @@
 </template>
 <script>
 import { judgeFileSuffix, initOption, getValue, getNodeByElement, insertNodeAfter, isNotHtml } from './util'
+import { getCurrentInstance } from 'vue'
 import { Dap } from '../dap'
-import elementFormat from './elementFormat'
+import editorFormatter from './editorFormatter'
 import defaultUploadImageProps from './defaultUploadImageProps'
 import defaultUploadVideoProps from './defaultUploadVideoProps'
 import { Msgbox } from '../msgbox'
@@ -110,6 +111,12 @@ export default {
 			isModelChange: false,
 			//激活菜单项的具体判定函数
 			changeActiveJudgeFn: null
+		}
+	},
+	setup() {
+		const instance = getCurrentInstance()
+		return {
+			uid: instance.uid
 		}
 	},
 	computed: {
@@ -416,7 +423,7 @@ export default {
 				subtree: true,
 				childNodesChange: addNode => {
 					if (addNode) {
-						elementFormat(addNode, this)
+						editorFormatter(addNode, this)
 					}
 				}
 			})
@@ -844,7 +851,7 @@ export default {
 }
 
 //表格demo样式
-:deep(.mvi-editor-table-demo) {
+:deep(.mvi-editor-table) {
 	width: 100%;
 	border: 1px solid @border-color;
 	margin: 0;
@@ -877,9 +884,24 @@ export default {
 				border-bottom: 1px solid @border-color;
 				border-right: 1px solid @border-color;
 				padding: @mp-sm;
+				position: relative;
 
 				&:last-child {
 					border-right: none;
+				}
+
+				.mvi-editor-colbtn {
+					position: absolute;
+					right: -@mp-xs / 2;
+					top: 0;
+					width: @mp-xs;
+					height: 100%;
+					background-color: @border-color;
+					border-radius: 0;
+
+					&:hover {
+						cursor: col-resize;
+					}
 				}
 			}
 		}

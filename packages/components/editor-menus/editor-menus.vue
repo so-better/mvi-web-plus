@@ -371,6 +371,14 @@ export default {
 								menu.active = false
 							}
 						}
+						//设置表格激活状态
+						else if (menu.options.key == 'table') {
+							if (this.editorInstance.compareTag(node, 'table')) {
+								menu.active = true
+							} else {
+								menu.active = false
+							}
+						}
 					}
 				}
 				//普通菜单

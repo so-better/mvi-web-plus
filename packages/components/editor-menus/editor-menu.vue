@@ -43,10 +43,13 @@
 				</div>
 				<!-- 表格 -->
 				<div class="mvi-editor-menu-table" v-else-if="options.key == 'table'">
-					<div class="mvi-editor-menu-table-groups" v-for="item in tableParams.groups">
-						<div @click="confirmTableSize(el)" @mouseenter="changeTableSize(el)" :class="['mvi-editor-menu-table-group', el.inside ? 'active' : '']" v-for="el in item"></div>
-					</div>
-					<div v-if="tableParams.size.length" class="mvi-editor-menu-table-size">{{ tableParams.size[0] }} × {{ tableParams.size[1] }}</div>
+					<template v-if="active"> 2</template>
+					<template v-else>
+						<div class="mvi-editor-menu-table-groups" v-for="item in tableParams.groups">
+							<div @click="confirmTableSize(el)" @mouseenter="changeTableSize(el)" :class="['mvi-editor-menu-table-group', el.inside ? 'active' : '']" v-for="el in item"></div>
+						</div>
+						<div v-if="tableParams.size.length" class="mvi-editor-menu-table-size">{{ tableParams.size[0] }} × {{ tableParams.size[1] }}</div>
+					</template>
 				</div>
 				<!-- 链接 -->
 				<div class="mvi-editor-menu-link" v-else-if="options.key == 'link'">
@@ -675,11 +678,38 @@ export default {
 				}
 			}
 		},
-		//确认表格大小
-		confirmTableSize(data) {
+		//插入表格
+		confirmTableSize() {
+			if (this.disabledMenu) {
+				return
+			}
 			//创建表格
-			//...
-
+			const table = document.createElement('table')
+			table.setAttribute('mvi-editor-insert', true)
+			const colGroup = document.createElement('colgroup')
+			const tbody = document.createElement('tbody')
+			for (let i = 0; i < this.tableParams.size[1]; i++) {
+				const tr = document.createElement('tr')
+				for (let j = 0; j < this.tableParams.size[0]; j++) {
+					const td = document.createElement('td')
+					td.innerHTML = '<br>'
+					tr.appendChild(td)
+					//在第一行的td加上列宽改变按钮
+					if (i == 0) {
+						let btn = Dap.element.string2dom('<span class="mvi-editor-colbtn"></span>')
+						td.appendChild(btn)
+					}
+				}
+				tbody.appendChild(tr)
+			}
+			for (let j = 0; j < this.tableParams.size[0]; j++) {
+				const col = document.createElement('col')
+				colGroup.appendChild(col)
+			}
+			table.appendChild(colGroup)
+			table.appendChild(tbody)
+			this.$parent.editorInstance.restoreRange()
+			this.$parent.editorInstance.insertHtml(table.outerHTML, true)
 			this.hideLayer()
 		},
 		//删除引用
@@ -693,8 +723,8 @@ export default {
 			}
 			const blockquote = this.$parent.editorInstance.getCompareTag(node, 'blockquote')
 			let pEl = Dap.element.string2dom('<p>' + blockquote.innerHTML + '</p>')
-			if (!Dap.element.isElement(pEl)) {
-				return
+			if (pEl instanceof HTMLCollection) {
+				pEl = Dap.element.string2dom('<div>' + blockquote.innerHTML + '</div>')
 			}
 			insertNodeAfter(pEl, blockquote)
 			blockquote.remove()

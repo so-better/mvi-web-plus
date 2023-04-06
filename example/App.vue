@@ -1,6 +1,5 @@
 <template>
 	<div class="mvi-p-2">
-		{{ value }}
 		<m-editor-menus :config="[{ key: 'codeView', name: '显示源码', icon: 'eye', data: show, index: 1 }]" border ref="editorMenus"></m-editor-menus>
 		<m-editor border placeholder="请输入内容" v-model="value" ref="editor"></m-editor>
 	</div>
@@ -10,7 +9,7 @@ export default {
 	data() {
 		return {
 			show: true,
-			value: '<p onclick="alert(1)">使用autofocus可以使<span style="color:#ff3300;">编辑器在初始化</span>完成后自动获取焦点</p><p>使用autofocus可<a href="#">以使编辑器在初始化</a>完成后自动获取焦点</p><p>使用autofocus可以使编辑器在初始化完成后自动获取焦点</p>'
+			value: '<table mvi-editor-insert="true" class="mvi-editor-table" cellpadding="0" cellspacing="0"><colgroup><col><col><col><col><col><col></colgroup><tbody><tr><td><br><span class="mvi-editor-colbtn"></span></td><td><br><span class="mvi-editor-colbtn"></span></td><td><br><span class="mvi-editor-colbtn"></span></td><td><br><span class="mvi-editor-colbtn"></span></td><td><br><span class="mvi-editor-colbtn"></span></td><td><br><span class="mvi-editor-colbtn"></span></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr></tbody></table>'
 		}
 	},
 	mounted() {
