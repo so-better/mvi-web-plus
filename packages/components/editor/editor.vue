@@ -421,10 +421,8 @@ export default {
 				attributes: false,
 				childList: true,
 				subtree: true,
-				childNodesChange: addNode => {
-					if (addNode) {
-						editorFormatter(addNode, this)
-					}
+				childNodesChange: (addNode, removeNode) => {
+					editorFormatter(addNode, removeNode, this)
 				}
 			})
 			observe.init()

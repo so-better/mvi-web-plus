@@ -45,13 +45,13 @@
 				<div class="mvi-editor-menu-table" v-else-if="options.key == 'table'">
 					<template v-if="active">
 						<div class="mvi-editor-menu-table-operations">
-							<div class="mvi-editor-menu-table-operation">插入行</div>
-							<div class="mvi-editor-menu-table-operation">删除行</div>
-							<div class="mvi-editor-menu-table-operation">插入列</div>
-							<div class="mvi-editor-menu-table-operation">删除列</div>
+							<div @click="addTableRow" :style="activeColorStyle" class="mvi-editor-menu-table-operation">{{ operationText(0) }}</div>
+							<div @click="removeTableRow" class="mvi-editor-menu-table-operation">{{ operationText(1) }}</div>
+							<div @click="addTableColumn" :style="activeColorStyle" class="mvi-editor-menu-table-operation">{{ operationText(2) }}</div>
+							<div @click="removeTableColumn" class="mvi-editor-menu-table-operation">{{ operationText(3) }}</div>
 						</div>
-						<div>
-							<span>删除表格</span>
+						<div class="mvi-editor-menu-table-footer">
+							<span @click="deleteTable">{{ options.deleteText ? options.deleteText : '删除表格' }}</span>
 						</div>
 					</template>
 					<template v-else>
@@ -106,7 +106,7 @@
 </template>
 <script>
 import { getCurrentInstance } from 'vue'
-import { insertNodeAfter, initTableGroups } from '../editor/util'
+import { insertNodeAfter, initTableGroups, copyTableRowAppend, copyTableColumnAppend, removeTableColumn } from '../editor/util'
 import unactiveMenus from './unactiveMenus'
 import editorTag from './editor-tag.vue'
 import { Dap } from '../dap'
@@ -370,6 +370,16 @@ export default {
 					return '视频链接'
 				}
 			}
+		},
+		//表格操作按钮文字内容
+		operationText() {
+			return index => {
+				let defaultArray = ['插入行', '删除行', '插入列', '删除列']
+				if (Array.isArray(this.options.operationText)) {
+					return this.options.operationText[index] ? this.options.operationText[index] : defaultArray[index]
+				}
+				return defaultArray[index]
+			}
 		}
 	},
 	components: {
@@ -465,8 +475,10 @@ export default {
 		},
 		//表格初始化设置
 		initTableParams() {
-			this.tableParams.size = []
-			this.tableParams.groups = initTableGroups()
+			if (!this.active) {
+				this.tableParams.size = []
+				this.tableParams.groups = initTableGroups()
+			}
 		},
 		//输入框获取焦点
 		inputFocus(event) {
@@ -684,22 +696,24 @@ export default {
 			if (this.disabledMenu) {
 				return
 			}
+			//获取唯一id
+			let id = Dap.data.get(document.body, 'mvi-editor-table-id') || 0
+			id++
+			Dap.data.set(document.body, 'mvi-editor-table-id', id)
 			//创建表格
 			const table = document.createElement('table')
-			table.setAttribute('mvi-editor-insert', true)
+			table.setAttribute('mvi-editor-table-id', id)
 			const colGroup = document.createElement('colgroup')
 			const tbody = document.createElement('tbody')
+			tbody.setAttribute('mvi-editor-table-id', id)
 			for (let i = 0; i < this.tableParams.size[1]; i++) {
 				const tr = document.createElement('tr')
+				tr.setAttribute('mvi-editor-table-id', id)
 				for (let j = 0; j < this.tableParams.size[0]; j++) {
 					const td = document.createElement('td')
+					td.setAttribute('mvi-editor-table-id', id)
 					td.innerHTML = '<br>'
 					tr.appendChild(td)
-					//在第一行的td加上列宽改变按钮
-					if (i == 0) {
-						let btn = Dap.element.string2dom('<span class="mvi-editor-colbtn"></span>')
-						td.appendChild(btn)
-					}
 				}
 				tbody.appendChild(tr)
 			}
@@ -711,6 +725,9 @@ export default {
 			table.appendChild(tbody)
 			this.$parent.editorInstance.restoreRange()
 			this.$parent.editorInstance.insertHtml(table.outerHTML, true)
+			//重新定位光标
+			const t = this.$parent.editorInstance.$el.querySelector(`table[mvi-editor-table-id="${id}"]`)
+			this.$parent.editorInstance.collapseToStart(t.querySelector('td'))
 			this.hideLayer()
 		},
 		//删除引用
@@ -804,6 +821,246 @@ export default {
 			} else if (this.options.key == 'video') {
 				this.$parent.editorInstance.insertVideo(this.mediaParams.remoteUrl)
 			}
+			this.hideLayer()
+		},
+		//表格增加行
+		addTableRow() {
+			let node = this.$parent.editorInstance.getSelectNode()
+			//td
+			if (this.$parent.editorInstance.compareTag(node, 'td')) {
+				let td = this.$parent.editorInstance.getCompareTag(node, 'td')
+				let tr = td.parentNode
+				let index = [].indexOf.call(Dap.element.children(tr, td.tagName), td)
+				copyTableRowAppend(tr)
+				//光标设置到增加的那一行上
+				this.$parent.editorInstance.collapseToStart(Dap.element.children(tr.nextElementSibling, 'td')[index])
+			}
+			//tr
+			else if (this.$parent.editorInstance.compareTag(node, 'tr')) {
+				let tr = this.$parent.editorInstance.getCompareTag(node, 'tr')
+				copyTableRowAppend(tr)
+				//光标设置到增加的那一行上
+				this.$parent.editorInstance.collapseToStart(Dap.element.children(tr.nextElementSibling, 'td')[0])
+			}
+			//tbody
+			else if (this.$parent.editorInstance.compareTag(node, 'tbody')) {
+				let tbody = this.$parent.editorInstance.getCompareTag(node, 'tbody')
+				let children = Dap.element.children(tbody, 'tr')
+				let tr = children[children.length - 1]
+				copyTableRowAppend(tr)
+				//光标设置到增加的那一行上
+				this.$parent.editorInstance.collapseToStart(Dap.element.children(tr.nextElementSibling, 'td')[0])
+			}
+			//table
+			else if (this.$parent.editorInstance.compareTag(node, 'table')) {
+				let table = this.$parent.editorInstance.getCompareTag(node, 'table')
+				let tbody = Dap.element.children(table, 'tbody')[0]
+				let children = Dap.element.children(tbody, 'tr')
+				let tr = children[children.length - 1]
+				copyTableRowAppend(tr)
+				//光标设置到增加的那一行上
+				this.$parent.editorInstance.collapseToStart(Dap.element.children(tr.nextElementSibling, 'td')[0])
+			}
+			this.$parent.editorInstance.updateHtmlText()
+			this.$parent.editorInstance.updateValue()
+			this.hideLayer()
+		},
+		//表格删除行
+		removeTableRow() {
+			let node = this.$parent.editorInstance.getSelectNode()
+			//td
+			if (this.$parent.editorInstance.compareTag(node, 'td')) {
+				let td = this.$parent.editorInstance.getCompareTag(node, 'td')
+				let tr = td.parentNode
+				let index = [].indexOf.call(Dap.element.children(tr, td.tagName), td)
+				//光标设置到删除的那一行之前
+				let parentNode = tr.parentNode
+				let previousElementSibling = tr.previousElementSibling
+				tr.remove()
+				if (previousElementSibling) {
+					this.$parent.editorInstance.collapseToStart(Dap.element.children(previousElementSibling, 'td')[index])
+				} else {
+					let firstTr = Dap.element.children(parentNode, 'tr')[0]
+					if (firstTr) {
+						this.$parent.editorInstance.collapseToStart(Dap.element.children(firstTr, 'td')[index])
+					}
+				}
+			}
+			//tr
+			else if (this.$parent.editorInstance.compareTag(node, 'tr')) {
+				let tr = this.$parent.editorInstance.getCompareTag(node, 'tr')
+				//光标设置到删除的那一行之前
+				let parentNode = tr.parentNode
+				let previousElementSibling = tr.previousElementSibling
+				tr.remove()
+				if (previousElementSibling) {
+					this.$parent.editorInstance.collapseToStart(Dap.element.children(previousElementSibling, 'td')[0])
+				} else {
+					let firstTr = Dap.element.children(parentNode, 'tr')[0]
+					if (firstTr) {
+						this.$parent.editorInstance.collapseToStart(Dap.element.children(firstTr, 'td')[0])
+					}
+				}
+			}
+			//tbody
+			else if (this.$parent.editorInstance.compareTag(node, 'tbody')) {
+				let tbody = this.$parent.editorInstance.getCompareTag(node, 'tbody')
+				let children = Dap.element.children(tbody, 'tr')
+				let tr = children[children.length - 1]
+				//光标设置到删除的那一行之前
+				let parentNode = tr.parentNode
+				let previousElementSibling = tr.previousElementSibling
+				tr.remove()
+				if (previousElementSibling) {
+					this.$parent.editorInstance.collapseToStart(Dap.element.children(previousElementSibling, 'td')[0])
+				} else {
+					let firstTr = Dap.element.children(parentNode, 'tr')[0]
+					if (firstTr) {
+						this.$parent.editorInstance.collapseToStart(Dap.element.children(firstTr, 'td')[0])
+					}
+				}
+			}
+			//table
+			else if (this.$parent.editorInstance.compareTag(node, 'table')) {
+				let table = this.$parent.editorInstance.getCompareTag(node, 'table')
+				let tbody = Dap.element.children(table, 'tbody')[0]
+				let children = Dap.element.children(tbody, 'tr')
+				let tr = children[children.length - 1]
+				//光标设置到删除的那一行之前
+				let parentNode = tr.parentNode
+				let previousElementSibling = tr.previousElementSibling
+				tr.remove()
+				if (previousElementSibling) {
+					this.$parent.editorInstance.collapseToStart(Dap.element.children(previousElementSibling, 'td')[0])
+				} else {
+					let firstTr = Dap.element.children(parentNode, 'tr')[0]
+					if (firstTr) {
+						this.$parent.editorInstance.collapseToStart(Dap.element.children(firstTr, 'td')[0])
+					}
+				}
+			}
+			this.$parent.editorInstance.updateHtmlText()
+			this.$parent.editorInstance.updateValue()
+			this.hideLayer()
+		},
+		//表格增加列
+		addTableColumn() {
+			let node = this.$parent.editorInstance.getSelectNode()
+			if (this.$parent.editorInstance.compareTag(node, 'td')) {
+				let td = this.$parent.editorInstance.getCompareTag(node, 'td')
+				copyTableColumnAppend(td)
+				//光标设置到增加的那一列上
+				this.$parent.editorInstance.collapseToStart(td.nextElementSibling)
+			} else if (this.$parent.editorInstance.compareTag(node, 'tr')) {
+				let tr = this.$parent.editorInstance.getCompareTag(node, 'tr')
+				let children = Dap.element.children(tr, 'td')
+				let td = children[children.length - 1]
+				copyTableColumnAppend(td)
+				//光标设置到增加的那一列上
+				this.$parent.editorInstance.collapseToStart(td.nextElementSibling)
+			} else if (this.$parent.editorInstance.compareTag(node, 'tbody')) {
+				let tbody = this.$parent.editorInstance.getCompareTag(node, 'tbody')
+				let tr = Dap.element.children(tbody, 'tr')[0]
+				let childrenTd = Dap.element.children(tr, 'td')
+				let td = childrenTd[childrenTd.length - 1]
+				copyTableColumnAppend(td)
+				//光标设置到增加的那一列上
+				this.$parent.editorInstance.collapseToStart(td.nextElementSibling)
+			} else if (this.$parent.editorInstance.compareTag(node, 'table')) {
+				let table = this.$parent.editorInstance.getCompareTag(node, 'table')
+				let tbody = Dap.element.children(table, 'tbody')[0]
+				let tr = Dap.element.children(tbody, 'tr')[0]
+				let childrenTd = Dap.element.children(tr, 'td')
+				let td = childrenTd[childrenTd.length - 1]
+				copyTableColumnAppend(td)
+				//光标设置到增加的那一列上
+				this.$parent.editorInstance.collapseToStart(td.nextElementSibling)
+			}
+			this.$parent.editorInstance.updateHtmlText()
+			this.$parent.editorInstance.updateValue()
+			this.hideLayer()
+		},
+		//删除列
+		removeTableColumn() {
+			let node = this.$parent.editorInstance.getSelectNode()
+			if (this.$parent.editorInstance.compareTag(node, 'td')) {
+				let td = this.$parent.editorInstance.getCompareTag(node, 'td')
+				//光标设置到删除的那一列之前
+				let parentNode = td.parentNode
+				let previousElementSibling = td.previousElementSibling
+				removeTableColumn(td)
+				if (previousElementSibling) {
+					this.$parent.editorInstance.collapseToStart(previousElementSibling)
+				} else {
+					let firstTd = Dap.element.children(parentNode, 'td')[0]
+					if (firstTd) {
+						this.$parent.editorInstance.collapseToStart(firstTd)
+					}
+				}
+			} else if (this.$parent.editorInstance.compareTag(node, 'tr')) {
+				let tr = this.$parent.editorInstance.getCompareTag(node, 'tr')
+				let children = Dap.element.children(tr, 'td')
+				let td = children[children.length - 1]
+				//光标设置到删除的那一列之前
+				let previousElementSibling = td.previousElementSibling
+				removeTableColumn(td)
+				if (previousElementSibling) {
+					this.$parent.editorInstance.collapseToStart(previousElementSibling)
+				} else {
+					let firstTd = Dap.element.children(tr, 'td')[0]
+					if (firstTd) {
+						this.$parent.editorInstance.collapseToStart(firstTd)
+					}
+				}
+			} else if (this.$parent.editorInstance.compareTag(node, 'tbody')) {
+				let tbody = this.$parent.editorInstance.getCompareTag(node, 'tbody')
+				let tr = Dap.element.children(tbody, 'tr')[0]
+				let childrenTd = Dap.element.children(tr, 'td')
+				let td = childrenTd[childrenTd.length - 1]
+				//光标设置到删除的那一列之前
+				let previousElementSibling = td.previousElementSibling
+				removeTableColumn(td)
+				if (previousElementSibling) {
+					this.$parent.editorInstance.collapseToStart(previousElementSibling)
+				} else {
+					let firstTd = Dap.element.children(tr, 'td')[0]
+					if (firstTd) {
+						this.$parent.editorInstance.collapseToStart(firstTd)
+					}
+				}
+			} else if (this.$parent.editorInstance.compareTag(node, 'table')) {
+				let table = this.$parent.editorInstance.getCompareTag(node, 'table')
+				let tbody = Dap.element.children(table, 'tbody')[0]
+				let tr = Dap.element.children(tbody, 'tr')[0]
+				let childrenTd = Dap.element.children(tr, 'td')
+				let td = childrenTd[childrenTd.length - 1]
+				//光标设置到删除的那一列之前
+				let previousElementSibling = td.previousElementSibling
+				removeTableColumn(td)
+				if (previousElementSibling) {
+					this.$parent.editorInstance.collapseToStart(previousElementSibling)
+				} else {
+					let firstTd = Dap.element.children(tr, 'td')[0]
+					if (firstTd) {
+						this.$parent.editorInstance.collapseToStart(firstTd)
+					}
+				}
+			}
+			this.$parent.editorInstance.updateHtmlText()
+			this.$parent.editorInstance.updateValue()
+			this.hideLayer()
+		},
+		//删除表格
+		deleteTable() {
+			this.$parent.editorInstance.restoreRange()
+			let node = this.$parent.editorInstance.getSelectNode()
+			let table = this.$parent.editorInstance.getCompareTag(node, 'table')
+			if (table) {
+				table.remove()
+				this.active = false
+			}
+			this.$parent.editorInstance.updateHtmlText()
+			this.$parent.editorInstance.updateValue()
 			this.hideLayer()
 		}
 	}
@@ -928,7 +1185,7 @@ export default {
 
 	.mvi-editor-menu-table {
 		display: block;
-		padding: @mp-sm 0;
+		padding: @mp-sm;
 		background-color: #fff;
 		color: @font-color-default;
 		font-size: @font-size-default;
@@ -938,7 +1195,6 @@ export default {
 			display: -webkit-flex;
 			justify-content: flex-start;
 			align-items: center;
-			padding: 0 @mp-sm;
 
 			&:first-of-type > .mvi-editor-menu-table-group {
 				border-top: 1px solid @border-color;
@@ -979,13 +1235,30 @@ export default {
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
+			padding: @mp-sm 0;
 
 			.mvi-editor-menu-table-operation {
 				display: block;
-				padding: @mp-sm;
 				opacity: 0.8;
+				padding: 0 @mp-sm;
 				white-space: nowrap;
 
+				&:hover {
+					opacity: 1;
+					cursor: pointer;
+				}
+			}
+		}
+
+		.mvi-editor-menu-table-footer {
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+
+			span {
+				display: block;
+				opacity: 0.8;
+				padding: 0 @mp-sm;
 				&:hover {
 					opacity: 1;
 					cursor: pointer;

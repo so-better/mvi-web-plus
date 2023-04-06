@@ -9,7 +9,7 @@ export default {
 	data() {
 		return {
 			show: true,
-			value: '<table mvi-editor-insert="true" class="mvi-editor-table" cellpadding="0" cellspacing="0"><colgroup><col><col><col><col><col><col></colgroup><tbody><tr><td><br><span class="mvi-editor-colbtn"></span></td><td><br><span class="mvi-editor-colbtn"></span></td><td><br><span class="mvi-editor-colbtn"></span></td><td><br><span class="mvi-editor-colbtn"></span></td><td><br><span class="mvi-editor-colbtn"></span></td><td><br><span class="mvi-editor-colbtn"></span></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr></tbody></table>'
+			value: '<p><br></p>'
 		}
 	},
 	mounted() {

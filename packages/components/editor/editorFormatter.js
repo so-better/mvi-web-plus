@@ -1,21 +1,22 @@
 import { Dap } from '../dap'
 
+//插入表格列宽拖拽器
+const insertTableResizeSpan = el => {
+	const firstTr = el.querySelector('tr')
+	const tdArray = firstTr.querySelectorAll('td')
+	tdArray.forEach(td => {
+		let btn = td.querySelector('.mvi-editor-colbtn')
+		if (!btn) {
+			let btn = Dap.element.string2dom('<span class="mvi-editor-colbtn"></span>')
+			td.appendChild(btn)
+		}
+	})
+}
+
 //设置表格列宽拖拽
-const setTableResize = function (el, instance) {
-	//不是编辑器自己插入的表格
-	if (!el.hasAttribute('mvi-editor-insert')) {
-		return
-	}
-	//colgroup不存在
+const setTableResize = (el, instance) => {
 	const colgroup = el.querySelector('colgroup')
-	if (!colgroup) {
-		return
-	}
-	//col不存在
 	const cols = colgroup.querySelectorAll('col')
-	if (!cols.length) {
-		return
-	}
 	const firstTr = el.querySelector('tr')
 	const tdArray = firstTr.querySelectorAll('td')
 	tdArray.forEach((td, index) => {
@@ -65,30 +66,72 @@ const setTableResize = function (el, instance) {
 /**
  * 富文本内容节点格式化处理
  */
-export default function (el, instance) {
-	//移除事件
-	for (let attribute of el.attributes) {
-		if (attribute.nodeName.startsWith('on')) {
-			el.removeAttribute(attribute.nodeName)
+export default function (addNode, removeNode, instance) {
+	if (addNode) {
+		//移除事件
+		for (let attribute of addNode.attributes) {
+			if (attribute.nodeName.startsWith('on')) {
+				addNode.removeAttribute(attribute.nodeName)
+			}
 		}
-	}
-	if (el.nodeName.toLocaleLowerCase() == 'blockquote') {
-		Dap.element.addClass(el, 'mvi-editor-blockquote')
-	} else if (el.nodeName.toLocaleLowerCase() == 'hr') {
-		Dap.element.addClass(el, 'mvi-editor-hr')
-	} else if (el.nodeName.toLocaleLowerCase() == 'img') {
-		Dap.element.addClass(el, 'mvi-editor-image')
-		el.style.fontSize = ''
-	} else if (el.nodeName.toLocaleLowerCase() == 'video') {
-		Dap.element.addClass(el, 'mvi-editor-video')
-		el.setAttribute('muted', 'muted')
-		el.setAttribute('autoplay', 'autoplay')
-		el.style.fontSize = ''
-	} else if (el.nodeName.toLocaleLowerCase() == 'table') {
-		Dap.element.addClass(el, 'mvi-editor-table')
-		el.setAttribute('cellpadding', '0')
-		el.setAttribute('cellspacing', '0')
-		//设置列宽拖拽
-		setTableResize(el, instance)
+		//插入引用
+		if (addNode.nodeName.toLocaleLowerCase() == 'blockquote') {
+			Dap.element.addClass(addNode, 'mvi-editor-blockquote')
+		}
+		//插入分隔线
+		else if (addNode.nodeName.toLocaleLowerCase() == 'hr') {
+			Dap.element.addClass(addNode, 'mvi-editor-hr')
+		}
+		//插入图片
+		else if (addNode.nodeName.toLocaleLowerCase() == 'img') {
+			Dap.element.addClass(addNode, 'mvi-editor-image')
+			addNode.style.fontSize = ''
+		}
+		//插入视频
+		else if (addNode.nodeName.toLocaleLowerCase() == 'video') {
+			Dap.element.addClass(addNode, 'mvi-editor-video')
+			addNode.setAttribute('muted', 'muted')
+			addNode.setAttribute('autoplay', 'autoplay')
+			addNode.style.fontSize = ''
+		}
+		//插入表格
+		else if (addNode.nodeName.toLocaleLowerCase() == 'table') {
+			Dap.element.addClass(addNode, 'mvi-editor-table')
+			addNode.setAttribute('cellpadding', '0')
+			addNode.setAttribute('cellspacing', '0')
+			//编辑器插入的表格设置列宽拖拽修改
+			if (addNode.hasAttribute('mvi-editor-table-id')) {
+				//增加拖拽器
+				insertTableResizeSpan(addNode)
+				//设置拖拽调节列宽
+				setTableResize(addNode, instance)
+			}
+		}
+		//插入表格列
+		else if (addNode.nodeName.toLocaleLowerCase() == 'td') {
+			//增加拖拽器
+			insertTableResizeSpan(addNode.parentNode.parentNode.parentNode)
+			//设置拖拽调节列宽
+			setTableResize(addNode.parentNode.parentNode.parentNode, instance)
+		}
+	} else if (removeNode) {
+		//删除表格行
+		if (removeNode.nodeName.toLocaleLowerCase() == 'tr') {
+			let id = removeNode.getAttribute('mvi-editor-table-id')
+			if (id) {
+				id = Number(id)
+				let flag = Dap.element.children(removeNode, 'td').every(td => {
+					return !!td.querySelector('.mvi-editor-colbtn')
+				})
+				//删除的是表头
+				if (flag) {
+					let table = instance.$el.querySelector(`table[mvi-editor-table-id="${id}"]`)
+					//增加拖拽器
+					insertTableResizeSpan(table)
+					//设置拖拽调节列宽
+					setTableResize(table, instance)
+				}
+			}
+		}
 	}
 }

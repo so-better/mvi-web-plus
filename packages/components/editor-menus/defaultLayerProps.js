@@ -3,7 +3,7 @@ export default {
 	//位置
 	placement: 'bottom-start',
 	//距离触发元素的距离
-	offset: '0.1rem',
+	offset: '0rem',
 	//浮层z-index
 	zIndex: 400,
 	//是否fixed

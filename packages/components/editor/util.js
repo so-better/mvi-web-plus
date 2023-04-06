@@ -68,7 +68,7 @@ export const insertNodeAfter = (newNode, targetNode) => {
 	if (children[children.length - 1] == targetNode) {
 		parent.appendChild(newNode)
 	} else {
-		parent.insertBefore(newNode, targetNode.nextSibling)
+		parent.insertBefore(newNode, targetNode.nextElementSibling)
 	}
 }
 
@@ -105,4 +105,52 @@ export const isNotHtml = dom => {
 		return false
 	}
 	return true
+}
+
+/**
+ * 复制表格行进行增加
+ * @param { Element } row
+ */
+export const copyTableRowAppend = row => {
+	let newRow = row.cloneNode(true)
+	newRow.querySelectorAll('td').forEach(td => {
+		td.innerHTML = '<br>'
+	})
+	insertNodeAfter(newRow, row)
+}
+
+/**
+ * 复制表格列进行增加
+ * @param { Element } column
+ */
+export const copyTableColumnAppend = column => {
+	//该列在父元素中的序列
+	let index = [].indexOf.call(Dap.element.children(column.parentNode, column.tagName), column)
+	column.parentNode.parentNode.querySelectorAll('tr').forEach(tr => {
+		let td = Dap.element.children(tr, 'td')[index]
+		let newColumn = td.cloneNode(true)
+		newColumn.innerHTML = '<br>'
+		insertNodeAfter(newColumn, td)
+	})
+	const colgroup = column.parentNode.parentNode.parentNode.querySelector('colgroup')
+	const cols = Dap.element.children(colgroup, 'col')
+	const col = document.createElement('col')
+	insertNodeAfter(col, cols[index])
+}
+
+/**
+ * 根据表格列删除指定的一列
+ * @param { Element } column
+ */
+export const removeTableColumn = column => {
+	//该列在父元素中的序列
+	let index = [].indexOf.call(Dap.element.children(column.parentNode, column.tagName), column)
+	const colgroup = column.parentNode.parentNode.parentNode.querySelector('colgroup')
+	const cols = Dap.element.children(colgroup, 'col')
+	const col = cols[index]
+	col.remove()
+	column.parentNode.parentNode.querySelectorAll('tr').forEach(tr => {
+		let td = Dap.element.children(tr, 'td')[index]
+		td.remove()
+	})
 }
