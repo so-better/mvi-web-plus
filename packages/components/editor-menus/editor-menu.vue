@@ -43,7 +43,17 @@
 				</div>
 				<!-- 表格 -->
 				<div class="mvi-editor-menu-table" v-else-if="options.key == 'table'">
-					<template v-if="active"> 2</template>
+					<template v-if="active">
+						<div class="mvi-editor-menu-table-operations">
+							<div class="mvi-editor-menu-table-operation">插入行</div>
+							<div class="mvi-editor-menu-table-operation">删除行</div>
+							<div class="mvi-editor-menu-table-operation">插入列</div>
+							<div class="mvi-editor-menu-table-operation">删除列</div>
+						</div>
+						<div>
+							<span>删除表格</span>
+						</div>
+					</template>
 					<template v-else>
 						<div class="mvi-editor-menu-table-groups" v-for="item in tableParams.groups">
 							<div @click="confirmTableSize(el)" @mouseenter="changeTableSize(el)" :class="['mvi-editor-menu-table-group', el.inside ? 'active' : '']" v-for="el in item"></div>
@@ -53,21 +63,15 @@
 				</div>
 				<!-- 链接 -->
 				<div class="mvi-editor-menu-link" v-else-if="options.key == 'link'">
-					<Tabs v-model="linkParams.tabIndex" flex="flex-start" offset="0.4rem" :active-color="$parent.editorInstance.activeColor" inactive-color="#808080">
-						<Tab :disabled="options.data[0].disabled" v-if="options.data[0]" :title="options.data[0].label" :icon="options.data[0].icon?.value">
-							<div class="mvi-editor-menu-link-wrap">
-								<input :disabled="options.data[0].disabled" ref="linkText" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.text" :placeholder="linkPlaceholder[0]" type="text" />
-								<input :disabled="options.data[0].disabled" ref="linkUrl" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.url" :placeholder="linkPlaceholder[1]" type="text" />
-								<div class="mvi-editor-menu-link-footer">
-									<Checkbox :disabled="options.data[0].disabled" label="新窗口打开" label-placement="right" :icon="{ size: '0.24rem' }" label-size="0.28rem" label-color="#808080" :fill-color="$parent.editorInstance.activeColor" v-model="linkParams.target"> </Checkbox>
-									<div class="mvi-editor-menu-link-operation">
-										<span :disabled="options.data[0].disabled || null" class="mvi-editor-menu-link-delete" v-if="active" @click="deleteLink">删除链接</span>
-										<span :disabled="options.data[0].disabled || null" class="mvi-editor-menu-link-insert" :style="activeColorStyle" @click="insertLink">插入</span>
-									</div>
-								</div>
-							</div>
-						</Tab>
-					</Tabs>
+					<input ref="linkText" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.text" :placeholder="linkPlaceholder[0]" type="text" />
+					<input ref="linkUrl" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.url" :placeholder="linkPlaceholder[1]" type="text" />
+					<div class="mvi-editor-menu-link-footer">
+						<Checkbox :label="options.newWindoText ? options.newWindoText : '新窗口打开'" label-placement="right" :icon="{ size: '0.24rem' }" label-size="0.28rem" label-color="#808080" :fill-color="$parent.editorInstance.activeColor" v-model="linkParams.target"> </Checkbox>
+						<div class="mvi-editor-menu-link-operation">
+							<span class="mvi-editor-menu-link-delete" v-if="active" @click="deleteLink">{{ options.deleteText ? options.deleteText : '删除链接' }}</span>
+							<span class="mvi-editor-menu-link-insert" :style="activeColorStyle" @click="insertLink">{{ options.insertText ? options.insertText : '插入' }}</span>
+						</div>
+					</div>
 				</div>
 				<!-- 图片或者视频 -->
 				<div class="mvi-editor-menu-media" v-else-if="options.key == 'image' || options.key == 'video'">
@@ -77,8 +81,8 @@
 								<Icon type="upload-square" />
 							</div>
 							<div v-else-if="item.value == 'remote'" class="mvi-editor-menu-media-remote">
-								<input :disabled="item.disabled || null" @focus="inputFocus" @blur="inputBlur" v-model.trim="mediaParams.remoteUrl" :placeholder="mediaPlaceholder(item)" type="text" />
-								<div :disabled="item.disabled || null" class="mvi-editor-menu-media-remote-insert" :style="activeColorStyle" @click="insertRemote">插入</div>
+								<input :disabled="item.disabled || null" @focus="inputFocus" @blur="inputBlur" v-model.trim="mediaParams.remoteUrl" :placeholder="mediaPlaceholder" type="text" />
+								<div :disabled="item.disabled || null" class="mvi-editor-menu-media-remote-insert" :style="activeColorStyle" @click="insertRemote">{{ options.insertText ? options.insertText : '插入' }}</div>
 							</div>
 						</Tab>
 					</Tabs>
@@ -86,7 +90,7 @@
 				<!-- 自定义弹出层内容 -->
 				<slot name="layer" v-else-if="$slots.layer"></slot>
 				<!-- 普通弹出层 -->
-				<template v-else>
+				<div class="mvi-editor-menu-default" v-else>
 					<editorTag :tag="layerElTag(item)" :style="layerElStyle(item)" :disabled="item.disabled || null" :class="['mvi-editor-menu-layer-el', layerActiveClass(item)]" v-for="(item, index) in options.data" @click="selectLayerItem(item, index)" @mouseenter="layerItemHover('enter', item, $event)" @mouseleave="layerItemHover('leave', item, $event)">
 						<template v-if="item.icon">
 							<i class="mvi-editor-menu-layer-icon" v-if="item.icon.custom" :class="item.icon.value"></i>
@@ -95,7 +99,7 @@
 						<span v-text="item.label"></span>
 						<Icon class="mvi-editor-menu-layer-active-icon" v-if="active && item.value == selectVal.value" type="success"></Icon>
 					</editorTag>
-				</template>
+				</div>
 			</div>
 		</Layer>
 	</div>
@@ -142,8 +146,6 @@ export default {
 			},
 			//链接相关参数
 			linkParams: {
-				//选项卡值
-				tabIndex: 0,
 				//插入的链接
 				url: '',
 				//链接内容
@@ -347,8 +349,8 @@ export default {
 		},
 		//插入链接的两个输入框的placeholder值
 		linkPlaceholder() {
-			if (this.options.key == 'link' && this.options.data && this.options.data.length) {
-				const placeholder = this.options.data[0].placeholder
+			if (this.options.key == 'link') {
+				const placeholder = this.options.placeholder
 				if (Array.isArray(placeholder)) {
 					return [placeholder[0] || '链接文本', placeholder[1] || '链接地址']
 				}
@@ -357,9 +359,9 @@ export default {
 		},
 		//插入视频和图片时输入框的placeholder值
 		mediaPlaceholder() {
-			return dataItem => {
-				if (typeof dataItem.placeholder == 'string' && dataItem.placeholder) {
-					return dataItem.placeholder
+			if (this.options.key == 'image' || this.options.key == 'video') {
+				if (typeof this.options.placeholder == 'string' && this.options.placeholder) {
+					return this.options.placeholder
 				}
 				if (this.options.key == 'image') {
 					return '图片链接'
@@ -435,7 +437,6 @@ export default {
 		},
 		//链接初始化设置值
 		initLinkParams() {
-			this.linkParams.tabIndex = 0
 			//激活状态
 			if (this.active) {
 				let node = this.$parent.editorInstance.getSelectNode()
@@ -738,9 +739,6 @@ export default {
 			if (this.disabledMenu) {
 				return
 			}
-			if (this.options.data && this.options.data[0] && this.options.data[0].disabled) {
-				return
-			}
 			if (!this.linkParams.url) {
 				this.hideLayer()
 				return
@@ -767,9 +765,6 @@ export default {
 		//删除链接
 		deleteLink() {
 			if (this.disabledMenu) {
-				return
-			}
-			if (this.options.data && this.options.data[0] && this.options.data[0].disabled) {
 				return
 			}
 			this.$parent.editorInstance.restoreRange()
@@ -854,40 +849,43 @@ export default {
 
 .mvi-editor-menu-layer {
 	display: block;
-	padding: @mp-xs 0;
 
-	.mvi-editor-menu-layer-el {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		padding: @mp-sm @mp-lg;
-		margin: 0;
-		white-space: nowrap;
-		text-align: center;
-		opacity: 0.8;
-
-		&:hover {
-			opacity: 1;
-			cursor: pointer;
-			background-color: @bg-color-default;
-		}
-		.mvi-editor-menu-layer-icon {
-			margin-right: @mp-xs;
-		}
-
-		&[disabled] {
-			opacity: 0.6;
-			background-color: transparent;
-		}
-		&.active {
-			opacity: 1;
-			background-color: @bg-color-default;
-		}
-
-		.mvi-editor-menu-layer-active-icon {
-			margin-left: @mp-xs;
-			font-weight: normal;
+	.mvi-editor-menu-default {
+		display: block;
+		padding: @mp-xs 0;
+		.mvi-editor-menu-layer-el {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: @mp-sm @mp-lg;
+			margin: 0;
+			white-space: nowrap;
+			text-align: center;
 			opacity: 0.8;
+
+			&:hover {
+				opacity: 1;
+				cursor: pointer;
+				background-color: @bg-color-default;
+			}
+			.mvi-editor-menu-layer-icon {
+				margin-right: @mp-xs;
+			}
+
+			&[disabled] {
+				opacity: 0.6;
+				background-color: transparent;
+			}
+			&.active {
+				opacity: 1;
+				background-color: @bg-color-default;
+			}
+
+			.mvi-editor-menu-layer-active-icon {
+				margin-left: @mp-xs;
+				font-weight: normal;
+				opacity: 0.8;
+			}
 		}
 	}
 
@@ -897,7 +895,10 @@ export default {
 		justify-content: flex-start;
 		flex-wrap: wrap;
 		width: calc(@small-height * 4 + @mp-xs * 10 + 16px);
-		padding: 0 @mp-xs;
+		padding: @mp-xs;
+		background-color: #fff;
+		color: @font-color-default;
+		font-size: @font-size-default;
 
 		.mvi-editor-menu-color {
 			display: block;
@@ -927,7 +928,10 @@ export default {
 
 	.mvi-editor-menu-table {
 		display: block;
-		padding: @mp-xs 0;
+		padding: @mp-sm 0;
+		background-color: #fff;
+		color: @font-color-default;
+		font-size: @font-size-default;
 
 		.mvi-editor-menu-table-groups {
 			display: flex;
@@ -970,85 +974,88 @@ export default {
 			margin-top: @mp-sm;
 			line-height: 1;
 		}
+
+		.mvi-editor-menu-table-operations {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			.mvi-editor-menu-table-operation {
+				display: block;
+				padding: @mp-sm;
+				opacity: 0.8;
+				white-space: nowrap;
+
+				&:hover {
+					opacity: 1;
+					cursor: pointer;
+				}
+			}
+		}
 	}
 
 	.mvi-editor-menu-link {
 		display: block;
-		padding: @mp-xs 0;
-		width: 5rem;
+		padding: @mp-sm;
+		width: 6rem;
+		background-color: #fff;
+		color: @font-color-default;
+		font-size: @font-size-default;
 
-		.mvi-editor-menu-link-wrap {
+		input {
+			appearance: none;
+			-webkit-appearance: none;
+			-moz-appearance: none;
 			display: block;
-			padding: @mp-sm;
+			width: 100%;
+			margin: 0;
+			padding: @mp-xs;
+			border: none;
+			border-bottom: 1px solid @border-color;
+			font-size: @font-size-default;
+			color: @font-color-default;
+			line-height: 1.5;
+			margin-bottom: @mp-sm;
+			transition: border-color 400ms;
+			-moz-transition: border-color 400ms;
+			-webkit-transition: border-color 400ms;
 
-			input {
-				appearance: none;
-				-webkit-appearance: none;
-				-moz-appearance: none;
-				display: block;
-				width: 100%;
-				margin: 0;
-				padding: @mp-xs;
-				border: none;
-				border-bottom: 1px solid @border-color;
-				font-size: @font-size-default;
-				color: @font-color-default;
-				line-height: 1.5;
-				margin-bottom: @mp-sm;
-				transition: border-color 400ms;
-				-moz-transition: border-color 400ms;
-				-webkit-transition: border-color 400ms;
-
-				&::-webkit-input-placeholder,
-				&::placeholder {
-					color: inherit;
-					font-family: inherit;
-					font-size: inherit;
-					opacity: 0.5;
-					vertical-align: middle;
-				}
-
-				&[disabled] {
-					background-color: transparent;
-					opacity: 0.8;
-				}
+			&::-webkit-input-placeholder,
+			&::placeholder {
+				color: inherit;
+				font-family: inherit;
+				font-size: inherit;
+				opacity: 0.5;
+				vertical-align: middle;
 			}
+		}
 
-			.mvi-editor-menu-link-footer {
+		.mvi-editor-menu-link-footer {
+			display: flex;
+			display: -webkit-flex;
+			justify-content: space-between;
+			align-items: center;
+			width: 100%;
+			padding-top: @mp-xs 0;
+
+			.mvi-editor-menu-link-operation {
 				display: flex;
-				display: -webkit-flex;
-				justify-content: space-between;
+				justify-content: flex-start;
 				align-items: center;
-				width: 100%;
-				padding-top: @mp-xs 0;
 
-				.mvi-editor-menu-link-operation {
-					display: flex;
-					justify-content: flex-start;
-					align-items: center;
+				.mvi-editor-menu-link-delete {
+					opacity: 0.8;
+					margin-right: @mp-md;
 
-					.mvi-editor-menu-link-delete {
-						opacity: 0.8;
-						margin-right: @mp-md;
-
-						&:not([disabled]):hover {
-							opacity: 1;
-							cursor: pointer;
-						}
-
-						&[disabled] {
-							opacity: 0.5;
-						}
+					&:hover {
+						opacity: 1;
+						cursor: pointer;
 					}
+				}
 
-					.mvi-editor-menu-link-insert {
-						&:hover {
-							cursor: pointer;
-						}
-
-						&[disabled] {
-							opacity: 0.5;
-						}
+				.mvi-editor-menu-link-insert {
+					&:hover {
+						cursor: pointer;
 					}
 				}
 			}
@@ -1058,6 +1065,10 @@ export default {
 	.mvi-editor-menu-media {
 		display: block;
 		width: 5rem;
+		padding: @mp-xs 0;
+		background-color: #fff;
+		color: @font-color-default;
+		font-size: @font-size-default;
 
 		.mvi-editor-menu-media-upload {
 			display: block;
