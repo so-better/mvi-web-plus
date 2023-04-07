@@ -1252,6 +1252,7 @@ export default {
 			justify-content: space-between;
 			align-items: center;
 			padding: @mp-sm 0;
+			margin-bottom: @mp-sm;
 
 			.mvi-editor-menu-table-operation {
 				display: block;
