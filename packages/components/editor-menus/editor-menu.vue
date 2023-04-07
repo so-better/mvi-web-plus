@@ -816,7 +816,7 @@ export default {
 					td.setAttribute('mvi-editor-table-id', id)
 					tr.appendChild(td)
 					//第一行设置可拖拽器
-					if (i == 0) {
+					if (i == 0 && j < this.tableParams.size[0] - 1) {
 						const btn = createTableColBtn()
 						td.appendChild(btn)
 					}
@@ -826,6 +826,7 @@ export default {
 			//创建表格列分组元素
 			for (let j = 0; j < this.tableParams.size[0]; j++) {
 				const col = document.createElement('col')
+				col.setAttribute('width', 'auto')
 				colGroup.appendChild(col)
 			}
 			//添加到表格
@@ -889,10 +890,10 @@ export default {
 				let tbody = row.parentNode
 				let previousRow = row.previousElementSibling
 				let nextRow = row.nextElementSibling
-				row.remove()
 				if (isHead) {
 					setTableNewHeader(nextRow)
 				}
+				row.remove()
 				this.setTableCollapse('removeRow', { index, tbody, previousRow })
 			}
 			//tr
@@ -902,10 +903,10 @@ export default {
 				let tbody = row.parentNode
 				let previousRow = row.previousElementSibling
 				let nextRow = row.nextElementSibling
-				row.remove()
 				if (isHead) {
 					setTableNewHeader(nextRow)
 				}
+				row.remove()
 				this.setTableCollapse('removeRow', { tbody, previousRow })
 			}
 			//tbody
@@ -916,10 +917,10 @@ export default {
 				let isHead = isTableHeader(row)
 				let previousRow = row.previousElementSibling
 				let nextRow = row.nextElementSibling
-				row.remove()
 				if (isHead) {
 					setTableNewHeader(nextRow)
 				}
+				row.remove()
 				this.setTableCollapse('removeRow', { tbody, previousRow })
 			}
 			//table
@@ -931,10 +932,10 @@ export default {
 				let isHead = isTableHeader(row)
 				let previousRow = row.previousElementSibling
 				let nextRow = row.nextElementSibling
-				row.remove()
 				if (isHead) {
 					setTableNewHeader(nextRow)
 				}
+				row.remove()
 				this.setTableCollapse('removeRow', { tbody, previousRow })
 			}
 			this.$parent.editorInstance.updateHtmlText()

@@ -95,11 +95,15 @@ export default function (addNode, removeNode, instance) {
 		if (removeNode.nodeName.toLocaleLowerCase() == 'tr' && removeNode.hasAttribute('mvi-editor-table-id')) {
 			let id = removeNode.getAttribute('mvi-editor-table-id')
 			id = Number(id)
-			const flag = Dap.element.children(removeNode, 'td').every(column => {
-				return !!column.querySelector('.mvi-editor-colbtn')
+			const columns = Dap.element.children(removeNode, 'td')
+			const isHead = columns.every((column, index) => {
+				if (index < columns.length - 1) {
+					return !!column.querySelector('span.mvi-editor-colbtn')
+				}
+				return true
 			})
 			//删除的是表头
-			if (flag) {
+			if (isHead) {
 				const table = instance.$refs.content.querySelector(`table[mvi-editor-table-id="${id}"]`)
 				setTableResize(table, instance)
 			}

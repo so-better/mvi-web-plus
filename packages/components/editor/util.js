@@ -135,22 +135,37 @@ export const copyTableRowAppend = row => {
  * @param { Element } column
  */
 export const copyTableColumnAppend = column => {
+	//该列所在行的所有列数组
+	const columns = Dap.element.children(column.parentNode, column.tagName)
 	//该列在父元素中的序列
-	let index = [].indexOf.call(Dap.element.children(column.parentNode, column.tagName), column)
-	column.parentNode.parentNode.querySelectorAll('tr').forEach((tr, i) => {
+	const index = [].indexOf.call(columns, column)
+	//是否复制的最后一列进行增加
+	const isLastColumn = columns.length - 1 == index
+	//获取tbody
+	const tbody = column.parentNode.parentNode
+	//遍历所有的行
+	tbody.querySelectorAll('tr').forEach((tr, i) => {
 		let td = Dap.element.children(tr, 'td')[index]
 		let newColumn = td.cloneNode(true)
 		newColumn.innerHTML = '<br>'
 		//如果是表头需要创建拖拽器
 		if (i == 0) {
 			const btn = createTableColBtn()
-			newColumn.appendChild(btn)
+			//如果是复制最后一列进行增加，则原来的最后一列增加拖拽器
+			if (isLastColumn) {
+				td.appendChild(btn)
+			}
+			//否则新加的列增加拖拽器
+			else {
+				newColumn.appendChild(btn)
+			}
 		}
 		insertNodeAfter(newColumn, td)
 	})
 	const colgroup = column.parentNode.parentNode.parentNode.querySelector('colgroup')
 	const cols = Dap.element.children(colgroup, 'col')
 	const col = document.createElement('col')
+	col.setAttribute('width', 'auto')
 	insertNodeAfter(col, cols[index])
 }
 
@@ -159,14 +174,32 @@ export const copyTableColumnAppend = column => {
  * @param { Element } column
  */
 export const removeTableColumn = column => {
+	//该列的父元素的子节点数组
+	const columns = Dap.element.children(column.parentNode, column.tagName)
 	//该列在父元素中的序列
-	let index = [].indexOf.call(Dap.element.children(column.parentNode, column.tagName), column)
+	const index = [].indexOf.call(columns, column)
+	//是否删除最后一列
+	const isLastColumn = columns.length - 1 == index
+	//删除col
 	const colgroup = column.parentNode.parentNode.parentNode.querySelector('colgroup')
 	const cols = Dap.element.children(colgroup, 'col')
+	//删除的是最后一列的话，前一列的col改为auto
+	if (isLastColumn) {
+		cols[index - 1].setAttribute('width', 'auto')
+	}
 	const col = cols[index]
 	col.remove()
-	column.parentNode.parentNode.querySelectorAll('tr').forEach(tr => {
+	column.parentNode.parentNode.querySelectorAll('tr').forEach((tr, i) => {
 		let td = Dap.element.children(tr, 'td')[index]
+		//如果是表头且删除的是最后一列
+		if (i == 0 && isLastColumn) {
+			//前一列变成了最后一列此时移除拖拽器
+			let previous = td.previousElementSibling
+			const btn = previous.querySelector('.mvi-editor-colbtn')
+			if (btn) {
+				btn.remove()
+			}
+		}
 		td.remove()
 	})
 }
@@ -187,8 +220,10 @@ export const isTableHeader = row => {
  */
 export const setTableNewHeader = row => {
 	const columns = Dap.element.children(row, 'td')
-	columns.forEach(column => {
-		const btn = createTableColBtn()
-		column.appendChild(btn)
+	columns.forEach((column, index) => {
+		if (index < columns.length - 1) {
+			const btn = createTableColBtn()
+			column.appendChild(btn)
+		}
 	})
 }
