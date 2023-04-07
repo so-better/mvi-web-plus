@@ -1,5 +1,5 @@
 <template>
-	<div class="mvi-editor">
+	<div class="mvi-editor" @dragstart="preventDefault" @drop="preventDefault" @dragover="preventDefault">
 		<div v-if="codeViewShow" ref="codeView" v-text="initalHtml" key="code" :contenteditable="!disabled || null" :style="codeViewStyle" :class="codeViewClass" @blur="codeViewBlur" @focus="codeViewFocus" @input="codeViewInput" @paste="codeViewPaste"></div>
 		<div v-else ref="content" v-html="initalHtml" key="content" :contenteditable="!disabled || null" :style="contentStyle" :class="contentClass" :data-placeholder="placeholder" @blur="contentBlur" @focus="contentFocus" @input="contentInput" @paste="contentPaste" @keyup="changeActive" @click="changeActive"></div>
 	</div>
@@ -427,6 +427,11 @@ export default {
 				}
 			})
 			observe.init()
+		},
+		//禁用默认事件
+		preventDefault(e) {
+			e.preventDefault()
+			return false
 		},
 
 		//api：改变菜单项激活状态
