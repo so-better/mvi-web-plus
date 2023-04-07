@@ -203,6 +203,7 @@ export default {
 					this.$refs.codeView.innerText = this.html
 					this.collapseToEnd()
 				} else {
+					this.contentDomMonitor()
 					this.$refs.content.innerHTML = this.html
 					this.collapseToEnd()
 					this.changeActive()

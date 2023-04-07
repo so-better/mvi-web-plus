@@ -108,8 +108,18 @@ export const isNotHtml = dom => {
 }
 
 /**
+ * 创建表头拖拽器
+ * @returns element
+ */
+export const createTableColBtn = () => {
+	const btn = Dap.element.string2dom('<span class="mvi-editor-colbtn"></span>')
+	return btn
+}
+
+/**
  * 复制表格行进行增加
  * @param { Element } row
+ * @returns element
  */
 export const copyTableRowAppend = row => {
 	let newRow = row.cloneNode(true)
@@ -117,6 +127,7 @@ export const copyTableRowAppend = row => {
 		td.innerHTML = '<br>'
 	})
 	insertNodeAfter(newRow, row)
+	return newRow
 }
 
 /**
@@ -126,10 +137,15 @@ export const copyTableRowAppend = row => {
 export const copyTableColumnAppend = column => {
 	//该列在父元素中的序列
 	let index = [].indexOf.call(Dap.element.children(column.parentNode, column.tagName), column)
-	column.parentNode.parentNode.querySelectorAll('tr').forEach(tr => {
+	column.parentNode.parentNode.querySelectorAll('tr').forEach((tr, i) => {
 		let td = Dap.element.children(tr, 'td')[index]
 		let newColumn = td.cloneNode(true)
 		newColumn.innerHTML = '<br>'
+		//如果是表头需要创建拖拽器
+		if (i == 0) {
+			const btn = createTableColBtn()
+			newColumn.appendChild(btn)
+		}
 		insertNodeAfter(newColumn, td)
 	})
 	const colgroup = column.parentNode.parentNode.parentNode.querySelector('colgroup')
@@ -152,5 +168,27 @@ export const removeTableColumn = column => {
 	column.parentNode.parentNode.querySelectorAll('tr').forEach(tr => {
 		let td = Dap.element.children(tr, 'td')[index]
 		td.remove()
+	})
+}
+
+/**
+ * 判断tr是否表头
+ * @param { Element } row
+ * @returns boolean
+ */
+export const isTableHeader = row => {
+	let index = [].indexOf.call(Dap.element.children(row.parentNode, row.tagName), row)
+	return index == 0
+}
+
+/**
+ * 设置新的表头
+ * @param { Element } row
+ */
+export const setTableNewHeader = row => {
+	const columns = Dap.element.children(row, 'td')
+	columns.forEach(column => {
+		const btn = createTableColBtn()
+		column.appendChild(btn)
 	})
 }
