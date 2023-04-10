@@ -83,7 +83,12 @@ export default function (addNode, removeNode, instance) {
 		}
 		//统一代码块样式和格式化
 		else if (addNode.nodeName.toLocaleLowerCase() == 'pre') {
+			//获取唯一id
+			let id = Dap.data.get(document.body, 'mvi-editor-table-id') || 0
+			id++
+			Dap.data.set(document.body, 'mvi-editor-table-id', id)
 			Dap.element.addClass(addNode, 'mvi-editor-pre')
+			addNode.setAttribute('mvi-editor-pre-id', id)
 			formatCode(addNode)
 			instance.collapseToEnd(addNode)
 		}
