@@ -118,8 +118,6 @@ export default {
 				if (!Dap.number.isNumber(obj.index)) {
 					obj.index = 0
 				}
-				//初始化inertWrap
-				obj.insertWrap = Boolean(obj.insertWrap)
 				return obj
 			})
 			return menus.sort((a, b) => {

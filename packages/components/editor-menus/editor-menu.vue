@@ -213,7 +213,7 @@ export default {
 			}
 			//在pre标签内容只允许部分菜单可以使用
 			if (this.$parent.editorInstance.isInCode) {
-				return !['undo', 'redo', 'bold', 'removeFormat', 'italic', 'underline', 'strikeThrough', 'foreColor', 'codeView'].includes(this.options.key)
+				return !['undo', 'redo', 'bold', 'removeFormat', 'italic', 'underline', 'strikeThrough', 'foreColor', 'code', 'codeView'].includes(this.options.key)
 			}
 			return false
 		},
@@ -519,7 +519,7 @@ export default {
 			}
 			//插入标题
 			else if (this.options.key == 'title') {
-				this.$parent.editorInstance.insertBlock(dataItem.value, this.options.insertWrap)
+				this.$parent.editorInstance.insertBlock(dataItem.value)
 			}
 			//插入分隔线
 			else if (this.options.key == 'divider') {
@@ -558,7 +558,7 @@ export default {
 				if (this.active) {
 					this.removeBlockQuote()
 				} else {
-					this.$parent.editorInstance.insertBlock('blockquote', this.options.insertWrap)
+					this.$parent.editorInstance.insertBlock('blockquote', true, true)
 				}
 			}
 			//插入代码
@@ -566,7 +566,7 @@ export default {
 				if (this.active) {
 					this.removeCode()
 				} else {
-					this.$parent.editorInstance.insertBlock('pre', true)
+					this.$parent.editorInstance.insertBlock('pre', true, true)
 				}
 			}
 			//设置源码显示
@@ -729,7 +729,7 @@ export default {
 					a.remove()
 				}
 			}
-			this.$parent.editorInstance.insertHtml(link.outerHTML, false)
+			this.$parent.editorInstance.insertHtml(link.outerHTML)
 			this.hideLayer()
 		},
 		//删除链接

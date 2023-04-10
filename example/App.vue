@@ -1,7 +1,7 @@
 <template>
 	<div class="mvi-p-2">
 		<div>{{ value }}</div>
-		<m-editor-menus :customActive="customActive" :config="[{ key: 'codeView', name: '显示源码', icon: 'eye', data: show, index: 1 }]" border ref="editorMenus"></m-editor-menus>
+		<m-editor-menus @custom="custom" :config="[{ key: 'codeView', name: '显示源码', icon: 'eye', data: show, index: 1 }]" border ref="editorMenus"></m-editor-menus>
 		<m-editor placeholder="请输入内容..." border v-model="value" ref="editor"></m-editor>
 	</div>
 </template>
@@ -23,12 +23,8 @@ export default {
 		uploadError(state, message, file) {
 			console.log(state, message, file)
 		},
-		customActive(key, data, node) {
-			console.log(key, data, node)
-			return {
-				active: true,
-				value: 'bbb'
-			}
+		custom(options) {
+			console.log(options)
 		}
 	}
 }

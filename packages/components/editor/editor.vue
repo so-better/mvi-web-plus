@@ -461,9 +461,9 @@ export default {
 				return
 			}
 			if (this.$refs.content) {
-				this.$refs.content.innerHTML = '<p><br></p>'
+				this.$refs.content.innerHTML = getValue('')
 			} else if (this.$refs.codeView) {
-				this.$refs.codeView.innerText = '<p><br></p>'
+				this.$refs.codeView.innerText = getValue('')
 			}
 			this.updateHtmlText()
 			this.updateValue()
@@ -684,7 +684,7 @@ export default {
 			}
 		},
 		//api：插入HTML片段，会删除选中部分
-		insertHtml(html, wrap) {
+		insertHtml(html, wrap, focus) {
 			if (this.disabled) {
 				return
 			}
@@ -702,12 +702,12 @@ export default {
 			}
 			//如果在插入html后需要换行
 			if (wrap) {
-				html = `${html}<p><br></p>`
+				html = `${html}${getValue('')}`
 			}
 			//插入html
 			document.execCommand('insertHtml', false, html)
 			//如果插入html后需要换行并且存在选择器并且插入的html是一个DOM，则设置光标位置在插入的HTML里
-			if (wrap && Dap.element.isElement(dom)) {
+			if (wrap && focus && Dap.element.isElement(dom)) {
 				const selectNode = this.getSelectNode()
 				if (selectNode) {
 					this.collapseToEnd(selectNode.previousElementSibling)
@@ -750,16 +750,22 @@ export default {
 			this.insertHtml(videoHtml, true)
 		},
 		//api：更换当前选择的行的块元素，如果已经存在块元素则会替换
-		insertBlock(blockTag, wrap) {
+		insertBlock(blockTag, wrap, focus) {
 			document.execCommand('formatBlock', false, blockTag)
 			//在插入后换行
 			if (wrap) {
 				const selectNode = this.getSelectNode()
 				if (selectNode) {
 					const blockEl = this.getCompareTag(selectNode, blockTag)
-					const pEl = Dap.element.string2dom('<p><br></p>')
+					const pEl = Dap.element.string2dom(getValue(''))
 					insertNodeAfter(pEl, blockEl)
-					this.collapseToEnd(blockEl)
+					this.updateHtmlText()
+					this.updateValue()
+					if (focus) {
+						this.collapseToEnd(blockEl)
+					} else {
+						this.collapseToEnd(pEl)
+					}
 				}
 			}
 		},
