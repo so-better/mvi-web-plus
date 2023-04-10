@@ -12,6 +12,7 @@
 <script>
 import { getCurrentInstance } from 'vue'
 import { Dap } from '../dap'
+import unactiveMenus from './unactiveMenus'
 import { initOption } from '../editor/util'
 import defaultConfig from './defaultConfig'
 import defaultLayerProps from './defaultLayerProps'
@@ -272,6 +273,8 @@ export default {
 				if (this.isLayerMenu(menu.options)) {
 					//显示已选值的弹出式菜单
 					if (this.isValueMenu(menu.options)) {
+						menu.active = false
+						menu.initSelectVal()
 						//设置标题激活状态
 						if (menu.options.key == 'title') {
 							for (let dataItem of menu.options.data) {
@@ -280,7 +283,6 @@ export default {
 									menu.selectVal = { ...dataItem }
 									break
 								}
-								menu.initSelectVal()
 							}
 						}
 						//设置字体激活状态
@@ -291,7 +293,6 @@ export default {
 									menu.selectVal = { ...dataItem }
 									break
 								}
-								menu.initSelectVal()
 							}
 						}
 						//设置字号激活状态
@@ -309,12 +310,24 @@ export default {
 									menu.selectVal = { ...dataItem }
 									break
 								}
-								menu.initSelectVal()
+							}
+						}
+						//自定义菜单
+						else if (!unactiveMenus.includes(menu.options.key)) {
+							if (typeof this.customActive == 'function') {
+								const obj = this.customActive(menu.options.key, menu.options.data, node)
+								menu.active = obj.active || false
+								menu.selectVal =
+									menu.options.data.find(item => {
+										return item.value == obj.value
+									}) || {}
 							}
 						}
 					}
 					//普通的弹出式菜单
 					else {
+						menu.active = false
+						menu.selectVal = {}
 						//设置字体颜色激活状态
 						if (menu.options.key == 'foreColor') {
 							for (let dataItem of menu.options.data) {
@@ -329,8 +342,6 @@ export default {
 									menu.selectVal = { ...dataItem }
 									break
 								}
-								menu.active = false
-								menu.selectVal = {}
 							}
 						}
 						//设置背景色激活状态
@@ -347,8 +358,6 @@ export default {
 									menu.selectVal = { ...dataItem }
 									break
 								}
-								menu.active = false
-								menu.selectVal = {}
 							}
 						}
 						//设置对齐方式激活状态
@@ -359,116 +368,107 @@ export default {
 									menu.selectVal = { ...dataItem }
 									break
 								}
-								menu.active = false
-								menu.selectVal = {}
 							}
 						}
 						//设置链接激活状态
 						else if (menu.options.key == 'link') {
 							if (this.editorInstance.compareTag(node, 'a')) {
 								menu.active = true
-							} else {
-								menu.active = false
 							}
 						}
 						//设置表格激活状态
 						else if (menu.options.key == 'table') {
 							if (this.editorInstance.compareTag(node, 'table')) {
 								menu.active = true
-							} else {
-								menu.active = false
+							}
+						}
+						//自定义菜单
+						else if (!unactiveMenus.includes(menu.options.key)) {
+							if (typeof this.customActive == 'function') {
+								const obj = this.customActive(menu.options.key, menu.options.data, node)
+								menu.active = obj.active || false
+								menu.selectVal =
+									menu.options.data.find(item => {
+										return item.value == obj.value
+									}) || {}
 							}
 						}
 					}
 				}
 				//普通菜单
 				else {
+					menu.active = false
 					//设置加粗激活状态
 					if (menu.options.key == 'bold') {
 						if (document.queryCommandState('bold')) {
 							menu.active = true
-						} else {
-							menu.active = false
 						}
 					}
 					//设置斜体激活状态
 					else if (menu.options.key == 'italic') {
 						if (document.queryCommandState('italic')) {
 							menu.active = true
-						} else {
-							menu.active = false
 						}
 					}
 					//设置下划线激活状态
 					else if (menu.options.key == 'underline') {
 						if (document.queryCommandState('underline')) {
 							menu.active = true
-						} else {
-							menu.active = false
 						}
 					}
 					//设置删除线激活状态
 					else if (menu.options.key == 'strikeThrough') {
 						if (document.queryCommandState('strikeThrough')) {
 							menu.active = true
-						} else {
-							menu.active = false
 						}
 					}
 					//设置下标激活状态
 					else if (menu.options.key == 'subscript') {
 						if (document.queryCommandState('subscript')) {
 							menu.active = true
-						} else {
-							menu.active = false
 						}
 					}
 					//设置上标激活状态
 					else if (menu.options.key == 'superscript') {
 						if (document.queryCommandState('superscript')) {
 							menu.active = true
-						} else {
-							menu.active = false
 						}
 					}
 					//设置有序列表激活状态
 					else if (menu.options.key == 'ol') {
 						if (document.queryCommandState('insertOrderedList')) {
 							menu.active = true
-						} else {
-							menu.active = false
 						}
 					}
 					//设置无序列表激活状态
 					else if (menu.options.key == 'ul') {
 						if (document.queryCommandState('insertUnorderedList')) {
 							menu.active = true
-						} else {
-							menu.active = false
 						}
 					}
 					//设置引用激活状态
 					else if (menu.options.key == 'quote') {
 						if (document.queryCommandValue('formatBlock').toLocaleLowerCase() == 'blockquote') {
 							menu.active = true
-						} else {
-							menu.active = false
 						}
 					}
 					//设置代码激活状态
 					else if (menu.options.key == 'code') {
 						if (document.queryCommandValue('formatBlock').toLocaleLowerCase() == 'pre') {
 							menu.active = true
-						} else {
-							menu.active = false
 						}
 					}
 					//设置源码视图激活状态
 					else if (menu.options.key == 'codeView') {
 						if (this.editorInstance.codeViewShow) {
 							menu.active = true
-						} else {
-							menu.active = false
+						}
+					}
+					//自定义菜单
+					else if (!unactiveMenus.includes(menu.options.key)) {
+						if (typeof this.customActive == 'function') {
+							const obj = this.customActive(menu.options.key, node)
+							menu.active = obj.active || false
 						}
 					}
 				}

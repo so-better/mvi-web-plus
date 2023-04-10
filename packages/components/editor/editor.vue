@@ -362,7 +362,7 @@ export default {
 						//是图片或者视频
 						if (isImage || isVideo) {
 							const minSize = isImage ? this.combinedUploadImageProps.minSize : this.combinedUploadVideoProps.minSize
-							const maxSize = isImage ? this.combinedUploadVideoProps.maxSize : this.combinedUploadVideoProps.maxSize
+							const maxSize = isImage ? this.combinedUploadImageProps.maxSize : this.combinedUploadVideoProps.maxSize
 							//判断文件大小
 							if (file.size / 1024 > maxSize && maxSize > 0) {
 								if (typeof this.uploadImageError == 'function') {
