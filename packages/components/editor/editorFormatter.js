@@ -1,4 +1,5 @@
 import { Dap } from '../dap'
+import { formatCode } from './util'
 
 //设置表格列宽拖拽
 const setTableResize = (el, instance) => {
@@ -82,14 +83,14 @@ export default function (addNode, removeNode, instance) {
 		}
 		//插入代码
 		else if (addNode.nodeName.toLocaleLowerCase() == 'pre') {
-			//br更换为\n
-			let brArray = addNode.querySelectorAll('br')
-			brArray.forEach(br => {
-				const parent = br.parentElement
-				const text = document.createTextNode('\n')
-				parent.insertBefore(text, br)
-				br.remove()
+			const children = Dap.element.children(addNode)
+			children.forEach(childNode => {
+				formatCode(childNode)
 			})
+			if (!addNode.innerHTML) {
+				addNode.innerHTML = '<br>'
+			}
+			instance.collapseToEnd(addNode)
 		}
 		//监听编辑器插入表格操作
 		else if (addNode.nodeName.toLocaleLowerCase() == 'table' && addNode.hasAttribute('mvi-editor-table-id')) {
@@ -120,4 +121,7 @@ export default function (addNode, removeNode, instance) {
 			}
 		}
 	}
+
+	instance.updateHtmlText()
+	instance.updateValue()
 }

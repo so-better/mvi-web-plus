@@ -227,3 +227,51 @@ export const setTableNewHeader = row => {
 		}
 	})
 }
+
+/**
+ * 格式化代码块内容
+ * @param { Element} el
+ */
+export const formatCode = el => {
+	//移除非法样式和遍历子孙元素
+	const removeStyleAndChildrenItor = ele => {
+		//移除非法样式
+		ele.style.fontSize = ''
+		ele.style.fontFamily = ''
+		ele.backgroundColor = ''
+		const children = Dap.element.children(ele)
+		children.forEach(childNode => {
+			formatCode(childNode)
+		})
+	}
+	//更换换行符
+	if (el.nodeName.toLocaleLowerCase() == 'br') {
+		const text = document.createTextNode('\n')
+		el.parentNode.insertBefore(text, el)
+		el.remove()
+	}
+	//媒体标签
+	else if (el.nodeName.toLocaleLowerCase() == 'img' || el.nodeName.toLocaleLowerCase() == 'video') {
+		el.remove()
+	}
+	//解决标签混乱
+	else if (el.nodeName.toLocaleLowerCase() != 'span') {
+		const html = el.outerHTML.replace(`<${el.nodeName.toLocaleLowerCase()}`, '<span').replace(`</${el.nodeName.toLocaleLowerCase()}`, '</span')
+		let newEl = Dap.element.string2dom(html)
+		if (newEl instanceof HTMLCollection) {
+			newEl = Array.from(newEl)
+			newEl.forEach(item => {
+				el.parentNode.insertBefore(item, el)
+				removeStyleAndChildrenItor(item)
+			})
+		} else {
+			el.parentNode.insertBefore(newEl, el)
+			removeStyleAndChildrenItor(newEl)
+		}
+		el.remove()
+	}
+	//其他情况
+	else {
+		removeStyleAndChildrenItor(el)
+	}
+}

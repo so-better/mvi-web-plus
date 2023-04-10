@@ -10,7 +10,7 @@ export default {
 	data() {
 		return {
 			show: true,
-			value: '<p>2222</p>'
+			value: '<pre><h3>333<span style="font-size:30px;">222</span></h3></pre>'
 		}
 	},
 	mounted() {
