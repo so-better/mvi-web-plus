@@ -81,8 +81,9 @@ export default function (addNode, removeNode, instance) {
 			addNode.setAttribute('autoplay', 'autoplay')
 			addNode.style.fontSize = ''
 		}
-		//插入代码
+		//统一代码块样式和格式化
 		else if (addNode.nodeName.toLocaleLowerCase() == 'pre') {
+			Dap.element.addClass(addNode, 'mvi-editor-pre')
 			formatCode(addNode)
 			instance.collapseToEnd(addNode)
 		}

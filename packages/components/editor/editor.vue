@@ -952,4 +952,20 @@ export default {
 	background-color: @bg-color-dark;
 	border: none;
 }
+
+//代码块样式
+:deep(pre.mvi-editor-pre) {
+	display: block;
+	padding: @mp-lg @mp-sm @mp-sm;
+	margin: 0 0 @mp-sm;
+	font-size: @font-size-default;
+	font-family: Consolas !important;
+	line-height: 1.5;
+	color: @font-color-default;
+	background-color: #fafafa;
+	border: 1px solid @light-default;
+	border-radius: @radius-default;
+	overflow: auto;
+	position: relative;
+}
 </style>
