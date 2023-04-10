@@ -83,13 +83,7 @@ export default function (addNode, removeNode, instance) {
 		}
 		//插入代码
 		else if (addNode.nodeName.toLocaleLowerCase() == 'pre') {
-			const children = Dap.element.children(addNode)
-			children.forEach(childNode => {
-				formatCode(childNode)
-			})
-			if (!addNode.innerHTML) {
-				addNode.innerHTML = '<br>'
-			}
+			formatCode(addNode)
 			instance.collapseToEnd(addNode)
 		}
 		//监听编辑器插入表格操作
