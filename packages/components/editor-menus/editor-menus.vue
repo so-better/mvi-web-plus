@@ -192,16 +192,16 @@ export default {
 			if (Array.isArray(data)) {
 				let newData = []
 				data.forEach(item => {
-					if (typeof item == 'string' && item) {
-						newData.push({
-							label: item,
-							value: item
-						})
-					} else if (Dap.common.isObject(item)) {
+					if (Dap.common.isObject(item)) {
 						let o = { ...item }
 						o.icon = this.initMenuIcon(item.icon)
 						o.disabled = Boolean(item.disabled)
 						newData.push(o)
+					} else if (item) {
+						newData.push({
+							label: item,
+							value: item
+						})
 					}
 				})
 				return newData
