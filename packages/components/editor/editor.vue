@@ -206,7 +206,13 @@ export default {
 					this.collapseToEnd()
 				} else {
 					this.contentDomMonitor()
-					this.$refs.content.innerHTML = this.html
+					if (this.html) {
+						this.$refs.content.innerHTML = this.html
+					} else {
+						this.$refs.content.innerHTML = getValue('')
+						this.updateHtmlText()
+						this.updateValue()
+					}
 					this.collapseToEnd()
 					this.changeActive()
 				}
@@ -666,6 +672,9 @@ export default {
 		//api：根据编辑器的值更新html和text值
 		updateHtmlText() {
 			if (this.$refs.content) {
+				if (!this.$refs.content.innerHTML) {
+					this.$refs.content.innerHTML = getValue('')
+				}
 				this.html = this.$refs.content.innerHTML
 				this.text = this.$refs.content.innerText
 			} else if (this.$refs.codeView) {
