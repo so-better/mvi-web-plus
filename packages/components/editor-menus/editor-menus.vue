@@ -455,7 +455,15 @@ export default {
 							menu.active = false
 						}
 					}
-					//设置代码视图激活状态
+					//设置代码激活状态
+					else if (menu.options.key == 'code') {
+						if (document.queryCommandValue('formatBlock').toLocaleLowerCase() == 'pre') {
+							menu.active = true
+						} else {
+							menu.active = false
+						}
+					}
+					//设置源码视图激活状态
 					else if (menu.options.key == 'codeView') {
 						if (this.editorInstance.codeViewShow) {
 							menu.active = true

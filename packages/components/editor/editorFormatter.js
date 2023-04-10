@@ -80,18 +80,29 @@ export default function (addNode, removeNode, instance) {
 			addNode.setAttribute('autoplay', 'autoplay')
 			addNode.style.fontSize = ''
 		}
-		//编辑器插入表格操作
+		//插入代码
+		else if (addNode.nodeName.toLocaleLowerCase() == 'pre') {
+			//br更换为\n
+			let brArray = addNode.querySelectorAll('br')
+			brArray.forEach(br => {
+				const parent = br.parentElement
+				const text = document.createTextNode('\n')
+				parent.insertBefore(text, br)
+				br.remove()
+			})
+		}
+		//监听编辑器插入表格操作
 		else if (addNode.nodeName.toLocaleLowerCase() == 'table' && addNode.hasAttribute('mvi-editor-table-id')) {
 			setTableResize(addNode, instance)
 		}
-		//编辑器新增列操作
+		//监听编辑器新增列操作
 		else if (addNode.nodeName.toLocaleLowerCase() == 'td' && addNode.hasAttribute('mvi-editor-table-id')) {
 			const id = addNode.getAttribute('mvi-editor-table-id')
 			const table = instance.$refs.content.querySelector(`table[mvi-editor-table-id="${id}"]`)
 			setTableResize(table, instance)
 		}
 	} else if (removeNode) {
-		//编辑器删除表格行操作
+		//监听编辑器删除表格行操作
 		if (removeNode.nodeName.toLocaleLowerCase() == 'tr' && removeNode.hasAttribute('mvi-editor-table-id')) {
 			let id = removeNode.getAttribute('mvi-editor-table-id')
 			id = Number(id)
