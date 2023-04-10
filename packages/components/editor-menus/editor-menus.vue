@@ -454,8 +454,10 @@ export default {
 					}
 					//设置代码激活状态
 					else if (menu.options.key == 'code') {
+						this.editorInstance.isInCode = false
 						if (document.queryCommandValue('formatBlock').toLocaleLowerCase() == 'pre') {
 							menu.active = true
+							this.editorInstance.isInCode = true
 						}
 					}
 					//设置源码视图激活状态

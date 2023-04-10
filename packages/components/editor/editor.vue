@@ -101,6 +101,8 @@ export default {
 			range: null,
 			//源码是否显示
 			codeViewShow: false,
+			//是否在代码块内
+			isInCode: false,
 			//初始值
 			initalHtml: '',
 			//html内容

@@ -1,24 +1,7 @@
 <template>
 	<div class="mvi-p-2">
 		<div>{{ value }}</div>
-		<m-editor-menus
-			:customActive="customActive"
-			:config="[
-				{ key: 'codeView', name: '显示源码', icon: 'eye', data: show, index: 1 },
-				{
-					key: 'aaa',
-					name: '自定义',
-					icon: 'user',
-					data: [
-						{ label: 'aaa', value: 'aaa' },
-						{ label: 'bbb', value: 'bbb' }
-					],
-					value: 'aaa',
-					index: 1
-				}
-			]"
-			border
-			ref="editorMenus"></m-editor-menus>
+		<m-editor-menus :customActive="customActive" :config="[{ key: 'codeView', name: '显示源码', icon: 'eye', data: show, index: 1 }]" border ref="editorMenus"></m-editor-menus>
 		<m-editor placeholder="请输入内容..." border v-model="value" ref="editor"></m-editor>
 	</div>
 </template>
@@ -27,7 +10,7 @@ export default {
 	data() {
 		return {
 			show: true,
-			value: '<h5>3333</h5><h6>333</h6>'
+			value: '<p><br></p>'
 		}
 	},
 	mounted() {

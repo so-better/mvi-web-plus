@@ -1,6 +1,6 @@
 <template>
 	<div class="mvi-editor-menu" :data-id="`mvi-editor-menu-${uid}-${options.key}`">
-		<Tooltip :disabled="disabledToolTip || null" :title="options.name" trigger="hover" :placement="$parent.combinedTooltipProps.placement" :timeout="$parent.combinedTooltipProps.timeout" :color="$parent.combinedTooltipProps.color" :text-color="$parent.combinedTooltipProps.textColor" :border-color="$parent.combinedTooltipProps.borderColor" :offset="$parent.combinedTooltipProps.offset" :z-index="$parent.combinedTooltipProps.zIndex" :fixed="$parent.combinedTooltipProps.fixed" :fixed-auto="$parent.combinedTooltipProps.fixedAuto" :width="$parent.combinedTooltipProps.width" :animation="$parent.combinedTooltipProps.animation" :show-triangle="$parent.combinedTooltipProps.showTriangle">
+		<Tooltip :disabled="disabledToolTip" :title="options.name" trigger="hover" :placement="$parent.combinedTooltipProps.placement" :timeout="$parent.combinedTooltipProps.timeout" :color="$parent.combinedTooltipProps.color" :text-color="$parent.combinedTooltipProps.textColor" :border-color="$parent.combinedTooltipProps.borderColor" :offset="$parent.combinedTooltipProps.offset" :z-index="$parent.combinedTooltipProps.zIndex" :fixed="$parent.combinedTooltipProps.fixed" :fixed-auto="$parent.combinedTooltipProps.fixedAuto" :width="$parent.combinedTooltipProps.width" :animation="$parent.combinedTooltipProps.animation" :show-triangle="$parent.combinedTooltipProps.showTriangle">
 			<div class="mvi-editor-menu-target" @click="targetTrigger" :disabled="disabledMenu || null" :data-id="`mvi-editor-menu-target-${uid}-${options.key}`" @mouseenter="targetHover('enter', $event)" @mouseleave="targetHover('leave', $event)" :style="editorTargetStyle">
 				<span class="mvi-editor-menu-value" v-if="isValueMenu">{{ selectVal?.label }}</span>
 				<template v-else-if="options.icon">
@@ -131,8 +131,6 @@ export default {
 	},
 	data() {
 		return {
-			//禁用菜单项
-			disabled: false,
 			//已选值
 			selectVal: {},
 			//浮层是否打开
@@ -206,15 +204,16 @@ export default {
 			if (!this.$parent.editorInstance.range) {
 				return true
 			}
-			if (this.disabled) {
-				return true
-			}
 			if (this.options.disabled) {
 				return true
 			}
 			//显示源码的情况下除源码菜单项其他菜单项都禁用
 			if (this.options.key != 'codeView' && this.$parent.editorInstance.codeViewShow) {
 				return true
+			}
+			//在pre标签内容只允许部分菜单可以使用
+			if (this.$parent.editorInstance.isInCode) {
+				return !['undo', 'redo', 'bold', 'removeFormat', 'italic', 'underline', 'strikeThrough', 'foreColor', 'codeView'].includes(this.options.key)
 			}
 			return false
 		},
