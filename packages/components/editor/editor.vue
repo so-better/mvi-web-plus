@@ -956,7 +956,7 @@ export default {
 //代码块样式
 :deep(pre.mvi-editor-pre) {
 	display: block;
-	padding: @mp-lg @mp-sm @mp-sm;
+	padding: @mp-sm;
 	margin: 0 0 @mp-sm;
 	font-size: @font-size-default;
 	font-family: Consolas !important;
