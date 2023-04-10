@@ -10,7 +10,7 @@ export default {
 	data() {
 		return {
 			show: true,
-			value: '<pre><h5 style="color:#f30;">2222</h5></pre>'
+			value: '<pre>const a = new Object()</pre><p><br></p>'
 		}
 	},
 	mounted() {
