@@ -1,36 +1,5 @@
 export default [
 	{
-		key: 'title',
-		name: '标题',
-		value: 'p',
-		data: [
-			{
-				label: 'H1',
-				value: 'h1'
-			},
-			{
-				label: 'H2',
-				value: 'h2'
-			},
-			{
-				label: 'H3',
-				value: 'h3'
-			},
-			{
-				label: 'H4',
-				value: 'h4'
-			},
-			{
-				label: 'H5',
-				value: 'h5'
-			},
-			{
-				label: '正文',
-				value: 'p'
-			}
-		]
-	},
-	{
 		key: 'undo',
 		name: '撤回',
 		icon: 'undo',
@@ -89,6 +58,37 @@ export default [
 		name: '上标',
 		icon: 'superscript',
 		data: true
+	},
+	{
+		key: 'title',
+		name: '标题',
+		value: 'p',
+		data: [
+			{
+				label: 'H1',
+				value: 'h1'
+			},
+			{
+				label: 'H2',
+				value: 'h2'
+			},
+			{
+				label: 'H3',
+				value: 'h3'
+			},
+			{
+				label: 'H4',
+				value: 'h4'
+			},
+			{
+				label: 'H5',
+				value: 'h5'
+			},
+			{
+				label: '正文',
+				value: 'p'
+			}
+		]
 	},
 	{
 		key: 'fontFamily',
