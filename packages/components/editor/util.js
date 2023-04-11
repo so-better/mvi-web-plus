@@ -266,7 +266,7 @@ export const formatCode = el => {
 		let text = null
 		//更换换行符
 		if (childNode.nodeName.toLocaleLowerCase() == 'br') {
-			text = document.createTextNode('\n&nbsp;')
+			text = document.createTextNode('\n')
 		} else {
 			text = document.createTextNode(childNode.innerText)
 		}
@@ -277,7 +277,7 @@ export const formatCode = el => {
 		el.innerHTML = el.innerHTML
 			.split('\n')
 			.map(item => {
-				if (!item.startsWith('&nbsp;')) {
+				if (item && !item.startsWith('&nbsp;')) {
 					return `&nbsp;${item}`
 				}
 				return item
@@ -286,6 +286,5 @@ export const formatCode = el => {
 	} else {
 		el.innerHTML = '\n&nbsp;'
 	}
-
 	//设置代码块代码样式
 }
