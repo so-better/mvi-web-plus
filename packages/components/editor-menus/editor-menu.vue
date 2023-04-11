@@ -1038,14 +1038,14 @@ export default {
 				let id = opt.id
 				const table = this.$parent.editorInstance.$refs.content.querySelector(`table[mvi-editor-element="${id}"]`)
 				const column = table.querySelector('td')
-				this.$parent.editorInstance.collapseToStart(column)
+				this.$parent.editorInstance.collapseToEnd(column)
 			}
 			//增加行
 			else if (command == 'addRow') {
 				let newRow = opt.newRow
 				let index = opt.index || 0
 				const column = Dap.element.children(newRow, 'td')[index]
-				this.$parent.editorInstance.collapseToStart(column)
+				this.$parent.editorInstance.collapseToEnd(column)
 			}
 			//删除行
 			else if (command == 'removeRow') {
@@ -1054,30 +1054,30 @@ export default {
 				let previousRow = opt.previousRow
 				if (previousRow) {
 					const column = Dap.element.children(previousRow, 'td')[index]
-					this.$parent.editorInstance.collapseToStart(column)
+					this.$parent.editorInstance.collapseToEnd(column)
 				} else {
 					let row = Dap.element.children(tbody, 'tr')[0]
 					if (row) {
 						const column = Dap.element.children(row, 'td')[index]
-						this.$parent.editorInstance.collapseToStart(column)
+						this.$parent.editorInstance.collapseToEnd(column)
 					}
 				}
 			}
 			//增加列
 			else if (command == 'addColumn') {
 				let nextColumn = opt.nextColumn
-				this.$parent.editorInstance.collapseToStart(nextColumn)
+				this.$parent.editorInstance.collapseToEnd(nextColumn)
 			}
 			//删除列
 			else if (command == 'removeColumn') {
 				let row = opt.row
 				let previousEl = opt.previousEl
 				if (previousEl) {
-					this.$parent.editorInstance.collapseToStart(previousEl)
+					this.$parent.editorInstance.collapseToEnd(previousEl)
 				} else {
 					let column = Dap.element.children(row, 'td')[0]
 					if (column) {
-						this.$parent.editorInstance.collapseToStart(column)
+						this.$parent.editorInstance.collapseToEnd(column)
 					}
 				}
 			}
