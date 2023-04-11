@@ -8,7 +8,7 @@
 	</div>
 </template>
 <script>
-import { judgeFileSuffix, initOption, getValue, getNodeByElement, insertNodeAfter, isNotHtml } from './util'
+import { judgeFileSuffix, initOption, getValue, getNodeByElement, insertNodeAfter } from './util'
 import { getCurrentInstance } from 'vue'
 import { Dap } from '../dap'
 import editorFormatter from './editorFormatter'
@@ -326,9 +326,9 @@ export default {
 			if (!this.$refs.content) {
 				return
 			}
+			this.changeActive()
 			this.updateHtmlText()
 			this.updateValue()
-			this.changeActive()
 			this.$nextTick(() => {
 				this.$emit('input', {
 					html: this.html,
