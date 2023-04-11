@@ -452,13 +452,13 @@ export default {
 					}
 					//设置代码激活状态
 					else if (menu.options.key == 'code') {
-						this.editorInstance.isInCode = false
 						this.editorInstance.dialogOptions.target = null
 						this.editorInstance.dialogOptions.show = false
+						this.editorInstance.dialogOptions.type = ''
 						if (document.queryCommandValue('formatBlock').toLocaleLowerCase() == 'pre') {
 							menu.active = true
-							this.editorInstance.isInCode = true
 							const preEl = this.editorInstance.getCompareTag(node, 'pre')
+							this.editorInstance.dialogOptions.type = menu.options.key
 							this.editorInstance.dialogOptions.target = `[mvi-editor-element="${preEl.getAttribute('mvi-editor-element')}"]`
 							this.editorInstance.dialogOptions.show = true
 						}

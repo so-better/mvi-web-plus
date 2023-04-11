@@ -212,7 +212,7 @@ export default {
 				return true
 			}
 			//在pre标签内容只允许部分菜单可以使用
-			if (this.$parent.editorInstance.isInCode) {
+			if (this.$parent.editorInstance.dialogOptions.type == 'code') {
 				return !['undo', 'redo', 'bold', 'removeFormat', 'italic', 'underline', 'strikeThrough', 'foreColor', 'code', 'codeView'].includes(this.options.key)
 			}
 			return false

@@ -2,9 +2,11 @@
 	<div :data-id="`mvi-editor-${uid}`" class="mvi-editor" @dragstart="preventDefault" @drop="preventDefault" @dragover="preventDefault">
 		<div v-if="codeViewShow" ref="codeView" v-text="initalHtml" key="code" :contenteditable="!disabled || null" :style="codeViewStyle" :class="codeViewClass" @blur="codeViewBlur" @focus="codeViewFocus" @input="codeViewInput" @paste="codeViewPaste"></div>
 		<div v-else ref="content" v-html="initalHtml" key="content" :contenteditable="!disabled || null" :style="contentStyle" :class="contentClass" :data-placeholder="placeholder" @blur="contentBlur" @focus="contentFocus" @input="contentInput" @paste="contentPaste" @keyup="changeActive" @click="changeActive" @keydown="contentKeydown"></div>
-		<!-- <m-layer v-model="dialogOptions.show" :target="dialogOptions.target" :root="`mvi-editor-${uid}`" placement="bottom-start" offset="0.1rem" :z-index="40" width="3rem" closable shadow border :show-triangle="false">
-			<div style="height: 3rem">222</div>
-		</m-layer> -->
+		<m-layer v-model="dialogOptions.show" :target="dialogOptions.target" :root="`[data-id='mvi-editor-${uid}']`" placement="bottom-start" offset="0.1rem" :z-index="40" closable :timeout="100" shadow border :show-triangle="false" animation="mvi-editor-dialog">
+			<div class="mvi-editor-dialog">
+				<div v-if="dialogOptions.type == 'code'">333</div>
+			</div>
+		</m-layer>
 	</div>
 </template>
 <script>
@@ -104,8 +106,6 @@ export default {
 			range: null,
 			//源码是否显示
 			codeViewShow: false,
-			//是否在代码块内
-			isInCode: false,
 			//初始值
 			initalHtml: '',
 			//html内容
@@ -119,7 +119,8 @@ export default {
 			//跟随式弹窗参数
 			dialogOptions: {
 				show: false,
-				target: null
+				target: null,
+				type: '' //与当前菜单的key相同
 			}
 		}
 	},
@@ -253,14 +254,14 @@ export default {
 		contentKeydown(e) {
 			const { Mac } = Dap.platform.os()
 			//代码块内重新定义换行操作
-			if (e.keyCode == 13 && this.isInCode) {
+			if (e.keyCode == 13 && this.dialogOptions.type == 'code') {
 				e.preventDefault()
 				this.insertHtml('\n&nbsp;')
 			}
 			//tab键按下插入空格
 			else if (e.keyCode == 9) {
 				e.preventDefault()
-				if (this.isInCode) {
+				if (this.dialogOptions.type == 'code') {
 					this.insertHtml('&nbsp;&nbsp;')
 				} else {
 					this.insertHtml('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;')
@@ -888,6 +889,11 @@ export default {
 	}
 }
 
+.mvi-editor-dialog {
+	position: relative;
+	padding: @mp-sm;
+}
+
 //图片样式
 :deep(img[mvi-editor-element]) {
 	display: inline-block;
@@ -1000,5 +1006,11 @@ export default {
 	border-radius: @radius-default;
 	overflow: auto;
 	position: relative;
+}
+
+// 跟随式弹窗显示动画
+:deep(.mvi-editor-dialog-enter-from),
+:deep(.mvi-editor-dialog-leave-to) {
+	opacity: 0;
 }
 </style>
