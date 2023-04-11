@@ -2,14 +2,6 @@
 	<div :data-id="`mvi-editor-${uid}`" class="mvi-editor" @dragstart="preventDefault" @drop="preventDefault" @dragover="preventDefault">
 		<div v-if="codeViewShow" ref="codeView" v-text="initalHtml" key="code" :contenteditable="!disabled || null" :style="codeViewStyle" :class="codeViewClass" @blur="codeViewBlur" @focus="codeViewFocus" @input="codeViewInput" @paste="codeViewPaste"></div>
 		<div v-else ref="content" v-html="initalHtml" key="content" :contenteditable="!disabled || null" :style="contentStyle" :class="contentClass" :data-placeholder="placeholder" @blur="contentBlur" @focus="contentFocus" @input="contentInput" @paste="contentPaste" @keyup="changeActive" @click="changeActive" @keydown="contentKeydown"></div>
-		<m-layer v-model="dialogOptions.show" :target="dialogOptions.target" :root="`[data-id='mvi-editor-${uid}']`" placement="bottom-start" offset="0.1rem" :z-index="40" closable :timeout="100" shadow border :show-triangle="false" animation="mvi-editor-dialog">
-			<div class="mvi-editor-dialog">
-				<div class="mvi-editor-dialog-code" v-if="dialogOptions.type == 'code'">
-					<div class="mvi-editor-dialog-code-delete">删除代码</div>
-					<m-select v-if="codeLanguages.length" class="mvi-editor-dialog-code-select" size="small" v-model="dialogOptions.selectLanguage" :options="codeLanguages" :active-color="activeColor"></m-select>
-				</div>
-			</div>
-		</m-layer>
 	</div>
 </template>
 <script>
@@ -98,18 +90,6 @@ export default {
 		//自定义上传视频出错回调
 		uploadVideoError: {
 			type: Function
-		},
-		//代码块语言配置
-		codeLanguages: {
-			type: Array,
-			default: function () {
-				return [
-					{
-						label: 'JavaScript',
-						value: 'javascript'
-					}
-				]
-			}
 		}
 	},
 	emits: ['update:modelValue', 'blur', 'focus', 'input', 'file-paste', 'upload-image', 'upload-video', 'save'],
@@ -130,14 +110,7 @@ export default {
 			//是否双向绑定改变值
 			isModelChange: false,
 			//激活菜单项的具体判定函数
-			changeActiveJudgeFn: null,
-			//跟随式弹窗参数
-			dialogOptions: {
-				show: false,
-				target: null,
-				type: '', //与当前菜单的key相同
-				selectLanguage: this.codeLanguages[0]?.value //选择的语言
-			}
+			changeActiveJudgeFn: null
 		}
 	},
 	setup() {
@@ -903,37 +876,6 @@ export default {
 		vertical-align: middle;
 		cursor: text;
 	}
-}
-
-.mvi-editor-dialog {
-	position: relative;
-	padding: @mp-sm;
-
-	.mvi-editor-dialog-code {
-		display: flex;
-		justify-content: flex-start;
-		align-items: center;
-
-		.mvi-editor-dialog-code-delete {
-			white-space: nowrap;
-			opacity: 0.8;
-			font-size: @font-size-small;
-
-			&:hover {
-				cursor: pointer;
-				opacity: 1;
-			}
-		}
-
-		.mvi-editor-dialog-code-select {
-			width: 2.2rem;
-			margin-left: @mp-md;
-		}
-	}
-}
-
-:deep(.mvi-editor-dialog-code-select.mvi-select.mvi-select-small .mvi-select-target) {
-	height: @mini-height;
 }
 
 //图片样式

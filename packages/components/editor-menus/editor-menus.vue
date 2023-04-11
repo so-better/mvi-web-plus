@@ -7,6 +7,22 @@
 				</template>
 			</editorMenu>
 		</template>
+		<!-- 跟随式浮层 -->
+		<Layer v-model="dialogOptions.show" :target="dialogOptions.target" :root="`[data-id='mvi-editor-${uid}']`" placement="bottom-start" offset="0.1rem" :z-index="40" :timeout="100" shadow border :show-triangle="false" animation="mvi-editor-dialog" @hidden="dialogHidden">
+			<div class="mvi-editor-dialog">
+				<div v-if="dialogOptions.type == 'code'" class="mvi-editor-dialog-el">删除代码</div>
+				<div v-if="dialogOptions.type == 'code'" class="mvi-editor-dialog-el" :data-id="`mvi-editor-code-${uid}`" @click="codeLanguageLayerShow">
+					<span>{{ codeParams.currentLanguage?.label }}</span>
+					<Icon type="caret-down"></Icon>
+				</div>
+			</div>
+		</Layer>
+		<!-- 语言选择浮层 -->
+		<Layer v-model="codeParams.show" :target="`[data-id='mvi-editor-code-${uid}']`" :root="`[data-id='mvi-editor-${uid}']`" placement="bottom-start" offset="0.2rem" :z-index="41" closable :timeout="100" shadow border :show-triangle="false" animation="mvi-editor-dialog">
+			<div class="mvi-editor-dialog-layer">
+				<div class="mvi-editor-dialog-layer-el" v-for="item in codeLanguages" @click="selectLanguage(item)">{{ item.label }}</div>
+			</div>
+		</Layer>
 	</div>
 </template>
 <script>
@@ -19,6 +35,9 @@ import defaultLayerProps from './defaultLayerProps'
 import defaultTooltipProps from './defaultTooltipProps'
 import editorMenu from './editor-menu.vue'
 import { Observe } from '../observe'
+import { Icon } from '../icon'
+import { Layer } from '../layer'
+
 export default {
 	name: 'm-editor-menus',
 	emits: ['custom'],
@@ -78,6 +97,22 @@ export default {
 			default: function () {
 				return false
 			}
+		},
+		//代码块语言配置
+		codeLanguages: {
+			type: Array,
+			default: function () {
+				return [
+					{
+						label: 'JavaScript',
+						value: 'javascript'
+					},
+					{
+						label: 'Java',
+						value: 'java'
+					}
+				]
+			}
 		}
 	},
 	setup() {
@@ -91,11 +126,28 @@ export default {
 			//编辑器实例
 			editorInstance: null,
 			//菜单项数组
-			menuRefs: []
+			menuRefs: [],
+			//跟随式弹窗参数
+			dialogOptions: {
+				show: false,
+				target: null,
+				type: '' //与当前菜单的key相同
+			},
+			//代码块相关参数设置
+			codeParams: {
+				//是否显示语言选择浮层
+				show: false,
+				//浮层的target
+				target: null,
+				//当前选择的代码语言
+				currentLanguage: null
+			}
 		}
 	},
 	components: {
-		editorMenu
+		editorMenu,
+		Layer,
+		Icon
 	},
 	computed: {
 		//菜单列表
@@ -164,6 +216,7 @@ export default {
 		}
 	},
 	mounted() {
+		Dap.event.on(window, `click.editor_${this.uid}`, this.judgeCloseDialog)
 		Dap.event.on(document.documentElement, `mousedown.editor_${this.uid}`, this.judgeClearRange)
 	},
 	methods: {
@@ -452,16 +505,17 @@ export default {
 					}
 					//设置代码激活状态
 					else if (menu.options.key == 'code') {
-						this.editorInstance.dialogOptions.target = null
-						this.editorInstance.dialogOptions.show = false
-						this.editorInstance.dialogOptions.type = ''
-						if (document.queryCommandValue('formatBlock').toLocaleLowerCase() == 'pre') {
-							menu.active = true
-							const preEl = this.editorInstance.getCompareTag(node, 'pre')
-							this.editorInstance.dialogOptions.type = menu.options.key
-							this.editorInstance.dialogOptions.target = `[mvi-editor-element="${preEl.getAttribute('mvi-editor-element')}"]`
-							this.editorInstance.dialogOptions.show = true
-						}
+						this.dialogOptions.show = false
+						this.$nextTick(() => {
+							if (document.queryCommandValue('formatBlock').toLocaleLowerCase() == 'pre') {
+								menu.active = true
+								const preEl = this.editorInstance.getCompareTag(node, 'pre')
+								this.dialogOptions.type = menu.options.key
+								this.dialogOptions.target = `[mvi-editor-element="${preEl.getAttribute('mvi-editor-element')}"]`
+								this.codeParams.currentLanguage = Dap.data.get(preEl, 'mvi-editor-code-language') || this.codeLanguages[0]
+								this.dialogOptions.show = true
+							}
+						})
 					}
 					//设置源码视图激活状态
 					else if (menu.options.key == 'codeView') {
@@ -489,9 +543,42 @@ export default {
 				return
 			}
 			this.editorInstance.range = null
+		},
+		//判断是否关闭跟随式弹窗
+		judgeCloseDialog(e) {
+			if (!this.editorInstance) {
+				return
+			}
+			//如果是在编辑器内或者菜单栏内不清除
+			if (Dap.element.isContains(this.$el, e.target) || Dap.element.isContains(this.editorInstance.$el, e.target)) {
+				return
+			}
+			this.dialogOptions.show = false
+		},
+		//代码语言浮层打开
+		codeLanguageLayerShow() {
+			this.codeParams.show = true
+		},
+		//选择代码语言
+		selectLanguage(language) {
+			const preEl = document.body.querySelector(this.dialogOptions.target)
+			this.codeParams.currentLanguage = language
+			if (preEl) {
+				Dap.data.set(preEl, 'mvi-editor-code-language', language)
+			}
+			this.codeParams.show = false
+		},
+		//跟随式浮层关闭
+		dialogHidden() {
+			this.dialogOptions.target = null
+			this.dialogOptions.type = ''
+			this.codeParams.show = false
+			this.codeParams.target = null
+			this.codeParams.currentLanguage = null
 		}
 	},
 	beforeUnmount() {
+		Dap.event.off(window, `click.editor_${this.uid}`)
 		Dap.event.off(document.documentElement, `mousedown.editor_${this.uid}`)
 	}
 }
@@ -511,5 +598,69 @@ export default {
 	border-radius: @radius-default;
 	padding: @mp-xs @mp-sm;
 	font-size: @font-size-default;
+}
+
+.mvi-editor-dialog {
+	position: relative;
+	padding: @mp-sm;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+
+	.mvi-editor-dialog-el {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		height: @mini-height;
+		margin: 0;
+		padding: 0 @mp-sm;
+		transition: color 200ms;
+		-webkit-transition: color 200ms;
+		opacity: 0.8;
+		border-radius: @radius-default;
+
+		&:hover {
+			cursor: pointer;
+			opacity: 1;
+			background-color: @bg-color-default;
+		}
+
+		.mvi-icon {
+			transform: scale(0.5);
+		}
+	}
+}
+
+.mvi-editor-dialog-layer {
+	display: block;
+	padding: @mp-xs 0;
+	max-height: 5rem;
+	width: 2.2rem;
+	overflow-x: hidden;
+	overflow-y: auto;
+	background-color: #fff;
+	color: @font-color-default;
+
+	.mvi-editor-dialog-layer-el {
+		display: block;
+		padding: @mp-xs @mp-sm;
+		margin: 0;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		text-align: center;
+		opacity: 0.8;
+		width: 100%;
+
+		&:hover {
+			opacity: 1;
+			cursor: pointer;
+			background-color: @bg-color-default;
+		}
+	}
+}
+
+:deep(.mvi-editor-dialog-code-select.mvi-select.mvi-select-small .mvi-select-target) {
+	height: @mini-height;
 }
 </style>
