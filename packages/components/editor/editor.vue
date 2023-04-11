@@ -1,7 +1,7 @@
 <template>
 	<div class="mvi-editor" @dragstart="preventDefault" @drop="preventDefault" @dragover="preventDefault">
 		<div v-if="codeViewShow" ref="codeView" v-text="initalHtml" key="code" :contenteditable="!disabled || null" :style="codeViewStyle" :class="codeViewClass" @blur="codeViewBlur" @focus="codeViewFocus" @input="codeViewInput" @paste="codeViewPaste"></div>
-		<div v-else ref="content" v-html="initalHtml" key="content" :contenteditable="!disabled || null" :style="contentStyle" :class="contentClass" :data-placeholder="placeholder" @blur="contentBlur" @focus="contentFocus" @input="contentInput" @paste="contentPaste" @keyup="changeActive" @click="changeActive"></div>
+		<div v-else ref="content" v-html="initalHtml" key="content" :contenteditable="!disabled || null" :style="contentStyle" :class="contentClass" :data-placeholder="placeholder" @blur="contentBlur" @focus="contentFocus" @input="contentInput" @paste="contentPaste" @click="changeActive" @keydown="contentKeydown"></div>
 	</div>
 </template>
 <script>
@@ -240,6 +240,38 @@ export default {
 					this.collapseToEnd()
 				}
 			})
+		},
+		//编辑区域键盘按下
+		contentKeydown(e) {
+			//代码块内重新定义换行操作
+			if (e.keyCode == 13 && this.isInCode) {
+				e.preventDefault()
+				const node = this.range.startContainer
+				if (node.nodeType == 1) {
+					//如果结尾有换行符
+					if (/[/\n/\r]+$/g.test(node.innerHTML)) {
+						this.insertHtml('\n')
+					} else {
+						this.insertHtml('\n\n')
+					}
+				} else {
+					const index = this.range.startOffset
+					const nextText = node.data.substring(index)
+					if (nextText) {
+						this.insertHtml('\n')
+					} else {
+						this.insertHtml('\n\n')
+					}
+				}
+			}
+			//tab键按下
+			else if (e.keyCode == 9) {
+				e.preventDefault()
+				if (this.isInCode) {
+				} else {
+				}
+			}
+			this.changeActive()
 		},
 		//编辑区域获取焦点
 		contentFocus() {
@@ -696,17 +728,13 @@ export default {
 			}
 			//将需要插入的html转为DOM，用作后续的判断
 			let dom = Dap.element.string2dom(html)
-			//如果是纯文本字符串，则外面加上个span
-			if (isNotHtml(dom)) {
-				html = `<span>${html}</span>`
-			}
 			//如果在插入html后需要换行
 			if (wrap) {
 				html = `${html}${getValue('')}`
 			}
 			//插入html
 			document.execCommand('insertHtml', false, html)
-			//如果插入html后需要换行并且存在选择器并且插入的html是一个DOM，则设置光标位置在插入的HTML里
+			//设置光标位置在插入的HTML里
 			if (wrap && focus && Dap.element.isElement(dom)) {
 				const selectNode = this.getSelectNode()
 				if (selectNode) {

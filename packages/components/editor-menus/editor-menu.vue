@@ -796,30 +796,30 @@ export default {
 				return
 			}
 			//获取唯一id
-			let id = Dap.data.get(document.body, 'mvi-editor-table-id') || 0
+			let id = Dap.data.get(document.body, 'mvi-editor-element-id') || 0
 			id++
-			Dap.data.set(document.body, 'mvi-editor-table-id', id)
+			Dap.data.set(document.body, 'mvi-editor-element-id', id)
 			//创建表格
 			const table = document.createElement('table')
 			//设置表格样式
 			Dap.element.addClass(table, 'mvi-editor-table')
 			//设置表格属性
-			table.setAttribute('mvi-editor-table-id', id)
+			table.setAttribute('mvi-editor-element', id)
 			table.setAttribute('cellpadding', '0')
 			table.setAttribute('cellspacing', '0')
 			//创建列分组元素
 			const colGroup = document.createElement('colgroup')
 			//创建表格主体
 			const tbody = document.createElement('tbody')
-			tbody.setAttribute('mvi-editor-table-id', id)
+			tbody.setAttribute('mvi-editor-element', id)
 			//循环遍历生成表格行和列
 			for (let i = 0; i < this.tableParams.size[1]; i++) {
 				const tr = document.createElement('tr')
-				tr.setAttribute('mvi-editor-table-id', id)
+				tr.setAttribute('mvi-editor-element', id)
 				for (let j = 0; j < this.tableParams.size[0]; j++) {
 					const td = document.createElement('td')
 					td.innerHTML = '<br>'
-					td.setAttribute('mvi-editor-table-id', id)
+					td.setAttribute('mvi-editor-element', id)
 					tr.appendChild(td)
 					//第一行设置可拖拽器
 					if (i == 0 && j < this.tableParams.size[0] - 1) {
@@ -1040,7 +1040,7 @@ export default {
 			//插入表格时
 			if (command == 'insertTable') {
 				let id = opt.id
-				const table = this.$parent.editorInstance.$refs.content.querySelector(`table[mvi-editor-table-id="${id}"]`)
+				const table = this.$parent.editorInstance.$refs.content.querySelector(`table[mvi-editor-element="${id}"]`)
 				const column = table.querySelector('td')
 				this.$parent.editorInstance.collapseToStart(column)
 			}

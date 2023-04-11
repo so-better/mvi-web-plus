@@ -3,7 +3,7 @@ import { formatCode } from './util'
 
 //设置表格列宽拖拽
 const setTableResize = (el, instance) => {
-	const id = el.getAttribute('mvi-editor-table-id')
+	const id = el.getAttribute('mvi-editor-element')
 	const cols = Array.from(el.querySelectorAll('col'))
 	const firstRow = el.querySelector('tr')
 	const btns = Array.from(firstRow.querySelectorAll('span.mvi-editor-colbtn'))
@@ -83,29 +83,23 @@ export default function (addNode, removeNode, instance) {
 		}
 		//统一代码块样式和格式化
 		else if (addNode.nodeName.toLocaleLowerCase() == 'pre') {
-			//获取唯一id
-			let id = Dap.data.get(document.body, 'mvi-editor-table-id') || 0
-			id++
-			Dap.data.set(document.body, 'mvi-editor-table-id', id)
-			Dap.element.addClass(addNode, 'mvi-editor-pre')
-			addNode.setAttribute('mvi-editor-pre-id', id)
 			formatCode(addNode)
 			instance.collapseToEnd(addNode)
 		}
 		//监听编辑器插入表格操作
-		else if (addNode.nodeName.toLocaleLowerCase() == 'table' && addNode.hasAttribute('mvi-editor-table-id')) {
+		else if (addNode.nodeName.toLocaleLowerCase() == 'table' && addNode.hasAttribute('mvi-editor-element')) {
 			setTableResize(addNode, instance)
 		}
 		//监听编辑器新增列操作
-		else if (addNode.nodeName.toLocaleLowerCase() == 'td' && addNode.hasAttribute('mvi-editor-table-id')) {
-			const id = addNode.getAttribute('mvi-editor-table-id')
-			const table = instance.$refs.content.querySelector(`table[mvi-editor-table-id="${id}"]`)
+		else if (addNode.nodeName.toLocaleLowerCase() == 'td' && addNode.hasAttribute('mvi-editor-element')) {
+			const id = addNode.getAttribute('mvi-editor-element')
+			const table = instance.$refs.content.querySelector(`table[mvi-editor-element="${id}"]`)
 			setTableResize(table, instance)
 		}
 	} else if (removeNode) {
 		//监听编辑器删除表格行操作
-		if (removeNode.nodeName.toLocaleLowerCase() == 'tr' && removeNode.hasAttribute('mvi-editor-table-id')) {
-			let id = removeNode.getAttribute('mvi-editor-table-id')
+		if (removeNode.nodeName.toLocaleLowerCase() == 'tr' && removeNode.hasAttribute('mvi-editor-element')) {
+			let id = removeNode.getAttribute('mvi-editor-element')
 			id = Number(id)
 			const columns = Dap.element.children(removeNode, 'td')
 			const isHead = columns.every((column, index) => {
@@ -116,7 +110,7 @@ export default function (addNode, removeNode, instance) {
 			})
 			//删除的是表头
 			if (isHead) {
-				const table = instance.$refs.content.querySelector(`table[mvi-editor-table-id="${id}"]`)
+				const table = instance.$refs.content.querySelector(`table[mvi-editor-element="${id}"]`)
 				setTableResize(table, instance)
 			}
 		}

@@ -10,7 +10,7 @@ export default {
 	data() {
 		return {
 			show: true,
-			value: '<pre><code>const a = new Object()</code></pre><p><br></p>'
+			value: '<pre>const a = new Object()\nconst c = new Object()</pre><p><br></p>'
 		}
 	},
 	mounted() {

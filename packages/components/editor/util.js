@@ -233,8 +233,19 @@ export const setTableNewHeader = row => {
  * @param { Element} el
  */
 export const formatCode = el => {
-	let text = null
+	//清除代码标签的所有属性
+	const attributes = Array.from(el.attributes)
+	for (let attribute of attributes) {
+		el.removeAttribute(attribute.nodeName)
+	}
+	//获取唯一id
+	let id = Dap.data.get(document.body, 'mvi-editor-element-id') || 0
+	id++
+	Dap.data.set(document.body, 'mvi-editor-element-id', id)
+	Dap.element.addClass(el, 'mvi-editor-pre')
+	el.setAttribute('mvi-editor-element', id)
 	Dap.element.children(el).forEach(childNode => {
+		let text = null
 		//更换换行符
 		if (childNode.nodeName.toLocaleLowerCase() == 'br') {
 			text = document.createTextNode('\n')
