@@ -1,4 +1,26 @@
 import { Dap } from '../dap'
+
+/**
+ * 获取唯一id
+ * @returns number
+ */
+export const getGuid = () => {
+	//获取唯一id
+	let id = Dap.data.get(document.body, 'mvi-editor-element-id') || 0
+	id += 1
+	Dap.data.set(document.body, 'mvi-editor-element-id', id)
+	return id
+}
+
+/**
+ * 设置元素特殊属性
+ * @param { Element } el
+ * @param { Number } id
+ */
+export const setEditorElementId = (el, id) => {
+	el.setAttribute('mvi-editor-element', id)
+}
+
 /**
  * 判断文件后缀是否符合
  * @param { String } fileName
@@ -112,7 +134,7 @@ export const isNotHtml = dom => {
  * @returns element
  */
 export const createTableColBtn = () => {
-	const btn = Dap.element.string2dom('<span class="mvi-editor-colbtn"></span>')
+	const btn = Dap.element.string2dom('<span contenteditable="false" class="mvi-editor-colbtn"></span>')
 	return btn
 }
 
@@ -238,12 +260,8 @@ export const formatCode = el => {
 	for (let attribute of attributes) {
 		el.removeAttribute(attribute.nodeName)
 	}
-	//获取唯一id
-	let id = Dap.data.get(document.body, 'mvi-editor-element-id') || 0
-	id++
-	Dap.data.set(document.body, 'mvi-editor-element-id', id)
-	Dap.element.addClass(el, 'mvi-editor-pre')
-	el.setAttribute('mvi-editor-element', id)
+	const id = getGuid()
+	setEditorElementId(el, id)
 	Dap.element.children(el).forEach(childNode => {
 		let text = null
 		//更换换行符
@@ -268,4 +286,6 @@ export const formatCode = el => {
 	} else {
 		el.innerHTML = '\n&nbsp;'
 	}
+
+	//设置代码块代码样式
 }

@@ -1,7 +1,10 @@
 <template>
-	<div class="mvi-editor" @dragstart="preventDefault" @drop="preventDefault" @dragover="preventDefault">
+	<div :data-id="`mvi-editor-${uid}`" class="mvi-editor" @dragstart="preventDefault" @drop="preventDefault" @dragover="preventDefault">
 		<div v-if="codeViewShow" ref="codeView" v-text="initalHtml" key="code" :contenteditable="!disabled || null" :style="codeViewStyle" :class="codeViewClass" @blur="codeViewBlur" @focus="codeViewFocus" @input="codeViewInput" @paste="codeViewPaste"></div>
 		<div v-else ref="content" v-html="initalHtml" key="content" :contenteditable="!disabled || null" :style="contentStyle" :class="contentClass" :data-placeholder="placeholder" @blur="contentBlur" @focus="contentFocus" @input="contentInput" @paste="contentPaste" @keyup="changeActive" @click="changeActive" @keydown="contentKeydown"></div>
+		<m-layer v-model="dialogOptions.show" :target="dialogOptions.target" :root="`mvi-editor-${uid}`" placement="bottom-start" offset="0.1rem" :z-index="40" width="3rem" closable shadow border :show-triangle="false">
+			<div style="height: 3rem">222</div>
+		</m-layer>
 	</div>
 </template>
 <script>
@@ -112,7 +115,12 @@ export default {
 			//是否双向绑定改变值
 			isModelChange: false,
 			//激活菜单项的具体判定函数
-			changeActiveJudgeFn: null
+			changeActiveJudgeFn: null,
+			//跟随式弹窗参数
+			dialogOptions: {
+				show: false,
+				target: null
+			}
 		}
 	},
 	setup() {
@@ -878,7 +886,7 @@ export default {
 }
 
 //图片样式
-:deep(.mvi-editor-image) {
+:deep(img[mvi-editor-element]) {
 	display: inline-block;
 	width: auto;
 	height: auto;
@@ -886,7 +894,7 @@ export default {
 }
 
 //视频样式
-:deep(.mvi-editor-video) {
+:deep(video[mvi-editor-element]) {
 	display: block;
 	width: auto;
 	height: auto;
@@ -894,7 +902,7 @@ export default {
 }
 
 //表格demo样式
-:deep(.mvi-editor-table) {
+:deep(table[mvi-editor-element]) {
 	width: 100%;
 	border: 1px solid @border-color;
 	margin: 0;
@@ -933,7 +941,7 @@ export default {
 					border-right: none;
 				}
 
-				.mvi-editor-colbtn {
+				span.mvi-editor-colbtn {
 					position: absolute;
 					right: -@mp-xs / 2;
 					top: 0;
@@ -952,7 +960,7 @@ export default {
 }
 
 //引用样式
-:deep(blockquote.mvi-editor-blockquote) {
+:deep(blockquote[mvi-editor-element]) {
 	display: block;
 	border-left: 0.1rem solid @light-default;
 	padding: @mp-xs @mp-sm @mp-xs @mp-md;
@@ -964,7 +972,7 @@ export default {
 }
 
 //hr样式
-:deep(hr.mvi-editor-hr) {
+:deep(hr[mvi-editor-element]) {
 	display: block;
 	width: 100%;
 	margin: 0;
@@ -976,7 +984,7 @@ export default {
 }
 
 //代码块样式
-:deep(pre.mvi-editor-pre) {
+:deep(pre[mvi-editor-element]) {
 	display: block;
 	padding: @mp-sm;
 	margin: 0 0 @mp-sm;

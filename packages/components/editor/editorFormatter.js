@@ -1,5 +1,5 @@
 import { Dap } from '../dap'
-import { formatCode } from './util'
+import { formatCode, getGuid, setEditorElementId } from './util'
 
 //设置表格列宽拖拽
 const setTableResize = (el, instance) => {
@@ -63,20 +63,24 @@ export default function (addNode, removeNode, instance) {
 		}
 		//统一引用样式
 		if (addNode.nodeName.toLocaleLowerCase() == 'blockquote') {
-			Dap.element.addClass(addNode, 'mvi-editor-blockquote')
+			const id = getGuid()
+			setEditorElementId(addNode, id)
 		}
 		//统一分隔线样式
 		else if (addNode.nodeName.toLocaleLowerCase() == 'hr') {
-			Dap.element.addClass(addNode, 'mvi-editor-hr')
+			const id = getGuid()
+			setEditorElementId(addNode, id)
 		}
 		//统一图片样式
 		else if (addNode.nodeName.toLocaleLowerCase() == 'img') {
-			Dap.element.addClass(addNode, 'mvi-editor-image')
+			const id = getGuid()
+			setEditorElementId(addNode, id)
 			addNode.style.fontSize = ''
 		}
 		//统一所有视频样式
 		else if (addNode.nodeName.toLocaleLowerCase() == 'video') {
-			Dap.element.addClass(addNode, 'mvi-editor-video')
+			const id = getGuid()
+			setEditorElementId(addNode, id)
 			addNode.setAttribute('muted', 'muted')
 			addNode.setAttribute('autoplay', 'autoplay')
 			addNode.style.fontSize = ''
@@ -99,8 +103,6 @@ export default function (addNode, removeNode, instance) {
 	} else if (removeNode) {
 		//监听编辑器删除表格行操作
 		if (removeNode.nodeName.toLocaleLowerCase() == 'tr' && removeNode.hasAttribute('mvi-editor-element')) {
-			let id = removeNode.getAttribute('mvi-editor-element')
-			id = Number(id)
 			const columns = Dap.element.children(removeNode, 'td')
 			const isHead = columns.every((column, index) => {
 				if (index < columns.length - 1) {
@@ -110,6 +112,7 @@ export default function (addNode, removeNode, instance) {
 			})
 			//删除的是表头
 			if (isHead) {
+				let id = removeNode.getAttribute('mvi-editor-element')
 				const table = instance.$refs.content.querySelector(`table[mvi-editor-element="${id}"]`)
 				setTableResize(table, instance)
 			}
