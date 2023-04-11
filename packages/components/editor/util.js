@@ -262,6 +262,16 @@ export const formatCode = el => {
 	}
 	const id = getGuid()
 	setEditorElementId(el, id)
+	Dap.element.children(el).forEach(childNode => {
+		let text = null
+		if (childNode.nodeName.toLocaleLowerCase() == 'br') {
+			text = document.createTextNode('\n')
+		} else {
+			text = document.createTextNode(childNode.innerText)
+		}
+		el.insertBefore(text, childNode)
+		childNode.remove()
+	})
 	//代码块有内容时给每行代码前面加个空格
 	if (el.innerHTML && el.innerHTML != '\n') {
 		el.innerHTML = el.innerHTML
