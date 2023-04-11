@@ -248,14 +248,24 @@ export const formatCode = el => {
 		let text = null
 		//更换换行符
 		if (childNode.nodeName.toLocaleLowerCase() == 'br') {
-			text = document.createTextNode('\n')
+			text = document.createTextNode('\n&nbsp;')
 		} else {
 			text = document.createTextNode(childNode.innerText)
 		}
 		el.insertBefore(text, childNode)
 		childNode.remove()
 	})
-	if (!el.innerHTML) {
-		el.innerHTML = '\n'
+	if (el.innerHTML) {
+		el.innerHTML = el.innerHTML
+			.split('\n')
+			.map(item => {
+				if (!item.startsWith('&nbsp;')) {
+					return `&nbsp;${item}`
+				}
+				return item
+			})
+			.join('\n')
+	} else {
+		el.innerHTML = '\n&nbsp;'
 	}
 }

@@ -1,7 +1,7 @@
 <template>
 	<div class="mvi-editor" @dragstart="preventDefault" @drop="preventDefault" @dragover="preventDefault">
 		<div v-if="codeViewShow" ref="codeView" v-text="initalHtml" key="code" :contenteditable="!disabled || null" :style="codeViewStyle" :class="codeViewClass" @blur="codeViewBlur" @focus="codeViewFocus" @input="codeViewInput" @paste="codeViewPaste"></div>
-		<div v-else ref="content" v-html="initalHtml" key="content" :contenteditable="!disabled || null" :style="contentStyle" :class="contentClass" :data-placeholder="placeholder" @blur="contentBlur" @focus="contentFocus" @input="contentInput" @paste="contentPaste" @click="changeActive" @keydown="contentKeydown"></div>
+		<div v-else ref="content" v-html="initalHtml" key="content" :contenteditable="!disabled || null" :style="contentStyle" :class="contentClass" :data-placeholder="placeholder" @blur="contentBlur" @focus="contentFocus" @input="contentInput" @paste="contentPaste" @keyup="changeActive" @click="changeActive" @keydown="contentKeydown"></div>
 	</div>
 </template>
 <script>
@@ -246,23 +246,7 @@ export default {
 			//代码块内重新定义换行操作
 			if (e.keyCode == 13 && this.isInCode) {
 				e.preventDefault()
-				const node = this.range.startContainer
-				if (node.nodeType == 1) {
-					//如果结尾有换行符
-					if (/[/\n/\r]+$/g.test(node.innerHTML)) {
-						this.insertHtml('\n')
-					} else {
-						this.insertHtml('\n\n')
-					}
-				} else {
-					const index = this.range.startOffset
-					const nextText = node.data.substring(index)
-					if (nextText) {
-						this.insertHtml('\n')
-					} else {
-						this.insertHtml('\n\n')
-					}
-				}
+				this.insertHtml('\n&nbsp;')
 			}
 			//tab键按下
 			else if (e.keyCode == 9) {
@@ -271,7 +255,6 @@ export default {
 				} else {
 				}
 			}
-			this.changeActive()
 		},
 		//编辑区域获取焦点
 		contentFocus() {
