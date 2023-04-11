@@ -92,7 +92,7 @@ export default {
 			type: Function
 		}
 	},
-	emits: ['update:modelValue', 'blur', 'focus', 'input', 'file-paste', 'upload-image', 'upload-video'],
+	emits: ['update:modelValue', 'blur', 'focus', 'input', 'file-paste', 'upload-image', 'upload-video', 'save'],
 	data() {
 		return {
 			//是否使用菜单栏
@@ -243,17 +243,28 @@ export default {
 		},
 		//编辑区域键盘按下
 		contentKeydown(e) {
+			const { Mac } = Dap.platform.os()
 			//代码块内重新定义换行操作
 			if (e.keyCode == 13 && this.isInCode) {
 				e.preventDefault()
 				this.insertHtml('\n&nbsp;')
 			}
-			//tab键按下
+			//tab键按下插入空格
 			else if (e.keyCode == 9) {
 				e.preventDefault()
 				if (this.isInCode) {
+					this.insertHtml('&nbsp;&nbsp;')
 				} else {
+					this.insertHtml('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;')
 				}
+			}
+			//按下ctrl+s
+			if (e.keyCode == 83 && (Mac ? e.metaKey : e.ctrlKey)) {
+				e.preventDefault()
+				this.$emit('save', {
+					html: this.html,
+					text: this.text
+				})
 			}
 		},
 		//编辑区域获取焦点
