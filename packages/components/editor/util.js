@@ -86,11 +86,11 @@ export const getNodeByElement = ele => {
  */
 export const insertNodeAfter = (newNode, targetNode) => {
 	let parent = targetNode.parentNode
-	let children = Dap.element.children(parent)
+	let children = Array.from(parent.childNodes)
 	if (children[children.length - 1] == targetNode) {
 		parent.appendChild(newNode)
 	} else {
-		parent.insertBefore(newNode, targetNode.nextElementSibling)
+		parent.insertBefore(newNode, targetNode.nextSibling)
 	}
 }
 
@@ -262,18 +262,8 @@ export const formatCode = el => {
 	}
 	const id = getGuid()
 	setEditorElementId(el, id)
-	Dap.element.children(el).forEach(childNode => {
-		let text = null
-		//更换换行符
-		if (childNode.nodeName.toLocaleLowerCase() == 'br') {
-			text = document.createTextNode('\n')
-		} else {
-			text = document.createTextNode(childNode.innerText)
-		}
-		el.insertBefore(text, childNode)
-		childNode.remove()
-	})
-	if (el.innerHTML) {
+	//代码块有内容时给每行代码前面加个空格
+	if (el.innerHTML && el.innerHTML != '\n') {
 		el.innerHTML = el.innerHTML
 			.split('\n')
 			.map(item => {
@@ -283,8 +273,9 @@ export const formatCode = el => {
 				return item
 			})
 			.join('\n')
-	} else {
-		el.innerHTML = '\n&nbsp;'
 	}
-	//设置代码块代码样式
+	//代码块没有内容时初始化设置内容
+	else {
+		el.innerHTML = '&nbsp;\n'
+	}
 }

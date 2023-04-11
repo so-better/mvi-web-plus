@@ -2,9 +2,9 @@
 	<div :data-id="`mvi-editor-${uid}`" class="mvi-editor" @dragstart="preventDefault" @drop="preventDefault" @dragover="preventDefault">
 		<div v-if="codeViewShow" ref="codeView" v-text="initalHtml" key="code" :contenteditable="!disabled || null" :style="codeViewStyle" :class="codeViewClass" @blur="codeViewBlur" @focus="codeViewFocus" @input="codeViewInput" @paste="codeViewPaste"></div>
 		<div v-else ref="content" v-html="initalHtml" key="content" :contenteditable="!disabled || null" :style="contentStyle" :class="contentClass" :data-placeholder="placeholder" @blur="contentBlur" @focus="contentFocus" @input="contentInput" @paste="contentPaste" @keyup="changeActive" @click="changeActive" @keydown="contentKeydown"></div>
-		<m-layer v-model="dialogOptions.show" :target="dialogOptions.target" :root="`mvi-editor-${uid}`" placement="bottom-start" offset="0.1rem" :z-index="40" width="3rem" closable shadow border :show-triangle="false">
+		<!-- <m-layer v-model="dialogOptions.show" :target="dialogOptions.target" :root="`mvi-editor-${uid}`" placement="bottom-start" offset="0.1rem" :z-index="40" width="3rem" closable shadow border :show-triangle="false">
 			<div style="height: 3rem">222</div>
-		</m-layer>
+		</m-layer> -->
 	</div>
 </template>
 <script>
