@@ -343,7 +343,7 @@ export default {
 				text: this.text
 			})
 		},
-		//代码视图粘贴事件
+		//源码视图粘贴
 		codeViewPaste(event) {
 			event.preventDefault()
 			let clip = (event.originalEvent || event).clipboardData
