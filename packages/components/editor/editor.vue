@@ -784,19 +784,22 @@ export default {
 			document.execCommand('formatBlock', false, blockTag)
 			//在插入后换行
 			if (wrap) {
-				const selectNode = this.getSelectNode()
-				if (selectNode) {
-					const blockEl = this.getCompareTag(selectNode, blockTag)
-					const pEl = Dap.element.string2dom(getValue(''))
-					insertNodeAfter(pEl, blockEl)
-					this.updateHtmlText()
-					this.updateValue()
-					if (focus) {
-						this.collapseToEnd(blockEl)
-					} else {
-						this.collapseToEnd(pEl)
+				//解决插入代码块错乱问题
+				setTimeout(() => {
+					const selectNode = this.getSelectNode()
+					if (selectNode) {
+						const blockEl = this.getCompareTag(selectNode, blockTag)
+						const pEl = Dap.element.string2dom(getValue(''))
+						insertNodeAfter(pEl, blockEl)
+						this.updateHtmlText()
+						this.updateValue()
+						if (focus) {
+							this.collapseToEnd(blockEl)
+						} else {
+							this.collapseToEnd(pEl)
+						}
 					}
-				}
+				}, 0)
 			}
 		},
 		//api：注册菜单栏实例
