@@ -14,7 +14,7 @@
 					<div class="mvi-editor-dialog-target" @mouseenter="dialogBtnHover('enter', $event)" @mouseleave="dialogBtnHover('leave', $event)" @click="removeCode">删除代码</div>
 				</div>
 				<div v-if="dialogOptions.type == 'code'" :data-id="`mvi-editor-code-${uid}`" class="mvi-editor-dialog-el" @mouseenter="dialogElHover('enter')" @mouseleave="dialogElHover('leave')">
-					<div class="mvi-editor-dialog-target" :data-id="`mvi-editor-code-target-${uid}`" @click="codeLanguageLayerShow" @mouseenter="dialogBtnHover('enter', $event)" @mouseleave="dialogBtnHover('leave', $event)">
+					<div class="mvi-editor-dialog-target" :data-id="`mvi-editor-code-target-${uid}`" @click="codeParams.show = true" @mouseenter="dialogBtnHover('enter', $event)" @mouseleave="dialogBtnHover('leave', $event)">
 						<span>{{ languageLabelText }}</span>
 						<Icon type="caret-down"></Icon>
 					</div>
@@ -33,7 +33,7 @@
 import { getCurrentInstance } from 'vue'
 import { Dap } from '../dap'
 import unactiveMenus from './unactiveMenus'
-import { initOption } from '../editor/util'
+import { initOption, formatCode } from '../editor/util'
 import defaultConfig from './defaultConfig'
 import defaultLayerProps from './defaultLayerProps'
 import defaultTooltipProps from './defaultTooltipProps'
@@ -537,13 +537,17 @@ export default {
 						this.dialogOptions.show = false
 						this.$nextTick(() => {
 							if (document.queryCommandValue('formatBlock').toLocaleLowerCase() == 'pre') {
+								//设为激活状态
 								menu.active = true
+								//获取代码块元素
 								const preEl = this.editorInstance.getCompareTag(node, 'pre')
+								//跟随式浮层参数配置
 								this.dialogOptions.type = menu.options.key
 								this.dialogOptions.target = `[mvi-editor-element="${preEl.getAttribute('mvi-editor-element')}"]`
-								this.codeParams.currentLanguage = preEl.getAttribute('mvi-editor-code-language') || this.codeLanguageList[0]?.value
-								this.dialogOptions.show = true
 								this.dialogOptions.menuInstance = menu
+								this.codeParams.currentLanguage = preEl.getAttribute('mvi-editor-code-language') || this.codeLanguageList[0]?.value
+								//显示跟随式浮层
+								this.dialogOptions.show = true
 							}
 						})
 					}
@@ -585,18 +589,21 @@ export default {
 			}
 			this.dialogOptions.show = false
 		},
-		//代码语言浮层打开
-		codeLanguageLayerShow() {
-			this.codeParams.show = true
-		},
 		//选择代码语言
-		selectLanguage(language) {
+		selectLanguage(item) {
+			//恢复选区
 			this.editorInstance.restoreRange()
+			//查找代码块元素
 			const preEl = document.body.querySelector(this.dialogOptions.target)
-			this.codeParams.currentLanguage = language.value
+			//设置当前显示的语言类型
+			this.codeParams.currentLanguage = item.value
+			//记录语言类型
 			if (preEl) {
-				preEl.setAttribute('mvi-editor-code-language', language.value)
+				preEl.setAttribute('mvi-editor-code-language', item.value)
 			}
+			//进行格式化
+			formatCode(preEl)
+			//关闭语言类型选择浮层
 			this.codeParams.show = false
 		},
 		//跟随式浮层关闭

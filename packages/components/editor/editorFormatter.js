@@ -1,54 +1,5 @@
 import { Dap } from '../dap'
-import { initSpecsCode, getGuid, setEditorElementId } from './util'
-
-//设置表格列宽拖拽
-const setTableResize = (el, instance) => {
-	const id = el.getAttribute('mvi-editor-element')
-	const cols = Array.from(el.querySelectorAll('col'))
-	const firstRow = el.querySelector('tr')
-	const btns = Array.from(firstRow.querySelectorAll('span.mvi-editor-colbtn'))
-	btns.forEach(btn => {
-		//鼠标按下
-		btn.onmousedown = e => {
-			if (instance.disabled) {
-				return
-			}
-			Dap.data.set(btn, 'pageX', e.pageX)
-			Dap.data.set(btn, 'resizable', true)
-		}
-	})
-	//鼠标移动
-	Dap.event.on(document.documentElement, `mousemove.editor_table_${id}`, e => {
-		if (instance.disabled) {
-			return
-		}
-		const index = btns.findIndex(el => {
-			return Dap.data.get(el, 'resizable')
-		})
-		if (index < 0) {
-			return
-		}
-		const btn = btns[index]
-		let pageX = Dap.data.get(btn, 'pageX')
-		let moveX = e.pageX - pageX
-		cols[index].setAttribute('width', cols[index].offsetWidth + moveX)
-		Dap.data.set(btn, 'pageX', e.pageX)
-	})
-	//鼠标松开
-	Dap.event.on(document.documentElement, `mouseup.editor_table_${id}`, e => {
-		if (instance.disabled) {
-			return
-		}
-		const btn = btns.find(el => {
-			return Dap.data.get(el, 'resizable')
-		})
-		if (!btn) {
-			return
-		}
-		Dap.data.set(btn, 'pageX', 0)
-		Dap.data.set(btn, 'resizable', false)
-	})
-}
+import { initSpecsCode, getGuid, setEditorElementId, setTableResize } from './util'
 
 /**
  * 富文本内容节点格式化处理
@@ -88,7 +39,6 @@ export default function (addNode, removeNode, instance) {
 		//统一代码块样式和格式化
 		else if (addNode.nodeName.toLocaleLowerCase() == 'pre') {
 			initSpecsCode(addNode)
-			instance.collapseToEnd(addNode)
 		}
 		//监听编辑器插入表格操作
 		else if (addNode.nodeName.toLocaleLowerCase() == 'table' && addNode.hasAttribute('mvi-editor-element')) {

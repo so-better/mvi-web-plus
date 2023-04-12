@@ -5,8 +5,7 @@
 	</div>
 </template>
 <script>
-import { judgeFileSuffix, initOption, getValue, getNodeByElement, insertNodeAfter } from './util'
-import { getCurrentInstance } from 'vue'
+import { judgeFileSuffix, initOption, getValue, getNodeByElement, insertNodeAfter, setTableResize } from './util'
 import { Dap } from '../dap'
 import editorFormatter from './editorFormatter'
 import defaultUploadImageProps from './defaultUploadImageProps'
@@ -208,6 +207,18 @@ export default {
 					this.collapseToEnd()
 					this.changeActive()
 				}
+			})
+		},
+		//监听disabled
+		disabled(newValue) {
+			//源码模式下禁用编辑器必须调整为编辑模式
+			if (newValue) {
+				this.codeViewShow = false
+			}
+			this.$nextTick(() => {
+				this.$refs.content.querySelectorAll('table[mvi-editor-element]').forEach(table => {
+					setTableResize(table, this)
+				})
 			})
 		}
 	},

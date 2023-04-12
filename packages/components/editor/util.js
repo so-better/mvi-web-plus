@@ -1,4 +1,5 @@
 import { Dap } from '../dap'
+import JavaScript from './languages/javascript'
 
 /**
  * 获取唯一id
@@ -236,6 +237,68 @@ export const setTableNewHeader = row => {
 }
 
 /**
+ * 设置表格列宽拖拽
+ * @param { Element } el
+ * @param { Vue } instance
+ */
+export const setTableResize = (el, instance) => {
+	const id = el.getAttribute('mvi-editor-element')
+	const cols = Array.from(el.querySelectorAll('col'))
+	const firstRow = el.querySelector('tr')
+	const btns = Array.from(firstRow.querySelectorAll('span.mvi-editor-colbtn'))
+
+	btns.forEach(btn => {
+		if (instance.disabled) {
+			btn.style.cursor = 'auto'
+			btn.style.opacity = 0
+		} else {
+			btn.style.cursor = ''
+			btn.style.opacity = ''
+		}
+
+		//鼠标按下
+		btn.onmousedown = e => {
+			if (instance.disabled) {
+				return
+			}
+			Dap.data.set(btn, 'pageX', e.pageX)
+			Dap.data.set(btn, 'resizable', true)
+		}
+	})
+	//鼠标移动
+	Dap.event.on(document.documentElement, `mousemove.editor_table_${id}`, e => {
+		if (instance.disabled) {
+			return
+		}
+		const index = btns.findIndex(el => {
+			return Dap.data.get(el, 'resizable')
+		})
+		if (index < 0) {
+			return
+		}
+		const btn = btns[index]
+		let pageX = Dap.data.get(btn, 'pageX')
+		let moveX = e.pageX - pageX
+		cols[index].setAttribute('width', cols[index].offsetWidth + moveX)
+		Dap.data.set(btn, 'pageX', e.pageX)
+	})
+	//鼠标松开
+	Dap.event.on(document.documentElement, `mouseup.editor_table_${id}`, e => {
+		if (instance.disabled) {
+			return
+		}
+		const btn = btns.find(el => {
+			return Dap.data.get(el, 'resizable')
+		})
+		if (!btn) {
+			return
+		}
+		Dap.data.set(btn, 'pageX', 0)
+		Dap.data.set(btn, 'resizable', false)
+	})
+}
+
+/**
  * 初始化规范代码内容
  * @param { Element} el
  */
@@ -243,13 +306,15 @@ export const initSpecsCode = el => {
 	//清除代码标签的所有属性
 	const attributes = Array.from(el.attributes)
 	for (let attribute of attributes) {
-		//记录代码语言的属性不能删除
+		//记录代码语言类型的属性不能删除
 		if (attribute.nodeName != 'mvi-editor-code-language') {
 			el.removeAttribute(attribute.nodeName)
 		}
 	}
+	//设置唯一属性
 	const id = getGuid()
 	setEditorElementId(el, id)
+	//遍历子元素
 	Dap.element.children(el).forEach(childNode => {
 		let text = null
 		if (childNode.nodeName.toLocaleLowerCase() == 'br') {
@@ -288,4 +353,7 @@ export const initSpecsCode = el => {
 export const formatCode = el => {
 	const language = el.getAttribute('mvi-editor-code-language') || 'plaintext'
 	console.log('语言类型', language)
+	if (language == 'javascript') {
+		new JavaScript(el)
+	}
 }

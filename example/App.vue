@@ -1,8 +1,8 @@
 <template>
 	<div class="mvi-p-2">
-		<div>{{ value }}</div>
+		<m-button @click="disabled = !disabled">按钮</m-button>
 		<m-editor-menus @custom="custom" :config="[{ key: 'codeView', name: '显示源码', icon: 'eye', data: show, index: 1 }]" border ref="editorMenus"></m-editor-menus>
-		<m-editor placeholder="请输入内容..." border v-model="value" ref="editor"></m-editor>
+		<m-editor :disabled="disabled" @input="uploadImage" placeholder="请输入内容..." border v-model="value" ref="editor"></m-editor>
 	</div>
 </template>
 <script>
@@ -10,7 +10,8 @@ export default {
 	data() {
 		return {
 			show: true,
-			value: '<pre>const a = new A();<br>const b = new B();<br>a</pre><p><br></p>'
+			disabled: false,
+			value: '<pre>const a = new B();</pre><p><br></p>'
 		}
 	},
 	mounted() {
@@ -18,7 +19,7 @@ export default {
 	},
 	methods: {
 		uploadImage(e) {
-			console.log(e)
+			console.log(e.html)
 		},
 		uploadError(state, message, file) {
 			console.log(state, message, file)
