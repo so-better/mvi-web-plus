@@ -1,6 +1,5 @@
 import { Dap } from '../dap'
 import { Resize } from '../resize'
-import JavaScript from './languages/javascript'
 
 /**
  * 获取唯一id
@@ -336,51 +335,4 @@ export const resetResizeRange = instance => {
 	instance.$refs.content.querySelectorAll('video[mvi-editor-element]').forEach(video => {
 		setElementResize(video, instance)
 	})
-}
-
-/**
- * 初始化规范代码内容
- * @param { Element} el
- */
-export const initSpecsCode = el => {
-	//遍历子元素
-	Dap.element.children(el).forEach(childNode => {
-		let text = null
-		if (childNode.nodeName.toLocaleLowerCase() == 'br') {
-			text = document.createTextNode('\n')
-		} else {
-			text = document.createTextNode(childNode.innerText)
-		}
-		el.insertBefore(text, childNode)
-		childNode.remove()
-	})
-	//代码块有内容时给每行代码前面加个空格
-	if (el.innerHTML && el.innerHTML != '\n') {
-		el.innerHTML = el.innerHTML
-			.split('\n')
-			.map(item => {
-				if (item && !item.startsWith('&nbsp;')) {
-					return `&nbsp;${item}`
-				}
-				return item
-			})
-			.join('\n')
-	}
-	//代码块没有内容时初始化设置内容
-	else {
-		el.innerHTML = '&nbsp;\n'
-	}
-}
-
-/**
- * 格式化代码
- * @param { Element } el
- */
-export const formatCode = el => {
-	const language = el.getAttribute('mvi-editor-code-language') || 'plaintext'
-	console.log('语言类型', language)
-	if (language == 'javascript') {
-		const js = new JavaScript(el)
-		js.init()
-	}
 }

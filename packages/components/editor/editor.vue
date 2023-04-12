@@ -116,15 +116,6 @@ export default {
 				target: '',
 				menuInstance: null,
 				type: '' //与当前菜单的key相同
-			},
-			//代码块相关参数设置
-			codeParams: {
-				//是否显示语言选择浮层
-				show: false,
-				//浮层的target
-				target: '',
-				//当前选择的代码语言
-				currentLanguage: ''
 			}
 		}
 	},
@@ -269,20 +260,6 @@ export default {
 		//编辑区域键盘按下
 		contentKeydown(e) {
 			const { Mac } = Dap.platform.os()
-			//代码块内重新定义换行操作
-			if (e.keyCode == 13 && this.dialogOptions.type == 'code') {
-				e.preventDefault()
-				this.insertHtml('\n&nbsp;')
-			}
-			//tab键按下插入空格
-			else if (e.keyCode == 9) {
-				e.preventDefault()
-				if (this.dialogOptions.type == 'code') {
-					this.insertHtml('&nbsp;&nbsp;')
-				} else {
-					this.insertHtml('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;')
-				}
-			}
 			//按下ctrl+s
 			if (e.keyCode == 83 && (Mac ? e.metaKey : e.ctrlKey)) {
 				e.preventDefault()

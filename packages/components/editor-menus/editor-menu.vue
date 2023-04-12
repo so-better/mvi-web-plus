@@ -209,10 +209,6 @@ export default {
 			if (this.options.key != 'codeView' && this.$parent.editorInstance.codeViewShow) {
 				return true
 			}
-			//在pre标签内容只允许部分菜单可以使用
-			if (this.$parent.editorInstance.dialogOptions.type == 'code') {
-				return !['undo', 'redo', 'bold', 'removeFormat', 'italic', 'underline', 'strikeThrough', 'foreColor', 'code', 'codeView'].includes(this.options.key)
-			}
 			return false
 		},
 		//是否为显示已选值的菜单
@@ -561,11 +557,7 @@ export default {
 			}
 			//插入代码
 			else if (this.options.key == 'code') {
-				if (this.active) {
-					this.removeCode()
-				} else {
-					this.$parent.editorInstance.insertBlock('pre', true, true)
-				}
+				//待开发
 			}
 			//设置源码显示
 			else if (this.options.key == 'codeView') {
@@ -1086,28 +1078,6 @@ export default {
 					}
 				}
 			}
-		},
-		//删除代码块
-		removeCode() {
-			if (this.disabledMenu) {
-				return
-			}
-			let node = this.$parent.editorInstance.getSelectNode()
-			if (!node) {
-				return
-			}
-			const pre = this.$parent.editorInstance.getCompareTag(node, 'pre')
-			pre.innerHTML = pre.innerHTML.replace(/\r|\n/g, '<br>')
-			let pEl = Dap.element.string2dom('<p>' + pre.innerHTML + '</p>')
-			if (pEl instanceof HTMLCollection) {
-				pEl = Dap.element.string2dom('<div>' + pre.innerHTML + '</div>')
-			}
-			insertNodeAfter(pEl, pre)
-			pre.remove()
-			this.active = false
-			this.$parent.editorInstance.collapseToEnd(pEl)
-			this.$parent.editorInstance.updateHtmlText()
-			this.$parent.editorInstance.updateValue()
 		}
 	}
 }
