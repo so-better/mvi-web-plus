@@ -1,7 +1,7 @@
 <template>
 	<div class="mvi-p-2">
 		<div>{{ value }}</div>
-		<m-editor-menus trigger="hover" hover-class="mvi-bg-primary" layerHoverClass="mvi-bg-success" @custom="custom" :config="[{ key: 'codeView', name: '显示源码', icon: 'eye', data: show, index: 1 }]" border ref="editorMenus"></m-editor-menus>
+		<m-editor-menus @custom="custom" :config="[{ key: 'codeView', name: '显示源码', icon: 'eye', data: show, index: 1 }]" border ref="editorMenus"></m-editor-menus>
 		<m-editor placeholder="请输入内容..." border v-model="value" ref="editor"></m-editor>
 	</div>
 </template>

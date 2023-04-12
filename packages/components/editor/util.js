@@ -115,21 +115,6 @@ export const initTableGroups = () => {
 }
 
 /**
- * 判断html内容是否元素节点
- * @param { * } dom
- * @returns boolean
- */
-export const isNotHtml = dom => {
-	if (Dap.element.isElement(dom)) {
-		return false
-	}
-	if (dom instanceof HTMLCollection && dom.length > 0) {
-		return false
-	}
-	return true
-}
-
-/**
  * 创建表头拖拽器
  * @returns element
  */
@@ -251,14 +236,17 @@ export const setTableNewHeader = row => {
 }
 
 /**
- * 格式化代码块内容
+ * 初始化规范代码内容
  * @param { Element} el
  */
-export const formatCode = el => {
+export const initSpecsCode = el => {
 	//清除代码标签的所有属性
 	const attributes = Array.from(el.attributes)
 	for (let attribute of attributes) {
-		el.removeAttribute(attribute.nodeName)
+		//记录代码语言的属性不能删除
+		if (attribute.nodeName != 'mvi-editor-code-language') {
+			el.removeAttribute(attribute.nodeName)
+		}
 	}
 	const id = getGuid()
 	setEditorElementId(el, id)
@@ -288,4 +276,16 @@ export const formatCode = el => {
 	else {
 		el.innerHTML = '&nbsp;\n'
 	}
+
+	//格式化代码语言类型
+	formatCode(el)
+}
+
+/**
+ *
+ * @param { Element } el
+ */
+export const formatCode = el => {
+	const language = el.getAttribute('mvi-editor-code-language') || 'plaintext'
+	console.log('语言类型', language)
 }

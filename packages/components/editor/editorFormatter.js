@@ -1,5 +1,5 @@
 import { Dap } from '../dap'
-import { formatCode, getGuid, setEditorElementId } from './util'
+import { initSpecsCode, getGuid, setEditorElementId } from './util'
 
 //设置表格列宽拖拽
 const setTableResize = (el, instance) => {
@@ -87,7 +87,7 @@ export default function (addNode, removeNode, instance) {
 		}
 		//统一代码块样式和格式化
 		else if (addNode.nodeName.toLocaleLowerCase() == 'pre') {
-			formatCode(addNode)
+			initSpecsCode(addNode)
 			instance.collapseToEnd(addNode)
 		}
 		//监听编辑器插入表格操作
