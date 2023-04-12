@@ -209,6 +209,10 @@ export default {
 			if (this.options.key != 'codeView' && this.$parent.editorInstance.codeViewShow) {
 				return true
 			}
+			//在pre标签内容只允许部分菜单可以使用
+			if (this.$parent.editorInstance.isInCode) {
+				return ['divider', 'title', 'fontFamily', 'fontSize', 'ol', 'ul', 'justify', 'quote', 'link', 'image', 'video', 'table'].includes(this.options.key)
+			}
 			return false
 		},
 		//是否为显示已选值的菜单
@@ -580,7 +584,11 @@ export default {
 				this.$parent.$emit('custom', { ...this.options })
 			}
 			//重新调整图片和视频的点位
-			resetResizeRange(this.$parent.editorInstance)
+			this.$nextTick(() => {
+				if (this.$parent.editorInstance.$refs.content) {
+					resetResizeRange(this.$parent.editorInstance)
+				}
+			})
 		},
 		//菜单项点击
 		targetTrigger() {
