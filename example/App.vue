@@ -11,7 +11,7 @@ export default {
 		return {
 			show: true,
 			disabled: false,
-			value: '<pre>const a = new B();</pre><p><br></p>'
+			value: '<pre mvi-editor-code-language="javascript">const a = new B();</pre><p><br></p>'
 		}
 	},
 	mounted() {

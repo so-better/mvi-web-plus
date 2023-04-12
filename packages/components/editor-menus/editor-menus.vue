@@ -589,6 +589,7 @@ export default {
 			formatCode(preEl)
 			//关闭语言类型选择浮层
 			this.editorInstance.codeParams.show = false
+			this.editorInstance.collapseToEnd(preEl)
 		},
 		//跟随式浮层关闭
 		dialogHidden() {

@@ -380,6 +380,7 @@ export const formatCode = el => {
 	const language = el.getAttribute('mvi-editor-code-language') || 'plaintext'
 	console.log('语言类型', language)
 	if (language == 'javascript') {
-		new JavaScript(el)
+		const js = new JavaScript(el)
+		js.init()
 	}
 }
