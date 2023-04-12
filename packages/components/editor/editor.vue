@@ -1,5 +1,5 @@
 <template>
-	<div :data-id="`mvi-editor-${uid}`" class="mvi-editor" @dragstart="preventDefault" @drop="preventDefault" @dragover="preventDefault">
+	<div class="mvi-editor" @dragstart="preventDefault" @drop="preventDefault" @dragover="preventDefault">
 		<div v-if="codeViewShow" ref="codeView" v-text="initalHtml" key="code" :contenteditable="!disabled || null" :style="codeViewStyle" :class="codeViewClass" @blur="codeViewBlur" @focus="codeViewFocus" @input="codeViewInput" @paste="codeViewPaste"></div>
 		<div v-else ref="content" v-html="initalHtml" key="content" :contenteditable="!disabled || null" :style="contentStyle" :class="contentClass" :data-placeholder="placeholder" @blur="contentBlur" @focus="contentFocus" @input="contentInput" @paste="contentPaste" @keyup="changeActive" @click="changeActive" @keydown="contentKeydown"></div>
 	</div>
@@ -111,12 +111,6 @@ export default {
 			isModelChange: false,
 			//激活菜单项的具体判定函数
 			changeActiveJudgeFn: null
-		}
-	},
-	setup() {
-		const instance = getCurrentInstance()
-		return {
-			uid: instance.uid
 		}
 	},
 	computed: {

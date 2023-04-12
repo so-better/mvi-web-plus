@@ -13,18 +13,18 @@
 				<div v-if="dialogOptions.type == 'code'" class="mvi-editor-dialog-el">
 					<div class="mvi-editor-dialog-target" @mouseenter="dialogBtnHover('enter', $event)" @mouseleave="dialogBtnHover('leave', $event)">删除代码</div>
 				</div>
-				<div v-if="dialogOptions.type == 'code'" class="mvi-editor-dialog-el" @mouseenter="dialogElHover('enter')" @mouseleave="dialogElHover('leave')">
-					<div class="mvi-editor-dialog-target" :data-id="`mvi-editor-code-${uid}`" @click="codeLanguageLayerShow" @mouseenter="dialogBtnHover('enter', $event)" @mouseleave="dialogBtnHover('leave', $event)">
+				<div v-if="dialogOptions.type == 'code'" :data-id="`mvi-editor-code-${uid}`" class="mvi-editor-dialog-el" @mouseenter="dialogElHover('enter')" @mouseleave="dialogElHover('leave')">
+					<div class="mvi-editor-dialog-target" :data-id="`mvi-editor-code-target-${uid}`" @click="codeLanguageLayerShow" @mouseenter="dialogBtnHover('enter', $event)" @mouseleave="dialogBtnHover('leave', $event)">
 						<span>{{ codeParams.currentLanguage?.label }}</span>
 						<Icon type="caret-down"></Icon>
 					</div>
+					<!-- 语言选择浮层 -->
+					<Layer v-model="codeParams.show" :target="`[data-id='mvi-editor-code-target-${uid}']`" :root="`[data-id='mvi-editor-code-${uid}']`" placement="bottom-start" offset="0.2rem" :z-index="41" closable :timeout="100" shadow border :show-triangle="false" animation="mvi-editor-dialog">
+						<div class="mvi-editor-dialog-layer">
+							<div class="mvi-editor-dialog-layer-el" v-for="item in codeLanguages" @click="selectLanguage(item)" @mouseenter="dialogLayerHover('enter', $event)" @mouseleave="dialogLayerHover('leave', $event)">{{ item.label }}</div>
+						</div>
+					</Layer>
 				</div>
-			</div>
-		</Layer>
-		<!-- 语言选择浮层 -->
-		<Layer v-model="codeParams.show" :target="`[data-id='mvi-editor-code-${uid}']`" :root="`[data-id='mvi-editor-${uid}']`" placement="bottom-start" offset="0.2rem" :z-index="41" closable :timeout="100" shadow border :show-triangle="false" animation="mvi-editor-dialog">
-			<div class="mvi-editor-dialog-layer">
-				<div class="mvi-editor-dialog-layer-el" v-for="item in codeLanguages" @click="selectLanguage(item)" @mouseenter="dialogLayerHover('enter', $event)" @mouseleave="dialogLayerHover('leave', $event)">{{ item.label }}</div>
 			</div>
 		</Layer>
 	</div>
