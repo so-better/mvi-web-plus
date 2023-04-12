@@ -345,10 +345,14 @@ export default {
 		contentPaste(event) {
 			let clip = (event.originalEvent || event).clipboardData
 			let text = clip.getData('text/plain') || ''
-			if (this.pasteText) {
+			if (this.pasteText || this.isInCode) {
 				event.preventDefault()
 				if (text !== '') {
-					document.execCommand('insertText', false, text)
+					if (this.isInCode) {
+						this.insertHtml(text)
+					} else {
+						this.insertText(text)
+					}
 				}
 			} else {
 				if (clip.files.length > 0) {

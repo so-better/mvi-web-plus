@@ -2,7 +2,7 @@
 	<div class="mvi-p-2">
 		<m-button @click="disabled = !disabled">按钮</m-button>
 		<m-editor-menus @custom="custom" :config="[{ key: 'codeView', name: '显示源码', icon: 'eye', data: show, index: 1 }]" border ref="editorMenus"></m-editor-menus>
-		<m-editor :disabled="disabled" @input="uploadImage" placeholder="请输入内容..." border v-model="value" ref="editor"></m-editor>
+		<m-editor pasteText :disabled="disabled" @input="uploadImage" placeholder="请输入内容..." border v-model="value" ref="editor"></m-editor>
 	</div>
 </template>
 <script>
