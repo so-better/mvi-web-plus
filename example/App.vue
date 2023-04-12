@@ -11,7 +11,7 @@ export default {
 		return {
 			show: true,
 			disabled: false,
-			value: '<p><a href="https://www.mvi-web.cn" target="_blank">打开mvi-web网站</a></p>'
+			value: '<pre>ab</pre>'
 		}
 	},
 	mounted() {

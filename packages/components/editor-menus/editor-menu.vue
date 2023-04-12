@@ -557,7 +557,11 @@ export default {
 			}
 			//插入代码
 			else if (this.options.key == 'code') {
-				//待开发
+				if (this.active) {
+					this.removeCode()
+				} else {
+					this.$parent.editorInstance.insertBlock('pre', true, true)
+				}
 			}
 			//设置源码显示
 			else if (this.options.key == 'codeView') {
@@ -1078,6 +1082,28 @@ export default {
 					}
 				}
 			}
+		},
+		//删除代码块
+		removeCode() {
+			if (this.disabledMenu) {
+				return
+			}
+			let node = this.$parent.editorInstance.getSelectNode()
+			if (!node) {
+				return
+			}
+			const pre = this.$parent.editorInstance.getCompareTag(node, 'pre')
+			pre.innerHTML = pre.innerHTML.replace(/\n/g, '<br>')
+			let pEl = Dap.element.string2dom('<p>' + pre.innerHTML + '</p>')
+			if (pEl instanceof HTMLCollection) {
+				pEl = Dap.element.string2dom('<div>' + pre.innerHTML + '</div>')
+			}
+			insertNodeAfter(pEl, pre)
+			pre.remove()
+			this.active = false
+			this.$parent.editorInstance.collapseToEnd(pEl)
+			this.$parent.editorInstance.updateHtmlText()
+			this.$parent.editorInstance.updateValue()
 		}
 	}
 }

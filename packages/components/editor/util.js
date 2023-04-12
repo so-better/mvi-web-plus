@@ -336,3 +336,36 @@ export const resetResizeRange = instance => {
 		setElementResize(video, instance)
 	})
 }
+
+/**
+ * 格式化代码块内容
+ * @param { Element} el
+ */
+export const formatCode = el => {
+	Dap.element.children(el).forEach(childNode => {
+		let text = null
+		if (childNode.nodeName.toLocaleLowerCase() == 'br') {
+			text = document.createTextNode('\n')
+		} else {
+			text = document.createTextNode(childNode.innerText)
+		}
+		el.insertBefore(text, childNode)
+		childNode.remove()
+	})
+	//将&nbsp;转为空格；\r转为\n
+	el.innerHTML = el.innerHTML.replaceAll('&nbsp;', ' ').replaceAll('\r', '\n')
+	//代码块有内容时给每行代码前面加个空格
+	el.innerHTML = el.innerHTML
+		.split('\n')
+		.map(item => {
+			const hasSpace = /^(\s+)/g.test(item)
+			if (item && !hasSpace) {
+				return ` ${item}`
+			}
+			return item
+		})
+		.join('\n')
+	if (!el.innerHTML) {
+		el.innerHTML = ' \n'
+	}
+}

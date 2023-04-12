@@ -1,5 +1,5 @@
 import { Dap } from '../dap'
-import { getGuid, setEditorElementId, setTableResize, setElementResize } from './util'
+import { getGuid, setEditorElementId, setTableResize, setElementResize, formatCode } from './util'
 
 /**
  * 富文本内容节点格式化处理
@@ -46,6 +46,19 @@ export default function (addNode, removeNode, instance) {
 			addNode.style.fontSize = ''
 			//设置可拖拽改变大小
 			setElementResize(addNode, instance)
+		}
+		//代码块
+		else if (addNode.nodeName.toLocaleLowerCase() == 'pre') {
+			//清除代码标签的所有属性
+			const attributes = Array.from(addNode.attributes)
+			for (let attribute of attributes) {
+				addNode.removeAttribute(attribute.nodeName)
+			}
+			//设置唯一属性
+			const id = getGuid()
+			setEditorElementId(addNode, id)
+			//格式化代码块内容
+			formatCode(addNode)
 		}
 		//监听编辑器插入表格操作
 		else if (addNode.nodeName.toLocaleLowerCase() == 'table' && addNode.hasAttribute('mvi-editor-element')) {

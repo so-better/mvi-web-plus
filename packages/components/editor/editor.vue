@@ -109,7 +109,9 @@ export default {
 			//是否双向绑定改变值
 			isModelChange: false,
 			//激活菜单项的具体判定函数
-			changeActiveJudgeFn: null
+			changeActiveJudgeFn: null,
+			//光标是否在代码块内
+			isInCode: false
 		}
 	},
 	computed: {
@@ -253,6 +255,22 @@ export default {
 		//编辑区域键盘按下
 		contentKeydown(e) {
 			const { Mac } = Dap.platform.os()
+			//代码块内重新定义换行操作
+			if (e.keyCode == 13 && this.isInCode) {
+				e.preventDefault()
+				//换行符后需要加个空格
+				this.insertHtml('\n ')
+			}
+			//tab键按下插入空格
+			else if (e.keyCode == 9) {
+				e.preventDefault()
+				if (this.isInCode) {
+					//代码块内插入两个空格
+					this.insertHtml('  ')
+				} else {
+					this.insertHtml('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;')
+				}
+			}
 			//按下ctrl+s
 			if (e.keyCode == 83 && (Mac ? e.metaKey : e.ctrlKey)) {
 				e.preventDefault()
@@ -971,5 +989,21 @@ export default {
 	height: 0.02rem;
 	background-color: @bg-color-dark;
 	border: none;
+}
+
+//代码块样式
+:deep(pre[mvi-editor-element]) {
+	display: block;
+	padding: @mp-sm;
+	margin: 0 0 @mp-sm;
+	font-size: @font-size-default;
+	font-family: Consolas !important;
+	line-height: 1.5;
+	color: @font-color-default;
+	background-color: #fafafa;
+	border: 1px solid @light-default;
+	border-radius: @radius-default;
+	overflow: auto;
+	position: relative;
 }
 </style>
