@@ -1,5 +1,5 @@
 import { Dap } from '../dap'
-import { initSpecsCode, getGuid, setEditorElementId, setTableResize, setElementResize } from './util'
+import { getGuid, setEditorElementId, setTableResize, setElementResize } from './util'
 
 /**
  * 富文本内容节点格式化处理
