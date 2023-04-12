@@ -109,14 +109,7 @@ export default {
 			//是否双向绑定改变值
 			isModelChange: false,
 			//激活菜单项的具体判定函数
-			changeActiveJudgeFn: null,
-			//跟随式弹窗参数
-			dialogOptions: {
-				show: false,
-				target: '',
-				menuInstance: null,
-				type: '' //与当前菜单的key相同
-			}
+			changeActiveJudgeFn: null
 		}
 	},
 	computed: {
@@ -978,27 +971,5 @@ export default {
 	height: 0.02rem;
 	background-color: @bg-color-dark;
 	border: none;
-}
-
-//代码块样式
-:deep(pre[mvi-editor-element]) {
-	display: block;
-	padding: @mp-sm;
-	margin: 0 0 @mp-sm;
-	font-size: @font-size-default;
-	font-family: Consolas !important;
-	line-height: 1.5;
-	color: @font-color-default;
-	background-color: #fafafa;
-	border: 1px solid @light-default;
-	border-radius: @radius-default;
-	overflow: auto;
-	position: relative;
-}
-
-// 跟随式弹窗显示动画
-:deep(.mvi-editor-dialog-enter-from),
-:deep(.mvi-editor-dialog-leave-to) {
-	opacity: 0;
 }
 </style>
