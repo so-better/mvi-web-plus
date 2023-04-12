@@ -1,4 +1,5 @@
 import { Dap } from '../dap'
+import { Resize } from '../resize'
 import JavaScript from './languages/javascript'
 
 /**
@@ -299,21 +300,49 @@ export const setTableResize = (el, instance) => {
 }
 
 /**
+ * 设置元素可以拖拽改变大小
+ * @param { Element } el
+ * @param { Vue } instance
+ */
+export const setElementResize = (el, instance) => {
+	let obj = Dap.data.get(el, 'mvi-editor-element-resize')
+	if (obj) {
+		obj.setRange()
+		if (instance.disabled) {
+			obj.disabledDragX()
+			obj.disabledDragY()
+		} else {
+			obj.enabledDragX()
+			obj.enabledDragY()
+		}
+		return
+	}
+	obj = new Resize(el, {
+		draggableX: !instance.disabled,
+		draggableY: !instance.disabled
+	})
+	obj.init()
+	Dap.data.set(el, 'mvi-editor-element-resize', obj)
+}
+
+/**
+ * 重新初始化视频和图片的拖拽，达到更新点位的目的
+ * @param {*} instance
+ */
+export const resetResizeRange = instance => {
+	instance.$refs.content.querySelectorAll('img[mvi-editor-element]').forEach(img => {
+		setElementResize(img, instance)
+	})
+	instance.$refs.content.querySelectorAll('video[mvi-editor-element]').forEach(video => {
+		setElementResize(video, instance)
+	})
+}
+
+/**
  * 初始化规范代码内容
  * @param { Element} el
  */
 export const initSpecsCode = el => {
-	//清除代码标签的所有属性
-	const attributes = Array.from(el.attributes)
-	for (let attribute of attributes) {
-		//记录代码语言类型的属性不能删除
-		if (attribute.nodeName != 'mvi-editor-code-language') {
-			el.removeAttribute(attribute.nodeName)
-		}
-	}
-	//设置唯一属性
-	const id = getGuid()
-	setEditorElementId(el, id)
 	//遍历子元素
 	Dap.element.children(el).forEach(childNode => {
 		let text = null
@@ -341,13 +370,10 @@ export const initSpecsCode = el => {
 	else {
 		el.innerHTML = '&nbsp;\n'
 	}
-
-	//格式化代码语言类型
-	formatCode(el)
 }
 
 /**
- *
+ * 格式化代码
  * @param { Element } el
  */
 export const formatCode = el => {

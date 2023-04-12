@@ -5,7 +5,7 @@
 	</div>
 </template>
 <script>
-import { judgeFileSuffix, initOption, getValue, getNodeByElement, insertNodeAfter, setTableResize } from './util'
+import { judgeFileSuffix, initOption, getValue, getNodeByElement, insertNodeAfter, setTableResize, setElementResize } from './util'
 import { Dap } from '../dap'
 import editorFormatter from './editorFormatter'
 import defaultUploadImageProps from './defaultUploadImageProps'
@@ -109,7 +109,23 @@ export default {
 			//是否双向绑定改变值
 			isModelChange: false,
 			//激活菜单项的具体判定函数
-			changeActiveJudgeFn: null
+			changeActiveJudgeFn: null,
+			//跟随式弹窗参数
+			dialogOptions: {
+				show: false,
+				target: '',
+				menuInstance: null,
+				type: '' //与当前菜单的key相同
+			},
+			//代码块相关参数设置
+			codeParams: {
+				//是否显示语言选择浮层
+				show: false,
+				//浮层的target
+				target: '',
+				//当前选择的代码语言
+				currentLanguage: ''
+			}
 		}
 	},
 	computed: {
@@ -218,6 +234,12 @@ export default {
 			this.$nextTick(() => {
 				this.$refs.content.querySelectorAll('table[mvi-editor-element]').forEach(table => {
 					setTableResize(table, this)
+				})
+				this.$refs.content.querySelectorAll('img[mvi-editor-element]').forEach(img => {
+					setElementResize(img, this)
+				})
+				this.$refs.content.querySelectorAll('video[mvi-editor-element]').forEach(video => {
+					setElementResize(video, this)
 				})
 			})
 		}

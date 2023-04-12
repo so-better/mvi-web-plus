@@ -104,7 +104,7 @@
 </template>
 <script>
 import { getCurrentInstance } from 'vue'
-import { insertNodeAfter, initTableGroups, copyTableRowAppend, copyTableColumnAppend, removeTableColumn, isTableHeader, setTableNewHeader, createTableColBtn, setEditorElementId, getGuid } from '../editor/util'
+import { insertNodeAfter, initTableGroups, copyTableRowAppend, copyTableColumnAppend, removeTableColumn, isTableHeader, setTableNewHeader, createTableColBtn, setEditorElementId, getGuid, resetResizeRange } from '../editor/util'
 import unactiveMenus from './unactiveMenus'
 import editorTag from './editor-tag.vue'
 import { Dap } from '../dap'
@@ -210,7 +210,7 @@ export default {
 				return true
 			}
 			//在pre标签内容只允许部分菜单可以使用
-			if (this.$parent.dialogOptions.type == 'code') {
+			if (this.$parent.editorInstance.dialogOptions.type == 'code') {
 				return !['undo', 'redo', 'bold', 'removeFormat', 'italic', 'underline', 'strikeThrough', 'foreColor', 'code', 'codeView'].includes(this.options.key)
 			}
 			return false
@@ -583,6 +583,8 @@ export default {
 			else {
 				this.$parent.$emit('custom', { ...this.options })
 			}
+			//重新调整图片和视频的点位
+			resetResizeRange(this.$parent.editorInstance)
 		},
 		//菜单项点击
 		targetTrigger() {

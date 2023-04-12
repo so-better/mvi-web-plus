@@ -1,5 +1,5 @@
 import { Dap } from '../dap'
-import { initSpecsCode, getGuid, setEditorElementId, setTableResize } from './util'
+import { initSpecsCode, getGuid, setEditorElementId, setTableResize, setElementResize, formatCode } from './util'
 
 /**
  * 富文本内容节点格式化处理
@@ -14,38 +14,65 @@ export default function (addNode, removeNode, instance) {
 		}
 		//统一引用样式
 		if (addNode.nodeName.toLocaleLowerCase() == 'blockquote') {
+			//设置唯一属性
 			const id = getGuid()
 			setEditorElementId(addNode, id)
 		}
 		//统一分隔线样式
 		else if (addNode.nodeName.toLocaleLowerCase() == 'hr') {
+			//设置唯一属性
 			const id = getGuid()
 			setEditorElementId(addNode, id)
 		}
 		//统一图片样式
 		else if (addNode.nodeName.toLocaleLowerCase() == 'img') {
+			//设置唯一属性
 			const id = getGuid()
 			setEditorElementId(addNode, id)
+			//清除设置的字体大小
 			addNode.style.fontSize = ''
+			//设置可拖拽改变大小
+			setElementResize(addNode, instance)
 		}
 		//统一所有视频样式
 		else if (addNode.nodeName.toLocaleLowerCase() == 'video') {
+			//设置唯一属性
 			const id = getGuid()
 			setEditorElementId(addNode, id)
+			//设置播放模式
 			addNode.setAttribute('muted', 'muted')
 			addNode.setAttribute('autoplay', 'autoplay')
+			//清除设置的字体大小
 			addNode.style.fontSize = ''
+			//设置可拖拽改变大小
+			setElementResize(addNode, instance)
 		}
 		//统一代码块样式和格式化
 		else if (addNode.nodeName.toLocaleLowerCase() == 'pre') {
+			//清除代码标签的所有属性
+			const attributes = Array.from(addNode.attributes)
+			for (let attribute of attributes) {
+				//记录代码语言类型的属性不能删除
+				if (attribute.nodeName != 'mvi-editor-code-language') {
+					addNode.removeAttribute(attribute.nodeName)
+				}
+			}
+			//设置唯一属性
+			const id = getGuid()
+			setEditorElementId(addNode, id)
+			//代码块内容初始化
 			initSpecsCode(addNode)
+			//代码块内容格式化
+			formatCode(addNode)
 		}
 		//监听编辑器插入表格操作
 		else if (addNode.nodeName.toLocaleLowerCase() == 'table' && addNode.hasAttribute('mvi-editor-element')) {
+			//设置表格头可拖拽改变列宽
 			setTableResize(addNode, instance)
 		}
 		//监听编辑器新增列操作
 		else if (addNode.nodeName.toLocaleLowerCase() == 'td' && addNode.hasAttribute('mvi-editor-element')) {
+			//设置表格头可拖拽改变列宽
 			const id = addNode.getAttribute('mvi-editor-element')
 			const table = instance.$refs.content.querySelector(`table[mvi-editor-element="${id}"]`)
 			setTableResize(table, instance)
@@ -62,6 +89,7 @@ export default function (addNode, removeNode, instance) {
 			})
 			//删除的是表头
 			if (isHead) {
+				//设置表格头可拖拽改变列宽
 				let id = removeNode.getAttribute('mvi-editor-element')
 				const table = instance.$refs.content.querySelector(`table[mvi-editor-element="${id}"]`)
 				setTableResize(table, instance)
