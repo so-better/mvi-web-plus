@@ -549,7 +549,7 @@ export default {
 			if (!this.editorInstance) {
 				return
 			}
-			//如果是在编辑器内或者菜单栏内不清除
+			//如果是在编辑器内或者菜单栏内不关闭
 			if (Dap.element.isContains(this.$el, e.target) || Dap.element.isContains(this.editorInstance.$el, e.target)) {
 				return
 			}
@@ -606,6 +606,9 @@ export default {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
+	background-color: #fff;
+	color: @font-color-default;
+	font-size: @font-size-default;
 
 	.mvi-editor-dialog-el {
 		display: flex;
@@ -640,6 +643,7 @@ export default {
 	overflow-y: auto;
 	background-color: #fff;
 	color: @font-color-default;
+	font-size: @font-size-default;
 
 	.mvi-editor-dialog-layer-el {
 		display: block;

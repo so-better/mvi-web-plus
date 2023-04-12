@@ -23,9 +23,5 @@ export default {
 	//是否显示阴影
 	shadow: true,
 	//是否显示边框
-	border: true,
-	//边框颜色
-	borderColor: '#eee',
-	//背景颜色
-	background: '#fff'
+	border: true
 }

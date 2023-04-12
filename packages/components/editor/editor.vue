@@ -326,56 +326,6 @@ export default {
 				})
 			})
 		},
-		//源码视图获取焦点
-		codeViewFocus() {
-			if (this.disabled) {
-				return
-			}
-			if (!this.$refs.codeView) {
-				return
-			}
-			this.$emit('focus', {
-				html: this.html,
-				text: this.text
-			})
-		},
-		//源码视图失去焦点
-		codeViewBlur() {
-			if (this.disabled) {
-				return
-			}
-			if (!this.$refs.codeView) {
-				return
-			}
-			this.$emit('blur', {
-				html: this.html,
-				text: this.text
-			})
-		},
-		//源码视图输入
-		codeViewInput() {
-			if (this.disabled) {
-				return
-			}
-			if (!this.$refs.codeView) {
-				return
-			}
-			this.updateHtmlText()
-			this.updateValue()
-			this.$emit('input', {
-				html: this.html,
-				text: this.text
-			})
-		},
-		//源码视图粘贴
-		codeViewPaste(event) {
-			event.preventDefault()
-			let clip = (event.originalEvent || event).clipboardData
-			let text = clip.getData('text/plain') || ''
-			if (text !== '') {
-				document.execCommand('insertText', false, text)
-			}
-		},
 		//编辑器粘贴事件
 		contentPaste(event) {
 			let clip = (event.originalEvent || event).clipboardData
@@ -443,6 +393,56 @@ export default {
 						}
 					}
 				}
+			}
+		},
+		//源码视图获取焦点
+		codeViewFocus() {
+			if (this.disabled) {
+				return
+			}
+			if (!this.$refs.codeView) {
+				return
+			}
+			this.$emit('focus', {
+				html: this.html,
+				text: this.text
+			})
+		},
+		//源码视图失去焦点
+		codeViewBlur() {
+			if (this.disabled) {
+				return
+			}
+			if (!this.$refs.codeView) {
+				return
+			}
+			this.$emit('blur', {
+				html: this.html,
+				text: this.text
+			})
+		},
+		//源码视图输入
+		codeViewInput() {
+			if (this.disabled) {
+				return
+			}
+			if (!this.$refs.codeView) {
+				return
+			}
+			this.updateHtmlText()
+			this.updateValue()
+			this.$emit('input', {
+				html: this.html,
+				text: this.text
+			})
+		},
+		//源码视图粘贴
+		codeViewPaste(event) {
+			event.preventDefault()
+			let clip = (event.originalEvent || event).clipboardData
+			let text = clip.getData('text/plain') || ''
+			if (text !== '') {
+				document.execCommand('insertText', false, text)
 			}
 		},
 		//监听富文本编辑器中的dom

@@ -25,8 +25,6 @@
 			:animation="$parent.combinedLayerProps.animation"
 			:shadow="$parent.combinedLayerProps.shadow"
 			:border="$parent.combinedLayerProps.border"
-			:border-color="$parent.combinedLayerProps.borderColor"
-			:background="$parent.combinedLayerProps.background"
 			:width="$parent.combinedLayerProps.width"
 			:closable="$parent.trigger == 'click'"
 			:target="`[data-id='mvi-editor-menu-target-${uid}-${options.key}']`"
@@ -275,7 +273,7 @@ export default {
 		layerActiveClass() {
 			return dataItem => {
 				if (this.active && dataItem.value == this.selectVal.value) {
-					return dataItem.activeClass || this.$parent.layerActiveClass || 'active'
+					return this.options.layerActiveClass || this.$parent.layerActiveClass || 'active'
 				}
 				return ''
 			}
@@ -643,14 +641,14 @@ export default {
 				return
 			}
 			if (type == 'enter') {
-				if (dataItem.hoverClass) {
-					Dap.element.addClass(event.currentTarget, dataItem.hoverClass)
+				if (this.options.layerHoverClass) {
+					Dap.element.addClass(event.currentTarget, this.options.layerHoverClass)
 				} else if (this.$parent.layerHoverClass) {
 					Dap.element.addClass(event.currentTarget, this.$parent.layerHoverClass)
 				}
 			} else if (type == 'leave') {
-				if (dataItem.hoverClass) {
-					Dap.element.removeClass(event.currentTarget, dataItem.hoverClass)
+				if (this.options.layerHoverClass) {
+					Dap.element.removeClass(event.currentTarget, this.options.layerHoverClass)
 				} else if (this.$parent.layerHoverClass) {
 					Dap.element.removeClass(event.currentTarget, this.$parent.layerHoverClass)
 				}
@@ -1147,6 +1145,9 @@ export default {
 
 .mvi-editor-menu-layer {
 	display: block;
+	background-color: #fff;
+	color: @font-color-default;
+	font-size: @font-size-default;
 
 	.mvi-editor-menu-default {
 		display: block;
@@ -1194,9 +1195,6 @@ export default {
 		flex-wrap: wrap;
 		width: calc(@small-height * 4 + @mp-xs * 10 + 16px);
 		padding: @mp-xs;
-		background-color: #fff;
-		color: @font-color-default;
-		font-size: @font-size-default;
 
 		.mvi-editor-menu-color {
 			display: block;
@@ -1227,9 +1225,6 @@ export default {
 	.mvi-editor-menu-table {
 		display: block;
 		padding: @mp-sm;
-		background-color: #fff;
-		color: @font-color-default;
-		font-size: @font-size-default;
 
 		.mvi-editor-menu-table-groups {
 			display: flex;
@@ -1313,9 +1308,6 @@ export default {
 		display: block;
 		padding: @mp-sm;
 		width: 6rem;
-		background-color: #fff;
-		color: @font-color-default;
-		font-size: @font-size-default;
 
 		input {
 			appearance: none;
@@ -1381,9 +1373,6 @@ export default {
 		display: block;
 		width: 5rem;
 		padding: @mp-xs 0;
-		background-color: #fff;
-		color: @font-color-default;
-		font-size: @font-size-default;
 
 		.mvi-editor-menu-media-upload {
 			display: block;
