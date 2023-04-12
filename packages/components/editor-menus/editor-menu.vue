@@ -1,5 +1,5 @@
 <template>
-	<div class="mvi-editor-menu" :data-id="`mvi-editor-menu-${uid}-${options.key}`">
+	<div class="mvi-editor-menu" :data-id="`mvi-editor-menu-${uid}-${options.key}`" @mouseenter="editorMenuHover('enter')" @mouseleave="editorMenuHover('leave')">
 		<Tooltip :disabled="disabledToolTip" :title="options.name" trigger="hover" :placement="$parent.combinedTooltipProps.placement" :timeout="$parent.combinedTooltipProps.timeout" :color="$parent.combinedTooltipProps.color" :text-color="$parent.combinedTooltipProps.textColor" :border-color="$parent.combinedTooltipProps.borderColor" :offset="$parent.combinedTooltipProps.offset" :z-index="$parent.combinedTooltipProps.zIndex" :fixed="$parent.combinedTooltipProps.fixed" :fixed-auto="$parent.combinedTooltipProps.fixedAuto" :width="$parent.combinedTooltipProps.width" :animation="$parent.combinedTooltipProps.animation" :show-triangle="$parent.combinedTooltipProps.showTriangle">
 			<div class="mvi-editor-menu-target" @click="targetTrigger" :disabled="disabledMenu || null" :data-id="`mvi-editor-menu-target-${uid}-${options.key}`" @mouseenter="targetHover('enter', $event)" @mouseleave="targetHover('leave', $event)" :style="editorTargetStyle">
 				<span class="mvi-editor-menu-value" v-if="isValueMenu">{{ selectVal?.label }}</span>
@@ -618,18 +618,23 @@ export default {
 				} else if (this.$parent.hoverClass) {
 					Dap.element.addClass(event.currentTarget, this.$parent.hoverClass)
 				}
-				if (this.$parent.trigger == 'hover') {
-					this.showLayer()
-				}
 			} else if (type == 'leave') {
 				if (this.options.hoverClass) {
 					Dap.element.removeClass(event.currentTarget, this.options.hoverClass)
 				} else if (this.$parent.hoverClass) {
 					Dap.element.removeClass(event.currentTarget, this.$parent.hoverClass)
 				}
-				if (this.$parent.trigger == 'hover') {
-					this.hideLayer()
-				}
+			}
+		},
+		//菜单项根元素悬浮
+		editorMenuHover(type) {
+			if (this.$parent.trigger != 'hover') {
+				return
+			}
+			if (type == 'enter') {
+				this.showLayer()
+			} else if (type == 'leave') {
+				this.hideLayer()
 			}
 		},
 		//浮层选项悬浮效果设置

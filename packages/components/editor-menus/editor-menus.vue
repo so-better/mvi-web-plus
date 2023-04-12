@@ -10,17 +10,21 @@
 		<!-- 跟随式浮层 -->
 		<Layer v-model="dialogOptions.show" :target="dialogOptions.target" :root="`[data-id='mvi-editor-${uid}']`" placement="bottom-start" offset="0.1rem" :z-index="40" :timeout="100" shadow border :show-triangle="false" animation="mvi-editor-dialog" @hidden="dialogHidden">
 			<div class="mvi-editor-dialog">
-				<div v-if="dialogOptions.type == 'code'" class="mvi-editor-dialog-el">删除代码</div>
-				<div v-if="dialogOptions.type == 'code'" class="mvi-editor-dialog-el" :data-id="`mvi-editor-code-${uid}`" @click="codeLanguageLayerShow">
-					<span>{{ codeParams.currentLanguage?.label }}</span>
-					<Icon type="caret-down"></Icon>
+				<div v-if="dialogOptions.type == 'code'" class="mvi-editor-dialog-el">
+					<div class="mvi-editor-dialog-target" @mouseenter="dialogBtnHover('enter', $event)" @mouseleave="dialogBtnHover('leave', $event)">删除代码</div>
+				</div>
+				<div v-if="dialogOptions.type == 'code'" class="mvi-editor-dialog-el" @mouseenter="dialogElHover('enter')" @mouseleave="dialogElHover('leave')">
+					<div class="mvi-editor-dialog-target" :data-id="`mvi-editor-code-${uid}`" @click="codeLanguageLayerShow" @mouseenter="dialogBtnHover('enter', $event)" @mouseleave="dialogBtnHover('leave', $event)">
+						<span>{{ codeParams.currentLanguage?.label }}</span>
+						<Icon type="caret-down"></Icon>
+					</div>
 				</div>
 			</div>
 		</Layer>
 		<!-- 语言选择浮层 -->
 		<Layer v-model="codeParams.show" :target="`[data-id='mvi-editor-code-${uid}']`" :root="`[data-id='mvi-editor-${uid}']`" placement="bottom-start" offset="0.2rem" :z-index="41" closable :timeout="100" shadow border :show-triangle="false" animation="mvi-editor-dialog">
 			<div class="mvi-editor-dialog-layer">
-				<div class="mvi-editor-dialog-layer-el" v-for="item in codeLanguages" @click="selectLanguage(item)">{{ item.label }}</div>
+				<div class="mvi-editor-dialog-layer-el" v-for="item in codeLanguages" @click="selectLanguage(item)" @mouseenter="dialogLayerHover('enter', $event)" @mouseleave="dialogLayerHover('leave', $event)">{{ item.label }}</div>
 			</div>
 		</Layer>
 	</div>
@@ -575,6 +579,57 @@ export default {
 			this.codeParams.show = false
 			this.codeParams.target = null
 			this.codeParams.currentLanguage = null
+		},
+		//跟随式浮层按钮根元素悬浮
+		dialogElHover(type) {
+			if (this.trigger != 'hover') {
+				return
+			}
+			if (type == 'enter') {
+				if (this.dialogOptions.type == 'code' && this.trigger == 'hover') {
+					this.codeParams.show = true
+				}
+			} else if (type == 'leave') {
+				if (this.dialogOptions.type == 'code' && this.trigger == 'hover') {
+					this.codeParams.show = false
+				}
+			}
+		},
+		//跟随式浮层中的按钮悬浮效果
+		dialogBtnHover(type, event) {
+			if (!this.editorInstance) {
+				return
+			}
+			if (this.editorInstance.disabled) {
+				return
+			}
+			if (type == 'enter') {
+				if (this.hoverClass) {
+					Dap.element.addClass(event.currentTarget, this.hoverClass)
+				}
+			} else if (type == 'leave') {
+				if (this.hoverClass) {
+					Dap.element.removeClass(event.currentTarget, this.hoverClass)
+				}
+			}
+		},
+		//跟随式浮层上的浮层选项悬浮效果设置
+		dialogLayerHover(type, event) {
+			if (!this.editorInstance) {
+				return
+			}
+			if (this.editorInstance.disabled) {
+				return
+			}
+			if (type == 'enter') {
+				if (this.layerHoverClass) {
+					Dap.element.addClass(event.currentTarget, this.layerHoverClass)
+				}
+			} else if (type == 'leave') {
+				if (this.layerHoverClass) {
+					Dap.element.removeClass(event.currentTarget, this.layerHoverClass)
+				}
+			}
 		}
 	},
 	beforeUnmount() {
@@ -611,25 +666,30 @@ export default {
 	font-size: @font-size-default;
 
 	.mvi-editor-dialog-el {
-		display: flex;
-		justify-content: flex-start;
-		align-items: center;
-		height: @mini-height;
-		margin: 0;
-		padding: 0 @mp-sm;
-		transition: color 200ms;
-		-webkit-transition: color 200ms;
-		opacity: 0.8;
-		border-radius: @radius-default;
+		position: relative;
+		display: block;
 
-		&:hover {
-			cursor: pointer;
-			opacity: 1;
-			background-color: @bg-color-default;
-		}
+		.mvi-editor-dialog-target {
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			height: @mini-height;
+			margin: 0;
+			padding: 0 @mp-sm;
+			transition: color 200ms;
+			-webkit-transition: color 200ms;
+			opacity: 0.8;
+			border-radius: @radius-default;
 
-		.mvi-icon {
-			transform: scale(0.5);
+			&:hover {
+				cursor: pointer;
+				opacity: 1;
+				background-color: @bg-color-default;
+			}
+
+			.mvi-icon {
+				transform: scale(0.5);
+			}
 		}
 	}
 }
