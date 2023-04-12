@@ -12,19 +12,19 @@ export default function (addNode, removeNode, instance) {
 				addNode.removeAttribute(attribute.nodeName)
 			}
 		}
-		//统一引用样式
+		//引用
 		if (addNode.nodeName.toLocaleLowerCase() == 'blockquote') {
 			//设置唯一属性
 			const id = getGuid()
 			setEditorElementId(addNode, id)
 		}
-		//统一分隔线样式
+		//分隔线
 		else if (addNode.nodeName.toLocaleLowerCase() == 'hr') {
 			//设置唯一属性
 			const id = getGuid()
 			setEditorElementId(addNode, id)
 		}
-		//统一图片样式
+		//图片
 		else if (addNode.nodeName.toLocaleLowerCase() == 'img') {
 			//设置唯一属性
 			const id = getGuid()
@@ -34,7 +34,7 @@ export default function (addNode, removeNode, instance) {
 			//设置可拖拽改变大小
 			setElementResize(addNode, instance)
 		}
-		//统一所有视频样式
+		//视频
 		else if (addNode.nodeName.toLocaleLowerCase() == 'video') {
 			//设置唯一属性
 			const id = getGuid()
@@ -58,6 +58,20 @@ export default function (addNode, removeNode, instance) {
 			const id = addNode.getAttribute('mvi-editor-element')
 			const table = instance.$refs.content.querySelector(`table[mvi-editor-element="${id}"]`)
 			setTableResize(table, instance)
+		}
+		//监听链接插入
+		else if (addNode.nodeName.toLocaleLowerCase() == 'a' || addNode.querySelector('a')) {
+			if (addNode.nodeName.toLocaleLowerCase() == 'a') {
+				//设置唯一属性
+				const id = getGuid()
+				setEditorElementId(addNode, id)
+			} else {
+				addNode.querySelectorAll('a').forEach(link => {
+					//设置唯一属性
+					const id = getGuid()
+					setEditorElementId(link, id)
+				})
+			}
 		}
 	} else if (removeNode) {
 		//监听编辑器删除表格行操作

@@ -10,8 +10,11 @@
 		<!-- 跟随式浮层 -->
 		<Layer v-if="editorInstance" v-model="editorInstance.dialogOptions.show" :target="editorInstance.dialogOptions.target" :root="`[data-id='mvi-editor-${uid}']`" placement="bottom-start" offset="0.1rem" :z-index="40" :timeout="100" shadow border :show-triangle="false" animation="mvi-editor-dialog" @hidden="dialogHidden">
 			<div class="mvi-editor-dialog">
-				<div v-if="editorInstance.dialogOptions.type == 'code'" class="mvi-editor-dialog-el">
-					<div class="mvi-editor-dialog-target" @mouseenter="dialogBtnHover('enter', $event)" @mouseleave="dialogBtnHover('leave', $event)" @click="removeCode">删除代码</div>
+				<div v-if="editorInstance.dialogOptions.type == 'link'" class="mvi-editor-dialog-el">
+					<div class="mvi-editor-dialog-target" @mouseenter="dialogBtnHover('enter', $event)" @mouseleave="dialogBtnHover('leave', $event)" @click="editorInstance.dialogOptions.menuInstance.deleteLink">
+						<Icon type="unlink"></Icon>
+						<span>{{ editorInstance.dialogOptions.menuInstance.options.deleteText ? editorInstance.dialogOptions.menuInstance.options.deleteText : '删除链接' }}</span>
+					</div>
 				</div>
 			</div>
 		</Layer>
@@ -280,209 +283,217 @@ export default {
 			if (!node) {
 				return
 			}
-			for (let menu of this.menuRefs) {
-				//弹出式菜单
-				if (this.isLayerMenu(menu.options)) {
-					//显示已选值的弹出式菜单
-					if (this.isValueMenu(menu.options)) {
-						menu.active = false
-						menu.initSelectVal()
-						//设置标题激活状态
-						if (menu.options.key == 'title') {
-							for (let dataItem of menu.options.data) {
-								if (document.queryCommandValue('formatBlock').toLocaleLowerCase() == dataItem.value.toLocaleLowerCase()) {
-									menu.active = true
-									menu.selectVal = { ...dataItem }
-									break
-								}
-							}
-						}
-						//设置字体激活状态
-						else if (menu.options.key == 'fontFamily') {
-							for (let dataItem of menu.options.data) {
-								if (document.queryCommandValue('fontName') == dataItem.value) {
-									menu.active = true
-									menu.selectVal = { ...dataItem }
-									break
-								}
-							}
-						}
-						//设置字号激活状态
-						else if (menu.options.key == 'fontSize') {
-							for (let dataItem of menu.options.data) {
-								let value = dataItem.value
-								if (value.endsWith('rem')) {
-									const number = Number.parseFloat(value)
-									if (Dap.number.isNumber(number)) {
-										value = Dap.element.rem2px(number) + 'px'
+			this.editorInstance.dialogOptions.show = false
+			this.$nextTick(() => {
+				for (let menu of this.menuRefs) {
+					//弹出式菜单
+					if (this.isLayerMenu(menu.options)) {
+						//显示已选值的弹出式菜单
+						if (this.isValueMenu(menu.options)) {
+							menu.active = false
+							menu.initSelectVal()
+							//设置标题激活状态
+							if (menu.options.key == 'title') {
+								for (let dataItem of menu.options.data) {
+									if (document.queryCommandValue('formatBlock').toLocaleLowerCase() == dataItem.value.toLocaleLowerCase()) {
+										menu.active = true
+										menu.selectVal = { ...dataItem }
+										break
 									}
 								}
-								if (this.editorInstance.compareCss(node, 'font-size', value, false)) {
-									menu.active = true
-									menu.selectVal = { ...dataItem }
-									break
+							}
+							//设置字体激活状态
+							else if (menu.options.key == 'fontFamily') {
+								for (let dataItem of menu.options.data) {
+									if (document.queryCommandValue('fontName') == dataItem.value) {
+										menu.active = true
+										menu.selectVal = { ...dataItem }
+										break
+									}
+								}
+							}
+							//设置字号激活状态
+							else if (menu.options.key == 'fontSize') {
+								for (let dataItem of menu.options.data) {
+									let value = dataItem.value
+									if (value.endsWith('rem')) {
+										const number = Number.parseFloat(value)
+										if (Dap.number.isNumber(number)) {
+											value = Dap.element.rem2px(number) + 'px'
+										}
+									}
+									if (this.editorInstance.compareCss(node, 'font-size', value, false)) {
+										menu.active = true
+										menu.selectVal = { ...dataItem }
+										break
+									}
+								}
+							}
+							//自定义菜单
+							else if (!unactiveMenus.includes(menu.options.key)) {
+								if (typeof this.customActive == 'function') {
+									const obj = this.customActive(menu.options.key, menu.options.data, node)
+									menu.active = obj.active || false
+									menu.selectVal =
+										menu.options.data.find(item => {
+											return item.value == obj.value
+										}) || {}
 								}
 							}
 						}
-						//自定义菜单
-						else if (!unactiveMenus.includes(menu.options.key)) {
-							if (typeof this.customActive == 'function') {
-								const obj = this.customActive(menu.options.key, menu.options.data, node)
-								menu.active = obj.active || false
-								menu.selectVal =
-									menu.options.data.find(item => {
-										return item.value == obj.value
-									}) || {}
+						//普通的弹出式菜单
+						else {
+							menu.active = false
+							menu.selectVal = {}
+							//设置字体颜色激活状态
+							if (menu.options.key == 'foreColor') {
+								for (let dataItem of menu.options.data) {
+									let value = dataItem.value
+									//如果是十六进制颜色
+									if (Dap.common.matchingText(value, 'hex')) {
+										let rgbVal = Dap.color.hex2rgb(value)
+										value = `rgb(${rgbVal[0]}, ${rgbVal[1]}, ${rgbVal[2]})`
+									}
+									if (document.queryCommandValue('foreColor') == value) {
+										menu.active = true
+										menu.selectVal = { ...dataItem }
+										break
+									}
+								}
+							}
+							//设置背景色激活状态
+							else if (menu.options.key == 'backColor') {
+								for (let dataItem of menu.options.data) {
+									let value = dataItem.value
+									//如果是十六进制颜色
+									if (Dap.common.matchingText(value, 'hex')) {
+										let rgbVal = Dap.color.hex2rgb(value)
+										value = `rgb(${rgbVal[0]}, ${rgbVal[1]}, ${rgbVal[2]})`
+									}
+									if (document.queryCommandValue('backColor') == value) {
+										menu.active = true
+										menu.selectVal = { ...dataItem }
+										break
+									}
+								}
+							}
+							//设置对齐方式激活状态
+							else if (menu.options.key == 'justify') {
+								for (let dataItem of menu.options.data) {
+									if (document.queryCommandState(dataItem.value)) {
+										menu.active = true
+										menu.selectVal = { ...dataItem }
+										break
+									}
+								}
+							}
+							//设置链接激活状态
+							else if (menu.options.key == 'link') {
+								if (this.editorInstance.compareTag(node, 'a')) {
+									menu.active = true
+									const link = this.editorInstance.getCompareTag(node, 'a')
+									this.editorInstance.dialogOptions.target = `[mvi-editor-element="${link.getAttribute('mvi-editor-element')}"]`
+									this.editorInstance.dialogOptions.menuInstance = menu
+									this.editorInstance.dialogOptions.type = menu.options.key
+									this.editorInstance.dialogOptions.show = true
+								}
+							}
+							//设置表格激活状态
+							else if (menu.options.key == 'table') {
+								if (this.editorInstance.compareTag(node, 'table')) {
+									menu.active = true
+								}
+							}
+							//自定义菜单
+							else if (!unactiveMenus.includes(menu.options.key)) {
+								if (typeof this.customActive == 'function') {
+									const obj = this.customActive(menu.options.key, menu.options.data, node)
+									menu.active = obj.active || false
+									menu.selectVal =
+										menu.options.data.find(item => {
+											return item.value == obj.value
+										}) || {}
+								}
 							}
 						}
 					}
-					//普通的弹出式菜单
+					//普通菜单
 					else {
 						menu.active = false
-						menu.selectVal = {}
-						//设置字体颜色激活状态
-						if (menu.options.key == 'foreColor') {
-							for (let dataItem of menu.options.data) {
-								let value = dataItem.value
-								//如果是十六进制颜色
-								if (Dap.common.matchingText(value, 'hex')) {
-									let rgbVal = Dap.color.hex2rgb(value)
-									value = `rgb(${rgbVal[0]}, ${rgbVal[1]}, ${rgbVal[2]})`
-								}
-								if (document.queryCommandValue('foreColor') == value) {
-									menu.active = true
-									menu.selectVal = { ...dataItem }
-									break
-								}
-							}
-						}
-						//设置背景色激活状态
-						else if (menu.options.key == 'backColor') {
-							for (let dataItem of menu.options.data) {
-								let value = dataItem.value
-								//如果是十六进制颜色
-								if (Dap.common.matchingText(value, 'hex')) {
-									let rgbVal = Dap.color.hex2rgb(value)
-									value = `rgb(${rgbVal[0]}, ${rgbVal[1]}, ${rgbVal[2]})`
-								}
-								if (document.queryCommandValue('backColor') == value) {
-									menu.active = true
-									menu.selectVal = { ...dataItem }
-									break
-								}
-							}
-						}
-						//设置对齐方式激活状态
-						else if (menu.options.key == 'justify') {
-							for (let dataItem of menu.options.data) {
-								if (document.queryCommandState(dataItem.value)) {
-									menu.active = true
-									menu.selectVal = { ...dataItem }
-									break
-								}
-							}
-						}
-						//设置链接激活状态
-						else if (menu.options.key == 'link') {
-							if (this.editorInstance.compareTag(node, 'a')) {
+						//设置加粗激活状态
+						if (menu.options.key == 'bold') {
+							if (document.queryCommandState('bold')) {
 								menu.active = true
 							}
 						}
-						//设置表格激活状态
-						else if (menu.options.key == 'table') {
-							if (this.editorInstance.compareTag(node, 'table')) {
+						//设置斜体激活状态
+						else if (menu.options.key == 'italic') {
+							if (document.queryCommandState('italic')) {
+								menu.active = true
+							}
+						}
+						//设置下划线激活状态
+						else if (menu.options.key == 'underline') {
+							if (document.queryCommandState('underline')) {
+								menu.active = true
+							}
+						}
+						//设置删除线激活状态
+						else if (menu.options.key == 'strikeThrough') {
+							if (document.queryCommandState('strikeThrough')) {
+								menu.active = true
+							}
+						}
+						//设置下标激活状态
+						else if (menu.options.key == 'subscript') {
+							if (document.queryCommandState('subscript')) {
+								menu.active = true
+							}
+						}
+						//设置上标激活状态
+						else if (menu.options.key == 'superscript') {
+							if (document.queryCommandState('superscript')) {
+								menu.active = true
+							}
+						}
+						//设置有序列表激活状态
+						else if (menu.options.key == 'ol') {
+							if (document.queryCommandState('insertOrderedList')) {
+								menu.active = true
+							}
+						}
+						//设置无序列表激活状态
+						else if (menu.options.key == 'ul') {
+							if (document.queryCommandState('insertUnorderedList')) {
+								menu.active = true
+							}
+						}
+						//设置引用激活状态
+						else if (menu.options.key == 'quote') {
+							if (document.queryCommandValue('formatBlock').toLocaleLowerCase() == 'blockquote') {
+								menu.active = true
+							}
+						}
+						//设置代码激活状态
+						else if (menu.options.key == 'code') {
+							//待开发
+						}
+						//设置源码视图激活状态
+						else if (menu.options.key == 'codeView') {
+							if (this.editorInstance.codeViewShow) {
 								menu.active = true
 							}
 						}
 						//自定义菜单
 						else if (!unactiveMenus.includes(menu.options.key)) {
 							if (typeof this.customActive == 'function') {
-								const obj = this.customActive(menu.options.key, menu.options.data, node)
+								const obj = this.customActive(menu.options.key, node)
 								menu.active = obj.active || false
-								menu.selectVal =
-									menu.options.data.find(item => {
-										return item.value == obj.value
-									}) || {}
 							}
 						}
 					}
 				}
-				//普通菜单
-				else {
-					menu.active = false
-					//设置加粗激活状态
-					if (menu.options.key == 'bold') {
-						if (document.queryCommandState('bold')) {
-							menu.active = true
-						}
-					}
-					//设置斜体激活状态
-					else if (menu.options.key == 'italic') {
-						if (document.queryCommandState('italic')) {
-							menu.active = true
-						}
-					}
-					//设置下划线激活状态
-					else if (menu.options.key == 'underline') {
-						if (document.queryCommandState('underline')) {
-							menu.active = true
-						}
-					}
-					//设置删除线激活状态
-					else if (menu.options.key == 'strikeThrough') {
-						if (document.queryCommandState('strikeThrough')) {
-							menu.active = true
-						}
-					}
-					//设置下标激活状态
-					else if (menu.options.key == 'subscript') {
-						if (document.queryCommandState('subscript')) {
-							menu.active = true
-						}
-					}
-					//设置上标激活状态
-					else if (menu.options.key == 'superscript') {
-						if (document.queryCommandState('superscript')) {
-							menu.active = true
-						}
-					}
-					//设置有序列表激活状态
-					else if (menu.options.key == 'ol') {
-						if (document.queryCommandState('insertOrderedList')) {
-							menu.active = true
-						}
-					}
-					//设置无序列表激活状态
-					else if (menu.options.key == 'ul') {
-						if (document.queryCommandState('insertUnorderedList')) {
-							menu.active = true
-						}
-					}
-					//设置引用激活状态
-					else if (menu.options.key == 'quote') {
-						if (document.queryCommandValue('formatBlock').toLocaleLowerCase() == 'blockquote') {
-							menu.active = true
-						}
-					}
-					//设置代码激活状态
-					else if (menu.options.key == 'code') {
-						//待开发
-					}
-					//设置源码视图激活状态
-					else if (menu.options.key == 'codeView') {
-						if (this.editorInstance.codeViewShow) {
-							menu.active = true
-						}
-					}
-					//自定义菜单
-					else if (!unactiveMenus.includes(menu.options.key)) {
-						if (typeof this.customActive == 'function') {
-							const obj = this.customActive(menu.options.key, node)
-							menu.active = obj.active || false
-						}
-					}
-				}
-			}
+			})
 		},
 		//判断是否清除range
 		judgeClearRange(e) {
@@ -547,13 +558,6 @@ export default {
 					Dap.element.removeClass(event.currentTarget, this.layerHoverClass)
 				}
 			}
-		},
-		//删除代码块
-		removeCode() {
-			if (this.editorInstance.dialogOptions.menuInstance) {
-				this.editorInstance.restoreRange()
-				this.editorInstance.dialogOptions.menuInstance.removeCode()
-			}
 		}
 	},
 	beforeUnmount() {
@@ -612,43 +616,9 @@ export default {
 			}
 
 			.mvi-icon {
-				transform: scale(0.5);
+				margin-right: @mp-xs;
 			}
 		}
 	}
-}
-
-.mvi-editor-dialog-layer {
-	display: block;
-	padding: @mp-xs 0;
-	max-height: 5rem;
-	width: 2.2rem;
-	overflow-x: hidden;
-	overflow-y: auto;
-	background-color: #fff;
-	color: @font-color-default;
-	font-size: @font-size-default;
-
-	.mvi-editor-dialog-layer-el {
-		display: block;
-		padding: @mp-xs @mp-sm;
-		margin: 0;
-		white-space: nowrap;
-		text-overflow: ellipsis;
-		overflow: hidden;
-		text-align: center;
-		opacity: 0.8;
-		width: 100%;
-
-		&:hover {
-			opacity: 1;
-			cursor: pointer;
-			background-color: @bg-color-default;
-		}
-	}
-}
-
-:deep(.mvi-editor-dialog-code-select.mvi-select.mvi-select-small .mvi-select-target) {
-	height: @mini-height;
 }
 </style>
