@@ -110,8 +110,8 @@ export default {
 			isModelChange: false,
 			//激活菜单项的具体判定函数
 			changeActiveJudgeFn: null,
-			//光标是否在代码块内
-			isInCode: false
+			//光标所在区域
+			cursorArea: ''
 		}
 	},
 	computed: {
@@ -256,7 +256,7 @@ export default {
 		contentKeydown(e) {
 			const { Mac } = Dap.platform.os()
 			//代码块内重新定义换行操作
-			if (e.keyCode == 13 && this.isInCode) {
+			if (e.keyCode == 13 && this.cursorArea == 'code') {
 				e.preventDefault()
 				//换行符后需要加个空格
 				this.insertHtml('\n ')
@@ -264,7 +264,7 @@ export default {
 			//tab键按下插入空格
 			else if (e.keyCode == 9) {
 				e.preventDefault()
-				if (this.isInCode) {
+				if (this.cursorArea == 'code') {
 					//代码块内插入两个空格
 					this.insertHtml('  ')
 				} else {
@@ -345,10 +345,10 @@ export default {
 		contentPaste(event) {
 			let clip = (event.originalEvent || event).clipboardData
 			let text = clip.getData('text/plain') || ''
-			if (this.pasteText || this.isInCode) {
+			if (this.pasteText || this.cursorArea == 'code') {
 				event.preventDefault()
 				if (text !== '') {
-					if (this.isInCode) {
+					if (this.cursorArea == 'code') {
 						this.insertHtml(text)
 					} else {
 						this.insertText(text)

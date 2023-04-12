@@ -267,6 +267,7 @@ export default {
 			if (!node) {
 				return
 			}
+			this.editorInstance.cursorArea = ''
 			for (let menu of this.menuRefs) {
 				//弹出式菜单
 				if (this.isLayerMenu(menu.options)) {
@@ -379,6 +380,7 @@ export default {
 						else if (menu.options.key == 'table') {
 							if (this.editorInstance.compareTag(node, 'table')) {
 								menu.active = true
+								this.editorInstance.cursorArea = menu.options.key
 							}
 						}
 						//自定义菜单
@@ -449,15 +451,15 @@ export default {
 					else if (menu.options.key == 'quote') {
 						if (document.queryCommandValue('formatBlock').toLocaleLowerCase() == 'blockquote') {
 							menu.active = true
+							this.editorInstance.cursorArea = menu.options.key
 						}
 					}
 					//设置代码激活状态
 					else if (menu.options.key == 'code') {
-						this.editorInstance.isInCode = false
 						if (document.queryCommandValue('formatBlock').toLocaleLowerCase() == 'pre') {
 							//设为激活状态
 							menu.active = true
-							this.editorInstance.isInCode = true
+							this.editorInstance.cursorArea = menu.options.key
 						}
 					}
 					//设置源码视图激活状态

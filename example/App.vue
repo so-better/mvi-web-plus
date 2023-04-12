@@ -11,7 +11,7 @@ export default {
 		return {
 			show: true,
 			disabled: false,
-			value: '<pre>ab</pre>'
+			value: ''
 		}
 	},
 	mounted() {

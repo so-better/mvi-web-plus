@@ -209,9 +209,17 @@ export default {
 			if (this.options.key != 'codeView' && this.$parent.editorInstance.codeViewShow) {
 				return true
 			}
-			//在pre标签内容只允许部分菜单可以使用
-			if (this.$parent.editorInstance.isInCode) {
+			//在代码块内只允许部分菜单可以使用
+			if (this.$parent.editorInstance.cursorArea == 'code') {
 				return ['divider', 'title', 'fontFamily', 'fontSize', 'ol', 'ul', 'justify', 'quote', 'link', 'image', 'video', 'table'].includes(this.options.key)
+			}
+			//在引用内只允许部分菜单可以使用
+			if (this.$parent.editorInstance.cursorArea == 'quote') {
+				return ['divider', 'title', 'fontFamily', 'fontSize', 'ol', 'ul', 'justify', 'code', 'link', 'image', 'video', 'table'].includes(this.options.key)
+			}
+			//在引用内只允许部分菜单可以使用
+			if (this.$parent.editorInstance.cursorArea == 'table') {
+				return ['divider', 'title', 'ol', 'ul', 'link', 'image', 'video', 'quote', 'code'].includes(this.options.key)
 			}
 			return false
 		},
