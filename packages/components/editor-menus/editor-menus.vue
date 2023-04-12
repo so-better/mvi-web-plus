@@ -591,6 +591,7 @@ export default {
 		},
 		//选择代码语言
 		selectLanguage(language) {
+			this.editorInstance.restoreRange()
 			const preEl = document.body.querySelector(this.dialogOptions.target)
 			this.codeParams.currentLanguage = language.value
 			if (preEl) {
