@@ -1,5 +1,5 @@
 <template>
-	<div class="mvi-editor" @dragstart="preventDefault" @drop="preventDefault" @dragover="preventDefault">
+	<div class="mvi-editor" @dragstart="$event => $event.preventDefault()" @drop="$event => $event.preventDefault()" @dragover="$event => $event.preventDefault()">
 		<div v-if="codeViewShow" ref="codeView" v-text="initalHtml" key="code" :contenteditable="!disabled || null" :style="codeViewStyle" :class="codeViewClass" @blur="codeViewBlur" @focus="codeViewFocus" @input="codeViewInput" @paste="codeViewPaste"></div>
 		<div v-else ref="content" v-html="initalHtml" key="content" :contenteditable="!disabled || null" :style="contentStyle" :class="contentClass" :data-placeholder="placeholder" @blur="contentBlur" @focus="contentFocus" @input="contentInput" @paste="contentPaste" @keyup="changeActive" @click="changeActive" @keydown="contentKeydown"></div>
 	</div>
@@ -110,7 +110,7 @@ export default {
 			isModelChange: false,
 			//激活菜单项的具体判定函数
 			changeActiveJudgeFn: null,
-			//光标所在区域
+			//光标所在区域，目前可取值为code、quote等
 			cursorArea: ''
 		}
 	},
@@ -218,12 +218,15 @@ export default {
 				this.codeViewShow = false
 			}
 			this.$nextTick(() => {
+				//重新设置表格头可拖拽改变列宽
 				this.$refs.content.querySelectorAll('table[mvi-editor-element]').forEach(table => {
 					setTableResize(table, this)
 				})
+				//重新设置图片拖拽改变大小
 				this.$refs.content.querySelectorAll('img[mvi-editor-element]').forEach(img => {
 					setElementResize(img, this)
 				})
+				//重新设置视频拖拽改变大小
 				this.$refs.content.querySelectorAll('video[mvi-editor-element]').forEach(video => {
 					setElementResize(video, this)
 				})
@@ -345,6 +348,7 @@ export default {
 		contentPaste(event) {
 			let clip = (event.originalEvent || event).clipboardData
 			let text = clip.getData('text/plain') || ''
+			//如果是纯文本粘贴或者代码块内粘贴
 			if (this.pasteText || this.cursorArea == 'code') {
 				event.preventDefault()
 				if (text !== '') {
@@ -354,7 +358,9 @@ export default {
 						this.insertText(text)
 					}
 				}
-			} else {
+			}
+			//其他情况直接粘贴
+			else {
 				if (clip.files.length > 0) {
 					event.preventDefault()
 					for (let file of clip.files) {
@@ -364,7 +370,7 @@ export default {
 						if (isImage || isVideo) {
 							const minSize = isImage ? this.combinedUploadImageProps.minSize : this.combinedUploadVideoProps.minSize
 							const maxSize = isImage ? this.combinedUploadImageProps.maxSize : this.combinedUploadVideoProps.maxSize
-							//判断文件大小
+							//文件超过最大值
 							if (file.size / 1024 > maxSize && maxSize > 0) {
 								if (typeof this.uploadImageError == 'function') {
 									this.uploadImageError(102, '文件' + file.name + '超出文件最大值限定', file)
@@ -376,6 +382,7 @@ export default {
 								}
 								return
 							}
+							//文件小于最小值
 							if (file.size / 1024 < minSize && minSize > 0) {
 								if (typeof this.uploadImageError == 'function') {
 									this.uploadImageError(103, '文件' + file.name + '没有达到文件最小值限定', file)
@@ -474,15 +481,13 @@ export default {
 				childList: true,
 				subtree: true,
 				childNodesChange: (addNode, removeNode) => {
+					if (this.disabled) {
+						return
+					}
 					editorFormatter(addNode, removeNode, this)
 				}
 			})
 			observe.init()
-		},
-		//禁用默认事件
-		preventDefault(e) {
-			e.preventDefault()
-			return false
 		},
 
 		//api：改变菜单项激活状态

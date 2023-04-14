@@ -684,9 +684,6 @@ export default {
 		},
 		//隐藏浮层
 		hideLayer() {
-			if (this.disabledMenu) {
-				return
-			}
 			if (this.isLayerMenu) {
 				this.layerShow = false
 			}

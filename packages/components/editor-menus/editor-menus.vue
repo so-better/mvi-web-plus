@@ -139,16 +139,10 @@ export default {
 		},
 		//浮层组件配置
 		combinedLayerProps() {
-			if (!this.editorInstance) {
-				return defaultLayerProps
-			}
 			return initOption(defaultLayerProps, this.layerProps)
 		},
 		//工具提示组件配置
 		combinedTooltipProps() {
-			if (!this.editorInstance) {
-				return defaultTooltipProps
-			}
 			return initOption(defaultTooltipProps, this.tooltipProps)
 		},
 		//是否弹出式菜单
@@ -315,6 +309,7 @@ export default {
 						//自定义菜单
 						else if (!unactiveMenus.includes(menu.options.key)) {
 							if (typeof this.customActive == 'function') {
+								//customActive函数返回active和value两个值
 								const obj = this.customActive(menu.options.key, menu.options.data, node)
 								menu.active = obj.active || false
 								menu.selectVal =
@@ -472,7 +467,7 @@ export default {
 					else if (!unactiveMenus.includes(menu.options.key)) {
 						if (typeof this.customActive == 'function') {
 							const obj = this.customActive(menu.options.key, node)
-							menu.active = obj.active || false
+							menu.active = obj
 						}
 					}
 				}
