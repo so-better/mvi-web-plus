@@ -295,6 +295,8 @@ export const setTableResize = (el, instance) => {
 		}
 		Dap.data.set(btn, 'pageX', 0)
 		Dap.data.set(btn, 'resizable', false)
+		instance.updateHtmlText()
+		instance.updateValue()
 	})
 }
 
@@ -318,23 +320,14 @@ export const setElementResize = (el, instance) => {
 	}
 	obj = new Resize(el, {
 		draggableX: !instance.disabled,
-		draggableY: !instance.disabled
+		draggableY: !instance.disabled,
+		end: () => {
+			instance.updateHtmlText()
+			instance.updateValue()
+		}
 	})
 	obj.init()
 	Dap.data.set(el, 'mvi-editor-element-resize', obj)
-}
-
-/**
- * 重新初始化视频和图片的拖拽，达到更新点位的目的
- * @param {*} instance
- */
-export const resetResizeRange = instance => {
-	instance.$refs.content.querySelectorAll('img[mvi-editor-element]').forEach(img => {
-		setElementResize(img, instance)
-	})
-	instance.$refs.content.querySelectorAll('video[mvi-editor-element]').forEach(video => {
-		setElementResize(video, instance)
-	})
 }
 
 /**

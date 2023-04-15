@@ -91,7 +91,7 @@ export default {
 			type: Function
 		}
 	},
-	emits: ['update:modelValue', 'blur', 'focus', 'input', 'file-paste', 'upload-image', 'upload-video', 'save'],
+	emits: ['update:modelValue', 'blur', 'focus', 'input', 'file-paste', 'upload-image', 'upload-video', 'save', 'format-elements'],
 	data() {
 		return {
 			//是否使用菜单栏
@@ -212,25 +212,28 @@ export default {
 			})
 		},
 		//监听disabled
-		disabled(newValue) {
-			//源码模式下禁用编辑器必须调整为编辑模式
-			if (newValue) {
-				this.codeViewShow = false
+		disabled: {
+			immediate: true,
+			handler: function (newValue) {
+				//源码模式下禁用编辑器必须调整为编辑模式
+				if (newValue) {
+					this.codeViewShow = false
+				}
+				this.$nextTick(() => {
+					//重新设置表格头的拖拽改变列宽功能
+					this.$refs.content.querySelectorAll('table[mvi-editor-element]').forEach(table => {
+						setTableResize(table, this)
+					})
+					//重新设置图片拖拽改变大小的功能
+					this.$refs.content.querySelectorAll('img[mvi-editor-element]').forEach(img => {
+						setElementResize(img, this)
+					})
+					//重新设置视频拖拽改变大小的功能
+					this.$refs.content.querySelectorAll('video[mvi-editor-element]').forEach(video => {
+						setElementResize(video, this)
+					})
+				})
 			}
-			this.$nextTick(() => {
-				//重新设置表格头可拖拽改变列宽
-				this.$refs.content.querySelectorAll('table[mvi-editor-element]').forEach(table => {
-					setTableResize(table, this)
-				})
-				//重新设置图片拖拽改变大小
-				this.$refs.content.querySelectorAll('img[mvi-editor-element]').forEach(img => {
-					setElementResize(img, this)
-				})
-				//重新设置视频拖拽改变大小
-				this.$refs.content.querySelectorAll('video[mvi-editor-element]').forEach(video => {
-					setElementResize(video, this)
-				})
-			})
 		}
 	},
 	mounted() {
@@ -475,10 +478,15 @@ export default {
 				childList: true,
 				subtree: true,
 				childNodesChange: (addNode, removeNode) => {
+					//编辑器禁用情况下不会对编辑器内的dom进行校验
 					if (this.disabled) {
 						return
 					}
 					editorFormatter(addNode, removeNode, this)
+					this.$emit('format-elements', {
+						addNode,
+						removeNode
+					})
 				}
 			})
 			observe.init()

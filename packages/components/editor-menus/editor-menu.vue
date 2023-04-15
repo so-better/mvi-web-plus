@@ -104,7 +104,7 @@
 </template>
 <script>
 import { getCurrentInstance } from 'vue'
-import { insertNodeAfter, initTableGroups, copyTableRowAppend, copyTableColumnAppend, removeTableColumn, isTableHeader, setTableNewHeader, createTableColBtn, setEditorElementId, getGuid, resetResizeRange } from '../editor/util'
+import { insertNodeAfter, initTableGroups, copyTableRowAppend, copyTableColumnAppend, removeTableColumn, isTableHeader, setTableNewHeader, createTableColBtn, setEditorElementId, getGuid, setElementResize } from '../editor/util'
 import unactiveMenus from './unactiveMenus'
 import editorTag from './editor-tag.vue'
 import { Dap } from '../dap'
@@ -601,7 +601,12 @@ export default {
 			//重新调整图片和视频的点位
 			this.$nextTick(() => {
 				if (this.$parent.editorInstance.$refs.content) {
-					resetResizeRange(this.$parent.editorInstance)
+					this.$parent.editorInstance.$refs.content.querySelectorAll('img[mvi-editor-element]').forEach(img => {
+						setElementResize(img, this.$parent.editorInstance)
+					})
+					this.$parent.editorInstance.$refs.content.querySelectorAll('video[mvi-editor-element]').forEach(video => {
+						setElementResize(video, this.$parent.editorInstance)
+					})
 				}
 			})
 		},
