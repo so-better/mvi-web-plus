@@ -258,14 +258,8 @@ export default {
 		//编辑区域键盘按下
 		contentKeydown(e) {
 			const { Mac } = Dap.platform.os()
-			//代码块内重新定义换行操作
-			if (e.keyCode == 13 && this.cursorArea == 'code') {
-				e.preventDefault()
-				//换行符后需要加个空格
-				this.insertHtml('\n ')
-			}
 			//tab键按下插入空格
-			else if (e.keyCode == 9) {
+			if (e.keyCode == 9) {
 				e.preventDefault()
 				if (this.cursorArea == 'code') {
 					//代码块内插入两个空格

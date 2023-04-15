@@ -14,7 +14,7 @@ export default {
 		return {
 			show: true,
 			disabled: false,
-			value: ''
+			value: '<pre><p style="font-size:30px;"><p style="color:#b7e">333</p></p></pre>'
 		}
 	},
 	mounted() {

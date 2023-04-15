@@ -342,30 +342,44 @@ export const resetResizeRange = instance => {
  * @param { Element} el
  */
 export const formatCode = el => {
-	Dap.element.children(el).forEach(childNode => {
-		let text = null
-		if (childNode.nodeName.toLocaleLowerCase() == 'br') {
-			text = document.createTextNode('\n')
-		} else {
-			text = document.createTextNode(childNode.innerText)
+	const fn = el => {
+		const childNodes = Array.from(el.childNodes)
+		if (childNodes.length) {
+			childNodes.forEach(childNode => {
+				if (childNode.nodeType == 1) {
+					//如果是换行符改为\n
+					if (childNode.nodeName.toLocaleLowerCase() == 'br') {
+						let text = document.createTextNode('\n')
+						el.insertBefore(text, childNode)
+						childNode.remove()
+					}
+					//如果是span以外的其他元素
+					else if (childNode.nodeName.toLocaleLowerCase() != 'span') {
+						//递归对子元素进行处理
+						fn(childNode)
+						//改为span
+						let ele = document.createElement('span')
+						for (let attribute of childNode.attributes) {
+							ele.setAttribute(attribute.nodeName, attribute.nodeValue)
+						}
+						ele.style.fontSize = ''
+						ele.style.fontFamily = ''
+						ele.innerHTML = childNode.innerHTML
+						el.insertBefore(ele, childNode)
+						childNode.remove()
+					}
+					//是span元素
+					else {
+						childNode.style.fontSize = ''
+						childNode.style.fontFamily = ''
+					}
+				}
+				//文本节点
+				else if (childNode.nodeType == 3) {
+					childNode.data = childNode.data.replaceAll('&nbsp;', ' ').replaceAll('\r', '\n')
+				}
+			})
 		}
-		el.insertBefore(text, childNode)
-		childNode.remove()
-	})
-	//将&nbsp;转为空格；\r转为\n
-	el.innerHTML = el.innerHTML.replaceAll('&nbsp;', ' ').replaceAll('\r', '\n')
-	//代码块有内容时给每行代码前面加个空格
-	el.innerHTML = el.innerHTML
-		.split('\n')
-		.map(item => {
-			const hasSpace = /^(\s+)/g.test(item)
-			if (item && !hasSpace) {
-				return ` ${item}`
-			}
-			return item
-		})
-		.join('\n')
-	if (!el.innerHTML) {
-		el.innerHTML = ' \n'
 	}
+	fn(el)
 }
