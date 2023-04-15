@@ -4,7 +4,7 @@
 		<m-button @click="disabled = !disabled">按钮</m-button>
 		<m-editor-menus border ref="editorMenus"></m-editor-menus>
 		<m-editor border placeholder="Please Enter Text..." v-model="value" ref="editor"></m-editor>
-		<m-editor-menus border ref="editorMenus2"></m-editor-menus>
+		<m-editor-menus :config="[{ key: 'codeView', icon: 'eye', data: true }]" border ref="editorMenus2"></m-editor-menus>
 		<m-editor border placeholder="Please Enter Text..." v-model="value" ref="editor2"></m-editor>
 	</div>
 </template>

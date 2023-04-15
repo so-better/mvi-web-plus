@@ -249,6 +249,8 @@ export default {
 									break
 							}
 							this.editorInstance.changeActive()
+							this.editorInstance.updateHtmlText()
+							this.editorInstance.updateValue()
 						}
 					}
 				}
@@ -455,12 +457,6 @@ export default {
 							//设为激活状态
 							menu.active = true
 							this.editorInstance.cursorArea = menu.options.key
-						}
-					}
-					//设置源码视图激活状态
-					else if (menu.options.key == 'codeView') {
-						if (this.editorInstance.codeViewShow) {
-							menu.active = true
 						}
 					}
 					//自定义菜单

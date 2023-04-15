@@ -410,6 +410,11 @@ export default {
 					this.initSelectVal()
 				}
 			}
+		},
+		'$parent.editorInstance.codeViewShow': function (newVal) {
+			if (this.options.key == 'codeView') {
+				this.active = newVal
+			}
 		}
 	},
 	methods: {
