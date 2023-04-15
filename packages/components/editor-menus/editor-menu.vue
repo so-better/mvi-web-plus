@@ -594,7 +594,9 @@ export default {
 			}
 			//普通菜单触发自定义操作
 			else {
-				this.$parent.$emit('custom', { ...this.options })
+				this.$parent.$emit('custom', {
+					options: { ...this.options }
+				})
 			}
 			//重新调整图片和视频的点位
 			this.$nextTick(() => {

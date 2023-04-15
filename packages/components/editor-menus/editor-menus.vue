@@ -312,7 +312,11 @@ export default {
 						else if (!unactiveMenus.includes(menu.options.key)) {
 							if (typeof this.customActive == 'function') {
 								//customActive函数返回active和value两个值
-								const obj = this.customActive(menu.options.key, menu.options.data, node)
+								const obj = this.customActive({
+									key: menu.options.key,
+									data: menu.options.data,
+									node
+								})
 								menu.active = obj.active || false
 								menu.selectVal =
 									menu.options.data.find(item => {
@@ -383,7 +387,11 @@ export default {
 						//自定义菜单
 						else if (!unactiveMenus.includes(menu.options.key)) {
 							if (typeof this.customActive == 'function') {
-								const obj = this.customActive(menu.options.key, menu.options.data, node)
+								const obj = this.customActive({
+									key: menu.options.key,
+									data: menu.options.data,
+									node
+								})
 								menu.active = obj.active || false
 								menu.selectVal =
 									menu.options.data.find(item => {
@@ -462,7 +470,10 @@ export default {
 					//自定义菜单
 					else if (!unactiveMenus.includes(menu.options.key)) {
 						if (typeof this.customActive == 'function') {
-							const obj = this.customActive(menu.options.key, node)
+							const obj = this.customActive({
+								key: menu.options.key,
+								node
+							})
 							menu.active = obj
 						}
 					}
