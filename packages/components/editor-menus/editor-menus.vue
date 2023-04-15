@@ -500,7 +500,6 @@ export default {
 	width: 100%;
 	background-color: #fff;
 	color: @font-color-default;
-	margin-bottom: @mp-sm;
 	border: 1px solid @border-color;
 	border-radius: @radius-default;
 	padding: @mp-xs @mp-sm;
