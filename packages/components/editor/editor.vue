@@ -714,7 +714,9 @@ export default {
 			this.isModelChange = true
 			this.$emit('update:modelValue', this.html)
 			this.$nextTick(() => {
-				this.isModelChange = false
+				setTimeout(() => {
+					this.isModelChange = false
+				}, 0)
 			})
 		},
 		//api：根据编辑器的值更新html和text值
