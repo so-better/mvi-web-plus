@@ -851,7 +851,7 @@ export default {
 	overflow-y: auto;
 	font-size: @font-size-default;
 	color: #fff;
-	font-family: Consolas;
+	font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
 
 	&.mvi-editor-codeview-auto {
 		height: auto;
@@ -1002,7 +1002,7 @@ export default {
 	padding: @mp-sm;
 	margin: 0 0 @mp-sm;
 	font-size: @font-size-default;
-	font-family: Consolas !important;
+	font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
 	line-height: 1.5;
 	color: @font-color-default;
 	background-color: #fafafa;
