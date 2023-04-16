@@ -380,8 +380,11 @@ export default {
 						//设置表格激活状态
 						else if (menu.options.key == 'table') {
 							if (this.editorInstance.compareTag(node, 'table')) {
-								menu.active = true
-								this.editorInstance.cursorArea = menu.options.key
+								const table = this.editorInstance.getCompareTag(node, 'table')
+								if (table.hasAttribute('mvi-editor-element-table')) {
+									menu.active = true
+									this.editorInstance.cursorArea = menu.options.key
+								}
 							}
 						}
 						//自定义菜单
