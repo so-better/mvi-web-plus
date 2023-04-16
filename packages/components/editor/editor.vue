@@ -221,15 +221,15 @@ export default {
 				}
 				this.$nextTick(() => {
 					//重新设置表格头的拖拽改变列宽功能
-					this.$refs.content.querySelectorAll('table[mvi-editor-element]').forEach(table => {
+					this.$refs.content.querySelectorAll('table[mvi-editor-element-table]').forEach(table => {
 						setTableResize(table, this)
 					})
 					//重新设置图片拖拽改变大小的功能
-					this.$refs.content.querySelectorAll('img[mvi-editor-element]').forEach(img => {
+					this.$refs.content.querySelectorAll('img[mvi-editor-element-image]').forEach(img => {
 						setElementResize(img, this)
 					})
 					//重新设置视频拖拽改变大小的功能
-					this.$refs.content.querySelectorAll('video[mvi-editor-element]').forEach(video => {
+					this.$refs.content.querySelectorAll('video[mvi-editor-element-video]').forEach(video => {
 						setElementResize(video, this)
 					})
 				})
@@ -907,7 +907,7 @@ export default {
 }
 
 //图片样式
-:deep(img[mvi-editor-element]) {
+:deep(img[mvi-editor-element-image]) {
 	display: inline-block;
 	width: auto;
 	height: auto;
@@ -915,15 +915,15 @@ export default {
 }
 
 //视频样式
-:deep(video[mvi-editor-element]) {
+:deep(video[mvi-editor-element-video]) {
 	display: block;
 	width: auto;
 	height: auto;
 	max-width: 100%;
 }
 
-//表格demo样式
-:deep(table[mvi-editor-element]) {
+//表格样式
+:deep(table) {
 	width: 100%;
 	border: 1px solid @border-color;
 	margin: 0;
@@ -981,7 +981,7 @@ export default {
 }
 
 //引用样式
-:deep(blockquote[mvi-editor-element]) {
+:deep(blockquote[mvi-editor-element-quote]) {
 	display: block;
 	border-left: 0.1rem solid @light-default;
 	padding: @mp-xs @mp-sm @mp-xs @mp-md;
@@ -993,7 +993,7 @@ export default {
 }
 
 //hr样式
-:deep(hr[mvi-editor-element]) {
+:deep(hr[mvi-editor-element-divider]) {
 	display: block;
 	width: 100%;
 	margin: 0;
@@ -1005,7 +1005,7 @@ export default {
 }
 
 //代码块样式
-:deep(pre[mvi-editor-element]) {
+:deep(pre[mvi-editor-element-code]) {
 	display: block;
 	padding: @mp-sm;
 	margin: 0 0 @mp-sm;

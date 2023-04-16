@@ -17,9 +17,10 @@ export const getGuid = () => {
  * 设置元素特殊属性
  * @param { Element } el
  * @param { Number } id
+ * @param { String } marker
  */
-export const setEditorElementId = (el, id) => {
-	el.setAttribute('mvi-editor-element', id)
+export const setEditorElementId = (el, id, marker) => {
+	el.setAttribute(`mvi-editor-element${marker ? '-' + marker : ''}`, id)
 }
 
 /**
@@ -242,7 +243,7 @@ export const setTableNewHeader = row => {
  * @param { Vue } instance
  */
 export const setTableResize = (el, instance) => {
-	const id = el.getAttribute('mvi-editor-element')
+	const id = el.getAttribute('mvi-editor-element-table')
 	const cols = Array.from(el.querySelectorAll('col'))
 	const firstRow = el.querySelector('tr')
 	const btns = Array.from(firstRow.querySelectorAll('span.mvi-editor-colbtn'))

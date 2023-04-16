@@ -601,10 +601,10 @@ export default {
 			//重新调整图片和视频的点位
 			this.$nextTick(() => {
 				if (this.$parent.editorInstance.$refs.content) {
-					this.$parent.editorInstance.$refs.content.querySelectorAll('img[mvi-editor-element]').forEach(img => {
+					this.$parent.editorInstance.$refs.content.querySelectorAll('img[mvi-editor-element-image]').forEach(img => {
 						setElementResize(img, this.$parent.editorInstance)
 					})
-					this.$parent.editorInstance.$refs.content.querySelectorAll('video[mvi-editor-element]').forEach(video => {
+					this.$parent.editorInstance.$refs.content.querySelectorAll('video[mvi-editor-element-video]').forEach(video => {
 						setElementResize(video, this.$parent.editorInstance)
 					})
 				}
@@ -826,22 +826,22 @@ export default {
 			//创建表格
 			const table = document.createElement('table')
 			//设置表格属性
-			setEditorElementId(table, id)
+			setEditorElementId(table, id, 'table')
 			table.setAttribute('cellpadding', '0')
 			table.setAttribute('cellspacing', '0')
 			//创建列分组元素
 			const colGroup = document.createElement('colgroup')
 			//创建表格主体
 			const tbody = document.createElement('tbody')
-			setEditorElementId(tbody, id)
+			setEditorElementId(tbody, id, 'table')
 			//循环遍历生成表格行和列
 			for (let i = 0; i < this.tableParams.size[1]; i++) {
 				const tr = document.createElement('tr')
-				setEditorElementId(tr, id)
+				setEditorElementId(tr, id, 'table')
 				for (let j = 0; j < this.tableParams.size[0]; j++) {
 					const td = document.createElement('td')
 					td.innerHTML = '<br>'
-					setEditorElementId(td, id)
+					setEditorElementId(td, id, 'table')
 					tr.appendChild(td)
 					//第一行设置可拖拽器
 					if (i == 0 && j < this.tableParams.size[0] - 1) {
@@ -1062,7 +1062,7 @@ export default {
 			//插入表格时
 			if (command == 'insertTable') {
 				let id = opt.id
-				const table = this.$parent.editorInstance.$refs.content.querySelector(`table[mvi-editor-element="${id}"]`)
+				const table = this.$parent.editorInstance.$refs.content.querySelector(`table[mvi-editor-element-table="${id}"]`)
 				const column = table.querySelector('td')
 				this.$parent.editorInstance.collapseToEnd(column)
 			}

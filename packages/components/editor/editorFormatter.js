@@ -16,19 +16,19 @@ export default function (addNode, removeNode, instance) {
 		if (addNode.nodeName.toLocaleLowerCase() == 'blockquote') {
 			//设置唯一属性
 			const id = getGuid()
-			setEditorElementId(addNode, id)
+			setEditorElementId(addNode, id, 'quote')
 		}
 		//分隔线
 		else if (addNode.nodeName.toLocaleLowerCase() == 'hr') {
 			//设置唯一属性
 			const id = getGuid()
-			setEditorElementId(addNode, id)
+			setEditorElementId(addNode, id, 'divider')
 		}
 		//图片
 		else if (addNode.nodeName.toLocaleLowerCase() == 'img') {
 			//设置唯一属性
 			const id = getGuid()
-			setEditorElementId(addNode, id)
+			setEditorElementId(addNode, id, 'image')
 			//清除设置的字体大小
 			addNode.style.fontSize = ''
 			//设置可拖拽改变大小
@@ -38,7 +38,7 @@ export default function (addNode, removeNode, instance) {
 		else if (addNode.nodeName.toLocaleLowerCase() == 'video') {
 			//设置唯一属性
 			const id = getGuid()
-			setEditorElementId(addNode, id)
+			setEditorElementId(addNode, id, 'video')
 			//设置播放模式
 			addNode.setAttribute('muted', 'muted')
 			addNode.setAttribute('autoplay', 'autoplay')
@@ -56,20 +56,20 @@ export default function (addNode, removeNode, instance) {
 			}
 			//设置唯一属性
 			const id = getGuid()
-			setEditorElementId(addNode, id)
+			setEditorElementId(addNode, id, 'code')
 			//格式化代码块内容
 			formatCode(addNode)
 		}
 		//监听编辑器插入表格操作
-		else if (addNode.nodeName.toLocaleLowerCase() == 'table' && addNode.hasAttribute('mvi-editor-element')) {
+		else if (addNode.nodeName.toLocaleLowerCase() == 'table' && addNode.hasAttribute('mvi-editor-element-table')) {
 			//设置表格头可拖拽改变列宽
 			setTableResize(addNode, instance)
 		}
 		//监听编辑器新增列操作
-		else if (addNode.nodeName.toLocaleLowerCase() == 'td' && addNode.hasAttribute('mvi-editor-element')) {
+		else if (addNode.nodeName.toLocaleLowerCase() == 'td' && addNode.hasAttribute('mvi-editor-element-table')) {
 			//设置表格头可拖拽改变列宽
-			const id = addNode.getAttribute('mvi-editor-element')
-			const table = instance.$refs.content.querySelector(`table[mvi-editor-element="${id}"]`)
+			const id = addNode.getAttribute('mvi-editor-element-table')
+			const table = instance.$refs.content.querySelector(`table[mvi-editor-element-table="${id}"]`)
 			setTableResize(table, instance)
 		}
 		//监听链接插入
@@ -77,18 +77,18 @@ export default function (addNode, removeNode, instance) {
 			if (addNode.nodeName.toLocaleLowerCase() == 'a') {
 				//设置唯一属性
 				const id = getGuid()
-				setEditorElementId(addNode, id)
+				setEditorElementId(addNode, id, 'link')
 			} else {
 				addNode.querySelectorAll('a').forEach(link => {
 					//设置唯一属性
 					const id = getGuid()
-					setEditorElementId(link, id)
+					setEditorElementId(link, id, 'link')
 				})
 			}
 		}
 	} else if (removeNode) {
 		//监听编辑器删除表格行操作
-		if (removeNode.nodeName.toLocaleLowerCase() == 'tr' && removeNode.hasAttribute('mvi-editor-element')) {
+		if (removeNode.nodeName.toLocaleLowerCase() == 'tr' && removeNode.hasAttribute('mvi-editor-element-table')) {
 			const columns = Dap.element.children(removeNode, 'td')
 			const isHead = columns.every((column, index) => {
 				if (index < columns.length - 1) {
@@ -99,8 +99,8 @@ export default function (addNode, removeNode, instance) {
 			//删除的是表头
 			if (isHead) {
 				//设置表格头可拖拽改变列宽
-				let id = removeNode.getAttribute('mvi-editor-element')
-				const table = instance.$refs.content.querySelector(`table[mvi-editor-element="${id}"]`)
+				let id = removeNode.getAttribute('mvi-editor-element-table')
+				const table = instance.$refs.content.querySelector(`table[mvi-editor-element-table="${id}"]`)
 				setTableResize(table, instance)
 			}
 		}
