@@ -904,119 +904,119 @@ export default {
 		vertical-align: middle;
 		cursor: text;
 	}
-}
 
-//图片样式
-:deep(img[mvi-editor-element-image]) {
-	display: inline-block;
-	width: auto;
-	height: auto;
-	max-width: 100%;
-}
+	//图片样式
+	:deep(img) {
+		display: inline-block;
+		width: auto;
+		height: auto;
+		max-width: 100%;
+	}
 
-//视频样式
-:deep(video[mvi-editor-element-video]) {
-	display: block;
-	width: auto;
-	height: auto;
-	max-width: 100%;
-}
+	//视频样式
+	:deep(video) {
+		display: block;
+		width: auto;
+		height: auto;
+		max-width: 100%;
+	}
 
-//表格样式
-:deep(table) {
-	width: 100%;
-	border: 1px solid @border-color;
-	margin: 0;
-	padding: 0;
-	font-size: @font-size-default;
-	color: @font-color-default;
-	border-collapse: collapse;
-	margin-bottom: @mp-sm;
-
-	tbody {
+	//表格样式
+	:deep(table) {
+		width: 100%;
+		border: 1px solid @border-color;
 		margin: 0;
 		padding: 0;
+		font-size: @font-size-default;
+		color: @font-color-default;
+		border-collapse: collapse;
+		margin-bottom: @mp-sm;
 
-		tr {
+		tbody {
 			margin: 0;
 			padding: 0;
 
-			&:first-child {
-				background-color: @bg-color-dark;
+			tr {
+				margin: 0;
+				padding: 0;
+
+				&:first-child {
+					background-color: @bg-color-dark;
+
+					td {
+						font-weight: bold;
+					}
+				}
 
 				td {
-					font-weight: bold;
-				}
-			}
+					font-size: @font-size-default;
+					color: @font-color-default;
+					margin: 0;
+					border-bottom: 1px solid @border-color;
+					border-right: 1px solid @border-color;
+					padding: @mp-sm;
+					position: relative;
 
-			td {
-				font-size: @font-size-default;
-				color: @font-color-default;
-				margin: 0;
-				border-bottom: 1px solid @border-color;
-				border-right: 1px solid @border-color;
-				padding: @mp-sm;
-				position: relative;
+					&:last-child {
+						border-right: none;
+					}
 
-				&:last-child {
-					border-right: none;
-				}
+					span.mvi-editor-colbtn {
+						position: absolute;
+						right: -@mp-xs / 2;
+						top: 0;
+						width: @mp-xs;
+						height: 100%;
+						background-color: @border-color;
+						border-radius: 0;
 
-				span.mvi-editor-colbtn {
-					position: absolute;
-					right: -@mp-xs / 2;
-					top: 0;
-					width: @mp-xs;
-					height: 100%;
-					background-color: @border-color;
-					border-radius: 0;
-
-					&:hover {
-						cursor: col-resize;
+						&:hover {
+							cursor: col-resize;
+						}
 					}
 				}
 			}
 		}
 	}
-}
 
-//引用样式
-:deep(blockquote[mvi-editor-element-quote]) {
-	display: block;
-	border-left: 0.1rem solid @light-default;
-	padding: @mp-xs @mp-sm @mp-xs @mp-md;
-	margin: 0 0 @mp-sm 0;
-	line-height: 1.5;
-	font-size: @font-size-default;
-	color: @font-color-sub;
-	border-radius: 0;
-}
+	//引用样式
+	:deep(blockquote) {
+		display: block;
+		border-left: 0.1rem solid @light-default;
+		padding: @mp-xs @mp-sm @mp-xs @mp-md;
+		margin: 0 0 @mp-sm 0;
+		line-height: 1.5;
+		font-size: @font-size-default;
+		color: @font-color-sub;
+		border-radius: 0;
+	}
 
-//hr样式
-:deep(hr[mvi-editor-element-divider]) {
-	display: block;
-	width: 100%;
-	margin: 0;
-	padding: 0;
-	margin: @mp-sm 0;
-	height: 0.02rem;
-	background-color: @bg-color-dark;
-	border: none;
-}
+	//hr样式
+	:deep(hr) {
+		display: block;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		margin: @mp-sm 0;
+		height: 0.02rem;
+		background-color: @bg-color-dark;
+		border: none;
+	}
 
-//代码块样式
-:deep(pre[mvi-editor-element-code]) {
-	display: block;
-	padding: @mp-sm;
-	margin: 0 0 @mp-sm;
-	font-size: @font-size-default;
-	font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
-	line-height: 1.5;
-	color: @font-color-default;
-	background-color: #fafafa;
-	border: 1px solid @light-default;
-	border-radius: @radius-default;
-	overflow: auto;
-	position: relative;
+	//代码块样式
+	:deep(pre) {
+		display: block;
+		padding: @mp-sm;
+		margin: 0 0 @mp-sm;
+		font-size: @font-size-default;
+		font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
+		line-height: 1.5;
+		color: @font-color-default;
+		background-color: #fafafa;
+		border: 1px solid @light-default;
+		border-radius: @radius-default;
+		overflow: auto;
+		position: relative;
+	}
 }
 </style>

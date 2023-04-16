@@ -1,6 +1,6 @@
 {
 	"name": "mvi-web-plus",
-	"version": "1.6.29",
+	"version": "1.6.30",
 	"private": false,
 	"sideEffects": [
 		"*.css"
