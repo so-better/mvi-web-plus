@@ -2,8 +2,7 @@
 	<div class="mvi-p-2">
 		<div>{{ value }}</div>
 		<m-button @click="disabled = !disabled">按钮</m-button>
-		<m-editor-menus border ref="editorMenus"></m-editor-menus>
-		<m-editor active-color="#f30" border placeholder="Please Enter Text..." v-model="value" ref="editor"></m-editor>
+		<m-editor ref="editor"></m-editor>
 	</div>
 </template>
 <script>
@@ -15,14 +14,8 @@ export default {
 			value: ''
 		}
 	},
-	mounted() {
-		this.$refs.editor.use(this.$refs.editorMenus)
-	},
-	methods: {
-		formatElements(addNode, removeNode) {
-			console.log(addNode, removeNode)
-		}
-	}
+	mounted() {},
+	methods: {}
 }
 </script>
 <style lang="less">
@@ -33,14 +26,5 @@ html {
 #app {
 	height: 100%;
 	overflow: auto;
-}
-
-.a {
-	display: block;
-	width: 7rem;
-	height: 7rem;
-	border-radius: 1rem;
-	background-color: #eee;
-	position: absolute;
 }
 </style>
