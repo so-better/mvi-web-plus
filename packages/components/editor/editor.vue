@@ -1,7 +1,8 @@
 <template>
-	<m-button @click="codeViewShow = !codeViewShow">按钮</m-button>
 	<div class="mvi-editor">
-		<textarea :disabled="disabled" ref="code" v-if="codeViewShow" class="mvi-editor-code" :value="cmpValue" @input="codeInput"></textarea>
+		<!-- 代码视图 -->
+		<textarea v-if="codeViewShow" ref="code" readonly class="mvi-editor-code" :value="cmpValue" />
+		<!-- 编辑器视图 -->
 		<div ref="content" :data-placeholder="placeholder" :class="['mvi-editor-content', border ? 'border' : '', isEmpty ? 'empty' : '']" :style="contentStyle" @compositionstart="compositionFlag = true" @compositionend="compositionFlag = false"></div>
 	</div>
 </template>
@@ -68,7 +69,7 @@ export default {
 	},
 	data() {
 		return {
-			//是否显示代码视图
+			//是否显示代码视图，代码视图下不可编辑
 			codeViewShow: false,
 			//编辑器实例
 			editor: null,
@@ -112,34 +113,17 @@ export default {
 				this.editor.setEnabled()
 			}
 		},
-		//监听代码视图显示与否
-		codeViewShow(newVal) {
-			//源码视图不处理
-			if (newVal) {
-				return
-			}
-			//编辑器视图显示时重新渲染编辑器
-			this.$nextTick(() => {
-				this.editor.stack = this.editor.parseHtml(this.modelValue)
-				this.editor.formatElementStack()
-				const elements = AlexElement.flatElements(this.editor.stack)
-				this.editor.range.anchor.moveToEnd(elements[elements.length - 1])
-				this.editor.range.focus.moveToEnd(elements[elements.length - 1])
-				this.editor.domRender()
-				this.editor.setCursor()
-			})
-		},
 		//监听编辑的值变更
 		cmpValue(newVal) {
-			//内部修改不处理
-			if (this.isModelChange) {
-				return
-			}
 			//源码视图不处理
 			if (this.codeViewShow) {
 				return
 			}
-			//如果是外部修改了，则需要重新渲染编辑器
+			//内部修改不处理
+			if (this.isModelChange) {
+				return
+			}
+			//如果是外部修改，需要重新渲染编辑器
 			this.editor.stack = this.editor.parseHtml(newVal)
 			this.editor.formatElementStack()
 			const elements = AlexElement.flatElements(this.editor.stack)
@@ -158,16 +142,16 @@ export default {
 			htmlPaste: this.htmlPaste
 		})
 		//编辑器渲染后会有一个渲染过程，会改变内容，因此重新获取内容的值来设置modelValue
-		this.innerModify(this.editor.value)
+		this.internalModify(this.editor.value)
 		//监听编辑器内容变更
-		this.editor.on('change', this.contentChange)
+		this.editor.on('change', this.handleContentChange)
 		//监听编辑器聚焦
-		this.editor.on('focus', this.contentFocus)
+		this.editor.on('focus', this.handleContentFocus)
 		//监听编辑器失去焦点
-		this.editor.on('blur', this.contentBlur)
+		this.editor.on('blur', this.handleContentBlur)
 		//如果自定义粘贴文件则监听编辑器粘贴文件
 		if (this.customPasteFile) {
-			this.editor.on('pasteFile', this.contentPasteFile)
+			this.editor.on('pasteFile', this.handleContentPasteFile)
 		}
 		//设置自动获取焦点
 		if (this.autofocus && !this.codeViewShow) {
@@ -176,7 +160,7 @@ export default {
 	},
 	methods: {
 		//编辑器内部修改值的方法
-		innerModify(val) {
+		internalModify(val) {
 			this.isModelChange = true
 			this.cmpValue = val
 			this.$nextTick(() => {
@@ -184,38 +168,18 @@ export default {
 			})
 		},
 		//编辑器内容变更
-		contentChange(val) {
+		handleContentChange(newVal, oldVal) {
 			if (this.disabled) {
-				return
-			}
-			if (this.codeViewShow) {
 				return
 			}
 			//内部修改
-			this.innerModify(val)
+			this.internalModify(newVal)
 			//触发change事件
-			this.$emit('change', val)
-		},
-		//编辑器失去焦点
-		contentBlur(val) {
-			if (this.disabled) {
-				return
-			}
-			if (this.codeViewShow) {
-				return
-			}
-			if (this.border && this.activeColor) {
-				this.$refs.content.style.borderColor = ''
-				this.$refs.content.style.boxShadow = ''
-			}
-			this.$emit('blur', val)
+			this.$emit('change', newVal, oldVal)
 		},
 		//编辑器获取焦点
-		contentFocus(val) {
+		handleContentFocus(val) {
 			if (this.disabled) {
-				return
-			}
-			if (this.codeViewShow) {
 				return
 			}
 			if (this.border && this.activeColor) {
@@ -225,28 +189,23 @@ export default {
 			}
 			this.$emit('focus', val)
 		},
-		//编辑器粘贴文件
-		contentPasteFile(files) {
+		//编辑器失去焦点
+		handleContentBlur(val) {
 			if (this.disabled) {
 				return
 			}
-			if (this.codeViewShow) {
+			if (this.border && this.activeColor) {
+				this.$refs.content.style.borderColor = ''
+				this.$refs.content.style.boxShadow = ''
+			}
+			this.$emit('blur', val)
+		},
+		//编辑器粘贴文件
+		handleContentPasteFile(files) {
+			if (this.disabled) {
 				return
 			}
 			this.$emit('paste-file', files)
-		},
-		//源码视图输入
-		codeInput(e) {
-			if (this.disabled) {
-				return
-			}
-			if (!this.codeViewShow) {
-				return
-			}
-			//内部修改
-			this.innerModify(e.target.value)
-			//触发change事件
-			this.$emit('change', e.target.value)
 		}
 	}
 }
