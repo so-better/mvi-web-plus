@@ -129,6 +129,7 @@ export default {
 				this.editor.setCursor()
 			})
 		},
+		//监听编辑的值变更
 		cmpValue(newVal) {
 			//内部修改不处理
 			if (this.isModelChange) {
@@ -138,6 +139,7 @@ export default {
 			if (this.codeViewShow) {
 				return
 			}
+			//如果是外部修改了，则需要重新渲染编辑器
 			this.editor.stack = this.editor.parseHtml(newVal)
 			this.editor.formatElementStack()
 			const elements = AlexElement.flatElements(this.editor.stack)
@@ -186,7 +188,12 @@ export default {
 			if (this.disabled) {
 				return
 			}
+			if (this.codeViewShow) {
+				return
+			}
+			//内部修改
 			this.innerModify(val)
+			//触发change事件
 			this.$emit('change', val)
 		},
 		//编辑器失去焦点
@@ -236,7 +243,9 @@ export default {
 			if (!this.codeViewShow) {
 				return
 			}
+			//内部修改
 			this.innerModify(e.target.value)
+			//触发change事件
 			this.$emit('change', e.target.value)
 		}
 	}
