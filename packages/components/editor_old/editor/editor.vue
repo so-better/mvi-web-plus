@@ -15,54 +15,6 @@ import { Observe } from '../observe'
 export default {
 	name: 'm-editor',
 	props: {
-		//值
-		modelValue: {
-			type: [String, Number],
-			default: ''
-		},
-		//是否自动获取焦点
-		autofocus: {
-			type: Boolean,
-			default: false
-		},
-		//占位符
-		placeholder: {
-			type: String,
-			default: ''
-		},
-		//初始高度
-		height: {
-			type: String,
-			default: null
-		},
-		//编辑区域高度是否自动变化
-		autoHeight: {
-			type: Boolean,
-			default: false
-		},
-		//是否禁用
-		disabled: {
-			type: Boolean,
-			default: false
-		},
-		//编辑区域边框是否显示
-		border: {
-			type: Boolean,
-			default: false
-		},
-		//纯文本粘贴
-		pasteText: {
-			type: Boolean,
-			default: false
-		},
-		//激活颜色设定
-		activeColor: {
-			type: String,
-			default: '#0b73de',
-			validator(value) {
-				return Dap.common.matchingText(value, 'hex')
-			}
-		},
 		//本地上传文件是否使用base64
 		useBase64: {
 			type: Boolean,
@@ -115,60 +67,6 @@ export default {
 		}
 	},
 	computed: {
-		//是否空内容
-		isEmpty() {
-			return this.modelValue == '<p><br></p>' || this.modelValue == '' || this.modelValue == '<br>' || this.modelValue == '<p></p>'
-		},
-		//编辑区域样式类
-		contentClass() {
-			let cls = ['mvi-editor-content']
-			if (this.autoHeight) {
-				cls.push('mvi-editor-content-auto')
-			}
-			if (this.isEmpty) {
-				cls.push('mvi-editor-content-empty')
-			}
-			return cls
-		},
-		//源码视图样式类
-		codeViewClass() {
-			let cls = ['mvi-editor-codeview']
-			if (this.autoHeight) {
-				cls.push('mvi-editor-codeview-auto')
-			}
-			return cls
-		},
-		//编辑区域样式
-		contentStyle() {
-			let style = {}
-			if (this.autoHeight) {
-				if (this.height) {
-					style.minHeight = this.height
-				}
-			} else {
-				if (this.height) {
-					style.height = this.height
-				}
-			}
-			if (!this.border) {
-				style.border = 'none'
-			}
-			return style
-		},
-		//源码视图样式
-		codeViewStyle() {
-			let style = {}
-			if (this.autoHeight) {
-				if (this.height) {
-					style.minHeight = this.height
-				}
-			} else {
-				if (this.height) {
-					style.height = this.height
-				}
-			}
-			return style
-		},
 		//上传图片配置
 		combinedUploadImageProps() {
 			return initOption(defaultUploadImageProps, this.uploadImageProps)
@@ -179,18 +77,6 @@ export default {
 		}
 	},
 	watch: {
-		//监听modelValue
-		modelValue(newVal) {
-			//如果是组件外部赋值导致的更新
-			if (!this.isModelChange) {
-				if (this.$refs.content) {
-					this.$refs.content.innerHTML = getValue(newVal)
-				} else if (this.$refs.codeView) {
-					this.$refs.codeView.innerText = getValue(newVal)
-				}
-				this.updateHtmlText()
-			}
-		},
 		//监听代码视图切换标识
 		codeViewShow(newValue) {
 			this.$nextTick(() => {
