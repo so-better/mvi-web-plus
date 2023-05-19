@@ -14,11 +14,11 @@
 			<!-- 字体颜色、背景色 -->
 			<div v-if="name == 'foreColor' || name == 'backColor'"></div>
 			<!-- 表格 -->
-			<div v-if="name == 'table'"></div>
+			<div v-else-if="name == 'table'"></div>
 			<!-- 链接 -->
-			<div v-if="name == 'link'"></div>
+			<div v-else-if="name == 'link'"></div>
 			<!-- 图片或者视频 -->
-			<div v-if="name == 'image' || name == 'video'"></div>
+			<div v-else-if="name == 'image' || name == 'video'"></div>
 			<!-- 正常的下拉选 -->
 			<div v-else class="mvi-editor-menu-default">
 				<EditorTag :tag="layerElTag(item)" v-for="item in parseList" class="mvi-editor-menu-layer-el" @click="_layerClick(item)">
