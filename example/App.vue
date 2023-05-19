@@ -4,7 +4,7 @@
 		<div class="mvi-mb-4">
 			<m-button @click="disabled = !disabled">禁用/启用编辑器</m-button>
 		</div>
-		<m-editor-menus trigger="click" useTooltip class="mvi-mb-4" ref="menus">
+		<m-editor-menus border useTooltip class="mvi-mb-4" ref="menus">
 			<m-editor-menu :disabled="disabled" v-for="item in definedMenus" :name="item.name" />
 			<!-- <m-editor-menu type="select" icon="user" name="custom" @custom="customMenu">
 				<template #layer>222</template>
