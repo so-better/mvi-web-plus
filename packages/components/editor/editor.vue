@@ -76,7 +76,9 @@ export default {
 			//中文输入
 			compositionFlag: false,
 			//是否内部修改了modelValue的值
-			isModelChange: false
+			isModelChange: false,
+			//是否已经注册了菜单栏
+			useMenus: false
 		}
 	},
 	computed: {
@@ -142,25 +144,25 @@ export default {
 			htmlPaste: this.htmlPaste
 		})
 		//编辑器渲染后会有一个渲染过程，会改变内容，因此重新获取内容的值来设置modelValue
-		this.internalModify(this.editor.value)
+		this._internalModify(this.editor.value)
 		//监听编辑器内容变更
-		this.editor.on('change', this.handleContentChange)
+		this.editor.on('change', this._handleContentChange)
 		//监听编辑器聚焦
-		this.editor.on('focus', this.handleContentFocus)
+		this.editor.on('focus', this._handleContentFocus)
 		//监听编辑器失去焦点
-		this.editor.on('blur', this.handleContentBlur)
+		this.editor.on('blur', this._handleContentBlur)
 		//如果自定义粘贴文件则监听编辑器粘贴文件
 		if (this.customPasteFile) {
-			this.editor.on('pasteFile', this.handleContentPasteFile)
+			this.editor.on('pasteFile', this._handleContentPasteFile)
 		}
 		//设置自动获取焦点
 		if (this.autofocus && !this.codeViewShow) {
-			this.editor.collapseToEnd()
+			this.collapseToEnd()
 		}
 	},
 	methods: {
 		//编辑器内部修改值的方法
-		internalModify(val) {
+		_internalModify(val) {
 			this.isModelChange = true
 			this.cmpValue = val
 			this.$nextTick(() => {
@@ -168,17 +170,17 @@ export default {
 			})
 		},
 		//编辑器内容变更
-		handleContentChange(newVal, oldVal) {
+		_handleContentChange(newVal, oldVal) {
 			if (this.disabled) {
 				return
 			}
 			//内部修改
-			this.internalModify(newVal)
+			this._internalModify(newVal)
 			//触发change事件
 			this.$emit('change', newVal, oldVal)
 		},
 		//编辑器获取焦点
-		handleContentFocus(val) {
+		_handleContentFocus(val) {
 			if (this.disabled) {
 				return
 			}
@@ -190,7 +192,7 @@ export default {
 			this.$emit('focus', val)
 		},
 		//编辑器失去焦点
-		handleContentBlur(val) {
+		_handleContentBlur(val) {
 			if (this.disabled) {
 				return
 			}
@@ -201,16 +203,34 @@ export default {
 			this.$emit('blur', val)
 		},
 		//编辑器粘贴文件
-		handleContentPasteFile(files) {
+		_handleContentPasteFile(files) {
 			if (this.disabled) {
 				return
 			}
 			this.$emit('paste-file', files)
+		},
+		//注册菜单栏实例
+		use(menus) {
+			if (this.useMenus) {
+				throw new Error('The editor has already used a menu bar and cannot be used repeatedly')
+			}
+			//把编辑器实例传给菜单栏组件
+			menus.instance = this
+			//更新useMenus标识
+			this.useMenus = true
+		},
+		//光标设置到文档底部
+		collapseToEnd() {
+			this.editor.collapseToEnd()
+		},
+		//光标设置到文档头部
+		collapseToStart() {
+			this.editor.collapseToStart()
 		}
 	}
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
 @import '../../css/mvi-basic.less';
 .mvi-editor {
 	display: block;
