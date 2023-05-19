@@ -209,6 +209,22 @@ export default {
 			}
 			this.$emit('paste-file', files)
 		},
+		//插入分隔符
+		_insertDivider() {
+			const marks = {
+				class: 'mvi-editor-divider'
+			}
+			//创建分隔线
+			const divider = this.editor.formatElement(new AlexElement('closed', 'hr', marks, null, null))
+			//插入分割符
+			this.editor.insertElement(divider)
+			//换行
+			this.editor.insertParagraph()
+			//重新渲染
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.setCursor()
+		},
 		//注册菜单栏实例
 		use(menus) {
 			if (this.useMenus) {
@@ -293,5 +309,16 @@ export default {
 			cursor: text;
 		}
 	}
+}
+
+:deep(hr.mvi-editor-divider) {
+	display: block;
+	width: 100%;
+	margin: @mp-sm 0;
+	padding: 0;
+	height: 0.02rem;
+	background-color: @bg-color-dark;
+	border: none;
+	font-size: 0;
 }
 </style>

@@ -39,6 +39,7 @@ import { Tooltip } from '../tooltip'
 import { Layer } from '../layer'
 import EditorTag from './editor-tag.vue'
 import { getCurrentInstance } from 'vue'
+import { AlexElement } from 'alex-editor'
 //根据名称获取指定菜单项配置
 const getMenu = name => {
 	if (name == 'custom') {
@@ -174,7 +175,7 @@ export default {
 			if (!this.menus.instance) {
 				return true
 			}
-			if (this.menus.instance.codeViewShow) {
+			if (this.menus.instance.codeViewShow && this.name != 'codeView') {
 				return true
 			}
 			return this.disabled
@@ -305,6 +306,14 @@ export default {
 					this.menus.instance.editor.domRender(true)
 					this.menus.instance.editor.setCursor()
 				}
+			}
+			//分隔线
+			else if (this.name == 'divider') {
+				this.menus.instance._insertDivider()
+			}
+			//源码视图
+			else if (this.name == 'codeView') {
+				this.menus.instance.codeViewShow = !this.menus.instance.codeViewShow
 			}
 		}
 	}
