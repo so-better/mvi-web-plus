@@ -3,7 +3,7 @@
 		<Tooltip :disabled="!menus.useTooltip || cmpDisabled" :title="title" trigger="hover" :placement="menus.combinedTooltipProps.placement" :timeout="menus.combinedTooltipProps.timeout" :color="menus.combinedTooltipProps.color" :text-color="menus.combinedTooltipProps.textColor" :border-color="menus.combinedTooltipProps.borderColor" :offset="menus.combinedTooltipProps.offset" :z-index="menus.combinedTooltipProps.zIndex" :fixed="menus.combinedTooltipProps.fixed" :fixed-auto="menus.combinedTooltipProps.fixedAuto" :width="menus.combinedTooltipProps.width" :animation="menus.combinedTooltipProps.animation" :show-triangle="menus.combinedTooltipProps.showTriangle" block>
 			<div :disabled="cmpDisabled || null" class="mvi-editor-menu-el" :data-id="`mvi-editor-menu-el-${uid}`" @click="_menuClick">
 				<!-- 显示下拉选的值 -->
-				<span v-if="type == 'display'">{{ selectedVal.label }}</span>
+				<span v-if="type == 'display'" class="mvi-editor-menu-text">{{ selectedVal.label }}</span>
 				<!-- 菜单项图标 -->
 				<Icon v-else-if="parseIcon(icon).type || parseIcon(icon).url" :type="parseIcon(icon).type" :url="parseIcon(icon).url" :size="parseIcon(icon).size" :color="parseIcon(icon).color" :spin="parseIcon(icon).spin"></Icon>
 				<!-- 下拉选倒三角图标 -->
@@ -11,8 +11,16 @@
 			</div>
 		</Tooltip>
 		<Layer v-if="type == 'select' || type == 'display'" v-model="layerShow" ref="layer" :placement="menus.combinedLayerProps.placement" :z-index="menus.combinedLayerProps.zIndex" :fixed="menus.combinedLayerProps.fixed" :fixed-auto="menus.combinedLayerProps.fixedAuto" :offset="menus.combinedLayerProps.offset" :wrapper-class="menus.combinedLayerProps.wrapperClass" :timeout="menus.combinedLayerProps.timeout" :show-triangle="menus.combinedLayerProps.showTriangle" :animation="menus.combinedLayerProps.animation" :shadow="menus.combinedLayerProps.shadow" :border="menus.combinedLayerProps.border" :width="menus.combinedLayerProps.width" :closable="menus.trigger == 'click'" :target="`[data-id='mvi-editor-menu-el-${uid}']`" :root="`[data-id='mvi-editor-menu-${uid}']`">
+			<!-- 字体颜色、背景色 -->
+			<div v-if="name == 'foreColor' || name == 'backColor'"></div>
+			<!-- 表格 -->
+			<div v-if="name == 'table'"></div>
+			<!-- 链接 -->
+			<div v-if="name == 'link'"></div>
+			<!-- 图片或者视频 -->
+			<div v-if="name == 'image' || name == 'video'"></div>
 			<!-- 正常的下拉选 -->
-			<div class="mvi-editor-menu-default">
+			<div v-else class="mvi-editor-menu-default">
 				<EditorTag :tag="layerElTag(item)" v-for="item in parseList" class="mvi-editor-menu-layer-el" @click="_layerClick(item)">
 					<Icon v-if="item.icon.type || item.icon.url" class="mvi-editor-menu-layer-icon" :type="item.icon.type" :url="item.icon.url" :spin="item.icon.spin" :size="item.icon.size" :color="item.icon.color" />
 					<span v-text="item.label"></span>
@@ -333,6 +341,13 @@ export default {
 			background-color: transparent;
 		}
 
+		.mvi-editor-menu-text {
+			max-width: 2.8rem;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+		}
+
 		.mvi-editor-menu-caret {
 			transform: scale(0.5);
 		}
@@ -341,6 +356,9 @@ export default {
 	.mvi-editor-menu-default {
 		display: block;
 		padding: @mp-xs 0;
+		max-height: 8rem;
+		overflow-x: hidden;
+		overflow-y: auto;
 
 		.mvi-editor-menu-layer-el {
 			display: flex;
@@ -348,7 +366,6 @@ export default {
 			align-items: center;
 			padding: @mp-sm @mp-lg;
 			margin: 0;
-			white-space: nowrap;
 			text-align: center;
 			opacity: 0.8;
 
@@ -364,6 +381,13 @@ export default {
 
 			.mvi-editor-menu-layer-icon {
 				margin-right: @mp-xs;
+			}
+
+			span {
+				max-width: 2.8rem;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space: nowrap;
 			}
 		}
 	}
