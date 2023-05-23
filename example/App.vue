@@ -6,11 +6,11 @@
 		</div>
 		<m-editor-menus border useTooltip class="mvi-mb-4" ref="menus">
 			<m-editor-menu :disabled="disabled" v-for="item in definedMenus" :name="item.name" />
-			<!-- <m-editor-menu type="select" icon="user" name="custom" @custom="customMenu">
+			<m-editor-menu type="select" icon="user" name="custom" @custom="customMenu">
 				<template #layer>222</template>
-			</m-editor-menu> -->
+			</m-editor-menu>
 		</m-editor-menus>
-		<m-editor placeholder="请输入内容" autofocus border :disabled="disabled" @change="change" auto-height ref="editor" v-model="value"></m-editor>
+		<m-editor placeholder="请输入内容" border :disabled="disabled" @change="change" auto-height ref="editor" v-model="value"></m-editor>
 	</div>
 </template>
 <script>
@@ -20,7 +20,7 @@ export default {
 		return {
 			show: true,
 			disabled: false,
-			value: '<br>',
+			value: 'aaaaaa',
 			definedMenus: definedMenus
 		}
 	},

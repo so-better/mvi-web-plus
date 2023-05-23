@@ -156,7 +156,7 @@ export default {
 			this.editor.on('pasteFile', this._handleContentPasteFile)
 		}
 		//设置自动获取焦点
-		if (this.autofocus && !this.codeViewShow) {
+		if (this.autofocus && !this.codeViewShow && !this.disabled) {
 			this.collapseToEnd()
 		}
 	},

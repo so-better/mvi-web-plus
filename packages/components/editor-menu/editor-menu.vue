@@ -1,6 +1,6 @@
 <template>
 	<div class="mvi-editor-menu" :data-id="`mvi-editor-menu-${uid}`" @mouseenter="_menuHover('enter')" @mouseleave="_menuHover('leave')">
-		<Tooltip :disabled="!menus.useTooltip || cmpDisabled" :title="title" trigger="hover" :placement="menus.combinedTooltipProps.placement" :timeout="menus.combinedTooltipProps.timeout" :color="menus.combinedTooltipProps.color" :text-color="menus.combinedTooltipProps.textColor" :border-color="menus.combinedTooltipProps.borderColor" :offset="menus.combinedTooltipProps.offset" :z-index="menus.combinedTooltipProps.zIndex" :fixed="menus.combinedTooltipProps.fixed" :fixed-auto="menus.combinedTooltipProps.fixedAuto" :width="menus.combinedTooltipProps.width" :animation="menus.combinedTooltipProps.animation" :show-triangle="menus.combinedTooltipProps.showTriangle" block>
+		<Tooltip :disabled="!menus.useTooltip || !title || cmpDisabled" :title="title" trigger="hover" :placement="menus.combinedTooltipProps.placement" :timeout="menus.combinedTooltipProps.timeout" :color="menus.combinedTooltipProps.color" :text-color="menus.combinedTooltipProps.textColor" :border-color="menus.combinedTooltipProps.borderColor" :offset="menus.combinedTooltipProps.offset" :z-index="menus.combinedTooltipProps.zIndex" :fixed="menus.combinedTooltipProps.fixed" :fixed-auto="menus.combinedTooltipProps.fixedAuto" :width="menus.combinedTooltipProps.width" :animation="menus.combinedTooltipProps.animation" :show-triangle="menus.combinedTooltipProps.showTriangle" block>
 			<div :disabled="cmpDisabled || null" class="mvi-editor-menu-el" :data-id="`mvi-editor-menu-el-${uid}`" @click="_menuClick">
 				<!-- 显示下拉选的值 -->
 				<span v-if="type == 'display'" class="mvi-editor-menu-text">{{ selectedVal.label }}</span>
@@ -172,13 +172,27 @@ export default {
 		},
 		//菜单项是否禁用
 		cmpDisabled() {
+			//菜单项直接禁用
+			if (this.disabled) {
+				return true
+			}
+			//菜单栏整体禁用
+			if (this.menus.disabled) {
+				return true
+			}
+			//如果编辑器还没有获取则禁用
 			if (!this.menus.instance) {
 				return true
 			}
+			//编辑器被禁用
+			if (this.menus.instance.disabled) {
+				return true
+			}
+			//如果是代码视图，则禁用除"codeView"菜单项以外的所有菜单
 			if (this.menus.instance.codeViewShow && this.name != 'codeView') {
 				return true
 			}
-			return this.disabled
+			return false
 		},
 		//下拉选选项的渲染元素
 		layerElTag() {
@@ -188,6 +202,11 @@ export default {
 				}
 				return 'div'
 			}
+		},
+		//判断是否编辑器内部配置的菜单项
+		isDefinedMenu() {
+			const menu = getMenu(this.name)
+			return !!menu
 		}
 	},
 	components: {
@@ -202,6 +221,7 @@ export default {
 		}
 	},
 	watch: {
+		//监听list变化设置初始值为list第一个选项
 		list: {
 			handler: function (newVal) {
 				if (newVal && (this.type == 'select' || this.type == 'display')) {
@@ -231,8 +251,8 @@ export default {
 			if (this.cmpDisabled) {
 				return
 			}
-			//如果是固定菜单
-			if (getMenu(this.name)) {
+			//如果是内部已配置菜单
+			if (this.isDefinedMenu) {
 				this._handleOpt(item)
 			}
 			//自定义菜单项
@@ -259,8 +279,8 @@ export default {
 			}
 			//如果是普通菜单则直接作用
 			else {
-				//如果是固定菜单
-				if (getMenu(this.name)) {
+				//如果是内部已配置菜单
+				if (this.isDefinedMenu) {
 					this._handleOpt()
 				} else {
 					//触发自定义操作

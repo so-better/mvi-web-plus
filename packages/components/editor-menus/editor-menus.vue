@@ -51,6 +51,11 @@ export default {
 		border: {
 			type: Boolean,
 			default: false
+		},
+		//是否禁用整个菜单项
+		disabled: {
+			type: Boolean,
+			default: false
 		}
 	},
 	computed: {
