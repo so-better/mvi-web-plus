@@ -339,18 +339,24 @@ export default {
 			}
 			//清除格式
 			else if (this.name == 'removeFormat') {
-				if (this.menus.instance.editor.range.anchor.isEqual(this.menus.instance.editor.range.focus)) {
-					const inline = this.menus.instance.editor.range.anchor.element.getInline()
+				const removeFormat = ele => {
+					const inline = ele.getInline()
 					if (inline) {
 						inline.styles = null
+						const children = inline.parent.children.filter(item => {
+							return !item.isEmpty() && !item.isSpaceText()
+						})
+						if (children.length == 1) {
+							removeFormat(inline.parent)
+						}
 					}
+				}
+				if (this.menus.instance.editor.range.anchor.isEqual(this.menus.instance.editor.range.focus)) {
+					removeFormat(this.menus.instance.editor.range.anchor.element)
 				} else {
 					const elements = this.menus.instance.editor.getElementsByRange(true)
 					elements.forEach(el => {
-						const inline = el.getInline()
-						if (inline) {
-							inline.styles = null
-						}
+						removeFormat(el)
 					})
 				}
 				//重新渲染
