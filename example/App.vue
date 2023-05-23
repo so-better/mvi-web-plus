@@ -6,22 +6,19 @@
 		</div>
 		<m-editor-menus border useTooltip class="mvi-mb-4" ref="menus">
 			<m-editor-menu :disabled="disabled" v-for="item in definedMenus" :name="item.name" />
-			<m-editor-menu type="select" icon="user" name="custom" @custom="customMenu">
-				<template #layer>222</template>
-			</m-editor-menu>
 		</m-editor-menus>
 		<m-editor placeholder="请输入内容" border :disabled="disabled" @change="change" auto-height ref="editor" v-model="value"></m-editor>
 	</div>
 </template>
 <script>
-import { definedMenus } from '../packages/components/editor-menu'
+import { definedEditorMenus } from '../packages'
 export default {
 	data() {
 		return {
 			show: true,
 			disabled: false,
-			value: 'aaaaaa',
-			definedMenus: definedMenus
+			value: '<p><span style="color:#f30;"><span style="color:#78af3d">十年生死两茫茫，不思量，自难忘。</span></span></p><p>千里孤坟，<span style="font-weight:bold;color:#798af1">无处话凄凉</span>。</p><p>纵使相逢应不识，尘满面，鬓如霜。</p>',
+			definedMenus: definedEditorMenus
 		}
 	},
 	mounted() {

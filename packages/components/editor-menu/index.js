@@ -1,7 +1,7 @@
 import EditorMenu from './editor-menu.vue'
-import definedMenus from './definedMenus'
+import definedEditorMenus from './definedMenus'
 EditorMenu.install = app => {
 	app.component(EditorMenu.name, EditorMenu)
 }
 
-export { definedMenus, EditorMenu, EditorMenu as default }
+export { definedEditorMenus, EditorMenu, EditorMenu as default }

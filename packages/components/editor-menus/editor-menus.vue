@@ -1,5 +1,5 @@
 <template>
-	<div :class="['mvi-editor-menus', border ? 'border' : '']">
+	<div :class="['mvi-editor-menus', border ? 'border' : '']" @mousedown.prevent>
 		<slot></slot>
 	</div>
 </template>

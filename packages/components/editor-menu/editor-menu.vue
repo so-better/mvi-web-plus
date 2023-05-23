@@ -12,7 +12,13 @@
 		</Tooltip>
 		<Layer v-if="type == 'select' || type == 'display'" v-model="layerShow" ref="layer" :placement="menus.combinedLayerProps.placement" :z-index="menus.combinedLayerProps.zIndex" :fixed="menus.combinedLayerProps.fixed" :fixed-auto="menus.combinedLayerProps.fixedAuto" :offset="menus.combinedLayerProps.offset" :wrapper-class="menus.combinedLayerProps.wrapperClass" :timeout="menus.combinedLayerProps.timeout" :show-triangle="menus.combinedLayerProps.showTriangle" :animation="menus.combinedLayerProps.animation" :shadow="menus.combinedLayerProps.shadow" :border="menus.combinedLayerProps.border" :width="menus.combinedLayerProps.width" :closable="menus.trigger == 'click'" :target="`[data-id='mvi-editor-menu-el-${uid}']`" :root="`[data-id='mvi-editor-menu-${uid}']`">
 			<!-- 字体颜色、背景色 -->
-			<div v-if="name == 'foreColor' || name == 'backColor'"></div>
+			<div v-if="name == 'foreColor' || name == 'backColor'" class="mvi-editor-menu-colors">
+				<div class="mvi-editor-menu-color" v-for="item in parseList">
+					<Tooltip :disabled="!menus.useTooltip || !item.label || cmpDisabled" trigger="hover" :title="item.label" :placement="menus.combinedTooltipProps.placement" :timeout="menus.combinedTooltipProps.timeout" :color="menus.combinedTooltipProps.color" :text-color="menus.combinedTooltipProps.textColor" :border-color="menus.combinedTooltipProps.borderColor" :offset="menus.combinedTooltipProps.offset" :z-index="menus.combinedTooltipProps.zIndex" :fixed="menus.combinedTooltipProps.fixed" :fixed-auto="menus.combinedTooltipProps.fixedAuto" :width="menus.combinedTooltipProps.width" :animation="menus.combinedTooltipProps.animation" :show-triangle="menus.combinedTooltipProps.showTriangle" block>
+						<div :style="{ backgroundColor: item.value }" @click="_layerClick(item)" class="mvi-editor-menu-color-el"></div>
+					</Tooltip>
+				</div>
+			</div>
 			<!-- 表格 -->
 			<div v-else-if="name == 'table'"></div>
 			<!-- 链接 -->
@@ -192,6 +198,10 @@ export default {
 			if (this.menus.instance.codeViewShow && this.name != 'codeView') {
 				return true
 			}
+			//如果编辑器没有获取焦点
+			if (!this.menus.instance.focus) {
+				return true
+			}
 			return false
 		},
 		//下拉选选项的渲染元素
@@ -327,15 +337,74 @@ export default {
 					this.menus.instance.editor.setCursor()
 				}
 			}
+			//清除格式
+			else if (this.name == 'removeFormat') {
+				if (this.menus.instance.editor.range.anchor.isEqual(this.menus.instance.editor.range.focus)) {
+					const inline = this.menus.instance.editor.range.anchor.element.getInline()
+					if (inline) {
+						inline.styles = null
+					}
+				} else {
+					const elements = this.menus.instance.editor.getElementsByRange(true)
+					elements.forEach(el => {
+						const inline = el.getInline()
+						if (inline) {
+							inline.styles = null
+						}
+					})
+				}
+				//重新渲染
+				this.menus.instance.editor.formatElementStack()
+				this.menus.instance.editor.domRender()
+				this.menus.instance.editor.setCursor()
+			}
 			//分隔线
 			else if (this.name == 'divider') {
-				this.menus.instance._insertDivider()
+				this._insertDivider()
+			}
+			//字体颜色
+			else if (this.name == 'foreColor') {
+				this.menus.instance.editor.setStyle({
+					color: item.value
+				})
+				//重新渲染
+				this.menus.instance.editor.formatElementStack()
+				this.menus.instance.editor.domRender()
+				this.menus.instance.editor.setCursor()
+			}
+			//背景颜色
+			else if (this.name == 'backColor') {
+				this.menus.instance.editor.setStyle({
+					'background-color': item.value
+				})
+				//重新渲染
+				this.menus.instance.editor.formatElementStack()
+				this.menus.instance.editor.domRender()
+				this.menus.instance.editor.setCursor()
 			}
 			//源码视图
 			else if (this.name == 'codeView') {
 				this.menus.instance.codeViewShow = !this.menus.instance.codeViewShow
 			}
-		}
+		},
+		//插入分隔符
+		_insertDivider() {
+			const marks = {
+				class: 'mvi-editor-divider'
+			}
+			//创建分隔线
+			const divider = this.menus.instance.editor.formatElement(new AlexElement('closed', 'hr', marks, null, null))
+			//插入分割符
+			this.menus.instance.editor.insertElement(divider)
+			//换行
+			this.menus.instance.editor.insertParagraph()
+			//重新渲染
+			this.menus.instance.editor.formatElementStack()
+			this.menus.instance.editor.domRender()
+			this.menus.instance.editor.setCursor()
+		},
+		//判断是否激活并设置激活状态
+		setActive() {}
 	}
 }
 </script>
@@ -379,6 +448,40 @@ export default {
 
 		.mvi-editor-menu-caret {
 			transform: scale(0.5);
+		}
+	}
+
+	.mvi-editor-menu-colors {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-start;
+		flex-wrap: wrap;
+		width: calc(@small-height * 4 + @mp-xs * 10 + 16px);
+		padding: @mp-xs;
+
+		.mvi-editor-menu-color {
+			display: block;
+			padding: @mp-xs / 2;
+			border: 1px solid transparent;
+			border-radius: @radius-default / 2;
+
+			.mvi-editor-menu-color-el {
+				display: block;
+				width: @small-height / 2;
+				height: @small-height / 2;
+				border: 1px solid @border-color;
+				border-radius: @radius-default / 2;
+				position: relative;
+				transition: transform 200ms;
+				-webkit-transition: transform 200ms;
+				-moz-transition: transform 200ms;
+
+				&:hover {
+					cursor: pointer;
+					transform: translate3d(0, 0, 0) scale(1.5);
+					z-index: 2;
+				}
+			}
 		}
 	}
 
