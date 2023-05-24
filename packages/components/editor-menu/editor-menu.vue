@@ -243,6 +243,14 @@ export default {
 			immediate: true
 		}
 	},
+	mounted() {
+		const unwatch = this.$watch('menus.instance', instance => {
+			instance.editor.on('rangeUpdate', () => {
+				this._handleRangeUpdate()
+			})
+			unwatch()
+		})
+	},
 	methods: {
 		//菜单项悬浮
 		_menuHover(type) {
@@ -415,6 +423,10 @@ export default {
 			this.menus.instance.editor.formatElementStack()
 			this.menus.instance.editor.domRender()
 			this.menus.instance.editor.setCursor()
+		},
+		//监听range更新
+		_handleRangeUpdate() {
+			const editor = this.menus.instance.editor
 		},
 		//获取元素的指定样式
 		getElementStyle(element, style) {
