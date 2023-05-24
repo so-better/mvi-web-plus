@@ -358,7 +358,7 @@ export default {
 						return !item.isBlock()
 					})
 					.every(item => {
-						const styleValue = this.getCurrentStyle(item, 'font-weight')
+						const styleValue = this.getElementStyle(item, 'font-weight')
 						return styleValue == 'bold'
 					})
 				if (isBold) {
@@ -416,19 +416,18 @@ export default {
 			this.menus.instance.editor.domRender()
 			this.menus.instance.editor.setCursor()
 		},
-		getCurrentStyle(element, style) {
+		//获取元素的指定样式
+		getElementStyle(element, style) {
 			//如果元素拥有此样式
 			if (element.hasStyles() && element.styles.hasOwnProperty(style) && element.styles[style] != '') {
 				return element.styles[style]
 			}
 			//如果元素没有该样式，则向上查找
-
 			//根元素无法向上查找，返回null
 			if (element.isRoot()) {
 				return null
 			}
-
-			return this.getCurrentStyle(element.parent, style)
+			return this.getElementStyle(element.parent, style)
 		}
 	}
 }
