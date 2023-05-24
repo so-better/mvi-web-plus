@@ -339,27 +339,7 @@ export default {
 			}
 			//清除格式
 			else if (this.name == 'removeFormat') {
-				const removeFormat = ele => {
-					const inline = ele.getInline()
-					if (inline) {
-						inline.styles = null
-						const children = inline.parent.children.filter(item => {
-							return !item.isEmpty() && !item.isSpaceText()
-						})
-						if (children.length == 1) {
-							removeFormat(inline.parent)
-						}
-					}
-				}
-				if (this.menus.instance.editor.range.anchor.isEqual(this.menus.instance.editor.range.focus)) {
-					removeFormat(this.menus.instance.editor.range.anchor.element)
-				} else {
-					const elements = this.menus.instance.editor.getElementsByRange(true)
-					elements.forEach(el => {
-						removeFormat(el)
-					})
-				}
-				//重新渲染
+				this.menus.instance.editor.removeAllStyles()
 				this.menus.instance.editor.formatElementStack()
 				this.menus.instance.editor.domRender()
 				this.menus.instance.editor.setCursor()
@@ -367,6 +347,27 @@ export default {
 			//分隔线
 			else if (this.name == 'divider') {
 				this._insertDivider()
+			}
+			//加粗
+			else if (this.name == 'bold') {
+				// const elements = this.menus.instance.editor.getElementsByRange(true)
+				// let isBold = elements.every(item => {
+				// 	const styleValue = this.getCurrentStyle(item, 'font-weight')
+				// 	return styleValue == 'bold'
+				// })
+				// if (isBold) {
+				// 	this.menus.instance.editor.setStyle({
+				// 		'font-weight': ''
+				// 	})
+				// } else {
+				// 	this.menus.instance.editor.setStyle({
+				// 		'font-weight': 'bold'
+				// 	})
+				// }
+				//重新渲染
+				this.menus.instance.editor.formatElementStack()
+				this.menus.instance.editor.domRender()
+				this.menus.instance.editor.setCursor()
 			}
 			//字体颜色
 			else if (this.name == 'foreColor') {
@@ -409,8 +410,20 @@ export default {
 			this.menus.instance.editor.domRender()
 			this.menus.instance.editor.setCursor()
 		},
-		//判断是否激活并设置激活状态
-		setActive() {}
+		getCurrentStyle(element, style) {
+			//如果元素拥有此样式
+			if (element.hasStyles() && element.styles.hasOwnProperty(style) && element.styles[style] != '') {
+				return element.styles[style]
+			}
+			//如果元素没有该样式，则向上查找
+
+			//根元素无法向上查找，返回null
+			if (element.isRoot()) {
+				return null
+			}
+
+			return this.getCurrentStyle(element.parent, style)
+		}
 	}
 }
 </script>

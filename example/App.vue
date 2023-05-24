@@ -17,7 +17,7 @@ export default {
 		return {
 			show: true,
 			disabled: false,
-			value: '<p><span style="color:#f30;"><span style="color:#78af3d">十年生死两茫茫，不思量，自难忘。</span></span></p><p>千里孤坟，<span style="font-weight:bold;color:#798af1">无处话凄凉</span>。</p><p>纵使相逢应不识，尘满面，鬓如霜。</p>',
+			value: '<p><span style="color:#f30;">333333</span><span style="color:#78af3d;">十年生<span style="font-weight:bold;">死两茫茫，不思量</span>，自难忘。</span></p><p>千里孤坟，<span style="font-weight:bold;color:#798af1">无处话凄凉</span>。</p><p>纵使相逢应不识，尘满面，鬓如霜。</p>',
 			definedMenus: definedEditorMenus
 		}
 	},
