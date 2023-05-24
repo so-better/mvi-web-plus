@@ -121,7 +121,9 @@ export default {
 			//下拉选菜单项的已选值
 			selectedVal: {},
 			//浮层是否显示
-			layerShow: false
+			layerShow: false,
+			//是否激活此菜单项
+			active: false
 		}
 	},
 	computed: {
@@ -350,20 +352,24 @@ export default {
 			}
 			//加粗
 			else if (this.name == 'bold') {
-				// const elements = this.menus.instance.editor.getElementsByRange(true)
-				// let isBold = elements.every(item => {
-				// 	const styleValue = this.getCurrentStyle(item, 'font-weight')
-				// 	return styleValue == 'bold'
-				// })
-				// if (isBold) {
-				// 	this.menus.instance.editor.setStyle({
-				// 		'font-weight': ''
-				// 	})
-				// } else {
-				// 	this.menus.instance.editor.setStyle({
-				// 		'font-weight': 'bold'
-				// 	})
-				// }
+				const elements = this.menus.instance.editor.getElementsByRange(true)
+				let isBold = elements
+					.filter(item => {
+						return !item.isBlock()
+					})
+					.every(item => {
+						const styleValue = this.getCurrentStyle(item, 'font-weight')
+						return styleValue == 'bold'
+					})
+				if (isBold) {
+					this.menus.instance.editor.setStyle({
+						'font-weight': 'normal'
+					})
+				} else {
+					this.menus.instance.editor.setStyle({
+						'font-weight': 'bold'
+					})
+				}
 				//重新渲染
 				this.menus.instance.editor.formatElementStack()
 				this.menus.instance.editor.domRender()

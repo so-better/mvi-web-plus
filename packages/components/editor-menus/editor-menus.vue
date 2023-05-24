@@ -68,6 +68,9 @@ export default {
 			return this._initOption(defaultLayerProps, this.layerProps)
 		}
 	},
+	mounted() {
+		console.log(this.$slots.default()[0].children)
+	},
 	methods: {
 		_initOption(defaultObj, propObj) {
 			let obj = {}
