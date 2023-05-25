@@ -109,6 +109,14 @@ export default {
 				return menu ? menu.title : ''
 			}
 		},
+		//下拉选菜单的默认值
+		value: {
+			type: [String, Number],
+			default: function (props) {
+				const menu = getMenu(props.name)
+				return menu ? menu.value : null
+			}
+		},
 		//是否禁用菜单项
 		disabled: {
 			type: Boolean,
@@ -251,7 +259,13 @@ export default {
 		list: {
 			handler: function (newVal) {
 				if (newVal && (this.type == 'select' || this.type == 'display')) {
-					this.selectedVal = { ...this.parseList[0] }
+					if (this.value === null || this.value === undefined) {
+						this.selectedVal = { ...this.parseList[0] }
+					} else {
+						this.selectedVal = this.parseList.find(item => {
+							return item.value == this.value
+						}) || { ...this.parseList[0] }
+					}
 				}
 			},
 			immediate: true
@@ -427,6 +441,10 @@ export default {
 						'vertical-align': 'super'
 					})
 				}
+			}
+			//标题
+			else if (this.name == 'title') {
+				console.log(item)
 			}
 			//字体颜色
 			else if (this.name == 'foreColor') {

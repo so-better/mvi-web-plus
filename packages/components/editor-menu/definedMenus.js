@@ -88,12 +88,14 @@ export default [
 				label: '正文',
 				value: 'p'
 			}
-		]
+		],
+		value: 'p'
 	},
 	{
 		name: 'fontFamily',
 		type: 'display',
 		title: '字体',
+		value: '',
 		list: [
 			{
 				label: '默认字体',
@@ -111,6 +113,7 @@ export default [
 		name: 'fontSize',
 		type: 'display',
 		title: '字号',
+		value: '',
 		list: [
 			{
 				label: '默认字号',
