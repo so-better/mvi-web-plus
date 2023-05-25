@@ -1,7 +1,7 @@
 <template>
 	<div class="mvi-editor-menu" :data-id="`mvi-editor-menu-${uid}`" @mouseenter="_menuHover('enter')" @mouseleave="_menuHover('leave')">
 		<Tooltip :disabled="!menus.useTooltip || !title || cmpDisabled" :title="title" trigger="hover" :placement="menus.combinedTooltipProps.placement" :timeout="menus.combinedTooltipProps.timeout" :color="menus.combinedTooltipProps.color" :text-color="menus.combinedTooltipProps.textColor" :border-color="menus.combinedTooltipProps.borderColor" :offset="menus.combinedTooltipProps.offset" :z-index="menus.combinedTooltipProps.zIndex" :fixed="menus.combinedTooltipProps.fixed" :fixed-auto="menus.combinedTooltipProps.fixedAuto" :width="menus.combinedTooltipProps.width" :animation="menus.combinedTooltipProps.animation" :show-triangle="menus.combinedTooltipProps.showTriangle" block>
-			<div :disabled="cmpDisabled || null" class="mvi-editor-menu-el" :data-id="`mvi-editor-menu-el-${uid}`" @click="_menuClick">
+			<div :disabled="cmpDisabled || null" class="mvi-editor-menu-el" :data-id="`mvi-editor-menu-el-${uid}`" @click="_menuClick" :style="editorMenuElStyle">
 				<!-- 显示下拉选的值 -->
 				<span v-if="type == 'display'" class="mvi-editor-menu-text">{{ selectedVal.label }}</span>
 				<!-- 菜单项图标 -->
@@ -38,13 +38,13 @@
 	</div>
 </template>
 <script>
-import definedMenus from './definedMenus'
+import { getCurrentInstance } from 'vue'
 import { Dap } from '../dap'
 import { Icon } from '../icon'
 import { Tooltip } from '../tooltip'
 import { Layer } from '../layer'
 import EditorTag from './editor-tag.vue'
-import { getCurrentInstance } from 'vue'
+import definedMenus from './definedMenus'
 import { AlexElement } from 'alex-editor'
 //根据名称获取指定菜单项配置
 const getMenu = name => {
@@ -215,6 +215,20 @@ export default {
 				return 'div'
 			}
 		},
+		//菜单项激活样式设置
+		editorMenuElStyle() {
+			let style = {}
+			if (this.cmpDisabled) {
+				return style
+			}
+			if (this.active) {
+				style.opacity = 1
+				if (this.menus.instance.activeColor) {
+					style.color = this.menus.instance.activeColor
+				}
+			}
+			return style
+		},
 		//判断是否编辑器内部配置的菜单项
 		isDefinedMenu() {
 			const menu = getMenu(this.name)
@@ -244,6 +258,7 @@ export default {
 		}
 	},
 	mounted() {
+		//对editor组件实例进行监听，如果存在了，则对alexEditor插件的rangeUpdate事件进行监听
 		const unwatch = this.$watch('menus.instance', instance => {
 			instance.editor.on('rangeUpdate', () => {
 				this._handleRangeUpdate()
@@ -327,119 +342,54 @@ export default {
 		_handleOpt(item) {
 			//撤销
 			if (this.name == 'undo') {
-				const historyRecord = this.menus.instance.editor.history.get(-1)
-				if (historyRecord) {
-					this.menus.instance.editor.stack = historyRecord.stack
-					this.menus.instance.editor.range = historyRecord.range
-					this.menus.instance.editor.formatElementStack()
-					this.menus.instance.editor.domRender(true)
-					this.menus.instance.editor.setCursor()
-				}
+				this.menus.instance.undo()
 			}
 			//重做
 			else if (this.name == 'redo') {
-				const historyRecord = this.menus.instance.editor.history.get(1)
-				if (historyRecord) {
-					this.menus.instance.editor.stack = historyRecord.stack
-					this.menus.instance.editor.range = historyRecord.range
-					this.menus.instance.editor.formatElementStack()
-					this.menus.instance.editor.domRender(true)
-					this.menus.instance.editor.setCursor()
-				}
+				this.menus.instance.redo()
 			}
 			//清除格式
 			else if (this.name == 'removeFormat') {
-				this.menus.instance.editor.removeAllStyles()
-				this.menus.instance.editor.formatElementStack()
-				this.menus.instance.editor.domRender()
-				this.menus.instance.editor.setCursor()
+				this.menus.instance.removeAllStyles()
 			}
 			//分隔线
 			else if (this.name == 'divider') {
-				this._insertDivider()
+				this.menus.instance.insertDivider()
 			}
 			//加粗
 			else if (this.name == 'bold') {
-				const elements = this.menus.instance.editor.getElementsByRange(true)
-				let isBold = elements
-					.filter(item => {
-						return !item.isBlock()
-					})
-					.every(item => {
-						const styleValue = this.getElementStyle(item, 'font-weight')
-						return styleValue == 'bold'
-					})
-				if (isBold) {
-					this.menus.instance.editor.setStyle({
+				if (this.active) {
+					this.menus.instance.setStyle({
 						'font-weight': 'normal'
 					})
 				} else {
-					this.menus.instance.editor.setStyle({
+					this.menus.instance.setStyle({
 						'font-weight': 'bold'
 					})
 				}
-				//重新渲染
-				this.menus.instance.editor.formatElementStack()
-				this.menus.instance.editor.domRender()
-				this.menus.instance.editor.setCursor()
 			}
 			//字体颜色
 			else if (this.name == 'foreColor') {
-				this.menus.instance.editor.setStyle({
+				this.menus.instance.setStyle({
 					color: item.value
 				})
-				//重新渲染
-				this.menus.instance.editor.formatElementStack()
-				this.menus.instance.editor.domRender()
-				this.menus.instance.editor.setCursor()
 			}
 			//背景颜色
 			else if (this.name == 'backColor') {
-				this.menus.instance.editor.setStyle({
+				this.menus.instance.setStyle({
 					'background-color': item.value
 				})
-				//重新渲染
-				this.menus.instance.editor.formatElementStack()
-				this.menus.instance.editor.domRender()
-				this.menus.instance.editor.setCursor()
 			}
 			//源码视图
 			else if (this.name == 'codeView') {
 				this.menus.instance.codeViewShow = !this.menus.instance.codeViewShow
 			}
 		},
-		//插入分隔符
-		_insertDivider() {
-			const marks = {
-				class: 'mvi-editor-divider'
-			}
-			//创建分隔线
-			const divider = this.menus.instance.editor.formatElement(new AlexElement('closed', 'hr', marks, null, null))
-			//插入分割符
-			this.menus.instance.editor.insertElement(divider)
-			//换行
-			this.menus.instance.editor.insertParagraph()
-			//重新渲染
-			this.menus.instance.editor.formatElementStack()
-			this.menus.instance.editor.domRender()
-			this.menus.instance.editor.setCursor()
-		},
 		//监听range更新
 		_handleRangeUpdate() {
-			const editor = this.menus.instance.editor
-		},
-		//获取元素的指定样式
-		getElementStyle(element, style) {
-			//如果元素拥有此样式
-			if (element.hasStyles() && element.styles.hasOwnProperty(style) && element.styles[style] != '') {
-				return element.styles[style]
+			if (this.name == 'bold') {
+				this.active = this.menus.instance.queryRangeStyle('font-weight', 'bold')
 			}
-			//如果元素没有该样式，则向上查找
-			//根元素无法向上查找，返回null
-			if (element.isRoot()) {
-				return null
-			}
-			return this.getElementStyle(element.parent, style)
 		}
 	}
 }
