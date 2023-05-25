@@ -368,6 +368,66 @@ export default {
 					})
 				}
 			}
+			//斜体
+			else if (this.name == 'italic') {
+				if (this.active) {
+					this.menus.instance.setStyle({
+						'font-style': 'normal'
+					})
+				} else {
+					this.menus.instance.setStyle({
+						'font-style': 'italic'
+					})
+				}
+			}
+			//下划线
+			else if (this.name == 'underline') {
+				if (this.active) {
+					this.menus.instance.setStyle({
+						'text-decoration-line': 'none'
+					})
+				} else {
+					this.menus.instance.setStyle({
+						'text-decoration-line': 'underline'
+					})
+				}
+			}
+			//删除线
+			else if (this.name == 'strikeThrough') {
+				if (this.active) {
+					this.menus.instance.setStyle({
+						'text-decoration-line': 'none'
+					})
+				} else {
+					this.menus.instance.setStyle({
+						'text-decoration-line': 'line-through'
+					})
+				}
+			}
+			//下标
+			else if (this.name == 'subscript') {
+				if (this.active) {
+					this.menus.instance.setStyle({
+						'vertical-align': 'baseline'
+					})
+				} else {
+					this.menus.instance.setStyle({
+						'vertical-align': 'sub'
+					})
+				}
+			}
+			//上标
+			else if (this.name == 'superscript') {
+				if (this.active) {
+					this.menus.instance.setStyle({
+						'vertical-align': 'baseline'
+					})
+				} else {
+					this.menus.instance.setStyle({
+						'vertical-align': 'super'
+					})
+				}
+			}
 			//字体颜色
 			else if (this.name == 'foreColor') {
 				this.menus.instance.setStyle({
@@ -388,7 +448,17 @@ export default {
 		//监听range更新
 		_handleRangeUpdate() {
 			if (this.name == 'bold') {
-				this.active = this.menus.instance.queryRangeStyle('font-weight', 'bold')
+				this.active = this.menus.instance.queryRangeStyle('font-weight', 'bold') || this.menus.instance.queryRangeStyle('font-weight', '700')
+			} else if (this.name == 'italic') {
+				this.active = this.menus.instance.queryRangeStyle('font-style', 'italic')
+			} else if (this.name == 'underline') {
+				this.active = this.menus.instance.queryRangeStyle('text-decoration-line', 'underline') || this.menus.instance.queryRangeStyle('text-decoration', 'underline')
+			} else if (this.name == 'strikeThrough') {
+				this.active = this.menus.instance.queryRangeStyle('text-decoration-line', 'line-through') || this.menus.instance.queryRangeStyle('text-decoration', 'line-through')
+			} else if (this.name == 'subscript') {
+				this.active = this.menus.instance.queryRangeStyle('vertical-align', 'sub')
+			} else if (this.name == 'superscript') {
+				this.active = this.menus.instance.queryRangeStyle('vertical-align', 'super')
 			}
 		}
 	}
