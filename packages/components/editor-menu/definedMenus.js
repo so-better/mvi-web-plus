@@ -65,23 +65,23 @@ export default [
 		title: '标题',
 		list: [
 			{
-				label: 'H1',
+				label: '一级标题',
 				value: 'h1'
 			},
 			{
-				label: 'H2',
+				label: '二级标题',
 				value: 'h2'
 			},
 			{
-				label: 'H3',
+				label: '三级标题',
 				value: 'h3'
 			},
 			{
-				label: 'H4',
+				label: '四级标题',
 				value: 'h4'
 			},
 			{
-				label: 'H5',
+				label: '五级标题',
 				value: 'h5'
 			},
 			{

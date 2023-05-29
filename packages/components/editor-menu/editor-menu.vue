@@ -27,7 +27,7 @@
 			<div v-else-if="name == 'image' || name == 'video'"></div>
 			<!-- 正常的下拉选 -->
 			<div v-else class="mvi-editor-menu-default">
-				<EditorTag :tag="layerElTag(item)" v-for="item in parseList" class="mvi-editor-menu-layer-el" @click="_layerClick(item)">
+				<EditorTag :tag="layerElTag(item)" v-for="item in parseList" :class="['mvi-editor-menu-layer-el', selectedVal.value == item.value && this.active ? 'active' : '']" @click="_layerClick(item)">
 					<Icon v-if="item.icon.type || item.icon.url" class="mvi-editor-menu-layer-icon" :type="item.icon.type" :url="item.icon.url" :spin="item.icon.spin" :size="item.icon.size" :color="item.icon.color" />
 					<span v-text="item.label"></span>
 				</EditorTag>
@@ -226,7 +226,7 @@ export default {
 		//菜单项激活样式设置
 		editorMenuElStyle() {
 			let style = {}
-			if (this.cmpDisabled || this.type != 'default') {
+			if (this.cmpDisabled) {
 				return style
 			}
 			if (this.active) {
@@ -274,9 +274,7 @@ export default {
 	mounted() {
 		//对editor组件实例进行监听，如果存在了，则对alexEditor插件的rangeUpdate事件进行监听
 		const unwatch = this.$watch('menus.instance', instance => {
-			instance.editor.on('rangeUpdate', () => {
-				this._handleRangeUpdate()
-			})
+			instance.editor.on('rangeUpdate', this._handleRangeUpdate)
 			unwatch()
 		})
 	},
@@ -479,7 +477,23 @@ export default {
 			}
 			//标题
 			else if (this.name == 'title') {
-				console.log(item)
+				if (this.menus.instance.editor.range.anchor.isEqual(this.menus.instance.editor.range.focus)) {
+					const block = this.menus.instance.editor.range.anchor.element.getBlock()
+					block.parsedom = item.value
+				} else {
+					const elements = this.menus.instance.editor.getElementsByRange(true, false)
+					elements.forEach(el => {
+						if (el.isBlock()) {
+							el.parsedom = item.value
+						} else {
+							el.getBlock().parsedom = item.value
+						}
+					})
+				}
+				this.selectedVal = { ...item }
+				this.menus.instance.editor.formatElementStack()
+				this.menus.instance.editor.domRender()
+				this.menus.instance.editor.rangeRender()
 			}
 			//字体颜色
 			else if (this.name == 'foreColor') {
@@ -526,6 +540,26 @@ export default {
 				this.active = this.menus.instance.editor.queryStyle('vertical-align', 'sub')
 			} else if (this.name == 'superscript') {
 				this.active = this.menus.instance.editor.queryStyle('vertical-align', 'super')
+			} else if (this.name == 'title') {
+				if (range.anchor.isEqual(range.focus)) {
+					this.active = this.parseList.some(item => {
+						return item.value == range.anchor.element.getBlock().parsedom
+					})
+				} else {
+					const elements = this.menus.instance.editor.getElementsByRange(true, false)
+					this.active = elements.every(el => {
+						if (el.isBlock()) {
+							return this.parseList.some(item => {
+								return item.value == el.parsedom
+							})
+						} else {
+							return this.parseList.some(item => {
+								return item.value == el.getBlock().parsedom
+							})
+						}
+					})
+					this.menus.instance.editor.formatElementStack()
+				}
 			}
 		}
 	}
@@ -631,6 +665,10 @@ export default {
 			}
 
 			&:active {
+				background-color: @bg-color-dark;
+			}
+
+			&.active {
 				background-color: @bg-color-dark;
 			}
 
