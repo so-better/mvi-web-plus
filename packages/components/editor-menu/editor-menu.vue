@@ -226,7 +226,7 @@ export default {
 		//菜单项激活样式设置
 		editorMenuElStyle() {
 			let style = {}
-			if (this.cmpDisabled) {
+			if (this.cmpDisabled || this.type != 'default') {
 				return style
 			}
 			if (this.active) {
@@ -356,91 +356,126 @@ export default {
 		_handleOpt(item) {
 			//撤销
 			if (this.name == 'undo') {
-				this.menus.instance.undo()
+				const historyRecord = this.menus.instance.editor.history.get(-1)
+				if (historyRecord) {
+					this.menus.instance.editor.stack = historyRecord.stack
+					this.menus.instance.editor.range = historyRecord.range
+					this.menus.instance.editor.formatElementStack()
+					this.menus.instance.editor.domRender(true)
+					this.menus.instance.editor.rangeRender()
+				}
 			}
 			//重做
 			else if (this.name == 'redo') {
-				this.menus.instance.redo()
+				const historyRecord = this.menus.instance.editor.history.get(1)
+				if (historyRecord) {
+					this.menus.instance.editor.stack = historyRecord.stack
+					this.menus.instance.editor.range = historyRecord.range
+					this.menus.instance.editor.formatElementStack()
+					this.menus.instance.editor.domRender(true)
+					this.menus.instance.editor.rangeRender()
+				}
 			}
 			//清除格式
 			else if (this.name == 'removeFormat') {
-				this.menus.instance.removeAllStyles()
+				this.menus.instance.editor.removeStyle()
+				this.menus.instance.editor.formatElementStack()
+				this.menus.instance.editor.domRender()
+				this.menus.instance.editor.rangeRender()
 			}
 			//分隔线
 			else if (this.name == 'divider') {
-				this.menus.instance.insertDivider()
+				const marks = {
+					class: 'mvi-editor-divider'
+				}
+				//创建分隔线
+				const divider = this.menus.instance.editor.formatElement(new AlexElement('closed', 'hr', marks, null, null))
+				//插入分割线
+				this.menus.instance.editor.insertElement(divider)
+				//换行
+				this.menus.instance.editor.insertParagraph()
+				//重新渲染
+				this.menus.instance.editor.formatElementStack()
+				this.menus.instance.editor.domRender()
+				this.menus.instance.editor.rangeRender()
 			}
 			//加粗
 			else if (this.name == 'bold') {
 				if (this.active) {
-					this.menus.instance.setStyle({
-						'font-weight': 'normal'
-					})
+					this.menus.instance.editor.removeStyle(['font-weight'])
 				} else {
-					this.menus.instance.setStyle({
+					this.menus.instance.editor.setStyle({
 						'font-weight': 'bold'
 					})
 				}
+				this.menus.instance.editor.formatElementStack()
+				this.menus.instance.editor.domRender()
+				this.menus.instance.editor.rangeRender()
 			}
 			//斜体
 			else if (this.name == 'italic') {
 				if (this.active) {
-					this.menus.instance.setStyle({
-						'font-style': 'normal'
-					})
+					this.menus.instance.editor.removeStyle(['font-style'])
 				} else {
-					this.menus.instance.setStyle({
+					this.menus.instance.editor.setStyle({
 						'font-style': 'italic'
 					})
 				}
+				this.menus.instance.editor.formatElementStack()
+				this.menus.instance.editor.domRender()
+				this.menus.instance.editor.rangeRender()
 			}
 			//下划线
 			else if (this.name == 'underline') {
 				if (this.active) {
-					this.menus.instance.setStyle({
-						'text-decoration-line': 'none'
-					})
+					this.menus.instance.editor.removeStyle(['text-decoration-line', 'text-decoration'])
 				} else {
-					this.menus.instance.setStyle({
+					this.menus.instance.editor.setStyle({
 						'text-decoration-line': 'underline'
 					})
 				}
+				this.menus.instance.editor.formatElementStack()
+				this.menus.instance.editor.domRender()
+				this.menus.instance.editor.rangeRender()
 			}
 			//删除线
 			else if (this.name == 'strikeThrough') {
 				if (this.active) {
-					this.menus.instance.setStyle({
-						'text-decoration-line': 'none'
-					})
+					this.menus.instance.editor.removeStyle(['text-decoration-line', 'text-decoration'])
 				} else {
-					this.menus.instance.setStyle({
+					this.menus.instance.editor.setStyle({
 						'text-decoration-line': 'line-through'
 					})
 				}
+				this.menus.instance.editor.formatElementStack()
+				this.menus.instance.editor.domRender()
+				this.menus.instance.editor.rangeRender()
 			}
 			//下标
 			else if (this.name == 'subscript') {
 				if (this.active) {
-					this.menus.instance.setStyle({
-						'vertical-align': 'baseline'
-					})
+					this.menus.instance.editor.removeStyle(['vertical-align'])
 				} else {
-					this.menus.instance.setStyle({
+					this.menus.instance.editor.setStyle({
 						'vertical-align': 'sub'
 					})
 				}
+				this.menus.instance.editor.formatElementStack()
+				this.menus.instance.editor.domRender()
+				this.menus.instance.editor.rangeRender()
 			}
 			//上标
 			else if (this.name == 'superscript') {
 				if (this.active) {
-					this.menus.instance.setStyle({
-						'vertical-align': 'baseline'
-					})
+					this.menus.instance.editor.removeStyle(['vertical-align'])
 				} else {
-					this.menus.instance.setStyle({
+					this.menus.instance.editor.setStyle({
 						'vertical-align': 'super'
 					})
 				}
+				this.menus.instance.editor.formatElementStack()
+				this.menus.instance.editor.domRender()
+				this.menus.instance.editor.rangeRender()
 			}
 			//标题
 			else if (this.name == 'title') {
@@ -448,15 +483,29 @@ export default {
 			}
 			//字体颜色
 			else if (this.name == 'foreColor') {
-				this.menus.instance.setStyle({
-					color: item.value
-				})
+				if (this.active) {
+					this.menus.instance.editor.removeStyle(['color'])
+				} else {
+					this.menus.instance.editor.setStyle({
+						color: item.value
+					})
+				}
+				this.menus.instance.editor.formatElementStack()
+				this.menus.instance.editor.domRender()
+				this.menus.instance.editor.rangeRender()
 			}
 			//背景颜色
 			else if (this.name == 'backColor') {
-				this.menus.instance.setStyle({
-					'background-color': item.value
-				})
+				if (this.active) {
+					this.menus.instance.editor.removeStyle(['background-color'])
+				} else {
+					this.menus.instance.editor.setStyle({
+						'background-color': item.value
+					})
+				}
+				this.menus.instance.editor.formatElementStack()
+				this.menus.instance.editor.domRender()
+				this.menus.instance.editor.rangeRender()
 			}
 			//源码视图
 			else if (this.name == 'codeView') {
@@ -464,19 +513,19 @@ export default {
 			}
 		},
 		//监听range更新
-		_handleRangeUpdate() {
+		_handleRangeUpdate(range) {
 			if (this.name == 'bold') {
-				this.active = this.menus.instance.queryRangeStyle('font-weight', 'bold') || this.menus.instance.queryRangeStyle('font-weight', '700')
+				this.active = this.menus.instance.editor.queryStyle('font-weight', 'bold')
 			} else if (this.name == 'italic') {
-				this.active = this.menus.instance.queryRangeStyle('font-style', 'italic')
+				this.active = this.menus.instance.editor.queryStyle('font-style', 'italic')
 			} else if (this.name == 'underline') {
-				this.active = this.menus.instance.queryRangeStyle('text-decoration-line', 'underline') || this.menus.instance.queryRangeStyle('text-decoration', 'underline')
+				this.active = this.menus.instance.editor.queryStyle('text-decoration-line', 'underline')
 			} else if (this.name == 'strikeThrough') {
-				this.active = this.menus.instance.queryRangeStyle('text-decoration-line', 'line-through') || this.menus.instance.queryRangeStyle('text-decoration', 'line-through')
+				this.active = this.menus.instance.editor.queryStyle('text-decoration-line', 'line-through')
 			} else if (this.name == 'subscript') {
-				this.active = this.menus.instance.queryRangeStyle('vertical-align', 'sub')
+				this.active = this.menus.instance.editor.queryStyle('vertical-align', 'sub')
 			} else if (this.name == 'superscript') {
-				this.active = this.menus.instance.queryRangeStyle('vertical-align', 'super')
+				this.active = this.menus.instance.editor.queryStyle('vertical-align', 'super')
 			}
 		}
 	}

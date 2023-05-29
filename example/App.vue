@@ -17,7 +17,7 @@ export default {
 		return {
 			show: true,
 			disabled: false,
-			value: '<p>十年生死两茫茫&#xFEFF;&#xFEFF;<img src="#" style="width:100px;height:100px;"/>，不思量，自难忘。</p><p style="color:#f30">千里孤坟，无处话凄凉。</p><p>纵使相逢应不识，尘满面，鬓如霜。</p>',
+			value: '<p>十年生死两茫茫&#xFEFF;&#xFEFF;<img src="https://www.mvi-web.cn/mvi-resources/images/mvi_image_0_1676971974565.png" style="width:100px;height:100px;"/>，不思量，自难忘。</p><p >千里孤坟，无处话凄凉。</p><p>纵使相逢应不识，尘满面，鬓如霜。</p>',
 			definedMenus: definedEditorMenus
 		}
 	},
