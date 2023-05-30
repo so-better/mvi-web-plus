@@ -160,7 +160,6 @@ export default {
 		if (this.autofocus && !this.codeViewShow && !this.disabled) {
 			this.collapseToEnd()
 		}
-		console.log(this.editor.stack)
 	},
 	methods: {
 		//编辑器内部修改值的方法
@@ -229,6 +228,7 @@ export default {
 				return
 			}
 			this.editor.collapseToEnd()
+			this.editor.rangeRender()
 		},
 		//光标设置到文档头部
 		collapseToStart() {
@@ -236,6 +236,7 @@ export default {
 				return
 			}
 			this.editor.collapseToStart()
+			this.editor.rangeRender()
 		}
 	}
 }

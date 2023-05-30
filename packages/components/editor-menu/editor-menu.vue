@@ -46,7 +46,6 @@ import { Layer } from '../layer'
 import EditorTag from './editor-tag.vue'
 import definedMenus from './definedMenus'
 import { AlexElement } from 'alex-editor'
-import Util from 'alex-editor/src/Util'
 //根据名称获取指定菜单项配置
 const getMenu = name => {
 	if (name == 'custom') {
@@ -281,17 +280,15 @@ export default {
 			handler: function (newVal) {
 				if (newVal && this.type == 'display') {
 					if (this.value === null || this.value === undefined) {
-						this.selectedVal = Util.clone(this.parseList[0])
-						this.defaultVal = Util.clone(this.parseList[0])
+						this.selectedVal = { ...this.parseList[0] }
+						this.defaultVal = { ...this.parseList[0] }
 					} else {
-						this.selectedVal =
-							this.parseList.find(item => {
-								return item.value == this.value
-							}) || Util.clone(this.parseList[0])
-						this.defaultVal =
-							this.parseList.find(item => {
-								return item.value == this.value
-							}) || Util.clone(this.parseList[0])
+						this.selectedVal = this.parseList.find(item => {
+							return item.value == this.value
+						}) || { ...this.parseList[0] }
+						this.defaultVal = this.parseList.find(item => {
+							return item.value == this.value
+						}) || { ...this.parseList[0] }
 					}
 				}
 			},
@@ -517,7 +514,15 @@ export default {
 						}
 					})
 				}
-				this.selectedVal = Util.clone(item)
+				this.menus.instance.editor.formatElementStack()
+				this.menus.instance.editor.domRender()
+				this.menus.instance.editor.rangeRender()
+			}
+			//字体
+			else if (this.name == 'fontFamily') {
+				this.menus.instance.editor.setStyle({
+					'font-family': item.value
+				})
 				this.menus.instance.editor.formatElementStack()
 				this.menus.instance.editor.domRender()
 				this.menus.instance.editor.rangeRender()
@@ -533,35 +538,24 @@ export default {
 			}
 			//字体颜色
 			else if (this.name == 'foreColor') {
-				if (this.active) {
-					this.menus.instance.editor.removeStyle(['color'])
-				} else {
-					this.menus.instance.editor.setStyle({
-						color: item.value
-					})
-				}
+				this.menus.instance.editor.setStyle({
+					color: item.value
+				})
 				this.menus.instance.editor.formatElementStack()
 				this.menus.instance.editor.domRender()
 				this.menus.instance.editor.rangeRender()
 			}
 			//背景颜色
 			else if (this.name == 'backColor') {
-				if (this.active) {
-					this.menus.instance.editor.removeStyle(['background-color'])
-				} else {
-					this.menus.instance.editor.setStyle({
-						'background-color': item.value
-					})
-				}
+				this.menus.instance.editor.setStyle({
+					'background-color': item.value
+				})
 				this.menus.instance.editor.formatElementStack()
 				this.menus.instance.editor.domRender()
 				this.menus.instance.editor.rangeRender()
 			}
 			//插入有序列表
 			else if (this.name == 'ol') {
-				this.menus.instance.editor.formatElementStack()
-				this.menus.instance.editor.domRender()
-				this.menus.instance.editor.rangeRender()
 			}
 			//源码视图
 			else if (this.name == 'codeView') {
@@ -583,11 +577,11 @@ export default {
 			}
 			//下划线判定
 			else if (this.name == 'underline') {
-				this.active = this.menus.instance.editor.queryStyle('text-decoration-line', 'underline')
+				this.active = this.menus.instance.editor.queryStyle('text-decoration-line', 'underline') || this.menus.instance.editor.queryStyle('text-decoration', 'underline')
 			}
 			//删除线判定
 			else if (this.name == 'strikeThrough') {
-				this.active = this.menus.instance.editor.queryStyle('text-decoration-line', 'line-through')
+				this.active = this.menus.instance.editor.queryStyle('text-decoration-line', 'line-through') || this.menus.instance.editor.queryStyle('text-decoration', 'line-through')
 			}
 			//下标判定
 			else if (this.name == 'subscript') {
@@ -600,10 +594,9 @@ export default {
 			//标题判定
 			else if (this.name == 'title') {
 				if (range.anchor.isEqual(range.focus)) {
-					this.selectedVal =
-						this.parseList.find(item => {
-							return item.value == range.anchor.element.getBlock().parsedom
-						}) || Util.clone(this.defaultVal)
+					this.selectedVal = this.parseList.find(item => {
+						return item.value == range.anchor.element.getBlock().parsedom
+					}) || { ...this.defaultVal }
 				} else {
 					const elements = this.menus.instance.editor.getElementsByRange(true, false)
 					let parsedoms = []
@@ -620,22 +613,26 @@ export default {
 						}
 					})
 					if (parsedoms.length == 1) {
-						this.selectedVal =
-							this.parseList.find(item => {
-								return item.value == parsedoms[0]
-							}) || Util.clone(this.defaultVal)
+						this.selectedVal = this.parseList.find(item => {
+							return item.value == parsedoms[0]
+						}) || { ...this.defaultVal }
 					} else {
-						this.selectedVal = Util.clone(this.defaultVal)
+						this.selectedVal = { ...this.defaultVal }
 					}
 					this.menus.instance.editor.formatElementStack()
 				}
 			}
+			//字体判定
+			else if (this.name == 'fontFamily') {
+				this.selectedVal = this.parseList.find(item => {
+					return this.menus.instance.editor.queryStyle('font-family', item.value)
+				}) || { ...this.defaultVal }
+			}
 			//字号判定
 			else if (this.name == 'fontSize') {
-				this.selectedVal =
-					this.parseList.find(item => {
-						return this.menus.instance.editor.queryStyle('font-size', item.value)
-					}) || Util.clone(this.defaultVal)
+				this.selectedVal = this.parseList.find(item => {
+					return this.menus.instance.editor.queryStyle('font-size', item.value)
+				}) || { ...this.defaultVal }
 			}
 			//字体颜色判定
 			else if (this.name == 'foreColor') {
@@ -658,10 +655,9 @@ export default {
 					if (this.type == 'default') {
 						this.active = obj
 					} else {
-						this.selectedVal =
-							this.parseList.find(item => {
-								return item.value == obj
-							}) || Util.clone(this.defaultVal)
+						this.selectedVal = this.parseList.find(item => {
+							return item.value == obj
+						}) || { ...this.defaultVal }
 					}
 				}
 			}
