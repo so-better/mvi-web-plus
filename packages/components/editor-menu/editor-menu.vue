@@ -13,7 +13,7 @@
 		<Layer v-if="type == 'select' || type == 'display'" v-model="layerShow" ref="layer" :placement="menus.combinedLayerProps.placement" :z-index="menus.combinedLayerProps.zIndex" :fixed="menus.combinedLayerProps.fixed" :fixed-auto="menus.combinedLayerProps.fixedAuto" :offset="menus.combinedLayerProps.offset" :wrapper-class="menus.combinedLayerProps.wrapperClass" :timeout="menus.combinedLayerProps.timeout" :show-triangle="menus.combinedLayerProps.showTriangle" :animation="menus.combinedLayerProps.animation" :shadow="menus.combinedLayerProps.shadow" :border="menus.combinedLayerProps.border" :width="menus.combinedLayerProps.width" :closable="menus.trigger == 'click'" :target="`[data-id='mvi-editor-menu-el-${uid}']`" :root="`[data-id='mvi-editor-menu-${uid}']`">
 			<!-- 字体颜色、背景色 -->
 			<div v-if="name == 'foreColor' || name == 'backColor'" class="mvi-editor-menu-colors">
-				<div class="mvi-editor-menu-color" v-for="item in parseList">
+				<div class="mvi-editor-menu-color" :style="menuColorStyle(item)" v-for="item in parseList">
 					<Tooltip :disabled="!menus.useTooltip || !item.label || cmpDisabled" trigger="hover" :title="item.label" :placement="menus.combinedTooltipProps.placement" :timeout="menus.combinedTooltipProps.timeout" :color="menus.combinedTooltipProps.color" :text-color="menus.combinedTooltipProps.textColor" :border-color="menus.combinedTooltipProps.borderColor" :offset="menus.combinedTooltipProps.offset" :z-index="menus.combinedTooltipProps.zIndex" :fixed="menus.combinedTooltipProps.fixed" :fixed-auto="menus.combinedTooltipProps.fixedAuto" :width="menus.combinedTooltipProps.width" :animation="menus.combinedTooltipProps.animation" :show-triangle="menus.combinedTooltipProps.showTriangle" block>
 						<div :style="{ backgroundColor: item.value }" @click="_layerClick(item)" class="mvi-editor-menu-color-el"></div>
 					</Tooltip>
@@ -27,7 +27,7 @@
 			<div v-else-if="name == 'image' || name == 'video'"></div>
 			<!-- 正常的下拉选 -->
 			<div v-else class="mvi-editor-menu-default">
-				<EditorTag :tag="layerElTag(item)" v-for="item in parseList" :class="['mvi-editor-menu-layer-el', selectedVal.value == item.value && this.active ? 'active' : '']" @click="_layerClick(item)">
+				<EditorTag :tag="layerElTag(item)" v-for="item in parseList" :class="['mvi-editor-menu-layer-el', selectedVal.value == item.value ? 'active' : '']" @click="_layerClick(item)">
 					<Icon v-if="item.icon.type || item.icon.url" class="mvi-editor-menu-layer-icon" :type="item.icon.type" :url="item.icon.url" :spin="item.icon.spin" :size="item.icon.size" :color="item.icon.color" />
 					<span v-text="item.label"></span>
 				</EditorTag>
@@ -46,6 +46,7 @@ import { Layer } from '../layer'
 import EditorTag from './editor-tag.vue'
 import definedMenus from './definedMenus'
 import { AlexElement } from 'alex-editor'
+import Util from 'alex-editor/src/Util'
 //根据名称获取指定菜单项配置
 const getMenu = name => {
 	if (name == 'custom') {
@@ -121,16 +122,23 @@ export default {
 		disabled: {
 			type: Boolean,
 			default: false
+		},
+		//自定义菜单项的激活判定
+		customActive: {
+			type: Function,
+			default: null
 		}
 	},
 	inject: ['menus'],
 	data() {
 		return {
+			//下拉选菜单项的默认值
+			defaultVal: {},
 			//下拉选菜单项的已选值
 			selectedVal: {},
 			//浮层是否显示
 			layerShow: false,
-			//是否激活此菜单项
+			//是否激活此菜单项，一般下拉选式菜单项不使用此属性
 			active: false
 		}
 	},
@@ -241,6 +249,19 @@ export default {
 		isDefinedMenu() {
 			const menu = getMenu(this.name)
 			return !!menu
+		},
+		//颜色选取板每个颜色块的样式
+		menuColorStyle() {
+			return item => {
+				let style = {}
+				if (this.cmpDisabled) {
+					return style
+				}
+				if (this.selectedVal.value == item.value && this.menus.instance.activeColor) {
+					style.borderColor = this.menus.instance.activeColor
+				}
+				return style
+			}
 		}
 	},
 	components: {
@@ -258,13 +279,19 @@ export default {
 		//监听list变化设置初始值为list第一个选项
 		list: {
 			handler: function (newVal) {
-				if (newVal && (this.type == 'select' || this.type == 'display')) {
+				if (newVal && this.type == 'display') {
 					if (this.value === null || this.value === undefined) {
-						this.selectedVal = { ...this.parseList[0] }
+						this.selectedVal = Util.clone(this.parseList[0])
+						this.defaultVal = Util.clone(this.parseList[0])
 					} else {
-						this.selectedVal = this.parseList.find(item => {
-							return item.value == this.value
-						}) || { ...this.parseList[0] }
+						this.selectedVal =
+							this.parseList.find(item => {
+								return item.value == this.value
+							}) || Util.clone(this.parseList[0])
+						this.defaultVal =
+							this.parseList.find(item => {
+								return item.value == this.value
+							}) || Util.clone(this.parseList[0])
 					}
 				}
 			},
@@ -490,7 +517,16 @@ export default {
 						}
 					})
 				}
-				this.selectedVal = { ...item }
+				this.selectedVal = Util.clone(item)
+				this.menus.instance.editor.formatElementStack()
+				this.menus.instance.editor.domRender()
+				this.menus.instance.editor.rangeRender()
+			}
+			//字号
+			else if (this.name == 'fontSize') {
+				this.menus.instance.editor.setStyle({
+					'font-size': item.value
+				})
 				this.menus.instance.editor.formatElementStack()
 				this.menus.instance.editor.domRender()
 				this.menus.instance.editor.rangeRender()
@@ -521,6 +557,12 @@ export default {
 				this.menus.instance.editor.domRender()
 				this.menus.instance.editor.rangeRender()
 			}
+			//插入有序列表
+			else if (this.name == 'ol') {
+				this.menus.instance.editor.formatElementStack()
+				this.menus.instance.editor.domRender()
+				this.menus.instance.editor.rangeRender()
+			}
 			//源码视图
 			else if (this.name == 'codeView') {
 				this.menus.instance.codeViewShow = !this.menus.instance.codeViewShow
@@ -528,37 +570,99 @@ export default {
 		},
 		//监听range更新
 		_handleRangeUpdate(range) {
+			if (this.cmpDisabled) {
+				return
+			}
+			//加粗判定
 			if (this.name == 'bold') {
 				this.active = this.menus.instance.editor.queryStyle('font-weight', 'bold')
-			} else if (this.name == 'italic') {
+			}
+			//斜体判定
+			else if (this.name == 'italic') {
 				this.active = this.menus.instance.editor.queryStyle('font-style', 'italic')
-			} else if (this.name == 'underline') {
+			}
+			//下划线判定
+			else if (this.name == 'underline') {
 				this.active = this.menus.instance.editor.queryStyle('text-decoration-line', 'underline')
-			} else if (this.name == 'strikeThrough') {
+			}
+			//删除线判定
+			else if (this.name == 'strikeThrough') {
 				this.active = this.menus.instance.editor.queryStyle('text-decoration-line', 'line-through')
-			} else if (this.name == 'subscript') {
+			}
+			//下标判定
+			else if (this.name == 'subscript') {
 				this.active = this.menus.instance.editor.queryStyle('vertical-align', 'sub')
-			} else if (this.name == 'superscript') {
+			}
+			//上标判定
+			else if (this.name == 'superscript') {
 				this.active = this.menus.instance.editor.queryStyle('vertical-align', 'super')
-			} else if (this.name == 'title') {
+			}
+			//标题判定
+			else if (this.name == 'title') {
 				if (range.anchor.isEqual(range.focus)) {
-					this.active = this.parseList.some(item => {
-						return item.value == range.anchor.element.getBlock().parsedom
-					})
+					this.selectedVal =
+						this.parseList.find(item => {
+							return item.value == range.anchor.element.getBlock().parsedom
+						}) || Util.clone(this.defaultVal)
 				} else {
 					const elements = this.menus.instance.editor.getElementsByRange(true, false)
-					this.active = elements.every(el => {
+					let parsedoms = []
+					elements.forEach(el => {
 						if (el.isBlock()) {
-							return this.parseList.some(item => {
-								return item.value == el.parsedom
-							})
+							if (!parsedoms.includes(el.parsedom)) {
+								parsedoms.push(el.parsedom)
+							}
 						} else {
-							return this.parseList.some(item => {
-								return item.value == el.getBlock().parsedom
-							})
+							const block = el.getBlock()
+							if (!parsedoms.includes(block.parsedom)) {
+								parsedoms.push(block.parsedom)
+							}
 						}
 					})
+					if (parsedoms.length == 1) {
+						this.selectedVal =
+							this.parseList.find(item => {
+								return item.value == parsedoms[0]
+							}) || Util.clone(this.defaultVal)
+					} else {
+						this.selectedVal = Util.clone(this.defaultVal)
+					}
 					this.menus.instance.editor.formatElementStack()
+				}
+			}
+			//字号判定
+			else if (this.name == 'fontSize') {
+				this.selectedVal =
+					this.parseList.find(item => {
+						return this.menus.instance.editor.queryStyle('font-size', item.value)
+					}) || Util.clone(this.defaultVal)
+			}
+			//字体颜色判定
+			else if (this.name == 'foreColor') {
+				this.selectedVal =
+					this.parseList.find(item => {
+						return this.menus.instance.editor.queryStyle('color', item.value)
+					}) || {}
+			}
+			//背景颜色判定
+			else if (this.name == 'backColor') {
+				this.selectedVal =
+					this.parseList.find(item => {
+						return this.menus.instance.editor.queryStyle('background-color', item.value)
+					}) || {}
+			}
+			//自定义菜单项的激活判定
+			else if (!this.isDefinedMenu) {
+				if (typeof this.customActive == 'function') {
+					const obj = this.customActive.apply(this)
+					if (this.type == 'default') {
+						this.active = obj
+					} else {
+						this.selectedVal =
+							this.parseList.find(item => {
+								return item.value == obj
+							}) || Util.clone(this.defaultVal)
+					}
 				}
 			}
 		}
