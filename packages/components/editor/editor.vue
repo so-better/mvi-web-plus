@@ -181,8 +181,6 @@ export default {
 						if (element.parsedom == 'ol') {
 							newEl.marks['data-value'] = index + 1
 						}
-						//进行一次格式化
-						editor.formatElement(newEl)
 						//插入到该元素之前
 						editor.addElementBefore(newEl, element)
 					})
