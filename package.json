@@ -17,6 +17,7 @@
 	},
 	"dependencies": {
 		"dap-util": "^1.2.15",
+		"rem-fit": "^1.5.4",
 		"vue": "^3.2.37"
 	},
 	"devDependencies": {

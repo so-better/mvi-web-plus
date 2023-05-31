@@ -61,15 +61,15 @@ export default {
 	computed: {
 		//工具提示组件配置
 		combinedTooltipProps() {
-			return this._initOption(defaultTooltipProps, this.tooltipProps)
+			return this.initOption(defaultTooltipProps, this.tooltipProps)
 		},
 		//浮层组件配置
 		combinedLayerProps() {
-			return this._initOption(defaultLayerProps, this.layerProps)
+			return this.initOption(defaultLayerProps, this.layerProps)
 		}
 	},
 	methods: {
-		_initOption(defaultObj, propObj) {
+		initOption(defaultObj, propObj) {
 			let obj = {}
 			Object.assign(obj, defaultObj)
 			Object.assign(obj, propObj)

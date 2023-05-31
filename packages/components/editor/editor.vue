@@ -138,23 +138,27 @@ export default {
 		}
 	},
 	mounted() {
+		let _this = this
 		//创建编辑器
 		this.editor = new AlexEditor(this.$refs.content, {
 			disabled: this.disabled,
 			value: this.cmpValue,
-			htmlPaste: this.htmlPaste
+			htmlPaste: this.htmlPaste,
+			renderRules(element) {
+				return _this.renderRules(this, element)
+			}
 		})
 		//编辑器渲染后会有一个渲染过程，会改变内容，因此重新获取内容的值来设置modelValue
-		this._internalModify(this.editor.value)
+		this.internalModify(this.editor.value)
 		//监听编辑器内容变更
-		this.editor.on('change', this._handleContentChange)
+		this.editor.on('change', this.handleContentChange)
 		//监听编辑器聚焦
-		this.editor.on('focus', this._handleContentFocus)
+		this.editor.on('focus', this.handleContentFocus)
 		//监听编辑器失去焦点
-		this.editor.on('blur', this._handleContentBlur)
+		this.editor.on('blur', this.handleContentBlur)
 		//如果自定义粘贴文件则监听编辑器粘贴文件
 		if (this.customPasteFile) {
-			this.editor.on('pasteFile', this._handleContentPasteFile)
+			this.editor.on('pasteFile', this.handleContentPasteFile)
 		}
 		//设置自动获取焦点
 		if (this.autofocus && !this.codeViewShow && !this.disabled) {
@@ -162,8 +166,46 @@ export default {
 		}
 	},
 	methods: {
+		renderRules(editor, element) {
+			//ol标签和ul标签转为div
+			if (element.parsedom == 'ol' || element.parsedom == 'ul') {
+				if (element.hasChildren()) {
+					element.children.forEach((el, index) => {
+						const newEl = el.clone()
+						newEl.parsedom = 'div'
+						newEl.type = 'block'
+						if (!newEl.hasMarks()) {
+							newEl.marks = {}
+						}
+						newEl.marks['data-list'] = element.parsedom
+						if (element.parsedom == 'ol') {
+							newEl.marks['data-value'] = index + 1
+						}
+						//进行一次格式化
+						editor.formatElement(newEl)
+						//插入到该元素之前
+						editor.addElementBefore(newEl, element)
+					})
+				}
+				element.toEmpty()
+			}
+			//有序列表的序号处理
+			if (element.hasMarks() && element.marks['data-list'] == 'ol') {
+				//获取前一个元素
+				const previousElement = editor.getPreviousElement(element)
+				//如果前一个元素存在并且也是有序列表
+				if (previousElement && previousElement.hasMarks() && previousElement.marks['data-list'] == 'ol') {
+					const previousValue = Number(previousElement.marks['data-value'])
+					element.marks['data-value'] = previousValue + 1
+				}
+				//前一个元素不是有序列表，则从0开始
+				else {
+					element.marks['data-value'] = 1
+				}
+			}
+		},
 		//编辑器内部修改值的方法
-		_internalModify(val) {
+		internalModify(val) {
 			this.isModelChange = true
 			this.cmpValue = val
 			this.$nextTick(() => {
@@ -171,17 +213,17 @@ export default {
 			})
 		},
 		//编辑器内容变更
-		_handleContentChange(newVal, oldVal) {
+		handleContentChange(newVal, oldVal) {
 			if (this.disabled) {
 				return
 			}
 			//内部修改
-			this._internalModify(newVal)
+			this.internalModify(newVal)
 			//触发change事件
 			this.$emit('change', newVal, oldVal)
 		},
 		//编辑器获取焦点
-		_handleContentFocus(val) {
+		handleContentFocus(val) {
 			if (this.disabled) {
 				return
 			}
@@ -194,7 +236,7 @@ export default {
 			this.$emit('focus', val)
 		},
 		//编辑器失去焦点
-		_handleContentBlur(val) {
+		handleContentBlur(val) {
 			if (this.disabled) {
 				return
 			}
@@ -206,13 +248,13 @@ export default {
 			this.$emit('blur', val)
 		},
 		//编辑器粘贴文件
-		_handleContentPasteFile(files) {
+		handleContentPasteFile(files) {
 			if (this.disabled) {
 				return
 			}
 			this.$emit('paste-file', files)
 		},
-		//注册菜单栏实例
+		//api：注册菜单栏实例
 		use(menus) {
 			if (this.useMenus) {
 				throw new Error('The editor has already used a menu bar and cannot be used repeatedly')
@@ -222,7 +264,7 @@ export default {
 			//更新useMenus标识
 			this.useMenus = true
 		},
-		//光标设置到文档底部
+		//api：光标设置到文档底部
 		collapseToEnd() {
 			if (this.disabled) {
 				return
@@ -230,7 +272,7 @@ export default {
 			this.editor.collapseToEnd()
 			this.editor.rangeRender()
 		},
-		//光标设置到文档头部
+		//api：光标设置到文档头部
 		collapseToStart() {
 			if (this.disabled) {
 				return
@@ -306,6 +348,7 @@ export default {
 	}
 }
 
+//分隔线样式
 :deep(hr.mvi-editor-divider) {
 	display: block;
 	width: 100%;
@@ -317,7 +360,23 @@ export default {
 	font-size: 0;
 }
 
-:deep(.red) {
-	color: #f30;
+//有序列表样式
+:deep(div[data-list='ol']) {
+	margin-bottom: @mp-sm;
+
+	&::before {
+		content: attr(data-value) '.';
+		margin-right: @mp-xs;
+	}
+}
+
+//无序列表样式
+:deep(div[data-list='ul']) {
+	margin-bottom: @mp-sm;
+
+	&::before {
+		content: '\2022';
+		margin-right: @mp-xs;
+	}
 }
 </style>

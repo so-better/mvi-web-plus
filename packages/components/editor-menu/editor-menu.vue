@@ -1,7 +1,7 @@
 <template>
-	<div class="mvi-editor-menu" :data-id="`mvi-editor-menu-${uid}`" @mouseenter="_menuHover('enter')" @mouseleave="_menuHover('leave')">
+	<div class="mvi-editor-menu" :data-id="`mvi-editor-menu-${uid}`" @mouseenter="menuHover('enter')" @mouseleave="menuHover('leave')">
 		<Tooltip :disabled="!menus.useTooltip || !title || cmpDisabled" :title="title" trigger="hover" :placement="menus.combinedTooltipProps.placement" :timeout="menus.combinedTooltipProps.timeout" :color="menus.combinedTooltipProps.color" :text-color="menus.combinedTooltipProps.textColor" :border-color="menus.combinedTooltipProps.borderColor" :offset="menus.combinedTooltipProps.offset" :z-index="menus.combinedTooltipProps.zIndex" :fixed="menus.combinedTooltipProps.fixed" :fixed-auto="menus.combinedTooltipProps.fixedAuto" :width="menus.combinedTooltipProps.width" :animation="menus.combinedTooltipProps.animation" :show-triangle="menus.combinedTooltipProps.showTriangle" block>
-			<div :disabled="cmpDisabled || null" class="mvi-editor-menu-el" :data-id="`mvi-editor-menu-el-${uid}`" @click="_menuClick" :style="editorMenuElStyle">
+			<div :disabled="cmpDisabled || null" class="mvi-editor-menu-el" :data-id="`mvi-editor-menu-el-${uid}`" @click="menuClick" :style="editorMenuElStyle">
 				<!-- 显示下拉选的值 -->
 				<span v-if="type == 'display'" class="mvi-editor-menu-text">{{ selectedVal.label }}</span>
 				<!-- 菜单项图标 -->
@@ -15,7 +15,7 @@
 			<div v-if="name == 'foreColor' || name == 'backColor'" class="mvi-editor-menu-colors">
 				<div class="mvi-editor-menu-color" :style="menuColorStyle(item)" v-for="item in parseList">
 					<Tooltip :disabled="!menus.useTooltip || !item.label || cmpDisabled" trigger="hover" :title="item.label" :placement="menus.combinedTooltipProps.placement" :timeout="menus.combinedTooltipProps.timeout" :color="menus.combinedTooltipProps.color" :text-color="menus.combinedTooltipProps.textColor" :border-color="menus.combinedTooltipProps.borderColor" :offset="menus.combinedTooltipProps.offset" :z-index="menus.combinedTooltipProps.zIndex" :fixed="menus.combinedTooltipProps.fixed" :fixed-auto="menus.combinedTooltipProps.fixedAuto" :width="menus.combinedTooltipProps.width" :animation="menus.combinedTooltipProps.animation" :show-triangle="menus.combinedTooltipProps.showTriangle" block>
-						<div :style="{ backgroundColor: item.value }" @click="_layerClick(item)" class="mvi-editor-menu-color-el"></div>
+						<div :style="{ backgroundColor: item.value }" @click="layerClick(item)" class="mvi-editor-menu-color-el"></div>
 					</Tooltip>
 				</div>
 			</div>
@@ -27,7 +27,7 @@
 			<div v-else-if="name == 'image' || name == 'video'"></div>
 			<!-- 正常的下拉选 -->
 			<div v-else class="mvi-editor-menu-default">
-				<EditorTag :tag="layerElTag(item)" v-for="item in parseList" :class="['mvi-editor-menu-layer-el', selectedVal.value == item.value ? 'active' : '']" @click="_layerClick(item)">
+				<EditorTag :tag="layerElTag(item)" v-for="item in parseList" :class="['mvi-editor-menu-layer-el', selectedVal.value == item.value ? 'active' : '']" @click="layerClick(item)">
 					<Icon v-if="item.icon.type || item.icon.url" class="mvi-editor-menu-layer-icon" :type="item.icon.type" :url="item.icon.url" :spin="item.icon.spin" :size="item.icon.size" :color="item.icon.color" />
 					<span v-text="item.label"></span>
 				</EditorTag>
@@ -298,13 +298,13 @@ export default {
 	mounted() {
 		//对editor组件实例进行监听，如果存在了，则对alexEditor插件的rangeUpdate事件进行监听
 		const unwatch = this.$watch('menus.instance', instance => {
-			instance.editor.on('rangeUpdate', this._handleRangeUpdate)
+			instance.editor.on('rangeUpdate', this.handleRangeUpdate)
 			unwatch()
 		})
 	},
 	methods: {
 		//菜单项悬浮
-		_menuHover(type) {
+		menuHover(type) {
 			if (this.cmpDisabled) {
 				return
 			}
@@ -312,29 +312,29 @@ export default {
 				return
 			}
 			if (type == 'enter') {
-				this._showLayer()
+				this.showLayer()
 			} else if (type == 'leave') {
-				this._hideLayer()
+				this.hideLayer()
 			}
 		},
 		//浮层点击
-		_layerClick(item) {
+		layerClick(item) {
 			if (this.cmpDisabled) {
 				return
 			}
 			//如果是内部已配置菜单
 			if (this.isDefinedMenu) {
-				this._handleOpt(item)
+				this.handleOpt(item)
 			}
 			//自定义菜单项
 			else {
 				this.$emit('custom', { ...item })
 			}
 			//隐藏浮层
-			this._hideLayer()
+			this.hideLayer()
 		},
 		//菜单项点击
-		_menuClick() {
+		menuClick() {
 			if (this.cmpDisabled) {
 				return
 			}
@@ -342,9 +342,9 @@ export default {
 			if (this.type == 'select' || this.type == 'display') {
 				if (this.menus.trigger == 'click') {
 					if (this.layerShow) {
-						this._hideLayer()
+						this.hideLayer()
 					} else {
-						this._showLayer()
+						this.showLayer()
 					}
 				}
 			}
@@ -352,7 +352,7 @@ export default {
 			else {
 				//如果是内部已配置菜单
 				if (this.isDefinedMenu) {
-					this._handleOpt()
+					this.handleOpt()
 				} else {
 					//触发自定义操作
 					this.$emit('custom')
@@ -360,7 +360,7 @@ export default {
 			}
 		},
 		//显示浮层
-		_showLayer() {
+		showLayer() {
 			if (this.cmpDisabled) {
 				return
 			}
@@ -369,13 +369,13 @@ export default {
 			}
 		},
 		//隐藏浮层
-		_hideLayer() {
+		hideLayer() {
 			if (this.type == 'select' || this.type == 'display') {
 				this.layerShow = false
 			}
 		},
 		//执行富文本操作
-		_handleOpt(item) {
+		handleOpt(item) {
 			//撤销
 			if (this.name == 'undo') {
 				const historyRecord = this.menus.instance.editor.history.get(-1)
@@ -400,7 +400,7 @@ export default {
 			}
 			//清除格式
 			else if (this.name == 'removeFormat') {
-				this.menus.instance.editor.removeStyle()
+				this.menus.instance.editor.removeTextStyle()
 				this.menus.instance.editor.formatElementStack()
 				this.menus.instance.editor.domRender()
 				this.menus.instance.editor.rangeRender()
@@ -424,9 +424,9 @@ export default {
 			//加粗
 			else if (this.name == 'bold') {
 				if (this.active) {
-					this.menus.instance.editor.removeStyle(['font-weight'])
+					this.menus.instance.editor.removeTextStyle(['font-weight'])
 				} else {
-					this.menus.instance.editor.setStyle({
+					this.menus.instance.editor.setTextStyle({
 						'font-weight': 'bold'
 					})
 				}
@@ -437,9 +437,9 @@ export default {
 			//斜体
 			else if (this.name == 'italic') {
 				if (this.active) {
-					this.menus.instance.editor.removeStyle(['font-style'])
+					this.menus.instance.editor.removeTextStyle(['font-style'])
 				} else {
-					this.menus.instance.editor.setStyle({
+					this.menus.instance.editor.setTextStyle({
 						'font-style': 'italic'
 					})
 				}
@@ -450,9 +450,9 @@ export default {
 			//下划线
 			else if (this.name == 'underline') {
 				if (this.active) {
-					this.menus.instance.editor.removeStyle(['text-decoration-line', 'text-decoration'])
+					this.menus.instance.editor.removeTextStyle(['text-decoration-line', 'text-decoration'])
 				} else {
-					this.menus.instance.editor.setStyle({
+					this.menus.instance.editor.setTextStyle({
 						'text-decoration-line': 'underline'
 					})
 				}
@@ -463,9 +463,9 @@ export default {
 			//删除线
 			else if (this.name == 'strikeThrough') {
 				if (this.active) {
-					this.menus.instance.editor.removeStyle(['text-decoration-line', 'text-decoration'])
+					this.menus.instance.editor.removeTextStyle(['text-decoration-line', 'text-decoration'])
 				} else {
-					this.menus.instance.editor.setStyle({
+					this.menus.instance.editor.setTextStyle({
 						'text-decoration-line': 'line-through'
 					})
 				}
@@ -476,9 +476,9 @@ export default {
 			//下标
 			else if (this.name == 'subscript') {
 				if (this.active) {
-					this.menus.instance.editor.removeStyle(['vertical-align'])
+					this.menus.instance.editor.removeTextStyle(['vertical-align'])
 				} else {
-					this.menus.instance.editor.setStyle({
+					this.menus.instance.editor.setTextStyle({
 						'vertical-align': 'sub'
 					})
 				}
@@ -489,9 +489,9 @@ export default {
 			//上标
 			else if (this.name == 'superscript') {
 				if (this.active) {
-					this.menus.instance.editor.removeStyle(['vertical-align'])
+					this.menus.instance.editor.removeTextStyle(['vertical-align'])
 				} else {
-					this.menus.instance.editor.setStyle({
+					this.menus.instance.editor.setTextStyle({
 						'vertical-align': 'super'
 					})
 				}
@@ -520,7 +520,7 @@ export default {
 			}
 			//字体
 			else if (this.name == 'fontFamily') {
-				this.menus.instance.editor.setStyle({
+				this.menus.instance.editor.setTextStyle({
 					'font-family': item.value
 				})
 				this.menus.instance.editor.formatElementStack()
@@ -529,7 +529,7 @@ export default {
 			}
 			//字号
 			else if (this.name == 'fontSize') {
-				this.menus.instance.editor.setStyle({
+				this.menus.instance.editor.setTextStyle({
 					'font-size': item.value
 				})
 				this.menus.instance.editor.formatElementStack()
@@ -538,7 +538,7 @@ export default {
 			}
 			//字体颜色
 			else if (this.name == 'foreColor') {
-				this.menus.instance.editor.setStyle({
+				this.menus.instance.editor.setTextStyle({
 					color: item.value
 				})
 				this.menus.instance.editor.formatElementStack()
@@ -547,15 +547,19 @@ export default {
 			}
 			//背景颜色
 			else if (this.name == 'backColor') {
-				this.menus.instance.editor.setStyle({
+				this.menus.instance.editor.setTextStyle({
 					'background-color': item.value
 				})
 				this.menus.instance.editor.formatElementStack()
 				this.menus.instance.editor.domRender()
 				this.menus.instance.editor.rangeRender()
 			}
-			//插入有序列表
-			else if (this.name == 'ol') {
+			//有序列表和无序列表
+			else if (this.name == 'ol' || this.name == 'ul') {
+				this.insertList(this.name == 'ol')
+				this.menus.instance.editor.formatElementStack()
+				this.menus.instance.editor.domRender()
+				this.menus.instance.editor.rangeRender()
 			}
 			//源码视图
 			else if (this.name == 'codeView') {
@@ -563,33 +567,33 @@ export default {
 			}
 		},
 		//监听range更新
-		_handleRangeUpdate(range) {
+		handleRangeUpdate(range) {
 			if (this.cmpDisabled) {
 				return
 			}
 			//加粗判定
 			if (this.name == 'bold') {
-				this.active = this.menus.instance.editor.queryStyle('font-weight', 'bold')
+				this.active = this.menus.instance.editor.queryTextStyle('font-weight', 'bold')
 			}
 			//斜体判定
 			else if (this.name == 'italic') {
-				this.active = this.menus.instance.editor.queryStyle('font-style', 'italic')
+				this.active = this.menus.instance.editor.queryTextStyle('font-style', 'italic')
 			}
 			//下划线判定
 			else if (this.name == 'underline') {
-				this.active = this.menus.instance.editor.queryStyle('text-decoration-line', 'underline') || this.menus.instance.editor.queryStyle('text-decoration', 'underline')
+				this.active = this.menus.instance.editor.queryTextStyle('text-decoration-line', 'underline') || this.menus.instance.editor.queryTextStyle('text-decoration', 'underline')
 			}
 			//删除线判定
 			else if (this.name == 'strikeThrough') {
-				this.active = this.menus.instance.editor.queryStyle('text-decoration-line', 'line-through') || this.menus.instance.editor.queryStyle('text-decoration', 'line-through')
+				this.active = this.menus.instance.editor.queryTextStyle('text-decoration-line', 'line-through') || this.menus.instance.editor.queryTextStyle('text-decoration', 'line-through')
 			}
 			//下标判定
 			else if (this.name == 'subscript') {
-				this.active = this.menus.instance.editor.queryStyle('vertical-align', 'sub')
+				this.active = this.menus.instance.editor.queryTextStyle('vertical-align', 'sub')
 			}
 			//上标判定
 			else if (this.name == 'superscript') {
-				this.active = this.menus.instance.editor.queryStyle('vertical-align', 'super')
+				this.active = this.menus.instance.editor.queryTextStyle('vertical-align', 'super')
 			}
 			//标题判定
 			else if (this.name == 'title') {
@@ -625,28 +629,49 @@ export default {
 			//字体判定
 			else if (this.name == 'fontFamily') {
 				this.selectedVal = this.parseList.find(item => {
-					return this.menus.instance.editor.queryStyle('font-family', item.value)
+					return this.menus.instance.editor.queryTextStyle('font-family', item.value)
 				}) || { ...this.defaultVal }
 			}
 			//字号判定
 			else if (this.name == 'fontSize') {
 				this.selectedVal = this.parseList.find(item => {
-					return this.menus.instance.editor.queryStyle('font-size', item.value)
+					return this.menus.instance.editor.queryTextStyle('font-size', item.value)
 				}) || { ...this.defaultVal }
 			}
 			//字体颜色判定
 			else if (this.name == 'foreColor') {
 				this.selectedVal =
 					this.parseList.find(item => {
-						return this.menus.instance.editor.queryStyle('color', item.value)
+						return this.menus.instance.editor.queryTextStyle('color', item.value)
 					}) || {}
 			}
 			//背景颜色判定
 			else if (this.name == 'backColor') {
 				this.selectedVal =
 					this.parseList.find(item => {
-						return this.menus.instance.editor.queryStyle('background-color', item.value)
+						return this.menus.instance.editor.queryTextStyle('background-color', item.value)
 					}) || {}
+			}
+			//有序列表和无序列表判定
+			else if (this.name == 'ol' || this.name == 'ul') {
+				//起点和终点在一起
+				if (this.menus.instance.editor.range.anchor.isEqual(this.menus.instance.editor.range.focus)) {
+					const block = this.menus.instance.editor.range.anchor.element.getBlock()
+					this.active = block.hasMarks() && block.marks['data-list'] == this.name
+				}
+				//起点和终点不在一起
+				else {
+					const elements = this.menus.instance.editor.getElementsByRange(true, false)
+					this.active = elements.every(el => {
+						if (el.isBlock()) {
+							return el.hasMarks() && el.marks['data-list'] == this.name
+						} else {
+							const block = el.getBlock()
+							return block.hasMarks() && block.marks['data-list'] == this.name
+						}
+					})
+					this.menus.instance.editor.formatElementStack()
+				}
 			}
 			//自定义菜单项的激活判定
 			else if (!this.isDefinedMenu) {
@@ -661,6 +686,65 @@ export default {
 					}
 				}
 			}
+		},
+		//插入有序列表或者无序列表
+		insertList(ordered = false) {
+			const editor = this.menus.instance.editor
+			//起点和终点在一起
+			if (editor.range.anchor.isEqual(editor.range.focus)) {
+				const block = editor.range.anchor.element.getBlock()
+				//如果是在列表内则转为段落
+				if (this.active) {
+					this.listToParagraph(block)
+				}
+				//否则转为列表
+				else {
+					this.blockToList(block, ordered)
+				}
+			}
+			//起点和终点不在一起
+			else {
+				const elements = this.menus.instance.editor.getElementsByRange(true, false)
+				//在列表内，则全部转为段落
+				if (this.active) {
+					elements.forEach(el => {
+						if (el.isBlock()) {
+							this.listToParagraph(el)
+						} else {
+							this.listToParagraph(el.getBlock())
+						}
+					})
+				}
+				//不在列表内，则全部转为列表
+				else {
+					elements.forEach(el => {
+						if (el.isBlock()) {
+							this.blockToList(el, ordered)
+						} else {
+							this.blockToList(el.getBlock(), ordered)
+						}
+					})
+				}
+			}
+		},
+		//块元素转为列表
+		blockToList(element, ordered = false) {
+			element.parsedom = 'div'
+			if (!element.hasMarks()) {
+				element.marks = {}
+			}
+			element.marks['data-list'] = ordered ? 'ol' : 'ul'
+		},
+		//列表转为段落
+		listToParagraph(element) {
+			element.parsedom = AlexElement.PARAGRAPH_NODE
+			let marks = {}
+			for (let key in element.marks) {
+				if (key != 'data-list' && key != 'data-value') {
+					marks[key] = element.marks[key]
+				}
+			}
+			element.marks = marks
 		}
 	}
 }

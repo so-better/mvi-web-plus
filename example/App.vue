@@ -15,9 +15,10 @@ import { definedEditorMenus } from '../packages'
 export default {
 	data() {
 		return {
+			//https://www.mvi-web.cn/mvi-resources/images/mvi_image_0_1676971974565.png
 			show: true,
 			disabled: false,
-			value: '<p>十年生死两茫茫&#xFEFF;&#xFEFF;<img src="https://www.mvi-web.cn/mvi-resources/images/mvi_image_0_1676971974565.png" style="width:100px;height:100px;"/>，不思量，自难忘。</p><p >千里孤坟，无处话凄凉。</p><p>纵使相逢应不识，尘满面，鬓如霜。</p>',
+			value: '<ol><li>十年生死两茫茫，不思量，自难忘</li><li>千里孤坟无处话凄凉</li><li>纵使相逢应不识，尘满面，鬓如霜</li></ol><ul><li>十年生死两茫茫，不思量，自难忘</li><li>千里孤坟无处话凄凉</li><li>纵使相逢应不识，尘满面，鬓如霜</li></ul><p>444</p>',
 			definedMenus: definedEditorMenus
 		}
 	},
