@@ -74,9 +74,8 @@ export default {
 			if (!this.instance) {
 				return
 			}
-			if (Dap.element.isContains(this.$el, e.target) || Dap.element.isContains(this.instance.$el, e.target)) {
-				this.instance.canUseMenus = true
-			} else {
+			//如果点击了除编辑器菜单栏和编辑区域外的地方，菜单栏不可使用
+			if (!Dap.element.isContains(this.$el, e.target) && !Dap.element.isContains(this.instance.$el, e.target)) {
 				this.instance.canUseMenus = false
 			}
 		})
@@ -88,6 +87,9 @@ export default {
 			Object.assign(obj, propObj)
 			return obj
 		}
+	},
+	beforeUnmount() {
+		Dap.event.off(document.documentElement, 'click.mvi-editor-menus')
 	}
 }
 </script>

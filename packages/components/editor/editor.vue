@@ -230,6 +230,7 @@ export default {
 				const rgb = Dap.color.hex2rgb(this.activeColor)
 				this.$refs.content.style.boxShadow = `0 0 0.16rem rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.5)`
 			}
+			//获取焦点时可以使用菜单栏
 			this.canUseMenus = true
 			this.$emit('focus', val)
 		},

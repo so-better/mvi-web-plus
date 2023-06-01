@@ -7,7 +7,7 @@
 		<m-editor-menus border useTooltip class="mvi-mb-4" ref="menus">
 			<m-editor-menu :disabled="disabled" v-for="item in definedMenus" :name="item.name" />
 		</m-editor-menus>
-		<m-editor placeholder="请输入内容" border :disabled="disabled" @change="change" auto-height ref="editor" v-model="value"></m-editor>
+		<m-editor autofocus placeholder="请输入内容" border :disabled="disabled" @change="change" auto-height ref="editor" v-model="value"></m-editor>
 	</div>
 </template>
 <script>
