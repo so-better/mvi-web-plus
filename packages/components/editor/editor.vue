@@ -78,9 +78,7 @@ export default {
 			//是否内部修改了modelValue的值
 			isModelChange: false,
 			//是否已经注册了菜单栏
-			useMenus: false,
-			//是否获取焦点
-			focus: false
+			useMenus: false
 		}
 	},
 	computed: {
@@ -230,7 +228,6 @@ export default {
 				const rgb = Dap.color.hex2rgb(this.activeColor)
 				this.$refs.content.style.boxShadow = `0 0 0.16rem rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.5)`
 			}
-			this.focus = true
 			this.$emit('focus', val)
 		},
 		//编辑器失去焦点
@@ -242,7 +239,6 @@ export default {
 				this.$refs.content.style.borderColor = ''
 				this.$refs.content.style.boxShadow = ''
 			}
-			this.focus = false
 			this.$emit('blur', val)
 		},
 		//编辑器粘贴文件

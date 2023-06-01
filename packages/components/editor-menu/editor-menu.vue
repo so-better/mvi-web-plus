@@ -1,7 +1,7 @@
 <template>
 	<div class="mvi-editor-menu" :data-id="`mvi-editor-menu-${uid}`" @mouseenter="menuHover('enter')" @mouseleave="menuHover('leave')">
 		<Tooltip :disabled="!menus.useTooltip || !title || cmpDisabled" :title="title" trigger="hover" :placement="menus.combinedTooltipProps.placement" :timeout="menus.combinedTooltipProps.timeout" :color="menus.combinedTooltipProps.color" :text-color="menus.combinedTooltipProps.textColor" :border-color="menus.combinedTooltipProps.borderColor" :offset="menus.combinedTooltipProps.offset" :z-index="menus.combinedTooltipProps.zIndex" :fixed="menus.combinedTooltipProps.fixed" :fixed-auto="menus.combinedTooltipProps.fixedAuto" :width="menus.combinedTooltipProps.width" :animation="menus.combinedTooltipProps.animation" :show-triangle="menus.combinedTooltipProps.showTriangle" block>
-			<div :disabled="cmpDisabled || null" class="mvi-editor-menu-el" :data-id="`mvi-editor-menu-el-${uid}`" @click="menuClick" :style="editorMenuElStyle">
+			<div :disabled="cmpDisabled || null" class="mvi-editor-menu-el" :data-id="`mvi-editor-menu-el-${uid}`" @click="menuClick" :style="activeColorStyle">
 				<!-- 显示下拉选的值 -->
 				<span v-if="type == 'display'" class="mvi-editor-menu-text">{{ selectedVal.label }}</span>
 				<!-- 菜单项图标 -->
@@ -22,7 +22,17 @@
 			<!-- 表格 -->
 			<div v-else-if="name == 'table'"></div>
 			<!-- 链接 -->
-			<div v-else-if="name == 'link'"></div>
+			<div v-else-if="name == 'link'" class="mvi-editor-menu-link">
+				<input ref="linkText" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.text" placeholder="链接文本" type="text" />
+				<input ref="linkUrl" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.url" placeholder="链接地址" type="text" />
+				<div class="mvi-editor-menu-link-footer">
+					<Checkbox label="新窗口打开" label-placement="right" :icon="{ size: '0.24rem' }" label-size="0.28rem" label-color="#808080" :fill-color="menus.instance.activeColor" v-model="linkParams.target"> </Checkbox>
+					<div class="mvi-editor-menu-link-operation">
+						<span class="mvi-editor-menu-link-delete" v-if="active" @click="deleteLink">删除链接</span>
+						<span class="mvi-editor-menu-link-insert" :style="activeColorStyle" @click="insertLink">插入</span>
+					</div>
+				</div>
+			</div>
 			<!-- 图片或者视频 -->
 			<div v-else-if="name == 'image' || name == 'video'"></div>
 			<!-- 正常的下拉选 -->
@@ -43,6 +53,7 @@ import { Dap } from '../dap'
 import { Icon } from '../icon'
 import { Tooltip } from '../tooltip'
 import { Layer } from '../layer'
+import { Checkbox } from '../checkbox'
 import EditorTag from './editor-tag.vue'
 import definedMenus from './definedMenus'
 import { AlexElement } from 'alex-editor'
@@ -139,7 +150,16 @@ export default {
 			//浮层是否显示
 			layerShow: false,
 			//是否激活此菜单项，一般下拉选式菜单项不使用此属性
-			active: false
+			active: false,
+			//链接相关参数
+			linkParams: {
+				//插入的链接
+				url: '',
+				//链接内容
+				text: '',
+				//链接是否在新窗口打开
+				target: false
+			}
 		}
 	},
 	computed: {
@@ -216,10 +236,6 @@ export default {
 			if (this.menus.instance.codeViewShow && this.name != 'codeView') {
 				return true
 			}
-			//如果编辑器没有获取焦点
-			if (!this.menus.instance.focus) {
-				return true
-			}
 			return false
 		},
 		//下拉选选项的渲染元素
@@ -231,8 +247,8 @@ export default {
 				return 'div'
 			}
 		},
-		//菜单项激活样式设置
-		editorMenuElStyle() {
+		//激活样式设置
+		activeColorStyle() {
 			let style = {}
 			if (this.cmpDisabled) {
 				return style
@@ -268,6 +284,7 @@ export default {
 		Icon,
 		Tooltip,
 		Layer,
+		Checkbox,
 		EditorTag
 	},
 	setup() {
@@ -304,6 +321,18 @@ export default {
 		})
 	},
 	methods: {
+		//输入框获取焦点
+		inputFocus(event) {
+			if (this.menus.instance.activeColor) {
+				event.currentTarget.style.borderColor = this.menus.instance.activeColor
+			}
+		},
+		//输入框失去焦点
+		inputBlur(event) {
+			if (this.menus.instance.activeColor) {
+				event.currentTarget.style.borderColor = ''
+			}
+		},
 		//菜单项悬浮
 		menuHover(type) {
 			if (this.cmpDisabled) {
@@ -829,6 +858,27 @@ export default {
 					}
 				})
 			}
+		},
+		//插入链接
+		insertLink() {
+			if (this.cmpDisabled) {
+				return
+			}
+			if (!this.linkParams.url) {
+				this.hideLayer()
+				return
+			}
+			if (!this.linkParams.text) {
+				this.linkParams.text = this.linkParams.url
+			}
+			this.hideLayer()
+		},
+		//删除链接
+		deleteLink() {
+			if (this.cmpDisabled) {
+				return
+			}
+			this.hideLayer()
 		}
 	}
 }
@@ -949,6 +999,71 @@ export default {
 				text-overflow: ellipsis;
 				overflow: hidden;
 				white-space: nowrap;
+			}
+		}
+	}
+
+	.mvi-editor-menu-link {
+		display: block;
+		padding: @mp-sm;
+		width: 6rem;
+
+		input {
+			appearance: none;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			display: block;
+			width: 100%;
+			margin: 0;
+			padding: @mp-xs;
+			border: none;
+			border-bottom: 1px solid @border-color;
+			font-size: @font-size-default;
+			color: @font-color-default;
+			line-height: 1.5;
+			margin-bottom: @mp-sm;
+			transition: border-color 400ms;
+			-moz-transition: border-color 400ms;
+			-webkit-transition: border-color 400ms;
+
+			&::-webkit-input-placeholder,
+			&::placeholder {
+				color: inherit;
+				font-family: inherit;
+				font-size: inherit;
+				opacity: 0.5;
+				vertical-align: middle;
+			}
+		}
+
+		.mvi-editor-menu-link-footer {
+			display: flex;
+			display: -webkit-flex;
+			justify-content: space-between;
+			align-items: center;
+			width: 100%;
+			padding-top: @mp-xs 0;
+
+			.mvi-editor-menu-link-operation {
+				display: flex;
+				justify-content: flex-start;
+				align-items: center;
+
+				.mvi-editor-menu-link-delete {
+					opacity: 0.8;
+					margin-right: @mp-md;
+
+					&:hover {
+						opacity: 1;
+						cursor: pointer;
+					}
+				}
+
+				.mvi-editor-menu-link-insert {
+					&:hover {
+						cursor: pointer;
+					}
+				}
 			}
 		}
 	}
