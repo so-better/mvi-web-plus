@@ -508,30 +508,20 @@ export default {
 			else if (this.name == 'title') {
 				if (editor.range.anchor.isEqual(editor.range.focus)) {
 					const block = editor.range.anchor.element.getBlock()
-					//如果是有序列表或者无序列表
-					if (elementUtil.isList(block, true) || elementUtil.isList(block, false)) {
-						elementUtil.listToBlock(block, item.value)
-					} else {
-						block.parsedom = item.value
-					}
+					//先转为段落
+					elementUtil.toParagraph(block)
+					//设置标题
+					block.parsedom = item.value
 				} else {
 					const elements = editor.getElementsByRange(true, false)
 					elements.forEach(el => {
 						if (el.isBlock()) {
-							//如果是有序列表或者无序列表
-							if (elementUtil.isList(el, true) || elementUtil.isList(el, false)) {
-								elementUtil.listToBlock(el, item.value)
-							} else {
-								el.parsedom = item.value
-							}
+							elementUtil.toParagraph(el)
+							el.parsedom = item.value
 						} else {
 							const block = el.getBlock()
-							//如果是有序列表或者无序列表
-							if (elementUtil.isList(block, true) || elementUtil.isList(block, false)) {
-								elementUtil.listToBlock(block, item.value)
-							} else {
-								block.parsedom = item.value
-							}
+							elementUtil.toParagraph(block)
+							block.parsedom = item.value
 						}
 					})
 				}
@@ -622,6 +612,32 @@ export default {
 			}
 			//引用
 			else if (this.name == 'quote') {
+				//起点和终点在一起
+				if (editor.range.anchor.isEqual(editor.range.focus)) {
+					const block = editor.range.anchor.element.getBlock()
+					elementUtil.toParagraph(block)
+					if (!this.active) {
+						block.parsedom = 'blockquote'
+					}
+				}
+				//起点和终点不在一起
+				else {
+					const elements = editor.getElementsByRange(true, false)
+					elements.forEach(el => {
+						if (el.isBlock()) {
+							elementUtil.toParagraph(el)
+							if (!this.active) {
+								el.parsedom = 'blockquote'
+							}
+						} else {
+							const block = el.getBlock()
+							elementUtil.toParagraph(block)
+							if (!this.active) {
+								block.parsedom = 'blockquote'
+							}
+						}
+					})
+				}
 				editor.formatElementStack()
 				editor.domRender()
 				editor.rangeRender()
@@ -739,15 +755,16 @@ export default {
 						}) || {}
 				} else {
 					const elements = editor.getElementsByRange(true, false)
-					this.selectedVal = this.parseList.find(item => {
-						return elements.every(el => {
-							if (el.isBlock()) {
-								return el.hasStyles() && el.styles['text-align'] == item.value
-							}
-							const block = el.getBlock()
-							return block.hasStyles() && block.styles['text-align'] == item.value
-						})
-					})
+					this.selectedVal =
+						this.parseList.find(item => {
+							return elements.every(el => {
+								if (el.isBlock()) {
+									return el.hasStyles() && el.styles['text-align'] == item.value
+								}
+								const block = el.getBlock()
+								return block.hasStyles() && block.styles['text-align'] == item.value
+							})
+						}) || {}
 					editor.formatElementStack()
 				}
 			}
@@ -757,6 +774,16 @@ export default {
 					const block = editor.range.anchor.element.getBlock()
 					this.active = block.parsedom == 'blockquote'
 				} else {
+					const elements = editor.getElementsByRange(true, false)
+					this.active = elements.every(el => {
+						if (el.isBlock()) {
+							return el.parsedom == 'blockquote'
+						} else {
+							const block = el.getBlock()
+							return block.parsedom == 'blockquote'
+						}
+					})
+					editor.formatElementStack()
 				}
 			}
 			//自定义菜单项的激活判定
@@ -779,38 +806,28 @@ export default {
 			//起点和终点在一起
 			if (editor.range.anchor.isEqual(editor.range.focus)) {
 				const block = editor.range.anchor.element.getBlock()
-				//如果是在列表内则转为段落
-				if (this.active) {
-					elementUtil.listToBlock(block)
-				}
-				//否则转为列表
-				else {
-					elementUtil.blockToList(block, ordered)
+				elementUtil.toParagraph(block)
+				if (!this.active) {
+					elementUtil.toList(block, ordered)
 				}
 			}
 			//起点和终点不在一起
 			else {
 				const elements = this.menus.instance.editor.getElementsByRange(true, false)
-				//在列表内，则全部转为段落
-				if (this.active) {
-					elements.forEach(el => {
-						if (el.isBlock()) {
-							elementUtil.listToBlock(el)
-						} else {
-							elementUtil.listToBlock(el.getBlock())
+				elements.forEach(el => {
+					if (el.isBlock()) {
+						elementUtil.toParagraph(el)
+						if (!this.active) {
+							elementUtil.toList(el, ordered)
 						}
-					})
-				}
-				//不在列表内，则全部转为列表
-				else {
-					elements.forEach(el => {
-						if (el.isBlock()) {
-							elementUtil.blockToList(el, ordered)
-						} else {
-							elementUtil.blockToList(el.getBlock(), ordered)
+					} else {
+						const block = el.getBlock()
+						elementUtil.toParagraph(block)
+						if (!this.active) {
+							elementUtil.toList(block, ordered)
 						}
-					})
-				}
+					}
+				})
 			}
 		}
 	}

@@ -7,7 +7,7 @@
 		<m-editor-menus border useTooltip class="mvi-mb-4" ref="menus">
 			<m-editor-menu :disabled="disabled" v-for="item in definedMenus" :name="item.name" />
 		</m-editor-menus>
-		<m-editor placeholder="请输入内容" border :disabled="disabled" @change="change" auto-height ref="editor" autofocus v-model="value"></m-editor>
+		<m-editor placeholder="请输入内容" border :disabled="disabled" @change="change" auto-height ref="editor" v-model="value"></m-editor>
 	</div>
 </template>
 <script>
@@ -18,7 +18,7 @@ export default {
 			//https://www.mvi-web.cn/mvi-resources/images/mvi_image_0_1676971974565.png
 			show: true,
 			disabled: false,
-			value: '<blockquote><br></blockquote>',
+			value: '<ol><li>十年生死两茫茫，不思量，自难忘。</li><li>十年生死两茫茫，不思量，自难忘。</li><li>十年生死两茫茫，不思量，自难忘。</li></ol><ul><li>十年生死两茫茫，不思量，自难忘。</li><li>十年生死两茫茫，不思量，自难忘。</li><li>十年生死两茫茫，不思量，自难忘。</li></ul><p>十年生死两茫茫</p><blockquote><br></blockquote><blockquote><br></blockquote><p>十年生死两茫茫</p>',
 			definedMenus: definedEditorMenus
 		}
 	},
