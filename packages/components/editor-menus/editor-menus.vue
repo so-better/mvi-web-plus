@@ -6,12 +6,15 @@
 <script>
 import defaultTooltipProps from './defaultTooltipProps'
 import defaultLayerProps from './defaultLayerProps'
+import { Dap } from '../dap'
 export default {
 	name: 'm-editor-menus',
 	data() {
 		return {
 			//编辑器组件实例
-			instance: null
+			instance: null,
+			//菜单栏是否可以使用
+			canUse: false
 		}
 	},
 	provide() {
@@ -67,6 +70,18 @@ export default {
 		combinedLayerProps() {
 			return this.initOption(defaultLayerProps, this.layerProps)
 		}
+	},
+	mounted() {
+		Dap.event.on(document.documentElement, 'click.mvi-editor-menus', e => {
+			if (!this.instance) {
+				this.canUse = false
+			}
+			if (Dap.element.isContains(this.$el, e.target) || Dap.element.isContains(this.instance.$el, e.target)) {
+				this.canUse = true
+			} else {
+				this.canUse = false
+			}
+		})
 	},
 	methods: {
 		initOption(defaultObj, propObj) {

@@ -236,6 +236,10 @@ export default {
 			if (this.menus.instance.codeViewShow && this.name != 'codeView') {
 				return true
 			}
+			//如果菜单栏不可使用
+			if (!this.menus.canUse) {
+				return true
+			}
 			return false
 		},
 		//下拉选选项的渲染元素
