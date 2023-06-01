@@ -46,6 +46,7 @@ import { Layer } from '../layer'
 import EditorTag from './editor-tag.vue'
 import definedMenus from './definedMenus'
 import { AlexElement } from 'alex-editor'
+import elementUtil from './elementUtil'
 //根据名称获取指定菜单项配置
 const getMenu = name => {
 	if (name == 'custom') {
@@ -376,34 +377,38 @@ export default {
 		},
 		//执行富文本操作
 		handleOpt(item) {
+			if (this.cmpDisabled) {
+				return
+			}
+			const editor = this.menus.instance.editor
 			//撤销
 			if (this.name == 'undo') {
-				const historyRecord = this.menus.instance.editor.history.get(-1)
+				const historyRecord = editor.history.get(-1)
 				if (historyRecord) {
-					this.menus.instance.editor.stack = historyRecord.stack
-					this.menus.instance.editor.range = historyRecord.range
-					this.menus.instance.editor.formatElementStack()
-					this.menus.instance.editor.domRender(true)
-					this.menus.instance.editor.rangeRender()
+					editor.stack = historyRecord.stack
+					editor.range = historyRecord.range
+					editor.formatElementStack()
+					editor.domRender(true)
+					editor.rangeRender()
 				}
 			}
 			//重做
 			else if (this.name == 'redo') {
-				const historyRecord = this.menus.instance.editor.history.get(1)
+				const historyRecord = editor.history.get(1)
 				if (historyRecord) {
-					this.menus.instance.editor.stack = historyRecord.stack
-					this.menus.instance.editor.range = historyRecord.range
-					this.menus.instance.editor.formatElementStack()
-					this.menus.instance.editor.domRender(true)
-					this.menus.instance.editor.rangeRender()
+					editor.stack = historyRecord.stack
+					editor.range = historyRecord.range
+					editor.formatElementStack()
+					editor.domRender(true)
+					editor.rangeRender()
 				}
 			}
 			//清除格式
 			else if (this.name == 'removeFormat') {
-				this.menus.instance.editor.removeTextStyle()
-				this.menus.instance.editor.formatElementStack()
-				this.menus.instance.editor.domRender()
-				this.menus.instance.editor.rangeRender()
+				editor.removeTextStyle()
+				editor.formatElementStack()
+				editor.domRender()
+				editor.rangeRender()
 			}
 			//分隔线
 			else if (this.name == 'divider') {
@@ -411,155 +416,215 @@ export default {
 					class: 'mvi-editor-divider'
 				}
 				//创建分隔线
-				const divider = this.menus.instance.editor.formatElement(new AlexElement('closed', 'hr', marks, null, null))
+				const divider = editor.formatElement(new AlexElement('closed', 'hr', marks, null, null))
 				//插入分割线
-				this.menus.instance.editor.insertElement(divider)
+				editor.insertElement(divider)
 				//换行
-				this.menus.instance.editor.insertParagraph()
+				editor.insertParagraph()
 				//重新渲染
-				this.menus.instance.editor.formatElementStack()
-				this.menus.instance.editor.domRender()
-				this.menus.instance.editor.rangeRender()
+				editor.formatElementStack()
+				editor.domRender()
+				editor.rangeRender()
 			}
 			//加粗
 			else if (this.name == 'bold') {
 				if (this.active) {
-					this.menus.instance.editor.removeTextStyle(['font-weight'])
+					editor.removeTextStyle(['font-weight'])
 				} else {
-					this.menus.instance.editor.setTextStyle({
+					editor.setTextStyle({
 						'font-weight': 'bold'
 					})
 				}
-				this.menus.instance.editor.formatElementStack()
-				this.menus.instance.editor.domRender()
-				this.menus.instance.editor.rangeRender()
+				editor.formatElementStack()
+				editor.domRender()
+				editor.rangeRender()
 			}
 			//斜体
 			else if (this.name == 'italic') {
 				if (this.active) {
-					this.menus.instance.editor.removeTextStyle(['font-style'])
+					editor.removeTextStyle(['font-style'])
 				} else {
-					this.menus.instance.editor.setTextStyle({
+					editor.setTextStyle({
 						'font-style': 'italic'
 					})
 				}
-				this.menus.instance.editor.formatElementStack()
-				this.menus.instance.editor.domRender()
-				this.menus.instance.editor.rangeRender()
+				editor.formatElementStack()
+				editor.domRender()
+				editor.rangeRender()
 			}
 			//下划线
 			else if (this.name == 'underline') {
 				if (this.active) {
-					this.menus.instance.editor.removeTextStyle(['text-decoration-line', 'text-decoration'])
+					editor.removeTextStyle(['text-decoration-line', 'text-decoration'])
 				} else {
-					this.menus.instance.editor.setTextStyle({
+					editor.setTextStyle({
 						'text-decoration-line': 'underline'
 					})
 				}
-				this.menus.instance.editor.formatElementStack()
-				this.menus.instance.editor.domRender()
-				this.menus.instance.editor.rangeRender()
+				editor.formatElementStack()
+				editor.domRender()
+				editor.rangeRender()
 			}
 			//删除线
 			else if (this.name == 'strikeThrough') {
 				if (this.active) {
-					this.menus.instance.editor.removeTextStyle(['text-decoration-line', 'text-decoration'])
+					editor.removeTextStyle(['text-decoration-line', 'text-decoration'])
 				} else {
-					this.menus.instance.editor.setTextStyle({
+					editor.setTextStyle({
 						'text-decoration-line': 'line-through'
 					})
 				}
-				this.menus.instance.editor.formatElementStack()
-				this.menus.instance.editor.domRender()
-				this.menus.instance.editor.rangeRender()
+				editor.formatElementStack()
+				editor.domRender()
+				editor.rangeRender()
 			}
 			//下标
 			else if (this.name == 'subscript') {
 				if (this.active) {
-					this.menus.instance.editor.removeTextStyle(['vertical-align'])
+					editor.removeTextStyle(['vertical-align'])
 				} else {
-					this.menus.instance.editor.setTextStyle({
+					editor.setTextStyle({
 						'vertical-align': 'sub'
 					})
 				}
-				this.menus.instance.editor.formatElementStack()
-				this.menus.instance.editor.domRender()
-				this.menus.instance.editor.rangeRender()
+				editor.formatElementStack()
+				editor.domRender()
+				editor.rangeRender()
 			}
 			//上标
 			else if (this.name == 'superscript') {
 				if (this.active) {
-					this.menus.instance.editor.removeTextStyle(['vertical-align'])
+					editor.removeTextStyle(['vertical-align'])
 				} else {
-					this.menus.instance.editor.setTextStyle({
+					editor.setTextStyle({
 						'vertical-align': 'super'
 					})
 				}
-				this.menus.instance.editor.formatElementStack()
-				this.menus.instance.editor.domRender()
-				this.menus.instance.editor.rangeRender()
+				editor.formatElementStack()
+				editor.domRender()
+				editor.rangeRender()
 			}
 			//标题
 			else if (this.name == 'title') {
-				if (this.menus.instance.editor.range.anchor.isEqual(this.menus.instance.editor.range.focus)) {
-					const block = this.menus.instance.editor.range.anchor.element.getBlock()
-					block.parsedom = item.value
+				if (editor.range.anchor.isEqual(editor.range.focus)) {
+					const block = editor.range.anchor.element.getBlock()
+					//如果是有序列表或者无序列表
+					if (elementUtil.isList(block, true) || elementUtil.isList(block, false)) {
+						elementUtil.listToBlock(block, item.value)
+					} else {
+						block.parsedom = item.value
+					}
 				} else {
-					const elements = this.menus.instance.editor.getElementsByRange(true, false)
+					const elements = editor.getElementsByRange(true, false)
 					elements.forEach(el => {
 						if (el.isBlock()) {
-							el.parsedom = item.value
+							//如果是有序列表或者无序列表
+							if (elementUtil.isList(el, true) || elementUtil.isList(el, false)) {
+								elementUtil.listToBlock(el, item.value)
+							} else {
+								el.parsedom = item.value
+							}
 						} else {
-							el.getBlock().parsedom = item.value
+							const block = el.getBlock()
+							//如果是有序列表或者无序列表
+							if (elementUtil.isList(block, true) || elementUtil.isList(block, false)) {
+								elementUtil.listToBlock(block, item.value)
+							} else {
+								block.parsedom = item.value
+							}
 						}
 					})
 				}
-				this.menus.instance.editor.formatElementStack()
-				this.menus.instance.editor.domRender()
-				this.menus.instance.editor.rangeRender()
+				editor.formatElementStack()
+				editor.domRender()
+				editor.rangeRender()
 			}
 			//字体
 			else if (this.name == 'fontFamily') {
-				this.menus.instance.editor.setTextStyle({
+				editor.setTextStyle({
 					'font-family': item.value
 				})
-				this.menus.instance.editor.formatElementStack()
-				this.menus.instance.editor.domRender()
-				this.menus.instance.editor.rangeRender()
+				editor.formatElementStack()
+				editor.domRender()
+				editor.rangeRender()
 			}
 			//字号
 			else if (this.name == 'fontSize') {
-				this.menus.instance.editor.setTextStyle({
+				editor.setTextStyle({
 					'font-size': item.value
 				})
-				this.menus.instance.editor.formatElementStack()
-				this.menus.instance.editor.domRender()
-				this.menus.instance.editor.rangeRender()
+				editor.formatElementStack()
+				editor.domRender()
+				editor.rangeRender()
 			}
 			//字体颜色
 			else if (this.name == 'foreColor') {
-				this.menus.instance.editor.setTextStyle({
+				editor.setTextStyle({
 					color: item.value
 				})
-				this.menus.instance.editor.formatElementStack()
-				this.menus.instance.editor.domRender()
-				this.menus.instance.editor.rangeRender()
+				editor.formatElementStack()
+				editor.domRender()
+				editor.rangeRender()
 			}
 			//背景颜色
 			else if (this.name == 'backColor') {
-				this.menus.instance.editor.setTextStyle({
+				editor.setTextStyle({
 					'background-color': item.value
 				})
-				this.menus.instance.editor.formatElementStack()
-				this.menus.instance.editor.domRender()
-				this.menus.instance.editor.rangeRender()
+				editor.formatElementStack()
+				editor.domRender()
+				editor.rangeRender()
 			}
 			//有序列表和无序列表
 			else if (this.name == 'ol' || this.name == 'ul') {
 				this.insertList(this.name == 'ol')
-				this.menus.instance.editor.formatElementStack()
-				this.menus.instance.editor.domRender()
-				this.menus.instance.editor.rangeRender()
+				editor.formatElementStack()
+				editor.domRender()
+				editor.rangeRender()
+			}
+			//对齐方式
+			else if (this.name == 'justify') {
+				if (editor.range.anchor.isEqual(editor.range.focus)) {
+					const block = editor.range.anchor.element.getBlock()
+					if (block.hasStyles()) {
+						block.styles['text-align'] = item.value
+					} else {
+						block.styles = {
+							'text-align': item.value
+						}
+					}
+				} else {
+					const elements = editor.getElementsByRange(true, false)
+					elements.forEach(el => {
+						if (el.isBlock()) {
+							if (el.hasStyles()) {
+								el.styles['text-align'] = item.value
+							} else {
+								el.styles = {
+									'text-align': item.value
+								}
+							}
+						} else {
+							const block = el.getBlock()
+							if (block.hasStyles()) {
+								block.styles['text-align'] = item.value
+							} else {
+								block.styles = {
+									'text-align': item.value
+								}
+							}
+						}
+					})
+				}
+				editor.formatElementStack()
+				editor.domRender()
+				editor.rangeRender()
+			}
+			//引用
+			else if (this.name == 'quote') {
+				editor.formatElementStack()
+				editor.domRender()
+				editor.rangeRender()
 			}
 			//源码视图
 			else if (this.name == 'codeView') {
@@ -567,110 +632,131 @@ export default {
 			}
 		},
 		//监听range更新
-		handleRangeUpdate(range) {
+		handleRangeUpdate() {
 			if (this.cmpDisabled) {
 				return
 			}
+			const editor = this.menus.instance.editor
 			//加粗判定
 			if (this.name == 'bold') {
-				this.active = this.menus.instance.editor.queryTextStyle('font-weight', 'bold')
+				this.active = editor.queryTextStyle('font-weight', 'bold')
 			}
 			//斜体判定
 			else if (this.name == 'italic') {
-				this.active = this.menus.instance.editor.queryTextStyle('font-style', 'italic')
+				this.active = editor.queryTextStyle('font-style', 'italic')
 			}
 			//下划线判定
 			else if (this.name == 'underline') {
-				this.active = this.menus.instance.editor.queryTextStyle('text-decoration-line', 'underline') || this.menus.instance.editor.queryTextStyle('text-decoration', 'underline')
+				this.active = editor.queryTextStyle('text-decoration-line', 'underline') || editor.queryTextStyle('text-decoration', 'underline')
 			}
 			//删除线判定
 			else if (this.name == 'strikeThrough') {
-				this.active = this.menus.instance.editor.queryTextStyle('text-decoration-line', 'line-through') || this.menus.instance.editor.queryTextStyle('text-decoration', 'line-through')
+				this.active = editor.queryTextStyle('text-decoration-line', 'line-through') || editor.queryTextStyle('text-decoration', 'line-through')
 			}
 			//下标判定
 			else if (this.name == 'subscript') {
-				this.active = this.menus.instance.editor.queryTextStyle('vertical-align', 'sub')
+				this.active = editor.queryTextStyle('vertical-align', 'sub')
 			}
 			//上标判定
 			else if (this.name == 'superscript') {
-				this.active = this.menus.instance.editor.queryTextStyle('vertical-align', 'super')
+				this.active = editor.queryTextStyle('vertical-align', 'super')
 			}
 			//标题判定
 			else if (this.name == 'title') {
-				if (range.anchor.isEqual(range.focus)) {
+				if (editor.range.anchor.isEqual(editor.range.focus)) {
 					this.selectedVal = this.parseList.find(item => {
-						return item.value == range.anchor.element.getBlock().parsedom
+						return item.value == editor.range.anchor.element.getBlock().parsedom
 					}) || { ...this.defaultVal }
 				} else {
-					const elements = this.menus.instance.editor.getElementsByRange(true, false)
-					let parsedoms = []
-					elements.forEach(el => {
-						if (el.isBlock()) {
-							if (!parsedoms.includes(el.parsedom)) {
-								parsedoms.push(el.parsedom)
+					const elements = editor.getElementsByRange(true, false)
+					this.selectedVal = this.parseList.find(item => {
+						return elements.every(el => {
+							if (el.isBlock()) {
+								return el.parsedom == item.value
 							}
-						} else {
 							const block = el.getBlock()
-							if (!parsedoms.includes(block.parsedom)) {
-								parsedoms.push(block.parsedom)
-							}
-						}
-					})
-					if (parsedoms.length == 1) {
-						this.selectedVal = this.parseList.find(item => {
-							return item.value == parsedoms[0]
-						}) || { ...this.defaultVal }
-					} else {
-						this.selectedVal = { ...this.defaultVal }
-					}
-					this.menus.instance.editor.formatElementStack()
+							return block.parsedom == item.value
+						})
+					}) || { ...this.defaultVal }
+					editor.formatElementStack()
 				}
 			}
 			//字体判定
 			else if (this.name == 'fontFamily') {
 				this.selectedVal = this.parseList.find(item => {
-					return this.menus.instance.editor.queryTextStyle('font-family', item.value)
+					return editor.queryTextStyle('font-family', item.value)
 				}) || { ...this.defaultVal }
 			}
 			//字号判定
 			else if (this.name == 'fontSize') {
 				this.selectedVal = this.parseList.find(item => {
-					return this.menus.instance.editor.queryTextStyle('font-size', item.value)
+					return editor.queryTextStyle('font-size', item.value)
 				}) || { ...this.defaultVal }
 			}
 			//字体颜色判定
 			else if (this.name == 'foreColor') {
 				this.selectedVal =
 					this.parseList.find(item => {
-						return this.menus.instance.editor.queryTextStyle('color', item.value)
+						return editor.queryTextStyle('color', item.value)
 					}) || {}
 			}
 			//背景颜色判定
 			else if (this.name == 'backColor') {
 				this.selectedVal =
 					this.parseList.find(item => {
-						return this.menus.instance.editor.queryTextStyle('background-color', item.value)
+						return editor.queryTextStyle('background-color', item.value)
 					}) || {}
 			}
 			//有序列表和无序列表判定
 			else if (this.name == 'ol' || this.name == 'ul') {
 				//起点和终点在一起
-				if (this.menus.instance.editor.range.anchor.isEqual(this.menus.instance.editor.range.focus)) {
-					const block = this.menus.instance.editor.range.anchor.element.getBlock()
-					this.active = block.hasMarks() && block.marks['data-list'] == this.name
+				if (editor.range.anchor.isEqual(editor.range.focus)) {
+					const block = editor.range.anchor.element.getBlock()
+					this.active = elementUtil.isList(block, this.name == 'ol')
 				}
 				//起点和终点不在一起
 				else {
-					const elements = this.menus.instance.editor.getElementsByRange(true, false)
+					const elements = editor.getElementsByRange(true, false)
 					this.active = elements.every(el => {
 						if (el.isBlock()) {
-							return el.hasMarks() && el.marks['data-list'] == this.name
+							return elementUtil.isList(el, this.name == 'ol')
 						} else {
 							const block = el.getBlock()
-							return block.hasMarks() && block.marks['data-list'] == this.name
+							return elementUtil.isList(block, this.name == 'ol')
 						}
 					})
-					this.menus.instance.editor.formatElementStack()
+					editor.formatElementStack()
+				}
+			}
+			//对齐方式判定
+			else if (this.name == 'justify') {
+				//起点和终点在一起
+				if (editor.range.anchor.isEqual(editor.range.focus)) {
+					const block = editor.range.anchor.element.getBlock()
+					this.selectedVal =
+						this.parseList.find(item => {
+							return block.hasStyles() && block.styles['text-align'] == item.value
+						}) || {}
+				} else {
+					const elements = editor.getElementsByRange(true, false)
+					this.selectedVal = this.parseList.find(item => {
+						return elements.every(el => {
+							if (el.isBlock()) {
+								return el.hasStyles() && el.styles['text-align'] == item.value
+							}
+							const block = el.getBlock()
+							return block.hasStyles() && block.styles['text-align'] == item.value
+						})
+					})
+					editor.formatElementStack()
+				}
+			}
+			//引用判定
+			else if (this.name == 'quote') {
+				if (editor.range.anchor.isEqual(editor.range.focus)) {
+					const block = editor.range.anchor.element.getBlock()
+					this.active = block.parsedom == 'blockquote'
+				} else {
 				}
 			}
 			//自定义菜单项的激活判定
@@ -695,11 +781,11 @@ export default {
 				const block = editor.range.anchor.element.getBlock()
 				//如果是在列表内则转为段落
 				if (this.active) {
-					this.listToParagraph(block)
+					elementUtil.listToBlock(block)
 				}
 				//否则转为列表
 				else {
-					this.blockToList(block, ordered)
+					elementUtil.blockToList(block, ordered)
 				}
 			}
 			//起点和终点不在一起
@@ -709,9 +795,9 @@ export default {
 				if (this.active) {
 					elements.forEach(el => {
 						if (el.isBlock()) {
-							this.listToParagraph(el)
+							elementUtil.listToBlock(el)
 						} else {
-							this.listToParagraph(el.getBlock())
+							elementUtil.listToBlock(el.getBlock())
 						}
 					})
 				}
@@ -719,32 +805,13 @@ export default {
 				else {
 					elements.forEach(el => {
 						if (el.isBlock()) {
-							this.blockToList(el, ordered)
+							elementUtil.blockToList(el, ordered)
 						} else {
-							this.blockToList(el.getBlock(), ordered)
+							elementUtil.blockToList(el.getBlock(), ordered)
 						}
 					})
 				}
 			}
-		},
-		//块元素转为列表
-		blockToList(element, ordered = false) {
-			element.parsedom = 'div'
-			if (!element.hasMarks()) {
-				element.marks = {}
-			}
-			element.marks['data-list'] = ordered ? 'ol' : 'ul'
-		},
-		//列表转为段落
-		listToParagraph(element) {
-			element.parsedom = AlexElement.PARAGRAPH_NODE
-			let marks = {}
-			for (let key in element.marks) {
-				if (key != 'data-list' && key != 'data-value') {
-					marks[key] = element.marks[key]
-				}
-			}
-			element.marks = marks
 		}
 	}
 }

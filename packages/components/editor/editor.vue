@@ -345,7 +345,6 @@ export default {
 		}
 	}
 }
-
 //分隔线样式
 :deep(hr.mvi-editor-divider) {
 	display: block;
@@ -357,7 +356,6 @@ export default {
 	border: none;
 	font-size: 0;
 }
-
 //有序列表样式
 :deep(div[data-list='ol']) {
 	margin-bottom: @mp-sm;
@@ -367,7 +365,6 @@ export default {
 		margin-right: @mp-xs;
 	}
 }
-
 //无序列表样式
 :deep(div[data-list='ul']) {
 	margin-bottom: @mp-sm;
@@ -376,5 +373,16 @@ export default {
 		content: '\2022';
 		margin-right: @mp-xs;
 	}
+}
+//引用样式
+:deep(blockquote) {
+	display: block;
+	border-left: @mp-xs solid @bg-color-dark;
+	padding: @mp-xs @mp-sm @mp-xs @mp-md;
+	margin: 0 0 @mp-sm;
+	line-height: 1.5;
+	font-size: @font-size-default;
+	color: @font-color-sub;
+	border-radius: 0;
 }
 </style>

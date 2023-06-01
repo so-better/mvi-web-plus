@@ -179,22 +179,22 @@ export default [
 		list: [
 			{
 				label: '左对齐',
-				value: 'justifyLeft',
+				value: 'left',
 				icon: 'align-left'
 			},
 			{
 				label: '居中对齐',
-				value: 'justifyCenter',
+				value: 'center',
 				icon: 'align-center'
 			},
 			{
 				label: '右对齐',
-				value: 'justifyRight',
+				value: 'right',
 				icon: 'align-right'
 			},
 			{
 				label: '两端对齐',
-				value: 'justifyFull',
+				value: 'justify',
 				icon: 'align-justify'
 			}
 		]
