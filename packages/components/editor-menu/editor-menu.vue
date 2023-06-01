@@ -237,7 +237,7 @@ export default {
 				return true
 			}
 			//如果菜单栏不可使用
-			if (!this.menus.canUse) {
+			if (!this.menus.instance.canUseMenus) {
 				return true
 			}
 			return false

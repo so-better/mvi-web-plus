@@ -12,9 +12,7 @@ export default {
 	data() {
 		return {
 			//编辑器组件实例
-			instance: null,
-			//菜单栏是否可以使用
-			canUse: false
+			instance: null
 		}
 	},
 	provide() {
@@ -74,12 +72,12 @@ export default {
 	mounted() {
 		Dap.event.on(document.documentElement, 'click.mvi-editor-menus', e => {
 			if (!this.instance) {
-				this.canUse = false
+				return
 			}
 			if (Dap.element.isContains(this.$el, e.target) || Dap.element.isContains(this.instance.$el, e.target)) {
-				this.canUse = true
+				this.instance.canUseMenus = true
 			} else {
-				this.canUse = false
+				this.instance.canUseMenus = false
 			}
 		})
 	},
