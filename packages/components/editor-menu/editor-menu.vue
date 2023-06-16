@@ -23,19 +23,13 @@
 			<div v-else-if="name == 'table'"></div>
 			<!-- 链接 -->
 			<div v-else-if="name == 'link'" class="mvi-editor-menu-link">
-				<Form block width="100%">
-					<FormEl v-if="linkParams.showText" label="链接文本">
-						<input ref="linkText" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.text" placeholder="请输入..." type="text" />
-					</FormEl>
-					<FormEl label="链接地址">
-						<input ref="linkUrl" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.url" placeholder="请输入..." type="text" />
-					</FormEl>
-				</Form>
+				<input :disabled="!linkParams.showText || null" ref="linkText" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.text" :placeholder="linkProps.placeholder[0]" type="text" />
+				<input ref="linkUrl" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.url" :placeholder="linkProps.placeholder[1]" type="text" />
 				<div class="mvi-editor-menu-link-footer">
-					<Checkbox label="新窗口打开" label-placement="right" :icon="{ size: '0.24rem' }" label-size="0.28rem" label-color="#808080" :fill-color="activeColor" v-model="linkParams.target"> </Checkbox>
+					<Checkbox :label="linkProps.targetText" label-placement="right" :icon="{ size: '0.24rem' }" label-size="0.28rem" label-color="#808080" :fill-color="activeColor" v-model="linkParams.target"> </Checkbox>
 					<div class="mvi-editor-menu-link-operation">
-						<span class="mvi-editor-menu-link-delete" v-if="active" @click="deleteLink">移除链接</span>
-						<span class="mvi-editor-menu-link-insert" :style="{ color: activeColor }" @click="insertLink">插入</span>
+						<span class="mvi-editor-menu-link-delete" v-if="active" @click="deleteLink">{{ linkProps.removeText }}</span>
+						<span class="mvi-editor-menu-link-insert" :style="{ color: activeColor }" @click="insertLink">{{ linkProps.insertText }}</span>
 					</div>
 				</div>
 			</div>
@@ -146,6 +140,18 @@ export default {
 		customActive: {
 			type: Function,
 			default: null
+		},
+		//链接菜单项的配置
+		linkProps: {
+			type: Object,
+			default: function () {
+				return {
+					placeholder: ['输入文本', '输入地址'],
+					targetText: '新窗口打开',
+					removeText: '移除链接',
+					insertText: '插入'
+				}
+			}
 		}
 	},
 	inject: ['menus'],
@@ -426,9 +432,21 @@ export default {
 					if (this.active) {
 						this.linkParams.showText = false
 						const inline = this.menus.instance.editor.range.anchor.element.getInline()
-						if (inline && inline.hasMarks()) {
-							this.linkParams.url = inline.marks['href'] || ''
-							this.linkParams.target = inline.marks['target'] == '_blank'
+						if (inline) {
+							if (inline.hasChildren()) {
+								const elements = AlexElement.flatElements(inline.children)
+								let text = ''
+								elements.forEach(el => {
+									if (el.isText()) {
+										text += el.textContent || ''
+									}
+								})
+								this.linkParams.text = text
+							}
+							if (inline.hasMarks()) {
+								this.linkParams.url = inline.marks['href'] || ''
+								this.linkParams.target = inline.marks['target'] == '_blank'
+							}
 						}
 					}
 					//插入链接时预设值
@@ -1131,7 +1149,7 @@ export default {
 	.mvi-editor-menu-link {
 		display: block;
 		width: 6rem;
-		padding-top: @mp-sm;
+		padding: @mp-sm;
 
 		input {
 			appearance: none;
@@ -1144,10 +1162,13 @@ export default {
 			border-bottom: 1px solid @border-color;
 			font-size: @font-size-default;
 			color: @font-color-default;
+			margin-bottom: @mp-sm;
+			padding: @mp-xs 0;
 			line-height: 1.5;
 			transition: border-color 400ms;
 			-moz-transition: border-color 400ms;
 			-webkit-transition: border-color 400ms;
+			background-color: #fff;
 
 			&::-webkit-input-placeholder,
 			&::placeholder {
@@ -1157,6 +1178,11 @@ export default {
 				opacity: 0.5;
 				vertical-align: middle;
 			}
+
+			&[disabled] {
+				background-color: #fff;
+				opacity: 0.6;
+			}
 		}
 		.mvi-editor-menu-link-footer {
 			display: flex;
@@ -1164,7 +1190,6 @@ export default {
 			justify-content: space-between;
 			align-items: center;
 			width: 100%;
-			padding: @mp-sm @mp-md;
 
 			.mvi-editor-menu-link-operation {
 				display: flex;
