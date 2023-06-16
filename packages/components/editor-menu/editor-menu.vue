@@ -28,7 +28,7 @@
 				<div class="mvi-editor-menu-link-footer">
 					<Checkbox :label="props.targetText" label-placement="right" :icon="{ size: '0.24rem' }" label-size="0.28rem" label-color="#808080" :fill-color="activeColor" v-model="linkParams.target"> </Checkbox>
 					<div class="mvi-editor-menu-link-operation">
-						<span class="mvi-editor-menu-link-delete" v-if="active" @click="deleteLink">{{ props.removeText }}</span>
+						<span class="mvi-editor-menu-link-delete" v-if="!linkParams.showText" @click="deleteLink">{{ props.removeText }}</span>
 						<span class="mvi-editor-menu-link-insert" :style="{ color: activeColor }" @click="insertLink">{{ props.insertText }}</span>
 					</div>
 				</div>
@@ -42,7 +42,7 @@
 						</div>
 						<div v-else-if="item.value == 'remote'" class="mvi-editor-menu-media-remote">
 							<input @focus="inputFocus" @blur="inputBlur" v-model.trim="mediaParams.remoteUrl" :placeholder="props.placeholder" type="text" />
-							<div class="mvi-editor-menu-media-remote-insert" :style="{ color: activeColor }" @click="insertRemote">{{ props.insertText }}</div>
+							<div class="mvi-editor-menu-media-insert" :style="{ color: activeColor }" @click="insertRemote">{{ props.insertText }}</div>
 						</div>
 					</Tab>
 				</Tabs>
@@ -1283,7 +1283,7 @@ export default {
 			transition: border-color 400ms;
 			-moz-transition: border-color 400ms;
 			-webkit-transition: border-color 400ms;
-			background-color: #fff;
+			background-color: transparent;
 
 			&::-webkit-input-placeholder,
 			&::placeholder {
@@ -1295,7 +1295,7 @@ export default {
 			}
 
 			&[disabled] {
-				background-color: #fff;
+				background-color: transparent;
 				opacity: 0.6;
 			}
 		}
@@ -1343,13 +1343,9 @@ export default {
 			opacity: 0.8;
 			text-align: center;
 
-			&:not([disabled]):hover {
+			&:hover {
 				cursor: pointer;
 				opacity: 1;
-			}
-
-			&[disabled] {
-				opacity: 0.5;
 			}
 		}
 
@@ -1365,16 +1361,17 @@ export default {
 				display: block;
 				width: 100%;
 				margin: 0;
-				padding: @mp-xs;
 				border: none;
 				border-bottom: 1px solid @border-color;
 				font-size: @font-size-default;
 				color: @font-color-default;
-				line-height: 1.5;
 				margin-bottom: @mp-sm;
+				padding: @mp-xs 0;
+				line-height: 1.5;
 				transition: border-color 400ms;
 				-moz-transition: border-color 400ms;
 				-webkit-transition: border-color 400ms;
+				background-color: transparent;
 
 				&::-webkit-input-placeholder,
 				&::placeholder {
@@ -1384,25 +1381,15 @@ export default {
 					opacity: 0.5;
 					vertical-align: middle;
 				}
-
-				&[disabled] {
-					background-color: transparent;
-					opacity: 0.8;
-				}
 			}
 
-			.mvi-editor-menu-media-remote-insert {
+			.mvi-editor-menu-media-insert {
 				display: block;
 				width: 100%;
-				padding-top: @mp-sm;
 				text-align: right;
 
 				&:hover {
 					cursor: pointer;
-				}
-
-				&[disabled] {
-					opacity: 0.5;
 				}
 			}
 		}
