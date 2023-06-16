@@ -210,18 +210,22 @@ export default [
 		type: 'select',
 		icon: 'link',
 		title: '插入链接',
-		list: [
-			{
-				label: '插入链接',
-				value: 'link'
-			}
-		]
+		props: {
+			placeholder: ['输入文本', '输入地址'],
+			targetText: '新窗口打开',
+			removeText: '移除链接',
+			insertText: '插入'
+		}
 	},
 	{
 		name: 'image',
 		icon: 'image',
 		title: '插入图片',
 		type: 'select',
+		props: {
+			placeholder: '图片地址',
+			insertText: '插入'
+		},
 		list: [
 			{
 				label: '本地上传',
@@ -238,6 +242,10 @@ export default [
 		icon: 'video',
 		title: '插入视频',
 		type: 'select',
+		props: {
+			placeholder: '视频地址',
+			insertText: '插入'
+		},
 		list: [
 			{
 				label: '本地上传',

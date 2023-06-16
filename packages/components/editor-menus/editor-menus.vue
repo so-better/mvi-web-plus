@@ -6,6 +6,8 @@
 <script>
 import defaultTooltipProps from './defaultTooltipProps'
 import defaultLayerProps from './defaultLayerProps'
+import defaultUploadImageProps from './defaultUploadImageProps'
+import defaultUploadVideoProps from './defaultUploadVideoProps'
 import { Dap } from '../dap'
 export default {
 	name: 'm-editor-menus',
@@ -15,6 +17,7 @@ export default {
 			instance: null
 		}
 	},
+	emits: ['upload-image', 'upload-video'],
 	provide() {
 		return {
 			menus: this
@@ -32,6 +35,33 @@ export default {
 			default: function () {
 				return {}
 			}
+		},
+		//菜单项上传图片配置
+		uploadImageProps: {
+			type: Object,
+			default: function () {
+				return {}
+			}
+		},
+		//菜单项上传视频配置
+		uploadVideoProps: {
+			type: Object,
+			default: function () {
+				return {}
+			}
+		},
+		//上传图片或者视频是否使用base64
+		useBase64: {
+			type: Boolean,
+			default: true
+		},
+		//自定义上传图片出错回调
+		uploadImageError: {
+			type: Function
+		},
+		//自定义上传视频出错回调
+		uploadVideoError: {
+			type: Function
 		},
 		//触发悬浮层显现的方式
 		trigger: {
@@ -67,6 +97,14 @@ export default {
 		//浮层组件配置
 		combinedLayerProps() {
 			return this.initOption(defaultLayerProps, this.layerProps)
+		},
+		//上传图片配置
+		combinedUploadImageProps() {
+			return this.initOption(defaultUploadImageProps, this.uploadImageProps)
+		},
+		//上传视频配置
+		combinedUploadVideoProps() {
+			return this.initOption(defaultUploadVideoProps, this.uploadVideoProps)
 		}
 	},
 	mounted() {
