@@ -16,7 +16,7 @@ export default {
 			}
 			element.marks = marks
 		}
-		element.parsedom = AlexElement.PARAGRAPH_NODE
+		element.parsedom = AlexElement.BLOCK_NODE
 	},
 	//其他元素转为列表
 	toList(element, ordered = false) {

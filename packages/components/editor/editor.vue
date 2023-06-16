@@ -187,8 +187,8 @@ export default {
 				}
 				element.toEmpty()
 			}
-			//有序列表的序号处理
-			if (element.hasMarks() && element.marks['data-list'] == 'ol') {
+			// //有序列表的序号处理
+			if (element.type == 'block' && element.hasMarks() && element.marks['data-list'] == 'ol') {
 				//获取前一个元素
 				const previousElement = editor.getPreviousElement(element)
 				//如果前一个元素存在并且也是有序列表
@@ -231,7 +231,9 @@ export default {
 				this.$refs.content.style.boxShadow = `0 0 0.16rem rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.5)`
 			}
 			//获取焦点时可以使用菜单栏
-			this.canUseMenus = true
+			setTimeout(() => {
+				this.canUseMenus = true
+			}, 0)
 			this.$emit('focus', val)
 		},
 		//编辑器失去焦点

@@ -23,13 +23,19 @@
 			<div v-else-if="name == 'table'"></div>
 			<!-- 链接 -->
 			<div v-else-if="name == 'link'" class="mvi-editor-menu-link">
-				<input ref="linkText" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.text" placeholder="链接文本" type="text" />
-				<input ref="linkUrl" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.url" placeholder="链接地址" type="text" />
+				<Form block width="100%">
+					<FormEl v-if="linkParams.showText" label="链接文本">
+						<input ref="linkText" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.text" placeholder="请输入..." type="text" />
+					</FormEl>
+					<FormEl label="链接地址">
+						<input ref="linkUrl" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.url" placeholder="请输入..." type="text" />
+					</FormEl>
+				</Form>
 				<div class="mvi-editor-menu-link-footer">
-					<Checkbox label="新窗口打开" label-placement="right" :icon="{ size: '0.24rem' }" label-size="0.28rem" label-color="#808080" :fill-color="menus.instance.activeColor" v-model="linkParams.target"> </Checkbox>
+					<Checkbox label="新窗口打开" label-placement="right" :icon="{ size: '0.24rem' }" label-size="0.28rem" label-color="#808080" :fill-color="activeColor" v-model="linkParams.target"> </Checkbox>
 					<div class="mvi-editor-menu-link-operation">
-						<span class="mvi-editor-menu-link-delete" v-if="active" @click="deleteLink">删除链接</span>
-						<span class="mvi-editor-menu-link-insert" :style="activeColorStyle" @click="insertLink">插入</span>
+						<span class="mvi-editor-menu-link-delete" v-if="active" @click="deleteLink">移除链接</span>
+						<span class="mvi-editor-menu-link-insert" :style="{ color: activeColor }" @click="insertLink">插入</span>
 					</div>
 				</div>
 			</div>
@@ -54,6 +60,8 @@ import { Icon } from '../icon'
 import { Tooltip } from '../tooltip'
 import { Layer } from '../layer'
 import { Checkbox } from '../checkbox'
+import { Form } from '../form'
+import { FormEl } from '../form-el'
 import EditorTag from './editor-tag.vue'
 import definedMenus from './definedMenus'
 import { AlexElement } from 'alex-editor'
@@ -158,7 +166,9 @@ export default {
 				//链接内容
 				text: '',
 				//链接是否在新窗口打开
-				target: false
+				target: false,
+				//是否显示内容参数
+				showText: true
 			}
 		}
 	},
@@ -259,11 +269,18 @@ export default {
 			}
 			if (this.active) {
 				style.opacity = 1
-				if (this.menus.instance.activeColor) {
-					style.color = this.menus.instance.activeColor
-				}
+				style.color = this.activeColor
 			}
 			return style
+		},
+		activeColor() {
+			if (this.cmpDisabled) {
+				return ''
+			}
+			if (this.menus.instance.activeColor) {
+				return this.menus.instance.activeColor
+			}
+			return ''
 		},
 		//判断是否编辑器内部配置的菜单项
 		isDefinedMenu() {
@@ -277,8 +294,8 @@ export default {
 				if (this.cmpDisabled) {
 					return style
 				}
-				if (this.selectedVal.value == item.value && this.menus.instance.activeColor) {
-					style.borderColor = this.menus.instance.activeColor
+				if (this.selectedVal.value == item.value) {
+					style.borderColor = this.activeColor
 				}
 				return style
 			}
@@ -289,6 +306,8 @@ export default {
 		Tooltip,
 		Layer,
 		Checkbox,
+		Form,
+		FormEl,
 		EditorTag
 	},
 	setup() {
@@ -327,15 +346,11 @@ export default {
 	methods: {
 		//输入框获取焦点
 		inputFocus(event) {
-			if (this.menus.instance.activeColor) {
-				event.currentTarget.style.borderColor = this.menus.instance.activeColor
-			}
+			event.currentTarget.style.borderColor = this.activeColor
 		},
 		//输入框失去焦点
 		inputBlur(event) {
-			if (this.menus.instance.activeColor) {
-				event.currentTarget.style.borderColor = ''
-			}
+			event.currentTarget.style.borderColor = ''
 		},
 		//菜单项悬浮
 		menuHover(type) {
@@ -399,6 +414,39 @@ export default {
 				return
 			}
 			if (this.type == 'select' || this.type == 'display') {
+				//如果是链接菜单项
+				if (this.name == 'link') {
+					this.linkParams = {
+						url: '',
+						text: '',
+						target: false,
+						showText: true
+					}
+					//修改链接时预设值
+					if (this.active) {
+						this.linkParams.showText = false
+						const inline = this.menus.instance.editor.range.anchor.element.getInline()
+						if (inline && inline.hasMarks()) {
+							this.linkParams.url = inline.marks['href'] || ''
+							this.linkParams.target = inline.marks['target'] == '_blank'
+						}
+					}
+					//插入链接时预设值
+					else {
+						//如果起点和终点不在一起，表示选区
+						if (!this.menus.instance.editor.range.anchor.isEqual(this.menus.instance.editor.range.focus)) {
+							let text = ''
+							const elements = this.menus.instance.editor.getElementsByRange(true, true)
+							elements.forEach(el => {
+								if (el.isText()) {
+									text += el.textContent || ''
+								}
+							})
+							this.linkParams.text = text
+							this.menus.instance.editor.formatElementStack()
+						}
+					}
+				}
 				this.layerShow = true
 			}
 		},
@@ -449,11 +497,9 @@ export default {
 					class: 'mvi-editor-divider'
 				}
 				//创建分隔线
-				const divider = editor.formatElement(new AlexElement('closed', 'hr', marks, null, null))
+				const divider = new AlexElement('closed', 'hr', marks, null, null)
 				//插入分割线
 				editor.insertElement(divider)
-				//换行
-				editor.insertParagraph()
 				//重新渲染
 				editor.formatElementStack()
 				editor.domRender()
@@ -609,17 +655,28 @@ export default {
 			else if (this.name == 'justify') {
 				if (editor.range.anchor.isEqual(editor.range.focus)) {
 					const block = editor.range.anchor.element.getBlock()
-					if (block.hasStyles()) {
-						block.styles['text-align'] = item.value
+					const inblock = editor.range.anchor.element.getInblock()
+					if (inblock) {
+						if (inblock.hasStyles()) {
+							inblock.styles['text-align'] = item.value
+						} else {
+							inblock.styles = {
+								'text-align': item.value
+							}
+						}
 					} else {
-						block.styles = {
-							'text-align': item.value
+						if (block.hasStyles()) {
+							block.styles['text-align'] = item.value
+						} else {
+							block.styles = {
+								'text-align': item.value
+							}
 						}
 					}
 				} else {
 					const elements = editor.getElementsByRange(true, false)
 					elements.forEach(el => {
-						if (el.isBlock()) {
+						if (el.isBlock() || el.isInblock()) {
 							if (el.hasStyles()) {
 								el.styles['text-align'] = item.value
 							} else {
@@ -629,11 +686,22 @@ export default {
 							}
 						} else {
 							const block = el.getBlock()
-							if (block.hasStyles()) {
-								block.styles['text-align'] = item.value
+							const inblock = el.getInblock()
+							if (inblock) {
+								if (inblock.hasStyles()) {
+									inblock.styles['text-align'] = item.value
+								} else {
+									inblock.styles = {
+										'text-align': item.value
+									}
+								}
 							} else {
-								block.styles = {
-									'text-align': item.value
+								if (block.hasStyles()) {
+									block.styles['text-align'] = item.value
+								} else {
+									block.styles = {
+										'text-align': item.value
+									}
 								}
 							}
 						}
@@ -782,19 +850,31 @@ export default {
 				//起点和终点在一起
 				if (editor.range.anchor.isEqual(editor.range.focus)) {
 					const block = editor.range.anchor.element.getBlock()
-					this.selectedVal =
-						this.parseList.find(item => {
-							return block.hasStyles() && block.styles['text-align'] == item.value
-						}) || {}
+					const inblock = editor.range.anchor.element.getInblock()
+					if (inblock) {
+						this.selectedVal =
+							this.parseList.find(item => {
+								return inblock.hasStyles() && inblock.styles['text-align'] == item.value
+							}) || {}
+					} else {
+						this.selectedVal =
+							this.parseList.find(item => {
+								return block.hasStyles() && block.styles['text-align'] == item.value
+							}) || {}
+					}
 				} else {
 					const elements = editor.getElementsByRange(true, false)
 					this.selectedVal =
 						this.parseList.find(item => {
 							return elements.every(el => {
-								if (el.isBlock()) {
+								if (el.isBlock() || el.isInblock()) {
 									return el.hasStyles() && el.styles['text-align'] == item.value
 								}
 								const block = el.getBlock()
+								const inblock = el.getInblock()
+								if (inblock) {
+									return inblock.hasStyles() && inblock.styles['text-align'] == item.value
+								}
 								return block.hasStyles() && block.styles['text-align'] == item.value
 							})
 						}) || {}
@@ -817,6 +897,16 @@ export default {
 						}
 					})
 					editor.formatElementStack()
+				}
+			}
+			//链接判定
+			else if (this.name == 'link') {
+				const anchorInline = editor.range.anchor.element.getInline()
+				const focusInline = editor.range.focus.element.getInline()
+				if (anchorInline && focusInline && anchorInline.isEqual(focusInline)) {
+					this.active = anchorInline && anchorInline.parsedom == 'a'
+				} else {
+					this.active = false
 				}
 			}
 			//自定义菜单项的激活判定
@@ -872,9 +962,33 @@ export default {
 				this.hideLayer()
 				return
 			}
-			if (!this.linkParams.text) {
-				this.linkParams.text = this.linkParams.url
+			//修改链接
+			if (this.active) {
+				const inline = this.menus.instance.editor.range.anchor.element.getInline()
+				inline.marks.href = this.linkParams.url
+				if (this.linkParams.target) {
+					inline.marks.target = '_blank'
+				}
 			}
+			//新插入链接
+			else {
+				if (!this.linkParams.text) {
+					this.linkParams.text = this.linkParams.url
+				}
+				const marks = {
+					href: this.linkParams.url
+				}
+				if (this.linkParams.target) {
+					marks.target = '_blank'
+				}
+				const link = new AlexElement('inline', 'a', marks, null, null)
+				const text = new AlexElement('text', null, null, null, this.linkParams.text)
+				this.menus.instance.editor.addElementTo(text, link)
+				this.menus.instance.editor.insertElement(link)
+			}
+			this.menus.instance.editor.formatElementStack()
+			this.menus.instance.editor.domRender()
+			this.menus.instance.editor.rangeRender()
 			this.hideLayer()
 		},
 		//删除链接
@@ -882,6 +996,13 @@ export default {
 			if (this.cmpDisabled) {
 				return
 			}
+			const inline = this.menus.instance.editor.range.anchor.element.getInline()
+			inline.parsedom = AlexElement.TEXT_NODE
+			delete inline.marks.target
+			delete inline.marks.href
+			this.menus.instance.editor.formatElementStack()
+			this.menus.instance.editor.domRender()
+			this.menus.instance.editor.rangeRender()
 			this.hideLayer()
 		}
 	}
@@ -1009,8 +1130,8 @@ export default {
 
 	.mvi-editor-menu-link {
 		display: block;
-		padding: @mp-sm;
 		width: 6rem;
+		padding-top: @mp-sm;
 
 		input {
 			appearance: none;
@@ -1019,13 +1140,11 @@ export default {
 			display: block;
 			width: 100%;
 			margin: 0;
-			padding: @mp-xs;
 			border: none;
 			border-bottom: 1px solid @border-color;
 			font-size: @font-size-default;
 			color: @font-color-default;
 			line-height: 1.5;
-			margin-bottom: @mp-sm;
 			transition: border-color 400ms;
 			-moz-transition: border-color 400ms;
 			-webkit-transition: border-color 400ms;
@@ -1039,14 +1158,13 @@ export default {
 				vertical-align: middle;
 			}
 		}
-
 		.mvi-editor-menu-link-footer {
 			display: flex;
 			display: -webkit-flex;
 			justify-content: space-between;
 			align-items: center;
 			width: 100%;
-			padding-top: @mp-xs 0;
+			padding: @mp-sm @mp-md;
 
 			.mvi-editor-menu-link-operation {
 				display: flex;
