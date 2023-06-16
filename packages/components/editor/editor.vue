@@ -9,6 +9,7 @@
 <script>
 import { Dap } from '../dap'
 import { AlexElement, AlexEditor } from 'alex-editor'
+import elementUtil from '../editor-menu/elementUtil'
 export default {
 	name: 'm-editor',
 	emits: ['update:modelValue', 'focus', 'blur', 'change', 'paste-file'],
@@ -156,6 +157,8 @@ export default {
 		this.editor.on('focus', this.handleContentFocus)
 		//监听编辑器失去焦点
 		this.editor.on('blur', this.handleContentBlur)
+		//监听编辑器换行
+		this.editor.on('insertParagraph', this.handleInsertParagraph)
 		//如果自定义粘贴文件则监听编辑器粘贴文件
 		if (this.customPasteFile) {
 			this.editor.on('pasteFile', this.handleContentPasteFile)
@@ -253,6 +256,15 @@ export default {
 				return
 			}
 			this.$emit('paste-file', files)
+		},
+		//编辑器换行
+		handleInsertParagraph(element) {
+			if (element.isBlock() || element.isInblock()) {
+				//以下根级块元素或者内部块元素在换行时转为段落元素
+				if (['blockquote'].includes(element.parsedom)) {
+					elementUtil.toParagraph(element)
+				}
+			}
 		},
 		//api：注册菜单栏实例
 		use(menus) {
