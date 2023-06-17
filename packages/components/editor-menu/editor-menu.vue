@@ -614,11 +614,8 @@ export default {
 			}
 			//分隔线
 			else if (this.name == 'divider') {
-				const marks = {
-					class: 'mvi-editor-divider'
-				}
 				//创建分隔线
-				const divider = new AlexElement('closed', 'hr', marks, null, null)
+				const divider = new AlexElement('closed', 'hr', null, null, null)
 				//插入分割线
 				editor.insertElement(divider)
 				//重新渲染
@@ -1135,7 +1132,19 @@ export default {
 				this.hideLayer()
 				return
 			}
-			console.log('插入远程图片或者视频', this.mediaParams)
+			const video = new AlexElement(
+				'closed',
+				'video',
+				{
+					src: this.mediaParams.remoteUrl
+				},
+				null,
+				null
+			)
+			this.menus.instance.editor.insertElement(video)
+			this.menus.instance.editor.formatElementStack()
+			this.menus.instance.editor.domRender()
+			this.menus.instance.editor.rangeRender()
 			this.hideLayer()
 		}
 	}

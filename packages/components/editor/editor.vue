@@ -169,6 +169,7 @@ export default {
 		}
 	},
 	methods: {
+		//自定义的渲染逻辑
 		renderRules(editor, element) {
 			//ol标签和ul标签转为div
 			if (element.parsedom == 'ol' || element.parsedom == 'ul') {
@@ -203,6 +204,15 @@ export default {
 				else {
 					element.marks['data-value'] = 1
 				}
+			}
+			//视频处理
+			if (element.parsedom == 'video') {
+				const marks = {
+					controls: true,
+					autoplay: true,
+					muted: true
+				}
+				Object.assign(element.marks, marks)
 			}
 		},
 		//编辑器内部修改值的方法
@@ -357,46 +367,54 @@ export default {
 			vertical-align: middle;
 			cursor: text;
 		}
-	}
-}
-//分隔线样式
-:deep(hr.mvi-editor-divider) {
-	display: block;
-	width: 100%;
-	margin: @mp-sm 0;
-	padding: 0;
-	height: 0.02rem;
-	background-color: @bg-color-dark;
-	border: none;
-	font-size: 0;
-}
-//有序列表样式
-:deep(div[data-list='ol']) {
-	margin-bottom: @mp-sm;
 
-	&::before {
-		content: attr(data-value) '.';
-		margin-right: @mp-xs;
-	}
-}
-//无序列表样式
-:deep(div[data-list='ul']) {
-	margin-bottom: @mp-sm;
+		//分隔线样式
+		:deep(hr) {
+			display: block;
+			width: 100%;
+			margin: @mp-sm 0;
+			padding: 0;
+			height: 0.02rem;
+			background-color: @bg-color-dark;
+			border: none;
+			font-size: 0;
+		}
+		//有序列表样式
+		:deep(div[data-list='ol']) {
+			margin-bottom: @mp-sm;
 
-	&::before {
-		content: '\2022';
-		margin-right: @mp-xs;
+			&::before {
+				content: attr(data-value) '.';
+				margin-right: @mp-xs;
+			}
+		}
+		//无序列表样式
+		:deep(div[data-list='ul']) {
+			margin-bottom: @mp-sm;
+
+			&::before {
+				content: '\2022';
+				margin-right: @mp-xs;
+			}
+		}
+		//引用样式
+		:deep(blockquote) {
+			display: block;
+			border-left: @mp-xs solid @bg-color-dark;
+			padding: @mp-xs @mp-sm @mp-xs @mp-md;
+			margin: 0 0 @mp-sm;
+			line-height: 1.5;
+			font-size: @font-size-default;
+			color: @font-color-sub;
+			border-radius: 0;
+		}
+		//视频样式
+		:deep(video) {
+			display: inline-block;
+			width: auto;
+			max-width: 100%;
+			object-fit: scale-down;
+		}
 	}
-}
-//引用样式
-:deep(blockquote) {
-	display: block;
-	border-left: @mp-xs solid @bg-color-dark;
-	padding: @mp-xs @mp-sm @mp-xs @mp-md;
-	margin: 0 0 @mp-sm;
-	line-height: 1.5;
-	font-size: @font-size-default;
-	color: @font-color-sub;
-	border-radius: 0;
 }
 </style>
