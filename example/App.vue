@@ -18,7 +18,7 @@ export default {
 			//https://www.mvi-web.cn/mvi-resources/images/mvi_image_0_1676971974565.png
 			show: true,
 			disabled: false,
-			value: '<ol><li>十年生死两茫茫，不思量，<video src="https://www.mvi-web.cn/bg.mp4"></video>自难忘。</li><li>十年生死两茫茫，不思量，自难忘。</li><li>十年生死两茫茫，不思量，自难忘。</li></ol><ul><li>十年生死两茫茫，不思量，自难忘。</li><li>十年生死两茫茫，不思量，自难忘。</li><li>十年生死两茫茫，不思量，自难忘。</li></ul><p>十年生死两茫茫</p><blockquote><br></blockquote><p>十年生死两茫茫<a href="https://www.baidu.com">百度一下，你就知道</a><a href="www.baidu.com">百度一下，你就知道</a></p>',
+			value: '<ol><li>十年生死两茫茫，不思量，自难忘。</li><li>十年生死两茫茫，不思量，自难忘。</li><li>十年生死两茫茫，不思量，自难忘。</li></ol><ul><li>十年生死两茫茫，不思量，自难忘。</li><li>十年生死两茫茫，不思量，自难忘。</li><li>十年生死两茫茫，不思量，自难忘。</li></ul><p>十年生死两茫茫</p><blockquote><br></blockquote><p>十年生死两茫茫<a href="https://www.baidu.com">百度一下，你就知道</a><a href="www.baidu.com">百度一下，你就知道</a></p>',
 			definedMenus: definedEditorMenus
 		}
 	},
@@ -27,13 +27,13 @@ export default {
 	},
 	methods: {
 		change(newVal, oldVal) {
-			console.log(newVal)
+			//console.log(newVal)
 		},
 		pasteFile(files) {
 			//console.log(files)
 		},
 		customMenu(res) {
-			console.log('触发自定义菜单操作', res)
+			//console.log('触发自定义菜单操作', res)
 		}
 	}
 }

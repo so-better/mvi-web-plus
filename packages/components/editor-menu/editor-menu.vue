@@ -342,10 +342,31 @@ export default {
 						files.forEach(file => {
 							Dap.file.dataFileToBase64(file).then(base64 => {
 								if (this.name == 'image') {
-									console.log('插入图片', base64)
+									const image = new AlexElement(
+										'closed',
+										'img',
+										{
+											src: base64
+										},
+										null,
+										null
+									)
+									this.menus.instance.editor.insertElement(image)
 								} else if (this.name == 'video') {
-									console.log('插入视频', base64)
+									const video = new AlexElement(
+										'closed',
+										'video',
+										{
+											src: base64
+										},
+										null,
+										null
+									)
+									this.menus.instance.editor.insertElement(video)
 								}
+								this.menus.instance.editor.formatElementStack()
+								this.menus.instance.editor.domRender()
+								this.menus.instance.editor.rangeRender()
 							})
 						})
 					} else {
@@ -1132,16 +1153,29 @@ export default {
 				this.hideLayer()
 				return
 			}
-			const video = new AlexElement(
-				'closed',
-				'video',
-				{
-					src: this.mediaParams.remoteUrl
-				},
-				null,
-				null
-			)
-			this.menus.instance.editor.insertElement(video)
+			if (this.name == 'video') {
+				const video = new AlexElement(
+					'closed',
+					'video',
+					{
+						src: this.mediaParams.remoteUrl
+					},
+					null,
+					null
+				)
+				this.menus.instance.editor.insertElement(video)
+			} else {
+				const image = new AlexElement(
+					'closed',
+					'img',
+					{
+						src: this.mediaParams.remoteUrl
+					},
+					null,
+					null
+				)
+				this.menus.instance.editor.insertElement(image)
+			}
 			this.menus.instance.editor.formatElementStack()
 			this.menus.instance.editor.domRender()
 			this.menus.instance.editor.rangeRender()

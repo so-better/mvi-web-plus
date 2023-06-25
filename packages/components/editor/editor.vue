@@ -57,11 +57,6 @@ export default {
 				return Dap.common.matchingText(value, 'hex')
 			}
 		},
-		//是否自定义粘贴文件
-		customPasteFile: {
-			type: Boolean,
-			default: false
-		},
 		//粘贴文本时是否粘贴html
 		htmlPaste: {
 			type: Boolean,
@@ -159,10 +154,6 @@ export default {
 		this.editor.on('blur', this.handleContentBlur)
 		//监听编辑器换行
 		this.editor.on('insertParagraph', this.handleInsertParagraph)
-		//如果自定义粘贴文件则监听编辑器粘贴文件
-		if (this.customPasteFile) {
-			this.editor.on('pasteFile', this.handleContentPasteFile)
-		}
 		//设置自动获取焦点
 		if (this.autofocus && !this.codeViewShow && !this.disabled) {
 			this.collapseToEnd()
@@ -259,13 +250,6 @@ export default {
 				this.$refs.content.style.boxShadow = ''
 			}
 			this.$emit('blur', val)
-		},
-		//编辑器粘贴文件
-		handleContentPasteFile(files) {
-			if (this.disabled) {
-				return
-			}
-			this.$emit('paste-file', files)
 		},
 		//编辑器换行
 		handleInsertParagraph(element) {
@@ -409,7 +393,8 @@ export default {
 			border-radius: 0;
 		}
 		//视频样式
-		:deep(video) {
+		:deep(video),
+		:deep(img) {
 			display: inline-block;
 			width: auto;
 			max-width: 100%;
