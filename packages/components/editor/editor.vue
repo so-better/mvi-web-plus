@@ -3,13 +3,24 @@
 		<!-- 代码视图 -->
 		<textarea v-if="codeViewShow" ref="code" readonly class="mvi-editor-code" :value="cmpValue" />
 		<!-- 编辑器视图 -->
-		<div ref="content" :data-placeholder="placeholder" :class="['mvi-editor-content', border ? 'border' : '', isEmpty ? 'empty' : '']" :style="contentStyle" @compositionstart="compositionFlag = true" @compositionend="compositionFlag = false"></div>
+		<div ref="content" :data-placeholder="placeholder" :class="['mvi-editor-content', border ? 'border' : '', isEmpty ? 'empty' : '']" :style="contentStyle" @compositionstart="compositionFlag = true" @compositionend="compositionFlag = false" @click="clickEditor"></div>
+		<!-- 图片调整器 -->
+		<m-layer ref="imgLayer" v-model="imgLayerProps.show" fixed :target="imgLayerProps.target" placement="bottom-start" animation="mvi-editor-img-layer-animation" :timeout="50" closable>
+			<div class="mvi-editor-layer">
+				<div @click="setImageWidth('20%')" class="mvi-editor-layer-item">20%</div>
+				<div @click="setImageWidth('50%')" class="mvi-editor-layer-item">50%</div>
+				<div @click="setImageWidth('100%')" class="mvi-editor-layer-item">100%</div>
+				<div @click="deleteImage" class="mvi-editor-layer-item"><Icon type="trash-alt"></Icon></div>
+			</div>
+		</m-layer>
 	</div>
 </template>
 <script>
+import { getCurrentInstance } from 'vue'
 import { Dap } from '../dap'
 import { AlexElement, AlexEditor } from 'alex-editor'
 import elementUtil from '../editor-menu/elementUtil'
+import { Icon } from '../icon'
 export default {
 	name: 'm-editor',
 	emits: ['update:modelValue', 'focus', 'blur', 'change', 'paste-file'],
@@ -76,8 +87,22 @@ export default {
 			//是否已经注册了菜单栏
 			useMenus: false,
 			//菜单栏是否可以使用
-			canUseMenus: false
+			canUseMenus: false,
+			//图片调整器参数
+			imgLayerProps: {
+				show: false,
+				target: ''
+			}
 		}
+	},
+	setup() {
+		const instance = getCurrentInstance()
+		return {
+			uid: instance.uid
+		}
+	},
+	components: {
+		Icon
 	},
 	computed: {
 		//编辑器的值
@@ -134,15 +159,12 @@ export default {
 		}
 	},
 	mounted() {
-		let _this = this
 		//创建编辑器
 		this.editor = new AlexEditor(this.$refs.content, {
 			disabled: this.disabled,
 			value: this.cmpValue,
-			htmlPaste: this.htmlPaste,
-			renderRules(element) {
-				return _this.renderRules(this, element)
-			}
+			renderRules: [this.orderListHandle, this.mediaHandle],
+			htmlPaste: this.htmlPaste
 		})
 		//编辑器渲染后会有一个渲染过程，会改变内容，因此重新获取内容的值来设置modelValue
 		this.internalModify(this.editor.value)
@@ -154,14 +176,42 @@ export default {
 		this.editor.on('blur', this.handleContentBlur)
 		//监听编辑器换行
 		this.editor.on('insertParagraph', this.handleInsertParagraph)
+		//监听滚动
+		this.onScroll()
+		//格式化
+		this.editor.formatElementStack()
+		//渲染dom
+		this.editor.domRender()
 		//设置自动获取焦点
 		if (this.autofocus && !this.codeViewShow && !this.disabled) {
 			this.collapseToEnd()
 		}
 	},
 	methods: {
-		//自定义的渲染逻辑
-		renderRules(editor, element) {
+		//监听滚动隐藏编辑器内的浮层
+		onScroll() {
+			const setScroll = el => {
+				Dap.event.on(el, `scroll.mvi-editor-${this.uid}`, e => {
+					this.imgLayerProps.show = false
+				})
+				if (el.parentNode) {
+					setScroll(el.parentNode)
+				}
+			}
+			setScroll(this.$refs.content)
+		},
+		//移除上述滚动事件的监听
+		removeScroll() {
+			const removeScroll = el => {
+				Dap.event.off(el, `scroll.mvi-editor-${this.uid}`)
+				if (el.parentNode) {
+					removeScroll(el.parentNode)
+				}
+			}
+			removeScroll(this.$refs.content)
+		},
+		//元素格式化之前转换ol和ul标签
+		orderListHandle(element) {
 			//ol标签和ul标签转为div
 			if (element.parsedom == 'ol' || element.parsedom == 'ul') {
 				if (element.hasChildren()) {
@@ -177,15 +227,15 @@ export default {
 							newEl.marks['data-value'] = index + 1
 						}
 						//插入到该元素之前
-						editor.addElementBefore(newEl, element)
+						this.editor.addElementBefore(newEl, element)
 					})
 				}
 				element.toEmpty()
 			}
-			// //有序列表的序号处理
+			//有序列表的序号处理
 			if (element.type == 'block' && element.hasMarks() && element.marks['data-list'] == 'ol') {
 				//获取前一个元素
-				const previousElement = editor.getPreviousElement(element)
+				const previousElement = this.editor.getPreviousElement(element)
 				//如果前一个元素存在并且也是有序列表
 				if (previousElement && previousElement.hasMarks() && previousElement.marks['data-list'] == 'ol') {
 					const previousValue = Number(previousElement.marks['data-value'])
@@ -196,15 +246,44 @@ export default {
 					element.marks['data-value'] = 1
 				}
 			}
+		},
+		//自定义的渲染逻辑
+		mediaHandle(element) {
+			//图片增加marks和styles
+			if (element.parsedom == 'img') {
+				const marks = {
+					'mvi-editor-element-key': element.key
+				}
+				Object.assign(element.marks, marks)
+			}
 			//视频处理
 			if (element.parsedom == 'video') {
 				const marks = {
 					controls: true,
 					autoplay: true,
-					muted: true
+					muted: true,
+					'mvi-editor-element-key': element.key
 				}
 				Object.assign(element.marks, marks)
 			}
+		},
+		//点击编辑器
+		clickEditor(e) {
+			const isImage = e.target.nodeName.toLocaleLowerCase() == 'img'
+			if (isImage) {
+				if (this.imgLayerProps.show) {
+					this.imgLayerProps.show = false
+				}
+				setTimeout(() => {
+					const key = e.target.getAttribute('mvi-editor-element-key')
+					this.imgLayerProps.target = `[mvi-editor-element-key='${key}']`
+					this.imgLayerProps.show = true
+				}, 100)
+			}
+		},
+		//编辑器内容滚动
+		editorScroll() {
+			this.imgLayerProps.show = false
 		},
 		//编辑器内部修改值的方法
 		internalModify(val) {
@@ -260,6 +339,38 @@ export default {
 				}
 			}
 		},
+		//设置图片宽度
+		setImageWidth(value) {
+			const dom = this.$el.querySelector(this.imgLayerProps.target)
+			const key = dom.getAttribute('mvi-editor-element-key')
+			const element = this.editor.getElementByKey(key)
+			const styles = {
+				width: value
+			}
+			if (element.hasStyles()) {
+				Object.assign(element.styles, styles)
+			} else {
+				element.styles = styles
+			}
+			this.editor.range.anchor.moveToEnd(element)
+			this.editor.range.focus.moveToEnd(element)
+			this.editor.domRender()
+			this.editor.rangeRender()
+			this.imgLayerProps.show = false
+		},
+		//删除图片
+		deleteImage() {
+			const dom = this.$el.querySelector(this.imgLayerProps.target)
+			const key = dom.getAttribute('mvi-editor-element-key')
+			const element = this.editor.getElementByKey(key)
+			this.editor.range.anchor.moveToEnd(element)
+			this.editor.range.focus.moveToEnd(element)
+			element.toEmpty()
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+			this.imgLayerProps.show = false
+		},
 		//api：注册菜单栏实例
 		use(menus) {
 			if (this.useMenus) {
@@ -286,6 +397,9 @@ export default {
 			this.editor.collapseToStart()
 			this.editor.rangeRender()
 		}
+	},
+	beforeUnmount() {
+		this.removeScroll()
 	}
 }
 </script>
@@ -395,11 +509,49 @@ export default {
 		//视频样式
 		:deep(video),
 		:deep(img) {
+			position: relative;
 			display: inline-block;
-			width: auto;
-			max-width: 100%;
-			object-fit: scale-down;
+			width: 20%;
+			border-radius: 0.04rem;
 		}
 	}
+}
+
+.mvi-editor-layer {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	padding: @mp-xs @mp-sm;
+	background-color: #fff;
+	border-radius: inherit;
+	border: 1px solid #ddd;
+
+	.mvi-editor-layer-item {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: @font-size-default;
+		color: @font-color-default;
+		opacity: 0.8;
+		height: @mini-height;
+		padding: 0 @mp-sm;
+		border-radius: @radius-default;
+		line-height: 1;
+
+		&:hover {
+			cursor: pointer;
+			opacity: 1;
+			background-color: @bg-color-default;
+		}
+
+		&:active {
+			background-color: @bg-color-dark;
+		}
+	}
+}
+
+:deep(.mvi-editor-img-layer-animation-enter-from),
+:deep(.mvi-editor-img-layer-animation-leave-to) {
+	opacity: 0;
 }
 </style>
