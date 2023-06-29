@@ -5,7 +5,7 @@
 		<!-- 编辑器视图 -->
 		<div ref="content" :data-placeholder="placeholder" :class="['mvi-editor-content', border ? 'border' : '', isEmpty ? 'empty' : '']" :style="contentStyle" @compositionstart="compositionFlag = true" @compositionend="compositionFlag = false" @click="clickEditor"></div>
 		<!-- 图片调整器 -->
-		<m-layer ref="imgLayer" v-model="imgLayerProps.show" fixed :target="imgLayerProps.target" placement="bottom-start" animation="mvi-editor-img-layer-animation" :timeout="50" closable>
+		<m-layer ref="imgLayer" v-model="imgLayerProps.show" fixed :target="imgLayerProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" closable>
 			<div class="mvi-editor-layer">
 				<div @click="setImageWidth('20%')" class="mvi-editor-layer-item">20%</div>
 				<div @click="setImageWidth('50%')" class="mvi-editor-layer-item">50%</div>
@@ -13,6 +13,7 @@
 				<div @click="deleteImage" class="mvi-editor-layer-item"><Icon type="trash-alt"></Icon></div>
 			</div>
 		</m-layer>
+		<m-layer ref="linkLayer" v-model="linkLayerProps.show" fixed :target="linkLayerProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" closable> 3333 </m-layer>
 	</div>
 </template>
 <script>
@@ -88,6 +89,11 @@ export default {
 			useMenus: false,
 			//菜单栏是否可以使用
 			canUseMenus: false,
+			//链接调整器参数
+			linkLayerProps: {
+				show: false,
+				target: ''
+			},
 			//图片调整器参数
 			imgLayerProps: {
 				show: false,
@@ -176,6 +182,8 @@ export default {
 		this.editor.on('blur', this.handleContentBlur)
 		//监听编辑器换行
 		this.editor.on('insertParagraph', this.handleInsertParagraph)
+		//监听编辑器range更新
+		this.editor.on('rangeUpdate', this.handleRangeUpdate)
 		//监听滚动
 		this.onScroll()
 		//格式化
@@ -188,10 +196,31 @@ export default {
 		}
 	},
 	methods: {
+		//获取光标是否在指定标签元素下，如果是返回元素，否则返回null
+		getCurrentParsedomElement(parsedom) {
+			const fn = element => {
+				if (element.isBlock()) {
+					return element.parsedom == parsedom ? element : null
+				}
+				if (!element.isText() && element.parsedom == parsedom) {
+					return element
+				}
+				return fn(element.parent)
+			}
+			if (this.editor.range.anchor.element.isEqual(this.editor.range.focus.element)) {
+				return fn(this.editor.range.anchor.element)
+			}
+			const elements = this.editor.getElementsByRange(true, false)
+			if (elements.length == 1 && elements[0].parsedom == parsedom) {
+				return elements[0]
+			}
+			return null
+		},
 		//监听滚动隐藏编辑器内的浮层
 		onScroll() {
 			const setScroll = el => {
 				Dap.event.on(el, `scroll.mvi-editor-${this.uid}`, e => {
+					this.linkLayerProps.show = false
 					this.imgLayerProps.show = false
 				})
 				if (el.parentNode) {
@@ -210,7 +239,7 @@ export default {
 			}
 			removeScroll(this.$refs.content)
 		},
-		//元素格式化之前转换ol和ul标签
+		//元素格式化时转换ol和ul标签
 		orderListHandle(element) {
 			//ol标签和ul标签转为div
 			if (element.parsedom == 'ol' || element.parsedom == 'ul') {
@@ -247,7 +276,7 @@ export default {
 				}
 			}
 		},
-		//自定义的渲染逻辑
+		//元素格式化时处理媒体元素
 		mediaHandle(element) {
 			//图片增加marks和styles
 			if (element.parsedom == 'img') {
@@ -256,7 +285,7 @@ export default {
 				}
 				Object.assign(element.marks, marks)
 			}
-			//视频处理
+			//视频增加marks和styles
 			if (element.parsedom == 'video') {
 				const marks = {
 					controls: true,
@@ -266,24 +295,25 @@ export default {
 				}
 				Object.assign(element.marks, marks)
 			}
+			//链接增加marks和styles
+			if (element.parsedom == 'a') {
+				const marks = {
+					'mvi-editor-element-key': element.key
+				}
+				Object.assign(element.marks, marks)
+			}
 		},
 		//点击编辑器
 		clickEditor(e) {
-			const isImage = e.target.nodeName.toLocaleLowerCase() == 'img'
-			if (isImage) {
-				if (this.imgLayerProps.show) {
-					this.imgLayerProps.show = false
-				}
-				setTimeout(() => {
-					const key = e.target.getAttribute('mvi-editor-element-key')
-					this.imgLayerProps.target = `[mvi-editor-element-key='${key}']`
-					this.imgLayerProps.show = true
-				}, 100)
+			const node = e.target
+			//点击的是图片或者视频
+			if (node.nodeName.toLocaleLowerCase() == 'img' || node.nodeName.toLocaleLowerCase() == 'video') {
+				const key = node.getAttribute('mvi-editor-element-key')
+				const element = this.editor.getElementByKey(key)
+				this.editor.range.anchor.moveToStart(element)
+				this.editor.range.focus.moveToEnd(element)
+				this.editor.rangeRender()
 			}
-		},
-		//编辑器内容滚动
-		editorScroll() {
-			this.imgLayerProps.show = false
 		},
 		//编辑器内部修改值的方法
 		internalModify(val) {
@@ -338,6 +368,21 @@ export default {
 					elementUtil.toParagraph(element)
 				}
 			}
+		},
+		//编辑器range更新
+		handleRangeUpdate(range) {
+			const img = this.getCurrentParsedomElement('img')
+			const link = this.getCurrentParsedomElement('a')
+			setTimeout(() => {
+				if (img) {
+					this.imgLayerProps.target = `[mvi-editor-element-key='${img.key}']`
+					this.imgLayerProps.show = true
+				}
+				if (link) {
+					this.linkLayerProps.target = `[mvi-editor-element-key='${link.key}']`
+					this.linkLayerProps.show = true
+				}
+			}, 100)
 		},
 		//设置图片宽度
 		setImageWidth(value) {
@@ -550,8 +595,8 @@ export default {
 	}
 }
 
-:deep(.mvi-editor-img-layer-animation-enter-from),
-:deep(.mvi-editor-img-layer-animation-leave-to) {
+:deep(.mvi-editor-layer-animation-enter-from),
+:deep(.mvi-editor-layer-animation-leave-to) {
 	opacity: 0;
 }
 </style>
