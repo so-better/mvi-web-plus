@@ -7,7 +7,7 @@
 		<m-editor-menus border useTooltip class="mvi-mb-4" ref="menus">
 			<m-editor-menu :disabled="disabled" v-for="item in definedMenus" :name="item.name" />
 		</m-editor-menus>
-		<m-editor autofocus placeholder="请输入内容" border :disabled="disabled" @change="change" ref="editor" v-model="value" height="6rem"></m-editor>
+		<m-editor placeholder="请输入内容" border :disabled="disabled" @change="change" ref="editor" v-model="value" height="6rem"></m-editor>
 	</div>
 </template>
 <script>
@@ -18,7 +18,7 @@ export default {
 			//https://www.mvi-web.cn/mvi-resources/images/mvi_image_0_1676971974565.png
 			show: true,
 			disabled: false,
-			value: '<ol><li>十年生死两茫茫，不思量，<img src="https://www.mvi-web.cn/mvi-resources/images/mvi_image_0_1676971974565.png" />自难忘。</li><li>十年生死两茫茫，不思量，自难忘。</li><li>十年生死两茫茫，不思量，自难忘。</li></ol><ul><li>十年生死两茫茫，不思量，自难忘。</li><li>十年生死两茫茫，不思量，自难忘。</li><li>十年生死两茫茫，不思量，自难忘。</li></ul><p>十年生死两茫茫</p><blockquote><br></blockquote><p>十年生死两茫茫<a href="https://www.baidu.com">百度一下，你就知道</a><video src="https://www.mvi-web.cn/bg.mp4"></video><a href="www.baidu.com">百度一下，你就知道</a></p>',
+			value: '<ol><li>十年生死<code>bootstrap</code><code style="color:#f30">bootstrap</code>两茫茫，不思量，<img src="https://www.mvi-web.cn/mvi-resources/images/mvi_image_0_1676971974565.png" />自难忘。</li><li>十年生死两茫茫，不思量，自难忘。</li><li>十年生死两茫茫，不思量，自难忘。</li></ol><ul><li>十年生死两茫茫，不思量，自难忘。</li><li>十年生死两茫茫，不思量，自难忘。</li><li>十年生死两茫茫，不思量，自难忘。</li></ul><p>十年生死两茫茫</p><blockquote><br></blockquote><p>十年生死两茫茫<a href="https://www.baidu.com">百度一下，你就知道</a>333<a href="www.baidu.com">百度一下，你就知道</a></p>',
 			definedMenus: definedEditorMenus
 		}
 	},

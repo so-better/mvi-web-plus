@@ -190,7 +190,7 @@ export default {
 		this.editor = new AlexEditor(this.$refs.content, {
 			disabled: this.disabled,
 			value: this.cmpValue,
-			renderRules: [this.orderListHandle, this.mediaHandle],
+			renderRules: [this.orderListHandle, this.codeHandle, this.mediaHandle],
 			htmlPaste: this.htmlPaste
 		})
 		//编辑器渲染后会有一个渲染过程，会改变内容，因此重新获取内容的值来设置modelValue
@@ -254,7 +254,7 @@ export default {
 				}
 			}
 		},
-		//元素格式化时处理媒体元素
+		//元素格式化时处理媒体元素和链接
 		mediaHandle(element) {
 			//图片增加marks和styles
 			if (element.parsedom == 'img') {
@@ -279,6 +279,20 @@ export default {
 					'mvi-editor-element-key': element.key
 				}
 				Object.assign(element.marks, marks)
+			}
+		},
+		//元素格式化时转换code标签
+		codeHandle(element) {
+			if (element.parsedom == 'code') {
+				element.parsedom = 'span'
+				const marks = {
+					'data-code-style': true
+				}
+				if (element.hasMarks()) {
+					Object.assign(element.marks, marks)
+				} else {
+					element.marks = marks
+				}
 			}
 		},
 		//输入框获取焦点
@@ -489,6 +503,7 @@ export default {
 				return fn(this.editor.range.anchor.element)
 			}
 			const elements = this.editor.getElementsByRange(true, false)
+			this.editor.formatElementStack()
 			if (elements.length == 1 && elements[0].parsedom == parsedom) {
 				return elements[0]
 			}
@@ -640,13 +655,26 @@ export default {
 			width: 20%;
 			border-radius: 0.04rem;
 		}
+		//代码样式
+		:deep([data-code-style]) {
+			display: inline-block;
+			padding: @mp-xs;
+			margin: 0 @mp-xs / 2;
+			color: @font-color-sub;
+			border-radius: @radius-default / 2;
+			font-size: @font-size-default;
+			font-weight: bold;
+			line-height: 1;
+			background-color: @bg-color-dark;
+			font-family: 'Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace';
+		}
 	}
 }
 
 .mvi-editor-layer-link {
 	display: block;
 	width: 6rem;
-	padding: @mp-sm;
+	padding: @mp-sm @mp-md;
 	border-radius: inherit;
 	font-size: @font-size-default;
 	color: @font-color-default;

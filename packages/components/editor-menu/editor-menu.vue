@@ -644,6 +644,19 @@ export default {
 				editor.domRender()
 				editor.rangeRender()
 			}
+			//代码
+			else if (this.name == 'code') {
+				if (this.active) {
+					editor.removeTextMark(['data-code-style'])
+				} else {
+					editor.setTextMark({
+						'data-code-style': 'mvi-editor-code'
+					})
+				}
+				editor.formatElementStack()
+				editor.domRender()
+				editor.rangeRender()
+			}
 			//加粗
 			else if (this.name == 'bold') {
 				if (this.active) {
@@ -893,8 +906,12 @@ export default {
 				return
 			}
 			const editor = this.menus.instance.editor
+			//代码判定
+			if (this.name == 'code') {
+				this.active = editor.queryTextMark('data-code-style')
+			}
 			//加粗判定
-			if (this.name == 'bold') {
+			else if (this.name == 'bold') {
 				this.active = editor.queryTextStyle('font-weight', 'bold')
 			}
 			//斜体判定
@@ -1229,8 +1246,8 @@ export default {
 		display: -webkit-flex;
 		justify-content: flex-start;
 		flex-wrap: wrap;
-		width: calc(@small-height * 4 + @mp-xs * 10 + 16px);
-		padding: @mp-xs;
+		width: calc(@mp-xs * 12 + 10px + @small-height * 4);
+		padding: @mp-xs @mp-sm;
 
 		.mvi-editor-menu-color {
 			display: block;
@@ -1304,7 +1321,7 @@ export default {
 	.mvi-editor-menu-link {
 		display: block;
 		width: 6rem;
-		padding: @mp-sm;
+		padding: @mp-sm @mp-md;
 
 		input {
 			appearance: none;
@@ -1373,7 +1390,7 @@ export default {
 	.mvi-editor-menu-media {
 		display: block;
 		width: 5rem;
-		padding: @mp-xs 0;
+		padding: @mp-xs;
 
 		.mvi-editor-menu-media-upload {
 			display: block;

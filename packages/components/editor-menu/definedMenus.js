@@ -24,6 +24,12 @@ export default [
 		title: '分隔线'
 	},
 	{
+		name: 'code',
+		type: 'default',
+		icon: 'code',
+		title: '代码'
+	},
+	{
 		name: 'bold',
 		type: 'default',
 		icon: 'bold',
@@ -265,9 +271,9 @@ export default [
 		list: []
 	},
 	{
-		name: 'code',
+		name: 'codeBlock',
 		type: 'default',
-		icon: 'code',
+		icon: 'code-block',
 		title: '代码块'
 	},
 	{
