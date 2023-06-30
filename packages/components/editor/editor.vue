@@ -4,16 +4,25 @@
 		<textarea v-if="codeViewShow" ref="code" readonly class="mvi-editor-code" :value="cmpValue" />
 		<!-- 编辑器视图 -->
 		<div ref="content" :data-placeholder="placeholder" :class="['mvi-editor-content', border ? 'border' : '', isEmpty ? 'empty' : '']" :style="contentStyle" @compositionstart="compositionFlag = true" @compositionend="compositionFlag = false" @click="clickEditor"></div>
-		<!-- 图片调整器 -->
-		<m-layer ref="imgLayer" v-model="imgLayerProps.show" fixed :target="imgLayerProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" closable>
-			<div class="mvi-editor-layer">
-				<div @click="setImageWidth('20%')" class="mvi-editor-layer-item">20%</div>
-				<div @click="setImageWidth('50%')" class="mvi-editor-layer-item">50%</div>
-				<div @click="setImageWidth('100%')" class="mvi-editor-layer-item">100%</div>
-				<div @click="deleteImage" class="mvi-editor-layer-item"><Icon type="trash-alt"></Icon></div>
+		<!-- 链接调整器 -->
+		<m-layer v-model="linkAdjusterProps.show" fixed :target="linkAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#ddd" closable>
+			<div class="mvi-editor-layer-link">
+				<input @change="updateLink" ref="linkUrl" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkAdjusterProps.url" :placeholder="linkAdjusterProps.props.placeholder" type="text" />
+				<div class="mvi-editor-layer-link-footer">
+					<Checkbox @change="updateLink" :label="linkAdjusterProps.props.targetText" label-placement="right" :icon="{ size: '0.24rem' }" label-size="0.28rem" label-color="#505050" :fill-color="activeColor" v-model="linkAdjusterProps.newWindow"> </Checkbox>
+					<span class="mvi-editor-layer-link-delete" @click="deleteLink">{{ linkAdjusterProps.props.removeText }}</span>
+				</div>
 			</div>
 		</m-layer>
-		<m-layer ref="linkLayer" v-model="linkLayerProps.show" fixed :target="linkLayerProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" closable> 3333 </m-layer>
+		<!-- 图片调整器 -->
+		<m-layer v-model="mediaAdjusterProps.show" fixed :target="mediaAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#ccc" closable>
+			<div class="mvi-editor-layer">
+				<div @click="setMediaWidth('20%')" class="mvi-editor-layer-item">20%</div>
+				<div @click="setMediaWidth('50%')" class="mvi-editor-layer-item">50%</div>
+				<div @click="setMediaWidth('100%')" class="mvi-editor-layer-item">100%</div>
+				<div @click="deleteMedia" class="mvi-editor-layer-item"><Icon type="trash-alt" /></div>
+			</div>
+		</m-layer>
 	</div>
 </template>
 <script>
@@ -22,6 +31,8 @@ import { Dap } from '../dap'
 import { AlexElement, AlexEditor } from 'alex-editor'
 import elementUtil from '../editor-menu/elementUtil'
 import { Icon } from '../icon'
+import { Field } from '../field'
+import { Checkbox } from '../checkbox'
 export default {
 	name: 'm-editor',
 	emits: ['update:modelValue', 'focus', 'blur', 'change', 'paste-file'],
@@ -90,12 +101,20 @@ export default {
 			//菜单栏是否可以使用
 			canUseMenus: false,
 			//链接调整器参数
-			linkLayerProps: {
+			linkAdjusterProps: {
 				show: false,
-				target: ''
+				target: '',
+				newWindow: false,
+				url: '',
+				props: {
+					placeholder: '输入地址',
+					targetText: '新窗口打开',
+					removeText: '移除链接',
+					insertText: '插入'
+				}
 			},
-			//图片调整器参数
-			imgLayerProps: {
+			//媒体调整器参数
+			mediaAdjusterProps: {
 				show: false,
 				target: ''
 			}
@@ -108,7 +127,9 @@ export default {
 		}
 	},
 	components: {
-		Icon
+		Icon,
+		Field,
+		Checkbox
 	},
 	computed: {
 		//编辑器的值
@@ -196,49 +217,6 @@ export default {
 		}
 	},
 	methods: {
-		//获取光标是否在指定标签元素下，如果是返回元素，否则返回null
-		getCurrentParsedomElement(parsedom) {
-			const fn = element => {
-				if (element.isBlock()) {
-					return element.parsedom == parsedom ? element : null
-				}
-				if (!element.isText() && element.parsedom == parsedom) {
-					return element
-				}
-				return fn(element.parent)
-			}
-			if (this.editor.range.anchor.element.isEqual(this.editor.range.focus.element)) {
-				return fn(this.editor.range.anchor.element)
-			}
-			const elements = this.editor.getElementsByRange(true, false)
-			if (elements.length == 1 && elements[0].parsedom == parsedom) {
-				return elements[0]
-			}
-			return null
-		},
-		//监听滚动隐藏编辑器内的浮层
-		onScroll() {
-			const setScroll = el => {
-				Dap.event.on(el, `scroll.mvi-editor-${this.uid}`, e => {
-					this.linkLayerProps.show = false
-					this.imgLayerProps.show = false
-				})
-				if (el.parentNode) {
-					setScroll(el.parentNode)
-				}
-			}
-			setScroll(this.$refs.content)
-		},
-		//移除上述滚动事件的监听
-		removeScroll() {
-			const removeScroll = el => {
-				Dap.event.off(el, `scroll.mvi-editor-${this.uid}`)
-				if (el.parentNode) {
-					removeScroll(el.parentNode)
-				}
-			}
-			removeScroll(this.$refs.content)
-		},
 		//元素格式化时转换ol和ul标签
 		orderListHandle(element) {
 			//ol标签和ul标签转为div
@@ -303,17 +281,36 @@ export default {
 				Object.assign(element.marks, marks)
 			}
 		},
-		//点击编辑器
-		clickEditor(e) {
-			const node = e.target
-			//点击的是图片或者视频
-			if (node.nodeName.toLocaleLowerCase() == 'img' || node.nodeName.toLocaleLowerCase() == 'video') {
-				const key = node.getAttribute('mvi-editor-element-key')
-				const element = this.editor.getElementByKey(key)
-				this.editor.range.anchor.moveToStart(element)
-				this.editor.range.focus.moveToEnd(element)
-				this.editor.rangeRender()
+		//输入框获取焦点
+		inputFocus(event) {
+			event.currentTarget.style.borderColor = this.activeColor
+		},
+		//输入框失去焦点
+		inputBlur(event) {
+			event.currentTarget.style.borderColor = ''
+		},
+		//监听滚动隐藏编辑器内的浮层
+		onScroll() {
+			const setScroll = el => {
+				Dap.event.on(el, `scroll.mvi-editor-${this.uid}`, e => {
+					this.linkAdjusterProps.show = false
+					this.mediaAdjusterProps.show = false
+				})
+				if (el.parentNode) {
+					setScroll(el.parentNode)
+				}
 			}
+			setScroll(this.$refs.content)
+		},
+		//移除上述滚动事件的监听
+		removeScroll() {
+			const removeScroll = el => {
+				Dap.event.off(el, `scroll.mvi-editor-${this.uid}`)
+				if (el.parentNode) {
+					removeScroll(el.parentNode)
+				}
+			}
+			removeScroll(this.$refs.content)
 		},
 		//编辑器内部修改值的方法
 		internalModify(val) {
@@ -322,6 +319,22 @@ export default {
 			this.$nextTick(() => {
 				this.isModelChange = false
 			})
+		},
+		//点击编辑器
+		clickEditor(e) {
+			if (this.disabled) {
+				return
+			}
+			const node = e.target
+			e.preventDefault()
+			//点击的是图片或者视频
+			if (node.nodeName.toLocaleLowerCase() == 'img' || node.nodeName.toLocaleLowerCase() == 'video') {
+				const key = node.getAttribute('mvi-editor-element-key')
+				const element = this.editor.getElementByKey(key)
+				this.editor.range.anchor.moveToStart(element)
+				this.editor.range.focus.moveToEnd(element)
+				this.editor.rangeRender()
+			}
 		},
 		//编辑器内容变更
 		handleContentChange(newVal, oldVal) {
@@ -371,24 +384,61 @@ export default {
 		},
 		//编辑器range更新
 		handleRangeUpdate(range) {
+			if (this.disabled) {
+				return
+			}
 			const img = this.getCurrentParsedomElement('img')
 			const link = this.getCurrentParsedomElement('a')
+			const video = this.getCurrentParsedomElement('video')
 			setTimeout(() => {
-				if (img) {
-					this.imgLayerProps.target = `[mvi-editor-element-key='${img.key}']`
-					this.imgLayerProps.show = true
-				}
-				if (link) {
-					this.linkLayerProps.target = `[mvi-editor-element-key='${link.key}']`
-					this.linkLayerProps.show = true
+				if (img || video) {
+					const el = img || video
+					this.mediaAdjusterProps.target = `[mvi-editor-element-key='${el.key}']`
+					this.mediaAdjusterProps.show = true
+					this.linkAdjusterProps.show = false
+				} else if (link) {
+					this.linkAdjusterProps.target = `[mvi-editor-element-key='${link.key}']`
+					this.linkAdjusterProps.show = true
+					this.linkAdjusterProps.url = link.marks['href']
+					this.linkAdjusterProps.newWindow = link.marks['target'] == '_blank'
 				}
 			}, 100)
 		},
-		//设置图片宽度
-		setImageWidth(value) {
-			const dom = this.$el.querySelector(this.imgLayerProps.target)
-			const key = dom.getAttribute('mvi-editor-element-key')
-			const element = this.editor.getElementByKey(key)
+		//删除当前链接
+		deleteLink() {
+			if (this.disabled) {
+				return
+			}
+			const element = this.getCurrentParsedomElement('a')
+			element.parsedom = AlexElement.TEXT_NODE
+			delete element.marks.target
+			delete element.marks.href
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+			this.linkAdjusterProps.show = false
+		},
+		//修改当前链接
+		updateLink() {
+			if (this.disabled) {
+				return
+			}
+			if (!this.linkAdjusterProps.url) {
+				return
+			}
+			const element = this.getCurrentParsedomElement('a')
+			element.marks.href = this.linkAdjusterProps.url
+			if (this.linkAdjusterProps.newWindow) {
+				element.marks.target = '_blank'
+			} else {
+				delete element.marks.target
+			}
+			this.editor.formatElementStack()
+			this.editor.domRender()
+		},
+		//设置媒体宽度
+		setMediaWidth(value) {
+			const element = this.getCurrentParsedomElement('img') || this.getCurrentParsedomElement('video')
 			const styles = {
 				width: value
 			}
@@ -401,20 +451,18 @@ export default {
 			this.editor.range.focus.moveToEnd(element)
 			this.editor.domRender()
 			this.editor.rangeRender()
-			this.imgLayerProps.show = false
+			this.mediaAdjusterProps.show = false
 		},
-		//删除图片
-		deleteImage() {
-			const dom = this.$el.querySelector(this.imgLayerProps.target)
-			const key = dom.getAttribute('mvi-editor-element-key')
-			const element = this.editor.getElementByKey(key)
+		//删除媒体
+		deleteMedia() {
+			const element = this.getCurrentParsedomElement('img') || this.getCurrentParsedomElement('video')
 			this.editor.range.anchor.moveToEnd(element)
 			this.editor.range.focus.moveToEnd(element)
 			element.toEmpty()
 			this.editor.formatElementStack()
 			this.editor.domRender()
 			this.editor.rangeRender()
-			this.imgLayerProps.show = false
+			this.mediaAdjusterProps.show = false
 		},
 		//api：注册菜单栏实例
 		use(menus) {
@@ -426,6 +474,26 @@ export default {
 			//更新useMenus标识
 			this.useMenus = true
 		},
+		//api：获取光标是否在指定标签元素下，如果是返回元素，否则返回null
+		getCurrentParsedomElement(parsedom) {
+			const fn = element => {
+				if (element.isBlock()) {
+					return element.parsedom == parsedom ? element : null
+				}
+				if (!element.isText() && element.parsedom == parsedom) {
+					return element
+				}
+				return fn(element.parent)
+			}
+			if (this.editor.range.anchor.element.isEqual(this.editor.range.focus.element)) {
+				return fn(this.editor.range.anchor.element)
+			}
+			const elements = this.editor.getElementsByRange(true, false)
+			if (elements.length == 1 && elements[0].parsedom == parsedom) {
+				return elements[0]
+			}
+			return null
+		},
 		//api：光标设置到文档底部
 		collapseToEnd() {
 			if (this.disabled) {
@@ -433,6 +501,11 @@ export default {
 			}
 			this.editor.collapseToEnd()
 			this.editor.rangeRender()
+			Dap.element.setScrollTop({
+				el: this.$refs.content,
+				number: 1000000,
+				time: 0
+			})
 		},
 		//api：光标设置到文档头部
 		collapseToStart() {
@@ -441,9 +514,17 @@ export default {
 			}
 			this.editor.collapseToStart()
 			this.editor.rangeRender()
+			this.$nextTick(() => {
+				Dap.element.setScrollTop({
+					el: this.$refs.content,
+					number: 0,
+					time: 0
+				})
+			})
 		}
 	},
 	beforeUnmount() {
+		//卸载滚动监听事件
 		this.removeScroll()
 	}
 }
@@ -562,36 +643,96 @@ export default {
 	}
 }
 
+.mvi-editor-layer-link {
+	display: block;
+	width: 6rem;
+	padding: @mp-sm;
+	border-radius: inherit;
+	font-size: @font-size-default;
+	color: @font-color-default;
+
+	input {
+		appearance: none;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		display: block;
+		width: 100%;
+		margin: 0;
+		border: none;
+		border-bottom: 1px solid @border-color;
+		font-size: @font-size-default;
+		color: @font-color-default;
+		margin-bottom: @mp-sm;
+		padding: @mp-xs 0;
+		line-height: 1.5;
+		transition: border-color 400ms;
+		-moz-transition: border-color 400ms;
+		-webkit-transition: border-color 400ms;
+		background-color: transparent;
+
+		&::-webkit-input-placeholder,
+		&::placeholder {
+			color: inherit;
+			font-family: inherit;
+			font-size: inherit;
+			opacity: 0.5;
+			vertical-align: middle;
+		}
+
+		&[disabled] {
+			background-color: transparent;
+			opacity: 0.6;
+		}
+	}
+	.mvi-editor-layer-link-footer {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+
+		.mvi-editor-layer-link-delete {
+			opacity: 0.8;
+
+			&:hover {
+				opacity: 1;
+				cursor: pointer;
+			}
+		}
+	}
+}
+
 .mvi-editor-layer {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
 	padding: @mp-xs @mp-sm;
-	background-color: #fff;
 	border-radius: inherit;
-	border: 1px solid #ddd;
+	font-size: @font-size-default;
+	color: @font-color-default;
+}
 
-	.mvi-editor-layer-item {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		font-size: @font-size-default;
-		color: @font-color-default;
-		opacity: 0.8;
-		height: @mini-height;
-		padding: 0 @mp-sm;
-		border-radius: @radius-default;
-		line-height: 1;
+.mvi-editor-layer-item {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: @font-size-default;
+	color: @font-color-default;
+	opacity: 0.8;
+	height: @small-height;
+	padding: 0 @mp-sm;
+	border-radius: @radius-default;
+	line-height: 1;
+	white-space: nowrap;
 
-		&:hover {
-			cursor: pointer;
-			opacity: 1;
-			background-color: @bg-color-default;
-		}
+	&:hover {
+		cursor: pointer;
+		opacity: 1;
+		background-color: @bg-color-default;
+	}
 
-		&:active {
-			background-color: @bg-color-dark;
-		}
+	&:active {
+		background-color: @bg-color-dark;
 	}
 }
 

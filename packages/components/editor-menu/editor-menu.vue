@@ -26,7 +26,7 @@
 				<input :disabled="!linkParams.showText || null" ref="linkText" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.text" :placeholder="props.placeholder[0]" type="text" />
 				<input ref="linkUrl" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.url" :placeholder="props.placeholder[1]" type="text" />
 				<div class="mvi-editor-menu-link-footer">
-					<Checkbox :label="props.targetText" label-placement="right" :icon="{ size: '0.24rem' }" label-size="0.28rem" label-color="#808080" :fill-color="activeColor" v-model="linkParams.target"> </Checkbox>
+					<Checkbox :label="props.targetText" label-placement="right" :icon="{ size: '0.24rem' }" label-size="0.28rem" label-color="#505050" :fill-color="activeColor" v-model="linkParams.target"> </Checkbox>
 					<div class="mvi-editor-menu-link-operation">
 						<span class="mvi-editor-menu-link-delete" v-if="!linkParams.showText" @click="deleteLink">{{ props.removeText }}</span>
 						<span class="mvi-editor-menu-link-insert" :style="{ color: activeColor }" @click="insertLink">{{ props.insertText }}</span>
@@ -460,10 +460,10 @@ export default {
 				//修改链接时预设值
 				if (this.active) {
 					this.linkParams.showText = false
-					const inline = this.menus.instance.editor.range.anchor.element.getInline()
-					if (inline) {
-						if (inline.hasChildren()) {
-							const elements = AlexElement.flatElements(inline.children)
+					const element = this.menus.instance.getCurrentParsedomElement('a')
+					if (element) {
+						if (element.hasChildren()) {
+							const elements = AlexElement.flatElements(element.children)
 							let text = ''
 							elements.forEach(el => {
 								if (el.isText()) {
@@ -472,9 +472,9 @@ export default {
 							})
 							this.linkParams.text = text
 						}
-						if (inline.hasMarks()) {
-							this.linkParams.url = inline.marks['href'] || ''
-							this.linkParams.target = inline.marks['target'] == '_blank'
+						if (element.hasMarks()) {
+							this.linkParams.url = element.marks['href'] || ''
+							this.linkParams.target = element.marks['target'] == '_blank'
 						}
 					}
 				}
@@ -1040,13 +1040,8 @@ export default {
 			}
 			//链接判定
 			else if (this.name == 'link') {
-				const anchorInline = editor.range.anchor.element.getInline()
-				const focusInline = editor.range.focus.element.getInline()
-				if (anchorInline && focusInline && anchorInline.isEqual(focusInline)) {
-					this.active = anchorInline && anchorInline.parsedom == 'a'
-				} else {
-					this.active = false
-				}
+				const element = this.menus.instance.getCurrentParsedomElement('a')
+				this.active = !!element
 			}
 			//自定义菜单项的激活判定
 			else if (!this.isDefinedMenu) {
@@ -1103,10 +1098,12 @@ export default {
 			}
 			//修改链接
 			if (this.active) {
-				const inline = this.menus.instance.editor.range.anchor.element.getInline()
-				inline.marks.href = this.linkParams.url
+				const element = this.menus.instance.getCurrentParsedomElement('a')
+				element.marks.href = this.linkParams.url
 				if (this.linkParams.target) {
-					inline.marks.target = '_blank'
+					element.marks.target = '_blank'
+				} else {
+					delete element.marks.target
 				}
 			}
 			//新插入链接
@@ -1135,10 +1132,10 @@ export default {
 			if (this.cmpDisabled) {
 				return
 			}
-			const inline = this.menus.instance.editor.range.anchor.element.getInline()
-			inline.parsedom = AlexElement.TEXT_NODE
-			delete inline.marks.target
-			delete inline.marks.href
+			const element = this.menus.instance.getCurrentParsedomElement('a')
+			element.parsedom = AlexElement.TEXT_NODE
+			delete element.marks.target
+			delete element.marks.href
 			this.menus.instance.editor.formatElementStack()
 			this.menus.instance.editor.domRender()
 			this.menus.instance.editor.rangeRender()
