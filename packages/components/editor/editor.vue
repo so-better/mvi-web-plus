@@ -203,6 +203,8 @@ export default {
 		this.editor.on('blur', this.handleContentBlur)
 		//监听编辑器换行
 		this.editor.on('insertParagraph', this.handleInsertParagraph)
+		//监听编辑器删除事件
+		this.editor.on('deleteInStart', this.handleDelete)
 		//监听编辑器range更新
 		this.editor.on('rangeUpdate', this.handleRangeUpdate)
 		//监听滚动
@@ -387,13 +389,23 @@ export default {
 			}
 			this.$emit('blur', val)
 		},
-		//编辑器换行
-		handleInsertParagraph(element) {
-			if (element.isBlock() || element.isInblock()) {
-				//以下根级块元素或者内部块元素在换行时转为段落元素
-				if (['blockquote'].includes(element.parsedom)) {
-					elementUtil.toParagraph(element)
+		//编辑器换行：实现当前所在块如果只包含换行符，则转为段落
+		handleInsertParagraph(element, previousElement) {
+			if (previousElement.isOnlyHasBreak() && element.isOnlyHasBreak()) {
+				elementUtil.toParagraph(previousElement)
+				if (!previousElement.isBlock()) {
+					previousElement.convertToBlock()
 				}
+				this.editor.range.anchor.moveToStart(previousElement)
+				this.editor.range.focus.moveToStart(previousElement)
+				element.toEmpty()
+			}
+		},
+		//编辑器部分删除情景
+		handleDelete(element) {
+			elementUtil.toParagraph(element)
+			if (element.isInblock()) {
+				element.convertToBlock()
 			}
 		},
 		//编辑器range更新
