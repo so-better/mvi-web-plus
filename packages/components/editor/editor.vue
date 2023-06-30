@@ -663,7 +663,6 @@ export default {
 			color: @font-color-sub;
 			border-radius: @radius-default / 2;
 			font-size: @font-size-default;
-			font-weight: bold;
 			line-height: 1;
 			background-color: @bg-color-dark;
 			font-family: 'Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace';
