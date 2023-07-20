@@ -20,7 +20,25 @@
 				</div>
 			</div>
 			<!-- 表格 -->
-			<div v-else-if="name == 'table'"></div>
+			<div v-else-if="name == 'table'" class="mvi-editor-menu-table">
+				<template v-if="active">
+					<div class="mvi-editor-menu-table-operations">
+						<div @click="addTableRow" :style="{ color: activeColor }" class="mvi-editor-menu-table-operation">{{ props.insertRowText }}</div>
+						<div @click="removeTableRow" class="mvi-editor-menu-table-operation">{{ props.removeRowText }}</div>
+						<div @click="addTableColumn" :style="{ color: activeColor }" class="mvi-editor-menu-table-operation">{{ props.insertColumnText }}</div>
+						<div @click="removeTableColumn" class="mvi-editor-menu-table-operation">{{ props.removeColumnText }}</div>
+					</div>
+					<div class="mvi-editor-menu-table-footer">
+						<span @click="deleteTable">{{ props.deleteText }}</span>
+					</div>
+				</template>
+				<template v-else>
+					<div class="mvi-editor-menu-table-grids" v-for="item in tableParams.grids">
+						<div @click="confirmTableSize" @mouseenter="changeTableSize(el)" :class="['mvi-editor-menu-table-grid', el.inside ? 'active' : '']" v-for="el in item"></div>
+					</div>
+					<div v-if="tableParams.size.length" class="mvi-editor-menu-table-size">{{ tableParams.size[0] }} × {{ tableParams.size[1] }}</div>
+				</template>
+			</div>
 			<!-- 链接 -->
 			<div v-else-if="name == 'link'" class="mvi-editor-menu-link">
 				<input :disabled="!linkParams.showText || null" ref="linkText" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.text" :placeholder="props.placeholder[0]" type="text" />
@@ -82,6 +100,22 @@ const getMenu = name => {
 	return definedMenus.find(item => {
 		return name == item.name
 	})
+}
+//获取表格网格
+const getTableGrids = function () {
+	const grids = []
+	for (let i = 0; i < 10; i++) {
+		let row = []
+		for (let j = 0; j < 10; j++) {
+			row.push({
+				x: j + 1,
+				y: i + 1,
+				inside: false //是否被选中
+			})
+		}
+		grids.push(row)
+	}
+	return grids
 }
 export default {
 	name: 'm-editor-menu',
@@ -192,6 +226,13 @@ export default {
 				tabIndex: 0,
 				//远程地址
 				remoteUrl: ''
+			},
+			//表格相关参数
+			tableParams: {
+				//表格大小，如[5,5]
+				size: [],
+				//表格创建规格
+				grids: getTableGrids()
 			}
 		}
 	},
@@ -1060,17 +1101,20 @@ export default {
 				const element = this.menus.instance.getCurrentParsedomElement('a')
 				this.active = !!element
 			}
+			//表格判定
+			else if (this.name == 'table') {
+				const element = this.menus.instance.getCurrentParsedomElement('table')
+				this.active = !!element
+			}
 			//自定义菜单项的激活判定
-			else if (!this.isDefinedMenu) {
-				if (typeof this.customActive == 'function') {
-					const obj = this.customActive.apply(this)
-					if (this.type == 'default') {
-						this.active = obj
-					} else {
-						this.selectedVal = this.parseList.find(item => {
-							return item.value == obj
-						}) || { ...this.defaultVal }
-					}
+			else if (!this.isDefinedMenu && typeof this.customActive == 'function') {
+				const obj = this.customActive.apply(this)
+				if (this.type == 'default') {
+					this.active = obj
+				} else {
+					this.selectedVal = this.parseList.find(item => {
+						return item.value == obj
+					}) || { ...this.defaultVal }
 				}
 			}
 		},
@@ -1190,6 +1234,168 @@ export default {
 				)
 				this.menus.instance.editor.insertElement(image)
 			}
+			this.menus.instance.editor.formatElementStack()
+			this.menus.instance.editor.domRender()
+			this.menus.instance.editor.rangeRender()
+			this.hideLayer()
+		},
+		//确认表格规格创建表格
+		confirmTableSize() {
+			if (this.cmpDisabled) {
+				return
+			}
+			const rowLength = this.tableParams.size[0]
+			const colLength = this.tableParams.size[1]
+			const table = new AlexElement('block', 'table', null, null, null)
+			const tbody = new AlexElement('inblock', 'tbody', null, null, null)
+			this.menus.instance.editor.addElementTo(tbody, table)
+			for (let i = 0; i < rowLength; i++) {
+				const row = new AlexElement('inblock', 'tr', null, null, null)
+				for (let j = 0; j < colLength; j++) {
+					const column = new AlexElement('inblock', 'td', null, null, null)
+					const breakEl = new AlexElement('closed', 'br', null, null, null)
+					this.menus.instance.editor.addElementTo(breakEl, column)
+					this.menus.instance.editor.addElementTo(column, row)
+				}
+				this.menus.instance.editor.addElementTo(row, tbody)
+			}
+			this.menus.instance.editor.insertElement(table)
+			this.menus.instance.editor.formatElementStack()
+			this.menus.instance.editor.range.anchor.moveToStart(tbody)
+			this.menus.instance.editor.range.focus.moveToStart(tbody)
+			this.menus.instance.editor.domRender()
+			this.menus.instance.editor.rangeRender()
+			//隐藏浮层
+			this.hideLayer()
+		},
+		//改变表格大小
+		changeTableSize(data) {
+			if (this.cmpDisabled) {
+				return
+			}
+			this.tableParams.size = [data.x, data.y]
+			for (let i in this.tableParams.grids) {
+				const grid = this.tableParams.grids[i]
+				for (let j in grid) {
+					if (grid[j].x <= data.x && grid[j].y <= data.y) {
+						this.tableParams.grids[i][j].inside = true
+					} else {
+						this.tableParams.grids[i][j].inside = false
+					}
+				}
+			}
+		},
+		//插入表格行
+		addTableRow() {
+			if (this.cmpDisabled) {
+				return
+			}
+			const row = this.menus.instance.getCurrentParsedomElement('tr')
+			const newRow = row.clone()
+			newRow.children.forEach(column => {
+				column.children = []
+				const breakEl = new AlexElement('closed', 'br', null, null, null)
+				this.menus.instance.editor.addElementTo(breakEl, column)
+			})
+			this.menus.instance.editor.addElementAfter(newRow, row)
+			this.menus.instance.editor.formatElementStack()
+			this.menus.instance.editor.range.anchor.moveToStart(newRow)
+			this.menus.instance.editor.range.focus.moveToStart(newRow)
+			this.menus.instance.editor.domRender()
+			this.menus.instance.editor.rangeRender()
+			this.hideLayer()
+		},
+		//删除表格行
+		removeTableRow() {
+			if (this.cmpDisabled) {
+				return
+			}
+			const row = this.menus.instance.getCurrentParsedomElement('tr')
+			const parent = row.parent
+			if (parent.children.length == 1) {
+				this.deleteTable()
+				return
+			}
+			const previousRow = this.menus.instance.editor.getPreviousElement(row)
+			row.toEmpty()
+			this.menus.instance.editor.formatElementStack()
+			if (previousRow) {
+				this.menus.instance.editor.range.anchor.moveToEnd(previousRow.children[0])
+				this.menus.instance.editor.range.focus.moveToEnd(previousRow.children[0])
+			} else {
+				const firstRow = parent.children[0]
+				this.menus.instance.editor.range.anchor.moveToEnd(firstRow.children[0])
+				this.menus.instance.editor.range.focus.moveToEnd(firstRow.children[0])
+			}
+			this.menus.instance.editor.domRender()
+			this.menus.instance.editor.rangeRender()
+			this.hideLayer()
+		},
+		//插入表格列
+		addTableColumn() {
+			if (this.cmpDisabled) {
+				return
+			}
+			const column = this.menus.instance.getCurrentParsedomElement('td')
+			const tbody = this.menus.instance.getCurrentParsedomElement('tbody')
+			const rows = tbody.children
+			const index = column.parent.children.findIndex(item => {
+				return item.isEqual(column)
+			})
+			rows.forEach(row => {
+				const newColumn = column.clone(false)
+				const breakEl = new AlexElement('closed', 'br', null, null, null)
+				this.menus.instance.editor.addElementTo(breakEl, newColumn)
+				this.menus.instance.editor.addElementTo(newColumn, row, index + 1)
+			})
+			this.menus.instance.editor.formatElementStack()
+			const nextColumn = this.menus.instance.editor.getNextElement(column)
+			this.menus.instance.editor.range.anchor.moveToStart(nextColumn)
+			this.menus.instance.editor.range.focus.moveToStart(nextColumn)
+			this.menus.instance.editor.domRender()
+			this.menus.instance.editor.rangeRender()
+			this.hideLayer()
+		},
+		//删除表格列
+		removeTableColumn() {
+			if (this.cmpDisabled) {
+				return
+			}
+			const column = this.menus.instance.getCurrentParsedomElement('td')
+			const tbody = this.menus.instance.getCurrentParsedomElement('tbody')
+			const rows = tbody.children
+			const parent = column.parent
+			if (parent.children.length == 1) {
+				this.deleteTable()
+				return
+			}
+			const previousColumn = this.menus.instance.editor.getPreviousElement(column)
+			const index = column.parent.children.findIndex(item => {
+				return item.isEqual(column)
+			})
+			rows.forEach(row => {
+				row.children[index].toEmpty()
+			})
+			this.menus.instance.editor.formatElementStack()
+			if (previousColumn) {
+				this.menus.instance.editor.range.anchor.moveToEnd(previousColumn)
+				this.menus.instance.editor.range.focus.moveToEnd(previousColumn)
+			} else {
+				const firstColumn = parent.children[0]
+				this.menus.instance.editor.range.anchor.moveToEnd(firstColumn)
+				this.menus.instance.editor.range.focus.moveToEnd(firstColumn)
+			}
+			this.menus.instance.editor.domRender()
+			this.menus.instance.editor.rangeRender()
+			this.hideLayer()
+		},
+		//删除表格
+		deleteTable() {
+			if (this.cmpDisabled) {
+				return
+			}
+			const table = this.menus.instance.getCurrentParsedomElement('table')
+			table.toEmpty()
 			this.menus.instance.editor.formatElementStack()
 			this.menus.instance.editor.domRender()
 			this.menus.instance.editor.rangeRender()
@@ -1314,6 +1520,88 @@ export default {
 				text-overflow: ellipsis;
 				overflow: hidden;
 				white-space: nowrap;
+			}
+		}
+	}
+
+	.mvi-editor-menu-table {
+		display: block;
+		padding: @mp-sm;
+
+		.mvi-editor-menu-table-grids {
+			display: flex;
+			display: -webkit-flex;
+			justify-content: flex-start;
+			align-items: center;
+
+			&:first-of-type > .mvi-editor-menu-table-grid {
+				border-top: 1px solid @border-color;
+			}
+
+			.mvi-editor-menu-table-grid {
+				display: block;
+				width: @mini-height / 2;
+				height: @mini-height / 2;
+				border-right: 1px solid @border-color;
+				border-bottom: 1px solid @border-color;
+
+				&:first-child {
+					border-left: 1px solid @border-color;
+				}
+
+				&:hover {
+					cursor: pointer;
+				}
+
+				&.active {
+					background-color: @bg-color-dark;
+				}
+			}
+		}
+
+		.mvi-editor-menu-table-size {
+			display: block;
+			width: 100%;
+			text-align: center;
+			font-size: @font-size-small;
+			color: @font-color-sub;
+			margin-top: @mp-sm;
+			line-height: 1;
+		}
+
+		.mvi-editor-menu-table-operations {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: @mp-sm 0;
+			margin-bottom: @mp-sm;
+
+			.mvi-editor-menu-table-operation {
+				display: block;
+				opacity: 0.8;
+				padding: 0 @mp-sm;
+				white-space: nowrap;
+
+				&:hover {
+					opacity: 1;
+					cursor: pointer;
+				}
+			}
+		}
+
+		.mvi-editor-menu-table-footer {
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+
+			span {
+				display: block;
+				opacity: 0.8;
+				padding: 0 @mp-sm;
+				&:hover {
+					opacity: 1;
+					cursor: pointer;
+				}
 			}
 		}
 	}

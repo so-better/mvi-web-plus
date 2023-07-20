@@ -268,6 +268,13 @@ export default [
 		type: 'select',
 		icon: 'table-alt',
 		title: '插入表格',
+		props: {
+			insertRowText: '插入行',
+			removeRowText: '删除行',
+			insertColumnText: '插入列',
+			removeColumnText: '删除列',
+			deleteText: '删除表格'
+		},
 		list: []
 	},
 	{

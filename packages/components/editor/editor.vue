@@ -23,6 +23,15 @@
 				<div @click="deleteMedia" class="mvi-editor-layer-item"><Icon type="trash-alt" /></div>
 			</div>
 		</m-layer>
+		<!-- 表格调整器 -->
+		<m-layer v-model="tableAdjusterProps.show" fixed :target="tableAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#ccc" closable ref="tableLayer">
+			<div class="mvi-editor-layer">
+				<div @click="addTableRow" :style="{ color: activeColor }" class="mvi-editor-layer-item">{{ tableAdjusterProps.props.insertRowText }}</div>
+				<div @click="removeTableRow" class="mvi-editor-layer-item">{{ tableAdjusterProps.props.removeRowText }}</div>
+				<div @click="addTableColumn" :style="{ color: activeColor }" class="mvi-editor-layer-item">{{ tableAdjusterProps.props.insertColumnText }}</div>
+				<div @click="removeTableColumn" class="mvi-editor-layer-item">{{ tableAdjusterProps.props.removeColumnText }}</div>
+				<div @click="deleteTable" class="mvi-editor-layer-item"><Icon type="trash-alt" /></div></div
+		></m-layer>
 	</div>
 </template>
 <script>
@@ -35,7 +44,7 @@ import { Field } from '../field'
 import { Checkbox } from '../checkbox'
 export default {
 	name: 'm-editor',
-	emits: ['update:modelValue', 'focus', 'blur', 'change', 'paste-file'],
+	emits: ['update:modelValue', 'focus', 'blur', 'change', 'paste-image', 'paste-video'],
 	props: {
 		//编辑器内容
 		modelValue: {
@@ -84,6 +93,16 @@ export default {
 		htmlPaste: {
 			type: Boolean,
 			default: false
+		},
+		//是否自定义图片粘贴
+		customImagePaste: {
+			type: Boolean,
+			default: false
+		},
+		//自定义视频粘贴
+		customVideoPaste: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -117,6 +136,17 @@ export default {
 			mediaAdjusterProps: {
 				show: false,
 				target: ''
+			},
+			//表格调整器参数
+			tableAdjusterProps: {
+				show: false,
+				target: '',
+				props: {
+					insertRowText: '插入行',
+					removeRowText: '删除行',
+					insertColumnText: '插入列',
+					removeColumnText: '删除列'
+				}
 			}
 		}
 	},
@@ -190,7 +220,7 @@ export default {
 		this.editor = new AlexEditor(this.$refs.content, {
 			disabled: this.disabled,
 			value: this.cmpValue,
-			renderRules: [this.orderListHandle, this.codeHandle, this.mediaHandle],
+			renderRules: [this.orderListHandle, this.codeHandle, this.mediaHandle, this.tableHandle],
 			htmlPaste: this.htmlPaste
 		})
 		//编辑器渲染后会有一个渲染过程，会改变内容，因此重新获取内容的值来设置modelValue
@@ -207,6 +237,18 @@ export default {
 		this.editor.on('deleteInStart', this.handleDelete)
 		//监听编辑器range更新
 		this.editor.on('rangeUpdate', this.handleRangeUpdate)
+		//监听编辑器粘贴图片
+		if (this.customImagePaste) {
+			this.editor.on('pasteImage', url => {
+				this.$emit('paste-image', url)
+			})
+		}
+		//监听编辑器粘贴视频
+		if (this.customVideoPaste) {
+			this.editor.on('pasteVideo', url => {
+				this.$emit('paste-video', url)
+			})
+		}
 		//监听滚动
 		this.onScroll()
 		//格式化
@@ -258,14 +300,18 @@ export default {
 		},
 		//元素格式化时处理媒体元素和链接
 		mediaHandle(element) {
-			//图片增加marks和styles
+			//图片增加marks
 			if (element.parsedom == 'img') {
 				const marks = {
 					'mvi-editor-element-key': element.key
 				}
-				Object.assign(element.marks, marks)
+				if (Dap.common.isObject(element.marks)) {
+					Object.assign(element.marks, marks)
+				} else {
+					element.marks = marks
+				}
 			}
-			//视频增加marks和styles
+			//视频增加marks
 			if (element.parsedom == 'video') {
 				const marks = {
 					controls: true,
@@ -273,14 +319,22 @@ export default {
 					muted: true,
 					'mvi-editor-element-key': element.key
 				}
-				Object.assign(element.marks, marks)
+				if (Dap.common.isObject(element.marks)) {
+					Object.assign(element.marks, marks)
+				} else {
+					element.marks = marks
+				}
 			}
-			//链接增加marks和styles
+			//链接增加marks
 			if (element.parsedom == 'a') {
 				const marks = {
 					'mvi-editor-element-key': element.key
 				}
-				Object.assign(element.marks, marks)
+				if (Dap.common.isObject(element.marks)) {
+					Object.assign(element.marks, marks)
+				} else {
+					element.marks = marks
+				}
 			}
 		},
 		//元素格式化时转换code标签
@@ -291,6 +345,19 @@ export default {
 					'data-code-style': true
 				}
 				if (element.hasMarks()) {
+					Object.assign(element.marks, marks)
+				} else {
+					element.marks = marks
+				}
+			}
+		},
+		//元素格式化时处理表格
+		tableHandle(element) {
+			if (element.parsedom == 'table') {
+				const marks = {
+					'mvi-editor-element-key': element.key
+				}
+				if (Dap.common.isObject(element.marks)) {
 					Object.assign(element.marks, marks)
 				} else {
 					element.marks = marks
@@ -311,6 +378,7 @@ export default {
 				Dap.event.on(el, `scroll.mvi-editor-${this.uid}`, e => {
 					this.linkAdjusterProps.show = false
 					this.mediaAdjusterProps.show = false
+					this.tableAdjusterProps.show = false
 				})
 				if (el.parentNode) {
 					setScroll(el.parentNode)
@@ -416,17 +484,30 @@ export default {
 			const img = this.getCurrentParsedomElement('img')
 			const link = this.getCurrentParsedomElement('a')
 			const video = this.getCurrentParsedomElement('video')
+			const table = this.getCurrentParsedomElement('table')
 			setTimeout(() => {
 				if (img || video) {
 					const el = img || video
 					this.mediaAdjusterProps.target = `[mvi-editor-element-key='${el.key}']`
 					this.mediaAdjusterProps.show = true
 					this.linkAdjusterProps.show = false
+					this.tableAdjusterProps.show = false
 				} else if (link) {
 					this.linkAdjusterProps.target = `[mvi-editor-element-key='${link.key}']`
 					this.linkAdjusterProps.show = true
 					this.linkAdjusterProps.url = link.marks['href']
 					this.linkAdjusterProps.newWindow = link.marks['target'] == '_blank'
+					this.mediaAdjusterProps.show = false
+					this.tableAdjusterProps.show = false
+				} else if (table) {
+					this.tableAdjusterProps.target = `[mvi-editor-element-key='${table.key}']`
+					this.tableAdjusterProps.show = true
+					this.mediaAdjusterProps.show = false
+					this.linkAdjusterProps.show = false
+				} else {
+					this.tableAdjusterProps.show = false
+					this.mediaAdjusterProps.show = false
+					this.linkAdjusterProps.show = false
 				}
 			}, 100)
 		},
@@ -489,6 +570,121 @@ export default {
 			this.editor.domRender()
 			this.editor.rangeRender()
 			this.mediaAdjusterProps.show = false
+		},
+		//插入表格行
+		addTableRow() {
+			if (this.disabled) {
+				return
+			}
+			const row = this.getCurrentParsedomElement('tr')
+			const newRow = row.clone()
+			newRow.children.forEach(column => {
+				column.children = []
+				const breakEl = new AlexElement('closed', 'br', null, null, null)
+				this.editor.addElementTo(breakEl, column)
+			})
+			this.editor.addElementAfter(newRow, row)
+			this.editor.formatElementStack()
+			this.editor.range.anchor.moveToStart(newRow)
+			this.editor.range.focus.moveToStart(newRow)
+			this.editor.domRender()
+			this.editor.rangeRender()
+			this.$refs.tableLayer.reset()
+		},
+		//删除表格行
+		removeTableRow() {
+			if (this.disabled) {
+				return
+			}
+			const row = this.getCurrentParsedomElement('tr')
+			const parent = row.parent
+			if (parent.children.length == 1) {
+				this.deleteTable()
+				return
+			}
+			const previousRow = this.editor.getPreviousElement(row)
+			row.toEmpty()
+			this.editor.formatElementStack()
+			if (previousRow) {
+				this.editor.range.anchor.moveToEnd(previousRow.children[0])
+				this.editor.range.focus.moveToEnd(previousRow.children[0])
+			} else {
+				const firstRow = parent.children[0]
+				this.editor.range.anchor.moveToEnd(firstRow.children[0])
+				this.editor.range.focus.moveToEnd(firstRow.children[0])
+			}
+			this.editor.domRender()
+			this.editor.rangeRender()
+			this.$refs.tableLayer.reset()
+		},
+		//插入表格列
+		addTableColumn() {
+			if (this.disabled) {
+				return
+			}
+			const column = this.getCurrentParsedomElement('td')
+			const tbody = this.getCurrentParsedomElement('tbody')
+			const rows = tbody.children
+			const index = column.parent.children.findIndex(item => {
+				return item.isEqual(column)
+			})
+			rows.forEach(row => {
+				const newColumn = column.clone(false)
+				const breakEl = new AlexElement('closed', 'br', null, null, null)
+				this.editor.addElementTo(breakEl, newColumn)
+				this.editor.addElementTo(newColumn, row, index + 1)
+			})
+			this.editor.formatElementStack()
+			const nextColumn = this.editor.getNextElement(column)
+			this.editor.range.anchor.moveToStart(nextColumn)
+			this.editor.range.focus.moveToStart(nextColumn)
+			this.editor.domRender()
+			this.editor.rangeRender()
+			this.$refs.tableLayer.reset()
+		},
+		//删除表格列
+		removeTableColumn() {
+			if (this.disabled) {
+				return
+			}
+			const column = this.getCurrentParsedomElement('td')
+			const tbody = this.getCurrentParsedomElement('tbody')
+			const rows = tbody.children
+			const parent = column.parent
+			if (parent.children.length == 1) {
+				this.deleteTable()
+				return
+			}
+			const previousColumn = this.editor.getPreviousElement(column)
+			const index = column.parent.children.findIndex(item => {
+				return item.isEqual(column)
+			})
+			rows.forEach(row => {
+				row.children[index].toEmpty()
+			})
+			this.editor.formatElementStack()
+			if (previousColumn) {
+				this.editor.range.anchor.moveToEnd(previousColumn)
+				this.editor.range.focus.moveToEnd(previousColumn)
+			} else {
+				const firstColumn = parent.children[0]
+				this.editor.range.anchor.moveToEnd(firstColumn)
+				this.editor.range.focus.moveToEnd(firstColumn)
+			}
+			this.editor.domRender()
+			this.editor.rangeRender()
+			this.$refs.tableLayer.reset()
+		},
+		//删除表格
+		deleteTable() {
+			if (this.disabled) {
+				return
+			}
+			const table = this.getCurrentParsedomElement('table')
+			table.toEmpty()
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
 		},
 		//api：注册菜单栏实例
 		use(menus) {
@@ -679,6 +875,49 @@ export default {
 			background-color: @bg-color-dark;
 			font-family: 'Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace';
 		}
+		//表格样式
+		:deep(table) {
+			width: 100%;
+			border: 1px solid @border-color;
+			margin: 0;
+			padding: 0;
+			font-size: @font-size-default;
+			color: @font-color-default;
+			border-collapse: collapse;
+			margin-bottom: @mp-sm;
+
+			tbody {
+				margin: 0;
+				padding: 0;
+
+				tr {
+					margin: 0;
+					padding: 0;
+
+					&:first-child {
+						background-color: @bg-color-dark;
+
+						td {
+							font-weight: bold;
+						}
+					}
+
+					td {
+						font-size: @font-size-default;
+						color: @font-color-default;
+						margin: 0;
+						border-bottom: 1px solid @border-color;
+						border-right: 1px solid @border-color;
+						padding: @mp-sm;
+						position: relative;
+
+						&:last-child {
+							border-right: none;
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -767,11 +1006,6 @@ export default {
 	&:hover {
 		cursor: pointer;
 		opacity: 1;
-		background-color: @bg-color-default;
-	}
-
-	&:active {
-		background-color: @bg-color-dark;
 	}
 }
 
