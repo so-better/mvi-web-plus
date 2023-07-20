@@ -26,6 +26,7 @@
 		<!-- 表格调整器 -->
 		<m-layer v-model="tableAdjusterProps.show" fixed :target="tableAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#ccc" closable ref="tableLayer">
 			<div class="mvi-editor-layer">
+				<div @click="insertParagraph" class="mvi-editor-layer-item"><Icon type="turn-arrow-text" /></div>
 				<div @click="addTableRow" :style="{ color: activeColor }" class="mvi-editor-layer-item">{{ tableAdjusterProps.props.insertRowText }}</div>
 				<div @click="removeTableRow" class="mvi-editor-layer-item">{{ tableAdjusterProps.props.removeRowText }}</div>
 				<div @click="addTableColumn" :style="{ color: activeColor }" class="mvi-editor-layer-item">{{ tableAdjusterProps.props.insertColumnText }}</div>
@@ -220,7 +221,7 @@ export default {
 		this.editor = new AlexEditor(this.$refs.content, {
 			disabled: this.disabled,
 			value: this.cmpValue,
-			renderRules: [this.orderListHandle, this.codeHandle, this.mediaHandle, this.tableHandle],
+			renderRules: [this.orderListHandle, this.codeHandle, this.mediaHandle, this.thParseTdHandle, this.tableHandle],
 			htmlPaste: this.htmlPaste
 		})
 		//编辑器渲染后会有一个渲染过程，会改变内容，因此重新获取内容的值来设置modelValue
@@ -237,6 +238,8 @@ export default {
 		this.editor.on('deleteInStart', this.handleDelete)
 		//监听编辑器range更新
 		this.editor.on('rangeUpdate', this.handleRangeUpdate)
+		//监听编辑器dom渲染
+		this.editor.on('domRender', this.handleDomRender)
 		//监听编辑器粘贴图片
 		if (this.customImagePaste) {
 			this.editor.on('pasteImage', url => {
@@ -351,6 +354,12 @@ export default {
 				}
 			}
 		},
+		//表格th转td
+		thParseTdHandle(element) {
+			if (element.parsedom == 'th') {
+				element.parsedom = 'td'
+			}
+		},
 		//元素格式化时处理表格
 		tableHandle(element) {
 			if (element.parsedom == 'table') {
@@ -362,6 +371,41 @@ export default {
 				} else {
 					element.marks = marks
 				}
+				const elements = AlexElement.flatElements(element.children)
+				const rows = elements.filter(el => {
+					return el.parsedom == 'tr'
+				})
+				let colgroup = elements.find(el => {
+					return el.parsedom == 'colgroup'
+				})
+				if (colgroup) {
+					colgroup.children.forEach(col => {
+						if (!col.hasMarks() || !col.marks['width']) {
+							col.marks['width'] = 'auto'
+						}
+					})
+				} else {
+					colgroup = new AlexElement('inblock', 'colgroup', null, null, null)
+					for (let i = rows[0].children.length - 1; i >= 0; i--) {
+						const col = new AlexElement(
+							'closed',
+							'col',
+							{
+								width: 'auto'
+							},
+							null,
+							null
+						)
+						this.editor.addElementTo(col, colgroup)
+					}
+				}
+				element.children = []
+				const tbody = new AlexElement('inblock', 'tbody', null, null, null)
+				rows.reverse().forEach(row => {
+					this.editor.addElementTo(row, tbody)
+				})
+				this.editor.addElementTo(tbody, element)
+				this.editor.addElementTo(colgroup, element)
 			}
 		},
 		//输入框获取焦点
@@ -511,6 +555,25 @@ export default {
 				}
 			}, 100)
 		},
+		//编辑器dom渲染
+		handleDomRender() {
+			const elements = AlexElement.flatElements(this.editor.stack)
+			const tables = elements.filter(el => {
+				return el.parsedom == 'table'
+			})
+			tables.forEach(table => {
+				const firstRow = AlexElement.flatElements(table.children).filter(el => {
+					return el.parsedom == 'tr'
+				})[0]
+				firstRow.children.forEach(column => {
+					Dap.event.off(column._elm)
+					let flag = false
+					Dap.event.on(column._elm, 'mousedown', e => {
+						console.log('鼠标按下')
+					})
+				})
+			})
+		},
 		//删除当前链接
 		deleteLink() {
 			if (this.disabled) {
@@ -570,6 +633,22 @@ export default {
 			this.editor.domRender()
 			this.editor.rangeRender()
 			this.mediaAdjusterProps.show = false
+		},
+		//在表格前面换行
+		insertParagraph() {
+			if (this.disabled) {
+				return
+			}
+			const table = this.getCurrentParsedomElement('table')
+			const paragraph = new AlexElement('block', AlexElement.BLOCK_NODE, null, null, null)
+			const breakEl = new AlexElement('closed', 'br', null, null, null)
+			this.editor.addElementTo(breakEl, paragraph)
+			this.editor.addElementBefore(paragraph, table)
+			this.editor.range.anchor.moveToEnd(paragraph)
+			this.editor.range.focus.moveToEnd(paragraph)
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
 		},
 		//插入表格行
 		addTableRow() {

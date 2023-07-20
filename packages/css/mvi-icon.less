@@ -1,14 +1,18 @@
 @font-face {
 	font-family: 'mvi-icon';
-	src: url('../icon/iconfont') format('woff'), url('../icon/iconfont.ttf') format('truetype');
+	src: url('../icon/iconfont.woff') format('woff'), url('../icon/iconfont.ttf') format('truetype');
 }
 
-.mvi-icon {
-	font-family: 'mvi-icon' !important;
-	font-size: 16px;
-	font-style: normal;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+.icon-turn-arrow-text:before {
+	content: '\e65d';
+}
+
+.icon-turn-arrow-round:before {
+	content: '\e660';
+}
+
+.icon-turn-arrow:before {
+	content: '\e751';
 }
 
 .icon-code-block:before {
