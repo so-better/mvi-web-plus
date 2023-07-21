@@ -676,6 +676,20 @@ export default {
 				editor.domRender()
 				editor.rangeRender()
 			}
+			//缩进
+			else if (this.name == 'indent') {
+				//增加缩进
+				if (item.value == 'indent-right') {
+					editor.setIndent()
+				}
+				//减少缩进
+				else {
+					editor.setOutdent()
+				}
+				editor.formatElementStack()
+				editor.domRender()
+				editor.rangeRender()
+			}
 			//分隔线
 			else if (this.name == 'divider') {
 				//创建分隔线
@@ -950,21 +964,45 @@ export default {
 				}
 				//起点和终点不在一起
 				else {
-					const elements = editor.getElementsByRange(true, false)
-					elements.forEach(el => {
-						if (el.isBlock()) {
-							elementUtil.toParagraph(el)
-							if (!this.active) {
-								el.parsedom = 'pre'
+					if (this.active) {
+						const pre = editor.range.anchor.element.getBlock()
+						elementUtil.toParagraph(pre)
+					} else {
+						let elements = editor.getElementsByRange(true, false)
+						editor.range.anchor.moveToStart(elements[0].getBlock())
+						editor.range.focus.moveToEnd(elements[elements.length - 1].getBlock())
+						elements = editor.getElementsByRange(true, true).filter(el => {
+							return el.isText()
+						})
+						const obj = {}
+						elements.forEach(el => {
+							if (obj[el.getBlock().key]) {
+								obj[el.getBlock().key].push(el.clone())
+							} else {
+								obj[el.getBlock().key] = [el.clone()]
 							}
-						} else {
-							const block = el.getBlock()
-							elementUtil.toParagraph(block)
-							if (!this.active) {
-								block.parsedom = 'pre'
+						})
+						const pre = new AlexElement('block', 'pre', null, null, null)
+						Object.keys(obj).forEach((key, index) => {
+							if (index > 0) {
+								const text = new AlexElement('text', null, null, null, '\n')
+								if (pre.hasChildren()) {
+									editor.addElementTo(text, pre, pre.children.length)
+								} else {
+									editor.addElementTo(text, pre)
+								}
 							}
-						}
-					})
+							obj[key].forEach(el => {
+								if (pre.hasChildren()) {
+									editor.addElementTo(el, pre, pre.children.length)
+								} else {
+									editor.addElementTo(el, pre)
+								}
+							})
+						})
+						editor.delete()
+						editor.insertElement(pre)
+					}
 				}
 				editor.formatElementStack()
 				editor.domRender()
@@ -1317,6 +1355,11 @@ export default {
 				this.menus.instance.editor.addElementTo(row, tbody)
 			}
 			this.menus.instance.editor.insertElement(table)
+			//在表格后创建一个段落
+			const paragraph = new AlexElement('block', AlexElement.BLOCK_NODE, null, null, null)
+			const breakEl = new AlexElement('closed', 'br', null, null, null)
+			this.menus.instance.editor.addElementTo(breakEl, paragraph)
+			this.menus.instance.editor.addElementAfter(paragraph, table)
 			this.menus.instance.editor.formatElementStack()
 			this.menus.instance.editor.range.anchor.moveToStart(tbody)
 			this.menus.instance.editor.range.focus.moveToStart(tbody)
@@ -1347,6 +1390,10 @@ export default {
 			if (this.cmpDisabled) {
 				return
 			}
+			if (!this.menus.instance.editor.range.anchor.isEqual(this.menus.instance.editor.range.focus)) {
+				this.menus.instance.editor.range.anchor.element = this.menus.instance.editor.range.focus.element
+				this.menus.instance.editor.range.anchor.offset = this.menus.instance.editor.range.focus.offset
+			}
 			const row = this.menus.instance.getCurrentParsedomElement('tr')
 			const newRow = row.clone()
 			newRow.children.forEach(column => {
@@ -1366,6 +1413,10 @@ export default {
 		removeTableRow() {
 			if (this.cmpDisabled) {
 				return
+			}
+			if (!this.menus.instance.editor.range.anchor.isEqual(this.menus.instance.editor.range.focus)) {
+				this.menus.instance.editor.range.anchor.element = this.menus.instance.editor.range.focus.element
+				this.menus.instance.editor.range.anchor.offset = this.menus.instance.editor.range.focus.offset
 			}
 			const row = this.menus.instance.getCurrentParsedomElement('tr')
 			const parent = row.parent
@@ -1393,6 +1444,10 @@ export default {
 			if (this.cmpDisabled) {
 				return
 			}
+			if (!this.menus.instance.editor.range.anchor.isEqual(this.menus.instance.editor.range.focus)) {
+				this.menus.instance.editor.range.anchor.element = this.menus.instance.editor.range.focus.element
+				this.menus.instance.editor.range.anchor.offset = this.menus.instance.editor.range.focus.offset
+			}
 			const column = this.menus.instance.getCurrentParsedomElement('td')
 			const tbody = this.menus.instance.getCurrentParsedomElement('tbody')
 			const rows = tbody.children
@@ -1417,6 +1472,10 @@ export default {
 		removeTableColumn() {
 			if (this.cmpDisabled) {
 				return
+			}
+			if (!this.menus.instance.editor.range.anchor.isEqual(this.menus.instance.editor.range.focus)) {
+				this.menus.instance.editor.range.anchor.element = this.menus.instance.editor.range.focus.element
+				this.menus.instance.editor.range.anchor.offset = this.menus.instance.editor.range.focus.offset
 			}
 			const column = this.menus.instance.getCurrentParsedomElement('td')
 			const tbody = this.menus.instance.getCurrentParsedomElement('tbody')
@@ -1450,6 +1509,10 @@ export default {
 		deleteTable() {
 			if (this.cmpDisabled) {
 				return
+			}
+			if (!this.menus.instance.editor.range.anchor.isEqual(this.menus.instance.editor.range.focus)) {
+				this.menus.instance.editor.range.anchor.element = this.menus.instance.editor.range.focus.element
+				this.menus.instance.editor.range.anchor.offset = this.menus.instance.editor.range.focus.offset
 			}
 			const table = this.menus.instance.getCurrentParsedomElement('table')
 			table.toEmpty()

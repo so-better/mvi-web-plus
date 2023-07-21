@@ -18,6 +18,24 @@ export default [
 		title: '清除格式'
 	},
 	{
+		name: 'indent',
+		type: 'select',
+		icon: 'indent-right',
+		title: '缩进',
+		list: [
+			{
+				label: '增加缩进',
+				value: 'indent-right',
+				icon: 'indent-right'
+			},
+			{
+				label: '减少缩进',
+				value: 'indent-left',
+				icon: 'indent-left'
+			}
+		]
+	},
+	{
 		name: 'divider',
 		type: 'default',
 		icon: 'divider',

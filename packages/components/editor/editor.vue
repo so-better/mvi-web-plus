@@ -26,7 +26,8 @@
 		<!-- 表格调整器 -->
 		<m-layer v-model="tableAdjusterProps.show" fixed :target="tableAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#ccc" closable ref="tableLayer">
 			<div class="mvi-editor-layer">
-				<div @click="insertParagraph" class="mvi-editor-layer-item"><Icon type="turn-arrow-text" /></div>
+				<div @click="insertParagraph('up')" class="mvi-editor-layer-item"><Icon style="transform: rotate(180deg)" type="turn-arrow-text" /></div>
+				<div @click="insertParagraph('down')" class="mvi-editor-layer-item"><Icon type="turn-arrow-text" /></div>
 				<div @click="addTableRow" :style="{ color: activeColor }" class="mvi-editor-layer-item">{{ tableAdjusterProps.props.insertRowText }}</div>
 				<div @click="removeTableRow" class="mvi-editor-layer-item">{{ tableAdjusterProps.props.removeRowText }}</div>
 				<div @click="addTableColumn" :style="{ color: activeColor }" class="mvi-editor-layer-item">{{ tableAdjusterProps.props.insertColumnText }}</div>
@@ -512,13 +513,15 @@ export default {
 		//编辑器换行：实现当前所在块如果只包含换行符，则转为段落
 		handleInsertParagraph(element, previousElement) {
 			if (previousElement.isOnlyHasBreak() && element.isOnlyHasBreak()) {
-				elementUtil.toParagraph(previousElement)
 				if (!previousElement.isBlock()) {
 					previousElement.convertToBlock()
 				}
-				this.editor.range.anchor.moveToStart(previousElement)
-				this.editor.range.focus.moveToStart(previousElement)
-				element.toEmpty()
+				if (previousElement.parsedom != AlexElement.BLOCK_NODE) {
+					elementUtil.toParagraph(previousElement)
+					this.editor.range.anchor.moveToStart(previousElement)
+					this.editor.range.focus.moveToStart(previousElement)
+					element.toEmpty()
+				}
 			}
 		},
 		//编辑器部分删除情景
@@ -705,16 +708,24 @@ export default {
 			this.editor.rangeRender()
 			this.mediaAdjusterProps.show = false
 		},
-		//在表格前面换行
-		insertParagraph() {
+		//在表格前或者后换行
+		insertParagraph(type) {
 			if (this.disabled) {
 				return
+			}
+			if (!this.editor.range.anchor.isEqual(this.editor.range.focus)) {
+				this.editor.range.anchor.element = this.editor.range.focus.element
+				this.editor.range.anchor.offset = this.editor.range.focus.offset
 			}
 			const table = this.getCurrentParsedomElement('table')
 			const paragraph = new AlexElement('block', AlexElement.BLOCK_NODE, null, null, null)
 			const breakEl = new AlexElement('closed', 'br', null, null, null)
 			this.editor.addElementTo(breakEl, paragraph)
-			this.editor.addElementBefore(paragraph, table)
+			if (type == 'up') {
+				this.editor.addElementBefore(paragraph, table)
+			} else {
+				this.editor.addElementAfter(paragraph, table)
+			}
 			this.editor.range.anchor.moveToEnd(paragraph)
 			this.editor.range.focus.moveToEnd(paragraph)
 			this.editor.formatElementStack()
@@ -725,6 +736,10 @@ export default {
 		addTableRow() {
 			if (this.disabled) {
 				return
+			}
+			if (!this.editor.range.anchor.isEqual(this.editor.range.focus)) {
+				this.editor.range.anchor.element = this.editor.range.focus.element
+				this.editor.range.anchor.offset = this.editor.range.focus.offset
 			}
 			const row = this.getCurrentParsedomElement('tr')
 			const newRow = row.clone()
@@ -745,6 +760,10 @@ export default {
 		removeTableRow() {
 			if (this.disabled) {
 				return
+			}
+			if (!this.editor.range.anchor.isEqual(this.editor.range.focus)) {
+				this.editor.range.anchor.element = this.editor.range.focus.element
+				this.editor.range.anchor.offset = this.editor.range.focus.offset
 			}
 			const row = this.getCurrentParsedomElement('tr')
 			const parent = row.parent
@@ -772,6 +791,10 @@ export default {
 			if (this.disabled) {
 				return
 			}
+			if (!this.editor.range.anchor.isEqual(this.editor.range.focus)) {
+				this.editor.range.anchor.element = this.editor.range.focus.element
+				this.editor.range.anchor.offset = this.editor.range.focus.offset
+			}
 			const column = this.getCurrentParsedomElement('td')
 			const tbody = this.getCurrentParsedomElement('tbody')
 			const rows = tbody.children
@@ -796,6 +819,10 @@ export default {
 		removeTableColumn() {
 			if (this.disabled) {
 				return
+			}
+			if (!this.editor.range.anchor.isEqual(this.editor.range.focus)) {
+				this.editor.range.anchor.element = this.editor.range.focus.element
+				this.editor.range.anchor.offset = this.editor.range.focus.offset
 			}
 			const column = this.getCurrentParsedomElement('td')
 			const tbody = this.getCurrentParsedomElement('tbody')
@@ -830,6 +857,10 @@ export default {
 			if (this.disabled) {
 				return
 			}
+			if (!this.editor.range.anchor.isEqual(this.editor.range.focus)) {
+				this.editor.range.anchor.element = this.editor.range.focus.element
+				this.editor.range.anchor.offset = this.editor.range.focus.offset
+			}
 			const table = this.getCurrentParsedomElement('table')
 			table.toEmpty()
 			this.editor.formatElementStack()
@@ -862,8 +893,32 @@ export default {
 			}
 			const elements = this.editor.getElementsByRange(true, false)
 			this.editor.formatElementStack()
-			if (elements.length == 1 && elements[0].parsedom == parsedom) {
-				return elements[0]
+			const arr = []
+			elements.forEach(el => {
+				arr.push(fn(el))
+			})
+			let hasNull = arr.some(el => {
+				return el == null
+			})
+			//如果存在null，则表示有的选区元素不在指定标签下，返回null
+			if (hasNull) {
+				return null
+			}
+			//如果只有一个元素，则返回该元素
+			if (arr.length == 1) {
+				return arr[0]
+			}
+			//默认数组中的元素都相等
+			let flag = true
+			for (let i = 1; i < arr.length; i++) {
+				if (!arr[i].isEqual(arr[0])) {
+					flag = false
+					break
+				}
+			}
+			//如果相等，则返回该元素
+			if (flag) {
+				return arr[0]
 			}
 			return null
 		},
