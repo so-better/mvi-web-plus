@@ -9,6 +9,7 @@ import defaultLayerProps from './defaultLayerProps'
 import defaultUploadImageProps from './defaultUploadImageProps'
 import defaultUploadVideoProps from './defaultUploadVideoProps'
 import { Dap } from '../dap'
+import { getCurrentInstance } from 'vue'
 export default {
 	name: 'm-editor-menus',
 	data() {
@@ -107,8 +108,14 @@ export default {
 			return this.initOption(defaultUploadVideoProps, this.uploadVideoProps)
 		}
 	},
+	setup() {
+		const instance = getCurrentInstance()
+		return {
+			uid: instance.uid
+		}
+	},
 	mounted() {
-		Dap.event.on(document.documentElement, 'click.mvi-editor-menus', e => {
+		Dap.event.on(document.documentElement, `click.editor_menus_${this.uid}`, e => {
 			if (!this.instance) {
 				return
 			}
@@ -127,7 +134,7 @@ export default {
 		}
 	},
 	beforeUnmount() {
-		Dap.event.off(document.documentElement, 'click.mvi-editor-menus')
+		Dap.event.off(document.documentElement, `click.editor_menus_${this.uid}`)
 	}
 }
 </script>

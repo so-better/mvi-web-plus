@@ -1317,15 +1317,15 @@ export default {
 				return
 			}
 			const previousRow = this.menus.instance.editor.getPreviousElement(row)
+			const nextRow = this.menus.instance.editor.getNextElement(row)
 			row.toEmpty()
 			this.menus.instance.editor.formatElementStack()
 			if (previousRow) {
 				this.menus.instance.editor.range.anchor.moveToEnd(previousRow.children[0])
 				this.menus.instance.editor.range.focus.moveToEnd(previousRow.children[0])
 			} else {
-				const firstRow = parent.children[0]
-				this.menus.instance.editor.range.anchor.moveToEnd(firstRow.children[0])
-				this.menus.instance.editor.range.focus.moveToEnd(firstRow.children[0])
+				this.menus.instance.editor.range.anchor.moveToEnd(nextRow.children[0])
+				this.menus.instance.editor.range.focus.moveToEnd(nextRow.children[0])
 			}
 			this.menus.instance.editor.domRender()
 			this.menus.instance.editor.rangeRender()
@@ -1370,6 +1370,7 @@ export default {
 				return
 			}
 			const previousColumn = this.menus.instance.editor.getPreviousElement(column)
+			const nextColumn = this.menus.instance.editor.getNextElement(column)
 			const index = column.parent.children.findIndex(item => {
 				return item.isEqual(column)
 			})
@@ -1381,9 +1382,8 @@ export default {
 				this.menus.instance.editor.range.anchor.moveToEnd(previousColumn)
 				this.menus.instance.editor.range.focus.moveToEnd(previousColumn)
 			} else {
-				const firstColumn = parent.children[0]
-				this.menus.instance.editor.range.anchor.moveToEnd(firstColumn)
-				this.menus.instance.editor.range.focus.moveToEnd(firstColumn)
+				this.menus.instance.editor.range.anchor.moveToEnd(nextColumn)
+				this.menus.instance.editor.range.focus.moveToEnd(nextColumn)
 			}
 			this.menus.instance.editor.domRender()
 			this.menus.instance.editor.rangeRender()

@@ -1,5 +1,5 @@
 <template>
-	<div class="mvi-editor">
+	<div class="mvi-editor" :disabled="disabled || null">
 		<!-- 代码视图 -->
 		<textarea v-if="codeViewShow" ref="code" readonly class="mvi-editor-code" :value="cmpValue" />
 		<!-- 编辑器视图 -->
@@ -266,83 +266,87 @@ export default {
 	methods: {
 		//元素格式化时转换ol和ul标签
 		orderListHandle(element) {
-			//ol标签和ul标签转为div
-			if (element.parsedom == 'ol' || element.parsedom == 'ul') {
-				if (element.hasChildren()) {
-					element.children.forEach((el, index) => {
-						const newEl = el.clone()
-						newEl.parsedom = 'div'
-						newEl.type = 'block'
-						if (!newEl.hasMarks()) {
-							newEl.marks = {}
-						}
-						newEl.marks['data-list'] = element.parsedom
-						if (element.parsedom == 'ol') {
-							newEl.marks['data-value'] = index + 1
-						}
-						//插入到该元素之前
-						this.editor.addElementBefore(newEl, element)
-					})
+			if (!element.isEmpty()) {
+				//ol标签和ul标签转为div
+				if (element.parsedom == 'ol' || element.parsedom == 'ul') {
+					if (element.hasChildren()) {
+						element.children.forEach((el, index) => {
+							const newEl = el.clone()
+							newEl.parsedom = 'div'
+							newEl.type = 'block'
+							if (!newEl.hasMarks()) {
+								newEl.marks = {}
+							}
+							newEl.marks['data-list'] = element.parsedom
+							if (element.parsedom == 'ol') {
+								newEl.marks['data-value'] = index + 1
+							}
+							//插入到该元素之前
+							this.editor.addElementBefore(newEl, element)
+						})
+					}
+					element.toEmpty()
 				}
-				element.toEmpty()
-			}
-			//有序列表的序号处理
-			if (element.type == 'block' && element.hasMarks() && element.marks['data-list'] == 'ol') {
-				//获取前一个元素
-				const previousElement = this.editor.getPreviousElement(element)
-				//如果前一个元素存在并且也是有序列表
-				if (previousElement && previousElement.hasMarks() && previousElement.marks['data-list'] == 'ol') {
-					const previousValue = Number(previousElement.marks['data-value'])
-					element.marks['data-value'] = previousValue + 1
-				}
-				//前一个元素不是有序列表，则从0开始
-				else {
-					element.marks['data-value'] = 1
+				//有序列表的序号处理
+				if (element.type == 'block' && element.hasMarks() && element.marks['data-list'] == 'ol') {
+					//获取前一个元素
+					const previousElement = this.editor.getPreviousElement(element)
+					//如果前一个元素存在并且也是有序列表
+					if (previousElement && previousElement.hasMarks() && previousElement.marks['data-list'] == 'ol') {
+						const previousValue = Number(previousElement.marks['data-value'])
+						element.marks['data-value'] = previousValue + 1
+					}
+					//前一个元素不是有序列表，则从0开始
+					else {
+						element.marks['data-value'] = 1
+					}
 				}
 			}
 		},
 		//元素格式化时处理媒体元素和链接
 		mediaHandle(element) {
-			//图片增加marks
-			if (element.parsedom == 'img') {
-				const marks = {
-					'mvi-editor-element-key': element.key
+			if (!element.isEmpty()) {
+				//图片增加marks
+				if (element.parsedom == 'img') {
+					const marks = {
+						'mvi-editor-element-key': element.key
+					}
+					if (Dap.common.isObject(element.marks)) {
+						Object.assign(element.marks, marks)
+					} else {
+						element.marks = marks
+					}
 				}
-				if (Dap.common.isObject(element.marks)) {
-					Object.assign(element.marks, marks)
-				} else {
-					element.marks = marks
+				//视频增加marks
+				if (element.parsedom == 'video') {
+					const marks = {
+						controls: true,
+						autoplay: true,
+						muted: true,
+						'mvi-editor-element-key': element.key
+					}
+					if (Dap.common.isObject(element.marks)) {
+						Object.assign(element.marks, marks)
+					} else {
+						element.marks = marks
+					}
 				}
-			}
-			//视频增加marks
-			if (element.parsedom == 'video') {
-				const marks = {
-					controls: true,
-					autoplay: true,
-					muted: true,
-					'mvi-editor-element-key': element.key
-				}
-				if (Dap.common.isObject(element.marks)) {
-					Object.assign(element.marks, marks)
-				} else {
-					element.marks = marks
-				}
-			}
-			//链接增加marks
-			if (element.parsedom == 'a') {
-				const marks = {
-					'mvi-editor-element-key': element.key
-				}
-				if (Dap.common.isObject(element.marks)) {
-					Object.assign(element.marks, marks)
-				} else {
-					element.marks = marks
+				//链接增加marks
+				if (element.parsedom == 'a') {
+					const marks = {
+						'mvi-editor-element-key': element.key
+					}
+					if (Dap.common.isObject(element.marks)) {
+						Object.assign(element.marks, marks)
+					} else {
+						element.marks = marks
+					}
 				}
 			}
 		},
 		//元素格式化时转换code标签
 		codeHandle(element) {
-			if (element.parsedom == 'code') {
+			if (!element.isEmpty() && element.parsedom == 'code') {
 				element.parsedom = 'span'
 				const marks = {
 					'data-code-style': true
@@ -362,7 +366,7 @@ export default {
 		},
 		//元素格式化时处理表格
 		tableHandle(element) {
-			if (element.parsedom == 'table') {
+			if (element.parsedom == 'table' && !element.isEmpty()) {
 				const marks = {
 					'mvi-editor-element-key': element.key
 				}
@@ -419,7 +423,7 @@ export default {
 		//监听滚动隐藏编辑器内的浮层
 		onScroll() {
 			const setScroll = el => {
-				Dap.event.on(el, `scroll.mvi-editor-${this.uid}`, e => {
+				Dap.event.on(el, `scroll.editor_${this.uid}`, e => {
 					this.linkAdjusterProps.show = false
 					this.mediaAdjusterProps.show = false
 					this.tableAdjusterProps.show = false
@@ -433,7 +437,7 @@ export default {
 		//移除上述滚动事件的监听
 		removeScroll() {
 			const removeScroll = el => {
-				Dap.event.off(el, `scroll.mvi-editor-${this.uid}`)
+				Dap.event.off(el, `scroll.editor_${this.uid}`)
 				if (el.parentNode) {
 					removeScroll(el.parentNode)
 				}
@@ -565,13 +569,76 @@ export default {
 				const firstRow = AlexElement.flatElements(table.children).filter(el => {
 					return el.parsedom == 'tr'
 				})[0]
-				firstRow.children.forEach(column => {
-					Dap.event.off(column._elm)
-					let flag = false
-					Dap.event.on(column._elm, 'mousedown', e => {
-						console.log('鼠标按下')
-					})
+				firstRow.children.forEach((column, i) => {
+					this.setTabelColumnResize(table, firstRow, column, i)
 				})
+			})
+		},
+		//设置表格列宽拖拽
+		setTabelColumnResize(table, firstRow, column, i) {
+			if (this.disabled) {
+				return
+			}
+			//最后一个列不设置拖拽
+			if (i == firstRow.children.length - 1) {
+				return
+			}
+			//列在行中的序列
+			const index = column.parent.children.findIndex(item => {
+				return item.isEqual(column)
+			})
+			//colgroup
+			const colgroup = table.children.find(item => {
+				return item.parsedom == 'colgroup'
+			})
+			//先移除事件
+			Dap.event.off(column._elm, 'mousedown')
+			Dap.event.off(document.documentElement, `mousemove.editor_table_${table.key}_${index}_${this.uid} mouseup.editor_table_${table.key}_${index}_${this.uid}`)
+			//是否可以拖拽
+			let canResize = false
+			//按下时的位置
+			let start = 0
+			//鼠标按下
+			Dap.event.on(column._elm, 'mousedown', e => {
+				if (this.disabled) {
+					return
+				}
+				const rect = Dap.element.getElementBounding(column._elm)
+				//在可拖拽范围内
+				if (Math.abs(rect.left + column._elm.offsetWidth - e.pageX) < Dap.element.rem2px(0.2)) {
+					canResize = true
+					start = e.pageX
+				} else {
+					canResize = false
+				}
+			})
+			//鼠标移动
+			Dap.event.on(document.documentElement, `mousemove.editor_table_${table.key}_${index}_${this.uid}`, e => {
+				if (this.disabled) {
+					return
+				}
+				if (canResize) {
+					colgroup.children[index].marks['width'] = `${column._elm.offsetWidth + e.pageX - start}`
+					colgroup.children[index]._elm.setAttribute('width', `${column._elm.offsetWidth + e.pageX - start}`)
+					start = e.pageX
+				}
+			})
+			//鼠标松开
+			Dap.event.on(document.documentElement, `mouseup.editor_table_${table.key}_${index}_${this.uid}`, e => {
+				if (this.disabled) {
+					return
+				}
+				if (canResize) {
+					const width = Number(colgroup.children[index].marks['width'])
+					if (!isNaN(width)) {
+						colgroup.children[index].marks['width'] = `${Number(((width / firstRow._elm.offsetWidth) * 100).toFixed(2))}%`
+						this.editor.formatElementStack()
+						this.editor.domRender()
+						this.editor.rangeRender()
+					}
+					canResize = false
+					start = 0
+				}
 			})
 		},
 		//删除当前链接
@@ -682,15 +749,15 @@ export default {
 				return
 			}
 			const previousRow = this.editor.getPreviousElement(row)
+			const nextRow = this.editor.getNextElement(row)
 			row.toEmpty()
 			this.editor.formatElementStack()
 			if (previousRow) {
 				this.editor.range.anchor.moveToEnd(previousRow.children[0])
 				this.editor.range.focus.moveToEnd(previousRow.children[0])
 			} else {
-				const firstRow = parent.children[0]
-				this.editor.range.anchor.moveToEnd(firstRow.children[0])
-				this.editor.range.focus.moveToEnd(firstRow.children[0])
+				this.editor.range.anchor.moveToEnd(nextRow.children[0])
+				this.editor.range.focus.moveToEnd(nextRow.children[0])
 			}
 			this.editor.domRender()
 			this.editor.rangeRender()
@@ -735,6 +802,7 @@ export default {
 				return
 			}
 			const previousColumn = this.editor.getPreviousElement(column)
+			const nextColumn = this.editor.getNextElement(column)
 			const index = column.parent.children.findIndex(item => {
 				return item.isEqual(column)
 			})
@@ -746,9 +814,8 @@ export default {
 				this.editor.range.anchor.moveToEnd(previousColumn)
 				this.editor.range.focus.moveToEnd(previousColumn)
 			} else {
-				const firstColumn = parent.children[0]
-				this.editor.range.anchor.moveToEnd(firstColumn)
-				this.editor.range.focus.moveToEnd(firstColumn)
+				this.editor.range.anchor.moveToEnd(nextColumn)
+				this.editor.range.focus.moveToEnd(nextColumn)
 			}
 			this.editor.domRender()
 			this.editor.rangeRender()
@@ -828,6 +895,13 @@ export default {
 	beforeUnmount() {
 		//卸载滚动监听事件
 		this.removeScroll()
+		//卸载绑定在document.documentElement上的事件
+		const data = Dap.event.get(document.documentElement)
+		for (let key in data) {
+			if (key.startsWith('mousemove.editor_') || key.startsWith('mouseup.editor_')) {
+				Dap.event.off(document.documentElement, key)
+			}
+		}
 	}
 }
 </script>
@@ -978,6 +1052,19 @@ export default {
 
 						td {
 							font-weight: bold;
+							position: relative;
+
+							&:not(:last-child)::after {
+								position: absolute;
+								right: -@mp-lg / 2;
+								top: 0;
+								width: @mp-lg;
+								height: 100%;
+								content: '';
+								z-index: 1;
+								cursor: col-resize;
+								user-select: none;
+							}
 						}
 					}
 
@@ -996,6 +1083,12 @@ export default {
 					}
 				}
 			}
+		}
+	}
+
+	&[disabled] {
+		:deep(table) tr:first-child td:not(:last-child)::after {
+			cursor: not-allowed !important;
 		}
 	}
 }
