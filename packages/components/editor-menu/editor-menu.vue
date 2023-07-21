@@ -201,6 +201,8 @@ export default {
 	inject: ['menus'],
 	data() {
 		return {
+			//range更新计时器
+			rangeUpdateTimer: null,
 			//下拉选菜单项的默认值
 			defaultVal: {},
 			//下拉选菜单项的已选值
@@ -936,6 +938,38 @@ export default {
 				editor.domRender()
 				editor.rangeRender()
 			}
+			//代码块
+			else if (this.name == 'codeBlock') {
+				//起点和终点在一起
+				if (editor.range.anchor.isEqual(editor.range.focus)) {
+					const block = editor.range.anchor.element.getBlock()
+					elementUtil.toParagraph(block)
+					if (!this.active) {
+						block.parsedom = 'pre'
+					}
+				}
+				//起点和终点不在一起
+				else {
+					const elements = editor.getElementsByRange(true, false)
+					elements.forEach(el => {
+						if (el.isBlock()) {
+							elementUtil.toParagraph(el)
+							if (!this.active) {
+								el.parsedom = 'pre'
+							}
+						} else {
+							const block = el.getBlock()
+							elementUtil.toParagraph(block)
+							if (!this.active) {
+								block.parsedom = 'pre'
+							}
+						}
+					})
+				}
+				editor.formatElementStack()
+				editor.domRender()
+				editor.rangeRender()
+			}
 			//源码视图
 			else if (this.name == 'codeView') {
 				this.menus.instance.codeViewShow = !this.menus.instance.codeViewShow
@@ -946,177 +980,199 @@ export default {
 			if (this.cmpDisabled) {
 				return
 			}
-			const editor = this.menus.instance.editor
-			//代码判定
-			if (this.name == 'code') {
-				this.active = editor.queryTextMark('data-code-style')
+			if (this.rangeUpdateTimer) {
+				clearTimeout(this.rangeUpdateTimer)
+				this.rangeUpdateTimer = null
 			}
-			//加粗判定
-			else if (this.name == 'bold') {
-				this.active = editor.queryTextStyle('font-weight', 'bold')
-			}
-			//斜体判定
-			else if (this.name == 'italic') {
-				this.active = editor.queryTextStyle('font-style', 'italic')
-			}
-			//下划线判定
-			else if (this.name == 'underline') {
-				this.active = editor.queryTextStyle('text-decoration-line', 'underline') || editor.queryTextStyle('text-decoration', 'underline')
-			}
-			//删除线判定
-			else if (this.name == 'strikeThrough') {
-				this.active = editor.queryTextStyle('text-decoration-line', 'line-through') || editor.queryTextStyle('text-decoration', 'line-through')
-			}
-			//下标判定
-			else if (this.name == 'subscript') {
-				this.active = editor.queryTextStyle('vertical-align', 'sub')
-			}
-			//上标判定
-			else if (this.name == 'superscript') {
-				this.active = editor.queryTextStyle('vertical-align', 'super')
-			}
-			//标题判定
-			else if (this.name == 'title') {
-				if (editor.range.anchor.isEqual(editor.range.focus)) {
-					this.selectedVal = this.parseList.find(item => {
-						return item.value == editor.range.anchor.element.getBlock().parsedom
-					}) || { ...this.defaultVal }
-				} else {
-					const elements = editor.getElementsByRange(true, false)
-					this.selectedVal = this.parseList.find(item => {
-						return elements.every(el => {
-							if (el.isBlock()) {
-								return el.parsedom == item.value
-							}
-							const block = el.getBlock()
-							return block.parsedom == item.value
-						})
-					}) || { ...this.defaultVal }
+			this.rangeUpdateTimer = setTimeout(() => {
+				const editor = this.menus.instance.editor
+				//代码判定
+				if (this.name == 'code') {
+					this.active = editor.queryTextMark('data-code-style')
 					editor.formatElementStack()
 				}
-			}
-			//字体判定
-			else if (this.name == 'fontFamily') {
-				this.selectedVal = this.parseList.find(item => {
-					return editor.queryTextStyle('font-family', item.value)
-				}) || { ...this.defaultVal }
-			}
-			//字号判定
-			else if (this.name == 'fontSize') {
-				this.selectedVal = this.parseList.find(item => {
-					return editor.queryTextStyle('font-size', item.value)
-				}) || { ...this.defaultVal }
-			}
-			//字体颜色判定
-			else if (this.name == 'foreColor') {
-				this.selectedVal =
-					this.parseList.find(item => {
-						return editor.queryTextStyle('color', item.value)
-					}) || {}
-			}
-			//背景颜色判定
-			else if (this.name == 'backColor') {
-				this.selectedVal =
-					this.parseList.find(item => {
-						return editor.queryTextStyle('background-color', item.value)
-					}) || {}
-			}
-			//有序列表和无序列表判定
-			else if (this.name == 'ol' || this.name == 'ul') {
-				//起点和终点在一起
-				if (editor.range.anchor.isEqual(editor.range.focus)) {
-					const block = editor.range.anchor.element.getBlock()
-					this.active = elementUtil.isList(block, this.name == 'ol')
-				}
-				//起点和终点不在一起
-				else {
-					const elements = editor.getElementsByRange(true, false)
-					this.active = elements.every(el => {
-						if (el.isBlock()) {
-							return elementUtil.isList(el, this.name == 'ol')
-						} else {
-							const block = el.getBlock()
-							return elementUtil.isList(block, this.name == 'ol')
-						}
-					})
+				//加粗判定
+				else if (this.name == 'bold') {
+					this.active = editor.queryTextStyle('font-weight', 'bold')
 					editor.formatElementStack()
 				}
-			}
-			//对齐方式判定
-			else if (this.name == 'justify') {
-				//起点和终点在一起
-				if (editor.range.anchor.isEqual(editor.range.focus)) {
-					const block = editor.range.anchor.element.getBlock()
-					const inblock = editor.range.anchor.element.getInblock()
-					if (inblock) {
-						this.selectedVal =
-							this.parseList.find(item => {
-								return inblock.hasStyles() && inblock.styles['text-align'] == item.value
-							}) || {}
+				//斜体判定
+				else if (this.name == 'italic') {
+					this.active = editor.queryTextStyle('font-style', 'italic')
+					editor.formatElementStack()
+				}
+				//下划线判定
+				else if (this.name == 'underline') {
+					this.active = editor.queryTextStyle('text-decoration-line', 'underline') || editor.queryTextStyle('text-decoration', 'underline')
+					editor.formatElementStack()
+				}
+				//删除线判定
+				else if (this.name == 'strikeThrough') {
+					this.active = editor.queryTextStyle('text-decoration-line', 'line-through') || editor.queryTextStyle('text-decoration', 'line-through')
+					editor.formatElementStack()
+				}
+				//下标判定
+				else if (this.name == 'subscript') {
+					this.active = editor.queryTextStyle('vertical-align', 'sub')
+					editor.formatElementStack()
+				}
+				//上标判定
+				else if (this.name == 'superscript') {
+					this.active = editor.queryTextStyle('vertical-align', 'super')
+					editor.formatElementStack()
+				}
+				//标题判定
+				else if (this.name == 'title') {
+					if (editor.range.anchor.isEqual(editor.range.focus)) {
+						this.selectedVal = this.parseList.find(item => {
+							return item.value == editor.range.anchor.element.getBlock().parsedom
+						}) || { ...this.defaultVal }
 					} else {
-						this.selectedVal =
-							this.parseList.find(item => {
-								return block.hasStyles() && block.styles['text-align'] == item.value
-							}) || {}
-					}
-				} else {
-					const elements = editor.getElementsByRange(true, false)
-					this.selectedVal =
-						this.parseList.find(item => {
+						const elements = editor.getElementsByRange(true, false)
+						this.selectedVal = this.parseList.find(item => {
 							return elements.every(el => {
-								if (el.isBlock() || el.isInblock()) {
-									return el.hasStyles() && el.styles['text-align'] == item.value
+								if (el.isBlock()) {
+									return el.parsedom == item.value
 								}
 								const block = el.getBlock()
-								const inblock = el.getInblock()
-								if (inblock) {
-									return inblock.hasStyles() && inblock.styles['text-align'] == item.value
-								}
-								return block.hasStyles() && block.styles['text-align'] == item.value
+								return block.parsedom == item.value
 							})
+						}) || { ...this.defaultVal }
+						editor.formatElementStack()
+					}
+				}
+				//字体判定
+				else if (this.name == 'fontFamily') {
+					this.selectedVal = this.parseList.find(item => {
+						return editor.queryTextStyle('font-family', item.value)
+					}) || { ...this.defaultVal }
+					editor.formatElementStack()
+				}
+				//字号判定
+				else if (this.name == 'fontSize') {
+					this.selectedVal = this.parseList.find(item => {
+						return editor.queryTextStyle('font-size', item.value)
+					}) || { ...this.defaultVal }
+					editor.formatElementStack()
+				}
+				//字体颜色判定
+				else if (this.name == 'foreColor') {
+					this.selectedVal =
+						this.parseList.find(item => {
+							return editor.queryTextStyle('color', item.value)
 						}) || {}
 					editor.formatElementStack()
 				}
-			}
-			//引用判定
-			else if (this.name == 'quote') {
-				if (editor.range.anchor.isEqual(editor.range.focus)) {
-					const block = editor.range.anchor.element.getBlock()
-					this.active = block.parsedom == 'blockquote'
-				} else {
-					const elements = editor.getElementsByRange(true, false)
-					this.active = elements.every(el => {
-						if (el.isBlock()) {
-							return el.parsedom == 'blockquote'
-						} else {
-							const block = el.getBlock()
-							return block.parsedom == 'blockquote'
-						}
-					})
+				//背景颜色判定
+				else if (this.name == 'backColor') {
+					this.selectedVal =
+						this.parseList.find(item => {
+							return editor.queryTextStyle('background-color', item.value)
+						}) || {}
 					editor.formatElementStack()
 				}
-			}
-			//链接判定
-			else if (this.name == 'link') {
-				const element = this.menus.instance.getCurrentParsedomElement('a')
-				this.active = !!element
-			}
-			//表格判定
-			else if (this.name == 'table') {
-				const element = this.menus.instance.getCurrentParsedomElement('table')
-				this.active = !!element
-			}
-			//自定义菜单项的激活判定
-			else if (!this.isDefinedMenu && typeof this.customActive == 'function') {
-				const obj = this.customActive.apply(this)
-				if (this.type == 'default') {
-					this.active = obj
-				} else {
-					this.selectedVal = this.parseList.find(item => {
-						return item.value == obj
-					}) || { ...this.defaultVal }
+				//有序列表和无序列表判定
+				else if (this.name == 'ol' || this.name == 'ul') {
+					//起点和终点在一起
+					if (editor.range.anchor.isEqual(editor.range.focus)) {
+						const block = editor.range.anchor.element.getBlock()
+						this.active = elementUtil.isList(block, this.name == 'ol')
+					}
+					//起点和终点不在一起
+					else {
+						const elements = editor.getElementsByRange(true, false)
+						this.active = elements.every(el => {
+							if (el.isBlock()) {
+								return elementUtil.isList(el, this.name == 'ol')
+							} else {
+								const block = el.getBlock()
+								return elementUtil.isList(block, this.name == 'ol')
+							}
+						})
+						editor.formatElementStack()
+					}
 				}
-			}
+				//对齐方式判定
+				else if (this.name == 'justify') {
+					//起点和终点在一起
+					if (editor.range.anchor.isEqual(editor.range.focus)) {
+						const block = editor.range.anchor.element.getBlock()
+						const inblock = editor.range.anchor.element.getInblock()
+						if (inblock) {
+							this.selectedVal =
+								this.parseList.find(item => {
+									return inblock.hasStyles() && inblock.styles['text-align'] == item.value
+								}) || {}
+						} else {
+							this.selectedVal =
+								this.parseList.find(item => {
+									return block.hasStyles() && block.styles['text-align'] == item.value
+								}) || {}
+						}
+					} else {
+						const elements = editor.getElementsByRange(true, false)
+						this.selectedVal =
+							this.parseList.find(item => {
+								return elements.every(el => {
+									if (el.isBlock() || el.isInblock()) {
+										return el.hasStyles() && el.styles['text-align'] == item.value
+									}
+									const block = el.getBlock()
+									const inblock = el.getInblock()
+									if (inblock) {
+										return inblock.hasStyles() && inblock.styles['text-align'] == item.value
+									}
+									return block.hasStyles() && block.styles['text-align'] == item.value
+								})
+							}) || {}
+						editor.formatElementStack()
+					}
+				}
+				//引用判定
+				else if (this.name == 'quote') {
+					if (editor.range.anchor.isEqual(editor.range.focus)) {
+						const block = editor.range.anchor.element.getBlock()
+						this.active = block.parsedom == 'blockquote'
+					} else {
+						const elements = editor.getElementsByRange(true, false)
+						this.active = elements.every(el => {
+							if (el.isBlock()) {
+								return el.parsedom == 'blockquote'
+							} else {
+								const block = el.getBlock()
+								return block.parsedom == 'blockquote'
+							}
+						})
+						editor.formatElementStack()
+					}
+				}
+				//链接判定
+				else if (this.name == 'link') {
+					const element = this.menus.instance.getCurrentParsedomElement('a')
+					this.active = !!element
+				}
+				//表格判定
+				else if (this.name == 'table') {
+					const element = this.menus.instance.getCurrentParsedomElement('table')
+					this.active = !!element
+				}
+				//代码块判定
+				else if (this.name == 'codeBlock') {
+					const element = this.menus.instance.getCurrentParsedomElement('pre')
+					this.active = !!element
+				}
+				//自定义菜单项的激活判定
+				else if (!this.isDefinedMenu && typeof this.customActive == 'function') {
+					const obj = this.customActive.apply(this)
+					if (this.type == 'default') {
+						this.active = obj
+					} else {
+						this.selectedVal = this.parseList.find(item => {
+							return item.value == obj
+						}) || { ...this.defaultVal }
+					}
+				}
+			}, 100)
 		},
 		//插入有序列表或者无序列表
 		insertList(ordered = false) {
@@ -1146,6 +1202,7 @@ export default {
 						}
 					}
 				})
+				this.menus.instance.editor.formatElementStack()
 			}
 		},
 		//插入链接

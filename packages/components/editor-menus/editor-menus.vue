@@ -115,7 +115,7 @@ export default {
 		}
 	},
 	mounted() {
-		Dap.event.on(document.documentElement, `click.editor_menus_${this.uid}`, e => {
+		Dap.event.on(document.documentElement, `mousedown.editor_menus_${this.uid}`, e => {
 			if (!this.instance) {
 				return
 			}

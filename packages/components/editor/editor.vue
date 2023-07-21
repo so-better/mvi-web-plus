@@ -384,7 +384,11 @@ export default {
 				})
 				if (colgroup) {
 					colgroup.children.forEach(col => {
-						if (!col.hasMarks() || !col.marks['width']) {
+						if (!col.hasMarks()) {
+							col.marks = {
+								width: 'auto'
+							}
+						} else if (!col.marks['width']) {
 							col.marks['width'] = 'auto'
 						}
 					})
@@ -1083,6 +1087,22 @@ export default {
 					}
 				}
 			}
+		}
+
+		//代码块样式
+		:deep(pre) {
+			display: block;
+			padding: @mp-sm;
+			margin: 0 0 @mp-sm;
+			font-size: @font-size-default;
+			font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
+			line-height: 1.5;
+			color: @font-color-default;
+			background-color: @bg-color-default;
+			border: 1px solid @bg-color-dark;
+			border-radius: @radius-default;
+			overflow: auto;
+			position: relative;
 		}
 	}
 
