@@ -1,9 +1,9 @@
 <template>
-	<div class="mvi-editor" :disabled="disabled || null">
+	<div class="mvi-editor">
 		<!-- 代码视图 -->
 		<textarea v-if="codeViewShow" ref="code" readonly class="mvi-editor-code" :value="cmpValue" />
 		<!-- 编辑器视图 -->
-		<div ref="content" :data-placeholder="placeholder" :class="['mvi-editor-content', border ? 'border' : '', isEmpty ? 'empty' : '']" :style="contentStyle" @compositionstart="compositionFlag = true" @compositionend="compositionFlag = false" @click="clickEditor"></div>
+		<div ref="content" :data-placeholder="placeholder" :class="['mvi-editor-content', border ? 'border' : '', isEmpty ? 'empty' : '']" :style="contentStyle" @compositionstart="compositionFlag = true" @compositionend="compositionFlag = false" @click="clickEditor" :disabled="disabled || null"></div>
 		<!-- 链接调整器 -->
 		<m-layer v-model="linkAdjusterProps.show" fixed :target="linkAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#ddd" closable>
 			<div class="mvi-editor-layer-link">
@@ -63,13 +63,13 @@ export default {
 			type: String,
 			default: ''
 		},
-		//初始高度
+		//高度
 		height: {
 			type: String,
 			default: '8rem'
 		},
 		//编辑区域高度是否自动变化
-		autoHeight: {
+		autoheight: {
 			type: Boolean,
 			default: false
 		},
@@ -176,7 +176,7 @@ export default {
 		//编辑器区域样式设置
 		contentStyle() {
 			let style = {}
-			if (this.autoHeight) {
+			if (this.autoheight) {
 				style.minHeight = this.height
 			} else {
 				style.height = this.height
@@ -949,6 +949,38 @@ export default {
 					time: 0
 				})
 			})
+		},
+		//api：插入图片
+		insertImage(url) {
+			const image = new AlexElement(
+				'closed',
+				'img',
+				{
+					src: url
+				},
+				null,
+				null
+			)
+			this.editor.insertElement(image)
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//api：插入视频
+		insertVideo(url) {
+			const video = new AlexElement(
+				'closed',
+				'video',
+				{
+					src: url
+				},
+				null,
+				null
+			)
+			this.editor.insertElement(video)
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
 		}
 	},
 	beforeUnmount() {
@@ -1143,7 +1175,6 @@ export default {
 				}
 			}
 		}
-
 		//代码块样式
 		:deep(pre) {
 			display: block;
@@ -1159,11 +1190,14 @@ export default {
 			overflow: auto;
 			position: relative;
 		}
-	}
 
-	&[disabled] {
-		:deep(table) tr:first-child td:not(:last-child)::after {
-			cursor: not-allowed !important;
+		&[disabled] {
+			&.empty::before {
+				cursor: not-allowed;
+			}
+			:deep(table) tr:first-child td:not(:last-child)::after {
+				cursor: not-allowed !important;
+			}
 		}
 	}
 }

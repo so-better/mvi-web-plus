@@ -385,31 +385,10 @@ export default {
 						files.forEach(file => {
 							Dap.file.dataFileToBase64(file).then(base64 => {
 								if (this.name == 'image') {
-									const image = new AlexElement(
-										'closed',
-										'img',
-										{
-											src: base64
-										},
-										null,
-										null
-									)
-									this.menus.instance.editor.insertElement(image)
+									this.menus.instance.insertImage(base64)
 								} else if (this.name == 'video') {
-									const video = new AlexElement(
-										'closed',
-										'video',
-										{
-											src: base64
-										},
-										null,
-										null
-									)
-									this.menus.instance.editor.insertElement(video)
+									this.menus.instance.insertVideo(base64)
 								}
-								this.menus.instance.editor.formatElementStack()
-								this.menus.instance.editor.domRender()
-								this.menus.instance.editor.rangeRender()
 							})
 						})
 					} else {
