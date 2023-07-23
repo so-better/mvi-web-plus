@@ -1,32 +1,30 @@
 <template>
 	<div class="mvi-p-4">
 		<div>
-			<m-button @click="change">插入html</m-button>
+			<m-button @click="show = !show">Button</m-button>
 		</div>
-		<m-editor-menus use-tooltip class="mvi-mb-4" ref="menus">
-			<m-editor-menu v-for="item in definedMenus" :name="item.name" />
-		</m-editor-menus>
-		<!-- {{ value }} -->
-		<m-editor ref="editor" v-model="value" autofocus placeholder="Please Enter Text" height="4rem" autoheight border active-color="#10837f" htmlPaste></m-editor>
+		<m-actionsheet v-model="show" overlayColor="rgba(0,0,0,0.7)" title="分享" :options="options" size="large" closable round @select="change"></m-actionsheet>
 	</div>
 </template>
 <script>
-import { EditorDefinedMenuConfig } from '../packages'
 export default {
 	data() {
 		return {
-			value: '<p><br></p>',
-			definedMenus: EditorDefinedMenuConfig
+			show: false,
+			options: [
+				{
+					label: '分享到朋友圈'
+				},
+				{
+					label: '分享到QQ空间'
+				}
+			]
 		}
 	},
-	mounted() {
-		this.$refs.editor.use(this.$refs.menus)
-	},
+	mounted() {},
 	methods: {
-		change() {
-			this.$refs.editor.setTextStyle({
-				color: 'red'
-			})
+		change(item, index) {
+			console.log(item, index)
 		}
 	}
 }
