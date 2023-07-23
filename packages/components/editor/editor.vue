@@ -962,6 +962,12 @@ export default {
 				null
 			)
 			this.editor.insertElement(image)
+			const leftSpace = AlexElement.getSpaceElement()
+			const rightSpace = AlexElement.getSpaceElement()
+			this.editor.addElementAfter(rightSpace, image)
+			this.editor.addElementBefore(leftSpace, image)
+			this.editor.range.anchor.moveToEnd(rightSpace)
+			this.editor.range.focus.moveToEnd(rightSpace)
 			this.editor.formatElementStack()
 			this.editor.domRender()
 			this.editor.rangeRender()
@@ -978,6 +984,41 @@ export default {
 				null
 			)
 			this.editor.insertElement(video)
+			const leftSpace = AlexElement.getSpaceElement()
+			const rightSpace = AlexElement.getSpaceElement()
+			this.editor.addElementAfter(rightSpace, video)
+			this.editor.addElementBefore(leftSpace, video)
+			this.editor.range.anchor.moveToEnd(rightSpace)
+			this.editor.range.focus.moveToEnd(rightSpace)
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//api：插入html
+		insertHtml(html) {
+			if (!html) {
+				return
+			}
+			const elements = this.editor.parseHtml(html)
+			elements.reverse().forEach((el, index) => {
+				if (index == 0) {
+					this.editor.insertElement(el)
+				} else {
+					this.editor.addElementBefore(el, elements[0])
+				}
+			})
+			this.editor.range.anchor.moveToEnd(elements[elements.length - 1])
+			this.editor.range.focus.moveToEnd(elements[elements.length - 1])
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//api：插入文本
+		insertText(text) {
+			if (!text) {
+				return
+			}
+			this.editor.insertText(text)
 			this.editor.formatElementStack()
 			this.editor.domRender()
 			this.editor.rangeRender()

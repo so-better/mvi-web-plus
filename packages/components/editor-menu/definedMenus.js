@@ -12,7 +12,7 @@ export default [
 		title: '重做'
 	},
 	{
-		name: 'removeFormat',
+		name: 'removeformat',
 		type: 'default',
 		icon: 'clear',
 		title: '清除格式'
@@ -66,7 +66,7 @@ export default [
 		title: '下划线'
 	},
 	{
-		name: 'strikeThrough',
+		name: 'strikethrough',
 		type: 'default',
 		icon: 'strikethrough',
 		title: '删除线'
@@ -116,7 +116,7 @@ export default [
 		value: 'p'
 	},
 	{
-		name: 'fontFamily',
+		name: 'fontfamily',
 		type: 'display',
 		title: '字体',
 		value: '',
@@ -134,7 +134,7 @@ export default [
 		]
 	},
 	{
-		name: 'fontSize',
+		name: 'fontsize',
 		type: 'display',
 		title: '字号',
 		value: '',
@@ -170,14 +170,14 @@ export default [
 		]
 	},
 	{
-		name: 'foreColor',
+		name: 'forecolor',
 		type: 'select',
 		title: '文字颜色',
 		icon: 'color-picker',
 		list: ['#000000', '#505050', '#808080', '#BBBBBB', '#CCCCCC', '#EEEEEE', '#F7F7F7', '#FFFFFF', '#EC1A0A', '#FF9900', '#FFFF00', '#07C160', '#00FFFF', '#0B73DE', '#9C00FF', '#FF00FF', '#F7C6CE', '#FFE7CE', '#FFEFC6', '#D6EFD6', '#CEDEE7', '#CEE7F7', '#D6D6E7', '#E7D6DE', '#E79C9C', '#FFC69C', '#FFE79C', '#B5D6A5', '#A5C6CE', '#9CC6EF', '#B5A5D6', '#D6A5BD', '#e45649', '#F7AD6B', '#FFD663', '#94BD7B', '#73A5AD', '#6BADDE', '#8C7BC6', '#C67BA5', '#CE0000', '#E79439', '#EFC631', '#50a14f', '#4A7B8C', '#03A8F3', '#634AA5', '#A54A7B', '#9C0000', '#B56308', '#BD9400', '#397B21', '#104A5A', '#085294', '#311873', '#731842', '#630000', '#7B3900', '#986801', '#295218', '#083139', '#003163', '#21104A', '#4A1031']
 	},
 	{
-		name: 'backColor',
+		name: 'backcolor',
 		type: 'select',
 		title: '背景颜色',
 		icon: 'brush',
@@ -292,17 +292,16 @@ export default [
 			insertColumnText: '插入列',
 			removeColumnText: '删除列',
 			deleteText: '删除表格'
-		},
-		list: []
+		}
 	},
 	{
-		name: 'codeBlock',
+		name: 'codeblock',
 		type: 'default',
 		icon: 'code-block',
 		title: '代码块'
 	},
 	{
-		name: 'codeView',
+		name: 'codeview',
 		type: 'default',
 		icon: 'eye',
 		title: '源码视图'

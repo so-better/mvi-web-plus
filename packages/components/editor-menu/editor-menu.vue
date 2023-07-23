@@ -11,69 +11,71 @@
 			</div>
 		</Tooltip>
 		<Layer v-if="type == 'select' || type == 'display'" v-model="layerShow" ref="layer" :placement="menus.combinedLayerProps.placement" :z-index="menus.combinedLayerProps.zIndex" :fixed="menus.combinedLayerProps.fixed" :fixed-auto="menus.combinedLayerProps.fixedAuto" :offset="menus.combinedLayerProps.offset" :wrapper-class="menus.combinedLayerProps.wrapperClass" :timeout="menus.combinedLayerProps.timeout" :show-triangle="menus.combinedLayerProps.showTriangle" :animation="menus.combinedLayerProps.animation" :shadow="menus.combinedLayerProps.shadow" :border="menus.combinedLayerProps.border" :width="menus.combinedLayerProps.width" :closable="menus.trigger == 'click'" :target="`[data-id='mvi-editor-menu-el-${uid}']`" :root="`[data-id='mvi-editor-menu-${uid}']`" @showing="beforeLayerShow">
-			<!-- 字体颜色、背景色 -->
-			<div v-if="name == 'foreColor' || name == 'backColor'" class="mvi-editor-menu-colors">
-				<div class="mvi-editor-menu-color" :style="menuColorStyle(item)" v-for="item in parseList">
-					<Tooltip :disabled="!menus.useTooltip || !item.label || cmpDisabled" trigger="hover" :title="item.label" :placement="menus.combinedTooltipProps.placement" :timeout="menus.combinedTooltipProps.timeout" :color="menus.combinedTooltipProps.color" :text-color="menus.combinedTooltipProps.textColor" :border-color="menus.combinedTooltipProps.borderColor" :offset="menus.combinedTooltipProps.offset" :z-index="menus.combinedTooltipProps.zIndex" :fixed="menus.combinedTooltipProps.fixed" :fixed-auto="menus.combinedTooltipProps.fixedAuto" :width="menus.combinedTooltipProps.width" :animation="menus.combinedTooltipProps.animation" :show-triangle="menus.combinedTooltipProps.showTriangle" block>
-						<div :style="{ backgroundColor: item.value }" @click="layerClick(item)" class="mvi-editor-menu-color-el"></div>
-					</Tooltip>
-				</div>
-			</div>
-			<!-- 表格 -->
-			<div v-else-if="name == 'table'" class="mvi-editor-menu-table">
-				<template v-if="active">
-					<div class="mvi-editor-menu-table-operations">
-						<div @click="addTableRow" :style="{ color: activeColor }" class="mvi-editor-menu-table-operation">{{ props.insertRowText }}</div>
-						<div @click="removeTableRow" class="mvi-editor-menu-table-operation">{{ props.removeRowText }}</div>
-						<div @click="addTableColumn" :style="{ color: activeColor }" class="mvi-editor-menu-table-operation">{{ props.insertColumnText }}</div>
-						<div @click="removeTableColumn" class="mvi-editor-menu-table-operation">{{ props.removeColumnText }}</div>
-					</div>
-					<div class="mvi-editor-menu-table-footer">
-						<span @click="deleteTable">{{ props.deleteText }}</span>
-					</div>
-				</template>
-				<template v-else>
-					<div class="mvi-editor-menu-table-grids" v-for="item in tableParams.grids">
-						<div @click="confirmTableSize" @mouseenter="changeTableSize(el)" :class="['mvi-editor-menu-table-grid', el.inside ? 'active' : '']" v-for="el in item"></div>
-					</div>
-					<div v-if="tableParams.size.length" class="mvi-editor-menu-table-size">{{ tableParams.size[0] }} × {{ tableParams.size[1] }}</div>
-				</template>
-			</div>
-			<!-- 链接 -->
-			<div v-else-if="name == 'link'" class="mvi-editor-menu-link">
-				<input :disabled="!linkParams.showText || null" ref="linkText" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.text" :placeholder="props.placeholder[0]" type="text" />
-				<input ref="linkUrl" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.url" :placeholder="props.placeholder[1]" type="text" />
-				<div class="mvi-editor-menu-link-footer">
-					<Checkbox :label="props.targetText" label-placement="right" :icon="{ size: '0.24rem' }" label-size="0.28rem" label-color="#505050" :fill-color="activeColor" v-model="linkParams.target"> </Checkbox>
-					<div class="mvi-editor-menu-link-operation">
-						<span class="mvi-editor-menu-link-delete" v-if="!linkParams.showText" @click="deleteLink">{{ props.removeText }}</span>
-						<span class="mvi-editor-menu-link-insert" :style="{ color: activeColor }" @click="insertLink">{{ props.insertText }}</span>
-					</div>
-				</div>
-			</div>
-			<!-- 图片或者视频 -->
-			<div v-else-if="name == 'image' || name == 'video'" class="mvi-editor-menu-media">
-				<Tabs @change="tabChange" v-model="mediaParams.tabIndex" flex="flex-start" offset="0.4rem" :active-color="activeColor" inactive-color="#808080">
-					<Tab v-for="item in parseList" :title="item.label">
-						<div class="mvi-editor-menu-media-upload" v-if="item.value == 'upload'">
-							<Icon type="upload-square" />
-						</div>
-						<div v-else-if="item.value == 'remote'" class="mvi-editor-menu-media-remote">
-							<input @focus="inputFocus" @blur="inputBlur" v-model.trim="mediaParams.remoteUrl" :placeholder="props.placeholder" type="text" />
-							<div class="mvi-editor-menu-media-insert" :style="{ color: activeColor }" @click="insertRemote">{{ props.insertText }}</div>
-						</div>
-					</Tab>
-				</Tabs>
-			</div>
-			<!-- 正常的下拉选 -->
-			<div v-else class="mvi-editor-menu-default">
-				<EditorTag :tag="layerElTag(item)" v-for="item in parseList" :class="['mvi-editor-menu-layer-el', selectedVal.value == item.value ? 'active' : '']" @click="layerClick(item)">
-					<Icon v-if="item.icon.type || item.icon.url" class="mvi-editor-menu-layer-icon" :type="item.icon.type" :url="item.icon.url" :spin="item.icon.spin" :size="item.icon.size" :color="item.icon.color" />
-					<span v-text="item.label"></span>
-				</EditorTag>
-			</div>
 			<!-- 自定义浮层内容 -->
 			<slot name="layer" v-if="$slots.layer"></slot>
+			<template v-else>
+				<!-- 字体颜色、背景色 -->
+				<div v-if="name == 'forecolor' || name == 'backcolor'" class="mvi-editor-menu-colors">
+					<div class="mvi-editor-menu-color" :style="menuColorStyle(item)" v-for="item in parseList">
+						<Tooltip :disabled="!menus.useTooltip || !item.label || cmpDisabled" trigger="hover" :title="item.label" :placement="menus.combinedTooltipProps.placement" :timeout="menus.combinedTooltipProps.timeout" :color="menus.combinedTooltipProps.color" :text-color="menus.combinedTooltipProps.textColor" :border-color="menus.combinedTooltipProps.borderColor" :offset="menus.combinedTooltipProps.offset" :z-index="menus.combinedTooltipProps.zIndex" :fixed="menus.combinedTooltipProps.fixed" :fixed-auto="menus.combinedTooltipProps.fixedAuto" :width="menus.combinedTooltipProps.width" :animation="menus.combinedTooltipProps.animation" :show-triangle="menus.combinedTooltipProps.showTriangle" block>
+							<div :style="{ backgroundColor: item.value }" @click="layerClick(item)" class="mvi-editor-menu-color-el"></div>
+						</Tooltip>
+					</div>
+				</div>
+				<!-- 表格 -->
+				<div v-else-if="name == 'table'" class="mvi-editor-menu-table">
+					<template v-if="active">
+						<div class="mvi-editor-menu-table-operations">
+							<div @click="addTableRow" :style="{ color: activeColor }" class="mvi-editor-menu-table-operation">{{ props.insertRowText }}</div>
+							<div @click="removeTableRow" class="mvi-editor-menu-table-operation">{{ props.removeRowText }}</div>
+							<div @click="addTableColumn" :style="{ color: activeColor }" class="mvi-editor-menu-table-operation">{{ props.insertColumnText }}</div>
+							<div @click="removeTableColumn" class="mvi-editor-menu-table-operation">{{ props.removeColumnText }}</div>
+						</div>
+						<div class="mvi-editor-menu-table-footer">
+							<span @click="deleteTable">{{ props.deleteText }}</span>
+						</div>
+					</template>
+					<template v-else>
+						<div class="mvi-editor-menu-table-grids" v-for="item in tableParams.grids">
+							<div @click="confirmTableSize" @mouseenter="changeTableSize(el)" :class="['mvi-editor-menu-table-grid', el.inside ? 'active' : '']" v-for="el in item"></div>
+						</div>
+						<div v-if="tableParams.size.length" class="mvi-editor-menu-table-size">{{ tableParams.size[0] }} × {{ tableParams.size[1] }}</div>
+					</template>
+				</div>
+				<!-- 链接 -->
+				<div v-else-if="name == 'link'" class="mvi-editor-menu-link">
+					<input :disabled="!linkParams.showText || null" ref="linkText" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.text" :placeholder="props.placeholder[0]" type="text" />
+					<input ref="linkUrl" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.url" :placeholder="props.placeholder[1]" type="text" />
+					<div class="mvi-editor-menu-link-footer">
+						<Checkbox :label="props.targetText" label-placement="right" :icon="{ size: '0.24rem' }" label-size="0.28rem" label-color="#505050" :fill-color="activeColor" v-model="linkParams.target"> </Checkbox>
+						<div class="mvi-editor-menu-link-operation">
+							<span class="mvi-editor-menu-link-delete" v-if="!linkParams.showText" @click="deleteLink">{{ props.removeText }}</span>
+							<span class="mvi-editor-menu-link-insert" :style="{ color: activeColor }" @click="insertLink">{{ props.insertText }}</span>
+						</div>
+					</div>
+				</div>
+				<!-- 图片或者视频 -->
+				<div v-else-if="name == 'image' || name == 'video'" class="mvi-editor-menu-media">
+					<Tabs @change="tabChange" v-model="mediaParams.tabIndex" flex="flex-start" offset="0.4rem" :active-color="activeColor" inactive-color="#808080">
+						<Tab v-for="item in parseList" :title="item.label">
+							<div class="mvi-editor-menu-media-upload" v-if="item.value == 'upload'">
+								<Icon type="upload-square" />
+							</div>
+							<div v-else-if="item.value == 'remote'" class="mvi-editor-menu-media-remote">
+								<input @focus="inputFocus" @blur="inputBlur" v-model.trim="mediaParams.remoteUrl" :placeholder="props.placeholder" type="text" />
+								<div class="mvi-editor-menu-media-insert" :style="{ color: activeColor }" @click="insertRemote">{{ props.insertText }}</div>
+							</div>
+						</Tab>
+					</Tabs>
+				</div>
+				<!-- 正常的下拉选 -->
+				<div v-else class="mvi-editor-menu-default">
+					<EditorTag :tag="layerElTag(item)" v-for="item in parseList" :class="['mvi-editor-menu-layer-el', selectedVal.value == item.value ? 'active' : '']" @click="layerClick(item)">
+						<Icon v-if="item.icon.type || item.icon.url" class="mvi-editor-menu-layer-icon" :type="item.icon.type" :url="item.icon.url" :spin="item.icon.spin" :size="item.icon.size" :color="item.icon.color" />
+						<span v-text="item.label"></span>
+					</EditorTag>
+				</div>
+			</template>
 		</Layer>
 	</div>
 </template>
@@ -124,13 +126,7 @@ export default {
 		//菜单项名称，唯一标识
 		name: {
 			type: String,
-			default: '',
-			validator(value) {
-				const names = definedMenus.map(item => {
-					return item.name
-				})
-				return [...names, 'custom'].includes(value)
-			}
+			default: null
 		},
 		//菜单项类型
 		type: {
@@ -179,7 +175,7 @@ export default {
 				return menu ? menu.value : null
 			}
 		},
-		//菜单项的额外配置参数，不同的菜单项其内部具体属性不同
+		//菜单项的额外配置参数
 		props: {
 			type: Object,
 			default: function (props) {
@@ -194,8 +190,7 @@ export default {
 		},
 		//自定义菜单项的激活判定
 		customActive: {
-			type: Function,
-			default: null
+			type: Function
 		}
 	},
 	inject: ['menus'],
@@ -308,8 +303,8 @@ export default {
 			if (this.menus.instance.disabled) {
 				return true
 			}
-			//如果是代码视图，则禁用除"codeView"菜单项以外的所有菜单
-			if (this.menus.instance.codeViewShow && this.name != 'codeView') {
+			//如果是代码视图，则禁用除"codeview"菜单项以外的所有菜单
+			if (this.menus.instance.codeViewShow && this.name != 'codeview') {
 				return true
 			}
 			//如果菜单栏不可使用
@@ -649,7 +644,7 @@ export default {
 				}
 			}
 			//清除格式
-			else if (this.name == 'removeFormat') {
+			else if (this.name == 'removeformat') {
 				editor.removeTextStyle()
 				editor.formatElementStack()
 				editor.domRender()
@@ -733,7 +728,7 @@ export default {
 				editor.rangeRender()
 			}
 			//删除线
-			else if (this.name == 'strikeThrough') {
+			else if (this.name == 'strikethrough') {
 				if (this.active) {
 					editor.removeTextStyle(['text-decoration-line', 'text-decoration'])
 				} else {
@@ -797,7 +792,7 @@ export default {
 				editor.rangeRender()
 			}
 			//字体
-			else if (this.name == 'fontFamily') {
+			else if (this.name == 'fontfamily') {
 				editor.setTextStyle({
 					'font-family': item.value
 				})
@@ -806,7 +801,7 @@ export default {
 				editor.rangeRender()
 			}
 			//字号
-			else if (this.name == 'fontSize') {
+			else if (this.name == 'fontsize') {
 				editor.setTextStyle({
 					'font-size': item.value
 				})
@@ -815,7 +810,7 @@ export default {
 				editor.rangeRender()
 			}
 			//字体颜色
-			else if (this.name == 'foreColor') {
+			else if (this.name == 'forecolor') {
 				editor.setTextStyle({
 					color: item.value
 				})
@@ -824,7 +819,7 @@ export default {
 				editor.rangeRender()
 			}
 			//背景颜色
-			else if (this.name == 'backColor') {
+			else if (this.name == 'backcolor') {
 				editor.setTextStyle({
 					'background-color': item.value
 				})
@@ -932,7 +927,7 @@ export default {
 				editor.rangeRender()
 			}
 			//代码块
-			else if (this.name == 'codeBlock') {
+			else if (this.name == 'codeblock') {
 				//起点和终点在一起
 				if (editor.range.anchor.isEqual(editor.range.focus)) {
 					const block = editor.range.anchor.element.getBlock()
@@ -988,7 +983,7 @@ export default {
 				editor.rangeRender()
 			}
 			//源码视图
-			else if (this.name == 'codeView') {
+			else if (this.name == 'codeview') {
 				this.menus.instance.codeViewShow = !this.menus.instance.codeViewShow
 			}
 		},
@@ -1024,7 +1019,7 @@ export default {
 					editor.formatElementStack()
 				}
 				//删除线判定
-				else if (this.name == 'strikeThrough') {
+				else if (this.name == 'strikethrough') {
 					this.active = editor.queryTextStyle('text-decoration-line', 'line-through') || editor.queryTextStyle('text-decoration', 'line-through')
 					editor.formatElementStack()
 				}
@@ -1059,21 +1054,21 @@ export default {
 					}
 				}
 				//字体判定
-				else if (this.name == 'fontFamily') {
+				else if (this.name == 'fontfamily') {
 					this.selectedVal = this.parseList.find(item => {
 						return editor.queryTextStyle('font-family', item.value)
 					}) || { ...this.defaultVal }
 					editor.formatElementStack()
 				}
 				//字号判定
-				else if (this.name == 'fontSize') {
+				else if (this.name == 'fontsize') {
 					this.selectedVal = this.parseList.find(item => {
 						return editor.queryTextStyle('font-size', item.value)
 					}) || { ...this.defaultVal }
 					editor.formatElementStack()
 				}
 				//字体颜色判定
-				else if (this.name == 'foreColor') {
+				else if (this.name == 'forecolor') {
 					this.selectedVal =
 						this.parseList.find(item => {
 							return editor.queryTextStyle('color', item.value)
@@ -1081,7 +1076,7 @@ export default {
 					editor.formatElementStack()
 				}
 				//背景颜色判定
-				else if (this.name == 'backColor') {
+				else if (this.name == 'backcolor') {
 					this.selectedVal =
 						this.parseList.find(item => {
 							return editor.queryTextStyle('background-color', item.value)
@@ -1174,7 +1169,7 @@ export default {
 					this.active = !!element
 				}
 				//代码块判定
-				else if (this.name == 'codeBlock') {
+				else if (this.name == 'codeblock') {
 					const element = this.menus.instance.getCurrentParsedomElement('pre')
 					this.active = !!element
 				}

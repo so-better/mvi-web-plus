@@ -1,10 +1,13 @@
 <template>
 	<div class="mvi-p-4">
-		<m-editor-menus border useTooltip class="mvi-mb-4" ref="menus">
+		<div>
+			<m-button @click="change">插入html</m-button>
+		</div>
+		<m-editor-menus use-tooltip class="mvi-mb-4" ref="menus">
 			<m-editor-menu v-for="item in definedMenus" :name="item.name" />
 		</m-editor-menus>
 		<!-- {{ value }} -->
-		<m-editor ref="editor" v-model="value" autofocus placeholder="Please Enter Text" height="4rem" autoheight border active-color="#10837f" html-paste custom-image-paste @paste-image="change"></m-editor>
+		<m-editor ref="editor" v-model="value" autofocus placeholder="Please Enter Text" height="4rem" autoheight border active-color="#10837f" htmlPaste></m-editor>
 	</div>
 </template>
 <script>
@@ -20,8 +23,10 @@ export default {
 		this.$refs.editor.use(this.$refs.menus)
 	},
 	methods: {
-		change(newVal, oldVal) {
-			this.$refs.editor.insertImage(newVal)
+		change() {
+			this.$refs.editor.setTextStyle({
+				color: 'red'
+			})
 		}
 	}
 }
