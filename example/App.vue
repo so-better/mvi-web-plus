@@ -11,12 +11,12 @@
 	</div>
 </template>
 <script>
-import { definedEditorMenus } from '../packages'
+import { EditorDefinedMenuConfig } from '../packages'
 export default {
 	data() {
 		return {
 			value: '<p><br></p>',
-			definedMenus: definedEditorMenus
+			definedMenus: EditorDefinedMenuConfig
 		}
 	},
 	mounted() {
