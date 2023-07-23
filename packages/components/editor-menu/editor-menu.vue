@@ -928,20 +928,22 @@ export default {
 			}
 			//代码块
 			else if (this.name == 'codeblock') {
-				//起点和终点在一起
-				if (editor.range.anchor.isEqual(editor.range.focus)) {
-					const block = editor.range.anchor.element.getBlock()
-					elementUtil.toParagraph(block)
-					if (!this.active) {
+				if (this.active) {
+					const pre = this.menus.instance.getCurrentParsedomElement('pre')
+					elementUtil.toParagraph(pre)
+				} else {
+					//起点和终点在一起
+					if (editor.range.anchor.isEqual(editor.range.focus)) {
+						const block = editor.range.anchor.element.getBlock()
+						elementUtil.toParagraph(block)
 						block.parsedom = 'pre'
+						const paragraph = new AlexElement('block', AlexElement.BLOCK_NODE, null, null, null)
+						const breakEl = new AlexElement('closed', 'br', null, null, null)
+						editor.addElementTo(breakEl, paragraph)
+						editor.addElementAfter(paragraph, block)
 					}
-				}
-				//起点和终点不在一起
-				else {
-					if (this.active) {
-						const pre = editor.range.anchor.element.getBlock()
-						elementUtil.toParagraph(pre)
-					} else {
+					//起点和终点不在一起
+					else {
 						let elements = editor.getElementsByRange(true, false)
 						editor.range.anchor.moveToStart(elements[0].getBlock())
 						editor.range.focus.moveToEnd(elements[elements.length - 1].getBlock())
@@ -976,8 +978,13 @@ export default {
 						})
 						editor.delete()
 						editor.insertElement(pre)
+						const paragraph = new AlexElement('block', AlexElement.BLOCK_NODE, null, null, null)
+						const breakEl = new AlexElement('closed', 'br', null, null, null)
+						editor.addElementTo(breakEl, paragraph)
+						editor.addElementAfter(paragraph, pre)
 					}
 				}
+
 				editor.formatElementStack()
 				editor.domRender()
 				editor.rangeRender()
