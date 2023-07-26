@@ -1,15 +1,17 @@
 <template>
 	<div class="mvi-p-4">
-		<div>
-			<m-button @click="show = !show">Button</m-button>
-		</div>
-		<m-actionsheet v-model="show" overlayColor="rgba(0,0,0,0.7)" title="分享" :options="options" size="large" closable round @select="change"></m-actionsheet>
+		<m-editor-menus ref="menus">
+			<m-editor-menu v-for="item in menus" :name="item.name"></m-editor-menu>
+		</m-editor-menus>
+		<m-editor v-mode="value" ref="editor"></m-editor>
 	</div>
 </template>
 <script>
+import { EditorDefinedMenuConfig } from '../packages'
 export default {
 	data() {
 		return {
+			value: '',
 			show: false,
 			options: [
 				{
@@ -18,10 +20,13 @@ export default {
 				{
 					label: '分享到QQ空间'
 				}
-			]
+			],
+			menus: EditorDefinedMenuConfig
 		}
 	},
-	mounted() {},
+	mounted() {
+		this.$refs.editor.use(this.$refs.menus)
+	},
 	methods: {
 		change(item, index) {
 			console.log(item, index)

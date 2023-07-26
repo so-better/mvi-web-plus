@@ -962,12 +962,6 @@ export default {
 				null
 			)
 			this.editor.insertElement(image)
-			const leftSpace = AlexElement.getSpaceElement()
-			const rightSpace = AlexElement.getSpaceElement()
-			this.editor.addElementAfter(rightSpace, image)
-			this.editor.addElementBefore(leftSpace, image)
-			this.editor.range.anchor.moveToEnd(rightSpace)
-			this.editor.range.focus.moveToEnd(rightSpace)
 			this.editor.formatElementStack()
 			this.editor.domRender()
 			this.editor.rangeRender()

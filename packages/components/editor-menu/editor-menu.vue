@@ -1288,27 +1288,9 @@ export default {
 				return
 			}
 			if (this.name == 'video') {
-				const video = new AlexElement(
-					'closed',
-					'video',
-					{
-						src: this.mediaParams.remoteUrl
-					},
-					null,
-					null
-				)
-				this.menus.instance.editor.insertElement(video)
+				this.menus.instance.insertVideo(this.mediaParams.remoteUrl)
 			} else {
-				const image = new AlexElement(
-					'closed',
-					'img',
-					{
-						src: this.mediaParams.remoteUrl
-					},
-					null,
-					null
-				)
-				this.menus.instance.editor.insertElement(image)
+				this.menus.instance.insertImage(this.mediaParams.remoteUrl)
 			}
 			this.menus.instance.editor.formatElementStack()
 			this.menus.instance.editor.domRender()
