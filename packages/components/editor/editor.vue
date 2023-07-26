@@ -1147,12 +1147,13 @@ export default {
 			display: inline-block;
 			padding: @mp-xs;
 			margin: 0 @mp-xs / 2;
-			color: @font-color-sub;
-			border-radius: @radius-default / 2;
+			color: @font-color-default;
+			border-radius: @radius-default;
 			font-size: @font-size-default;
 			line-height: 1;
-			background-color: @bg-color-dark;
-			font-family: 'Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace';
+			background-color: @bg-color-default;
+			font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
+			border: 1px solid @bg-color-dark;
 		}
 		//表格样式
 		:deep(table) {
