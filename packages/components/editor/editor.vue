@@ -5,7 +5,7 @@
 		<!-- 编辑器视图 -->
 		<div ref="content" :data-placeholder="placeholder" :class="['mvi-editor-content', border ? 'border' : '', isEmpty ? 'empty' : '']" :style="contentStyle" @compositionstart="compositionFlag = true" @compositionend="compositionFlag = false" @click="clickEditor" :disabled="disabled || null"></div>
 		<!-- 链接调整器 -->
-		<m-layer v-model="linkAdjusterProps.show" fixed :target="linkAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#ddd" closable>
+		<m-layer v-model="linkAdjusterProps.show" fixed :target="linkAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#eee" closable>
 			<div class="mvi-editor-layer-link">
 				<input @change="updateLink" ref="linkUrl" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkAdjusterProps.url" :placeholder="linkAdjusterProps.props.placeholder" type="text" />
 				<div class="mvi-editor-layer-link-footer">
@@ -15,7 +15,7 @@
 			</div>
 		</m-layer>
 		<!-- 图片调整器 -->
-		<m-layer v-model="mediaAdjusterProps.show" fixed :target="mediaAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#ccc" closable>
+		<m-layer v-model="mediaAdjusterProps.show" fixed :target="mediaAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#eee" closable>
 			<div class="mvi-editor-layer">
 				<div @click="setMediaWidth('20%')" class="mvi-editor-layer-item">20%</div>
 				<div @click="setMediaWidth('50%')" class="mvi-editor-layer-item">50%</div>
@@ -24,7 +24,7 @@
 			</div>
 		</m-layer>
 		<!-- 表格调整器 -->
-		<m-layer v-model="tableAdjusterProps.show" fixed :target="tableAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#ccc" closable ref="tableLayer">
+		<m-layer v-model="tableAdjusterProps.show" fixed :target="tableAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#eee" closable ref="tableLayer">
 			<div class="mvi-editor-layer">
 				<div @click="insertParagraph('up')" class="mvi-editor-layer-item"><Icon style="transform: rotate(180deg)" type="turn-arrow-text" /></div>
 				<div @click="insertParagraph('down')" class="mvi-editor-layer-item"><Icon type="turn-arrow-text" /></div>
@@ -699,10 +699,7 @@ export default {
 		},
 		//删除媒体
 		deleteMedia() {
-			const element = this.getCurrentParsedomElement('img') || this.getCurrentParsedomElement('video')
-			this.editor.range.anchor.moveToEnd(element)
-			this.editor.range.focus.moveToEnd(element)
-			element.toEmpty()
+			this.editor.delete()
 			this.editor.formatElementStack()
 			this.editor.domRender()
 			this.editor.rangeRender()
