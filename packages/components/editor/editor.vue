@@ -5,7 +5,7 @@
 		<!-- 编辑器视图 -->
 		<div ref="content" :data-placeholder="placeholder" :class="['mvi-editor-content', border ? 'border' : '', isEmpty ? 'empty' : '']" :style="contentStyle" @compositionstart="compositionFlag = true" @compositionend="compositionFlag = false" @click="clickEditor" :disabled="disabled || null"></div>
 		<!-- 链接调整器 -->
-		<m-layer v-model="linkAdjusterProps.show" fixed :target="linkAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#eee" closable>
+		<m-layer v-model="linkAdjusterProps.show" fixed :target="linkAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#eee" closable ref="linkLayer">
 			<div class="mvi-editor-layer-link">
 				<input @change="updateLink" ref="linkUrl" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkAdjusterProps.url" :placeholder="linkAdjusterProps.props.placeholder" type="text" />
 				<div class="mvi-editor-layer-link-footer">
@@ -15,7 +15,7 @@
 			</div>
 		</m-layer>
 		<!-- 图片调整器 -->
-		<m-layer v-model="mediaAdjusterProps.show" fixed :target="mediaAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#eee" closable>
+		<m-layer v-model="mediaAdjusterProps.show" fixed :target="mediaAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#eee" closable ref="mediaLayer">
 			<div class="mvi-editor-layer">
 				<div @click="setMediaWidth('20%')" class="mvi-editor-layer-item">20%</div>
 				<div @click="setMediaWidth('50%')" class="mvi-editor-layer-item">50%</div>
@@ -429,9 +429,15 @@ export default {
 		onScroll() {
 			const setScroll = el => {
 				Dap.event.on(el, `scroll.editor_${this.uid}`, e => {
-					this.linkAdjusterProps.show = false
-					this.mediaAdjusterProps.show = false
-					this.tableAdjusterProps.show = false
+					if (this.linkAdjusterProps.show) {
+						this.$refs.linkLayer.reset()
+					}
+					if (this.mediaAdjusterProps.show) {
+						this.$refs.mediaLayer.reset()
+					}
+					if (this.tableAdjusterProps.show) {
+						this.$refs.tableLayer.reset()
+					}
 				})
 				if (el.parentNode) {
 					setScroll(el.parentNode)
@@ -751,7 +757,6 @@ export default {
 			this.editor.range.focus.moveToStart(newRow)
 			this.editor.domRender()
 			this.editor.rangeRender()
-			this.$refs.tableLayer.reset()
 		},
 		//删除表格行
 		removeTableRow() {
@@ -810,7 +815,6 @@ export default {
 			this.editor.range.focus.moveToStart(nextColumn)
 			this.editor.domRender()
 			this.editor.rangeRender()
-			this.$refs.tableLayer.reset()
 		},
 		//删除表格列
 		removeTableColumn() {
@@ -847,7 +851,6 @@ export default {
 			}
 			this.editor.domRender()
 			this.editor.rangeRender()
-			this.$refs.tableLayer.reset()
 		},
 		//删除表格
 		deleteTable() {

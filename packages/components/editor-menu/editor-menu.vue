@@ -1302,8 +1302,8 @@ export default {
 			if (this.cmpDisabled) {
 				return
 			}
-			const rowLength = this.tableParams.size[0]
-			const colLength = this.tableParams.size[1]
+			const rowLength = this.tableParams.size[1]
+			const colLength = this.tableParams.size[0]
 			const table = new AlexElement('block', 'table', null, null, null)
 			const tbody = new AlexElement('inblock', 'tbody', null, null, null)
 			this.menus.instance.editor.addElementTo(tbody, table)
@@ -1535,7 +1535,7 @@ export default {
 		display: -webkit-flex;
 		justify-content: flex-start;
 		flex-wrap: wrap;
-		width: calc(@mp-xs * 12 + 10px + @small-height * 4);
+		width: calc(@small-height * 4 + @mp-xs * 8 + 16px + @mp-sm * 2);
 		padding: @mp-xs @mp-sm;
 
 		.mvi-editor-menu-color {
