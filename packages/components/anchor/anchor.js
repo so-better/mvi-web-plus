@@ -6,9 +6,8 @@ class Anchor {
 	constructor(element, options) {
 		//点击的元素
 		this.$el = element
-		if (!Dap.common.isObject(options)) {
-			options = {}
-		}
+		//参数配置
+		options = Dap.common.isObject(options) ? options : {}
 		//锚点到的元素
 		this.$target = options.target
 		//相对的父祖元素
@@ -30,11 +29,11 @@ class Anchor {
 		this.hasInit = true
 		//根据root的值查找元素
 		if (typeof this.$root == 'string' && this.$root) {
-			this.$root = document.body.querySelector(this.$root)
+			this.$root = document.documentElement.querySelector(this.$root)
 		}
 		//根据target的值查找元素
 		if (typeof this.$target == 'string' && this.$target) {
-			this.$target = document.body.querySelector(this.$target)
+			this.$target = document.documentElement.querySelector(this.$target)
 		}
 
 		if (!Dap.element.isElement(this.$el)) {

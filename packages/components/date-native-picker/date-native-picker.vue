@@ -1,8 +1,9 @@
 <template>
-	<input @blur="selectDateForIOS" @change="selectDateForAndroid" class="mvi-date-native-picker" :type="dateType" />
+	<input @blur="selectDateForIOS" @change="selectDateForAndroid" class="mvi-date-native-picker" :type="dateType" :value="defaultDate" />
 </template>
 
 <script>
+import moment from 'moment'
 import { Dap } from '../dap'
 export default {
 	name: 'm-date-native-picker',
@@ -39,6 +40,23 @@ export default {
 			} else {
 				return this.type
 			}
+		},
+		defaultDate() {
+			if (this.modelValue) {
+				if (this.type == 'date') {
+					return moment(this.modelValue).format('YYYY-MM-DD')
+				}
+				if (this.type == 'datetime') {
+					return moment(this.modelValue).format('YYYY-MM-DD HH:mm')
+				}
+				if (this.type == 'month') {
+					return moment(this.modelValue).format('YYYY-MM')
+				}
+				if (this.type == 'time') {
+					return moment(this.modelValue).format('HH:mm')
+				}
+			}
+			return ''
 		}
 	},
 	data() {
@@ -58,109 +76,32 @@ export default {
 		//IOS下选择日期
 		selectDateForIOS() {
 			if (this.ios) {
-				let date = this.dateParse(this.$el.value)
-				if (date) {
-					if (this.min) {
-						let minTime = this.min.getTime()
-						if (date.getTime() < minTime) {
-							this.$emit('error', '选择的时间小于限定最小时间')
-							return
-						}
-					}
-					if (this.max) {
-						let maxTime = this.max.getTime()
-						if (date.getTime() > maxTime) {
-							this.$emit('error', '选择的时间大于限定最大时间')
-							return
-						}
-					}
-				}
-				this.$emit('update:modelValue', date)
-				this.$emit('change', date)
+				this.selectDate()
 			}
 		},
 		//安卓系统下选择日期
 		selectDateForAndroid() {
 			if (!this.ios) {
-				let date = this.dateParse(this.$el.value)
-				if (date) {
-					if (this.min) {
-						let minTime = this.min.getTime()
-						if (date.getTime() < minTime) {
-							this.$emit('error', '选择的时间小于限定最小时间')
-							return
-						}
-					}
-					if (this.max) {
-						let maxTime = this.max.getTime()
-						if (date.getTime() > maxTime) {
-							this.$emit('error', '选择的时间大于限定最大时间')
-							return
-						}
-					}
+				this.selectDate()
+			}
+		},
+		//选择时间
+		selectDate() {
+			if (this.$el.value) {
+				const date = moment(this.$el.value)
+				if (this.min && date.isBefore(moment(this.min))) {
+					this.$emit('error', 0, 'The date is less than min')
+					return
+				}
+				if (this.max && moment(this.max).isBefore(date)) {
+					this.$emit('error', 1, 'The date is greater than max')
+					return
 				}
 				this.$emit('update:modelValue', date)
 				this.$emit('change', date)
-			}
-		},
-		//解析方法
-		dateParse(value) {
-			if (value) {
-				if (this.type == 'date') {
-					let obj = this.dateParseDate(value)
-					let d = new Date()
-					d.setFullYear(obj.year)
-					d.setMonth(obj.month - 1)
-					d.setDate(obj.date)
-					return d
-				} else if (this.type == 'datetime') {
-					let dateArray = value.split('T')
-					let dateObj = this.dateParseDate(dateArray[0])
-					let timeObj = this.dateParseTime(dateArray[1])
-					let d = new Date()
-					d.setFullYear(dateObj.year)
-					d.setMonth(dateObj.month - 1)
-					d.setDate(dateObj.date)
-					d.setHours(timeObj.hour)
-					d.setMinutes(timeObj.min)
-					return d
-				} else if (this.type == 'month') {
-					let obj = this.dateParseDate(value)
-					let d = new Date()
-					d.setFullYear(obj.year)
-					d.setMonth(obj.month - 1)
-					return d
-				} else if (this.type == 'time') {
-					let obj = this.dateParseTime(value)
-					let d = new Date()
-					d.setHours(obj.hour)
-					d.setMinutes(obj.min)
-					return d
-				}
 			} else {
-				return null
-			}
-		},
-		//解析时间(格式如22:22)
-		dateParseTime(value) {
-			let dateArray = value.split(':')
-			let hour = dateArray[0]
-			let min = dateArray[1]
-			return {
-				hour,
-				min
-			}
-		},
-		//解析日期(格式如2019-01-20)
-		dateParseDate(value) {
-			let dateArray = value.split('-')
-			let year = Number(dateArray[0]) //年份
-			let month = Number(dateArray[1]) //月份
-			let date = Number(dateArray[2]) //日期
-			return {
-				year,
-				month,
-				date
+				this.$emit('update:modelValue', null)
+				this.$emit('change', null)
 			}
 		}
 	}

@@ -1,16 +1,18 @@
 <template>
 	<div class="mvi-p-4">
-		<m-editor-menus ref="menus">
-			<m-editor-menu v-for="item in menus" :name="item.name"></m-editor-menu>
-		</m-editor-menus>
-		<m-editor v-mode="value" ref="editor"></m-editor>
+		<m-button v-anchor="{ target: '#btn', time: 300 }">按钮</m-button>
+		<div style="margin: 20rem 0">
+			<m-button id="btn">锚点元素</m-button>
+		</div>
 	</div>
 </template>
 <script>
-import { EditorDefinedMenuConfig } from '../packages'
+import moment from 'moment'
 export default {
 	data() {
 		return {
+			moment: moment,
+			date: moment('2023-08').toDate(),
 			value: '',
 			show: false,
 			options: [
@@ -20,14 +22,17 @@ export default {
 				{
 					label: '分享到QQ空间'
 				}
-			],
-			menus: EditorDefinedMenuConfig
+			]
 		}
 	},
-	mounted() {
-		this.$refs.editor.use(this.$refs.menus)
-	},
+	mounted() {},
 	methods: {
+		error(code, message) {
+			console.log(code, message)
+		},
+		selectDate() {
+			this.$refs.date.trigger()
+		},
 		change(item, index) {
 			console.log(item, index)
 		}
@@ -39,8 +44,8 @@ html {
 	font-size: 50px;
 }
 
-#app {
-	height: 100%;
-	overflow: auto;
+body {
+	height: 100% !important;
+	overflow: auto !important;
 }
 </style>
