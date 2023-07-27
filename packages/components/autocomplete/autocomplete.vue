@@ -1,20 +1,20 @@
 <template>
 	<div :data-id="'mvi-autocomplete-' + uid" :class="autocompleteClass" :disabled="disabled || null">
 		<div :class="targetClass" :style="targetStyle" :data-id="'mvi-autocomplete-target-' + uid" ref="target">
-			<div @click="leftClick" v-if="leftIconType || leftIconUrl" class="mvi-autocomplete-left-icon">
-				<Icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" :color="leftIconColor" />
+			<div @click="leftClick" v-if="parseIcon(leftIcon).type || parseIcon(leftIcon).url" class="mvi-autocomplete-left-icon">
+				<Icon :type="parseIcon(leftIcon).type" :url="parseIcon(leftIcon).url" :spin="parseIcon(leftIcon).spin" :size="parseIcon(leftIcon).size" :color="parseIcon(leftIcon).color" />
 			</div>
 			<input ref="input" @input="input" v-model="realValue" type="text" :placeholder="placeholder" :style="inputStyle" :name="name" @focus="inputFocus" @blur="inputBlur" :disabled="disabled || null" autocomplete="off" />
 			<div @click="doClear" v-if="clearable" v-show="showClearIcon" class="mvi-autocomplete-clear" :style="clearStyle">
 				<Icon type="times-o" />
 			</div>
-			<div class="mvi-autocomplete-right-icon" v-if="rightIconType || rightIconUrl" @click="rightClick">
-				<Icon :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize" :color="rightIconColor" />
+			<div class="mvi-autocomplete-right-icon" v-if="parseIcon(rightIcon).type || parseIcon(rightIcon).url" @click="rightClick">
+				<Icon :type="parseIcon(rightIcon).type" :url="parseIcon(rightIcon).url" :spin="parseIcon(rightIcon).spin" :size="parseIcon(rightIcon).size" :color="parseIcon(rightIcon).color" />
 			</div>
 		</div>
 		<Layer :model-value="show" :target="`[data-id='mvi-autocomplete-target-${uid}']`" :root="`[data-id='mvi-autocomplete-${uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :fixed="layerRealProps.fixed" :z-index="layerRealProps.zIndex" :fixed-auto="layerRealProps.fixedAuto" ref="layer" :wrapper-class="layerRealProps.wrapperClass" :animation="layerRealProps.animation" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :timeout="layerRealProps.timeout" :closable="false" :show-triangle="layerRealProps.showTriangle" :border-color="layerRealProps.borderColor" :background="layerRealProps.background" @showing="layerShow">
 			<div class="mvi-autocomplete-menu" :style="menuStyle" ref="menu">
-				<div class="mvi-autocomplete-list" v-for="(item, index) in computedFilter" v-text="item" @click="doSelect(item)" @mouseenter="listEnter" @mouseleave="listLeave" :key="'mvi-autocomplete-list-' + index"></div>
+				<div class="mvi-autocomplete-list" v-for="item in computedFilter" v-text="item" @click="doSelect(item)"></div>
 			</div>
 		</Layer>
 	</div>
@@ -36,7 +36,7 @@ export default {
 	props: {
 		//输入框的值
 		modelValue: {
-			type: [String, Number],
+			type: String,
 			default: ''
 		},
 		//占位符
@@ -107,11 +107,6 @@ export default {
 			type: String,
 			default: null
 		},
-		//layer层列表悬浮样式
-		hoverClass: {
-			type: String,
-			default: null
-		},
 		//左侧图标
 		leftIcon: {
 			type: [String, Object],
@@ -155,99 +150,37 @@ export default {
 		show() {
 			return this.focus && this.computedFilter.length != 0
 		},
-		leftIconType() {
-			let type = null
-			if (Dap.common.isObject(this.leftIcon)) {
-				if (typeof this.leftIcon.type == 'string') {
-					type = this.leftIcon.type
+		//左侧图标
+		parseIcon() {
+			return param => {
+				let icon = {
+					spin: false,
+					type: null,
+					url: null,
+					color: null,
+					size: null
 				}
-			} else if (typeof this.leftIcon == 'string') {
-				type = this.leftIcon
-			}
-			return type
-		},
-		leftIconUrl() {
-			let url = null
-			if (Dap.common.isObject(this.leftIcon)) {
-				if (typeof this.leftIcon.url == 'string') {
-					url = this.leftIcon.url
+				if (Dap.common.isObject(param)) {
+					if (typeof param.spin == 'boolean') {
+						icon.spin = param.spin
+					}
+					if (typeof param.type == 'string') {
+						icon.type = param.type
+					}
+					if (typeof param.url == 'string') {
+						icon.url = param.url
+					}
+					if (typeof param.color == 'string') {
+						icon.color = param.color
+					}
+					if (typeof param.size == 'string') {
+						icon.size = param.size
+					}
+				} else if (typeof param == 'string') {
+					icon.type = param
 				}
+				return icon
 			}
-			return url
-		},
-		leftIconSpin() {
-			let spin = false
-			if (Dap.common.isObject(this.leftIcon)) {
-				if (typeof this.leftIcon.spin == 'boolean') {
-					spin = this.leftIcon.spin
-				}
-			}
-			return spin
-		},
-		leftIconSize() {
-			let size = null
-			if (Dap.common.isObject(this.leftIcon)) {
-				if (typeof this.leftIcon.size == 'string') {
-					size = this.leftIcon.size
-				}
-			}
-			return size
-		},
-		leftIconColor() {
-			let color = null
-			if (Dap.common.isObject(this.leftIcon)) {
-				if (typeof this.leftIcon.color == 'string') {
-					color = this.leftIcon.color
-				}
-			}
-			return color
-		},
-		rightIconType() {
-			let type = null
-			if (Dap.common.isObject(this.rightIcon)) {
-				if (typeof this.rightIcon.type == 'string') {
-					type = this.rightIcon.type
-				}
-			} else if (typeof this.rightIcon == 'string') {
-				type = this.rightIcon
-			}
-			return type
-		},
-		rightIconUrl() {
-			let url = null
-			if (Dap.common.isObject(this.rightIcon)) {
-				if (typeof this.rightIcon.url == 'string') {
-					url = this.rightIcon.url
-				}
-			}
-			return url
-		},
-		rightIconSpin() {
-			let spin = false
-			if (Dap.common.isObject(this.rightIcon)) {
-				if (typeof this.rightIcon.spin == 'boolean') {
-					spin = this.rightIcon.spin
-				}
-			}
-			return spin
-		},
-		rightIconSize() {
-			let size = null
-			if (Dap.common.isObject(this.rightIcon)) {
-				if (typeof this.rightIcon.size == 'string') {
-					size = this.rightIcon.size
-				}
-			}
-			return size
-		},
-		rightIconColor() {
-			let color = null
-			if (Dap.common.isObject(this.rightIcon)) {
-				if (typeof this.rightIcon.color == 'string') {
-					color = this.rightIcon.color
-				}
-			}
-			return color
 		},
 		showClearIcon() {
 			if (this.disabled) {
@@ -255,13 +188,12 @@ export default {
 			}
 			if (this.realValue && this.focus) {
 				return true
-			} else {
-				return false
 			}
+			return false
 		},
 		clearStyle() {
 			let style = {}
-			if (this.rightIconType || this.rightIconUrl) {
+			if (this.parseIcon(this.rightIcon).type || this.parseIcon(this.rightIcon).url) {
 				style.borderRadius = 0
 			}
 			return style
@@ -276,20 +208,18 @@ export default {
 		computedFilter() {
 			if (typeof this.filterMethod == 'function') {
 				return this.filterMethod(this.realValue, this.list)
-			} else if (this.filterMethod) {
-				return this.defaultFilter()
-			} else {
-				return this.list
 			}
+			if (this.filterMethod) {
+				return this.defaultFilter()
+			}
+			return this.list
 		},
 		inputStyle() {
 			let style = {}
-			if (this.leftIconType || this.leftIconUrl) {
+			if (this.parseIcon(this.leftIcon).type || this.parseIcon(this.leftIcon).url) {
 				style.paddingLeft = 0
 			}
-			if (this.showClearIcon && this.clearable) {
-				style.paddingRight = 0
-			} else if (this.rightIconType || this.rightIconUrl) {
+			if ((this.showClearIcon && this.clearable) || this.parseIcon(this.rightIcon).type || this.parseIcon(this.rightIcon).url) {
 				style.paddingRight = 0
 			}
 			if (this.align) {
@@ -298,11 +228,11 @@ export default {
 			return style
 		},
 		autocompleteClass() {
-			let cls = ['mvi-autocomplete', 'mvi-autocomplete-' + this.size]
+			let cls = ['mvi-autocomplete', this.size]
 			if (this.round) {
-				cls.push('mvi-autocomplete-round')
+				cls.push('round')
 			} else if (this.square) {
-				cls.push('mvi-autocomplete-square')
+				cls.push('square')
 			}
 			return cls
 		},
@@ -372,45 +302,29 @@ export default {
 			}
 			this.$emit('left-click', this.realValue)
 		},
-		listEnter(e) {
-			if (this.hoverClass) {
-				Dap.element.addClass(e.currentTarget, this.hoverClass)
-			}
-		},
-		listLeave(e) {
-			if (this.hoverClass) {
-				Dap.element.removeClass(e.currentTarget, this.hoverClass)
-			}
-		},
 		input() {
 			if (this.disabled) {
 				return
 			}
 			this.focus = true
-			this.$nextTick(() => {
-				setTimeout(() => {
-					this.$refs.layer.reset()
-				}, 10)
-			})
+			this.$refs.layer.reset()
 			this.$emit('input', this.realValue)
 		},
 		inputBlur() {
 			if (this.disabled) {
 				return
 			}
-			this.$emit('blur', this.realValue)
 			setTimeout(() => {
 				this.focus = false
-			}, 200)
+				this.$emit('blur', this.realValue)
+			}, 100)
 		},
 		inputFocus() {
 			if (this.disabled) {
 				return
 			}
+			this.focus = true
 			this.$emit('focus', this.realValue)
-			setTimeout(() => {
-				this.focus = true
-			}, 200)
 		},
 		doClear() {
 			if (this.disabled) {
@@ -423,7 +337,7 @@ export default {
 				this.realValue = ''
 				this.$emit('clear', '')
 				this.$refs.input.focus()
-			}, 200)
+			}, 110)
 		},
 		doSelect(item) {
 			if (this.disabled) {
@@ -435,14 +349,9 @@ export default {
 		},
 		//默认过滤方法
 		defaultFilter() {
-			let arr = []
-			let length = this.list.length
-			for (let i = 0; i < length; i++) {
-				if (this.list[i].includes(this.realValue)) {
-					arr.push(this.list[i])
-				}
-			}
-			return arr
+			return this.list.filter(item => {
+				return String(item).toLocaleLowerCase().includes(this.realValue.toLocaleLowerCase())
+			})
 		}
 	}
 }
@@ -459,15 +368,15 @@ export default {
 	position: relative;
 	background-color: #fff;
 
-	&.mvi-autocomplete-round {
+	&.round {
 		border-radius: @radius-round;
 	}
 
-	&.mvi-autocomplete-square {
+	&.square {
 		border-radius: 0;
 	}
 
-	&.mvi-autocomplete-small {
+	&.small {
 		font-size: @font-size-small;
 		height: @small-height;
 
@@ -486,7 +395,7 @@ export default {
 		}
 	}
 
-	&.mvi-autocomplete-medium {
+	&.medium {
 		font-size: @font-size-default;
 		height: @medium-height;
 
@@ -505,7 +414,7 @@ export default {
 		}
 	}
 
-	&.mvi-autocomplete-large {
+	&.large {
 		font-size: @font-size-h6;
 		height: @large-height;
 

@@ -1,9 +1,8 @@
 <template>
 	<div class="mvi-p-4">
-		<m-button v-anchor="{ target: '#btn', time: 300 }">按钮</m-button>
-		<div style="margin: 20rem 0">
-			<m-button id="btn">锚点元素</m-button>
-		</div>
+		<m-autocomplete class="mvi-mb-4" size="small" placeholder="请输入内容" v-model="value" :list="list"></m-autocomplete>
+		<m-autocomplete filterMethod class="mvi-mb-4" size="medium" placeholder="请输入内容" v-model="value" :list="list" clearable></m-autocomplete>
+		<m-autocomplete size="large" active-color="#f30" placeholder="请输入内容" v-model="value" :list="list" clearable></m-autocomplete>
 	</div>
 </template>
 <script>
@@ -22,20 +21,13 @@ export default {
 				{
 					label: '分享到QQ空间'
 				}
-			]
+			],
+			list: ['佛罗里达州', '加利福利亚州', '北京', '伦敦', 'aaa', 'bbb', 'AAAA']
 		}
 	},
 	mounted() {},
 	methods: {
-		error(code, message) {
-			console.log(code, message)
-		},
-		selectDate() {
-			this.$refs.date.trigger()
-		},
-		change(item, index) {
-			console.log(item, index)
-		}
+		change(val, list) {}
 	}
 }
 </script>
