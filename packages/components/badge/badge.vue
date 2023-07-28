@@ -24,16 +24,6 @@ export default {
 				return ['top-right', 'top-left', 'bottom-left', 'bottom-right'].includes(value)
 			}
 		},
-		//背景色
-		background: {
-			type: String,
-			default: null
-		},
-		//字体颜色
-		color: {
-			type: String,
-			default: null
-		},
 		//是否圆点
 		dot: {
 			type: Boolean,
@@ -50,6 +40,16 @@ export default {
 			default: function () {
 				return null
 			}
+		},
+		//背景色
+		background: {
+			type: String,
+			default: null
+		},
+		//字体颜色
+		color: {
+			type: String,
+			default: null
 		}
 	},
 	computed: {

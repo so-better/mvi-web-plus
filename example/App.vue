@@ -1,8 +1,14 @@
 <template>
 	<div class="mvi-p-4">
-		<m-autocomplete class="mvi-mb-4" size="small" placeholder="请输入内容" v-model="value" :list="list"></m-autocomplete>
-		<m-autocomplete filterMethod class="mvi-mb-4" size="medium" placeholder="请输入内容" v-model="value" :list="list" clearable></m-autocomplete>
-		<m-autocomplete size="large" active-color="#f30" placeholder="请输入内容" v-model="value" :list="list" clearable></m-autocomplete>
+		<div class="mvi-mb-4">
+			<m-badge content="99">
+				<m-button>按钮</m-button>
+			</m-badge>
+			<m-button plain class="mvi-ml-4" type="success">按钮</m-button>
+			<m-button plain class="mvi-ml-4" type="info">按钮</m-button>
+			<m-button plain class="mvi-ml-4" type="warn">按钮</m-button>
+			<m-button plain class="mvi-ml-4" type="primary">按钮</m-button>
+		</div>
 	</div>
 </template>
 <script>

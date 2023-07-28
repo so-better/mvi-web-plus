@@ -13,7 +13,7 @@
 				</div>
 			</div>
 			<div class="mvi-actionsheet-divider"></div>
-			<div :class="['mvi-actionsheet-button', size, active ? 'mvi-actionsheet-active' : '']" v-if="showCancel" v-text="cancelText" @click="doCancel"></div>
+			<div :class="['mvi-actionsheet-button', size, active ? 'active' : '']" v-if="showCancel" v-text="cancelText" @click="doCancel"></div>
 		</div>
 	</Popup>
 </template>
@@ -148,7 +148,7 @@ export default {
 			return item => {
 				let cls = ['mvi-actionsheet-item', this.size]
 				if (this.active && !item.loading && !item.disabled) {
-					cls.push('mvi-actionsheet-active')
+					cls.push('active')
 				}
 				return cls
 			}
@@ -249,6 +249,10 @@ export default {
 				font-size: @font-size-h6;
 			}
 
+			&.active:active::before {
+				.mvi-active();
+			}
+
 			&[disabled] {
 				color: @font-color-mute;
 			}
@@ -286,10 +290,6 @@ export default {
 		}
 	}
 
-	.mvi-actionsheet-active:active::before {
-		.mvi-active();
-	}
-
 	.mvi-actionsheet-divider {
 		display: block;
 		width: 100%;
@@ -313,6 +313,10 @@ export default {
 		&.large {
 			font-size: @font-size-h5;
 			height: @large-height;
+		}
+
+		&.active:active::before {
+			.mvi-active();
 		}
 	}
 }

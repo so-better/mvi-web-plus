@@ -248,7 +248,7 @@ export default {
 		targetClass() {
 			let cls = ['mvi-autocomplete-target']
 			if (this.activeType && !this.activeColor && this.focus) {
-				cls.push('mvi-autocomplete-' + this.activeType)
+				cls.push(this.activeType)
 			}
 			return cls
 		},
@@ -383,7 +383,7 @@ export default {
 		.mvi-autocomplete-left-icon,
 		.mvi-autocomplete-right-icon,
 		.mvi-autocomplete-clear {
-			padding: 0 @mp-xs*2.4;
+			padding: 0 @mp-sm;
 		}
 
 		input {
@@ -421,7 +421,7 @@ export default {
 		.mvi-autocomplete-left-icon,
 		.mvi-autocomplete-right-icon,
 		.mvi-autocomplete-clear {
-			padding: 0 @mp-xs*3.4;
+			padding: 0 @mp-lg;
 		}
 
 		input {
@@ -513,27 +513,27 @@ export default {
 		border-bottom-right-radius: inherit;
 	}
 
-	&.mvi-autocomplete-info {
+	&.info {
 		border-color: @info-normal;
 		box-shadow: 0 0 0.16rem @info-shadow;
 	}
 
-	&.mvi-autocomplete-success {
+	&.success {
 		border-color: @success-normal;
 		box-shadow: 0 0 0.16rem @success-shadow;
 	}
 
-	&.mvi-autocomplete-primary {
+	&.primary {
 		border-color: @primary-normal;
 		box-shadow: 0 0 0.16rem @primary-shadow;
 	}
 
-	&.mvi-autocomplete-warn {
+	&.warn {
 		border-color: @warn-normal;
 		box-shadow: 0 0 0.16rem @warn-shadow;
 	}
 
-	&.mvi-autocomplete-error {
+	&.error {
 		border-color: @error-normal;
 		box-shadow: 0 0 0.16rem @error-shadow;
 	}

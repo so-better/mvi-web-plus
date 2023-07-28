@@ -2,8 +2,8 @@
 	<Button :disabled="disabled || null" :class="btnClass" :style="btnStyle">
 		<slot name="loading" v-if="loading && $slots.loading"></slot>
 		<template v-else-if="loading">
-			<Icon :type="iconType" :color="iconColor" :url="iconUrl" :spin="iconSpin" :size="iconSize" class="mvi-button-load-icon" />
-			<span v-if="loadText">{{ loadText }}</span>
+			<Icon :type="parseIcon(loadIcon).type" :color="parseIcon(loadIcon).color" :url="parseIcon(loadIcon).url" :spin="parseIcon(loadIcon).spin" :size="parseIcon(loadIcon).size" />
+			<span class="mvi-button-load-text" v-if="loadText">{{ loadText }}</span>
 		</template>
 		<slot v-else></slot>
 	</Button>
@@ -53,7 +53,7 @@ export default {
 			default: 'loading...'
 		},
 		//是否独占一行
-		formControl: {
+		block: {
 			type: Boolean,
 			default: false
 		},
@@ -95,56 +95,45 @@ export default {
 		//加载图标
 		loadIcon: {
 			type: [String, Object],
-			default: null
+			default: function () {
+				return {
+					type: 'load-e',
+					spin: true
+				}
+			}
 		}
 	},
 	computed: {
-		iconType() {
-			let type = 'load-e'
-			if (Dap.common.isObject(this.loadIcon)) {
-				if (typeof this.loadIcon.type == 'string') {
-					type = this.loadIcon.type
+		parseIcon() {
+			return param => {
+				let icon = {
+					spin: false,
+					type: null,
+					url: null,
+					color: null,
+					size: null
 				}
-			} else if (typeof this.loadIcon == 'string') {
-				type = this.loadIcon
-			}
-			return type
-		},
-		iconUrl() {
-			let url = null
-			if (Dap.common.isObject(this.loadIcon)) {
-				if (typeof this.loadIcon.url == 'string') {
-					url = this.loadIcon.url
+				if (Dap.common.isObject(param)) {
+					if (typeof param.spin == 'boolean') {
+						icon.spin = param.spin
+					}
+					if (typeof param.type == 'string') {
+						icon.type = param.type
+					}
+					if (typeof param.url == 'string') {
+						icon.url = param.url
+					}
+					if (typeof param.color == 'string') {
+						icon.color = param.color
+					}
+					if (typeof param.size == 'string') {
+						icon.size = param.size
+					}
+				} else if (typeof param == 'string') {
+					icon.type = param
 				}
+				return icon
 			}
-			return url
-		},
-		iconSpin() {
-			let spin = true
-			if (Dap.common.isObject(this.loadIcon)) {
-				if (typeof this.loadIcon.spin == 'boolean') {
-					spin = this.loadIcon.spin
-				}
-			}
-			return spin
-		},
-		iconSize() {
-			let size = null
-			if (Dap.common.isObject(this.loadIcon)) {
-				if (typeof this.loadIcon.size == 'string') {
-					size = this.loadIcon.size
-				}
-			}
-			return size
-		},
-		iconColor() {
-			let color = null
-			if (Dap.common.isObject(this.loadIcon)) {
-				if (typeof this.loadIcon.color == 'string') {
-					color = this.loadIcon.color
-				}
-			}
-			return color
 		},
 		btnStyle() {
 			let obj = {}
@@ -167,27 +156,27 @@ export default {
 		btnClass() {
 			let cls = ['mvi-button']
 			if (this.type) {
-				cls.push('mvi-button-' + this.type)
+				cls.push(this.type)
 			}
 			if (this.size) {
-				cls.push('mvi-button-' + this.size)
+				cls.push(this.size)
 			}
 			if (this.round) {
-				cls.push('mvi-button-radius-round')
+				cls.push('round')
 			} else if (this.square) {
-				cls.push('mvi-button-radius-square')
+				cls.push('square')
 			}
-			if (this.formControl) {
-				cls.push('mvi-button-form-control')
+			if (this.block) {
+				cls.push('block')
 			}
 			if (this.plain) {
-				cls.push('mvi-button-plain')
+				cls.push('plain')
 			}
 			if (this.active && !this.disabled) {
-				cls.push('mvi-button-active')
+				cls.push('active')
 			}
 			if (this.loading) {
-				cls.push('mvi-button-loading')
+				cls.push('loading')
 			}
 			return cls
 		}
@@ -234,137 +223,128 @@ export default {
 	padding: 0;
 	border-radius: @radius-default;
 	cursor: pointer;
-}
 
-// 按钮情景样式
-.mvi-button.mvi-button-default {
-	background: #fff;
-	border-color: @border-color;
-	color: @font-color-default;
-}
+	&.default {
+		background: #fff;
+		border-color: @border-color;
+		color: @font-color-default;
+	}
 
-.mvi-button.mvi-button-warn {
-	background: @warn-normal;
-	border-color: @warn-normal;
-	color: #fff;
-}
+	&.warn {
+		background: @warn-normal;
+		border-color: @warn-normal;
+		color: #fff;
 
-.mvi-button.mvi-button-warn.mvi-button-plain {
-	border-color: @warn-normal;
-	background: #fff;
-	color: @warn-normal;
-}
+		&.plain {
+			border-color: @warn-normal;
+			background: #fff;
+			color: @warn-normal;
+		}
+	}
 
-.mvi-button.mvi-button-error {
-	background: @error-normal;
-	color: #fff;
-	border-color: @error-normal;
-}
+	&.error {
+		background: @error-normal;
+		color: #fff;
+		border-color: @error-normal;
 
-.mvi-button.mvi-button-error.mvi-button-plain {
-	border-color: @error-normal;
-	background: #fff;
-	color: @error-normal;
-}
+		&.plain {
+			border-color: @error-normal;
+			background: #fff;
+			color: @error-normal;
+		}
+	}
 
-.mvi-button.mvi-button-success {
-	background: @success-normal;
-	border-color: @success-normal;
-	color: #fff;
-}
+	&.success {
+		background: @success-normal;
+		border-color: @success-normal;
+		color: #fff;
 
-.mvi-button.mvi-button-success.mvi-button-plain {
-	border-color: @success-normal;
-	background: #fff;
-	color: @success-normal;
-}
+		&.plain {
+			border-color: @success-normal;
+			background: #fff;
+			color: @success-normal;
+		}
+	}
 
-.mvi-button.mvi-button-info {
-	background: @info-normal;
-	color: #fff;
-	border-color: @info-normal;
-}
+	&.info {
+		background: @info-normal;
+		color: #fff;
+		border-color: @info-normal;
 
-.mvi-button.mvi-button-info.mvi-button-plain {
-	border-color: @info-normal;
-	color: @info-normal;
-	background: #fff;
-}
+		&.plain {
+			border-color: @info-normal;
+			color: @info-normal;
+			background: #fff;
+		}
+	}
 
-.mvi-button.mvi-button-primary {
-	background: @primary-normal;
-	color: #fff;
-	border-color: @primary-normal;
-}
+	&.primary {
+		background: @primary-normal;
+		color: #fff;
+		border-color: @primary-normal;
 
-.mvi-button.mvi-button-primary.mvi-button-plain {
-	background: #fff;
-	color: @primary-normal;
-	border-color: @primary-normal;
-}
+		&.plain {
+			background: #fff;
+			color: @primary-normal;
+			border-color: @primary-normal;
+		}
+	}
 
-//按钮大小
-.mvi-button.mvi-button-mini {
-	height: @mini-height;
-	padding: 0 @mp-xs;
-	font-size: @font-size-small;
-}
+	&.mini {
+		height: @mini-height;
+		padding: 0 @mp-xs;
+		font-size: @font-size-small;
+	}
 
-.mvi-button.mvi-button-small {
-	font-size: @font-size-default;
-	height: @small-height;
-	padding: 0 @mp-sm;
-}
+	&.small {
+		font-size: @font-size-default;
+		height: @small-height;
+		padding: 0 @mp-sm;
+	}
 
-.mvi-button.mvi-button-medium {
-	font-size: @font-size-h6;
-	height: @medium-height;
-	padding: 0 @mp-md;
-}
+	&.medium {
+		font-size: @font-size-h6;
+		height: @medium-height;
+		padding: 0 @mp-md;
+	}
 
-.mvi-button.mvi-button-large {
-	font-size: @font-size-h5;
-	height: @large-height;
-	padding: 0 @mp-lg;
-}
+	&.large {
+		font-size: @font-size-h5;
+		height: @large-height;
+		padding: 0 @mp-lg;
+	}
 
-//加载按钮图标
-.mvi-button-load-icon {
-	margin-right: @mp-xs;
-}
+	&.round {
+		border-radius: @radius-round;
+	}
 
-//按钮圆角
-.mvi-button.mvi-button-radius-round {
-	border-radius: @radius-round;
-}
+	&.square {
+		border-radius: 0;
+	}
 
-//方形按钮
-.mvi-button.mvi-button-radius-square {
-	border-radius: 0;
-}
+	&.active:active::before {
+		.mvi-active();
+	}
 
-//点击态
-.mvi-button.mvi-button-active:active::before {
-	.mvi-active();
-}
+	&[disabled] {
+		opacity: 0.6;
+		touch-action: none;
+	}
 
-//禁用
-.mvi-button[disabled] {
-	opacity: 0.6;
-	touch-action: none;
-}
+	&.block {
+		display: flex;
+		display: -webkit-flex;
+		width: 100%;
+	}
 
-//独占一行的按钮
-.mvi-button.mvi-button-form-control {
-	display: flex;
-	display: -webkit-flex;
-	width: 100%;
-}
+	&.loading {
+		pointer-events: none;
+		touch-action: none;
+		opacity: 0.8;
+	}
 
-//加载状态
-.mvi-button.mvi-button-loading {
-	pointer-events: none;
-	touch-action: none;
-	opacity: 0.8;
+	.mvi-button-load-text {
+		margin-left: @mp-sm;
+	}
 }
 </style>
