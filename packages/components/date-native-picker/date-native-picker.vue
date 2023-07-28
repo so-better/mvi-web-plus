@@ -61,7 +61,8 @@ export default {
 	},
 	data() {
 		return {
-			ios: Dap.platform.os().ios
+			ios: Dap.platform.os().ios,
+			iPad: Dap.platform.device().iPad
 		}
 	},
 	methods: {
@@ -73,15 +74,15 @@ export default {
 				this.$el.click()
 			}
 		},
-		//IOS下选择日期
+		//ios系统下选择日期（排除ipad）
 		selectDateForIOS() {
-			if (this.ios) {
+			if (this.ios && !this.iPad) {
 				this.selectDate()
 			}
 		},
-		//安卓系统下选择日期
+		//安卓系统下选择日期（加上ipad）
 		selectDateForAndroid() {
-			if (!this.ios) {
+			if (!this.ios || this.iPad) {
 				this.selectDate()
 			}
 		},
@@ -97,8 +98,8 @@ export default {
 					this.$emit('error', 1, 'The date is greater than max')
 					return
 				}
-				this.$emit('update:modelValue', date)
-				this.$emit('change', date)
+				this.$emit('update:modelValue', date.toDate())
+				this.$emit('change', date.toDate())
 			} else {
 				this.$emit('update:modelValue', null)
 				this.$emit('change', null)
