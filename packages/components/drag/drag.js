@@ -6,9 +6,7 @@ class Drag {
 	constructor(element, options) {
 		//被拖拽的元素
 		this.$el = element
-		if (!Dap.common.isObject(options)) {
-			options = {}
-		}
+		options = Dap.common.isObject(options) ? options : {}
 		//可拖拽的区域
 		this.$container = options.container
 		//x轴方向是否可拖动
@@ -22,7 +20,7 @@ class Drag {
 		//元素被拖动时触发
 		this.drag = options.drag
 		//元素开始拖动时触发
-		this.beforedrag = options.beforedrag
+		this.beforeDrag = options.beforeDrag
 		//元素拖拽结束触发
 		this.dragged = options.dragged
 		//初始化完毕的回调
@@ -36,66 +34,11 @@ class Drag {
 		//Y坐标
 		this.pageY = 0
 		//生成唯一值
-		this.guid = this._createGuid()
-	}
-
-	//初始化
-	init() {
-		if (this.hasInit) {
-			return
-		}
-		this.hasInit = true
-
-		if (!Dap.element.isElement(this.$el)) {
-			throw new TypeError('The element that needs to be dragged is not a node element')
-		}
-		if (typeof this.$container == 'string' && this.$container) {
-			this.$container = document.body.querySelector(this.$container)
-		}
-		if (!Dap.element.isElement(this.$container)) {
-			this.$container = document.body
-		}
-		if (!Dap.element.isContains(this.$container, this.$el)) {
-			throw new Error('Elements that need to be dragged are not descendants of container elements')
-		}
-		if (Dap.element.getCssStyle(this.$container, 'position') == 'static' && this.$container != document.body) {
-			throw new Error('The container element cannot be static positioning')
-		}
-		if (Dap.element.getCssStyle(this.$el, 'position') == 'static' || Dap.element.getCssStyle(this.$el, 'position') == 'relative') {
-			throw new Error('The element that need to be dragged cannot be static and relative positioning')
-		}
-		if (typeof this.draggableY != 'boolean') {
-			this.draggableY = true
-		}
-		if (typeof this.draggableX != 'boolean') {
-			this.draggableX = true
-		}
-		if (this.mode != 'on' && this.mode != 'in' && this.mode != 'over' && this.mode != 'out') {
-			this.mode = '' //默认对拖拽范围不做限定
-		}
-		if (typeof this.cursor != 'boolean') {
-			this.cursor = true
-		}
-		if (typeof this.drag != 'function') {
-			this.drag = function () {}
-		}
-		if (typeof this.beforedrag != 'function') {
-			this.beforedrag = function () {}
-		}
-		if (typeof this.dragged != 'function') {
-			this.dragged = function () {}
-		}
-		if (typeof this.ready != 'function') {
-			this.ready = function () {}
-		}
-		//设置拖拽事件
-		this._setOn()
-		//初始化回调
-		this.ready.apply(this, [this])
+		this.guid = this.createGuid()
 	}
 
 	//设置拖拽事件
-	_setOn() {
+	setOn() {
 		//触摸开始
 		Dap.event.on(this.$el, 'touchstart.drag', e => {
 			if (!this.draggableX && !this.draggableY) {
@@ -108,14 +51,7 @@ class Drag {
 				this.$el.style.cursor = 'move'
 			}
 			//监听事件，监听刚开始拖动触发
-			this.beforedrag.apply(this, [
-				{
-					event: e,
-					target: this.$el,
-					container: this.$container,
-					placement: Dap.element.getElementPoint(this.$el, this.$container)
-				}
-			])
+			this.beforeDrag.apply(this, [this.$el, this.$container, Dap.element.getElementPoint(this.$el, this.$container), e])
 		})
 		//触摸移动
 		Dap.event.on(this.$el, 'touchmove.drag', e => {
@@ -130,21 +66,16 @@ class Drag {
 				let top = e.targetTouches[0].pageY - this.pageY
 				if (this.draggableX) {
 					this.$el.style.left = left + 'px'
+					this.$el.style.right = 'auto'
 				}
 				if (this.draggableY) {
 					this.$el.style.top = top + 'px'
+					this.$el.style.bottom = 'auto'
 				}
-				this._resize()
+				this.resize()
 				if (this.draggableX || this.draggableY) {
 					//监听事件
-					this.drag.apply(this, [
-						{
-							event: e,
-							target: this.$el,
-							container: this.$container,
-							placement: Dap.element.getElementPoint(this.$el, this.$container)
-						}
-					])
+					this.drag.apply(this, [this.$el, this.$container, Dap.element.getElementPoint(this.$el, this.$container), e])
 				}
 			}
 		})
@@ -159,14 +90,7 @@ class Drag {
 					this.$el.style.cursor = ''
 				}
 				//监听事件
-				this.dragged.apply(this, [
-					{
-						event: e,
-						target: this.$el,
-						container: this.$container,
-						placement: Dap.element.getElementPoint(this.$el, this.$container)
-					}
-				])
+				this.dragged.apply(this, [this.$el, this.$container, Dap.element.getElementPoint(this.$el, this.$container), e])
 			}
 		})
 		//鼠标按下
@@ -181,14 +105,7 @@ class Drag {
 				this.$el.style.cursor = 'move'
 			}
 			//监听事件，监听刚开始拖动触发
-			this.beforedrag.apply(this, [
-				{
-					event: e,
-					target: this.$el,
-					container: this.$container,
-					placement: Dap.element.getElementPoint(this.$el, this.$container)
-				}
-			])
+			this.beforeDrag.apply(this, [this.$el, this.$container, Dap.element.getElementPoint(this.$el, this.$container), e])
 		})
 		//鼠标移动
 		Dap.event.on(document.documentElement, `mousemove.drag_${this.guid}`, e => {
@@ -200,21 +117,16 @@ class Drag {
 				let top = e.pageY - this.pageY
 				if (this.draggableX) {
 					this.$el.style.left = left + 'px'
+					this.$el.style.right = 'auto'
 				}
 				if (this.draggableY) {
 					this.$el.style.top = top + 'px'
+					this.$el.style.bottom = 'auto'
 				}
-				this._resize()
+				this.resize()
 				if (this.draggableX || this.draggableY) {
 					//监听事件
-					this.drag.apply(this, [
-						{
-							event: e,
-							target: this.$el,
-							container: this.$container,
-							placement: Dap.element.getElementPoint(this.$el, this.$container)
-						}
-					])
+					this.drag.apply(this, [this.$el, this.$container, Dap.element.getElementPoint(this.$el, this.$container), e])
 				}
 			}
 		})
@@ -229,25 +141,13 @@ class Drag {
 					this.$el.style.cursor = ''
 				}
 				//监听事件
-				this.dragged.apply(this, [
-					{
-						event: e,
-						target: this.$el,
-						container: this.$container,
-						placement: Dap.element.getElementPoint(this.$el, this.$container)
-					}
-				])
+				this.dragged.apply(this, [this.$el, this.$container, Dap.element.getElementPoint(this.$el, this.$container), e])
 			}
 		})
 	}
 
-	//移除该指令绑定在documentElement上的事件
-	_setOff() {
-		Dap.event.off(document.documentElement, `mousemove.drag_${this.guid} mouseup.drag_${this.guid}`)
-	}
-
 	//元素超出容器范围设置
-	_resize() {
+	resize() {
 		if (this.mode == 'in') {
 			if (this.draggableX) {
 				if (Dap.element.getElementPoint(this.$el, this.$container).left <= 0) {
@@ -303,7 +203,7 @@ class Drag {
 	}
 
 	//生成唯一值
-	_createGuid() {
+	createGuid() {
 		//获取当前guid，不存在则从0开始
 		let guid = Dap.data.get(document.body, 'mvi-directives-drag-guid') || 0
 		guid++
@@ -311,29 +211,83 @@ class Drag {
 		return guid
 	}
 
-	//移动元素到指定位置
+	//api：初始化
+	init() {
+		if (this.hasInit) {
+			return
+		}
+		this.hasInit = true
+
+		if (!Dap.element.isElement(this.$el)) {
+			throw new TypeError('The element that needs to be dragged is not a node element')
+		}
+		if (typeof this.$container == 'string' && this.$container) {
+			this.$container = document.body.querySelector(this.$container)
+		}
+		if (!Dap.element.isElement(this.$container)) {
+			this.$container = document.body
+		}
+		if (!Dap.element.isContains(this.$container, this.$el)) {
+			throw new Error('Elements that need to be dragged are not descendants of container elements')
+		}
+		if (Dap.element.getCssStyle(this.$container, 'position') == 'static' && this.$container != document.body) {
+			throw new Error('The container element cannot be static positioning')
+		}
+		if (Dap.element.getCssStyle(this.$el, 'position') == 'static' || Dap.element.getCssStyle(this.$el, 'position') == 'relative') {
+			throw new Error('The element that need to be dragged cannot be static and relative positioning')
+		}
+		if (typeof this.draggableY != 'boolean') {
+			this.draggableY = true
+		}
+		if (typeof this.draggableX != 'boolean') {
+			this.draggableX = true
+		}
+		if (this.mode != 'on' && this.mode != 'in' && this.mode != 'over' && this.mode != 'out') {
+			this.mode = '' //默认对拖拽范围不做限定
+		}
+		if (typeof this.cursor != 'boolean') {
+			this.cursor = true
+		}
+		if (typeof this.drag != 'function') {
+			this.drag = function () {}
+		}
+		if (typeof this.beforeDrag != 'function') {
+			this.beforeDrag = function () {}
+		}
+		if (typeof this.dragged != 'function') {
+			this.dragged = function () {}
+		}
+		if (typeof this.ready != 'function') {
+			this.ready = function () {}
+		}
+		//设置拖拽事件
+		this.setOn()
+		//初始化回调
+		this.ready.apply(this, [this])
+	}
+
+	//api：移除该指令绑定在documentElement上的事件
+	destroy() {
+		Dap.event.off(document.documentElement, `mousemove.drag_${this.guid} mouseup.drag_${this.guid}`)
+	}
+
+	//api：移动元素到指定位置
 	dragTo(left, top) {
-		return new Promise((resolve, reject) => {
-			this.beforedrag.apply(this, [
-				{
-					target: this.$el,
-					container: this.$container,
-					placement: Dap.element.getElementPoint(this.$el, this.$container)
-				}
-			])
+		return new Promise(resolve => {
 			if (this.draggableX) {
 				this.$el.style.left = left + 'px'
+				this.$el.style.right = 'auto'
 			}
 			if (this.draggableY) {
 				this.$el.style.top = top + 'px'
+				this.$el.style.bottom = 'auto'
 			}
-			this._resize()
+			this.resize()
 			let options = {
 				target: this.$el,
 				container: this.$container,
 				placement: Dap.element.getElementPoint(this.$el, this.$container)
 			}
-			this.dragged.apply(this, [options])
 			resolve(options)
 		})
 	}

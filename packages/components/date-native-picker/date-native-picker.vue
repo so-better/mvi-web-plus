@@ -66,7 +66,7 @@ export default {
 		}
 	},
 	methods: {
-		//触发日期选择弹窗
+		//api：触发日期选择弹窗
 		trigger() {
 			if (this.ios) {
 				this.$el.focus()

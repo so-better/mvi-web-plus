@@ -4,4 +4,5 @@ import mvi from '../packages'
 // import RemFit from 'rem-fit'
 // const remFit = new RemFit(7.5, true)
 // remFit.init()
-createApp(App).use(mvi).mount('#app')
+const app = createApp(App)
+app.use(mvi).mount('#app')

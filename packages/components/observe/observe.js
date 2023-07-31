@@ -25,7 +25,7 @@ class Observe {
 		this.hasInit = false
 	}
 
-	//初始化方法
+	//api：初始化方法
 	init() {
 		if (this.hasInit) {
 			return

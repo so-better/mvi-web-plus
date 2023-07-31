@@ -1,14 +1,6 @@
 <template>
 	<div class="mvi-p-4">
-		<div class="mvi-mb-4">
-			<m-badge content="99">
-				<m-button>按钮</m-button>
-			</m-badge>
-			<m-button plain class="mvi-ml-4" type="success">按钮</m-button>
-			<m-button plain class="mvi-ml-4" type="info">按钮</m-button>
-			<m-button plain class="mvi-ml-4" type="warn">按钮</m-button>
-			<m-button plain class="mvi-ml-4" type="primary">按钮</m-button>
-		</div>
+		<m-button v-resize="resizeOpt">按钮</m-button>
 	</div>
 </template>
 <script>
@@ -16,10 +8,12 @@ import moment from 'moment'
 export default {
 	data() {
 		return {
+			height: 1,
+			type: 'success',
 			moment: moment,
 			date: moment('2023-08').toDate(),
 			value: '',
-			show: false,
+			show: true,
 			options: [
 				{
 					label: '分享到朋友圈'
@@ -28,7 +22,33 @@ export default {
 					label: '分享到QQ空间'
 				}
 			],
-			list: ['佛罗里达州', '加利福利亚州', '北京', '伦敦', 'aaa', 'bbb', 'AAAA']
+			list: ['佛罗里达州', '加利福利亚州', '北京', '伦敦', 'aaa', 'bbb', 'AAAA'],
+			dragOpt: {
+				beforedrag: (el, container, placement, event) => {
+					console.log('beforedrag', el, container, placement, event)
+				},
+				drag: (el, container, placement, event) => {
+					console.log('drag', el, container, placement, event)
+				},
+				dragged: (el, container, placement, event) => {
+					console.log('dragged', el, container, placement, event)
+				}
+			},
+			observeOpt: {
+				attributes: true,
+				attributeNames: ['class'],
+				attributesChange: (attributeName, newValue, oldValue) => {
+					console.log(attributeName, newValue, 'and', oldValue)
+				}
+			},
+			resizeOpt: {
+				beforeResize: data => {
+					console.log(data)
+				},
+				resize: data => {
+					console.log('resize', data)
+				}
+			}
 		}
 	},
 	mounted() {},

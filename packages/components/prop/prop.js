@@ -15,9 +15,31 @@ class Prop {
 		//是否已经初始化
 		this.hasInit = false
 		//生成唯一标识符
-		this.guid = this._createGuid()
+		this.guid = this.createGuid()
 	}
 
+	//生成唯一值
+	createGuid() {
+		//获取当前guid，不存在则从0开始
+		let guid = Dap.data.get(document.body, 'mvi-directives-prop-guid') || 0
+		guid++
+		Dap.data.set(document.body, 'mvi-directives-prop-guid', guid)
+		return guid
+	}
+
+	//api：设置高度的方法
+	set(number) {
+		if (typeof number == 'number' && !isNaN(number) && number >= 0) {
+			this.ratio = number
+		}
+		//宽度
+		this.width = Number(parseFloat(Dap.element.getCssStyle(this.$el, 'width')).toFixed(2))
+		//比例系数乘以宽度获得高度
+		this.height = this.width * this.ratio
+		this.$el.style.height = this.height + 'px'
+	}
+
+	//api：初始化
 	init() {
 		if (this.hasInit) {
 			return
@@ -29,33 +51,15 @@ class Prop {
 		if (typeof this.ratio != 'number' || isNaN(this.ratio)) {
 			this.ratio = 0
 		}
-		this._set()
+		this.set()
 		Dap.event.on(window, `resize.prop_${this.guid}`, e => {
-			this._set()
+			this.set()
 		})
 	}
 
-	//设置高度的方法
-	_set() {
-		//宽度
-		this.width = Number(parseFloat(Dap.element.getCssStyle(this.$el, 'width')).toFixed(2))
-		//比例系数乘以宽度获得高度
-		this.height = this.width * this.ratio
-		this.$el.style.height = this.height + 'px'
-	}
-
-	//移除绑定在window的事件
-	_setOff() {
+	//api：移除绑定在window的事件
+	destroy() {
 		Dap.event.off(window, `resize.prop_${this.guid}`)
-	}
-
-	//生成唯一值
-	_createGuid() {
-		//获取当前guid，不存在则从0开始
-		let guid = Dap.data.get(document.body, 'mvi-directives-prop-guid') || 0
-		guid++
-		Dap.data.set(document.body, 'mvi-directives-prop-guid', guid)
-		return guid
 	}
 }
 

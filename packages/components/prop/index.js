@@ -10,12 +10,18 @@ Prop.install = app => {
 			//将对象记录在元素里
 			Dap.data.set(el, 'directive:prop', prop)
 		},
-		beforeUnmount(el, binding) {
+		updated(el, binding) {
+			let prop = Dap.data.get(el, 'directive:prop')
+			if (prop) {
+				prop.set(binding.value)
+			}
+		},
+		beforeUnmount(el) {
 			//获取对象
 			let prop = Dap.data.get(el, 'directive:prop')
 			if (prop) {
 				//移除绑定在window上的事件
-				prop._setOff()
+				prop.destroy()
 			}
 		}
 	})

@@ -6,9 +6,7 @@ class Resize {
 	constructor(element, options) {
 		//拖拽元素
 		this.$el = element
-		if (!Dap.common.isObject(options)) {
-			options = {}
-		}
+		options = Dap.common.isObject(options) ? options : {}
 		//水平方向是否可拖拽
 		this.draggableX = options.draggableX
 		//垂直方向是否可拖拽
@@ -62,10 +60,776 @@ class Resize {
 		//记录原先的鼠标样式
 		this.cursor = ''
 		//生成唯一标识符
-		this.guid = this._createGuid()
+		this.guid = this.createGuid()
 	}
 
-	//初始化
+	///判断点击的点是否在指定区域范围内
+	getIsInRange(x, y, range) {
+		let conditions1 = x >= range.x[0] && x <= range.x[1]
+		let conditions2 = y >= range.y[0] && y <= range.y[1]
+		if (conditions1 && conditions2) {
+			return true
+		} else {
+			return false
+		}
+	}
+
+	//移动端触摸按下或者PC端鼠标按下
+	down(e) {
+		this._width = this.$el.offsetWidth
+		this._height = this.$el.offsetHeight
+		this._left = this.$el.offsetLeft
+		this._top = this.$el.offsetTop
+		this.cursor = Dap.element.getCssStyle(this.$el, 'cursor')
+		//宽高都可以改
+		if (this.draggableX && this.draggableY) {
+			//左上区域内
+			if (this.getIsInRange(this.startX, this.startY, this.leftTopRange)) {
+				if (this.mode.left || this.mode.top) {
+					this.draggable = true
+					this.$el.style.cursor = 'nw-resize'
+					this.trigger.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.LEFTTOP
+						}
+					])
+				}
+			}
+			//左下区域内
+			else if (this.getIsInRange(this.startX, this.startY, this.leftBottomRange)) {
+				if (this.mode.left || this.mode.bottom) {
+					this.draggable = true
+					this.$el.style.cursor = 'sw-resize'
+					this.trigger.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.LEFTBOTTOM
+						}
+					])
+				}
+			}
+			//右上区域内
+			else if (this.getIsInRange(this.startX, this.startY, this.rightTopRange)) {
+				if (this.mode.right || this.mode.top) {
+					this.draggable = true
+					this.$el.style.cursor = 'ne-resize'
+					this.trigger.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.RIGHTTOP
+						}
+					])
+				}
+			}
+			//右下区域内
+			else if (this.getIsInRange(this.startX, this.startY, this.rightBottomRange)) {
+				if (this.mode.right || this.mode.bottom) {
+					this.draggable = true
+					this.$el.style.cursor = 'se-resize'
+					this.trigger.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.RIGHTBOTTOM
+						}
+					])
+				}
+			}
+			//左侧区域内
+			else if (this.getIsInRange(this.startX, this.startY, this.leftRange)) {
+				if (this.mode.left) {
+					this.draggable = true
+					this.$el.style.cursor = 'w-resize'
+					this.trigger.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.LEFT
+						}
+					])
+				}
+			}
+			//右侧区域内
+			else if (this.getIsInRange(this.startX, this.startY, this.rightRange)) {
+				if (this.mode.right) {
+					this.draggable = true
+					this.$el.style.cursor = 'e-resize'
+					this.trigger.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.RIGHT
+						}
+					])
+				}
+			}
+			//顶部区域内
+			else if (this.getIsInRange(this.startX, this.startY, this.topRange)) {
+				if (this.mode.top) {
+					this.draggable = true
+					this.$el.style.cursor = 'n-resize'
+					this.trigger.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.TOP
+						}
+					])
+				}
+			}
+			//底部区域内
+			else if (this.getIsInRange(this.startX, this.startY, this.bottomRange)) {
+				if (this.mode.bottom) {
+					this.draggable = true
+					this.$el.style.cursor = 's-resize'
+					this.trigger.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.BOTTOM
+						}
+					])
+				}
+			}
+		}
+		//只可以改变元素宽度
+		else if (this.draggableX) {
+			//左侧区域内
+			if (this.getIsInRange(this.startX, this.startY, this.leftRange)) {
+				if (this.mode.left) {
+					this.draggable = true
+					this.$el.style.cursor = 'w-resize'
+					this.trigger.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.LEFT
+						}
+					])
+				}
+			}
+			//右侧区域内
+			else if (this.getIsInRange(this.startX, this.startY, this.rightRange)) {
+				if (this.mode.right) {
+					this.draggable = true
+					this.$el.style.cursor = 'e-resize'
+					this.trigger.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.RIGHT
+						}
+					])
+				}
+			}
+		}
+		//只可以改变元素高度
+		else if (this.draggableY) {
+			//顶部区域内
+			if (this.getIsInRange(this.startX, this.startY, this.topRange)) {
+				if (this.mode.top) {
+					this.draggable = true
+					this.$el.style.cursor = 'n-resize'
+					this.trigger.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.TOP
+						}
+					])
+				}
+			}
+			//底部区域内
+			else if (this.getIsInRange(this.startX, this.startY, this.bottomRange)) {
+				if (this.mode.bottom) {
+					this.draggable = true
+					this.$el.style.cursor = 's-resize'
+					this.trigger.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.BOTTOM
+						}
+					])
+				}
+			}
+		}
+	}
+
+	//移动端触摸滑动或者PC端鼠标拖动
+	move(e, endX, endY) {
+		if (this.draggable) {
+			let moveX = endX - this.startX
+			let moveY = endY - this.startY
+			//宽高都可以改
+			if (this.draggableX && this.draggableY) {
+				//左上区域内
+				if (this.getIsInRange(this.startX, this.startY, this.leftTopRange)) {
+					if (this.mode.left || this.mode.top) {
+						if (
+							this.beforeResize.apply(this, [
+								{
+									event: e,
+									area: Resize.AREA.LEFTTOP,
+									width: this.$el.offsetWidth,
+									height: this.$el.offsetHeight,
+									moveX: moveX,
+									moveY: moveY
+								}
+							]) === false
+						) {
+							return
+						}
+					}
+					if (this.mode.left) {
+						this.$el.style.width = this._width - moveX + 'px'
+						this.$el.style.left = this._left + moveX + 'px'
+					}
+					if (this.mode.top) {
+						this.$el.style.height = this._height - moveY + 'px'
+						this.$el.style.top = this._top + moveY + 'px'
+					}
+					if (this.mode.left || this.mode.top) {
+						this.resize.apply(this, [
+							{
+								area: Resize.AREA.LEFTTOP,
+								event: e,
+								width: this.$el.offsetWidth,
+								height: this.$el.offsetHeight,
+								moveX: moveX,
+								moveY: moveY
+							}
+						])
+					}
+				}
+				//左下区域内
+				else if (this.getIsInRange(this.startX, this.startY, this.leftBottomRange)) {
+					if (this.mode.left || this.mode.bottom) {
+						if (
+							this.beforeResize.apply(this, [
+								{
+									area: Resize.AREA.LEFTBOTTOM,
+									event: e,
+									width: this.$el.offsetWidth,
+									height: this.$el.offsetHeight,
+									moveX: moveX,
+									moveY: moveY
+								}
+							]) === false
+						) {
+							return
+						}
+					}
+					if (this.mode.left) {
+						this.$el.style.width = this._width - moveX + 'px'
+						this.$el.style.left = this._left + moveX + 'px'
+					}
+					if (this.mode.bottom) {
+						this.$el.style.height = this._height + moveY + 'px'
+					}
+					if (this.mode.left || this.mode.bottom) {
+						this.resize.apply(this, [
+							{
+								area: Resize.AREA.LEFTBOTTOM,
+								event: e,
+								width: this.$el.offsetWidth,
+								height: this.$el.offsetHeight,
+								moveX: moveX,
+								moveY: moveY
+							}
+						])
+					}
+				}
+				//右上区域内
+				else if (this.getIsInRange(this.startX, this.startY, this.rightTopRange)) {
+					if (this.mode.right || this.mode.top) {
+						if (
+							this.beforeResize.apply(this, [
+								{
+									area: Resize.AREA.RIGHTTOP,
+									event: e,
+									width: this.$el.offsetWidth,
+									height: this.$el.offsetHeight,
+									moveX: moveX,
+									moveY: moveY
+								}
+							]) === false
+						) {
+							return
+						}
+					}
+					if (this.mode.right) {
+						this.$el.style.width = this._width + moveX + 'px'
+					}
+					if (this.mode.top) {
+						this.$el.style.height = this._height - moveY + 'px'
+						this.$el.style.top = this._top + moveY + 'px'
+					}
+					if (this.mode.top || this.mode.right) {
+						this.resize.apply(this, [
+							{
+								area: Resize.AREA.RIGHTTOP,
+								event: e,
+								width: this.$el.offsetWidth,
+								height: this.$el.offsetHeight,
+								moveX: moveX,
+								moveY: moveY
+							}
+						])
+					}
+				}
+				//右下区域内
+				else if (this.getIsInRange(this.startX, this.startY, this.rightBottomRange)) {
+					if (this.mode.right || this.mode.bottom) {
+						if (
+							this.beforeResize.apply(this, [
+								{
+									area: Resize.AREA.RIGHTBOTTOM,
+									event: e,
+									width: this.$el.offsetWidth,
+									height: this.$el.offsetHeight,
+									moveX: moveX,
+									moveY: moveY
+								}
+							]) === false
+						) {
+							return
+						}
+					}
+					if (this.mode.right) {
+						this.$el.style.width = this._width + moveX + 'px'
+					}
+					if (this.mode.bottom) {
+						this.$el.style.height = this._height + moveY + 'px'
+					}
+					if (this.mode.right || this.mode.bottom) {
+						this.resize.apply(this, [
+							{
+								area: Resize.AREA.RIGHTBOTTOM,
+								event: e,
+								width: this.$el.offsetWidth,
+								height: this.$el.offsetHeight,
+								moveX: moveX,
+								moveY: moveY
+							}
+						])
+					}
+				}
+				//左侧区域内
+				else if (this.getIsInRange(this.startX, this.startY, this.leftRange)) {
+					if (this.mode.left) {
+						if (
+							this.beforeResize.apply(this, [
+								{
+									area: Resize.AREA.LEFT,
+									event: e,
+									width: this.$el.offsetWidth,
+									height: this.$el.offsetHeight,
+									moveX: moveX,
+									moveY: moveY
+								}
+							]) === false
+						) {
+							return
+						}
+						this.$el.style.width = this._width - moveX + 'px'
+						this.$el.style.left = this._left + moveX + 'px'
+						this.resize.apply(this, [
+							{
+								area: Resize.AREA.LEFT,
+								event: e,
+								width: this.$el.offsetWidth,
+								height: this.$el.offsetHeight,
+								moveX: moveX,
+								moveY: moveY
+							}
+						])
+					}
+				}
+				//右侧区域内
+				else if (this.getIsInRange(this.startX, this.startY, this.rightRange)) {
+					if (this.mode.right) {
+						if (
+							this.beforeResize.apply(this, [
+								{
+									area: Resize.AREA.RIGHT,
+									event: e,
+									width: this.$el.offsetWidth,
+									height: this.$el.offsetHeight,
+									moveX: moveX,
+									moveY: moveY
+								}
+							]) === false
+						) {
+							return
+						}
+						this.$el.style.width = this._width + moveX + 'px'
+						this.resize.apply(this, [
+							{
+								area: Resize.AREA.RIGHT,
+								event: e,
+								width: this.$el.offsetWidth,
+								height: this.$el.offsetHeight,
+								moveX: moveX,
+								moveY: moveY
+							}
+						])
+					}
+				}
+				//顶部区域内
+				else if (this.getIsInRange(this.startX, this.startY, this.topRange)) {
+					if (this.mode.top) {
+						if (
+							this.beforeResize.apply(this, [
+								{
+									area: Resize.AREA.TOP,
+									event: e,
+									width: this.$el.offsetWidth,
+									height: this.$el.offsetHeight,
+									moveX: moveX,
+									moveY: moveY
+								}
+							]) === false
+						) {
+							return
+						}
+						this.$el.style.height = this._height - moveY + 'px'
+						this.$el.style.top = this._top + moveY + 'px'
+						this.resize.apply(this, [
+							{
+								area: Resize.AREA.TOP,
+								event: e,
+								width: this.$el.offsetWidth,
+								height: this.$el.offsetHeight,
+								moveX: moveX,
+								moveY: moveY
+							}
+						])
+					}
+				}
+				//底部区域内
+				else if (this.getIsInRange(this.startX, this.startY, this.bottomRange)) {
+					if (this.mode.bottom) {
+						if (
+							this.beforeResize.apply(this, [
+								{
+									area: Resize.AREA.BOTTOM,
+									event: e,
+									width: this.$el.offsetWidth,
+									height: this.$el.offsetHeight,
+									moveX: moveX,
+									moveY: moveY
+								}
+							]) === false
+						) {
+							return
+						}
+						this.$el.style.height = this._height + moveY + 'px'
+						this.resize.apply(this, [
+							{
+								area: Resize.AREA.BOTTOM,
+								event: e,
+								width: this.$el.offsetWidth,
+								height: this.$el.offsetHeight,
+								moveX: moveX,
+								moveY: moveY
+							}
+						])
+					}
+				}
+			}
+			//可以改变宽度
+			else if (this.draggableX) {
+				//左侧区域内
+				if (this.getIsInRange(this.startX, this.startY, this.leftRange)) {
+					if (this.mode.left) {
+						if (
+							this.beforeResize.apply(this, [
+								{
+									area: Resize.AREA.LEFT,
+									event: e,
+									width: this.$el.offsetWidth,
+									height: this.$el.offsetHeight,
+									moveX: moveX,
+									moveY: moveY
+								}
+							]) === false
+						) {
+							return
+						}
+						this.$el.style.width = this._width - moveX + 'px'
+						this.$el.style.left = this._left + moveX + 'px'
+						this.resize.apply(this, [
+							{
+								area: Resize.AREA.LEFT,
+								event: e,
+								width: this.$el.offsetWidth,
+								height: this.$el.offsetHeight,
+								moveX: moveX,
+								moveY: moveY
+							}
+						])
+					}
+				}
+				//右侧区域内
+				else if (this.getIsInRange(this.startX, this.startY, this.rightRange)) {
+					if (this.mode.right) {
+						if (
+							this.beforeResize.apply(this, [
+								{
+									area: Resize.AREA.RIGHT,
+									event: e,
+									width: this.$el.offsetWidth,
+									height: this.$el.offsetHeight,
+									moveX: moveX,
+									moveY: moveY
+								}
+							]) === false
+						) {
+							return
+						}
+						this.$el.style.width = this._width + moveX + 'px'
+						this.resize.apply(this, [
+							{
+								area: Resize.AREA.RIGHT,
+								event: e,
+								width: this.$el.offsetWidth,
+								height: this.$el.offsetHeight,
+								moveX: moveX,
+								moveY: moveY
+							}
+						])
+					}
+				}
+			}
+			//可以改变元素高度
+			else if (this.draggableY) {
+				//顶部区域内
+				if (this.getIsInRange(this.startX, this.startY, this.topRange)) {
+					if (this.mode.top) {
+						if (
+							this.beforeResize.apply(this, [
+								{
+									area: Resize.AREA.TOP,
+									event: e,
+									width: this.$el.offsetWidth,
+									height: this.$el.offsetHeight,
+									moveX: moveX,
+									moveY: moveY
+								}
+							]) === false
+						) {
+							return
+						}
+						this.$el.style.height = this._height - moveY + 'px'
+						this.$el.style.top = this._top + moveY + 'px'
+						this.resize.apply(this, [
+							{
+								area: Resize.AREA.TOP,
+								event: e,
+								width: this.$el.offsetWidth,
+								height: this.$el.offsetHeight,
+								moveX: moveX,
+								moveY: moveY
+							}
+						])
+					}
+				}
+				//底部区域内
+				else if (this.getIsInRange(this.startX, this.startY, this.bottomRange)) {
+					if (this.mode.bottom) {
+						if (
+							this.beforeResize.apply(this, [
+								{
+									area: Resize.AREA.BOTTOM,
+									event: e,
+									width: this.$el.offsetWidth,
+									height: this.$el.offsetHeight,
+									moveX: moveX,
+									moveY: moveY
+								}
+							]) === false
+						) {
+							return
+						}
+						this.$el.style.height = this._height + moveY + 'px'
+						this.resize.apply(this, [
+							{
+								area: Resize.AREA.BOTTOM,
+								event: e,
+								width: this.$el.offsetWidth,
+								height: this.$el.offsetHeight,
+								moveX: moveX,
+								moveY: moveY
+							}
+						])
+					}
+				}
+			}
+		}
+	}
+
+	//移动端触摸松开或者PC端鼠标松开
+	leave(e) {
+		if (this.draggable) {
+			this.$el.style.cursor = this.cursor
+			this.draggable = false
+			//宽高都可以改
+			if (this.draggableX && this.draggableY) {
+				//左上区域
+				if (this.getIsInRange(this.startX, this.startY, this.leftTopRange)) {
+					this.end.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.LEFTTOP
+						}
+					])
+				}
+				//左下区域
+				else if (this.getIsInRange(this.startX, this.startY, this.leftBottomRange)) {
+					this.end.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.LEFTBOTTOM
+						}
+					])
+				}
+				//右上区域
+				else if (this.getIsInRange(this.startX, this.startY, this.rightTopRange)) {
+					this.end.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.RIGHTTOP
+						}
+					])
+				}
+				//右下区域
+				else if (this.getIsInRange(this.startX, this.startY, this.rightBottomRange)) {
+					this.end.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.RIGHTBOTTOM
+						}
+					])
+				}
+				//左侧区域
+				else if (this.getIsInRange(this.startX, this.startY, this.leftRange)) {
+					this.end.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.LEFT
+						}
+					])
+				}
+				//右侧区域
+				else if (this.getIsInRange(this.startX, this.startY, this.rightRange)) {
+					this.end.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.RIGHT
+						}
+					])
+				}
+				//上侧区域
+				else if (this.getIsInRange(this.startX, this.startY, this.topRange)) {
+					this.end.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.TOP
+						}
+					])
+				}
+				//下侧区域
+				else if (this.getIsInRange(this.startX, this.startY, this.bottomRange)) {
+					this.end.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.BOTTOM
+						}
+					])
+				}
+			}
+			//可以改变宽度
+			else if (this.draggableX) {
+				//左侧区域
+				if (this.getIsInRange(this.startX, this.startY, this.leftRange)) {
+					this.end.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.LEFT
+						}
+					])
+				}
+				//右侧区域
+				else if (this.getIsInRange(this.startX, this.startY, this.rightRange)) {
+					this.end.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.RIGHT
+						}
+					])
+				}
+			}
+			//可以改变元素高度
+			else if (this.draggableY) {
+				//上侧区域
+				if (this.getIsInRange(this.startX, this.startY, this.topRange)) {
+					this.end.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.TOP
+						}
+					])
+				}
+				//下侧区域
+				else if (this.getIsInRange(this.startX, this.startY, this.bottomRange)) {
+					this.end.apply(this, [
+						{
+							event: e,
+							area: Resize.AREA.BOTTOM
+						}
+					])
+				}
+			}
+			this.setRange()
+		}
+	}
+
+	//设置拖动事件
+	setOn() {
+		Dap.event.on(this.$el, 'touchstart.resize', e => {
+			this.startX = e.targetTouches[0].pageX
+			this.startY = e.targetTouches[0].pageY
+			this.down(e)
+		})
+		Dap.event.on(this.$el, 'touchmove.resize', e => {
+			if (e.cancelable) {
+				e.preventDefault()
+			}
+			let endX = e.targetTouches[0].pageX
+			let endY = e.targetTouches[0].pageY
+			this.move(e, endX, endY)
+		})
+		Dap.event.on(this.$el, 'touchend.resize', e => {
+			this.leave(e)
+		})
+		Dap.event.on(this.$el, 'mousedown.resize', e => {
+			this.startX = e.pageX
+			this.startY = e.pageY
+			this.down(e)
+		})
+		Dap.event.on(document.documentElement, `mousemove.resize_${this.guid}`, e => {
+			let endX = e.pageX
+			let endY = e.pageY
+			this.move(e, endX, endY)
+		})
+		Dap.event.on(document.documentElement, `mouseup.resize_${this.guid}`, e => {
+			this.leave(e)
+		})
+	}
+
+	//生成唯一值
+	createGuid() {
+		//获取当前guid，不存在则从0开始
+		let guid = Dap.data.get(document.body, 'mvi-directives-resize-guid') || 0
+		guid++
+		Dap.data.set(document.body, 'mvi-directives-resize-guid', guid)
+		return guid
+	}
+
+	//api：初始化
 	init() {
 		if (this.hasInit) {
 			return
@@ -125,13 +889,13 @@ class Resize {
 		this.setRange()
 
 		//设置拖动事件
-		this._setOn()
+		this.setOn()
 
 		//初始化完成回调
 		this.ready.apply(this, [this])
 	}
 
-	//设置可拖动的范围
+	//api：设置可拖动的范围
 	setRange() {
 		let range = this.$el.getBoundingClientRect()
 		if (this.draggableX && this.draggableY) {
@@ -188,796 +952,30 @@ class Resize {
 		}
 	}
 
-	///判断点击的点是否在指定区域范围内
-	_getIsInRange(x, y, range) {
-		let conditions1 = x >= range.x[0] && x <= range.x[1]
-		let conditions2 = y >= range.y[0] && y <= range.y[1]
-		if (conditions1 && conditions2) {
-			return true
-		} else {
-			return false
-		}
-	}
-
-	//移动端触摸按下或者PC端鼠标按下
-	_down(e) {
-		this._width = this.$el.offsetWidth
-		this._height = this.$el.offsetHeight
-		this._left = this.$el.offsetLeft
-		this._top = this.$el.offsetTop
-		this.cursor = Dap.element.getCssStyle(this.$el, 'cursor')
-		//宽高都可以改
-		if (this.draggableX && this.draggableY) {
-			//左上区域内
-			if (this._getIsInRange(this.startX, this.startY, this.leftTopRange)) {
-				if (this.mode.left || this.mode.top) {
-					this.draggable = true
-					this.$el.style.cursor = 'nw-resize'
-					this.trigger.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.LEFTTOP
-						}
-					])
-				}
-			}
-			//左下区域内
-			else if (this._getIsInRange(this.startX, this.startY, this.leftBottomRange)) {
-				if (this.mode.left || this.mode.bottom) {
-					this.draggable = true
-					this.$el.style.cursor = 'sw-resize'
-					this.trigger.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.LEFTBOTTOM
-						}
-					])
-				}
-			}
-			//右上区域内
-			else if (this._getIsInRange(this.startX, this.startY, this.rightTopRange)) {
-				if (this.mode.right || this.mode.top) {
-					this.draggable = true
-					this.$el.style.cursor = 'ne-resize'
-					this.trigger.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.RIGHTTOP
-						}
-					])
-				}
-			}
-			//右下区域内
-			else if (this._getIsInRange(this.startX, this.startY, this.rightBottomRange)) {
-				if (this.mode.right || this.mode.bottom) {
-					this.draggable = true
-					this.$el.style.cursor = 'se-resize'
-					this.trigger.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.RIGHTBOTTOM
-						}
-					])
-				}
-			}
-			//左侧区域内
-			else if (this._getIsInRange(this.startX, this.startY, this.leftRange)) {
-				if (this.mode.left) {
-					this.draggable = true
-					this.$el.style.cursor = 'w-resize'
-					this.trigger.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.LEFT
-						}
-					])
-				}
-			}
-			//右侧区域内
-			else if (this._getIsInRange(this.startX, this.startY, this.rightRange)) {
-				if (this.mode.right) {
-					this.draggable = true
-					this.$el.style.cursor = 'e-resize'
-					this.trigger.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.RIGHT
-						}
-					])
-				}
-			}
-			//顶部区域内
-			else if (this._getIsInRange(this.startX, this.startY, this.topRange)) {
-				if (this.mode.top) {
-					this.draggable = true
-					this.$el.style.cursor = 'n-resize'
-					this.trigger.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.TOP
-						}
-					])
-				}
-			}
-			//底部区域内
-			else if (this._getIsInRange(this.startX, this.startY, this.bottomRange)) {
-				if (this.mode.bottom) {
-					this.draggable = true
-					this.$el.style.cursor = 's-resize'
-					this.trigger.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.BOTTOM
-						}
-					])
-				}
-			}
-		}
-		//只可以改变元素宽度
-		else if (this.draggableX) {
-			//左侧区域内
-			if (this._getIsInRange(this.startX, this.startY, this.leftRange)) {
-				if (this.mode.left) {
-					this.draggable = true
-					this.$el.style.cursor = 'w-resize'
-					this.trigger.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.LEFT
-						}
-					])
-				}
-			}
-			//右侧区域内
-			else if (this._getIsInRange(this.startX, this.startY, this.rightRange)) {
-				if (this.mode.right) {
-					this.draggable = true
-					this.$el.style.cursor = 'e-resize'
-					this.trigger.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.RIGHT
-						}
-					])
-				}
-			}
-		}
-		//只可以改变元素高度
-		else if (this.draggableY) {
-			//顶部区域内
-			if (this._getIsInRange(this.startX, this.startY, this.topRange)) {
-				if (this.mode.top) {
-					this.draggable = true
-					this.$el.style.cursor = 'n-resize'
-					this.trigger.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.TOP
-						}
-					])
-				}
-			}
-			//底部区域内
-			else if (this._getIsInRange(this.startX, this.startY, this.bottomRange)) {
-				if (this.mode.bottom) {
-					this.draggable = true
-					this.$el.style.cursor = 's-resize'
-					this.trigger.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.BOTTOM
-						}
-					])
-				}
-			}
-		}
-	}
-
-	//移动端触摸滑动或者PC端鼠标拖动
-	_move(e, endX, endY) {
-		if (this.draggable) {
-			let moveX = endX - this.startX
-			let moveY = endY - this.startY
-			//宽高都可以改
-			if (this.draggableX && this.draggableY) {
-				//左上区域内
-				if (this._getIsInRange(this.startX, this.startY, this.leftTopRange)) {
-					if (this.mode.left || this.mode.top) {
-						if (
-							this.beforeResize.apply(this, [
-								{
-									event: e,
-									area: Resize.AREA.LEFTTOP,
-									width: this.$el.offsetWidth,
-									height: this.$el.offsetHeight,
-									moveX: moveX,
-									moveY: moveY
-								}
-							]) === false
-						) {
-							return
-						}
-					}
-					if (this.mode.left) {
-						this.$el.style.width = this._width - moveX + 'px'
-						this.$el.style.left = this._left + moveX + 'px'
-					}
-					if (this.mode.top) {
-						this.$el.style.height = this._height - moveY + 'px'
-						this.$el.style.top = this._top + moveY + 'px'
-					}
-					if (this.mode.left || this.mode.top) {
-						this.resize.apply(this, [
-							{
-								area: Resize.AREA.LEFTTOP,
-								event: e,
-								width: this.$el.offsetWidth,
-								height: this.$el.offsetHeight,
-								moveX: moveX,
-								moveY: moveY
-							}
-						])
-					}
-				}
-				//左下区域内
-				else if (this._getIsInRange(this.startX, this.startY, this.leftBottomRange)) {
-					if (this.mode.left || this.mode.bottom) {
-						if (
-							this.beforeResize.apply(this, [
-								{
-									area: Resize.AREA.LEFTBOTTOM,
-									event: e,
-									width: this.$el.offsetWidth,
-									height: this.$el.offsetHeight,
-									moveX: moveX,
-									moveY: moveY
-								}
-							]) === false
-						) {
-							return
-						}
-					}
-					if (this.mode.left) {
-						this.$el.style.width = this._width - moveX + 'px'
-						this.$el.style.left = this._left + moveX + 'px'
-					}
-					if (this.mode.bottom) {
-						this.$el.style.height = this._height + moveY + 'px'
-					}
-					if (this.mode.left || this.mode.bottom) {
-						this.resize.apply(this, [
-							{
-								area: Resize.AREA.LEFTBOTTOM,
-								event: e,
-								width: this.$el.offsetWidth,
-								height: this.$el.offsetHeight,
-								moveX: moveX,
-								moveY: moveY
-							}
-						])
-					}
-				}
-				//右上区域内
-				else if (this._getIsInRange(this.startX, this.startY, this.rightTopRange)) {
-					if (this.mode.right || this.mode.top) {
-						if (
-							this.beforeResize.apply(this, [
-								{
-									area: Resize.AREA.RIGHTTOP,
-									event: e,
-									width: this.$el.offsetWidth,
-									height: this.$el.offsetHeight,
-									moveX: moveX,
-									moveY: moveY
-								}
-							]) === false
-						) {
-							return
-						}
-					}
-					if (this.mode.right) {
-						this.$el.style.width = this._width + moveX + 'px'
-					}
-					if (this.mode.top) {
-						this.$el.style.height = this._height - moveY + 'px'
-						this.$el.style.top = this._top + moveY + 'px'
-					}
-					if (this.mode.top || this.mode.right) {
-						this.resize.apply(this, [
-							{
-								area: Resize.AREA.RIGHTTOP,
-								event: e,
-								width: this.$el.offsetWidth,
-								height: this.$el.offsetHeight,
-								moveX: moveX,
-								moveY: moveY
-							}
-						])
-					}
-				}
-				//右下区域内
-				else if (this._getIsInRange(this.startX, this.startY, this.rightBottomRange)) {
-					if (this.mode.right || this.mode.bottom) {
-						if (
-							this.beforeResize.apply(this, [
-								{
-									area: Resize.AREA.RIGHTBOTTOM,
-									event: e,
-									width: this.$el.offsetWidth,
-									height: this.$el.offsetHeight,
-									moveX: moveX,
-									moveY: moveY
-								}
-							]) === false
-						) {
-							return
-						}
-					}
-					if (this.mode.right) {
-						this.$el.style.width = this._width + moveX + 'px'
-					}
-					if (this.mode.bottom) {
-						this.$el.style.height = this._height + moveY + 'px'
-					}
-					if (this.mode.right || this.mode.bottom) {
-						this.resize.apply(this, [
-							{
-								area: Resize.AREA.RIGHTBOTTOM,
-								event: e,
-								width: this.$el.offsetWidth,
-								height: this.$el.offsetHeight,
-								moveX: moveX,
-								moveY: moveY
-							}
-						])
-					}
-				}
-				//左侧区域内
-				else if (this._getIsInRange(this.startX, this.startY, this.leftRange)) {
-					if (this.mode.left) {
-						if (
-							this.beforeResize.apply(this, [
-								{
-									area: Resize.AREA.LEFT,
-									event: e,
-									width: this.$el.offsetWidth,
-									height: this.$el.offsetHeight,
-									moveX: moveX,
-									moveY: moveY
-								}
-							]) === false
-						) {
-							return
-						}
-						this.$el.style.width = this._width - moveX + 'px'
-						this.$el.style.left = this._left + moveX + 'px'
-						this.resize.apply(this, [
-							{
-								area: Resize.AREA.LEFT,
-								event: e,
-								width: this.$el.offsetWidth,
-								height: this.$el.offsetHeight,
-								moveX: moveX,
-								moveY: moveY
-							}
-						])
-					}
-				}
-				//右侧区域内
-				else if (this._getIsInRange(this.startX, this.startY, this.rightRange)) {
-					if (this.mode.right) {
-						if (
-							this.beforeResize.apply(this, [
-								{
-									area: Resize.AREA.RIGHT,
-									event: e,
-									width: this.$el.offsetWidth,
-									height: this.$el.offsetHeight,
-									moveX: moveX,
-									moveY: moveY
-								}
-							]) === false
-						) {
-							return
-						}
-						this.$el.style.width = this._width + moveX + 'px'
-						this.resize.apply(this, [
-							{
-								area: Resize.AREA.RIGHT,
-								event: e,
-								width: this.$el.offsetWidth,
-								height: this.$el.offsetHeight,
-								moveX: moveX,
-								moveY: moveY
-							}
-						])
-					}
-				}
-				//顶部区域内
-				else if (this._getIsInRange(this.startX, this.startY, this.topRange)) {
-					if (this.mode.top) {
-						if (
-							this.beforeResize.apply(this, [
-								{
-									area: Resize.AREA.TOP,
-									event: e,
-									width: this.$el.offsetWidth,
-									height: this.$el.offsetHeight,
-									moveX: moveX,
-									moveY: moveY
-								}
-							]) === false
-						) {
-							return
-						}
-						this.$el.style.height = this._height - moveY + 'px'
-						this.$el.style.top = this._top + moveY + 'px'
-						this.resize.apply(this, [
-							{
-								area: Resize.AREA.TOP,
-								event: e,
-								width: this.$el.offsetWidth,
-								height: this.$el.offsetHeight,
-								moveX: moveX,
-								moveY: moveY
-							}
-						])
-					}
-				}
-				//底部区域内
-				else if (this._getIsInRange(this.startX, this.startY, this.bottomRange)) {
-					if (this.mode.bottom) {
-						if (
-							this.beforeResize.apply(this, [
-								{
-									area: Resize.AREA.BOTTOM,
-									event: e,
-									width: this.$el.offsetWidth,
-									height: this.$el.offsetHeight,
-									moveX: moveX,
-									moveY: moveY
-								}
-							]) === false
-						) {
-							return
-						}
-						this.$el.style.height = this._height + moveY + 'px'
-						this.resize.apply(this, [
-							{
-								area: Resize.AREA.BOTTOM,
-								event: e,
-								width: this.$el.offsetWidth,
-								height: this.$el.offsetHeight,
-								moveX: moveX,
-								moveY: moveY
-							}
-						])
-					}
-				}
-			}
-			//可以改变宽度
-			else if (this.draggableX) {
-				//左侧区域内
-				if (this._getIsInRange(this.startX, this.startY, this.leftRange)) {
-					if (this.mode.left) {
-						if (
-							this.beforeResize.apply(this, [
-								{
-									area: Resize.AREA.LEFT,
-									event: e,
-									width: this.$el.offsetWidth,
-									height: this.$el.offsetHeight,
-									moveX: moveX,
-									moveY: moveY
-								}
-							]) === false
-						) {
-							return
-						}
-						this.$el.style.width = this._width - moveX + 'px'
-						this.$el.style.left = this._left + moveX + 'px'
-						this.resize.apply(this, [
-							{
-								area: Resize.AREA.LEFT,
-								event: e,
-								width: this.$el.offsetWidth,
-								height: this.$el.offsetHeight,
-								moveX: moveX,
-								moveY: moveY
-							}
-						])
-					}
-				}
-				//右侧区域内
-				else if (this._getIsInRange(this.startX, this.startY, this.rightRange)) {
-					if (this.mode.right) {
-						if (
-							this.beforeResize.apply(this, [
-								{
-									area: Resize.AREA.RIGHT,
-									event: e,
-									width: this.$el.offsetWidth,
-									height: this.$el.offsetHeight,
-									moveX: moveX,
-									moveY: moveY
-								}
-							]) === false
-						) {
-							return
-						}
-						this.$el.style.width = this._width + moveX + 'px'
-						this.resize.apply(this, [
-							{
-								area: Resize.AREA.RIGHT,
-								event: e,
-								width: this.$el.offsetWidth,
-								height: this.$el.offsetHeight,
-								moveX: moveX,
-								moveY: moveY
-							}
-						])
-					}
-				}
-			}
-			//可以改变元素高度
-			else if (this.draggableY) {
-				//顶部区域内
-				if (this._getIsInRange(this.startX, this.startY, this.topRange)) {
-					if (this.mode.top) {
-						if (
-							this.beforeResize.apply(this, [
-								{
-									area: Resize.AREA.TOP,
-									event: e,
-									width: this.$el.offsetWidth,
-									height: this.$el.offsetHeight,
-									moveX: moveX,
-									moveY: moveY
-								}
-							]) === false
-						) {
-							return
-						}
-						this.$el.style.height = this._height - moveY + 'px'
-						this.$el.style.top = this._top + moveY + 'px'
-						this.resize.apply(this, [
-							{
-								area: Resize.AREA.TOP,
-								event: e,
-								width: this.$el.offsetWidth,
-								height: this.$el.offsetHeight,
-								moveX: moveX,
-								moveY: moveY
-							}
-						])
-					}
-				}
-				//底部区域内
-				else if (this._getIsInRange(this.startX, this.startY, this.bottomRange)) {
-					if (this.mode.bottom) {
-						if (
-							this.beforeResize.apply(this, [
-								{
-									area: Resize.AREA.BOTTOM,
-									event: e,
-									width: this.$el.offsetWidth,
-									height: this.$el.offsetHeight,
-									moveX: moveX,
-									moveY: moveY
-								}
-							]) === false
-						) {
-							return
-						}
-						this.$el.style.height = this._height + moveY + 'px'
-						this.resize.apply(this, [
-							{
-								area: Resize.AREA.BOTTOM,
-								event: e,
-								width: this.$el.offsetWidth,
-								height: this.$el.offsetHeight,
-								moveX: moveX,
-								moveY: moveY
-							}
-						])
-					}
-				}
-			}
-		}
-	}
-
-	//移动端触摸松开或者PC端鼠标松开
-	_leave(e) {
-		if (this.draggable) {
-			this.$el.style.cursor = this.cursor
-			this.draggable = false
-			//宽高都可以改
-			if (this.draggableX && this.draggableY) {
-				//左上区域
-				if (this._getIsInRange(this.startX, this.startY, this.leftTopRange)) {
-					this.end.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.LEFTTOP
-						}
-					])
-				}
-				//左下区域
-				else if (this._getIsInRange(this.startX, this.startY, this.leftBottomRange)) {
-					this.end.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.LEFTBOTTOM
-						}
-					])
-				}
-				//右上区域
-				else if (this._getIsInRange(this.startX, this.startY, this.rightTopRange)) {
-					this.end.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.RIGHTTOP
-						}
-					])
-				}
-				//右下区域
-				else if (this._getIsInRange(this.startX, this.startY, this.rightBottomRange)) {
-					this.end.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.RIGHTBOTTOM
-						}
-					])
-				}
-				//左侧区域
-				else if (this._getIsInRange(this.startX, this.startY, this.leftRange)) {
-					this.end.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.LEFT
-						}
-					])
-				}
-				//右侧区域
-				else if (this._getIsInRange(this.startX, this.startY, this.rightRange)) {
-					this.end.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.RIGHT
-						}
-					])
-				}
-				//上侧区域
-				else if (this._getIsInRange(this.startX, this.startY, this.topRange)) {
-					this.end.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.TOP
-						}
-					])
-				}
-				//下侧区域
-				else if (this._getIsInRange(this.startX, this.startY, this.bottomRange)) {
-					this.end.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.BOTTOM
-						}
-					])
-				}
-			}
-			//可以改变宽度
-			else if (this.draggableX) {
-				//左侧区域
-				if (this._getIsInRange(this.startX, this.startY, this.leftRange)) {
-					this.end.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.LEFT
-						}
-					])
-				}
-				//右侧区域
-				else if (this._getIsInRange(this.startX, this.startY, this.rightRange)) {
-					this.end.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.RIGHT
-						}
-					])
-				}
-			}
-			//可以改变元素高度
-			else if (this.draggableY) {
-				//上侧区域
-				if (this._getIsInRange(this.startX, this.startY, this.topRange)) {
-					this.end.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.TOP
-						}
-					])
-				}
-				//下侧区域
-				else if (this._getIsInRange(this.startX, this.startY, this.bottomRange)) {
-					this.end.apply(this, [
-						{
-							event: e,
-							area: Resize.AREA.BOTTOM
-						}
-					])
-				}
-			}
-			this.setRange()
-		}
-	}
-
-	//设置拖动事件
-	_setOn() {
-		Dap.event.on(this.$el, 'touchstart.resize', e => {
-			this.startX = e.targetTouches[0].pageX
-			this.startY = e.targetTouches[0].pageY
-			this._down(e)
-		})
-		Dap.event.on(this.$el, 'touchmove.resize', e => {
-			if (e.cancelable) {
-				e.preventDefault()
-			}
-			let endX = e.targetTouches[0].pageX
-			let endY = e.targetTouches[0].pageY
-			this._move(e, endX, endY)
-		})
-		Dap.event.on(this.$el, 'touchend.resize', e => {
-			this._leave(e)
-		})
-		Dap.event.on(this.$el, 'mousedown.resize', e => {
-			this.startX = e.pageX
-			this.startY = e.pageY
-			this._down(e)
-		})
-		Dap.event.on(document.documentElement, `mousemove.resize_${this.guid}`, e => {
-			let endX = e.pageX
-			let endY = e.pageY
-			this._move(e, endX, endY)
-		})
-		Dap.event.on(document.documentElement, `mouseup.resize_${this.guid}`, e => {
-			this._leave(e)
-		})
-	}
-
-	//移除documentElement上的拖动事件
-	_setOff() {
+	//api：移除documentElement上的拖动事件
+	destroy() {
 		Dap.event.off(document.documentElement, `mousemove.resize_${this.guid} mouseup.resize_${this.guid}`)
 	}
 
-	//生成唯一值
-	_createGuid() {
-		//获取当前guid，不存在则从0开始
-		let guid = Dap.data.get(document.body, 'mvi-directives-resize-guid') || 0
-		guid++
-		Dap.data.set(document.body, 'mvi-directives-resize-guid', guid)
-		return guid
-	}
-
-	//设置水平方向不可拖拽改变大小
+	//api：设置水平方向不可拖拽改变大小
 	disabledDragX() {
 		this.draggableX = false
 		this.setRange()
 	}
 
-	//设置垂直方向不可拖拽改变大小
+	//api：设置垂直方向不可拖拽改变大小
 	disabledDragY() {
 		this.draggableY = false
 		this.setRange()
 	}
 
-	//设置水平方向可拖拽改变大小
+	//api：设置水平方向可拖拽改变大小
 	enabledDragX() {
 		this.draggableX = true
 		this.setRange()
 	}
 
-	//设置垂直方向可拖拽改变大小
+	//api：设置垂直方向可拖拽改变大小
 	enabledDragY() {
 		this.draggableY = true
 		this.setRange()
@@ -986,14 +984,14 @@ class Resize {
 
 //拖动的区域范围
 Resize.AREA = {
-	LEFT: 0,
-	TOP: 1,
-	RIGHT: 2,
-	BOTTOM: 3,
-	LEFTTOP: 4,
-	LEFTBOTTOM: 5,
-	RIGHTTOP: 6,
-	RIGHTBOTTOM: 7
+	LEFT: 'left',
+	TOP: 'top',
+	RIGHT: 'right',
+	BOTTOM: 'bottom',
+	LEFTTOP: 'left-top',
+	LEFTBOTTOM: 'left-bottom',
+	RIGHTTOP: 'right-top',
+	RIGHTBOTTOM: 'right-bottom'
 }
 
 //模式默认值

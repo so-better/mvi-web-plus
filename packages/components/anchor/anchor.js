@@ -22,6 +22,7 @@ class Anchor {
 		this.hasInit = false
 	}
 
+	//api：初始化
 	init() {
 		if (this.hasInit) {
 			return
