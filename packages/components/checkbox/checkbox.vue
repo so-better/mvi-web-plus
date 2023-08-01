@@ -1,11 +1,11 @@
 <template>
 	<label class="mvi-checkbox" :disabled="disabled || null">
-		<span v-if="labelPlacement == 'left' && label" :disabled="disabled || null" class="mvi-checkbox-label" :data-placement="labelPlacement" v-text="label" :style="labelStyle"></span>
-		<input @change="change" :value="value" :disabled="disabled || null" :checked="check" type="checkbox" :name="name" />
-		<span :disabled="disabled || null" :class="['mvi-checkbox-item', check ? 'mvi-checkbox-item-check' : '']" :style="checkboxStyle">
-			<Icon :disabled="disabled || null" :color="iconColor" :size="iconSize" :type="iconType" :class="['mvi-checkbox-icon', check ? 'mvi-checkbox-icon-check' : '']" />
+		<span v-if="placement == 'left' && label" class="mvi-checkbox-label" :data-placement="placement" v-text="label"></span>
+		<input @change="change" :value="value" :disabled="disabled" :checked="check" type="checkbox" :name="name" />
+		<span :class="['mvi-checkbox-item', check ? 'check' : '', round ? 'round' : '']" :style="itemStyle">
+			<Icon type="success" :style="{ opacity: this.check ? '' : 0 }" />
 		</span>
-		<span v-if="labelPlacement == 'right' && label" :disabled="disabled || null" class="mvi-checkbox-label" :data-placement="labelPlacement" v-text="label" :style="labelStyle"></span>
+		<span v-if="placement == 'right' && label" class="mvi-checkbox-label" :data-placement="placement" v-text="label"></span>
 	</label>
 </template>
 
@@ -31,106 +31,42 @@ export default {
 			type: String,
 			default: null
 		},
-		//文字颜色
-		labelColor: {
-			type: String,
-			default: null
-		},
-		//文字大小
-		labelSize: {
-			type: String,
-			default: null
-		},
 		//值
 		value: {
 			type: [Object, Number, String, Array],
 			default: ''
-		},
-		//填充颜色
-		fillColor: {
-			type: String,
-			default: null
-		},
-		//文字位置
-		labelPlacement: {
-			type: String,
-			default: 'right',
-			validator(value) {
-				return ['left', 'right'].includes(value)
-			}
 		},
 		//是否圆形
 		round: {
 			type: Boolean,
 			default: false
 		},
-		//图标
-		icon: {
-			type: [String, Object],
-			default: 'success'
-		},
 		//原生name属性
 		name: {
+			type: String,
+			default: null
+		},
+		//文字位置
+		placement: {
+			type: String,
+			default: 'right',
+			validator(value) {
+				return ['left', 'right'].includes(value)
+			}
+		},
+		//大小
+		size: {
+			type: String,
+			default: null
+		},
+		//主题颜色
+		color: {
 			type: String,
 			default: null
 		}
 	},
 	computed: {
-		iconColor() {
-			if (this.disabled || !this.check) {
-				return null
-			}
-			let color = null
-			if (Dap.common.isObject(this.icon)) {
-				if (typeof this.icon.color == 'string') {
-					color = this.icon.color
-				}
-			}
-			return color
-		},
-		iconSize() {
-			let size = null
-			if (Dap.common.isObject(this.icon)) {
-				if (typeof this.icon.size == 'string') {
-					size = this.icon.size
-				}
-			}
-			return size
-		},
-		iconType() {
-			let type = 'success'
-			if (Dap.common.isObject(this.icon)) {
-				if (typeof this.icon.type == 'string') {
-					type = this.icon.type
-				}
-			} else if (typeof this.icon == 'string') {
-				type = this.icon
-			}
-			return type
-		},
-		checkboxStyle() {
-			let style = {}
-			if (!this.disabled && this.check && this.fillColor) {
-				style.backgroundColor = this.fillColor
-				style.borderColor = this.fillColor
-			}
-			if (this.round) {
-				style.borderRadius = '50%'
-			}
-			return style
-		},
-		labelStyle() {
-			let style = {}
-			if (!this.disabled && this.labelColor) {
-				style.color = this.labelColor
-			}
-			if (this.labelSize) {
-				style.fontSize = this.labelSize
-			}
-			return style
-		},
 		check() {
-			//modelValue为boolean
 			if (typeof this.modelValue == 'boolean') {
 				return this.modelValue
 			} else if (Array.isArray(this.modelValue)) {
@@ -141,6 +77,17 @@ export default {
 			} else {
 				return false
 			}
+		},
+		itemStyle() {
+			let style = {}
+			if (this.color && this.check && !this.disabled) {
+				style.backgroundColor = this.color
+				style.borderColor = this.color
+			}
+			if (this.size) {
+				style.fontSize = this.size
+			}
+			return style
 		}
 	},
 	components: {
@@ -184,74 +131,66 @@ export default {
 	align-items: center;
 	cursor: pointer;
 	user-select: none;
-	-webkit-user-select: none;
 
-	& > input[type='checkbox'] {
+	input[type='checkbox'] {
 		width: 0;
 		height: 0;
 		opacity: 0;
 		border: none;
 		display: none;
 	}
-}
 
-.mvi-checkbox-item {
-	display: inline-flex;
-	display: -webkit-inline-flex;
-	justify-content: center;
-	align-items: center;
-	position: relative;
-	margin: 0;
-	padding: @mp-xs / 2;
-	border: 1px solid @border-color;
-	border-radius: @radius-default;
-	background-color: #fff;
-	transition: background-color 100ms, border-color 100ms;
-
-	&.mvi-checkbox-item-check {
-		background-color: @info-normal;
-		border-color: @info-normal;
-	}
-
-	&[disabled],
-	&.mvi-checkbox-item-check[disabled] {
-		background-color: @bg-color-dark;
-		border-color: @border-color;
-	}
-}
-
-.mvi-checkbox-icon {
-	font-size: @font-size-small;
-	margin: 0;
-	padding: 0;
-	line-height: 1;
-	color: transparent;
-	transition: color 300ms;
-
-	&.mvi-checkbox-icon-check {
+	.mvi-checkbox-item {
+		display: inline-flex;
+		display: -webkit-inline-flex;
+		justify-content: center;
+		align-items: center;
+		position: relative;
+		margin: 0;
+		padding: @mp-xs / 2;
+		border: 1px solid @border-color;
+		background-color: #fff;
+		font-size: @font-size-small;
+		border-radius: @radius-default / 2;
 		color: #fff;
+		transition: border-color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46), background-color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46), color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46);
 
-		&[disabled] {
-			color: @font-color-mute;
+		&.check {
+			background-color: @info-normal;
+			border-color: @info-normal;
+		}
+
+		&.round {
+			border-radius: 50%;
 		}
 	}
-}
-.mvi-checkbox-label {
-	vertical-align: middle;
-	font-size: @font-size-default;
-	color: @font-color-default;
-	user-select: none;
 
-	&[data-placement='left'] {
-		margin-right: @mp-xs;
-	}
+	.mvi-checkbox-label {
+		vertical-align: middle;
+		font-size: @font-size-default;
+		color: @font-color-default;
+		user-select: none;
 
-	&[data-placement='right'] {
-		margin-left: @mp-xs;
+		&[data-placement='left'] {
+			margin-right: @mp-xs;
+		}
+
+		&[data-placement='right'] {
+			margin-left: @mp-xs;
+		}
 	}
 
 	&[disabled] {
-		color: @font-color-mute;
+		.mvi-checkbox-item,
+		.mvi-checkbox-item.check {
+			background-color: @bg-color-dark;
+			border-color: @border-color;
+			color: @font-color-mute;
+		}
+
+		.mvi-checkbox-label {
+			color: @font-color-mute;
+		}
 	}
 }
 </style>

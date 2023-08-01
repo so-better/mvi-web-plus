@@ -3,12 +3,12 @@
 		<!-- 加载中 -->
 		<div v-if="(loading || lazying) && showLoading" class="mvi-image-loading">
 			<slot name="loading" v-if="$slots.loading"></slot>
-			<Icon v-else :type="loadIconType" :url="loadIconUrl" :spin="loadIconSpin" :size="loadIconSize" :color="loadIconColor" />
+			<Icon v-else :type="parseIcon(loadIcon).type" :url="parseIcon(loadIcon).url" :spin="parseIcon(loadIcon).spin" :size="parseIcon(loadIcon).size" :color="parseIcon(loadIcon).color" />
 		</div>
 		<!-- 加载失败 -->
 		<div v-else-if="error && showError" class="mvi-image-error" ref="error">
 			<slot name="error" v-if="$slots.error"></slot>
-			<Icon v-else :type="errorIconType" :url="errorIconUrl" :spin="errorIconSpin" :size="errorIconSize" :color="errorIconColor" />
+			<Icon v-else :type="parseIcon(errorIcon).type" :url="parseIcon(errorIcon).url" :spin="parseIcon(errorIcon).spin" :size="parseIcon(errorIcon).size" :color="parseIcon(errorIcon).color" />
 		</div>
 		<!-- 加载成功 -->
 		<img @load="loadSuccess" @error="loadError" :src="computedSrc" :alt="showError ? '' : alt" :class="imgClass" />
@@ -77,12 +77,12 @@ export default {
 		//加载图标
 		loadIcon: {
 			type: [String, Object],
-			default: null
+			default: 'image-alt'
 		},
 		//失败图标
 		errorIcon: {
 			type: [String, Object],
-			default: null
+			default: 'image-error'
 		},
 		//是否圆形图片
 		round: {
@@ -101,99 +101,37 @@ export default {
 		}
 	},
 	computed: {
-		loadIconType() {
-			let type = 'image-alt'
-			if (Dap.common.isObject(this.loadIcon)) {
-				if (typeof this.loadIcon.type == 'string') {
-					type = this.loadIcon.type
+		//转换图标字段
+		parseIcon() {
+			return param => {
+				let icon = {
+					spin: false,
+					type: null,
+					url: null,
+					color: null,
+					size: null
 				}
-			} else if (typeof this.loadIcon == 'string') {
-				type = this.loadIcon
-			}
-			return type
-		},
-		loadIconUrl() {
-			let url = null
-			if (Dap.common.isObject(this.loadIcon)) {
-				if (typeof this.loadIcon.url == 'string') {
-					url = this.loadIcon.url
+				if (Dap.common.isObject(param)) {
+					if (typeof param.spin == 'boolean') {
+						icon.spin = param.spin
+					}
+					if (typeof param.type == 'string') {
+						icon.type = param.type
+					}
+					if (typeof param.url == 'string') {
+						icon.url = param.url
+					}
+					if (typeof param.color == 'string') {
+						icon.color = param.color
+					}
+					if (typeof param.size == 'string') {
+						icon.size = param.size
+					}
+				} else if (typeof param == 'string') {
+					icon.type = param
 				}
+				return icon
 			}
-			return url
-		},
-		loadIconSpin() {
-			let spin = false
-			if (Dap.common.isObject(this.loadIcon)) {
-				if (typeof this.loadIcon.spin == 'boolean') {
-					spin = this.loadIcon.spin
-				}
-			}
-			return spin
-		},
-		loadIconSize() {
-			let size = null
-			if (Dap.common.isObject(this.loadIcon)) {
-				if (typeof this.loadIcon.size == 'string') {
-					size = this.loadIcon.size
-				}
-			}
-			return size
-		},
-		loadIconColor() {
-			let color = null
-			if (Dap.common.isObject(this.loadIcon)) {
-				if (typeof this.loadIcon.color == 'string') {
-					color = this.loadIcon.color
-				}
-			}
-			return color
-		},
-		errorIconType() {
-			let type = 'image-error'
-			if (Dap.common.isObject(this.errorIcon)) {
-				if (typeof this.errorIcon.type == 'string') {
-					type = this.errorIcon.type
-				}
-			} else if (typeof this.errorIcon == 'string') {
-				type = this.errorIcon
-			}
-			return type
-		},
-		errorIconUrl() {
-			let url = null
-			if (Dap.common.isObject(this.errorIcon)) {
-				if (typeof this.errorIcon.url == 'string') {
-					url = this.errorIcon.url
-				}
-			}
-			return url
-		},
-		errorIconSpin() {
-			let spin = false
-			if (Dap.common.isObject(this.errorIcon)) {
-				if (typeof this.errorIcon.spin == 'boolean') {
-					spin = this.errorIcon.spin
-				}
-			}
-			return spin
-		},
-		errorIconSize() {
-			let size = null
-			if (Dap.common.isObject(this.errorIcon)) {
-				if (typeof this.errorIcon.size == 'string') {
-					size = this.errorIcon.size
-				}
-			}
-			return size
-		},
-		errorIconColor() {
-			let color = null
-			if (Dap.common.isObject(this.errorIcon)) {
-				if (typeof this.errorIcon.color == 'string') {
-					color = this.errorIcon.color
-				}
-			}
-			return color
 		},
 		//图片容器样式
 		imageStyle() {
@@ -236,7 +174,7 @@ export default {
 		Icon
 	},
 	watch: {
-		computedSrc(newValue, oldValue) {
+		computedSrc() {
 			this.loading = true
 		}
 	},
@@ -253,7 +191,7 @@ export default {
 			this.spy = new Spy(this.$el, {
 				el: this.root,
 				//图片进入可视端口时加载
-				beforeEnter: el => {
+				beforeEnter: () => {
 					this.lazying = false
 					this.lazySrc = this.src
 				}
@@ -275,7 +213,7 @@ export default {
 	},
 	beforeUnmount() {
 		if (this.spy) {
-			this.spy._setOff()
+			this.spy.destroy()
 		}
 	}
 }
@@ -288,52 +226,52 @@ export default {
 	display: inline-block;
 	overflow: hidden;
 	position: relative;
-}
 
-.mvi-image > img {
-	display: block;
-	margin: 0;
-	padding: 0;
-	border-radius: inherit;
-	width: 100%;
-	height: 100%;
-	position: relative;
-	z-index: 1;
-}
+	img {
+		display: block;
+		margin: 0;
+		padding: 0;
+		border-radius: inherit;
+		width: 100%;
+		height: 100%;
+		position: relative;
+		z-index: 1;
 
-.mvi-image > img.mvi-image-contain {
-	object-fit: contain;
-}
+		&.mvi-image-contain {
+			object-fit: contain;
+		}
 
-.mvi-image > img.mvi-image-cover {
-	object-fit: cover;
-}
+		&.mvi-image-cover {
+			object-fit: cover;
+		}
 
-.mvi-image > img.mvi-image-fill {
-	object-fit: fill;
-}
+		&.mvi-image-fill {
+			object-fit: fill;
+		}
 
-.mvi-image > img.mvi-image-none {
-	object-fit: none;
-}
+		&.mvi-image-none {
+			object-fit: none;
+		}
 
-.mvi-image > img.mvi-image-response {
-	object-fit: scale-down;
-}
+		&.mvi-image-response {
+			object-fit: scale-down;
+		}
+	}
 
-.mvi-image-error,
-.mvi-image-loading {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	left: 0;
-	top: 0;
-	background-color: @bg-color-dark;
-	color: @font-color-sub;
-	z-index: 2;
+	.mvi-image-error,
+	.mvi-image-loading {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		left: 0;
+		top: 0;
+		background-color: @bg-color-dark;
+		color: @font-color-sub;
+		z-index: 2;
+	}
 }
 </style>

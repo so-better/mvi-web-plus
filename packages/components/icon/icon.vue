@@ -1,6 +1,6 @@
 <template>
-	<i v-if="url" :class="['mvi-icon-url', spin ? 'mvi-icon-spin' : '']" :style="iconStyle"></i>
-	<i v-else :class="['mvi-icon', 'icon-' + type, spin ? 'mvi-icon-spin' : '']" :style="iconStyle"></i>
+	<i v-if="url" :class="['mvi-icon-url', spin ? 'spin' : '']" :style="iconStyle"></i>
+	<i v-else :class="['mvi-icon', 'icon-' + type, spin ? 'spin' : '']" :style="iconStyle"></i>
 </template>
 
 <script>
@@ -69,6 +69,11 @@ export default {
 	align-items: center;
 	font-size: inherit;
 	line-height: 1;
+
+	&.spin {
+		animation: spin 1.4s linear infinite;
+		-webkit-animation: spin 1.4s linear infinite;
+	}
 }
 
 .mvi-icon-url {
@@ -80,12 +85,11 @@ export default {
 	-webkit-background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
-}
 
-//旋转效果的图标
-.mvi-icon-spin {
-	animation: spin 1.4s linear infinite;
-	-webkit-animation: spin 1.4s linear infinite;
+	&.spin {
+		animation: spin 1.4s linear infinite;
+		-webkit-animation: spin 1.4s linear infinite;
+	}
 }
 
 //旋转
