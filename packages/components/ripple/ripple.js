@@ -6,9 +6,7 @@ class Ripple {
 	constructor(element, options) {
 		//指定的元素
 		this.$el = element
-		if (!Dap.common.isObject(options)) {
-			options = {}
-		}
+		options = Dap.common.isObject(options) ? options : {}
 		//水波纹颜色
 		this.color = options.color
 		//水波持续时间，单位ms
@@ -24,11 +22,111 @@ class Ripple {
 		//是否初始化了
 		this.hasInit = false
 		//生成唯一值
-		this.guid = this._createGuid()
+		this.guid = this.createGuid()
 		//水波纹容器数组
 		this.rippleContainers = []
 	}
 
+	//动画完成处理
+	endDeal(rippleContainer) {
+		const rippleUp = Dap.data.get(rippleContainer, 'ripple-up')
+		const rippleAnimationEnd = Dap.data.get(rippleContainer, 'ripple-animation-end')
+		if (rippleUp && rippleAnimationEnd) {
+			//透明度消失时间
+			const destoryDuration = 100
+			//水波纹元素
+			const rippleEls = Dap.element.children(rippleContainer)
+			const rippleEl = rippleEls[0]
+			//重新设置动画
+			rippleEl.style.transition = `opacity ${destoryDuration}ms ease-in-out`
+			//促使浏览器重绘
+			rippleEl.offsetWidth
+			rippleEl.style.opacity = 0
+			setTimeout(() => {
+				//重置容器数组
+				this.rippleContainers = this.rippleContainers.filter(el => {
+					return el != rippleContainer
+				})
+				//移除容器元素
+				rippleContainer.remove()
+			}, destoryDuration)
+		}
+	}
+
+	//创建ripple元素
+	createRippleElement(pageX, pageY) {
+		//获取元素位置信息
+		const rect = Dap.element.getElementBounding(this.$el)
+		//获取水波圆形的半径
+		const { x1, x2, y1, y2, r } = this.getRadius(pageX, pageY, rect)
+		//创建元素
+		const el = Dap.element.string2dom('<div></div>')
+		el.style.width = r * 2 + 'px'
+		el.style.height = r * 2 + 'px'
+		el.style.position = 'absolute'
+		el.style.background = this.color
+		el.style.top = y1 - r + 'px'
+		el.style.left = x1 - r + 'px'
+		el.style.zIndex = 1
+		el.style.borderRadius = '50%'
+		//设置初始状态样式
+		el.style.transform = 'scale(0)'
+		el.style.opacity = this.initialOpacity
+		el.style.transition = `transform ${this.duration}ms cubic-bezier(0, 0.5, 0.25, 1), opacity ${this.duration}ms cubic-bezier(0.0, 0, 0.2, 1)`
+		return el
+	}
+
+	//创建ripple父容器
+	createRippleContainer() {
+		const el = Dap.element.string2dom('<div></div>')
+		el.style.position = 'absolute'
+		el.style.left = '0px'
+		el.style.top = '0px'
+		el.style.width = Dap.element.getCssStyle(this.$el, 'width')
+		el.style.height = Dap.element.getCssStyle(this.$el, 'height')
+		el.style.background = 'transparent'
+		el.style.borderRadius = Dap.element.getCssStyle(this.$el, 'border-radius')
+		el.style.overflow = 'hidden'
+		el.style.pointerEvents = 'none'
+		//解决移动端子元素存在transform动画时border-radius失效的问题
+		el.style.transform = 'rotate(0deg)'
+		return el
+	}
+
+	//获取圆半径
+	getRadius(pageX, pageY, rect) {
+		//点击位置距离元素左侧的距离
+		const x1 = pageX - rect.left
+		//点击位置距离元素顶部的距离
+		const y1 = pageY - rect.top
+		//点击位置距离元素右侧的距离
+		const x2 = this.$el.offsetWidth - x1
+		//点击位置距离元素底部的距离
+		const y2 = this.$el.offsetHeight - y1
+		//使用勾股定理获取点击位置到各个顶点的距离
+		const topLeft = Math.sqrt(x1 * x1 + y1 * y1)
+		const topRight = Math.sqrt(x2 * x2 + y1 * y1)
+		const bottomLeft = Math.sqrt(x1 * x1 + y2 * y2)
+		const bottomRight = Math.sqrt(x2 * x2 + y2 * y2)
+		return {
+			r: Math.round(Math.max(topLeft, topRight, bottomLeft, bottomRight)),
+			x1,
+			x2,
+			y1,
+			y2
+		}
+	}
+
+	//生成唯一值
+	createGuid() {
+		//获取当前guid，不存在则从0开始
+		let guid = Dap.data.get(document.documentElement, 'mvi-directives-ripple-guid') || 0
+		guid++
+		Dap.data.set(document.documentElement, 'mvi-directives-ripple-guid', guid)
+		return guid
+	}
+
+	//api：初始化
 	init() {
 		if (this.hasInit) {
 			return
@@ -66,9 +164,9 @@ class Ripple {
 				return
 			}
 			//创建水波纹父元素
-			const rippleContainer = this._createRippleContainer()
+			const rippleContainer = this.createRippleContainer()
 			//创建水波纹元素
-			const rippleEl = this._createRippleElement(pageX, pageY)
+			const rippleEl = this.createRippleElement(pageX, pageY)
 			//添加到指定的元素
 			this.$el.appendChild(rippleContainer)
 			rippleContainer.appendChild(rippleEl)
@@ -83,7 +181,7 @@ class Ripple {
 				setTimeout(() => {
 					//设置动画完成标识
 					Dap.data.set(rippleContainer, 'ripple-animation-end', true)
-					this._endDeal(rippleContainer)
+					this.endDeal(rippleContainer)
 				}, this.duration)
 			}, this.delay)
 		}
@@ -93,7 +191,7 @@ class Ripple {
 			if (this.rippleContainers.length) {
 				this.rippleContainers.forEach(rippleContainer => {
 					Dap.data.set(rippleContainer, 'ripple-up', true)
-					this._endDeal(rippleContainer)
+					this.endDeal(rippleContainer)
 				})
 			}
 		}
@@ -115,108 +213,9 @@ class Ripple {
 		Dap.event.on(this.$el, `touchend.ripple`, upFn)
 	}
 
-	//移除documentElement上的拖动事件
-	_setOff() {
+	//api：移除documentElement上的拖动事件
+	destroy() {
 		Dap.event.off(document.documentElement, `mouseup.ripple_${this.guid}`)
-	}
-
-	//动画完成处理
-	_endDeal(rippleContainer) {
-		const rippleUp = Dap.data.get(rippleContainer, 'ripple-up')
-		const rippleAnimationEnd = Dap.data.get(rippleContainer, 'ripple-animation-end')
-		if (rippleUp && rippleAnimationEnd) {
-			//透明度消失时间
-			const destoryDuration = 100
-			//水波纹元素
-			const rippleEls = Dap.element.children(rippleContainer)
-			const rippleEl = rippleEls[0]
-			//重新设置动画
-			rippleEl.style.transition = `opacity ${destoryDuration}ms ease-in-out`
-			//促使浏览器重绘
-			rippleEl.offsetWidth
-			rippleEl.style.opacity = 0
-			setTimeout(() => {
-				//重置容器数组
-				this.rippleContainers = this.rippleContainers.filter(el => {
-					return el != rippleContainer
-				})
-				//移除容器元素
-				rippleContainer.remove()
-			}, destoryDuration)
-		}
-	}
-
-	//创建ripple元素
-	_createRippleElement(pageX, pageY) {
-		//获取元素位置信息
-		const rect = Dap.element.getElementBounding(this.$el)
-		//获取水波圆形的半径
-		const { x1, x2, y1, y2, r } = this._getRadius(pageX, pageY, rect)
-		//创建元素
-		const el = Dap.element.string2dom('<div></div>')
-		el.style.width = r * 2 + 'px'
-		el.style.height = r * 2 + 'px'
-		el.style.position = 'absolute'
-		el.style.background = this.color
-		el.style.top = y1 - r + 'px'
-		el.style.left = x1 - r + 'px'
-		el.style.zIndex = 1
-		el.style.borderRadius = '50%'
-		//设置初始状态样式
-		el.style.transform = 'scale(0)'
-		el.style.opacity = this.initialOpacity
-		el.style.transition = `transform ${this.duration}ms cubic-bezier(0, 0.5, 0.25, 1), opacity ${this.duration}ms cubic-bezier(0.0, 0, 0.2, 1)`
-		return el
-	}
-
-	//创建ripple父容器
-	_createRippleContainer() {
-		const el = Dap.element.string2dom('<div></div>')
-		el.style.position = 'absolute'
-		el.style.left = '0px'
-		el.style.top = '0px'
-		el.style.width = Dap.element.getCssStyle(this.$el, 'width')
-		el.style.height = Dap.element.getCssStyle(this.$el, 'height')
-		el.style.background = 'transparent'
-		el.style.borderRadius = Dap.element.getCssStyle(this.$el, 'border-radius')
-		el.style.overflow = 'hidden'
-		el.style.pointerEvents = 'none'
-		//解决移动端子元素存在transform动画时border-radius失效的问题
-		el.style.transform = 'rotate(0deg)'
-		return el
-	}
-
-	//获取圆半径
-	_getRadius(pageX, pageY, rect) {
-		//点击位置距离元素左侧的距离
-		const x1 = pageX - rect.left
-		//点击位置距离元素顶部的距离
-		const y1 = pageY - rect.top
-		//点击位置距离元素右侧的距离
-		const x2 = this.$el.offsetWidth - x1
-		//点击位置距离元素底部的距离
-		const y2 = this.$el.offsetHeight - y1
-		//使用勾股定理获取点击位置到各个顶点的距离
-		const topLeft = Math.sqrt(x1 * x1 + y1 * y1)
-		const topRight = Math.sqrt(x2 * x2 + y1 * y1)
-		const bottomLeft = Math.sqrt(x1 * x1 + y2 * y2)
-		const bottomRight = Math.sqrt(x2 * x2 + y2 * y2)
-		return {
-			r: Math.round(Math.max(topLeft, topRight, bottomLeft, bottomRight)),
-			x1,
-			x2,
-			y1,
-			y2
-		}
-	}
-
-	//生成唯一值
-	_createGuid() {
-		//获取当前guid，不存在则从0开始
-		let guid = Dap.data.get(document.documentElement, 'mvi-directives-ripple-guid') || 0
-		guid++
-		Dap.data.set(document.documentElement, 'mvi-directives-ripple-guid', guid)
-		return guid
 	}
 }
 

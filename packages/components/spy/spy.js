@@ -5,9 +5,7 @@ import { Dap } from '../dap'
 class Spy {
 	constructor(element, options) {
 		this.$el = element
-		if (!Dap.common.isObject(options)) {
-			options = {}
-		}
+		options = Dap.common.isObject(options) ? options : {}
 		this.$root = options.el
 		this.beforeEnter = options.beforeEnter
 		this.enter = options.enter
@@ -21,47 +19,11 @@ class Spy {
 			after: false
 		}
 		//生成唯一标识符
-		this.guid = this._createGuid()
-	}
-
-	init() {
-		if (this.hasInit) {
-			return
-		}
-		this.hasInit = true
-
-		if (!Dap.element.isElement(this.$el)) {
-			throw new TypeError('The bound element is not a node element')
-		}
-
-		//初始化参数
-		if (typeof this.$root == 'string' && this.$root) {
-			this.$root = document.documentElement.querySelector(this.$root)
-		}
-		if (!Dap.element.isElement(this.$root)) {
-			this.$root = document.body
-		}
-		if (typeof this.beforeEnter != 'function') {
-			this.beforeEnter = function () {}
-		}
-		if (typeof this.enter != 'function') {
-			this.enter = function () {}
-		}
-		if (typeof this.beforeLeave != 'function') {
-			this.beforeLeave = function () {}
-		}
-		if (typeof this.leave != 'function') {
-			this.leave = function () {}
-		}
-		//给滚动容器添加监听事件
-		this._scrollHandler()
-		Dap.event.on(this.$root, `scroll.spy_${this.guid}`, e => {
-			this._scrollHandler()
-		})
+		this.guid = this.createGuid()
 	}
 
 	//侦听处理
-	_scrollHandler() {
+	scrollHandle() {
 		//获取容器元素是否含有滚动条
 		let overflowX = Dap.element.getCssStyle(this.$root, 'overflow-x')
 		let overflowY = Dap.element.getCssStyle(this.$root, 'overflow-y')
@@ -160,18 +122,55 @@ class Spy {
 		}
 	}
 
-	//移除滚动容器监听事件
-	_setOff() {
-		Dap.event.off(this.$root, `scroll.spy_${this.guid}`)
-	}
-
 	//生成唯一值
-	_createGuid() {
+	createGuid() {
 		//获取当前guid，不存在则从0开始
 		let guid = Dap.data.get(document.body, 'mvi-directives-spy-guid') || 0
 		guid++
 		Dap.data.set(document.body, 'mvi-directives-spy-guid', guid)
 		return guid
+	}
+
+	//api：初始化
+	init() {
+		if (this.hasInit) {
+			return
+		}
+		this.hasInit = true
+
+		if (!Dap.element.isElement(this.$el)) {
+			throw new TypeError('The bound element is not a node element')
+		}
+
+		//初始化参数
+		if (typeof this.$root == 'string' && this.$root) {
+			this.$root = document.documentElement.querySelector(this.$root)
+		}
+		if (!Dap.element.isElement(this.$root)) {
+			this.$root = document.body
+		}
+		if (typeof this.beforeEnter != 'function') {
+			this.beforeEnter = function () {}
+		}
+		if (typeof this.enter != 'function') {
+			this.enter = function () {}
+		}
+		if (typeof this.beforeLeave != 'function') {
+			this.beforeLeave = function () {}
+		}
+		if (typeof this.leave != 'function') {
+			this.leave = function () {}
+		}
+		//给滚动容器添加监听事件
+		this.scrollHandle()
+		Dap.event.on(this.$root, `scroll.spy_${this.guid}`, e => {
+			this.scrollHandle()
+		})
+	}
+
+	//api：移除滚动容器监听事件
+	destroy() {
+		Dap.event.off(this.$root, `scroll.spy_${this.guid}`)
 	}
 }
 

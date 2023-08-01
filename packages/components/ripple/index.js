@@ -14,12 +14,12 @@ Ripple.install = app => {
 			//将对象记录在元素里
 			Dap.data.set(el, 'directive:ripple', ripple)
 		},
-		beforeUnmount(el, binding) {
+		beforeUnmount(el) {
 			//获取对象
 			let ripple = Dap.data.get(el, 'directive:ripple')
 			if (ripple) {
-				//移除绑定在body上的事件
-				ripple._setOff()
+				//移除绑定在documentElement上的事件
+				ripple.destroy()
 			}
 		}
 	})

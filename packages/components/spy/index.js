@@ -14,12 +14,12 @@ Spy.install = app => {
 			//将对象记录在元素里
 			Dap.data.set(el, 'directive:spy', spy)
 		},
-		beforeUnmount(el, binding) {
+		beforeUnmount(el) {
 			//获取对象
 			let spy = Dap.data.get(el, 'directive:spy')
 			if (spy) {
 				//移除容器队列监听的滚动事件
-				spy._setOff()
+				spy.destroy()
 			}
 		}
 	})

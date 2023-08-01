@@ -6,9 +6,7 @@ class Upload {
 	constructor(element, options) {
 		//组件容器
 		this.$el = element
-		if (!Dap.common.isObject(options)) {
-			options = {}
-		}
+		options = Dap.common.isObject(options) ? options : {}
 		//文件上传元素
 		this.$selectInput = null
 		//选择的文件值数组
@@ -40,12 +38,28 @@ class Upload {
 		//加载完毕触发的回调函数
 		this.ready = options.ready
 		//额外的参数
-		this.extra = options.extra
+		this.extraData = options.extraData
 		//是否初始化
 		this.hasInit = false
 	}
 
-	//初始化
+	//判断选择的文件是否符合规定的后缀格式
+	judgeSuffix(fileName) {
+		//获取文件后缀
+		let suffix = fileName.substr(fileName.lastIndexOf('.') + 1)
+		if (this.allowedFileType.length == 0) {
+			return true
+		} else {
+			//转为小写
+			suffix = suffix.toLocaleLowerCase()
+			for (let i = 0; i < this.allowedFileType.length; i++) {
+				this.allowedFileType[i] = this.allowedFileType[i].toLocaleLowerCase()
+			}
+			return this.allowedFileType.includes(suffix)
+		}
+	}
+
+	//api：初始化
 	init() {
 		if (this.hasInit) {
 			return
@@ -90,8 +104,8 @@ class Upload {
 		if (typeof this.ready != 'function') {
 			this.ready = function () {}
 		}
-		if (typeof this.extra != 'object') {
-			this.extra = {}
+		if (!Dap.common.isObject(this.extraData)) {
+			this.extraData = {}
 		}
 		//生成input[type='file']元素
 		this.$selectInput = Dap.element.string2dom("<input type='file' />")
@@ -156,26 +170,26 @@ class Upload {
 			let isAllAccord = true
 			for (let i = 0; i < length; i++) {
 				//判断后缀
-				if (!this._judgeSuffix(files[i].name)) {
-					this.error.apply(this, [Upload.ERRORTYPE.FILE_SUFFIX_ERROR, '文件' + files[i].name + '不符合规定的文件后缀类型', files[i]])
+				if (!this.judgeSuffix(files[i].name)) {
+					this.error.apply(this, [Upload.ERRORTYPE.FILE_SUFFIX_ERROR, files[i]])
 					isAllAccord = false
 					break
 				}
 				//超出文件最大值
 				if (files[i].size / 1024 > this.maxSize && this.maxSize > 0) {
-					this.error.apply(this, [Upload.ERRORTYPE.FILE_MAXSIZE_ERROR, '文件' + files[i].name + '超出文件最大值限定', files[i]])
+					this.error.apply(this, [Upload.ERRORTYPE.FILE_MAXSIZE_ERROR, files[i]])
 					isAllAccord = false
 					break
 				}
 				//没有达到最小值
 				if (files[i].size / 1024 < this.minSize && this.minSize > 0) {
-					this.error.apply(this, [Upload.ERRORTYPE.FILE_MINSIZE_ERROR, '文件' + files[i].name + '没有达到文件最小值限定', files[i]])
+					this.error.apply(this, [Upload.ERRORTYPE.FILE_MINSIZE_ERROR, files[i]])
 					isAllAccord = false
 					break
 				}
 				//超出最大数量限制
 				if (this.files.length + length > this.maxLength && this.maxLength > 0) {
-					this.error.apply(this, [Upload.ERRORTYPE.FILE_MAXLENGTH_ERROR, '文件数量超出限定的最大值'])
+					this.error.apply(this, [Upload.ERRORTYPE.FILE_MAXLENGTH_ERROR])
 					isAllAccord = false
 					break
 				}
@@ -186,55 +200,39 @@ class Upload {
 			}
 			//文件数量没有达到最小值
 			if (this.files.length + length < this.minLength && this.minLength > 0) {
-				this.error.apply(this, [Upload.ERRORTYPE.FILE_MINLENGTH_ERROR, '文件数量没有达到限定的最小值'])
+				this.error.apply(this, [Upload.ERRORTYPE.FILE_MINLENGTH_ERROR])
 				return
 			}
 			this.files = [...this.files, ...files]
-			this.select.apply(this, [[...this.files], { ...this.extra }])
+			this.select.apply(this, [[...this.files], { ...this.extraData }])
 		}
 
 		//ready
 		this.ready.apply(this, [this])
 	}
 
-	//判断选择的文件是否符合规定的后缀格式
-	_judgeSuffix(fileName) {
-		//获取文件后缀
-		let suffix = fileName.substr(fileName.lastIndexOf('.') + 1)
-		if (this.allowedFileType.length == 0) {
-			return true
-		} else {
-			//转为小写
-			suffix = suffix.toLocaleLowerCase()
-			for (let i = 0; i < this.allowedFileType.length; i++) {
-				this.allowedFileType[i] = this.allowedFileType[i].toLocaleLowerCase()
-			}
-			return this.allowedFileType.includes(suffix)
-		}
-	}
-
-	//获取已经选择的文件
+	//api：获取已经选择的文件
 	getFiles() {
 		return {
 			files: [...this.files],
-			extra: { ...this.extra }
+			extraData: { ...this.extraData }
 		}
 	}
 
-	//清空选择的文件
+	//api：清空选择的文件
 	clear() {
 		this.files = []
 		this.$selectInput.value = ''
-		this.select.apply(this, [[...this.files], { ...this.extra }])
+		this.select.apply(this, [[...this.files], { ...this.extraData }])
 	}
 
-	//禁用
+	//api：禁用
 	setDisabled() {
 		this.disabled = true
 		this.$el.setAttribute('disabled', 'disabled')
 	}
 
-	//启用
+	//api：启用
 	setEnabled() {
 		this.disabled = false
 		this.$el.removeAttribute('disabled')
@@ -243,15 +241,15 @@ class Upload {
 
 Upload.ERRORTYPE = {
 	//文件后缀不符合
-	FILE_SUFFIX_ERROR: 101,
+	FILE_SUFFIX_ERROR: 'suffixError',
 	//超出最大文件尺寸限制
-	FILE_MAXSIZE_ERROR: 102,
+	FILE_MAXSIZE_ERROR: 'maxSizeError',
 	//文件尺寸没有达到要求的最小值
-	FILE_MINSIZE_ERROR: 103,
+	FILE_MINSIZE_ERROR: 'minSizeError',
 	//文件数量超出限制
-	FILE_MAXLENGTH_ERROR: 104,
+	FILE_MAXLENGTH_ERROR: 'maxLengthError',
 	//文件数量没有达到最小值
-	FILE_MINLENGTH_ERROR: 105
+	FILE_MINLENGTH_ERROR: 'minLengthError'
 }
 
 export default Upload

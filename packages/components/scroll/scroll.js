@@ -5,15 +5,14 @@ import { Dap } from '../dap'
 class Scroll {
 	constructor(element, options) {
 		this.$el = element
-		if (!Dap.common.isObject(options)) {
-			options = {}
-		}
+		options = Dap.common.isObject(options) ? options : {}
 		this.top = options.top
 		this.bottom = options.bottom
 		//是否已经初始化
 		this.hasInit = false
 	}
 
+	//api：初始化
 	init() {
 		if (this.hasInit) {
 			return
