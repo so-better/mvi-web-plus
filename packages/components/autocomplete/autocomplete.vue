@@ -12,7 +12,7 @@
 				<Icon :type="parseIcon(rightIcon).type" :url="parseIcon(rightIcon).url" :spin="parseIcon(rightIcon).spin" :size="parseIcon(rightIcon).size" :color="parseIcon(rightIcon).color" />
 			</div>
 		</div>
-		<Layer :model-value="show" :target="`[data-id='mvi-autocomplete-target-${uid}']`" :root="`[data-id='mvi-autocomplete-${uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :fixed="layerRealProps.fixed" :z-index="layerRealProps.zIndex" :fixed-auto="layerRealProps.fixedAuto" ref="layer" :wrapper-class="layerRealProps.wrapperClass" :animation="layerRealProps.animation" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :timeout="layerRealProps.timeout" :closable="false" :show-triangle="layerRealProps.showTriangle" :border-color="layerRealProps.borderColor" :background="layerRealProps.background" @showing="layerShow">
+		<Layer :model-value="show" :target="`[data-id='mvi-autocomplete-target-${uid}']`" :root="`[data-id='mvi-autocomplete-${uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :fixed="layerRealProps.fixed" :z-index="layerRealProps.zIndex" :fixed-auto="layerRealProps.fixedAuto" ref="layer" :animation="layerRealProps.animation" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :timeout="layerRealProps.timeout" :closable="false" :show-triangle="layerRealProps.showTriangle" :border-color="layerRealProps.borderColor" :background="layerRealProps.background" @showing="layerShow">
 			<div class="mvi-autocomplete-menu" :style="menuStyle" ref="menu">
 				<div class="mvi-autocomplete-list" v-for="item in computedFilter" v-text="item" @click="doSelect(item)"></div>
 			</div>
@@ -270,7 +270,6 @@ export default {
 				width: this.layerProps.width,
 				zIndex: Dap.number.isNumber(this.layerProps.zIndex) ? this.layerProps.zIndex : 400,
 				offset: this.layerProps.offset ? this.layerProps.offset : '0.1rem',
-				wrapperClass: this.layerProps.wrapperClass,
 				animation: this.layerProps.animation,
 				timeout: Dap.number.isNumber(this.layerProps.timeout) ? this.layerProps.timeout : 200,
 				showTriangle: typeof this.layerProps.showTriangle == 'boolean' ? this.layerProps.showTriangle : false,

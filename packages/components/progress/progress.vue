@@ -2,7 +2,7 @@
 	<!-- 进度条 -->
 	<div :class="progressClass" :style="progressStyle">
 		<!-- 进度条进度 -->
-		<div :class="barClass" :style="progressBarStyle">
+		<div class="mvi-progress-bar" :style="progressBarStyle">
 			<div v-if="showTip" class="mvi-progress-tooltip" :style="tipStyle">
 				<slot name="tip" v-if="$slots.tip" :value="value"></slot>
 				<span v-else v-text="computedText"></span>
@@ -57,7 +57,7 @@ export default {
 		},
 		//进度显示的文字，默认为百分比
 		tipText: {
-			type: String,
+			type: [String, Number],
 			default: null
 		},
 		//显示圆角
@@ -122,21 +122,12 @@ export default {
 			}
 			return style
 		},
-		barClass() {
-			let cls = ['mvi-progress-bar']
-			if (this.round) {
-				cls.push('mvi-progress-radius-round')
-			} else if (this.square) {
-				cls.push('mvi-progress-radius-square')
-			}
-			return cls
-		},
 		progressClass() {
 			let cls = ['mvi-progress']
 			if (this.round) {
-				cls.push('mvi-progress-radius-round')
+				cls.push('round')
 			} else if (this.square) {
-				cls.push('mvi-progress-radius-square')
+				cls.push('square')
 			}
 			return cls
 		}
@@ -154,43 +145,43 @@ export default {
 	height: 0.2rem;
 	background-color: @bg-color-dark;
 	border-radius: @radius-default;
-}
 
-.mvi-progress.mvi-progress-radius-square {
-	border-radius: 0;
-}
+	&.square {
+		border-radius: 0;
+	}
 
-.mvi-progress.mvi-progress-radius-round {
-	border-radius: @radius-round;
-}
+	&.round {
+		border-radius: @radius-round;
+	}
 
-.mvi-progress-bar {
-	display: block;
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	background-color: @info-normal;
-	border-radius: inherit;
-	border-top-right-radius: 0;
-	border-bottom-right-radius: 0;
-}
+	.mvi-progress-bar {
+		display: block;
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		background-color: @info-normal;
+		border-radius: inherit;
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+	}
 
-.mvi-progress-tooltip {
-	position: absolute;
-	display: flex;
-	display: -webkit-flex;
-	justify-content: center;
-	align-items: center;
-	right: 0;
-	top: 50%;
-	transform: translateY(-50%);
-	-webkit-transform: translateY(-50%);
-	width: auto;
-	min-height: 100%;
-	font-size: @font-size-small;
-	color: #fff;
-	padding-right: @mp-xs;
+	.mvi-progress-tooltip {
+		position: absolute;
+		display: flex;
+		display: -webkit-flex;
+		justify-content: center;
+		align-items: center;
+		right: 0;
+		top: 50%;
+		transform: translateY(-50%);
+		-webkit-transform: translateY(-50%);
+		width: auto;
+		min-height: 100%;
+		font-size: @font-size-small;
+		color: #fff;
+		padding-right: @mp-xs;
+	}
 }
 </style>

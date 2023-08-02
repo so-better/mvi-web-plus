@@ -1,7 +1,9 @@
 <template>
-	<div class="mvi-p-4">
-		<m-button>File Select</m-button>
-		<m-image width="3rem" height="3rem" :error-icon="{ type: 'image-error', size: '1rem' }" src="https://www.mvi-web.cn/mvi-resources/images/mvi_image_3_1652322363025.jpeg"></m-image>
+	<div class="mvi-p-20">
+		<m-button @click="show = !show" id="btn" class="mvi-mr-4">File Select</m-button>
+		<m-transition-slide :expand="show">
+			<div style="width: 100%; height: 4rem; background-color: #ff3300"></div>
+		</m-transition-slide>
 	</div>
 </template>
 <script>
@@ -11,7 +13,7 @@ export default {
 		return {
 			moment: moment,
 			date: moment('2023-08').toDate(),
-			value: 'x',
+			value: 40,
 			show: true,
 			options: [
 				{

@@ -1,14 +1,13 @@
 <template>
-	<label :class="['mvi-switch', modelValue ? 'mvi-switch-checked' : '']" :style="switchStyle" :disabled="disabled || null">
-		<span :class="['mvi-switch-el', modelValue ? 'mvi-switch-el-checked' : '']" :style="elStyle">
-			<Icon v-if="loading && !disabled" :type="iconType" :spin="iconSpin" :url="iconUrl" :size="iconSize" :color="iconColor" />
+	<label :class="['mvi-switch', modelValue ? 'checked' : '']" :style="switchStyle" :disabled="disabled || null">
+		<span :class="['mvi-switch-el', modelValue ? 'checked' : '']" :style="elStyle">
+			<Icon v-if="loading && !disabled" type="load-e" spin size="0.8em" />
 		</span>
-		<input @change="change" type="checkbox" :checked="modelValue" :disabled="disabled || loading || null" />
+		<input @change="change" type="checkbox" :checked="modelValue" :disabled="disabled || loading" />
 	</label>
 </template>
 
 <script>
-import { Dap } from '../dap'
 import { Icon } from '../icon'
 export default {
 	name: 'm-switch',
@@ -43,11 +42,6 @@ export default {
 		inactiveColor: {
 			type: String,
 			default: null
-		},
-		//加载状态图标
-		icon: {
-			type: [String, Object],
-			default: null
 		}
 	},
 	components: {
@@ -62,53 +56,6 @@ export default {
 		}
 	},
 	computed: {
-		iconType() {
-			let type = 'load-e'
-			if (Dap.common.isObject(this.icon)) {
-				if (typeof this.icon.type == 'string') {
-					type = this.icon.type
-				}
-			} else if (typeof this.icon == 'string') {
-				type = this.icon
-			}
-			return type
-		},
-		iconUrl() {
-			let url = null
-			if (Dap.common.isObject(this.icon)) {
-				if (typeof this.icon.url == 'string') {
-					url = this.icon.url
-				}
-			}
-			return url
-		},
-		iconSpin() {
-			let spin = true
-			if (Dap.common.isObject(this.icon)) {
-				if (typeof this.icon.spin == 'boolean') {
-					spin = this.icon.spin
-				}
-			}
-			return spin
-		},
-		iconSize() {
-			let size = null
-			if (Dap.common.isObject(this.icon)) {
-				if (typeof this.icon.size == 'string') {
-					size = this.icon.size
-				}
-			}
-			return size
-		},
-		iconColor() {
-			let color = null
-			if (Dap.common.isObject(this.icon)) {
-				if (typeof this.icon.color == 'string') {
-					color = this.icon.color
-				}
-			}
-			return color
-		},
 		switchStyle() {
 			let style = {}
 			if (this.inactiveColor && !this.modelValue) {
@@ -154,46 +101,45 @@ export default {
 	-webkit-transition: background-color 300ms;
 	cursor: pointer;
 
-	& > input[type='checkbox'] {
+	input[type='checkbox'] {
 		display: none;
 		width: 0;
 		height: 0;
 		opacity: 0;
+
+		&[disabled] {
+			pointer-events: none;
+		}
 	}
 
-	& > input[type='checkbox'][disabled] {
-		pointer-events: none;
+	&[disabled] {
+		opacity: 0.6;
 	}
-}
 
-.mvi-switch[disabled] {
-	opacity: 0.6;
-}
+	&.checked {
+		background-color: @info-normal;
+	}
 
-.mvi-switch.mvi-switch-checked {
-	background-color: @info-normal;
-}
+	.mvi-switch-el {
+		display: inline-flex;
+		display: -webkit-inline-flex;
+		justify-content: center;
+		align-items: center;
+		color: @info-normal;
+		width: 0.4rem;
+		height: 0.4rem;
+		border-radius: @radius-circle;
+		box-shadow: @boxshadow;
+		background-color: #fff;
+		margin: 0;
+		padding: 0;
+		transition: transform 0.3s cubic-bezier(0.3, 1.05, 0.4, 1.05);
+		-webkit-transition: transform 0.3s cubic-bezier(0.3, 1.05, 0.4, 1.05);
 
-.mvi-switch-el {
-	display: inline-flex;
-	display: -webkit-inline-flex;
-	justify-content: center;
-	align-items: center;
-	font-size: @font-size-h6;
-	color: @info-normal;
-	width: 0.4rem;
-	height: 0.4rem;
-	border-radius: @radius-circle;
-	box-shadow: @boxshadow;
-	background-color: #fff;
-	margin: 0;
-	padding: 0;
-	transition: transform 0.3s cubic-bezier(0.3, 1.05, 0.4, 1.05);
-	-webkit-transition: transform 0.3s cubic-bezier(0.3, 1.05, 0.4, 1.05);
-}
-
-.mvi-switch-el.mvi-switch-el-checked {
-	transform: translateX(100%);
-	-webkit-transform: translateX(100%);
+		&.checked {
+			transform: translateX(100%);
+			-webkit-transform: translateX(100%);
+		}
+	}
 }
 </style>

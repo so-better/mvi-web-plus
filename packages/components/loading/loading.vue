@@ -1,9 +1,6 @@
 <template>
-	<div v-if="type == 0" class="mvi-loading" :style="{ width: size, height: size }">
-		<div v-for="(item, index) in new Array(12)" :key="'mvi-loading-' + index" :style="loadingStyle"></div>
-	</div>
-	<div v-else-if="type == 1" class="mvi-loading2" :style="{ width: size, height: size }">
-		<div :style="loading2Style"></div>
+	<div class="mvi-loading" :style="{ width: size, height: size }">
+		<div v-for="item in new Array(12)" :style="loadingStyle"></div>
 	</div>
 </template>
 
@@ -20,14 +17,6 @@ export default {
 		size: {
 			type: String,
 			default: '0.4rem'
-		},
-		//类型
-		type: {
-			type: [Number, String],
-			default: 0,
-			validator(value) {
-				return value == 0 || value == 1
-			}
 		}
 	},
 	computed: {
@@ -38,16 +27,6 @@ export default {
 			style.height = 'calc(' + this.size + '/4)'
 			style.transformOrigin = 'calc(' + this.size + '/40) calc(' + this.size + '/2)'
 			style.webkitTransformOrigin = 'calc(' + this.size + '/40) calc(' + this.size + '/2)'
-			return style
-		},
-		loading2Style() {
-			let style = {}
-			style.boxShadow = '0 calc(' + this.size + '/20) 0 0 ' + this.color
-			style.webkitBoxShadow = '0 calc(' + this.size + '/20) 0 0 ' + this.color
-			style.width = this.size
-			style.height = this.size
-			style.transformOrigin = 'calc(' + this.size + '/2) calc(' + this.size + '2 + ' + this.size + '/40)'
-			style.webkitTransformOrigin = 'calc(' + this.size + '/2) calc(' + this.size + '2 + ' + this.size + '/40)'
 			return style
 		}
 	}
@@ -177,55 +156,5 @@ export default {
 	transform: rotate(330deg);
 	-webkit-animation-delay: 0s;
 	animation-delay: 0s;
-}
-
-//type=1
-@keyframes mvi-loading2 {
-	0% {
-		-webkit-transform: rotate(0deg);
-		transform: rotate(0deg);
-	}
-
-	50% {
-		-webkit-transform: rotate(180deg);
-		transform: rotate(180deg);
-	}
-
-	100% {
-		-webkit-transform: rotate(360deg);
-		transform: rotate(360deg);
-	}
-}
-
-@-webkit-keyframes mvi-loading2 {
-	0% {
-		-webkit-transform: rotate(0deg);
-		transform: rotate(0deg);
-	}
-
-	50% {
-		-webkit-transform: rotate(180deg);
-		transform: rotate(180deg);
-	}
-
-	100% {
-		-webkit-transform: rotate(360deg);
-		transform: rotate(360deg);
-	}
-}
-
-.mvi-loading2 {
-	display: inline-block;
-	position: relative;
-}
-
-.mvi-loading2 div {
-	display: inline-block;
-	position: absolute;
-	-webkit-animation: mvi-loading2 1s linear infinite;
-	animation: mvi-loading2 1s linear infinite;
-	top: 0;
-	left: 0;
-	border-radius: 50%;
 }
 </style>

@@ -12,8 +12,6 @@ export default {
 	fixedAuto: false,
 	//宽度
 	width: null,
-	//主体额外样式
-	wrapperClass: null,
 	//显示与隐藏动画时长
 	timeout: 100,
 	//是否显示三角

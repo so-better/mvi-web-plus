@@ -1,6 +1,6 @@
 <template>
 	<transition :name="animation || 'mvi-layer'" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @leave="leave" @before-leave="beforeLeave" @after-leave="afterLeave">
-		<div v-if="firstShow" v-show="layerShow" :class="['mvi-layer', fixed ? 'mvi-layer-fixed' : '']" :style="layerStyle">
+		<div v-if="firstShow" v-show="layerShow" :class="['mvi-layer', fixed ? 'fixed' : '']" :style="layerStyle">
 			<div :class="wrapperCls" :style="wrapperStyle">
 				<Triangle v-if="showTriangle" ref="triangle" class="mvi-layer-triangle" :placement="trianglePlacement" :background="background" :border-color="border && borderColor ? borderColor : background" size="0.14rem"></Triangle>
 				<slot></slot>
@@ -64,11 +64,6 @@ export default {
 		},
 		//悬浮层的宽度
 		width: {
-			type: String,
-			default: null
-		},
-		//悬浮层的主体额外样式
-		wrapperClass: {
 			type: String,
 			default: null
 		},
@@ -155,13 +150,10 @@ export default {
 		wrapperCls() {
 			let cls = ['mvi-layer-wrapper']
 			if (this.shadow) {
-				cls.push('mvi-layer-shadow')
+				cls.push('shadow')
 			}
 			if (this.border) {
-				cls.push('mvi-layer-border')
-			}
-			if (this.wrapperClass) {
-				cls.push(this.wrapperClass)
+				cls.push('border')
 			}
 			return cls
 		},
@@ -808,7 +800,7 @@ export default {
 				this.layerComponentWatch.apply(this, ['hidden', el])
 			}
 		},
-		//重置位置
+		//api：重置位置
 		reset() {
 			if (!Dap.element.isElement(this.$el)) {
 				return
@@ -891,7 +883,7 @@ export default {
 				this.$el.style.bottom = 'auto'
 			}
 		},
-		//重置三角位置
+		//api：重置三角位置
 		resetTriangle() {
 			if (!this.showTriangle || (this.$refs.triangle && !this.$refs.triangle.$el)) {
 				return
@@ -964,7 +956,7 @@ export default {
 				this.$refs.triangle.$el.style.top = 'auto'
 			}
 		},
-		//获取绑定的元素
+		//api：获取绑定的元素
 		getTargetEl() {
 			if (this.target) {
 				return document.body.querySelector(this.target) || document.body
@@ -972,7 +964,7 @@ export default {
 				return document.body
 			}
 		},
-		//获取根元素
+		//api：获取根元素
 		getRootEl() {
 			if (this.fixed) {
 				return document.body
@@ -997,7 +989,7 @@ export default {
 	position: absolute;
 	z-index: 400;
 
-	&.mvi-layer-fixed {
+	&.fixed {
 		position: fixed;
 	}
 
@@ -1007,11 +999,11 @@ export default {
 		width: 100%;
 		border-radius: @radius-default;
 
-		&.mvi-layer-shadow {
+		&.shadow {
 			box-shadow: @boxshadow;
 		}
 
-		&.mvi-layer-border {
+		&.border {
 			border: 1px solid #eee;
 		}
 
