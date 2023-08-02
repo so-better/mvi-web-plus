@@ -995,7 +995,7 @@ export default {
 			}
 		},
 		//监听range更新
-		handleRangeUpdate() {
+		handleRangeUpdate(range) {
 			if (this.cmpDisabled) {
 				return
 			}
@@ -1008,37 +1008,51 @@ export default {
 				//代码判定
 				if (this.name == 'code') {
 					this.active = editor.queryTextMark('data-code-style')
-					editor.formatElementStack()
+					if (!range.anchor.isEqual(range.focus)) {
+						editor.formatElementStack()
+					}
 				}
 				//加粗判定
 				else if (this.name == 'bold') {
 					this.active = editor.queryTextStyle('font-weight', 'bold')
-					editor.formatElementStack()
+					if (!range.anchor.isEqual(range.focus)) {
+						editor.formatElementStack()
+					}
 				}
 				//斜体判定
 				else if (this.name == 'italic') {
 					this.active = editor.queryTextStyle('font-style', 'italic')
-					editor.formatElementStack()
+					if (!range.anchor.isEqual(range.focus)) {
+						editor.formatElementStack()
+					}
 				}
 				//下划线判定
 				else if (this.name == 'underline') {
 					this.active = editor.queryTextStyle('text-decoration-line', 'underline') || editor.queryTextStyle('text-decoration', 'underline')
-					editor.formatElementStack()
+					if (!range.anchor.isEqual(range.focus)) {
+						editor.formatElementStack()
+					}
 				}
 				//删除线判定
 				else if (this.name == 'strikethrough') {
 					this.active = editor.queryTextStyle('text-decoration-line', 'line-through') || editor.queryTextStyle('text-decoration', 'line-through')
-					editor.formatElementStack()
+					if (!range.anchor.isEqual(range.focus)) {
+						editor.formatElementStack()
+					}
 				}
 				//下标判定
 				else if (this.name == 'subscript') {
 					this.active = editor.queryTextStyle('vertical-align', 'sub')
-					editor.formatElementStack()
+					if (!range.anchor.isEqual(range.focus)) {
+						editor.formatElementStack()
+					}
 				}
 				//上标判定
 				else if (this.name == 'superscript') {
 					this.active = editor.queryTextStyle('vertical-align', 'super')
-					editor.formatElementStack()
+					if (!range.anchor.isEqual(range.focus)) {
+						editor.formatElementStack()
+					}
 				}
 				//标题判定
 				else if (this.name == 'title') {
@@ -1065,14 +1079,18 @@ export default {
 					this.selectedVal = this.parseList.find(item => {
 						return editor.queryTextStyle('font-family', item.value)
 					}) || { ...this.defaultVal }
-					editor.formatElementStack()
+					if (!range.anchor.isEqual(range.focus)) {
+						editor.formatElementStack()
+					}
 				}
 				//字号判定
 				else if (this.name == 'fontsize') {
 					this.selectedVal = this.parseList.find(item => {
 						return editor.queryTextStyle('font-size', item.value)
 					}) || { ...this.defaultVal }
-					editor.formatElementStack()
+					if (!range.anchor.isEqual(range.focus)) {
+						editor.formatElementStack()
+					}
 				}
 				//字体颜色判定
 				else if (this.name == 'forecolor') {
@@ -1080,7 +1098,9 @@ export default {
 						this.parseList.find(item => {
 							return editor.queryTextStyle('color', item.value)
 						}) || {}
-					editor.formatElementStack()
+					if (!range.anchor.isEqual(range.focus)) {
+						editor.formatElementStack()
+					}
 				}
 				//背景颜色判定
 				else if (this.name == 'backcolor') {
@@ -1088,7 +1108,9 @@ export default {
 						this.parseList.find(item => {
 							return editor.queryTextStyle('background-color', item.value)
 						}) || {}
-					editor.formatElementStack()
+					if (!range.anchor.isEqual(range.focus)) {
+						editor.formatElementStack()
+					}
 				}
 				//有序列表和无序列表判定
 				else if (this.name == 'ol' || this.name == 'ul') {

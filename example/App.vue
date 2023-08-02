@@ -1,20 +1,25 @@
 <template>
 	<div class="mvi-p-20">
-		<m-button @click="show = !show" id="btn" class="mvi-mr-4">File Select</m-button>
-		<m-transition-slide :expand="show">
-			<div style="width: 100%; height: 4rem; background-color: #ff3300"></div>
-		</m-transition-slide>
+		<!-- 菜单栏 -->
+		<m-editor-menus class="mvi-mb-4" ref="menus">
+			<!-- 菜单项 -->
+			<m-editor-menu v-for="item in definedMenus" :name="item.name" />
+		</m-editor-menus>
+		<!-- 编辑器 -->
+		<m-editor html-paste ref="editor" v-model="value" placeholder="Please Enter Text ..."></m-editor>
 	</div>
 </template>
 <script>
+import { EditorDefinedMenuConfig } from '../packages'
 import moment from 'moment'
 export default {
 	data() {
 		return {
+			definedMenus: EditorDefinedMenuConfig,
 			moment: moment,
 			date: moment('2023-08').toDate(),
-			value: 40,
-			show: true,
+			value: '',
+			show: false,
 			options: [
 				{
 					label: '分享到朋友圈'
@@ -26,7 +31,9 @@ export default {
 			list: ['佛罗里达州', '加利福利亚州', '北京', '伦敦', 'aaa', 'bbb', 'AAAA']
 		}
 	},
-	mounted() {},
+	mounted() {
+		this.$refs.editor.use(this.$refs.menus)
+	},
 	methods: {
 		change(val, list) {}
 	}

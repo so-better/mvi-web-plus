@@ -109,6 +109,10 @@ export default [
 				value: 'h5'
 			},
 			{
+				label: '六级标题',
+				value: 'h6'
+			},
+			{
 				label: '正文',
 				value: 'p'
 			}

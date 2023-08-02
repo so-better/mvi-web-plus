@@ -222,7 +222,7 @@ export default {
 		this.editor = new AlexEditor(this.$refs.content, {
 			disabled: this.disabled,
 			value: this.cmpValue,
-			renderRules: [this.orderListHandle, this.codeHandle, this.mediaHandle, this.thParseTdHandle, this.tableHandle],
+			renderRules: [this.elementFilter, this.orderListHandle, this.codeHandle, this.mediaHandle, this.thParseTdHandle, this.tableHandle],
 			htmlPaste: this.htmlPaste
 		})
 		//编辑器渲染后会有一个渲染过程，会改变内容，因此重新获取内容的值来设置modelValue
@@ -265,6 +265,14 @@ export default {
 		}
 	},
 	methods: {
+		//元素格式化时过滤一些元素的属性和样式
+		elementFilter(element) {
+			//以下元素清除marks和styles
+			if (['table', 'tr', 'td', 'tbody', 'p', 'br', 'blockquote', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'ul', 'li', 'pre', 'code'].includes(element.parsedom)) {
+				element.marks = null
+				element.styles = null
+			}
+		},
 		//元素格式化时转换ol和ul标签
 		orderListHandle(element) {
 			if (!element.isEmpty()) {
@@ -312,7 +320,7 @@ export default {
 					const marks = {
 						'mvi-editor-element-key': element.key
 					}
-					if (Dap.common.isObject(element.marks)) {
+					if (element.hasMarks()) {
 						Object.assign(element.marks, marks)
 					} else {
 						element.marks = marks
@@ -326,7 +334,7 @@ export default {
 						muted: true,
 						'mvi-editor-element-key': element.key
 					}
-					if (Dap.common.isObject(element.marks)) {
+					if (element.hasMarks()) {
 						Object.assign(element.marks, marks)
 					} else {
 						element.marks = marks
@@ -337,7 +345,7 @@ export default {
 					const marks = {
 						'mvi-editor-element-key': element.key
 					}
-					if (Dap.common.isObject(element.marks)) {
+					if (element.hasMarks()) {
 						Object.assign(element.marks, marks)
 					} else {
 						element.marks = marks
@@ -371,7 +379,7 @@ export default {
 				const marks = {
 					'mvi-editor-element-key': element.key
 				}
-				if (Dap.common.isObject(element.marks)) {
+				if (element.hasMarks()) {
 					Object.assign(element.marks, marks)
 				} else {
 					element.marks = marks
