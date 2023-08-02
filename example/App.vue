@@ -1,7 +1,7 @@
 <template>
 	<div class="mvi-p-20">
 		<!-- 菜单栏 -->
-		<m-editor-menus class="mvi-mb-4" ref="menus">
+		<m-editor-menus use-tooltip class="mvi-mb-4" ref="menus">
 			<!-- 菜单项 -->
 			<m-editor-menu v-for="item in definedMenus" :name="item.name" />
 		</m-editor-menus>

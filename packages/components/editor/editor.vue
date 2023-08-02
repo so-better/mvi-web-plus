@@ -222,7 +222,7 @@ export default {
 		this.editor = new AlexEditor(this.$refs.content, {
 			disabled: this.disabled,
 			value: this.cmpValue,
-			renderRules: [this.elementFilter, this.orderListHandle, this.codeHandle, this.mediaHandle, this.thParseTdHandle, this.tableHandle],
+			renderRules: [this.orderListHandle, this.codeHandle, this.mediaHandle, this.thParseTdHandle, this.tableHandle],
 			htmlPaste: this.htmlPaste
 		})
 		//编辑器渲染后会有一个渲染过程，会改变内容，因此重新获取内容的值来设置modelValue
@@ -241,6 +241,8 @@ export default {
 		this.editor.on('rangeUpdate', this.handleRangeUpdate)
 		//监听编辑器dom渲染
 		this.editor.on('domRender', this.handleDomRender)
+		//监听编辑器粘贴html
+		this.editor.on('pasteHtml', this.handlePasteHtml)
 		//监听编辑器粘贴图片
 		if (this.customImagePaste) {
 			this.editor.on('pasteImage', url => {
@@ -265,14 +267,6 @@ export default {
 		}
 	},
 	methods: {
-		//元素格式化时过滤一些元素的属性和样式
-		elementFilter(element) {
-			//以下元素清除marks和styles
-			if (['table', 'tr', 'td', 'tbody', 'p', 'br', 'blockquote', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'ul', 'li', 'pre', 'code'].includes(element.parsedom)) {
-				element.marks = null
-				element.styles = null
-			}
-		},
 		//元素格式化时转换ol和ul标签
 		orderListHandle(element) {
 			if (!element.isEmpty()) {
@@ -593,6 +587,15 @@ export default {
 				firstRow.children.forEach((column, i) => {
 					this.setTabelColumnResize(table, firstRow, column, i)
 				})
+			})
+		},
+		//粘贴html时过滤部分元素的样式和属性
+		handlePasteHtml(data, elements) {
+			AlexElement.flatElements(elements).forEach(el => {
+				if (['table', 'tr', 'th', 'td', 'tbody', 'p', 'div', 'br', 'blockquote', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'ul', 'li', 'pre', 'code', 'label', 'hr', 'colgroup'].includes(el.parsedom)) {
+					el.marks = null
+					el.styles = null
+				}
 			})
 		},
 		//设置表格列宽拖拽
