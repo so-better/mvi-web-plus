@@ -5,7 +5,7 @@
 		<!-- 编辑器视图 -->
 		<div ref="content" :data-placeholder="placeholder" :class="['mvi-editor-content', border ? 'border' : '', isEmpty ? 'empty' : '']" :style="contentStyle" @compositionstart="compositionFlag = true" @compositionend="compositionFlag = false" @click="clickEditor" :disabled="disabled || null"></div>
 		<!-- 链接调整器 -->
-		<m-layer v-model="linkAdjusterProps.show" fixed :target="linkAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#eee" closable ref="linkLayer">
+		<m-layer v-model="linkAdjusterProps.show" fixed :target="linkAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#eee" offset="0.05rem" closable ref="linkLayer">
 			<div class="mvi-editor-layer-link">
 				<input @change="updateLink" ref="linkUrl" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkAdjusterProps.url" :placeholder="linkAdjusterProps.props.placeholder" type="text" />
 				<div class="mvi-editor-layer-link-footer">
@@ -15,7 +15,7 @@
 			</div>
 		</m-layer>
 		<!-- 图片调整器 -->
-		<m-layer v-model="mediaAdjusterProps.show" fixed :target="mediaAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#eee" closable ref="mediaLayer">
+		<m-layer v-model="mediaAdjusterProps.show" fixed :target="mediaAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#eee" offset="0.05rem" closable ref="mediaLayer" @showing="autoLayerOffset('mediaLayer')">
 			<div class="mvi-editor-layer">
 				<div @click="setMediaWidth('20%')" class="mvi-editor-layer-item">20%</div>
 				<div @click="setMediaWidth('50%')" class="mvi-editor-layer-item">50%</div>
@@ -24,7 +24,7 @@
 			</div>
 		</m-layer>
 		<!-- 表格调整器 -->
-		<m-layer v-model="tableAdjusterProps.show" fixed :target="tableAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#eee" closable ref="tableLayer">
+		<m-layer v-model="tableAdjusterProps.show" fixed :target="tableAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#eee" offset="0.05rem" closable ref="tableLayer" @showing="autoLayerOffset('tableLayer')">
 			<div class="mvi-editor-layer">
 				<div @click="insertParagraph('up')" class="mvi-editor-layer-item"><Icon style="transform: rotate(180deg)" type="turn-arrow-text" /></div>
 				<div @click="insertParagraph('down')" class="mvi-editor-layer-item"><Icon type="turn-arrow-text" /></div>
@@ -427,18 +427,29 @@ export default {
 		inputBlur(event) {
 			event.currentTarget.style.borderColor = ''
 		},
+		//自动矫正调整器的位置
+		autoLayerOffset(refName) {
+			const b1 = Dap.element.getElementBounding(this.$el)
+			const b2 = Dap.element.getElementBounding(this.$refs[refName].$el)
+			if (b1.top >= b2.top || b1.bottom >= b2.bottom) {
+				this.$refs[refName].$el.style.bottom = b1.bottom + 'px'
+				this.$refs[refName].$el.style.top = 'auto'
+			} else {
+				this.$refs[refName].reset()
+			}
+		},
 		//监听滚动隐藏编辑器内的浮层
 		onScroll() {
 			const setScroll = el => {
 				Dap.event.on(el, `scroll.editor_${this.uid}`, e => {
 					if (this.linkAdjusterProps.show) {
-						this.$refs.linkLayer.reset()
+						this.linkAdjusterProps.show = false
 					}
 					if (this.mediaAdjusterProps.show) {
-						this.$refs.mediaLayer.reset()
+						this.mediaAdjusterProps.show = false
 					}
 					if (this.tableAdjusterProps.show) {
-						this.$refs.tableLayer.reset()
+						this.tableAdjusterProps.show = false
 					}
 				})
 				if (el.parentNode) {
@@ -593,9 +604,25 @@ export default {
 		//粘贴html时过滤部分元素的样式和属性
 		handlePasteHtml(data, elements) {
 			AlexElement.flatElements(elements).forEach(el => {
-				if (['table', 'tr', 'th', 'td', 'tbody', 'p', 'div', 'br', 'blockquote', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'ul', 'li', 'pre', 'code', 'label', 'hr', 'colgroup'].includes(el.parsedom)) {
+				//粘贴时以下元素应当改为内部定义的样式，因此需要移除原来的属性和样式
+				if (['table', 'tr', 'th', 'td', 'tbody', 'br', 'blockquote', 'ol', 'ul', 'li', 'pre', 'code', 'label', 'hr', 'colgroup'].includes(el.parsedom)) {
 					el.marks = null
-					el.styles = null
+					//根级块元素和内部块元素
+					if (el.isBlock() || el.isInblock()) {
+						if (el.hasStyles()) {
+							let styles = {}
+							for (let key in el.styles) {
+								if (['text-indent', 'text-align'].includes(key)) {
+									styles[key] = el.styles[key]
+								}
+							}
+							el.styles = styles
+						}
+					}
+					//其他元素
+					else {
+						el.styles = null
+					}
 				}
 			})
 		},

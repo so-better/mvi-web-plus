@@ -754,7 +754,6 @@ export default {
 			Dap.data.set(el, 'mvi-layer-enter-trigger', true)
 
 			this.$nextTick(() => {
-				this.$emit('showing', el)
 				//智能修改位置
 				this.autoAdjust()
 				//根据位置设置
@@ -763,6 +762,7 @@ export default {
 				this.$nextTick(() => {
 					this.resetTriangle()
 				})
+				this.$emit('showing', el)
 				if (typeof this.layerComponentWatch == 'function') {
 					this.layerComponentWatch.apply(this, ['showing', el])
 				}
