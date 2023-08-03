@@ -6,7 +6,7 @@
 		</svg>
 		<div v-if="showTip" class="mvi-circle-progress-tip">
 			<slot v-if="$slots.tip" name="tip" :value="value"></slot>
-			<span v-else :class="tipClass || ''" v-text="computedValue"></span>
+			<span v-else v-text="computedValue"></span>
 		</div>
 	</div>
 </template>
@@ -90,11 +90,6 @@ export default {
 		clockWise: {
 			type: Boolean,
 			default: true
-		},
-		//文字内容添加额外的样式类
-		tipClass: {
-			type: String,
-			default: null
 		}
 	},
 	computed: {

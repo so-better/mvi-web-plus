@@ -1,24 +1,17 @@
 <template>
 	<div class="mvi-p-20">
-		<!-- 菜单栏 -->
-		<m-editor-menus use-tooltip class="mvi-mb-4" ref="menus">
-			<!-- 菜单项 -->
-			<m-editor-menu v-for="item in definedMenus" :name="item.name" />
-		</m-editor-menus>
-		<!-- 编辑器 -->
-		<m-editor html-paste ref="editor" v-model="value" placeholder="Please Enter Text ..."></m-editor>
+		<m-button @click="value = 100">按钮</m-button>
+		<m-circle-progress :value="value" :size="5" animation :timeout="2000" :stroke-width="1" :clock-wise="false"></m-circle-progress>
 	</div>
 </template>
 <script>
-import { EditorDefinedMenuConfig } from '../packages'
 import moment from 'moment'
 export default {
 	data() {
 		return {
-			definedMenus: EditorDefinedMenuConfig,
 			moment: moment,
 			date: moment('2023-08').toDate(),
-			value: '',
+			value: 50,
 			show: false,
 			options: [
 				{
@@ -31,9 +24,7 @@ export default {
 			list: ['佛罗里达州', '加利福利亚州', '北京', '伦敦', 'aaa', 'bbb', 'AAAA']
 		}
 	},
-	mounted() {
-		this.$refs.editor.use(this.$refs.menus)
-	},
+	mounted() {},
 	methods: {
 		change(val, list) {}
 	}

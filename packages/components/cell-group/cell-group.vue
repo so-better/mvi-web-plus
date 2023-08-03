@@ -1,6 +1,6 @@
 <template>
-	<div :class="['mvi-cell-group', border ? 'mvi-cell-group-border' : '']">
-		<div :class="['mvi-cell-group-title', titleClass || '']" v-text="title" v-if="title"></div>
+	<div :class="['mvi-cell-group', border ? 'border' : '']">
+		<div class="mvi-cell-group-title" v-text="title" v-if="title"></div>
 		<slot></slot>
 	</div>
 </template>
@@ -19,11 +19,6 @@ export default {
 			type: Boolean,
 			default: true
 		},
-		//标题class
-		titleClass: {
-			type: String,
-			default: null
-		},
 		//是否显示点击态
 		active: {
 			type: Boolean,
@@ -40,14 +35,15 @@ export default {
 	display: block;
 	width: 100%;
 	margin-bottom: @mp-md;
-	color: @font-color-sub;
-}
 
-.mvi-cell-group-title {
-	padding: @mp-md @mp-sm;
-}
+	.mvi-cell-group-title {
+		padding: @mp-md @mp-sm;
+		color: @font-color-sub;
+		font-size: @font-size-default;
+	}
 
-.mvi-cell-group-border :deep(.mvi-cell.mvi-cell-border:last-child::after) {
-	border: none;
+	&.border :deep(.mvi-cell.border:last-child::after) {
+		border: none;
+	}
 }
 </style>
