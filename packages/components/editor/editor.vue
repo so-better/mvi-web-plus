@@ -46,7 +46,7 @@ import { Field } from '../field'
 import { Checkbox } from '../checkbox'
 export default {
 	name: 'm-editor',
-	emits: ['update:modelValue', 'focus', 'blur', 'change', 'paste-image', 'paste-video'],
+	emits: ['update:modelValue', 'focus', 'blur', 'change', 'paste-image', 'paste-video', 'range-update'],
 	props: {
 		//编辑器内容
 		modelValue: {
@@ -361,7 +361,7 @@ export default {
 				}
 			}
 		},
-		//表格th转td
+		//元素格式化时表格th转td
 		thParseTdHandle(element) {
 			if (element.parsedom == 'th') {
 				element.parsedom = 'td'
@@ -544,6 +544,7 @@ export default {
 			if (this.disabled) {
 				return
 			}
+			this.$emit('range-update', range)
 			const img = this.getCurrentParsedomElement('img')
 			const link = this.getCurrentParsedomElement('a')
 			const video = this.getCurrentParsedomElement('video')

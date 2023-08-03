@@ -204,8 +204,10 @@ export default {
 			selectedVal: {},
 			//浮层是否显示
 			layerShow: false,
-			//是否激活此菜单项，一般下拉选式菜单项不使用此属性
+			//是否激活此菜单项，一般情况下下拉选式菜单项不使用此属性
 			active: false,
+			//关联禁用（其他菜单激活导致本菜单禁用）
+			relevanceDisabled: false,
 			//链接相关参数
 			linkParams: {
 				//插入的链接
@@ -303,15 +305,15 @@ export default {
 			if (this.menus.instance.disabled) {
 				return true
 			}
-			//如果是代码视图，则禁用除"codeview"菜单项以外的所有菜单
-			if (this.menus.instance.codeViewShow && this.name != 'codeview') {
-				return true
-			}
 			//如果菜单栏不可使用
 			if (!this.menus.instance.canUseMenus) {
 				return true
 			}
-			return false
+			//如果是代码视图，则禁用除"codeview"菜单项以外的所有菜单
+			if (this.menus.instance.codeViewShow && this.name != 'codeview') {
+				return true
+			}
+			return this.relevanceDisabled
 		},
 		//下拉选选项的渲染元素
 		layerElTag() {
@@ -996,17 +998,24 @@ export default {
 		},
 		//监听range更新
 		handleRangeUpdate(range) {
-			if (this.cmpDisabled) {
-				return
-			}
 			if (this.rangeUpdateTimer) {
 				clearTimeout(this.rangeUpdateTimer)
 				this.rangeUpdateTimer = null
 			}
 			this.rangeUpdateTimer = setTimeout(() => {
 				const editor = this.menus.instance.editor
+				//缩进
+				if (this.name == 'indent') {
+					const isTable = !!this.menus.instance.getCurrentParsedomElement('table')
+					this.relevanceDisabled = isTable
+				}
+				//分隔线
+				else if (this.name == 'divider') {
+					const isTable = !!this.menus.instance.getCurrentParsedomElement('table')
+					this.relevanceDisabled = isTable
+				}
 				//代码判定
-				if (this.name == 'code') {
+				else if (this.name == 'code') {
 					this.active = editor.queryTextMark('data-code-style')
 					if (!range.anchor.isEqual(range.focus)) {
 						editor.formatElementStack()
@@ -1073,6 +1082,8 @@ export default {
 						}) || { ...this.defaultVal }
 						editor.formatElementStack()
 					}
+					const isTable = !!this.menus.instance.getCurrentParsedomElement('table')
+					this.relevanceDisabled = isTable
 				}
 				//字体判定
 				else if (this.name == 'fontfamily') {
@@ -1132,6 +1143,8 @@ export default {
 						})
 						editor.formatElementStack()
 					}
+					const isTable = !!this.menus.instance.getCurrentParsedomElement('table')
+					this.relevanceDisabled = isTable
 				}
 				//对齐方式判定
 				else if (this.name == 'justify') {
@@ -1186,6 +1199,8 @@ export default {
 						})
 						editor.formatElementStack()
 					}
+					const isTable = !!this.menus.instance.getCurrentParsedomElement('table')
+					this.relevanceDisabled = isTable
 				}
 				//链接判定
 				else if (this.name == 'link') {
@@ -1201,16 +1216,36 @@ export default {
 				else if (this.name == 'codeblock') {
 					const element = this.menus.instance.getCurrentParsedomElement('pre')
 					this.active = !!element
+					const isTable = !!this.menus.instance.getCurrentParsedomElement('table')
+					this.relevanceDisabled = isTable
 				}
 				//自定义菜单项的激活判定
 				else if (!this.isDefinedMenu && typeof this.customActive == 'function') {
-					const obj = this.customActive.apply(this)
+					const obj = this.customActive.apply(this, [this.name])
+					//普通菜单项
 					if (this.type == 'default') {
 						this.active = obj
-					} else {
-						this.selectedVal = this.parseList.find(item => {
-							return item.value == obj
-						}) || { ...this.defaultVal }
+					}
+					//下拉选菜单项
+					else if (this.type == 'select') {
+						if (typeof obj == 'boolean') {
+							this.active = obj
+						} else {
+							this.selectedVal =
+								this.parseList.find(item => {
+									return item.value == obj
+								}) || {}
+						}
+					}
+					//显示已选值的菜单项
+					else {
+						if (typeof obj == 'boolean') {
+							this.active = obj
+						} else {
+							this.selectedVal = this.parseList.find(item => {
+								return item.value == obj
+							}) || { ...this.defaultVal }
+						}
 					}
 				}
 			}, 100)

@@ -6,7 +6,7 @@
 			<m-editor-menu v-for="item in definedMenus" :name="item.name" />
 		</m-editor-menus>
 		<!-- 编辑器 -->
-		<m-editor html-paste ref="editor" v-model="value" placeholder="Please Enter Text ..."></m-editor>
+		<m-editor @range-update="change" html-paste ref="editor" v-model="value" placeholder="Please Enter Text ..."></m-editor>
 	</div>
 </template>
 <script>
@@ -35,7 +35,9 @@ export default {
 		this.$refs.editor.use(this.$refs.menus)
 	},
 	methods: {
-		change(val, list) {}
+		change(val, list) {
+			console.log(val)
+		}
 	}
 }
 </script>
