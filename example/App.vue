@@ -1,7 +1,8 @@
 <template>
-	<div class="mvi-p-20">
-		<m-button @click="value = 100">按钮</m-button>
-		<m-circle-progress :value="value" :size="5" animation :timeout="2000" :stroke-width="1" :clock-wise="false"></m-circle-progress>
+	<div class="mvi-p-4">
+		<div>{{ date }}</div>
+		<m-button @click="show = !show">按钮</m-button>
+		<m-calendar v-model="date" type="success"></m-calendar>
 	</div>
 </template>
 <script>
@@ -10,9 +11,9 @@ export default {
 	data() {
 		return {
 			moment: moment,
-			date: moment('2023-08').toDate(),
-			value: 50,
-			show: false,
+			date: moment('2023-08-02').toDate(),
+			value: 2,
+			show: true,
 			options: [
 				{
 					label: '分享到朋友圈'
@@ -26,7 +27,9 @@ export default {
 	},
 	mounted() {},
 	methods: {
-		change(val, list) {}
+		change(data) {
+			console.log(data)
+		}
 	}
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-	<div :disabled="disabled || null" class="mvi-collapse">
+	<div class="mvi-collapse">
 		<slot></slot>
 	</div>
 </template>
@@ -49,21 +49,6 @@ export default {
 		noWrap: {
 			type: Boolean,
 			default: false
-		},
-		//展开时右侧图标
-		openArrow: {
-			type: [String, Object],
-			default: 'angle-up'
-		},
-		//关闭时右侧图标
-		closeArrow: {
-			type: [String, Object],
-			default: 'angle-down'
-		},
-		//折叠或者展开的动画时长,单位ms
-		timeout: {
-			type: Number,
-			default: 200
 		}
 	},
 	provide() {
@@ -81,5 +66,15 @@ export default {
 	display: block;
 	width: 100%;
 	background-color: #fff;
+
+	:deep(.mvi-collapse-item:last-child) {
+		&.border::after {
+			border-bottom: none;
+		}
+
+		.mvi-collapse-cell.border:not(.expand)::after {
+			border-bottom: none;
+		}
+	}
 }
 </style>

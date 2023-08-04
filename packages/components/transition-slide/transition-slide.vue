@@ -12,10 +12,14 @@ export default {
 	name: 'm-transition-slide',
 	data() {
 		return {
+			//初始就显示
 			show: true,
+			//记录的高度
 			height: null,
+			//初始不使用动画
 			useAnimation: false,
-			opacity: ''
+			//透明度默认为0
+			opacity: 0
 		}
 	},
 	emits: ['before-slide-down', 'slide-down', 'before-slide-up', 'slide-up'],
@@ -36,53 +40,44 @@ export default {
 			this.show = newValue
 		}
 	},
-	created() {
-		//初始化不展开，则设置透明度为0
-		if (!this.expand) {
-			this.opacity = 0
-		}
-	},
 	mounted() {
 		//show取值于expand
 		this.show = this.expand
-		//启用动画
-		this.$nextTick(() => {
+		//如果初始化就是展开的，则设置动画并且恢复透明度
+		if (this.show) {
 			this.useAnimation = true
-			//恢复第一次设置的透明度
-			if (this.opacity === 0) {
-				this.opacity = ''
-			}
-		})
+			this.opacity = ''
+		}
 	},
 	methods: {
+		//元素显示前
 		beforeEnter(el) {
 			//设置高度为0
 			el.style.height = 0
 			//设置动画
-			if (this.useAnimation) {
-				el.style.transition = 'height ' + this.timeout + 'ms linear'
-				el.style.webkitTransition = 'height ' + this.timeout + 'ms linear'
-			}
+			el.style.transition = 'height ' + this.timeout + 'ms linear'
+			el.style.webkitTransition = 'height ' + this.timeout + 'ms linear'
 			//触发事件
 			this.$emit('before-slide-down', this.$el)
 		},
+		//元素显示时
 		enter(el) {
 			//促使浏览器重绘
 			el.offsetWidth
 			//设置显示后的高度
 			el.style.height = this.height
 		},
+		//元素显示后
 		afterEnter(el) {
 			//移除动画
-			if (this.useAnimation) {
-				el.style.transition = ''
-				el.style.webkitTransition = ''
-			}
+			el.style.transition = ''
+			el.style.webkitTransition = ''
 			//动画结束后恢复高度
 			el.style.height = ''
 			//触发事件
 			this.$emit('slide-down', this.$el)
 		},
+		//元素隐藏之前
 		beforeLeave(el) {
 			//只记录第一次的高度
 			if (!this.height) {
@@ -90,30 +85,37 @@ export default {
 			}
 			//设置元素高度
 			el.style.height = this.height
-			//设置动画
+			//此时有动画，则设置动画属性，并触发事件
 			if (this.useAnimation) {
 				el.style.transition = 'height ' + this.timeout + 'ms linear'
 				el.style.webkitTransition = 'height ' + this.timeout + 'ms linear'
+				//触发事件
+				this.$emit('before-slide-up', this.$el)
 			}
-			//触发事件
-			this.$emit('before-slide-up', this.$el)
 		},
+		//元素隐藏时
 		leave(el) {
 			//促使浏览器重绘
 			el.offsetWidth
 			//设置隐藏后的高度
 			el.style.height = 0
 		},
+		//元素隐藏后
 		afterLeave(el) {
-			//移除动画
+			//动画结束后恢复高度
+			el.style.height = ''
+			//此时有动画效果，则设置动画效果相关的属性，并触发事件
 			if (this.useAnimation) {
 				el.style.transition = ''
 				el.style.webkitTransition = ''
+				//触发事件
+				this.$emit('slide-up', this.$el)
 			}
-			//动画结束后恢复高度
-			el.style.height = ''
-			//触发事件
-			this.$emit('slide-up', this.$el)
+			//此时没有动画效果，表示元素初始化是隐藏的，需要为后续做动画进行准备
+			else {
+				this.useAnimation = true
+				this.opacity = ''
+			}
 		}
 	}
 }

@@ -1,41 +1,45 @@
 <template>
 	<div class="mvi-calendar">
-		<!-- 日期视图 -->
-		<div v-if="view == 'date'" class="mvi-calendar-date">
-			<div class="mvi-calendar-date-header">
-				<div class="mvi-calendar-date-header-item" v-for="(item, index) in weekText" :key="'week-' + index" v-text="item"></div>
-			</div>
-			<div ref="list" class="mvi-calendar-date-list">
-				<div v-for="(item, index) in new Array(6)" :key="'row-' + index" class="mvi-calendar-date-row">
-					<div class="mvi-calendar-date-day" v-for="(item2, index2) in days.slice(index * 7, index * 7 + 7)" :key="'date-' + index2">
-						<div :disabled="!item2.currentMonth || null" :class="['mvi-calendar-date-day-item', !item2.currentMonth && nonCurrentClick ? 'mvi-calendar-allowed' : '', (nonCurrentClick ? active : active && item2.currentMonth) ? 'mvi-calendar-active' : '', dateNowClass(item2), dateCurrentClass(item2)]" v-text="item2.date.getDate()" @click="onDateClick(item2)"></div>
+		<template v-if="view == 'year'">
+			<div class="mvi-calendar-years" v-for="(item, index) in new Array(3)">
+				<div class="mvi-calendar-year" v-for="el in years.slice(index * 4, index * 4 + 4)">
+					<div :class="yearClass(el)" :disabled="yearDisabled(el) || null" @click="yearClick(el)">
+						{{ el.getFullYear() }}
 					</div>
 				</div>
 			</div>
-		</div>
-		<!-- 月视图 -->
-		<div v-else-if="view == 'month'" class="mvi-calendar-month">
-			<div class="mvi-calendar-month-row" v-for="(item, index) in new Array(3)" :key="'monthRow-' + index">
-				<div class="mvi-calendar-month-m" v-for="(item2, index2) in months.slice(index * 4, index * 4 + 4)" :key="'month-' + index2">
-					<div :class="['mvi-calendar-month-item', active ? 'mvi-calendar-active' : '', monthNowClass(item2), monthCurrentClass(item2)]" v-text="item2.text" @click="onMonthClick(item2)"></div>
+		</template>
+		<template v-else-if="view == 'month'">
+			<div class="mvi-calendar-months" v-for="(item, index) in new Array(3)">
+				<div class="mvi-calendar-month" v-for="el in months.slice(index * 4, index * 4 + 4)">
+					<div :class="monthClass(el)" :disabled="monthDisabled(el) || null" @click="monthClick(el)">
+						{{ monthText[el.getMonth()] }}
+					</div>
 				</div>
 			</div>
-		</div>
-		<!-- 年视图 -->
-		<div v-else-if="view == 'year'">
-			<div class="mvi-calendar-year-row" v-for="(item, index) in new Array(3)" :key="'yearRow' + index">
-				<div class="mvi-calendar-year-y" v-for="(item2, index2) in years.slice(index * 4, index * 4 + 4)" :key="'year-' + index2">
-					<div :class="['mvi-calendar-year-item', item2.year >= startYear && item2.year <= endYear && active ? 'mvi-calendar-active' : '', yearNowClass(item2), yearCurrentClass(item2)]" v-text="item2.year" @click="onYearClick(item2)" :disabled="item2.year < startYear || item2.year > endYear || null"></div>
+		</template>
+		<div v-else-if="view == 'date'" class="mvi-calendar-date">
+			<div class="mvi-calendar-date-header">
+				<div class="mvi-calendar-date-header-item" v-for="item in weekText">{{ item }}</div>
+			</div>
+			<div class="mvi-calendar-date-body">
+				<div v-for="(item, index) in new Array(6)" class="mvi-calendar-date-row">
+					<div class="mvi-calendar-date-column" v-for="(el, i) in days.slice(index * 7, index * 7 + 7)">
+						<div :class="dateClass(el)" :disabled="dateDisabled(el) || null" @click="dateClick(el)">
+							{{ el.date.getDate() }}
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </template>
-
 <script>
 import { Dap } from '../dap'
+import moment from 'moment'
 export default {
 	name: 'm-calendar',
+	emits: ['update:modelValue', 'date-click', 'month-click', 'year-click'],
 	props: {
 		//指定显示的日期
 		modelValue: {
@@ -82,25 +86,19 @@ export default {
 				})
 			}
 		},
-		//开始年
-		startYear: {
-			type: Number,
-			default: 1970
+		//开始日期
+		startDate: {
+			type: Date,
+			default: function () {
+				return moment('1970-01-01').toDate()
+			}
 		},
-		//结束年
-		endYear: {
-			type: Number,
-			default: 2099
-		},
-		//当前日期显示样式
-		nowClass: {
-			type: [String, Object],
-			default: null
-		},
-		//指定日期显示样式
-		currentClass: {
-			type: [String, Object],
-			default: null
+		//截止日期
+		endDate: {
+			type: Date,
+			default: function () {
+				return moment('2099-01-01').toDate()
+			}
 		},
 		//非本月日期是否可以点击
 		nonCurrentClick: {
@@ -111,28 +109,31 @@ export default {
 		active: {
 			type: Boolean,
 			default: true
+		},
+		//主题样式
+		type: {
+			type: String,
+			default: 'info',
+			validator(value) {
+				return ['info', 'primary', 'error', 'warn', 'success'].includes(value)
+			}
 		}
 	},
-	emits: ['update:modelValue', 'date-click', 'month-click', 'year-click'],
 	computed: {
 		//显示在年份面板上的年数组
 		years() {
 			let arr = []
 			//获取指定的年份
-			let current_year = this.modelValue.getFullYear()
+			const year = this.modelValue.getFullYear()
+			const startYear = this.startDate.getFullYear()
 			//指定日期所在年份所在数组的序列,12个值为一个数组
-			let index = Math.floor((current_year - this.startYear) / 12)
-			for (let i = this.startYear + index * 12; i < this.startYear + index * 12 + 12; i++) {
+			let index = Math.floor((year - startYear) / 12)
+			for (let i = startYear + index * 12; i < startYear + index * 12 + 12; i++) {
 				let date = new Date()
 				date.setFullYear(i)
 				date.setMonth(this.modelValue.getMonth())
 				date.setDate(this.modelValue.getDate())
-				arr.push({
-					date: date,
-					year: i,
-					now: i == new Date().getFullYear(),
-					current: i == current_year
-				})
+				arr.push(date)
 			}
 			return arr
 		},
@@ -144,222 +145,179 @@ export default {
 				date.setFullYear(this.modelValue.getFullYear())
 				date.setMonth(i)
 				date.setDate(this.modelValue.getDate())
-				arr.push({
-					date: date,
-					year: this.modelValue.getFullYear(),
-					month: i + 1,
-					text: this.monthText[i],
-					now: i + 1 == new Date().getMonth() + 1 && this.modelValue.getFullYear() == new Date().getFullYear(),
-					current: i + 1 == this.modelValue.getMonth() + 1
-				})
+				arr.push(date)
 			}
 			return arr
 		},
 		//显示在日期面板上的日期数组
 		days() {
 			//获取指定日期的总天数
-			let total = Dap.date.getDays(this.modelValue.getFullYear(), this.modelValue.getMonth() + 1)
+			let total = moment(this.modelValue).daysInMonth()
 			let arr = []
 			for (let i = 0; i < total; i++) {
+				let month = this.modelValue.getMonth() + 1
 				arr.push({
-					date: this.getSpecifiedDate(i + 1),
-					now: this.isNow(i + 1),
-					current: this.isCurrent(i + 1),
-					currentMonth: true
+					date: moment(`${this.modelValue.getFullYear()}-${month < 10 ? '0' + month : month}-${i + 1 < 10 ? '0' + (i + 1) : i + 1}`).toDate(),
+					nonCurrent: false
 				})
 			}
 			//在数组中添加上个月末的几天
-			let fd = this.getSpecifiedDate(1)
-			let week = fd.getDay() //获取1号是周几
-			let pd = fd
-			for (let i = 0; i < week; i++) {
-				let prevDate = Dap.date.getDateBefore(pd, 1) //获取前一天
+			const firstDate = arr[0].date
+			let firstWeek = firstDate.getDay() //获取1号是周几
+			for (let i = 0; i < firstWeek; i++) {
+				let prevDate = moment(firstDate)
+					.subtract(i + 1, 'day')
+					.toDate()
 				arr.unshift({
 					date: prevDate,
-					now: false,
-					current: false,
-					currentMonth: false
+					nonCurrent: true
 				})
-				pd = prevDate
 			}
 			//在数组中添加下个月初的几天
-			let ld = this.getSpecifiedDate(total)
-			let length = arr.length
-			for (let i = length; i < 35; i++) {
-				let nextDate = Dap.date.getDateAfter(ld, 1) //获取后一天
+			const lastDate = arr[arr.length - 1].date
+			let lastWeek = lastDate.getDay() //获取月末是周几
+			for (let i = 0; i < 6 - lastWeek; i++) {
+				let nextDate = moment(lastDate)
+					.add(i + 1, 'day')
+					.toDate()
 				arr.push({
 					date: nextDate,
-					now: false,
-					current: false,
-					currentMonth: false
+					nonCurrent: true
 				})
-				ld = nextDate
 			}
 			return arr
 		},
-		//年视图指定年份样式
-		yearCurrentClass() {
-			return item => {
-				let cls = []
-				if (item.current) {
-					//指定年
-					if (typeof this.currentClass == 'string' && this.currentClass) {
-						cls.push(this.currentClass)
-					} else if (Dap.common.isObject(this.currentClass) && typeof this.currentClass.year == 'string' && this.currentClass.year) {
-						cls.push(this.currentClass.year)
-					} else {
-						cls.push('mvi-calendar-year-current')
-					}
-				}
-				return cls
+		//指定年份值是否禁用
+		yearDisabled() {
+			return date => {
+				return moment(date).isBefore(moment(this.startDate), 'year') || moment(date).isAfter(moment(this.endDate), 'year')
 			}
 		},
-		//月视图指定月份样式
-		monthCurrentClass() {
-			return item => {
-				let cls = []
-				if (item.current) {
-					//指定月
-					if (typeof this.currentClass == 'string' && this.currentClass) {
-						cls.push(this.currentClass)
-					} else if (Dap.common.isObject(this.currentClass) && typeof this.currentClass.month == 'string' && this.currentClass.month) {
-						cls.push(this.currentClass.month)
-					} else {
-						cls.push('mvi-calendar-month-current')
-					}
-				}
-				return cls
+		//指定月份值是否禁用
+		monthDisabled() {
+			return date => {
+				return moment(date).isBefore(moment(this.startDate), 'month') || moment(date).isAfter(moment(this.endDate), 'month')
 			}
 		},
-		//日期视图指定日期样式
-		dateCurrentClass(item) {
+		//指定日期值是否禁用
+		dateDisabled() {
 			return item => {
-				let cls = []
-				if (item.current) {
-					//指定日期
-					if (typeof this.currentClass == 'string' && this.currentClass) {
-						cls.push(this.currentClass)
-					} else if (Dap.common.isObject(this.currentClass) && typeof this.currentClass.date == 'string' && this.currentClass.date) {
-						cls.push(this.currentClass.date)
-					} else {
-						cls.push('mvi-calendar-date-current')
-					}
-				}
-				return cls
+				return moment(item.date).isBefore(moment(this.startDate), 'date') || moment(item.date).isAfter(moment(this.endDate), 'date')
 			}
 		},
-		//年视图当前年份样式
-		yearNowClass(item) {
-			return item => {
-				let cls = []
-				if (item.now) {
-					//当前年
-					if (typeof this.nowClass == 'string' && this.nowClass) {
-						cls.push(this.nowClass)
-					} else if (Dap.common.isObject(this.nowClass) && typeof this.nowClass.year == 'string' && this.nowClass.year) {
-						cls.push(this.nowClass.year)
-					} else {
-						cls.push('mvi-calendar-year-now')
-					}
+		//年视图下每个年数值的样式
+		yearClass() {
+			return date => {
+				let arr = ['mvi-calendar-year-item', this.type]
+				if (this.yearDisabled(date)) {
+					return arr
 				}
-				return cls
+				if (this.active) {
+					arr.push('active')
+				}
+				if (moment().isSame(moment(date), 'year')) {
+					arr.push('now')
+				}
+				if (moment(this.modelValue).isSame(moment(date), 'year')) {
+					arr.push('current')
+				}
+				return arr
 			}
 		},
-		//月视图当前月份样式
-		monthNowClass() {
-			return item => {
-				let cls = []
-				if (item.now) {
-					//当前月
-					if (typeof this.nowClass == 'string' && this.nowClass) {
-						cls.push(this.nowClass)
-					} else if (Dap.common.isObject(this.nowClass) && typeof this.nowClass.month == 'string' && this.nowClass.month) {
-						cls.push(this.nowClass.month)
-					} else {
-						cls.push('mvi-calendar-month-now')
-					}
+		//月视图下每个月数值的样式
+		monthClass() {
+			return date => {
+				let arr = ['mvi-calendar-month-item', this.type]
+				if (this.monthDisabled(date)) {
+					return arr
 				}
-				return cls
+				if (this.active) {
+					arr.push('active')
+				}
+				if (moment().isSame(moment(date), 'month')) {
+					arr.push('now')
+				}
+				if (moment(this.modelValue).isSame(moment(date), 'month')) {
+					arr.push('current')
+				}
+				return arr
 			}
 		},
-		//日期视图当前日期样式
-		dateNowClass(item) {
+		//日期视图下每个日期数值的样式
+		dateClass() {
 			return item => {
-				let cls = []
-				if (item.now) {
-					//当前月
-					if (typeof this.nowClass == 'string') {
-						cls.push(this.nowClass)
-					} else if (Dap.common.isObject(this.nowClass) && typeof this.nowClass.date == 'string' && this.nowClass.date) {
-						cls.push(this.nowClass.date)
-					} else {
-						cls.push('mvi-calendar-date-now')
+				let arr = ['mvi-calendar-date-item', this.type]
+				//在日期范围之外直接返回
+				if (this.dateDisabled(item)) {
+					return arr
+				}
+				//本月之外的日期
+				if (item.nonCurrent) {
+					//设置固定样式
+					arr.push('none-current')
+					//如果本月之外的日期允许点击
+					if (this.nonCurrentClick) {
+						//鼠标设为可点击样式
+						arr.push('allowed')
+						//如果显示点击态，设置点击态样式
+						if (this.active) {
+							arr.push('active')
+						}
 					}
 				}
-				return cls
+				//本月内的日期
+				else {
+					//如果显示点击态设置点击态样式
+					if (this.active) {
+						arr.push('active')
+					}
+					//如果是今天显示今天样式
+					if (moment().isSame(moment(item.date), 'date')) {
+						arr.push('now')
+					}
+					//如果是当前日期值，显示当前值样式
+					if (moment(this.modelValue).isSame(moment(item.date), 'date')) {
+						arr.push('current')
+					}
+				}
+
+				return arr
 			}
 		}
 	},
 	methods: {
-		//判断是否是今天
-		isNow(date) {
-			let now = new Date()
-			if (this.modelValue.getFullYear() == now.getFullYear() && this.modelValue.getMonth() == now.getMonth() && date == now.getDate()) {
-				return true
-			} else {
-				return false
+		//年份点击
+		yearClick(date) {
+			if (this.yearDisabled(date)) {
+				return
 			}
+			this.$emit('update:modelValue', date)
+			this.$emit('year-click', date)
 		},
-		//判断是否是指定日期
-		isCurrent(date) {
-			if (this.modelValue.getDate() == date) {
-				return true
-			} else {
-				return false
+		//月份点击
+		monthClick(date) {
+			if (this.monthDisabled(date)) {
+				return
 			}
+			this.$emit('update:modelValue', date)
+			this.$emit('month-click', date)
 		},
-		//获取某个日期是星期几
-		getWeek(date) {
-			let fullDate = new Date()
-			fullDate.setFullYear(this.modelValue.getFullYear())
-			fullDate.setMonth(this.modelValue.getMonth())
-			fullDate.setDate(date)
-			return fullDate.getDay()
-		},
-		//获取本月指定日期
-		getSpecifiedDate(index) {
-			let fullDate = new Date()
-			fullDate.setFullYear(this.modelValue.getFullYear())
-			fullDate.setMonth(this.modelValue.getMonth())
-			fullDate.setDate(index)
-			return fullDate
-		},
-		//日期视图点击事件
-		onDateClick(item) {
-			//如果非本月且非本月日期不可点击
-			if (!item.currentMonth && !this.nonCurrentClick) {
+		//日期点击
+		dateClick(item) {
+			//超出日期范围
+			if (this.dateDisabled(item)) {
+				return
+			}
+			//不是本月并且不能点击本月之外的日期
+			if (item.nonCurrent && !this.nonCurrentClick) {
 				return
 			}
 			this.$emit('update:modelValue', item.date)
-			this.$emit('date-click', item)
-		},
-		//月份视图点击事件
-		onMonthClick(item) {
-			this.$emit('update:modelValue', item.date)
-			this.$emit('month-click', item)
-		},
-		//年视图点击事件
-		onYearClick(item) {
-			if (item.year < this.startYear || item.year > this.endYear) {
-				return
-			}
-			this.$emit('update:modelValue', item.date)
-			this.$emit('year-click', item)
+			this.$emit('date-click', item.date)
 		}
 	}
 }
 </script>
-
 <style lang="less" scoped>
 @import '../../css/mvi-basic.less';
 
@@ -370,142 +328,275 @@ export default {
 	background-color: #fff;
 	border-radius: @radius-default;
 	color: @font-color-default;
-}
 
-.mvi-calendar-month,
-.mvi-calendar-year {
-	display: block;
-	width: 100%;
-}
+	.mvi-calendar-years {
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+		align-items: center;
 
-.mvi-calendar-month-row,
-.mvi-calendar-year-row {
-	display: flex;
-	display: -webkit-flex;
-	width: 100%;
-	justify-content: space-between;
-	align-items: center;
-}
+		.mvi-calendar-year {
+			width: 25%;
+			display: block;
+			text-align: center;
+			padding: @mp-xs;
+			user-select: none;
 
-.mvi-calendar-month-m,
-.mvi-calendar-year-y {
-	width: 25%;
-	display: block;
-	text-align: center;
-	padding: @mp-xs;
-}
+			.mvi-calendar-year-item {
+				display: inline-block;
+				position: relative;
+				padding: @mp-xs @mp-sm;
+				font-size: @font-size-small;
+				border-radius: @radius-default / 2;
+				cursor: pointer;
 
-.mvi-calendar-month-item,
-.mvi-calendar-year-item {
-	display: inline-block;
-	position: relative;
-	padding: @mp-xs @mp-sm;
-	font-size: @font-size-small;
-	border-radius: @radius-default;
-	cursor: pointer;
-}
+				&[disabled] {
+					opacity: 0.6;
+				}
 
-.mvi-calendar-month-item.mvi-calendar-month-now,
-.mvi-calendar-year-item.mvi-calendar-year-now {
-	color: @info-normal;
-}
+				&.active:active::before {
+					.mvi-active();
+				}
 
-.mvi-calendar-month-item.mvi-calendar-month-current,
-.mvi-calendar-year-item.mvi-calendar-year-current {
-	color: @info-normal;
-	font-weight: bold;
-}
+				&.now {
+					&.info {
+						color: @info-normal;
+					}
+					&.success {
+						color: @success-normal;
+					}
+					&.primary {
+						color: @primary-normal;
+					}
+					&.warn {
+						color: @warn-normal;
+					}
+					&.error {
+						color: @error-normal;
+					}
+				}
 
-.mvi-calendar-date {
-	display: table;
-	border-collapse: collapse;
-	width: 100%;
-	vertical-align: middle;
-}
+				&.current {
+					font-weight: bold;
 
-.mvi-calendar-date-header {
-	margin: 0;
-	padding: 0;
-	width: 100%;
-	display: table-header-group;
-	font-weight: bold;
-	vertical-align: middle;
-}
+					&.info {
+						background-color: @light-info;
+						color: @info-normal;
+					}
+					&.success {
+						background-color: @light-success;
+						color: @success-normal;
+					}
+					&.primary {
+						background-color: @light-primary;
+						color: #fff;
+					}
+					&.warn {
+						background-color: @light-warn;
+						color: @warn-normal;
+					}
+					&.error {
+						background-color: @light-error;
+						color: @error-normal;
+					}
+				}
+			}
+		}
+	}
 
-.mvi-calendar-date-header > .mvi-calendar-date-header-item {
-	display: table-cell;
-	padding: @mp-xs;
-	text-align: center;
-	line-height: 1.5;
-	font-size: @font-size-default;
-}
+	.mvi-calendar-months {
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+		align-items: center;
 
-.mvi-calendar-date-list {
-	width: 100%;
-	display: table-row-group;
-	vertical-align: middle;
-	padding: @mp-sm 0;
-}
+		.mvi-calendar-month {
+			width: 25%;
+			display: block;
+			text-align: center;
+			padding: @mp-xs;
+			user-select: none;
 
-.mvi-calendar-date-row {
-	margin: 0;
-	padding: 0;
-	display: table-row;
-	width: 100%;
-	position: relative;
-	vertical-align: middle;
-}
+			.mvi-calendar-month-item {
+				display: inline-block;
+				position: relative;
+				padding: @mp-xs @mp-sm;
+				font-size: @font-size-small;
+				border-radius: @radius-default / 2;
+				cursor: pointer;
 
-.mvi-calendar-date-day {
-	position: relative;
-	display: table-cell;
-	text-align: center;
-	line-height: 1.5;
-	vertical-align: middle;
-}
+				&[disabled] {
+					opacity: 0.6;
+				}
 
-.mvi-calendar-date-day-item {
-	position: relative;
-	display: inline-flex;
-	display: -webkit-inline-flex;
-	justify-content: center;
-	align-items: center;
-	width: @medium-height;
-	height: @medium-height;
-	border-radius: @radius-circle;
-	font-size: @font-size-default;
-	cursor: pointer;
-}
+				&.active:active::before {
+					.mvi-active();
+				}
 
-.mvi-calendar-date-day-item.mvi-calendar-date-now {
-	color: @info-normal;
-}
+				&.now {
+					&.info {
+						color: @info-normal;
+					}
+					&.success {
+						color: @success-normal;
+					}
+					&.primary {
+						color: @primary-normal;
+					}
+					&.warn {
+						color: @warn-normal;
+					}
+					&.error {
+						color: @error-normal;
+					}
+				}
 
-.mvi-calendar-date-day-item.mvi-calendar-date-current {
-	background-color: @info-normal;
-	color: #fff;
-}
+				&.current {
+					font-weight: bold;
 
-//点击
-.mvi-calendar-date-day-item.mvi-calendar-active:active::before {
-	.mvi-active();
-}
+					&.info {
+						background-color: @light-info;
+						color: @info-normal;
+					}
+					&.success {
+						background-color: @light-success;
+						color: @success-normal;
+					}
+					&.primary {
+						background-color: @light-primary;
+						color: #fff;
+					}
+					&.warn {
+						background-color: @light-warn;
+						color: @warn-normal;
+					}
+					&.error {
+						background-color: @light-error;
+						color: @error-normal;
+					}
+				}
+			}
+		}
+	}
 
-.mvi-calendar-month-item.mvi-calendar-active:active::before {
-	.mvi-active();
-}
+	.mvi-calendar-date {
+		display: table;
+		border-collapse: collapse;
+		width: 100%;
+		vertical-align: middle;
 
-.mvi-calendar-year-item.mvi-calendar-active:active::before {
-	.mvi-active();
-}
+		.mvi-calendar-date-header {
+			margin: 0;
+			padding: 0;
+			width: 100%;
+			display: table-header-group;
+			font-weight: bold;
+			vertical-align: middle;
 
-//禁用
-.mvi-calendar-date-day-item[disabled],
-.mvi-calendar-year-item[disabled] {
-	opacity: 0.6;
+			.mvi-calendar-date-header-item {
+				display: table-cell;
+				padding: @mp-xs;
+				text-align: center;
+				line-height: 1.5;
+				font-size: @font-size-default;
+			}
+		}
 
-	&.mvi-calendar-allowed {
-		cursor: pointer !important;
+		.mvi-calendar-date-body {
+			display: table-row-group;
+			width: 100%;
+			vertical-align: middle;
+			padding: @mp-sm 0;
+
+			.mvi-calendar-date-row {
+				display: table-row;
+				margin: 0;
+				padding: 0;
+				width: 100%;
+				position: relative;
+				vertical-align: middle;
+				.mvi-calendar-date-column {
+					display: table-cell;
+					position: relative;
+					text-align: center;
+					line-height: 1.5;
+					vertical-align: middle;
+					user-select: none;
+
+					.mvi-calendar-date-item {
+						position: relative;
+						display: inline-flex;
+						justify-content: center;
+						align-items: center;
+						width: @medium-height;
+						height: @medium-height;
+						border-radius: @radius-circle;
+						font-size: @font-size-default;
+						cursor: pointer;
+
+						&[disabled] {
+							opacity: 0.6;
+						}
+
+						&.none-current {
+							opacity: 0.6;
+							cursor: auto;
+
+							&.allowed {
+								cursor: pointer;
+							}
+						}
+
+						&.active:active::before {
+							.mvi-active();
+						}
+
+						&.now {
+							&.info {
+								color: @info-normal;
+							}
+							&.success {
+								color: @success-normal;
+							}
+							&.primary {
+								color: @primary-normal;
+							}
+							&.warn {
+								color: @warn-normal;
+							}
+							&.error {
+								color: @error-normal;
+							}
+						}
+
+						&.current {
+							font-weight: bold;
+
+							&.info {
+								background-color: @light-info;
+								color: @info-normal;
+							}
+							&.success {
+								background-color: @light-success;
+								color: @success-normal;
+							}
+							&.primary {
+								background-color: @light-primary;
+								color: #fff;
+							}
+							&.warn {
+								background-color: @light-warn;
+								color: @warn-normal;
+							}
+							&.error {
+								background-color: @light-error;
+								color: @error-normal;
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
 </style>
