@@ -1,23 +1,23 @@
 <template>
 	<Overlay ref="overlay" :model-value="modelValue" @show="overlayShow" @hide="overlayHide" :use-padding="usePadding" :z-index="zIndex" @click.self="hide" :color="overlayColor" :timeout="timeout" :mount-el="mountEl">
-		<div ref="modal" class="mvi-modal" :style="modalStyle">
+		<div ref="modal" class="mvi-modal" :style="{ zIndex: zIndex + 10 }">
 			<transition :name="'mvi-modal-' + animation" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @before-leave="beforeLeave" @leave="leave" @after-leave="afterLeave">
 				<!-- 弹出层 -->
 				<div v-if="firstShow" v-show="modalShow" class="mvi-modal-wrapper" ref="wrapper" :style="wrapperStyle" v-bind="$attrs">
-					<div class="mvi-modal-times" @click="hideModal" v-if="showTimes && (iconType || iconUrl)">
-						<Icon :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor" />
+					<div class="mvi-modal-times" @click="hideModal" v-if="showTimes">
+						<Icon type="times" />
 					</div>
-					<div ref="header" :class="titleCls" v-if="$slots.title || title" :style="headerStyle">
+					<div ref="header" :class="['mvi-modal-title', ellipsis ? 'ellipsis' : '', center ? 'center' : '']" v-if="$slots.title || title" :style="headerStyle">
 						<slot name="title" v-if="$slots.title"></slot>
 						<span v-html="title" v-else-if="title"></span>
 					</div>
-					<div ref="content" :class="['mvi-modal-content', contentClass || '']" v-if="$slots.default || content" :style="{ padding: contentPadding ? '' : '0' }">
+					<div ref="content" class="mvi-modal-content" v-if="$slots.default || content">
 						<slot v-if="$slots.default"></slot>
 						<span v-html="content" v-else-if="content"></span>
 					</div>
-					<div ref="footer" :class="['mvi-modal-footer', footerClass || '']" v-if="$slots.footer || footer" :style="{ padding: footerPadding ? '' : '0' }">
+					<div ref="footer" class="mvi-modal-footer" :style="{ padding: __ignorePadding ? 0 : '' }" v-if="$slots.footer || footer">
 						<slot name="footer" v-if="$slots.footer"></slot>
-						<span class="mvi-modal-footer-text" v-html="footer" v-else-if="footer"></span>
+						<span v-text="footer" v-else-if="footer"></span>
 					</div>
 				</div>
 			</transition>
@@ -42,6 +42,11 @@ export default {
 	emits: ['update:modelValue', 'show', 'showing', 'shown', 'hide', 'hidding', 'hidden'],
 	inheritAttrs: false,
 	props: {
+		//是否显示
+		modelValue: {
+			type: Boolean,
+			default: false
+		},
 		//挂载元素
 		mountEl: {
 			type: String,
@@ -52,43 +57,28 @@ export default {
 			type: String,
 			default: ''
 		},
-		//标题额外样式
-		titleClass: {
-			type: String,
-			default: null
+		//标题是否居中
+		center: {
+			type: Boolean,
+			default: false
+		},
+		//标题是否只一行，超出省略
+		ellipsis: {
+			type: Boolean,
+			default: false
 		},
 		//模态框内容
 		content: {
 			type: String,
 			default: ''
 		},
-		//内容额外样式
-		contentClass: {
-			type: String,
-			default: null
-		},
 		//尾注信息
 		footer: {
 			type: String,
 			default: null
 		},
-		//尾注额外样式
-		footerClass: {
-			type: String,
-			default: null
-		},
 		//是否显示关闭图标
 		showTimes: {
-			type: Boolean,
-			default: false
-		},
-		//自定义关闭按钮
-		timesIcon: {
-			type: [String, Object],
-			default: null
-		},
-		//显示与否
-		modelValue: {
 			type: Boolean,
 			default: false
 		},
@@ -107,16 +97,6 @@ export default {
 			type: String,
 			default: null
 		},
-		//模态框背景色
-		modalColor: {
-			type: String,
-			default: null
-		},
-		//模态框字体颜色
-		color: {
-			type: String,
-			default: null
-		},
 		//遮罩层z-index
 		zIndex: {
 			type: Number,
@@ -127,21 +107,6 @@ export default {
 			type: String,
 			default: null
 		},
-		//尾注内边距
-		footerPadding: {
-			type: Boolean,
-			default: true
-		},
-		//主体内边距
-		contentPadding: {
-			type: Boolean,
-			default: true
-		},
-		//头部内边距
-		headerPadding: {
-			type: Boolean,
-			default: true
-		},
 		//模态框圆角
 		radius: {
 			type: String,
@@ -150,12 +115,8 @@ export default {
 		//动画
 		animation: {
 			type: String,
-			default: 'scale' //'narrow','scale','translate-top','translate-bottom','translate-left','translate-right'
-		},
-		//标题是否只一行，超出省略
-		titleEllipsis: {
-			type: Boolean,
-			default: false
+			//'narrow','scale','translate-top','translate-bottom','translate-left','translate-right'
+			default: 'scale'
 		},
 		//局部显示是否考虑PC端滚动条影响
 		usePadding: {
@@ -166,97 +127,30 @@ export default {
 		fullScreen: {
 			type: Boolean,
 			default: false
+		},
+		//模态框作为dialog时的属性，不设置footer的内边距，仅供内部使用
+		__ignorePadding: {
+			type: Boolean,
+			default: false
 		}
 	},
 	computed: {
 		$$el() {
 			return this.$refs.overlay.$$el
 		},
-		iconType() {
-			let type = 'times'
-			if (Dap.common.isObject(this.timesIcon)) {
-				if (typeof this.timesIcon.type == 'string') {
-					type = this.timesIcon.type
-				}
-			} else if (typeof this.timesIcon == 'string') {
-				type = this.timesIcon
-			}
-			return type
-		},
-		iconUrl() {
-			let url = null
-			if (Dap.common.isObject(this.timesIcon)) {
-				if (typeof this.timesIcon.url == 'string') {
-					url = this.timesIcon.url
-				}
-			}
-			return url
-		},
-		iconSpin() {
-			let spin = false
-			if (Dap.common.isObject(this.timesIcon)) {
-				if (typeof this.timesIcon.spin == 'boolean') {
-					spin = this.timesIcon.spin
-				}
-			}
-			return spin
-		},
-		iconSize() {
-			let size = null
-			if (Dap.common.isObject(this.timesIcon)) {
-				if (typeof this.timesIcon.size == 'string') {
-					size = this.timesIcon.size
-				}
-			}
-			return size
-		},
-		iconColor() {
-			let color = null
-			if (Dap.common.isObject(this.timesIcon)) {
-				if (typeof this.timesIcon.color == 'string') {
-					color = this.timesIcon.color
-				}
-			}
-			return color
-		},
-		modalStyle() {
-			let style = {}
-			style.zIndex = this.zIndex + 10
-			return style
-		},
 		wrapperStyle() {
 			let style = {}
 			if (this.radius) {
 				style.borderRadius = this.radius
 			}
-			if (this.modalColor) {
-				style.background = this.modalColor
-			}
-			if (this.color) {
-				style.color = this.color
-			}
 			style.transition = 'all ' + this.timeout + 'ms'
-			style.webkitTransition = 'all ' + this.timeout + 'ms'
 			return style
-		},
-		titleCls() {
-			let cls = ['mvi-modal-title']
-			if (this.titleEllipsis) {
-				cls.push('mvi-modal-title-ellipsis')
-			}
-			if (this.titleClass) {
-				cls.push(this.titleClass)
-			}
-			return cls
 		},
 		headerStyle() {
 			let style = {}
 			//主体存在
 			if (this.$slots.default || this.content) {
 				style.paddingBottom = '0'
-			}
-			if (!this.headerPadding) {
-				style.padding = '0'
 			}
 			return style
 		}
@@ -266,7 +160,7 @@ export default {
 		Overlay
 	},
 	watch: {
-		fullScreen(newValue) {
+		fullScreen() {
 			this.modalSize()
 		}
 	},
@@ -275,8 +169,8 @@ export default {
 		modalSize() {
 			//如果是全屏显示
 			if (this.fullScreen) {
-				this.$refs.modal.style.width = this.$refs.overlay.$$el.offsetParent.offsetWidth + 'px'
-				this.$refs.wrapper.style.height = this.$refs.overlay.$$el.offsetParent.offsetHeight + 'px'
+				this.$refs.modal.style.width = this.$$el.offsetParent.offsetWidth + 'px'
+				this.$refs.wrapper.style.height = this.$$el.offsetParent.offsetHeight + 'px'
 				this.$refs.wrapper.style.maxHeight = ''
 			} else {
 				if (this.width) {
@@ -284,12 +178,12 @@ export default {
 				} else {
 					this.$refs.modal.style.width = ''
 				}
-				this.$refs.wrapper.style.maxHeight = this.$refs.overlay.$$el.offsetParent.offsetHeight * 0.96 + 'px'
+				this.$refs.wrapper.style.maxHeight = this.$$el.offsetParent.offsetHeight * 0.96 + 'px'
 				this.$refs.wrapper.style.height = ''
 			}
 		},
 		//遮罩层显示前
-		overlayShow(el) {
+		overlayShow() {
 			if (!this.firstShow) {
 				this.firstShow = true
 			}
@@ -384,78 +278,79 @@ export default {
 	transform: translate(-50%, -50%);
 	-webkit-transform: translate(-50%, -50%);
 	background: transparent;
-	font-size: @font-size-default;
-	color: @font-color-default;
-}
 
-.mvi-modal-wrapper {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: flex-start;
-	flex-direction: column;
-	-ms-flex-direction: column;
-	-webkit-flex-direction: column;
-	width: 100%;
-	background: #fff;
-	font-size: @font-size-default;
-	color: @font-color-default;
-	border-radius: @radius-default;
-	box-shadow: @boxshadow;
-	position: relative;
-}
-
-.mvi-modal-title {
-	display: block;
-	width: 100%;
-	font-weight: bold;
-	font-size: @font-size-h6;
-	padding: @mp-lg @mp-md;
-
-	&.mvi-modal-title-ellipsis {
-		overflow: hidden;
-		white-space: nowrap;
-		text-overflow: ellipsis;
+	.mvi-modal-wrapper {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-start;
+		flex-direction: column;
+		-ms-flex-direction: column;
+		-webkit-flex-direction: column;
+		width: 100%;
+		background: #fff;
+		border-radius: @radius-default;
+		box-shadow: @boxshadow;
+		position: relative;
 	}
-}
 
-.mvi-modal-times {
-	position: absolute;
-	right: @mp-md;
-	top: @mp-lg + @mp-xs;
-	display: flex;
-	display: -webkit-flex;
-	justify-content: center;
-	align-items: center;
-	color: @font-color-mute;
-	font-size: @font-size-small;
+	.mvi-modal-title {
+		display: block;
+		width: 100%;
+		font-weight: bold;
+		font-size: @font-size-h6;
+		color: @font-color-default;
+		padding: @mp-md;
 
-	&:hover {
-		cursor: pointer;
+		&.ellipsis {
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+
+		&.center {
+			text-align: center;
+		}
+	}
+
+	.mvi-modal-times {
+		position: absolute;
+		right: @mp-sm;
+		top: @mp-sm;
+		display: flex;
+		display: -webkit-flex;
+		justify-content: center;
+		align-items: center;
+		color: @font-color-mute;
+		font-size: @font-size-small;
 		opacity: 0.8;
+
+		&:hover {
+			cursor: pointer;
+			opacity: 1;
+		}
 	}
-}
 
-.mvi-modal-content {
-	display: block;
-	padding: @mp-lg @mp-md;
-	flex: 1;
-	overflow-x: hidden;
-	overflow-y: auto;
-	border-radius: inherit;
-	font-size: @font-size-default;
-}
+	.mvi-modal-content {
+		display: block;
+		padding: @mp-md;
+		flex: 1;
+		overflow-x: hidden;
+		overflow-y: auto;
+		border-radius: inherit;
+		font-size: @font-size-default;
+		color: @font-color-default;
+	}
 
-.mvi-modal-footer {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: flex-end;
-	align-items: center;
-	border-top: 1px solid @border-color;
-	padding: @mp-sm @mp-md;
-	text-align: right;
-
-	& > .mvi-modal-footer-text {
-		opacity: 0.6;
+	.mvi-modal-footer {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-end;
+		align-items: center;
+		border-top: 1px solid @border-color;
+		padding: @mp-sm @mp-md;
+		text-align: right;
+		font-size: @font-size-default;
+		color: @font-color-sub;
 	}
 }
 

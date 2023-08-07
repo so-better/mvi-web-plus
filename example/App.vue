@@ -1,8 +1,7 @@
 <template>
 	<div class="mvi-p-4">
 		<div>{{ value }}</div>
-		<m-button @click="show = !show">按钮</m-button>
-		<m-color-picker v-model="value"></m-color-picker>
+		<m-button @click="change">按钮</m-button>
 	</div>
 </template>
 <script>
@@ -27,8 +26,18 @@ export default {
 	},
 	mounted() {},
 	methods: {
-		change(data) {
-			console.log(data)
+		change() {
+			this.$prompt({
+				title: '温馨提示',
+				message: '欢迎进入游戏',
+				center: true,
+				input: {
+					placeholder: '请输入内容',
+					clearable: true
+				}
+			}).then((res, val) => {
+				console.log(res, val)
+			})
 		}
 	}
 }

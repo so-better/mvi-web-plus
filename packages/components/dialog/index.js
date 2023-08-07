@@ -12,39 +12,20 @@ const Dialog = {
 			opts.message = options.message
 			opts.width = options.width
 			opts.zIndex = options.zIndex
-			opts.usePadding = options.usePadding
 			opts.animation = options.animation
 			opts.radius = options.radius
-			opts.timeout = options.timeout
 			opts.overlayColor = options.overlayColor
-			opts.mountEl = options.mountEl
 			opts.closable = options.closable
+			opts.input = options.input
 			if (type == 'alert' || type == 'confirm' || type == 'prompt') {
 				opts.btnText = options.btnText
 				opts.btnColor = options.btnColor
 				opts.ios = options.ios
-				opts.input = {
-					placeholder: options.placeholder,
-					type: options.type,
-					autofocus: options.autofocus,
-					maxlength: options.maxlength,
-					clearable: options.clearable,
-					mode: options.mode,
-					align: options.align,
-					value: options.value
-				}
 			} else if (type == 'Alert' || type == 'Confirm' || type == 'Prompt') {
+				opts.center = options.center
+				opts.usePadding = options.usePadding
 				opts.btns = options.btns
 				opts.showTimes = options.showTimes
-				opts.input = {
-					placeholder: options.placeholder,
-					type: options.type,
-					autofocus: options.autofocus,
-					maxlength: options.maxlength,
-					clearable: options.clearable,
-					align: options.align,
-					value: options.value
-				}
 			}
 		} else {
 			opts.message = options
@@ -61,7 +42,7 @@ const Dialog = {
 			document.body.appendChild(mountNode)
 			const instance = createApp(dialogComponent, {
 				...opts,
-				remove: () => {
+				__remove: () => {
 					instance.unmount()
 					mountNode.remove()
 					resolve()
@@ -83,7 +64,7 @@ const Dialog = {
 			document.body.appendChild(mountNode)
 			const instance = createApp(dialogComponent, {
 				...opts,
-				remove: ok => {
+				__remove: ok => {
 					instance.unmount()
 					mountNode.remove()
 					resolve(ok)
@@ -105,7 +86,7 @@ const Dialog = {
 			document.body.appendChild(mountNode)
 			const instance = createApp(dialogComponent, {
 				...opts,
-				remove: (ok, value) => {
+				__remove: (ok, value) => {
 					instance.unmount()
 					mountNode.remove()
 					resolve({
@@ -130,7 +111,7 @@ const Dialog = {
 			document.body.appendChild(mountNode)
 			const instance = createApp(dialogPcComponent, {
 				...opts,
-				remove: () => {
+				__remove: () => {
 					instance.unmount()
 					mountNode.remove()
 					resolve()
@@ -152,7 +133,7 @@ const Dialog = {
 			document.body.appendChild(mountNode)
 			const instance = createApp(dialogPcComponent, {
 				...opts,
-				remove: ok => {
+				__remove: ok => {
 					instance.unmount()
 					mountNode.remove()
 					resolve(ok)
@@ -174,7 +155,7 @@ const Dialog = {
 			document.body.appendChild(mountNode)
 			const instance = createApp(dialogPcComponent, {
 				...opts,
-				remove: (ok, value) => {
+				__remove: (ok, value) => {
 					instance.unmount()
 					mountNode.remove()
 					resolve({

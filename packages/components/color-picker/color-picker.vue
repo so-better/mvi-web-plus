@@ -172,7 +172,7 @@ export default {
 				this.$emit('update:modelValue', val)
 				this.$emit('change', val)
 			} else {
-				const val = `rgba(${rgbValue[0]},${rgbValue[1]},${rgbValue[2]},${this.opacity.toFixed(2)})`
+				const val = `rgba(${rgbValue[0]},${rgbValue[1]},${rgbValue[2]},${Number(this.opacity.toFixed(2))})`
 				this.$emit('update:modelValue', val)
 				this.$emit('change', val)
 			}

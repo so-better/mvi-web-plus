@@ -1,18 +1,17 @@
 <template>
-	<Modal ref="modal" v-model="show" :footer-padding="false" @hide="modalHide" @hidding="modalHidding" @hidden="modalHidden" :width="computedWidth" :z-index="computedZIndex" :radius="computedRadius" :use-padding="computedUsePadding" :animation="computedAnimation" @show="modalShow" @showing="modalShowing" @shown="modalShown" :timeout="computedTimeout" :overlay-color="computedOverlayColor" :mount-el="computedMountEl">
-		<template v-if="computedTitle" #title>
-			<div v-html="computedTitle" class="mvi-dialog-title"></div>
-			<Icon class="mvi-dialog-close" v-if="computedShowTimes" @click="cancelFun" type="times" />
+	<Modal ref="modal" v-model="show" :show-times="cmpShowTimes" @hide="modalHide" @hidding="modalHidding" @hidden="modalHidden" :width="cmpWidth" :z-index="cmpZIndex" :radius="cmpRadius" :use-padding="cmpUsePadding" :animation="cmpAnimation" @show="modalShow" @showing="modalShowing" @shown="modalShown" :timeout="200" :overlay-color="cmpOverlayColor" mount-el="body" :center="cmpCenter">
+		<template v-if="cmpTitle" #title>
+			<div v-html="cmpTitle" class="mvi-dialog-title"></div>
 		</template>
 		<template #default v-if="contentShow">
-			<div v-if="computedMessage" v-html="computedMessage" class="mvi-dialog-content"></div>
-			<div v-if="type == 'Prompt'" :class="['mvi-dialog-input', computedMessage ? 'mvi-dialog-input-mt' : '']">
-				<input ref="input" :type="computedInput.type == 'number' ? 'text' : computedInput.type" :placeholder="computedInput.placeholder" :maxlength="computedInput.maxlength" :class="inputClass" :style="inputStyle" v-model.trim="value" @input="inputFun" @focus="inputFocus" @blur="inputBlur" @keyup.enter="okFun" />
-				<Icon v-if="computedInput.clearable" ref="icon" v-show="showClear" type="times-o" class="mvi-dialog-times" @click="doClear" />
+			<div v-if="cmpMessage" v-html="cmpMessage" :class="['mvi-dialog-content', center ? 'center' : '']"></div>
+			<div v-if="type == 'Prompt'" class="mvi-dialog-input">
+				<input ref="input" :type="cmpInput.type == 'number' ? 'text' : cmpInput.type" :placeholder="cmpInput.placeholder" :maxlength="cmpInput.maxlength" :class="inputClass" :style="inputStyle" v-model.trim="value" @input="inputFun" @focus="inputFocus" @blur="inputBlur" @keyup.enter="okFun" />
+				<Icon v-if="cmpInput.clearable" ref="icon" v-show="showClear" type="times-o" class="mvi-dialog-times" @click="doClear" />
 			</div>
-			<div class="mvi-dialog-footer">
-				<Button v-if="type != 'Alert'" :type="computedBtns.cancel.type" :color="computedBtns.cancel.color" :sub-color="computedBtns.cancel.subColor" :plain="computedBtns.cancel.plain" class="mvi-dialog-cancel" @click="cancelFun" :size="computedBtns.cancel.size">{{ computedBtns.cancel.text }}</Button>
-				<Button :type="computedBtns.ok.type" :color="computedBtns.ok.color" :sub-color="computedBtns.ok.subColor" :plain="computedBtns.ok.plain" @click="okFun" :size="computedBtns.ok.size">{{ computedBtns.ok.text }}</Button>
+			<div :class="['mvi-dialog-footer', center ? 'center' : '']">
+				<Button v-if="type != 'Alert'" :type="cmpBtns.cancel.type" :color="cmpBtns.cancel.color" :sub-color="cmpBtns.cancel.subColor" :plain="cmpBtns.cancel.plain" class="mvi-dialog-cancel" @click="cancelFun" :size="cmpBtns.cancel.size">{{ cmpBtns.cancel.text }}</Button>
+				<Button :type="cmpBtns.ok.type" :color="cmpBtns.ok.color" :sub-color="cmpBtns.ok.subColor" :plain="cmpBtns.ok.plain" @click="okFun" :size="cmpBtns.ok.size">{{ cmpBtns.ok.text }}</Button>
 			</div>
 		</template>
 	</Modal>
@@ -52,11 +51,6 @@ export default {
 		message: {
 			default: ''
 		},
-		//按钮配置
-		btns: {
-			type: Object,
-			default: null
-		},
 		//宽度
 		width: {
 			type: String,
@@ -72,19 +66,9 @@ export default {
 			type: String,
 			default: null
 		},
-		//滚动条考虑
-		usePadding: {
-			type: Boolean,
-			default: null
-		},
 		//圆角
 		radius: {
 			type: String,
-			default: null
-		},
-		//动画时长
-		timeout: {
-			type: Number,
 			default: null
 		},
 		//遮罩层颜色
@@ -92,8 +76,8 @@ export default {
 			type: String,
 			default: null
 		},
-		//关闭按钮是否显示
-		showTimes: {
+		//是否点击遮罩可关闭
+		closable: {
 			type: Boolean,
 			default: null
 		},
@@ -102,18 +86,28 @@ export default {
 			type: Object,
 			default: null
 		},
-		//挂载元素
-		mountEl: {
-			type: String,
-			default: null
-		},
-		//是否点击遮罩可关闭
-		closable: {
+		//是否居中
+		center: {
 			type: Boolean,
 			default: false
 		},
+		//滚动条考虑
+		usePadding: {
+			type: Boolean,
+			default: null
+		},
+		//按钮配置
+		btns: {
+			type: Object,
+			default: null
+		},
+		//关闭按钮是否显示
+		showTimes: {
+			type: Boolean,
+			default: null
+		},
 		//弹窗移除方法
-		remove: {
+		__remove: {
 			type: Function,
 			default: function () {
 				return function () {}
@@ -124,28 +118,24 @@ export default {
 		$$el() {
 			return this.$refs.modal.$$el
 		},
-		computedMountEl() {
-			if (typeof this.mountEl == 'string' && this.mountEl) {
-				return this.mountEl
-			} else {
-				return 'body'
-			}
-		},
-		computedShowTimes() {
+		//是否显示关闭图标
+		cmpShowTimes() {
 			if (typeof this.showTimes == 'boolean') {
 				return this.showTimes
 			} else {
 				return true
 			}
 		},
-		computedTitle() {
+		//标题
+		cmpTitle() {
 			if (typeof this.title == 'string') {
 				return this.title
 			} else {
 				return '提示'
 			}
 		},
-		computedMessage() {
+		//信息内容
+		cmpMessage() {
 			if (typeof this.message == 'string') {
 				return this.message
 			} else if (Dap.common.isObject(this.message)) {
@@ -154,7 +144,8 @@ export default {
 				return String(this.message)
 			}
 		},
-		computedBtns() {
+		//按钮配置
+		cmpBtns() {
 			let btns = {
 				ok: {
 					type: 'primary',
@@ -217,14 +208,16 @@ export default {
 			}
 			return btns
 		},
-		computedWidth() {
+		//宽度
+		cmpWidth() {
 			if (typeof this.width == 'string' && this.width) {
 				return this.width
 			} else {
 				return '7.2rem'
 			}
 		},
-		computedInput() {
+		//输入框配置
+		cmpInput() {
 			let input = {
 				placeholder: '',
 				type: 'text',
@@ -259,73 +252,88 @@ export default {
 			}
 			return input
 		},
-		computedZIndex() {
+		//层级
+		cmpZIndex() {
 			if (Dap.number.isNumber(this.zIndex)) {
 				return this.zIndex
 			} else {
 				return 1000
 			}
 		},
-		computedUsePadding() {
+		//是否考虑滚动条影响
+		cmpUsePadding() {
 			if (typeof this.usePadding == 'boolean') {
 				return this.usePadding
 			} else {
 				return false
 			}
 		},
-		computedAnimation() {
+		//动画
+		cmpAnimation() {
 			if (typeof this.animation == 'string' && this.animation) {
 				return this.animation
 			} else {
 				return 'translate-top'
 			}
 		},
-		computedRadius() {
+		//圆角
+		cmpRadius() {
 			if (typeof this.radius == 'string' && this.radius) {
 				return this.radius
 			} else {
 				return '0.12rem'
 			}
 		},
-		computedTimeout() {
-			if (Dap.number.isNumber(this.timeout)) {
-				return this.timeout
-			} else {
-				return 200
-			}
-		},
-		computedOverlayColor() {
+		//遮罩层颜色
+		cmpOverlayColor() {
 			if (typeof this.overlayColor == 'string' && this.overlayColor) {
 				return this.overlayColor
 			} else {
 				return null
 			}
 		},
-		contentShow() {
-			if (this.type == 'Alert' || this.type == 'Confirm') {
-				if (this.computedMessage) {
-					return true
-				} else {
-					return false
-				}
+		//点击背景是否可关闭
+		cmpClosable() {
+			if (typeof this.closable == 'boolean') {
+				return this.closable
 			} else {
-				return true
+				return false
 			}
 		},
+		cmpCenter() {
+			if (typeof this.center == 'boolean') {
+				return this.center
+			} else {
+				return false
+			}
+		},
+		//信息内容是否显示
+		contentShow() {
+			if (this.type == 'Alert' || this.type == 'Confirm') {
+				if (this.cmpMessage) {
+					return true
+				}
+				return false
+			}
+			return true
+		},
+		//显示清除图标
 		showClear() {
 			return this.focus && this.value
 		},
+		//输入框class
 		inputClass() {
 			let cls = []
-			if (this.showClear && this.computedInput.clearable) {
+			if (this.showClear && this.cmpInput.clearable) {
 				cls.push('mvi-dialog-input-padding')
 			}
 			return cls
 		},
+		//输入框样式
 		inputStyle() {
 			let style = {}
-			if (['left', 'right', 'center'].includes(this.computedInput.align)) {
-				style.textAlign = this.computedInput.align
+			if (['left', 'right', 'center'].includes(this.cmpInput.align)) {
+				style.textAlign = this.cmpInput.align
 			}
 			return style
 		}
@@ -347,7 +355,7 @@ export default {
 	methods: {
 		//点击遮罩层关闭
 		overlayClick(event) {
-			if (!this.closable) {
+			if (!this.cmpClosable) {
 				return
 			}
 			if (event.target != event.currentTarget) {
@@ -358,45 +366,45 @@ export default {
 		},
 		//设置输入框默认值
 		setDefaultValue() {
-			let value = this.computedInput.value
-			if (this.computedInput.type == 'number') {
+			let value = this.cmpInput.value
+			if (this.cmpInput.type == 'number') {
 				value = value.replace(/\D/g, '')
 			}
-			if (this.computedInput.maxlength > 0 && value.length > this.computedInput.maxlength) {
-				value = value.substr(0, this.computedInput.maxlength)
+			if (this.cmpInput.maxlength > 0 && value.length > this.cmpInput.maxlength) {
+				value = value.substring(0, this.cmpInput.maxlength)
 			}
 			this.value = value
 		},
 		//获取焦点
 		inputFocus() {
-			setTimeout(() => {
-				this.focus = true
-			}, 200)
+			this.focus = true
 		},
 		//失去焦点
-		inputBlur(e) {
+		inputBlur() {
 			setTimeout(() => {
 				this.focus = false
-			}, 200)
+			}, 100)
 		},
 		//输入监听
 		inputFun() {
 			let value = this.value
-			if (this.computedInput.type == 'number') {
+			if (this.cmpInput.type == 'number') {
 				value = value.replace(/\D/g, '')
 			}
-			if (this.computedInput.maxlength > 0 && value.length > this.computedInput.maxlength) {
-				value = value.substr(0, this.computedInput.maxlength)
+			if (this.cmpInput.maxlength > 0 && value.length > this.cmpInput.maxlength) {
+				value = value.substring(0, this.cmpInput.maxlength)
 			}
 			this.value = value
 		},
 		//清除输入框的值
 		doClear() {
-			if (!this.computedInput.clearable) {
+			if (!this.cmpInput.clearable) {
 				return
 			}
-			this.value = ''
-			this.$refs.input.focus()
+			setTimeout(() => {
+				this.value = ''
+				this.$refs.input.focus()
+			}, 110)
 		},
 		//确定
 		okFun() {
@@ -426,11 +434,11 @@ export default {
 				this.dialogComponentWatch.apply(this, ['hidden', this.type, el])
 			}
 			if (this.type == 'Alert') {
-				this.remove()
+				this.__remove()
 			} else if (this.type == 'Confirm') {
-				this.remove(this.ok)
+				this.__remove(this.ok)
 			} else if (this.type == 'Prompt') {
-				this.remove(this.ok, this.value)
+				this.__remove(this.ok, this.value)
 			}
 		},
 		//模态框显示前
@@ -448,7 +456,7 @@ export default {
 		//模态框显示后
 		modalShown(el) {
 			//输入框获取焦点
-			if (this.type == 'Prompt' && this.computedInput.autofocus && this.$refs.input) {
+			if (this.type == 'Prompt' && this.cmpInput.autofocus && this.$refs.input) {
 				this.$refs.input.focus()
 			}
 			if (typeof this.dialogComponentWatch == 'function') {
@@ -471,24 +479,15 @@ export default {
 	line-height: 1.5;
 }
 
-.mvi-dialog-close {
-	position: absolute;
-	right: 0.2rem;
-	top: 0.3rem;
-	opacity: 0.5;
-	font-size: 0.28rem;
-	font-weight: normal;
-
-	&:hover {
-		cursor: pointer;
-		opacity: 0.8;
-	}
-}
-
 .mvi-dialog-content {
 	color: @font-color-default;
 	line-height: 1.5;
 	font-size: @font-size-default;
+	padding: @mp-md 0;
+
+	&.center {
+		text-align: center;
+	}
 }
 
 .mvi-dialog-input {
@@ -496,40 +495,35 @@ export default {
 	width: 100%;
 	position: relative;
 
-	&.mvi-dialog-input-mt {
-		margin-top: @mp-md;
+	input {
+		display: block;
+		appearance: none;
+		-moz-appearance: none;
+		-webkit-appearance: none;
+		width: 100%;
+		height: @medium-height;
+		line-height: 1.5;
+		border-radius: @radius-default;
+		border: 1px solid @border-color;
+		color: @font-color-default;
+		font-size: @font-size-default;
+		background-color: #fff;
+		padding: 0 @mp-sm;
+
+		&::placeholder,
+		&::-webkit-input-placeholder {
+			opacity: 0.5;
+			font-family: inherit;
+			font-size: inherit;
+			color: inherit;
+			vertical-align: middle;
+		}
+
+		&.mvi-dialog-input-padding {
+			padding-right: @mp-sm * 3;
+		}
 	}
 }
-
-.mvi-dialog-input > input {
-	display: block;
-	appearance: none;
-	-moz-appearance: none;
-	-webkit-appearance: none;
-	width: 100%;
-	height: @medium-height;
-	line-height: 1.5;
-	border-radius: @radius-default;
-	border: 1px solid @border-color;
-	color: @font-color-default;
-	font-size: @font-size-default;
-	background-color: #fff;
-	padding: 0 @mp-sm;
-
-	&::placeholder,
-	&::-webkit-input-placeholder {
-		opacity: 0.5;
-		font-family: inherit;
-		font-size: inherit;
-		color: inherit;
-		vertical-align: middle;
-	}
-
-	&.mvi-dialog-input-padding {
-		padding-right: @mp-sm * 3;
-	}
-}
-
 .mvi-dialog-times {
 	position: absolute;
 	top: 50%;
@@ -545,7 +539,6 @@ export default {
 .mvi-dialog-footer {
 	width: 100%;
 	display: flex;
-	display: -webkit-flex;
 	justify-content: flex-end;
 	align-items: center;
 	padding: 0 @mp-sm;
@@ -553,6 +546,10 @@ export default {
 
 	.mvi-dialog-cancel {
 		margin-right: @mp-md;
+	}
+
+	&.center {
+		justify-content: center;
 	}
 }
 </style>

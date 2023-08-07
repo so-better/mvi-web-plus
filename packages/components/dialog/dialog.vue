@@ -1,20 +1,20 @@
 <template>
-	<Modal ref="modal" v-model="show" :footer-padding="false" @hide="modalHide" @hidding="modalHidding" @hidden="modalHidden" :width="computedWidth" :z-index="computedZIndex" :radius="computedRadius" :use-padding="computedUsePadding" :animation="computedAnimation" @show="modalShow" @showing="modalShowing" @shown="modalShown" :timeout="computedTimeout" :overlay-color="computedOverlayColor" :mount-el="computedMountEl">
-		<template v-if="computedTitle || (computedIos && computedMessage)" #title>
-			<div v-html="computedTitle" v-if="computedTitle" class="mvi-dialog-title"></div>
-			<div v-if="computedMessage && computedIos" v-html="computedMessage" class="mvi-dialog-ios-content"></div>
+	<Modal ref="modal" v-model="show" @hide="modalHide" @hidding="modalHidding" @hidden="modalHidden" :width="cmpWidth" :z-index="cmpZIndex" :radius="cmpRadius" :use-padding="false" :animation="cmpAnimation" @show="modalShow" @showing="modalShowing" @shown="modalShown" :timeout="200" :overlay-color="cmpOverlayColor" mount-el="body" __ignorePadding>
+		<template v-if="cmpTitle || (cmpIos && cmpMessage)" #title>
+			<div v-html="cmpTitle" v-if="cmpTitle" class="mvi-dialog-title"></div>
+			<div v-if="cmpMessage && cmpIos" v-html="cmpMessage" class="mvi-dialog-ios-content"></div>
 		</template>
 		<template #default v-if="contentShow">
-			<div v-if="!computedIos && computedMessage" v-html="computedMessage" class="mvi-dialog-content"></div>
-			<div v-if="type == 'prompt'" :class="['mvi-dialog-input', !computedIos && computedMessage ? 'mvi-dialog-input-mt' : '']">
-				<input ref="input" :type="computedInput.type == 'number' ? 'text' : computedInput.type" :placeholder="computedInput.placeholder" :maxlength="computedInput.maxlength" :class="inputClass" :style="inputStyle" v-model.trim="value" @input="inputFun" @focus="inputFocus" @blur="inputBlur" :inputmode="inputMode" />
-				<Icon v-if="computedInput.clearable" ref="icon" v-show="showClear" type="times-o" class="mvi-dialog-times" @click="doClear" />
+			<div v-if="!cmpIos && cmpMessage" v-html="cmpMessage" class="mvi-dialog-content"></div>
+			<div v-if="type == 'prompt'" :class="['mvi-dialog-input', !cmpIos && cmpMessage ? 'mvi-dialog-input-mt' : '']">
+				<input ref="input" :type="cmpInput.type == 'number' ? 'text' : cmpInput.type" :placeholder="cmpInput.placeholder" :maxlength="cmpInput.maxlength" :class="inputClass" :style="inputStyle" v-model.trim="value" @input="inputFun" @focus="inputFocus" @blur="inputBlur" :inputmode="inputMode" />
+				<Icon v-if="cmpInput.clearable" ref="icon" v-show="showClear" type="times-o" class="mvi-dialog-times" @click="doClear" />
 			</div>
 		</template>
 		<template #footer>
 			<div class="mvi-dialog-footer">
-				<div v-if="type != 'alert'" class="mvi-dialog-cancel" v-text="computedBtnText[1]" @click="cancelFun" :style="{ color: computedBtnColor[1] || '' }"></div>
-				<div class="mvi-dialog-ok" v-text="type == 'alert' ? computedBtnText : computedBtnText[0]" @click="okFun" :style="{ color: type == 'alert' ? computedBtnColor || '' : computedBtnColor[0] || '' }"></div>
+				<div v-if="type != 'alert'" class="mvi-dialog-cancel" v-text="cmpBtnText[1]" @click="cancelFun" :style="{ color: cmpBtnColor[1] || '' }"></div>
+				<div class="mvi-dialog-ok" v-text="type == 'alert' ? cmpBtnText : cmpBtnText[0]" @click="okFun" :style="{ color: type == 'alert' ? cmpBtnColor || '' : cmpBtnColor[0] || '' }"></div>
 			</div>
 		</template>
 	</Modal>
@@ -53,16 +53,6 @@ export default {
 		message: {
 			default: ''
 		},
-		//按钮文本
-		btnText: {
-			type: [String, Array],
-			default: null
-		},
-		//按钮颜色
-		btnColor: {
-			type: [String, Array],
-			default: null
-		},
 		//宽度
 		width: {
 			type: String,
@@ -78,19 +68,9 @@ export default {
 			type: String,
 			default: null
 		},
-		//滚动条考虑
-		usePadding: {
-			type: Boolean,
-			default: null
-		},
 		//圆角
 		radius: {
 			type: String,
-			default: null
-		},
-		//动画时长
-		timeout: {
-			type: Number,
 			default: null
 		},
 		//遮罩层颜色
@@ -98,8 +78,8 @@ export default {
 			type: String,
 			default: null
 		},
-		//是否ios风格
-		ios: {
+		//是否点击遮罩可关闭
+		closable: {
 			type: Boolean,
 			default: null
 		},
@@ -108,18 +88,23 @@ export default {
 			type: Object,
 			default: null
 		},
-		//挂载元素
-		mountEl: {
-			type: String,
+		//按钮文本
+		btnText: {
+			type: [String, Array],
 			default: null
 		},
-		//是否点击遮罩可关闭
-		closable: {
+		//按钮颜色
+		btnColor: {
+			type: [String, Array],
+			default: null
+		},
+		//是否ios风格
+		ios: {
 			type: Boolean,
-			default: false
+			default: null
 		},
 		//弹窗移除方法
-		remove: {
+		__remove: {
 			type: Function,
 			default: function () {
 				return function () {}
@@ -130,14 +115,16 @@ export default {
 		$$el() {
 			return this.$refs.modal.$$el
 		},
-		computedTitle() {
+		//显示的标题
+		cmpTitle() {
 			if (typeof this.title == 'string') {
 				return this.title
 			} else {
 				return '提示'
 			}
 		},
-		computedMessage() {
+		//显示的信息
+		cmpMessage() {
 			if (typeof this.message == 'string') {
 				return this.message
 			} else if (Dap.common.isObject(this.message)) {
@@ -146,7 +133,8 @@ export default {
 				return String(this.message)
 			}
 		},
-		computedBtnText() {
+		//按钮文本
+		cmpBtnText() {
 			let bt = null
 			if (this.type == 'alert') {
 				if (typeof this.btnText == 'string') {
@@ -173,7 +161,8 @@ export default {
 			}
 			return bt
 		},
-		computedBtnColor() {
+		//按钮文本颜色
+		cmpBtnColor() {
 			let bt = null
 			if (this.type == 'alert') {
 				if (typeof this.btnColor == 'string') {
@@ -200,14 +189,16 @@ export default {
 			}
 			return bt
 		},
-		computedWidth() {
+		//宽度
+		cmpWidth() {
 			if (typeof this.width == 'string' && this.width) {
 				return this.width
 			} else {
 				return '5.6rem'
 			}
 		},
-		computedInput() {
+		//输入框配置
+		cmpInput() {
 			let input = {
 				placeholder: '',
 				type: 'text',
@@ -246,97 +237,92 @@ export default {
 			}
 			return input
 		},
-		computedZIndex() {
+		//层级
+		cmpZIndex() {
 			if (Dap.number.isNumber(this.zIndex)) {
 				return this.zIndex
 			} else {
 				return 1000
 			}
 		},
-		computedUsePadding() {
-			if (typeof this.usePadding == 'boolean') {
-				return this.usePadding
-			} else {
-				return false
-			}
-		},
-		computedAnimation() {
+		//动画效果
+		cmpAnimation() {
 			if (typeof this.animation == 'string' && this.animation) {
 				return this.animation
 			} else {
 				return 'narrow'
 			}
 		},
-		computedRadius() {
+		//圆角
+		cmpRadius() {
 			if (typeof this.radius == 'string' && this.radius) {
 				return this.radius
 			} else {
 				return '0.2rem'
 			}
 		},
-		computedTimeout() {
-			if (Dap.number.isNumber(this.timeout)) {
-				return this.timeout
-			} else {
-				return 200
-			}
-		},
-		computedOverlayColor() {
+		//遮罩层颜色
+		cmpOverlayColor() {
 			if (typeof this.overlayColor == 'string' && this.overlayColor) {
 				return this.overlayColor
 			} else {
-				if (this.computedIos) {
+				if (this.cmpIos) {
 					return 'rgba(0,10,20,.3)'
 				}
 				return null
 			}
 		},
-		computedIos() {
+		//是否ios样式
+		cmpIos() {
 			if (typeof this.ios == 'boolean') {
 				return this.ios
 			} else {
 				return false
 			}
 		},
-		computedMountEl() {
-			if (typeof this.mountEl == 'string' && this.mountEl) {
-				return this.mountEl
+		//点击背景是否可关闭
+		cmpClosable() {
+			if (typeof this.closable == 'boolean') {
+				return this.closable
 			} else {
-				return 'body'
+				return false
 			}
 		},
+		//内容是否显示
 		contentShow() {
 			if (this.type == 'alert' || this.type == 'confirm') {
-				if (this.computedMessage && !this.computedIos) {
+				if (this.cmpMessage && !this.cmpIos) {
 					return true
-				} else {
-					return false
 				}
-			} else {
-				return true
+				return false
 			}
+			return true
 		},
+		//是否显示输入框内的清除框
 		showClear() {
 			return this.focus && this.value
 		},
+		//输入框class
 		inputClass() {
 			let cls = []
-			if (this.showClear && this.computedInput.clearable) {
+			if (this.showClear && this.cmpInput.clearable) {
 				cls.push('mvi-dialog-input-padding')
 			}
 			return cls
 		},
+		//输入模式
 		inputMode() {
 			let mode = false
-			if ([false, 'none', 'text', 'decimal', 'numeric', 'tel', 'search', 'email', 'url'].includes(this.computedInput.mode)) {
-				mode = this.computedInput.mode
+			if ([false, 'none', 'text', 'decimal', 'numeric', 'tel', 'search', 'email', 'url'].includes(this.cmpInput.mode)) {
+				mode = this.cmpInput.mode
 			}
 			return mode
 		},
+		//输入框样式
 		inputStyle() {
 			let style = {}
-			if (['left', 'right', 'center'].includes(this.computedInput.align)) {
-				style.textAlign = this.computedInput.align
+			if (['left', 'right', 'center'].includes(this.cmpInput.align)) {
+				style.textAlign = this.cmpInput.align
 			}
 			return style
 		}
@@ -357,7 +343,7 @@ export default {
 	methods: {
 		//点击遮罩层关闭
 		overlayClick(event) {
-			if (!this.closable) {
+			if (!this.cmpClosable) {
 				return
 			}
 			if (event.target != event.currentTarget) {
@@ -368,45 +354,45 @@ export default {
 		},
 		//设置输入框默认值
 		setDefaultValue() {
-			let value = this.computedInput.value
-			if (this.computedInput.type == 'number') {
+			let value = this.cmpInput.value
+			if (this.cmpInput.type == 'number') {
 				value = value.replace(/\D/g, '')
 			}
-			if (this.computedInput.maxlength > 0 && value.length > this.computedInput.maxlength) {
-				value = value.substr(0, this.computedInput.maxlength)
+			if (this.cmpInput.maxlength > 0 && value.length > this.cmpInput.maxlength) {
+				value = value.substring(0, this.cmpInput.maxlength)
 			}
 			this.value = value
 		},
 		//获取焦点
-		inputFocus(e) {
-			setTimeout(() => {
-				this.focus = true
-			}, 200)
+		inputFocus() {
+			this.focus = true
 		},
 		//失去焦点
-		inputBlur(e) {
+		inputBlur() {
 			setTimeout(() => {
 				this.focus = false
-			}, 200)
+			}, 100)
 		},
 		//输入监听
-		inputFun(e) {
+		inputFun() {
 			let value = this.value
-			if (this.computedInput.type == 'number') {
+			if (this.cmpInput.type == 'number') {
 				value = value.replace(/\D/g, '')
 			}
-			if (this.computedInput.maxlength > 0 && value.length > this.computedInput.maxlength) {
-				value = value.substr(0, this.computedInput.maxlength)
+			if (this.cmpInput.maxlength > 0 && value.length > this.cmpInput.maxlength) {
+				value = value.substr(0, this.cmpInput.maxlength)
 			}
 			this.value = value
 		},
 		//清除输入框的值
 		doClear() {
-			if (!this.computedInput.clearable) {
+			if (!this.cmpInput.clearable) {
 				return
 			}
-			this.value = ''
-			this.$refs.input.focus()
+			setTimeout(() => {
+				this.value = ''
+				this.$refs.input.focus()
+			}, 110)
 		},
 		//确定
 		okFun() {
@@ -436,11 +422,11 @@ export default {
 				this.dialogComponentWatch.apply(this, ['hidden', this.type, el])
 			}
 			if (this.type == 'alert') {
-				this.remove()
+				this.__remove()
 			} else if (this.type == 'confirm') {
-				this.remove(this.ok)
+				this.__remove(this.ok)
 			} else if (this.type == 'prompt') {
-				this.remove(this.ok, this.value)
+				this.__remove(this.ok, this.value)
 			}
 		},
 		//模态框显示前
@@ -458,7 +444,7 @@ export default {
 		//模态框显示后
 		modalShown(el) {
 			//输入框获取焦点
-			if (this.type == 'prompt' && this.computedInput.autofocus && this.$refs.input) {
+			if (this.type == 'prompt' && this.cmpInput.autofocus && this.$refs.input) {
 				this.$refs.input.focus()
 			}
 			if (typeof this.dialogComponentWatch == 'function') {
@@ -482,22 +468,29 @@ export default {
 	line-height: 1.5;
 }
 
-.mvi-dialog-ios-content {
-	display: block;
-	width: 100%;
-	font-size: 0.24rem;
-	font-weight: normal;
-	text-align: center;
-	color: @font-color-default;
-	line-height: 1.5;
-	margin-top: @mp-xs;
-}
-
 .mvi-dialog-content {
 	text-align: center;
 	color: @font-color-default;
 	line-height: 1.5;
 	font-size: @font-size-default;
+}
+
+.mvi-dialog-footer {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	height: @medium-height;
+}
+
+.mvi-dialog-ios-content {
+	display: block;
+	width: 100%;
+	font-size: @font-size-small;
+	font-weight: normal;
+	text-align: center;
+	color: @font-color-default;
+	line-height: 1.5;
+	margin-top: @mp-sm;
 }
 
 .mvi-dialog-input {
@@ -550,14 +543,6 @@ export default {
 	-ms-transform: translateY(-50%);
 	color: @font-color-mute;
 	cursor: pointer;
-}
-
-.mvi-dialog-footer {
-	height: 0.88rem;
-	width: 100%;
-	display: flex;
-	display: -webkit-flex;
-	justify-content: space-between;
 }
 
 .mvi-dialog-ok {
