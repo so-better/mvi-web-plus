@@ -33,12 +33,12 @@ class Ripple {
 		const rippleAnimationEnd = Dap.data.get(rippleContainer, 'ripple-animation-end')
 		if (rippleUp && rippleAnimationEnd) {
 			//透明度消失时间
-			const destoryDuration = 100
+			const destroyDuration = 100
 			//水波纹元素
 			const rippleEls = Dap.element.children(rippleContainer)
 			const rippleEl = rippleEls[0]
 			//重新设置动画
-			rippleEl.style.transition = `opacity ${destoryDuration}ms ease-in-out`
+			rippleEl.style.transition = `opacity ${destroyDuration}ms ease-in-out`
 			//促使浏览器重绘
 			rippleEl.offsetWidth
 			rippleEl.style.opacity = 0
@@ -49,7 +49,7 @@ class Ripple {
 				})
 				//移除容器元素
 				rippleContainer.remove()
-			}, destoryDuration)
+			}, destroyDuration)
 		}
 	}
 

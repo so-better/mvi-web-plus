@@ -270,27 +270,6 @@ class Drag {
 	destroy() {
 		Dap.event.off(document.documentElement, `mousemove.drag_${this.guid} mouseup.drag_${this.guid}`)
 	}
-
-	//api：移动元素到指定位置
-	dragTo(left, top) {
-		return new Promise(resolve => {
-			if (this.draggableX) {
-				this.$el.style.left = left + 'px'
-				this.$el.style.right = 'auto'
-			}
-			if (this.draggableY) {
-				this.$el.style.top = top + 'px'
-				this.$el.style.bottom = 'auto'
-			}
-			this.resize()
-			let options = {
-				target: this.$el,
-				container: this.$container,
-				placement: Dap.element.getElementPoint(this.$el, this.$container)
-			}
-			resolve(options)
-		})
-	}
 }
 
 export default Drag

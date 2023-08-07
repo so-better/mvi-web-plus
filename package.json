@@ -16,10 +16,10 @@
 		"lib": "vite build"
 	},
 	"dependencies": {
-		"dap-util": "^1.3.3",
+		"dap-util": "^1.3.5",
+		"moment": "^2.29.4",
 		"rem-fit": "^1.5.4",
-		"vue": "^3.2.37",
-		"moment": "^2.29.4"
+		"vue": "^3.2.37"
 	},
 	"devDependencies": {
 		"@vitejs/plugin-vue": "^3.0.3",

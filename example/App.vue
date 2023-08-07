@@ -1,8 +1,8 @@
 <template>
 	<div class="mvi-p-4">
-		<div>{{ date }}</div>
+		<div>{{ value }}</div>
 		<m-button @click="show = !show">按钮</m-button>
-		<m-calendar v-model="date" type="success"></m-calendar>
+		<m-color-picker v-model="value"></m-color-picker>
 	</div>
 </template>
 <script>
@@ -11,9 +11,9 @@ export default {
 	data() {
 		return {
 			moment: moment,
-			date: moment('2023-08-02').toDate(),
-			value: 2,
-			show: true,
+			date: moment('2023-02-02').toDate(),
+			value: 'rgba(0,100,200,0.5)',
+			show: false,
 			options: [
 				{
 					label: '分享到朋友圈'

@@ -3,7 +3,7 @@
 		<div ref="bar" class="mvi-slider-bar" :style="sliderBarStyle"></div>
 		<div class="mvi-slider-button" ref="btn">
 			<slot name="button" v-if="$slots.button"></slot>
-			<div v-else :class="['mvi-slider-button-el', buttonClass || '']" :style="buttonElStyle"></div>
+			<div v-else class="mvi-slider-button-el" :style="buttonElStyle"></div>
 		</div>
 	</div>
 </template>
@@ -37,17 +37,17 @@ export default {
 			default: 100
 		},
 		//进度粗细
-		barHeight: {
+		strokeWidth: {
 			type: String,
-			default: null
+			default: '0.2rem'
 		},
 		//激活的进度颜色
-		activeColor: {
+		color: {
 			type: String,
 			default: null
 		},
-		//进度条默认颜色
-		barColor: {
+		//滑轨颜色
+		trackColor: {
 			type: String,
 			default: null
 		},
@@ -70,32 +70,27 @@ export default {
 		square: {
 			type: Boolean,
 			default: false
-		},
-		//拖拽按钮额外样式类
-		buttonClass: {
-			type: String,
-			default: null
 		}
 	},
 	computed: {
 		sliderStyle() {
 			let style = {}
-			if (this.barHeight) {
-				if (this.vertical) {
-					style.width = this.barHeight
-				} else {
-					style.height = this.barHeight
-				}
+			if (this.trackColor) {
+				style.background = this.trackColor
 			}
-			if (this.barColor) {
-				style.backgroundColor = this.barColor
+			if (this.strokeWidth) {
+				if (this.vertical) {
+					style.width = this.strokeWidth
+				} else {
+					style.height = this.strokeWidth
+				}
 			}
 			return style
 		},
 		sliderBarStyle() {
 			let style = {}
-			if (this.activeColor) {
-				style.backgroundColor = this.activeColor
+			if (this.color) {
+				style.background = this.color
 			}
 			let percent = Dap.number.divide(Dap.number.subtract(this.modelValue, this.min), Dap.number.subtract(this.max, this.min))
 			if (this.vertical) {
@@ -107,21 +102,21 @@ export default {
 		},
 		buttonElStyle() {
 			let style = {}
-			if (this.barHeight) {
-				style.width = `calc(${this.barHeight} * 2)`
-				style.height = `calc(${this.barHeight} * 2)`
+			if (this.strokeWidth) {
+				style.width = `calc(${this.strokeWidth} * 2)`
+				style.height = `calc(${this.strokeWidth} * 2)`
 			}
 			return style
 		},
 		sliderClass() {
 			let cls = ['mvi-slider']
 			if (this.round) {
-				cls.push('mvi-slider-radius-round')
+				cls.push('round')
 			} else if (this.square) {
-				cls.push('mvi-slider-radius-square')
+				cls.push('square')
 			}
 			if (this.vertical) {
-				cls.push('mvi-slider-vertical')
+				cls.push('vertical')
 			}
 			return cls
 		}
@@ -163,12 +158,12 @@ export default {
 				}
 			}
 		},
-		vertical(newValue) {
+		vertical() {
 			this.$nextTick(() => {
 				this.setBtnOffset()
 			})
 		},
-		modelValue(newValue) {
+		modelValue() {
 			if (!this.isdrag) {
 				this.setBtnOffset()
 			}
@@ -176,16 +171,14 @@ export default {
 	},
 	methods: {
 		//拖拽
-		onDrag(res) {
+		onDrag(el, container, placement) {
 			this.isdrag = true
 			if (this.vertical) {
-				let top = res.placement.top
-				let value = Dap.number.add(Dap.number.mutiply(Dap.number.divide(Dap.number.add(top, Dap.number.divide(this.$refs.btn.offsetHeight, 2)), this.$el.offsetHeight), Dap.number.subtract(this.max, this.min)), this.min)
+				let value = Dap.number.add(Dap.number.mutiply(Dap.number.divide(Dap.number.add(placement.top, Dap.number.divide(this.$refs.btn.offsetHeight, 2)), this.$el.offsetHeight), Dap.number.subtract(this.max, this.min)), this.min)
 				this.$emit('update:modelValue', value)
 				this.$emit('change', value)
 			} else {
-				let left = res.placement.left
-				let value = Dap.number.add(Dap.number.mutiply(Dap.number.divide(Dap.number.add(left, Dap.number.divide(this.$refs.btn.offsetWidth, 2)), this.$el.offsetWidth), Dap.number.subtract(this.max - this.min)), this.min)
+				let value = Dap.number.add(Dap.number.mutiply(Dap.number.divide(Dap.number.add(placement.left, Dap.number.divide(this.$refs.btn.offsetWidth, 2)), this.$el.offsetWidth), Dap.number.subtract(this.max - this.min)), this.min)
 				this.$emit('update:modelValue', value)
 				this.$emit('change', value)
 			}
@@ -226,7 +219,7 @@ export default {
 	},
 	beforeUnmount() {
 		if (this.drag) {
-			this.drag._setOff()
+			this.drag.destroy()
 		}
 	}
 }
@@ -239,70 +232,68 @@ export default {
 	position: relative;
 	display: block;
 	width: 100%;
-	height: 0.1rem;
-	background-color: @bg-color-dark;
+	height: 0.2rem;
+	background: @bg-color-dark;
 	touch-action: none;
 	border-radius: @radius-default;
-	margin: @mp-sm 0;
 	user-select: none;
 	-ms-user-select: none;
 	-moz-user-select: none;
 	-webkit-user-select: none;
-}
 
-.mvi-slider[disabled] {
-	opacity: 0.6;
-}
+	&[disabled] {
+		opacity: 0.6;
+	}
 
-.mvi-slider-vertical {
-	height: 100%;
-	width: 0.1rem;
-	margin: 0 @mp-sm;
-}
+	.mvi-slider-bar {
+		display: block;
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		background: @info-normal;
+		border-radius: inherit;
+		touch-action: none;
+	}
 
-.mvi-slider.mvi-slider-radius-square {
-	border-radius: 0;
-}
+	.mvi-slider-button {
+		position: absolute;
+		left: 0;
+		top: 50%;
+		cursor: pointer;
+		transform: translateY(-50%);
+		-webkit-transform: translateY(-50%);
 
-.mvi-slider.mvi-slider-radius-round {
-	border-radius: @radius-round;
-}
+		.mvi-slider-button-el {
+			display: block;
+			min-width: 0.4rem;
+			min-height: 0.4rem;
+			background: #fff;
+			box-shadow: @boxshadow;
+			-webkit-box-shadow: @boxshadow;
+			border-radius: @radius-circle;
+		}
+	}
 
-.mvi-slider-bar {
-	display: block;
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	background-color: @info-normal;
-	border-radius: inherit;
-	touch-action: none;
-}
+	&.vertical {
+		height: 100%;
+		width: 0.2rem;
 
-.mvi-slider-button {
-	position: absolute;
-	left: 0;
-	top: 50%;
-	cursor: pointer;
-	transform: translateY(-50%);
-	-webkit-transform: translateY(-50%);
-}
+		.mvi-slider-button {
+			top: 0;
+			left: 50%;
+			transform: translateX(-50%);
+			-webkit-transform: translateX(-50%);
+		}
+	}
 
-.mvi-slider-vertical .mvi-slider-button {
-	top: 0;
-	left: 50%;
-	transform: translateX(-50%);
-	-webkit-transform: translateX(-50%);
-}
+	&.square {
+		border-radius: 0;
+	}
 
-.mvi-slider-button-el {
-	display: block;
-	min-width: 0.4rem;
-	min-height: 0.4rem;
-	background-color: #fff;
-	box-shadow: @boxshadow;
-	-webkit-box-shadow: @boxshadow;
-	border-radius: @radius-circle;
+	&.round {
+		border-radius: @radius-round;
+	}
 }
 </style>
