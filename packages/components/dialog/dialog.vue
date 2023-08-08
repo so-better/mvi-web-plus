@@ -1,5 +1,5 @@
 <template>
-	<Modal ref="modal" v-model="show" @hide="modalHide" @hidding="modalHidding" @hidden="modalHidden" :width="cmpWidth" :z-index="cmpZIndex" :radius="cmpRadius" :use-padding="false" :animation="cmpAnimation" @show="modalShow" @showing="modalShowing" @shown="modalShown" :timeout="200" :overlay-color="cmpOverlayColor" mount-el="body" __ignorePadding>
+	<Modal ref="modal" v-model="show" @hide="modalHide" @hidding="modalHidding" @hidden="modalHidden" :width="cmpWidth" :z-index="cmpZIndex" :radius="cmpRadius" :use-padding="cmpUsePadding" :animation="cmpAnimation" @show="modalShow" @showing="modalShowing" @shown="modalShown" :timeout="200" :overlay-color="cmpOverlayColor" mount-el="body" __ignorePadding>
 		<template v-if="cmpTitle || (cmpIos && cmpMessage)" #title>
 			<div v-html="cmpTitle" v-if="cmpTitle" class="mvi-dialog-title"></div>
 			<div v-if="cmpMessage && cmpIos" v-html="cmpMessage" class="mvi-dialog-ios-content"></div>
@@ -86,6 +86,11 @@ export default {
 		//输入框配置
 		input: {
 			type: Object,
+			default: null
+		},
+		//滚动条考虑
+		usePadding: {
+			type: Boolean,
 			default: null
 		},
 		//按钮文本
@@ -243,6 +248,14 @@ export default {
 				return this.zIndex
 			} else {
 				return 1000
+			}
+		},
+		//是否考虑滚动条影响
+		cmpUsePadding() {
+			if (typeof this.usePadding == 'boolean') {
+				return this.usePadding
+			} else {
+				return false
 			}
 		},
 		//动画效果

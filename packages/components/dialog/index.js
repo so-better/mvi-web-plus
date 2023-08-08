@@ -17,13 +17,13 @@ const Dialog = {
 			opts.overlayColor = options.overlayColor
 			opts.closable = options.closable
 			opts.input = options.input
+			opts.usePadding = options.usePadding
 			if (type == 'alert' || type == 'confirm' || type == 'prompt') {
 				opts.btnText = options.btnText
 				opts.btnColor = options.btnColor
 				opts.ios = options.ios
 			} else if (type == 'Alert' || type == 'Confirm' || type == 'Prompt') {
 				opts.center = options.center
-				opts.usePadding = options.usePadding
 				opts.btns = options.btns
 				opts.showTimes = options.showTimes
 			}
