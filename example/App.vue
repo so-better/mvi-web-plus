@@ -27,14 +27,10 @@ export default {
 	mounted() {},
 	methods: {
 		change() {
-			this.$prompt({
+			this.$Alert({
 				title: '温馨提示',
 				message: '欢迎进入游戏',
-				center: true,
-				input: {
-					placeholder: '请输入内容',
-					clearable: true
-				}
+				showTimes: true
 			}).then((res, val) => {
 				console.log(res, val)
 			})

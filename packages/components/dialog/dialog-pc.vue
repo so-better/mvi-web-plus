@@ -300,6 +300,7 @@ export default {
 				return false
 			}
 		},
+		//内容是否居中
 		cmpCenter() {
 			if (typeof this.center == 'boolean') {
 				return this.center
