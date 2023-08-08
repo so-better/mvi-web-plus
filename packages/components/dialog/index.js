@@ -19,6 +19,7 @@ const Dialog = {
 			opts.input = options.input
 			opts.usePadding = options.usePadding
 			opts.mountEl = options.mountEl
+			opts.timeout = options.timeout
 			if (type == 'alert' || type == 'confirm' || type == 'prompt') {
 				opts.btnText = options.btnText
 				opts.btnColor = options.btnColor

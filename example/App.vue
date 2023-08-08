@@ -28,11 +28,12 @@ export default {
 	mounted() {},
 	methods: {
 		change() {
-			this.$Alert({
+			this.$alert({
 				title: '温馨提示',
 				message: '欢迎进入游戏',
 				showTimes: true,
-				mountEl: '#local'
+				mountEl: '#local',
+				timeout: 1000
 			}).then((res, val) => {
 				console.log(res, val)
 			})

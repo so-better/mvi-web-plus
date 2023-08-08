@@ -1,5 +1,5 @@
 <template>
-	<Modal ref="modal" v-model="show" :show-times="cmpShowTimes" @hide="modalHide" @hidding="modalHidding" @hidden="modalHidden" :width="cmpWidth" :z-index="cmpZIndex" :radius="cmpRadius" :use-padding="cmpUsePadding" :animation="cmpAnimation" @show="modalShow" @showing="modalShowing" @shown="modalShown" :timeout="200" :overlay-color="cmpOverlayColor" :mount-el="cmpMountEl" :center="cmpCenter">
+	<Modal ref="modal" v-model="show" :show-times="cmpShowTimes" @hide="modalHide" @hidding="modalHidding" @hidden="modalHidden" :width="cmpWidth" :z-index="cmpZIndex" :radius="cmpRadius" :use-padding="cmpUsePadding" :animation="cmpAnimation" @show="modalShow" @showing="modalShowing" @shown="modalShown" :timeout="cmpTimeout" :overlay-color="cmpOverlayColor" :mount-el="cmpMountEl" :center="cmpCenter">
 		<template v-if="cmpTitle" #title>
 			<div v-html="cmpTitle" class="mvi-dialog-title"></div>
 		</template>
@@ -109,6 +109,11 @@ export default {
 		//挂载元素
 		mountEl: {
 			type: String,
+			default: null
+		},
+		//动画时长
+		timeout: {
+			type: Number,
 			default: null
 		},
 		//弹窗移除方法
@@ -309,6 +314,13 @@ export default {
 				return this.mountEl
 			}
 			return 'body'
+		},
+		//动画时长
+		cmpTimeout() {
+			if (Dap.number.isNumber(this.timeout)) {
+				return this.timeout
+			}
+			return 200
 		},
 		//信息内容是否显示
 		contentShow() {
