@@ -18,6 +18,7 @@ const Dialog = {
 			opts.closable = options.closable
 			opts.input = options.input
 			opts.usePadding = options.usePadding
+			opts.mountEl = options.mountEl
 			if (type == 'alert' || type == 'confirm' || type == 'prompt') {
 				opts.btnText = options.btnText
 				opts.btnColor = options.btnColor

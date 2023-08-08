@@ -1,5 +1,5 @@
 <template>
-	<Modal ref="modal" v-model="show" :show-times="cmpShowTimes" @hide="modalHide" @hidding="modalHidding" @hidden="modalHidden" :width="cmpWidth" :z-index="cmpZIndex" :radius="cmpRadius" :use-padding="cmpUsePadding" :animation="cmpAnimation" @show="modalShow" @showing="modalShowing" @shown="modalShown" :timeout="200" :overlay-color="cmpOverlayColor" mount-el="body" :center="cmpCenter">
+	<Modal ref="modal" v-model="show" :show-times="cmpShowTimes" @hide="modalHide" @hidding="modalHidding" @hidden="modalHidden" :width="cmpWidth" :z-index="cmpZIndex" :radius="cmpRadius" :use-padding="cmpUsePadding" :animation="cmpAnimation" @show="modalShow" @showing="modalShowing" @shown="modalShown" :timeout="200" :overlay-color="cmpOverlayColor" :mount-el="cmpMountEl" :center="cmpCenter">
 		<template v-if="cmpTitle" #title>
 			<div v-html="cmpTitle" class="mvi-dialog-title"></div>
 		</template>
@@ -106,6 +106,11 @@ export default {
 			type: Boolean,
 			default: null
 		},
+		//挂载元素
+		mountEl: {
+			type: String,
+			default: null
+		},
 		//弹窗移除方法
 		__remove: {
 			type: Function,
@@ -122,27 +127,25 @@ export default {
 		cmpShowTimes() {
 			if (typeof this.showTimes == 'boolean') {
 				return this.showTimes
-			} else {
-				return true
 			}
+			return true
 		},
 		//标题
 		cmpTitle() {
 			if (typeof this.title == 'string') {
 				return this.title
-			} else {
-				return '提示'
 			}
+			return '提示'
 		},
 		//信息内容
 		cmpMessage() {
 			if (typeof this.message == 'string') {
 				return this.message
-			} else if (Dap.common.isObject(this.message)) {
-				return JSON.stringify(this.message)
-			} else {
-				return String(this.message)
 			}
+			if (Dap.common.isObject(this.message)) {
+				return JSON.stringify(this.message)
+			}
+			return String(this.message)
 		},
 		//按钮配置
 		cmpBtns() {
@@ -212,9 +215,8 @@ export default {
 		cmpWidth() {
 			if (typeof this.width == 'string' && this.width) {
 				return this.width
-			} else {
-				return '7.2rem'
 			}
+			return '7.2rem'
 		},
 		//输入框配置
 		cmpInput() {
@@ -256,57 +258,57 @@ export default {
 		cmpZIndex() {
 			if (Dap.number.isNumber(this.zIndex)) {
 				return this.zIndex
-			} else {
-				return 1000
 			}
+			return 1000
 		},
 		//是否考虑滚动条影响
 		cmpUsePadding() {
 			if (typeof this.usePadding == 'boolean') {
 				return this.usePadding
-			} else {
-				return false
 			}
+			return false
 		},
 		//动画
 		cmpAnimation() {
 			if (typeof this.animation == 'string' && this.animation) {
 				return this.animation
-			} else {
-				return 'translate-top'
 			}
+			return 'translate-top'
 		},
 		//圆角
 		cmpRadius() {
 			if (typeof this.radius == 'string' && this.radius) {
 				return this.radius
-			} else {
-				return '0.12rem'
 			}
+			return '0.12rem'
 		},
 		//遮罩层颜色
 		cmpOverlayColor() {
 			if (typeof this.overlayColor == 'string' && this.overlayColor) {
 				return this.overlayColor
-			} else {
-				return null
 			}
+			return null
 		},
 		//点击背景是否可关闭
 		cmpClosable() {
 			if (typeof this.closable == 'boolean') {
 				return this.closable
-			} else {
-				return false
 			}
+			return false
 		},
 		//内容是否居中
 		cmpCenter() {
 			if (typeof this.center == 'boolean') {
 				return this.center
-			} else {
-				return false
 			}
+			return false
+		},
+		//挂载元素
+		cmpMountEl() {
+			if (typeof this.mountEl == 'string' && this.mountEl) {
+				return this.mountEl
+			}
+			return 'body'
 		},
 		//信息内容是否显示
 		contentShow() {

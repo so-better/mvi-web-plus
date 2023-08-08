@@ -1,5 +1,5 @@
 <template>
-	<Modal ref="modal" v-model="show" @hide="modalHide" @hidding="modalHidding" @hidden="modalHidden" :width="cmpWidth" :z-index="cmpZIndex" :radius="cmpRadius" :use-padding="cmpUsePadding" :animation="cmpAnimation" @show="modalShow" @showing="modalShowing" @shown="modalShown" :timeout="200" :overlay-color="cmpOverlayColor" mount-el="body" __ignorePadding>
+	<Modal ref="modal" v-model="show" @hide="modalHide" @hidding="modalHidding" @hidden="modalHidden" :width="cmpWidth" :z-index="cmpZIndex" :radius="cmpRadius" :use-padding="cmpUsePadding" :animation="cmpAnimation" @show="modalShow" @showing="modalShowing" @shown="modalShown" :timeout="200" :overlay-color="cmpOverlayColor" :mount-el="cmpMountEl" __ignorePadding>
 		<template v-if="cmpTitle || (cmpIos && cmpMessage)" #title>
 			<div v-html="cmpTitle" v-if="cmpTitle" class="mvi-dialog-title"></div>
 			<div v-if="cmpMessage && cmpIos" v-html="cmpMessage" class="mvi-dialog-ios-content"></div>
@@ -108,6 +108,11 @@ export default {
 			type: Boolean,
 			default: null
 		},
+		//挂载元素
+		mountEl: {
+			type: String,
+			default: null
+		},
 		//弹窗移除方法
 		__remove: {
 			type: Function,
@@ -124,19 +129,18 @@ export default {
 		cmpTitle() {
 			if (typeof this.title == 'string') {
 				return this.title
-			} else {
-				return '提示'
 			}
+			return '提示'
 		},
 		//显示的信息
 		cmpMessage() {
 			if (typeof this.message == 'string') {
 				return this.message
-			} else if (Dap.common.isObject(this.message)) {
-				return JSON.stringify(this.message)
-			} else {
-				return String(this.message)
 			}
+			if (Dap.common.isObject(this.message)) {
+				return JSON.stringify(this.message)
+			}
+			return String(this.message)
 		},
 		//按钮文本
 		cmpBtnText() {
@@ -198,9 +202,8 @@ export default {
 		cmpWidth() {
 			if (typeof this.width == 'string' && this.width) {
 				return this.width
-			} else {
-				return '5.6rem'
 			}
+			return '5.6rem'
 		},
 		//输入框配置
 		cmpInput() {
@@ -246,52 +249,53 @@ export default {
 		cmpZIndex() {
 			if (Dap.number.isNumber(this.zIndex)) {
 				return this.zIndex
-			} else {
-				return 1000
 			}
+			return 1000
 		},
 		//是否考虑滚动条影响
 		cmpUsePadding() {
 			if (typeof this.usePadding == 'boolean') {
 				return this.usePadding
-			} else {
-				return false
 			}
+			return false
 		},
 		//动画效果
 		cmpAnimation() {
 			if (typeof this.animation == 'string' && this.animation) {
 				return this.animation
-			} else {
-				return 'narrow'
 			}
+			return 'narrow'
 		},
 		//圆角
 		cmpRadius() {
 			if (typeof this.radius == 'string' && this.radius) {
 				return this.radius
-			} else {
-				return '0.2rem'
 			}
+			return '0.2rem'
 		},
 		//遮罩层颜色
 		cmpOverlayColor() {
 			if (typeof this.overlayColor == 'string' && this.overlayColor) {
 				return this.overlayColor
-			} else {
-				if (this.cmpIos) {
-					return 'rgba(0,10,20,.3)'
-				}
-				return null
 			}
+			if (this.cmpIos) {
+				return 'rgba(0,10,20,.3)'
+			}
+			return null
 		},
 		//是否ios样式
 		cmpIos() {
 			if (typeof this.ios == 'boolean') {
 				return this.ios
-			} else {
-				return false
 			}
+			return false
+		},
+		//挂载元素
+		cmpMountEl() {
+			if (typeof this.mountEl == 'string' && this.mountEl) {
+				return this.mountEl
+			}
+			return 'body'
 		},
 		//点击背景是否可关闭
 		cmpClosable() {

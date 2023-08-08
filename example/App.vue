@@ -1,10 +1,8 @@
 <template>
 	<div class="mvi-p-4">
 		<div>{{ value }}</div>
-		<m-button @click="show = !show">按钮</m-button>
-		<div style="position: relative; width: 500px; height: 500px">
-			<m-popup mount-el="body" round v-model="show" showTimes placement="bottom" times-placement="top-right">333</m-popup>
-		</div>
+		<m-button @click="change">按钮</m-button>
+		<div id="local" style="position: relative; width: 500px; height: 500px"></div>
 	</div>
 </template>
 <script>
@@ -33,7 +31,8 @@ export default {
 			this.$Alert({
 				title: '温馨提示',
 				message: '欢迎进入游戏',
-				showTimes: true
+				showTimes: true,
+				mountEl: '#local'
 			}).then((res, val) => {
 				console.log(res, val)
 			})
