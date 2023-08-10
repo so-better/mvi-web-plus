@@ -8,7 +8,7 @@
 					<Icon @click="hidePopup" type="times" />
 				</div>
 				<!-- 正文内容 -->
-				<div class="mvi-popup-content">
+				<div class="mvi-popup-content" :style="{ padding: __contentPadding ? '' : 0 }">
 					<slot></slot>
 				</div>
 			</div>
@@ -74,7 +74,7 @@ export default {
 		//弹窗显示的宽度或者高度
 		width: {
 			type: String,
-			default: '50%'
+			default: null
 		},
 		//是否显示关闭图标
 		showTimes: {
@@ -98,6 +98,11 @@ export default {
 		usePadding: {
 			type: Boolean,
 			default: false
+		},
+		//是否设置内容的padding
+		__contentPadding: {
+			type: Boolean,
+			default: true
 		}
 	},
 	computed: {
@@ -110,10 +115,12 @@ export default {
 			if (this.round) {
 				cls.push('round')
 			}
-			if (this.timesPlacement == 'top-right' || this.timesPlacement == 'top-left') {
-				cls.push('padding-top')
-			} else if (this.timesPlacement == 'bottom-right' || this.timesPlacement == 'bottom-left') {
-				cls.push('padding-bottom')
+			if (this.showTimes) {
+				if (this.timesPlacement == 'top-right' || this.timesPlacement == 'top-left') {
+					cls.push('padding-top')
+				} else if (this.timesPlacement == 'bottom-right' || this.timesPlacement == 'bottom-left') {
+					cls.push('padding-bottom')
+				}
 			}
 			return cls
 		},

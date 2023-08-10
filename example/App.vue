@@ -1,42 +1,50 @@
 <template>
 	<div class="mvi-p-4">
-		<div>{{ value }}</div>
-		<m-button @click="change">按钮</m-button>
-		<div id="local" style="position: relative; width: 500px; height: 500px"></div>
+		<div>{{ dayjs(date).format('YYYY-MM-DD HH:mm') }}</div>
+		<m-date-chooser :layer-props="{ width: '4rem' }" style="width: 7rem" type="success" v-model="date" block mode="month" trigger="custom">
+			<m-field :model-value="dayjs(date).format('YYYY-MM-DD')"></m-field>
+		</m-date-chooser>
 	</div>
 </template>
 <script>
-import moment from 'moment'
+import dayjs from 'dayjs'
 export default {
 	data() {
 		return {
-			moment: moment,
-			date: moment('2023-02-02').toDate(),
-			value: 'rgba(0,100,200,0.5)',
+			dayjs: dayjs,
+			date: dayjs('2021-06-29 14:31').toDate(),
+			value: 0,
 			show: false,
 			options: [
 				{
-					label: '分享到朋友圈'
+					label: '选项A',
+					value: 0,
+					disabled: true,
+					icon: 'home'
 				},
 				{
-					label: '分享到QQ空间'
+					label: '选项B',
+					value: 1,
+					icon: 'home'
+				},
+				{
+					label: '选项C',
+					value: 2,
+					icon: 'home'
+				},
+				{
+					label: '选项D',
+					value: 3,
+					icon: 'home'
 				}
-			],
-			list: ['佛罗里达州', '加利福利亚州', '北京', '伦敦', 'aaa', 'bbb', 'AAAA']
+			]
 		}
 	},
 	mounted() {},
 	methods: {
-		change() {
-			this.$alert({
-				title: '温馨提示',
-				message: '欢迎进入游戏',
-				showTimes: true,
-				mountEl: '#local',
-				timeout: 1000
-			}).then((res, val) => {
-				console.log(res, val)
-			})
+		change(val, index) {
+			console.log(val, index)
+			return index
 		}
 	}
 }

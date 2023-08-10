@@ -4,13 +4,13 @@
 			<Loading size="0.5rem" color="#ddd"></Loading>
 		</div>
 		<div v-if="showToolbar && !loading" class="mvi-picker-toolbar">
-			<div :class="['mvi-picker-toolbar-cancel', cancelClass || '']" v-text="cancelText" @click="doCancel"></div>
-			<div :class="['mvi-picker-toolbar-title', titleClass || '']" v-if="title" v-text="title"></div>
-			<div :class="['mvi-picker-toolbar-confirm', confirmClass || '']" v-text="confirmText" @click="doConfirm"></div>
+			<div class="mvi-picker-toolbar-cancel" v-text="cancelText" @click="doCancel"></div>
+			<div class="mvi-picker-toolbar-title" v-if="title" v-text="title"></div>
+			<div class="mvi-picker-toolbar-confirm" v-text="confirmText" @click="doConfirm"></div>
 		</div>
 		<div v-if="!loading" class="mvi-picker-content" :style="contentStyle" ref="content" @touchmove="contentTouchMove">
-			<div v-for="(column, index) in computedOptions" :key="'picker-column-' + index" :class="['mvi-picker-items', column.className || '']" :ref="el => (itemRefs[index] = el)" :style="columnStyle(column, index)" @touchstart="touchstart($event, index)" @touchmove="touchmove" @touchend="touchend" @mousedown="mousedown($event, index)">
-				<div class="mvi-picker-item" v-for="(item, index2) in column.values" :key="'picker-item-' + index2" v-text="item" :style="{ height: selectHeight || '' }"></div>
+			<div v-for="(column, index) in cmpOptions" class="mvi-picker-items" :ref="el => (itemRefs[index] = el)" :style="columnStyle(column, index)" @touchstart="touchstart($event, index)" @touchmove="touchmove" @touchend="touchend" @mousedown="mousedown($event, index)">
+				<div class="mvi-picker-item" v-for="(item, index2) in column.values" v-text="item" :style="{ height: selectHeight || '' }"></div>
 			</div>
 			<div class="mvi-picker-active" :style="{ height: selectHeight || '' }"></div>
 			<div class="mvi-picker-mask" :style="maskStyle"></div>
@@ -52,8 +52,7 @@ export default {
 			default: function () {
 				return {
 					values: [],
-					defaultIndex: 0,
-					className: ''
+					defaultIndex: 0
 				}
 			}
 		},
@@ -67,11 +66,6 @@ export default {
 			type: String,
 			default: null
 		},
-		//标题class
-		titleClass: {
-			type: String,
-			default: null
-		},
 		//确认文字
 		confirmText: {
 			type: String,
@@ -81,16 +75,6 @@ export default {
 		cancelText: {
 			type: String,
 			default: '取消'
-		},
-		//确认文字class
-		confirmClass: {
-			type: String,
-			default: null
-		},
-		//取消文字class
-		cancelClass: {
-			type: String,
-			default: null
 		},
 		//是否显示加载状态
 		loading: {
@@ -109,29 +93,33 @@ export default {
 		}
 	},
 	watch: {
-		computedOptions(newValue) {
+		cmpOptions() {
 			this.init()
 		}
 	},
 	computed: {
-		computedHeight() {
+		//单个高度
+		cmpHeight() {
 			if (this.selectHeight.includes('px')) {
 				return parseFloat(this.selectHeight)
 			} else if (this.selectHeight.includes('rem')) {
 				return Dap.element.rem2px(parseFloat(this.selectHeight))
 			}
 		},
+		//加载状态样式
 		loadingStyle() {
 			let style = {}
-			style.height = `calc(${Dap.number.mutiply(this.computedHeight, this.visibleCounts)}px + 0.88rem)`
+			style.height = `calc(${Dap.number.mutiply(this.cmpHeight, this.visibleCounts)}px + 0.88rem)`
 			return style
 		},
+		//内容区域样式
 		contentStyle() {
 			let style = {}
-			style.height = `${Dap.number.mutiply(this.computedHeight, this.visibleCounts)}px`
+			style.height = `${Dap.number.mutiply(this.cmpHeight, this.visibleCounts)}px`
 			return style
 		},
-		computedOptions() {
+		//选项配置
+		cmpOptions() {
 			let op = []
 			if (Array.isArray(this.options)) {
 				op = this.options
@@ -140,6 +128,7 @@ export default {
 			}
 			return op
 		},
+		//每一列样式
 		columnStyle() {
 			return (column, index) => {
 				let style = {}
@@ -153,7 +142,7 @@ export default {
 			for (let i = 0; i < this.offsets.length; i++) {
 				arr.push({
 					index: this.getActive(this.offsets[i]),
-					value: this.computedOptions[i].values[this.getActive(this.offsets[i])]
+					value: this.cmpOptions[i].values[this.getActive(this.offsets[i])]
 				})
 			}
 			return arr
@@ -161,7 +150,7 @@ export default {
 		maskStyle() {
 			let style = {}
 			if (this.selectHeight) {
-				style.backgroundSize = '100% ' + Dap.number.mutiply(this.computedHeight, Dap.number.divide(this.visibleCounts - 1, 2)) + 'px'
+				style.backgroundSize = '100% ' + Dap.number.mutiply(this.cmpHeight, Dap.number.divide(this.visibleCounts - 1, 2)) + 'px'
 			}
 			return style
 		}
@@ -184,17 +173,17 @@ export default {
 		//初始化
 		init() {
 			this.offsets = []
-			for (let i = 0; i < this.computedOptions.length; i++) {
-				this.offsets.push(this.getOffset(this.computedOptions[i].defaultIndex || 0))
+			for (let i = 0; i < this.cmpOptions.length; i++) {
+				this.offsets.push(this.getOffset(this.cmpOptions[i].defaultIndex || 0))
 			}
 		},
 		//滑动临界值
 		crisis(index) {
 			let max = Dap.number.divide(this.visibleCounts - 1, 2)
-			max = Dap.number.mutiply(max, this.computedHeight)
+			max = Dap.number.mutiply(max, this.cmpHeight)
 			let min = -Dap.number.divide(this.visibleCounts - 1, 2)
-			min = Dap.number.mutiply(min, this.computedHeight)
-			min += Dap.number.mutiply(this.visibleCounts - this.computedOptions[index].values.length, this.computedHeight)
+			min = Dap.number.mutiply(min, this.cmpHeight)
+			min += Dap.number.mutiply(this.visibleCounts - this.cmpOptions[index].values.length, this.cmpHeight)
 			return {
 				max,
 				min
@@ -202,12 +191,12 @@ export default {
 		},
 		//根据offset计算序列
 		getActive(value) {
-			let num = Math.abs(Dap.number.divide(value - Dap.number.mutiply(Dap.number.divide(this.visibleCounts - 1, 2), this.computedHeight), this.computedHeight))
+			let num = Math.abs(Dap.number.divide(value - Dap.number.mutiply(Dap.number.divide(this.visibleCounts - 1, 2), this.cmpHeight), this.cmpHeight))
 			return Math.round(num)
 		},
 		//根据序列计算offset
 		getOffset(index) {
-			return Dap.number.mutiply(Dap.number.subtract(Dap.number.divide(this.visibleCounts - 1, 2), index), this.computedHeight)
+			return Dap.number.mutiply(Dap.number.subtract(Dap.number.divide(this.visibleCounts - 1, 2), index), this.cmpHeight)
 		},
 		//确认
 		doConfirm() {
@@ -233,7 +222,7 @@ export default {
 				this.itemRefs[index].style.webkitTransition = 'all ' + timeout + 'ms ease-out'
 				setTimeout(() => {
 					resolve()
-				}, 10)
+				}, 0)
 			})
 		},
 		//移除动画
@@ -243,7 +232,7 @@ export default {
 				this.itemRefs[index].style.webkitTransition = ''
 				setTimeout(() => {
 					resolve()
-				}, 10)
+				}, 0)
 			})
 		},
 		//开始触摸
@@ -287,7 +276,7 @@ export default {
 				this.offsets[this.columnIndex] = this.offsets[this.columnIndex] + moveY / this.amounts
 				return
 			}
-			this.offsets[this.columnIndex] = this.offsets[this.columnIndex] + moveY
+			this.offsets[this.columnIndex] = this.offsets[this.columnIndex] + moveY / 1.6
 			this.startY = endY
 		},
 		//鼠标拖动
@@ -313,7 +302,7 @@ export default {
 				this.offsets[this.columnIndex] = this.offsets[this.columnIndex] + moveY / this.amounts
 				return
 			}
-			this.offsets[this.columnIndex] = this.offsets[this.columnIndex] + moveY
+			this.offsets[this.columnIndex] = this.offsets[this.columnIndex] + moveY / 1.6
 			this.startY = endY
 		},
 		//触摸结束
@@ -321,7 +310,7 @@ export default {
 			this.endTimeStamp = Date.now()
 			let moveTotal = event.changedTouches[0].pageY - this.startY2
 			let totalTimeStamp = this.endTimeStamp - this.StartTimeStamp //时间差
-			if (totalTimeStamp < 300 && Math.abs(moveTotal) > this.computedHeight) {
+			if (totalTimeStamp < 300 && Math.abs(moveTotal) > this.cmpHeight) {
 				//惯性滑动
 				this.addTransition(this.columnIndex, 1000)
 					.then(() => {
@@ -350,7 +339,7 @@ export default {
 			this.endTimeStamp = Date.now()
 			let moveTotal = event.pageY - this.startY2
 			let totalTimeStamp = this.endTimeStamp - this.StartTimeStamp //时间差
-			if (totalTimeStamp < 300 && Math.abs(moveTotal) > this.computedHeight) {
+			if (totalTimeStamp < 300 && Math.abs(moveTotal) > this.cmpHeight) {
 				//惯性滑动
 				this.addTransition(this.columnIndex, 1000)
 					.then(() => {
@@ -389,10 +378,7 @@ export default {
 			}
 			if (this.actives.length == 1) {
 				if (this.actives[0].index != this.oldActives[0].index) {
-					this.$emit('change', {
-						columnIndex: this.columnIndex,
-						selected: this.actives[0]
-					})
+					this.$emit('change', this.columnIndex, this.actives[0])
 				}
 			} else {
 				let flag = true
@@ -402,10 +388,7 @@ export default {
 					}
 				}
 				if (!flag) {
-					this.$emit('change', {
-						columnIndex: this.columnIndex,
-						selected: this.actives
-					})
+					this.$emit('change', this.columnIndex, this.actives)
 				}
 			}
 			setTimeout(() => {
@@ -434,133 +417,136 @@ export default {
 	background-color: #fff;
 	color: @font-color-default;
 	font-size: @font-size-default;
-}
 
-.mvi-picker-loading {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	background-color: #fff;
-}
-
-.mvi-picker-toolbar {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: space-between;
-	align-items: center;
-	height: @medium-height;
-	border-bottom: 1px solid @border-color;
-	padding: 0;
-}
-
-.mvi-picker-toolbar-confirm {
-	display: flex;
-	display: -webkit-flex;
-	position: relative;
-	justify-content: center;
-	align-items: center;
-	font-size: @font-size-h6;
-	color: @primary-normal;
-	font-weight: bold;
-	height: 100%;
-	padding: 0 @mp-sm;
-	cursor: pointer;
-}
-
-.mvi-picker-toolbar-cancel {
-	display: flex;
-	display: -webkit-flex;
-	position: relative;
-	justify-content: center;
-	align-items: center;
-	font-size: @font-size-h6;
-	color: @font-color-sub;
-	height: 100%;
-	padding: 0 @mp-sm;
-	cursor: pointer;
-}
-
-.mvi-picker-toolbar-title {
-	font-size: @font-size-default;
-	color: @font-color-default;
-	max-width: 50%;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
-
-.mvi-picker-content {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-	position: relative;
-	overflow: hidden;
-}
-
-.mvi-picker-items {
-	display: block;
-	flex: 1;
-	height: 100%;
-	position: relative;
-	color: @font-color-default;
-	font-size: @font-size-default;
-	cursor: pointer;
-
-	& > .mvi-picker-item {
+	.mvi-picker-loading {
 		display: flex;
 		display: -webkit-flex;
 		justify-content: center;
 		align-items: center;
-	}
-}
-
-.mvi-picker-active {
-	position: absolute;
-	left: 0;
-	top: 50%;
-	transform: translateY(-50%);
-	-webkit-transform: translateY(-50%);
-	width: 100%;
-	z-index: 10;
-	pointer-events: none;
-
-	&::before,
-	&::after {
-		position: absolute;
-		left: 0;
-		display: block;
 		width: 100%;
-		height: 0;
+		background-color: #fff;
+	}
+
+	.mvi-picker-toolbar {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: space-between;
+		align-items: center;
+		height: @medium-height;
 		border-bottom: 1px solid @border-color;
-		content: '';
+		padding: 0;
+
+		.mvi-picker-toolbar-confirm {
+			display: flex;
+			display: -webkit-flex;
+			position: relative;
+			justify-content: center;
+			align-items: center;
+			font-size: @font-size-h6;
+			color: @primary-normal;
+			font-weight: bold;
+			height: 100%;
+			padding: 0 @mp-md;
+			cursor: pointer;
+			user-select: none;
+		}
+
+		.mvi-picker-toolbar-cancel {
+			display: flex;
+			display: -webkit-flex;
+			position: relative;
+			justify-content: center;
+			align-items: center;
+			font-size: @font-size-h6;
+			color: @font-color-sub;
+			height: 100%;
+			padding: 0 @mp-md;
+			cursor: pointer;
+			user-select: none;
+		}
+
+		.mvi-picker-toolbar-title {
+			font-size: @font-size-default;
+			color: @font-color-default;
+			max-width: 50%;
+			line-height: 1;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
 	}
 
-	&::before {
-		top: 0;
-	}
+	.mvi-picker-content {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		position: relative;
+		overflow: hidden;
 
-	&::after {
-		bottom: 0;
-	}
-}
+		.mvi-picker-items {
+			display: block;
+			flex: 1;
+			height: 100%;
+			position: relative;
+			color: @font-color-default;
+			font-size: @font-size-default;
+			cursor: pointer;
+			user-select: none;
 
-.mvi-picker-mask {
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 5;
-	width: 100%;
-	height: 100%;
-	background-image: -webkit-linear-gradient(top, hsla(0, 0%, 100%, 0.9), hsla(0, 0%, 100%, 0.4)), -webkit-linear-gradient(bottom, hsla(0, 0%, 100%, 0.9), hsla(0, 0%, 100%, 0.4));
-	background-image: linear-gradient(180deg, hsla(0, 0%, 100%, 0.9), hsla(0, 0%, 100%, 0.4)), linear-gradient(0deg, hsla(0, 0%, 100%, 0.9), hsla(0, 0%, 100%, 0.4));
-	background-repeat: no-repeat;
-	background-position: top, bottom;
-	-webkit-backface-visibility: hidden;
-	backface-visibility: hidden;
-	pointer-events: none;
+			& > .mvi-picker-item {
+				display: flex;
+				display: -webkit-flex;
+				justify-content: center;
+				align-items: center;
+			}
+		}
+
+		.mvi-picker-active {
+			position: absolute;
+			left: 0;
+			top: 50%;
+			transform: translateY(-50%);
+			-webkit-transform: translateY(-50%);
+			width: 100%;
+			z-index: 10;
+			pointer-events: none;
+
+			&::before,
+			&::after {
+				position: absolute;
+				left: 0;
+				display: block;
+				width: 100%;
+				height: 0;
+				border-bottom: 1px solid @border-color;
+				content: '';
+			}
+
+			&::before {
+				top: 0;
+			}
+
+			&::after {
+				bottom: 0;
+			}
+		}
+
+		.mvi-picker-mask {
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 5;
+			width: 100%;
+			height: 100%;
+			background-image: linear-gradient(180deg, hsla(0, 0%, 100%, 0.9), hsla(0, 0%, 100%, 0.6)), linear-gradient(0deg, hsla(0, 0%, 100%, 0.9), hsla(0, 0%, 100%, 0.6));
+			background-repeat: no-repeat;
+			background-position: top, bottom;
+			-webkit-backface-visibility: hidden;
+			backface-visibility: hidden;
+			pointer-events: none;
+		}
+	}
 }
 </style>

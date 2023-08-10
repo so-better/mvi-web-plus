@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { Dap } from '../dap'
 export default {
 	name: 'm-date-native-picker',
@@ -44,16 +44,16 @@ export default {
 		defaultDate() {
 			if (this.modelValue) {
 				if (this.type == 'date') {
-					return moment(this.modelValue).format('YYYY-MM-DD')
+					return dayjs(this.modelValue).format('YYYY-MM-DD')
 				}
 				if (this.type == 'datetime') {
-					return moment(this.modelValue).format('YYYY-MM-DD HH:mm')
+					return dayjs(this.modelValue).format('YYYY-MM-DD HH:mm')
 				}
 				if (this.type == 'month') {
-					return moment(this.modelValue).format('YYYY-MM')
+					return dayjs(this.modelValue).format('YYYY-MM')
 				}
 				if (this.type == 'time') {
-					return moment(this.modelValue).format('HH:mm')
+					return dayjs(this.modelValue).format('HH:mm')
 				}
 			}
 			return ''
@@ -89,12 +89,12 @@ export default {
 		//选择时间
 		selectDate() {
 			if (this.$el.value) {
-				const date = moment(this.$el.value)
-				if (this.min && date.isBefore(moment(this.min))) {
+				const date = dayjs(this.$el.value)
+				if (this.min && date.isBefore(dayjs(this.min))) {
 					this.$emit('error', 0, 'The date is less than min')
 					return
 				}
-				if (this.max && moment(this.max).isBefore(date)) {
+				if (this.max && dayjs(this.max).isBefore(date)) {
 					this.$emit('error', 1, 'The date is greater than max')
 					return
 				}

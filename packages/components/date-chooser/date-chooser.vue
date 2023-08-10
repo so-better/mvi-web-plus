@@ -1,34 +1,50 @@
 <template>
-	<div :class="['mvi-date-chooser', block ? 'mvi-date-chooser-block' : '']" :data-id="`mvi-date-chooser-${uid}`">
+	<div :class="['mvi-date-chooser', block ? 'block' : '']" :data-id="`mvi-date-chooser-${uid}`">
 		<div class="mvi-date-chooser-target" :data-id="`mvi-date-chooser-target-${uid}`" ref="target" @click="clickCalendar">
 			<slot></slot>
 		</div>
-		<Layer :target="`[data-id='mvi-date-chooser-target-${uid}']`" :root="`[data-id='mvi-date-chooser-${uid}']`" v-model="show" :placement="layerRealProps.placement" :fixed="layerRealProps.fixed" :fixed-auto="layerRealProps.fixedAuto" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" :wrapper-class="layerRealProps.wrapperClass" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :animation="layerRealProps.animation" :border-color="layerRealProps.borderColor" :timeout="layerRealProps.timeout" :closable="closable" :show-triangle="layerRealProps.showTriangle" @showing="layerShow" ref="layer">
+		<Layer :target="`[data-id='mvi-date-chooser-target-${uid}']`" :root="`[data-id='mvi-date-chooser-${uid}']`" v-model="show" :placement="layerRealProps.placement" :fixed="layerRealProps.fixed" :fixed-auto="layerRealProps.fixedAuto" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :animation="layerRealProps.animation" :border-color="layerRealProps.borderColor" :timeout="layerRealProps.timeout" :closable="closable" :show-triangle="layerRealProps.showTriangle" :width="layerRealProps.width" @showing="layerShow">
 			<div class="mvi-date-chooser-layer" ref="panel">
-				<div class="mvi-date-chooser-header">
-					<div class="mvi-date-chooser-header-left">
-						<span @mouseenter="hoverHeader(true, 0)" @mouseleave="hoverHeader(false, 0)" @click="goPrevYear" :class="headerItemClass(0)" :disabled="prevYearDisabled || null">
-							<Icon type="angle-double-left" />
-						</span>
-						<span @mouseenter="hoverHeader(true, 1)" @mouseleave="hoverHeader(false, 1)" @click="goPrevMonth" :class="headerItemClass(1)" :disabled="(modelValue.getFullYear() <= startYear && modelValue.getMonth() == 0) || null" v-if="view == 'date'">
-							<Icon type="angle-left" />
-						</span>
+				<!-- 年视图头部 -->
+				<div v-if="view == 'year'" class="mvi-date-chooser-year-header">
+					<div :class="['mvi-date-chooser-year-left', type]" @click="updateYear(-1)">
+						<Icon type="angle-double-left" />
 					</div>
-					<div class="mvi-date-chooser-header-center">
-						<span v-if="view != 'year' && currentYear" @mouseenter="hoverHeader(true, 2)" @mouseleave="hoverHeader(false, 2)" v-text="currentYear" :class="headerItemClass(2)" @click="jumpViewYear"></span>
-						<span v-if="view == 'date' && currentMonth" @mouseenter="hoverHeader(true, 3)" @mouseleave="hoverHeader(false, 3)" v-text="currentMonth" :class="headerItemClass(3)" @click="jumpViewMonth"></span>
-						<span v-if="view == 'year' && currentYears" @mouseenter="hoverHeader(true, 4)" @mouseleave="hoverHeader(false, 4)" v-text="currentYears" :class="headerItemClass(4)"></span>
+					<div class="mvi-date-chooser-year-center">
+						<span>{{ formatShow('year', years[0]) }}</span>
+						<span>-</span>
+						<span>{{ formatShow('year', years[years.length - 1]) }}</span>
 					</div>
-					<div class="mvi-date-chooser-header-right">
-						<span @mouseenter="hoverHeader(true, 5)" @mouseleave="hoverHeader(false, 5)" @click="goNextMonth" :class="headerItemClass(5)" :disabled="(modelValue.getFullYear() >= endYear && modelValue.getMonth() == 11) || null" v-if="view == 'date'">
-							<Icon type="angle-right" />
-						</span>
-						<span @mouseenter="hoverHeader(true, 6)" @mouseleave="hoverHeader(false, 6)" @click="goNextYear" :class="headerItemClass(6)" :disabled="nextYearDisabled || null">
-							<Icon type="angle-double-right" />
-						</span>
+					<div :class="['mvi-date-chooser-year-right', type]" @click="updateYear(1)">
+						<Icon type="angle-double-right" />
 					</div>
 				</div>
-				<Calendar :view="view" :model-value="modelValue" :month-text="monthText" :week-text="weekText" :start-year="startYear" :end-year="endYear" :now-class="nowClass" :current-class="currentClass" :non-current-click="false" :active="active" @date-click="dateClick" @month-click="monthClick" @year-click="yearClick" ref="calendar"></Calendar>
+				<!-- 月视图头部 -->
+				<div v-else-if="view == 'month'" class="mvi-date-chooser-month-header">
+					<div :class="['mvi-date-chooser-month-left', type]" @click="updateYear(-1)">
+						<Icon type="angle-double-left" />
+					</div>
+					<div :class="['mvi-date-chooser-month-center', type]" @click="goYear">{{ formatShow('year', selectedDate) }}</div>
+					<div :class="['mvi-date-chooser-month-right', type]" @click="updateYear(1)">
+						<Icon type="angle-double-right" />
+					</div>
+				</div>
+				<!-- 日期头部 -->
+				<div v-else-if="view == 'date'" class="mvi-date-chooser-date-header">
+					<div class="mvi-date-chooser-date-left">
+						<div :class="type" @click="updateYear(-1)"><Icon type="angle-double-left" /></div>
+						<div :class="type" @click="updateMonth(-1)"><Icon type="angle-left" /></div>
+					</div>
+					<div class="mvi-date-chooser-date-center">
+						<div :class="type" @click="goYear">{{ formatShow('year', selectedDate) }}</div>
+						<div :class="type" @click="goMonth">{{ formatShow('month', selectedDate) }}</div>
+					</div>
+					<div class="mvi-date-chooser-date-right">
+						<div :class="type" @click="updateMonth(1)"><Icon type="angle-right" /></div>
+						<div :class="type" @click="updateYear(1)"><Icon type="angle-double-right" /></div>
+					</div>
+				</div>
+				<Calendar :view="view" v-model="selectedDate" :month-text="monthText" :week-text="weekText" :start-date="startDate" :end-year="endDate" :non-current-click="false" :active="active" :type="type" @date-click="dateClick" @month-click="monthClick" @year-click="yearClick" ref="calendar"></Calendar>
 			</div>
 		</Layer>
 	</div>
@@ -40,15 +56,14 @@ import { Dap } from '../dap'
 import { Layer } from '../layer'
 import { Icon } from '../icon'
 import { Calendar } from '../calendar'
+import dayjs from 'dayjs'
 export default {
 	name: 'm-date-chooser',
 	data() {
 		return {
-			target: null,
-			layer: null,
 			show: false,
 			view: 'date',
-			hover: [false, false, false, false, false, false, false]
+			selectedDate: new Date()
 		}
 	},
 	emits: ['update:modelValue', 'change'],
@@ -107,40 +122,41 @@ export default {
 				return ['日', '一', '二', '三', '四', '五', '六']
 			}
 		},
-		//开始年
-		startYear: {
-			type: Number,
-			default: 1970
+		//开始日期
+		startDate: {
+			type: Date,
+			default: function () {
+				return dayjs('1970-01-01').toDate()
+			}
 		},
-		//结束年
-		endYear: {
-			type: Number,
-			default: 2099
-		},
-		//当前日期显示样式
-		nowClass: {
-			type: [String, Object],
-			default: null
-		},
-		//指定日期显示样式
-		currentClass: {
-			type: [String, Object],
-			default: null
+		//截止日期
+		endDate: {
+			type: Date,
+			default: function () {
+				return dayjs('2099-01-01').toDate()
+			}
 		},
 		//日历面板点击态
 		active: {
 			type: Boolean,
 			default: true
 		},
-		//头部悬浮样式
-		headerHoverClass: {
+		//主题样式
+		type: {
 			type: String,
-			default: null
+			default: 'info',
+			validator(value) {
+				return ['info', 'primary', 'error', 'warn', 'success'].includes(value)
+			}
 		},
 		//是否块级
 		block: {
 			type: Boolean,
 			default: false
+		},
+		//头部年月显示格式化
+		headerFormatter: {
+			type: Function
 		}
 	},
 	setup() {
@@ -150,63 +166,6 @@ export default {
 		}
 	},
 	computed: {
-		currentYear() {
-			//当前年份显示值
-			return this.modelValue.getFullYear() + '年'
-		},
-		currentMonth() {
-			//当前月份显示值
-			let month = this.modelValue.getMonth() + 1
-			return (month < 10 ? '0' + month : month) + '月'
-		},
-		hoverHeader() {
-			//头部元素悬浮标记
-			return (hover, index) => {
-				this.hover[index] = hover
-			}
-		},
-		headerItemClass() {
-			//头部元素样式类
-			return index => {
-				let cls = []
-				if (this.hover[index] && this.headerHoverClass) {
-					cls.push(this.headerHoverClass)
-				}
-				return cls
-			}
-		},
-		currentYears() {
-			//年视图下显示的中间年份区间
-			if (this.layer) {
-				let years = [...this.$refs.calendar.years]
-				for (let i = 0; i < years.length; i++) {
-					if (years[i].year < this.startYear) {
-						years.splice(i, 1)
-					}
-					if (years[i].year > this.endYear) {
-						years.splice(i, 1)
-					}
-				}
-				return years[0].year + '年 - ' + years[years.length - 1].year + '年'
-			} else {
-				return ''
-			}
-		},
-		prevYearDisabled() {
-			if (this.view == 'year' && this.layer) {
-				return this.$refs.calendar.years[0].year <= this.startYear
-			} else {
-				return this.modelValue.getFullYear() <= this.startYear
-			}
-		},
-		nextYearDisabled() {
-			if (this.view == 'year' && this.layer) {
-				let years = this.$refs.calendar.years
-				return years[years.length - 1].year >= this.endYear
-			} else {
-				return this.modelValue.getFullYear() >= this.endYear
-			}
-		},
 		layerRealProps() {
 			return {
 				placement: this.layerProps.placement ? this.layerProps.placement : 'bottom-start',
@@ -215,13 +174,44 @@ export default {
 				width: this.layerProps.width,
 				zIndex: Dap.number.isNumber(this.layerProps.zIndex) ? this.layerProps.zIndex : 400,
 				offset: this.layerProps.offset ? this.layerProps.offset : '0.2rem',
-				wrapperClass: this.layerProps.wrapperClass,
 				animation: this.layerProps.animation,
 				timeout: Dap.number.isNumber(this.layerProps.timeout) ? this.layerProps.timeout : 200,
 				showTriangle: typeof this.layerProps.showTriangle == 'boolean' ? this.layerProps.showTriangle : false,
 				shadow: typeof this.layerProps.shadow == 'boolean' ? this.layerProps.shadow : true,
 				border: typeof this.layerProps.border == 'boolean' ? this.layerProps.border : false,
 				borderColor: this.layerProps.borderColor
+			}
+		},
+		//年数组
+		years() {
+			let arr = []
+			//获取指定的年份
+			const year = this.selectedDate.getFullYear()
+			const startYear = this.startDate.getFullYear()
+			//指定日期所在年份所在数组的序列,12个值为一个数组
+			let index = Math.floor((year - startYear) / 12)
+			for (let i = startYear + index * 12; i < startYear + index * 12 + 12; i++) {
+				arr.push(dayjs(this.modelValue).year(i).toDate())
+			}
+			return arr
+		},
+		//头部显示年月的值
+		formatShow() {
+			return (type, date) => {
+				if (typeof this.headerFormatter == 'function') {
+					if (type == 'year') {
+						return this.headerFormatter.apply(this, [type, date.getFullYear()])
+					}
+					if (type == 'month') {
+						return this.headerFormatter.apply(this, [type, date.getMonth() + 1])
+					}
+				}
+				if (type == 'year') {
+					return dayjs(date).format('YYYY') + '年'
+				}
+				if (type == 'month') {
+					return dayjs(date).format('MM') + '月'
+				}
 			}
 		}
 	},
@@ -232,6 +222,7 @@ export default {
 	},
 	created() {
 		this.view = this.mode
+		this.selectedDate = this.modelValue
 	},
 	mounted() {
 		if (this.trigger == 'hover') {
@@ -242,28 +233,9 @@ export default {
 	methods: {
 		//悬浮层显示前进行宽度设置
 		layerShow() {
-			if (this.layerRealProps.width) {
-				this.$refs.panel.style.width = this.layerRealProps.width
-			} else {
+			if (!this.layerRealProps.width) {
 				this.$refs.panel.style.width = this.$refs.target.offsetWidth + 'px'
 			}
-			if (!this.layer) {
-				this.layer = this.$refs.layer
-			}
-		},
-		//打开日期选择弹窗
-		openCalendar() {
-			if (this.disabled) {
-				return
-			}
-			this.show = true
-		},
-		//关闭日期选择弹窗
-		closeCalendar() {
-			if (this.disabled) {
-				return
-			}
-			this.show = false
 		},
 		//点击打开/关闭日历弹窗
 		clickCalendar() {
@@ -279,143 +251,72 @@ export default {
 			}
 		},
 		//点击日期
-		dateClick(res) {
-			if (event || window.event) {
-				event.stopPropagation()
-			}
-			if (this.disabled) {
-				return
-			}
-			this.$emit('update:modelValue', res.date)
-			this.$emit('change', res.date)
+		dateClick(date) {
+			this.$emit('update:modelValue', date)
+			this.$emit('change', date)
 			this.show = false
 		},
 		//点击年份
-		yearClick(res) {
-			if (event || window.event) {
-				event.stopPropagation()
-			}
-			if (this.disabled) {
+		yearClick(date) {
+			if (this.mode == 'year') {
+				this.$emit('update:modelValue', date)
+				this.$emit('change', date)
+				this.show = false
 				return
 			}
-			//如果只是年选择模式
-			if (this.mode == 'year') {
-				this.show = false
-			}
-			//月选择模式或者日期选择模式
-			else {
+			setTimeout(() => {
 				this.view = 'month'
-			}
-			this.$emit('update:modelValue', res.date)
-			this.$emit('change', res.date)
+			}, 0)
 		},
 		//点击月份
-		monthClick(res) {
-			if (event || window.event) {
-				event.stopPropagation()
+		monthClick(date) {
+			if (this.mode == 'month') {
+				this.$emit('update:modelValue', date)
+				this.$emit('change', date)
+				this.show = false
+				return
 			}
+			setTimeout(() => {
+				this.view = 'date'
+			}, 0)
+		},
+		//更新年份
+		updateYear(num) {
+			this.selectedDate = dayjs(this.selectedDate).add(num, 'year').toDate()
+			this.$emit('update:modelValue', this.selectedDate)
+			this.$emit('change', this.selectedDate)
+		},
+		//更新月份
+		updateMonth(num) {
+			this.selectedDate = dayjs(this.selectedDate).add(num, 'month').toDate()
+			this.$emit('update:modelValue', this.selectedDate)
+			this.$emit('change', this.selectedDate)
+		},
+		//跳转年视图
+		goYear() {
+			setTimeout(() => {
+				this.view = 'year'
+			}, 0)
+		},
+		//跳转月视图
+		goMonth() {
+			setTimeout(() => {
+				this.view = 'month'
+			}, 0)
+		},
+		//api：打开日期选择弹窗
+		openCalendar() {
 			if (this.disabled) {
 				return
 			}
-			if (this.mode == 'date') {
-				this.view = 'date'
-			} else {
-				this.show = false
-			}
-			this.$emit('update:modelValue', res.date)
-			this.$emit('change', res.date)
+			this.show = true
 		},
-		//前一年
-		goPrevYear() {
-			if (this.view == 'year') {
-				let years = this.$refs.calendar.years
-				let date = this.modelValue
-				let year = date.getFullYear()
-				if (years[0].year <= this.startYear) {
-					return
-				} else if (years[0].year - this.startYear < 12) {
-					date = new Date(date.setFullYear(this.startYear))
-				} else {
-					date = new Date(date.setFullYear(year - 12))
-				}
-				this.$emit('update:modelValue', date)
-				this.$emit('change', date)
-			} else {
-				let date = this.modelValue
-				let year = date.getFullYear()
-				if (year <= this.startYear) {
-					return
-				}
-				date = new Date(date.setFullYear(year - 1))
-				this.$emit('update:modelValue', date)
-				this.$emit('change', date)
-			}
-		},
-		//前一月
-		goPrevMonth() {
-			let date = this.modelValue
-			if (date.getFullYear() <= this.startYear && date.getMonth() == 0) {
+		//api：关闭日期选择弹窗
+		closeCalendar() {
+			if (this.disabled) {
 				return
 			}
-			let prevMonths = Dap.date.getPrevMonths(date, 2)
-			date = prevMonths[1]
-			this.$emit('update:modelValue', date)
-			this.$emit('change', date)
-		},
-		//下一年
-		goNextYear() {
-			if (this.view == 'year') {
-				let years = this.$refs.calendar.years
-				let date = this.modelValue
-				let year = date.getFullYear()
-				if (years[years.length - 1].year >= this.endYear) {
-					return
-				} else if (this.endYear - years[years.length - 1].year < 12) {
-					date = new Date(date.setFullYear(this.endYear))
-				} else {
-					date = new Date(date.setFullYear(year + 12))
-				}
-				this.$emit('update:modelValue', date)
-				this.$emit('change', date)
-			} else {
-				let date = this.modelValue
-				let year = date.getFullYear()
-				if (year >= this.endYear) {
-					return
-				}
-				date = new Date(date.setFullYear(year + 1))
-				this.$emit('update:modelValue', date)
-				this.$emit('change', date)
-			}
-		},
-		//下一月
-		goNextMonth() {
-			let date = this.modelValue
-			if (date.getFullYear() >= this.endYear && date.getMonth() == 11) {
-				return
-			}
-			let nextMonths = Dap.date.getNextMonths(date, 2)
-			date = nextMonths[1]
-			this.$emit('update:modelValue', date)
-			this.$emit('change', date)
-		},
-		//跳转年视图
-		jumpViewYear(event) {
-			event.stopPropagation()
-			this.hover = [false, false, false, false, true, false, false]
-			this.view = 'year'
-		},
-		//跳转月视图
-		jumpViewMonth(event) {
-			event.stopPropagation()
-			this.hover = [false, false, false, false, false, false, false]
-			this.view = 'month'
-		},
-		//跳转日期视图
-		jumpViewDate(event) {
-			event.stopPropagation()
-			this.hover = [false, false, false, false, false, false, false]
-			this.view = 'date'
+			this.show = false
 		}
 	},
 	beforeUnmount() {
@@ -438,7 +339,7 @@ export default {
 		display: inline-block;
 	}
 
-	&.mvi-date-chooser-block {
+	&.block {
 		display: block;
 
 		.mvi-date-chooser-target {
@@ -457,62 +358,230 @@ export default {
 	border-radius: inherit;
 }
 
-.mvi-date-chooser-header {
+.mvi-date-chooser-year-header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
-	padding: 0 @mp-md;
-	height: 0.88rem;
+	height: @small-height;
+	user-select: none;
+	padding: 0 @mp-sm;
 
-	.mvi-date-chooser-header-left,
-	.mvi-date-chooser-header-right,
-	.mvi-date-chooser-header-center {
+	.mvi-date-chooser-year-left,
+	.mvi-date-chooser-year-right {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+		padding: 0 @mp-md;
+		color: @font-color-default;
+		font-size: @font-size-small;
+		transition: color 200ms linear;
+
+		&:hover {
+			cursor: pointer;
+
+			&.info {
+				color: @info-normal;
+			}
+
+			&.success {
+				color: @success-normal;
+			}
+
+			&.warn {
+				color: @warn-normal;
+			}
+
+			&.error {
+				color: @error-normal;
+			}
+
+			&.primary {
+				color: @primary-normal;
+			}
+		}
+	}
+
+	.mvi-date-chooser-year-center {
 		display: flex;
 		justify-content: flex-start;
 		align-items: center;
-	}
-
-	.mvi-date-chooser-header-left,
-	.mvi-date-chooser-header-right {
-		& > span {
-			display: block;
-			font-size: @font-size-small;
-			color: @font-color-sub;
-			padding: @mp-xs @mp-xs;
-			border-radius: @radius-default;
-
-			&:hover {
-				cursor: pointer;
-				color: @info-normal;
-			}
-
-			&[disabled] {
-				color: @font-color-mute !important;
-			}
-		}
-
-		& > span + span {
-			margin-left: @mp-xs;
-		}
-	}
-
-	.mvi-date-chooser-header-center {
-		font-size: @font-size-default;
+		font-size: @font-size-small;
 		color: @font-color-default;
 
-		& > span {
-			display: block;
-			padding: @mp-xs @mp-xs;
-			border-radius: @radius-default;
+		& > span:first-child + span {
+			margin: 0 @mp-sm;
+		}
+	}
+}
 
-			&:hover {
-				cursor: pointer;
+.mvi-date-chooser-month-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	height: @small-height;
+	user-select: none;
+	padding: 0 @mp-sm;
+
+	.mvi-date-chooser-month-left,
+	.mvi-date-chooser-month-right {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+		padding: 0 @mp-md;
+		color: @font-color-default;
+		font-size: @font-size-small;
+		transition: color 200ms linear;
+
+		&:hover {
+			cursor: pointer;
+
+			&.info {
 				color: @info-normal;
 			}
 
-			&[disabled] {
-				color: @font-color-mute !important;
+			&.success {
+				color: @success-normal;
+			}
+
+			&.warn {
+				color: @warn-normal;
+			}
+
+			&.error {
+				color: @error-normal;
+			}
+
+			&.primary {
+				color: @primary-normal;
+			}
+		}
+	}
+
+	.mvi-date-chooser-month-center {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		font-size: @font-size-small;
+		color: @font-color-default;
+		transition: color 200ms linear;
+
+		&:hover {
+			cursor: pointer;
+
+			&.info {
+				color: @info-normal;
+			}
+
+			&.success {
+				color: @success-normal;
+			}
+
+			&.warn {
+				color: @warn-normal;
+			}
+
+			&.error {
+				color: @error-normal;
+			}
+
+			&.primary {
+				color: @primary-normal;
+			}
+		}
+	}
+}
+
+.mvi-date-chooser-date-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	height: @small-height;
+	user-select: none;
+	padding: 0 @mp-sm;
+
+	.mvi-date-chooser-date-left,
+	.mvi-date-chooser-date-right {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		height: 100%;
+
+		& > div {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100%;
+			padding: 0 @mp-sm;
+			color: @font-color-default;
+			font-size: @font-size-small;
+			transition: color 200ms linear;
+
+			&:hover {
+				cursor: pointer;
+
+				&.info {
+					color: @info-normal;
+				}
+
+				&.success {
+					color: @success-normal;
+				}
+
+				&.warn {
+					color: @warn-normal;
+				}
+
+				&.error {
+					color: @error-normal;
+				}
+
+				&.primary {
+					color: @primary-normal;
+				}
+			}
+		}
+	}
+
+	.mvi-date-chooser-date-center {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		font-size: @font-size-small;
+		color: @font-color-default;
+
+		& > div {
+			transition: color 200ms linear;
+
+			&:first-child {
+				margin-right: @mp-md;
+			}
+			&:hover {
+				cursor: pointer;
+
+				&.info {
+					color: @info-normal;
+				}
+
+				&.success {
+					color: @success-normal;
+				}
+
+				&.warn {
+					color: @warn-normal;
+				}
+
+				&.error {
+					color: @error-normal;
+				}
+
+				&.primary {
+					color: @primary-normal;
+				}
 			}
 		}
 	}

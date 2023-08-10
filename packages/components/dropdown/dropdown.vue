@@ -1,13 +1,13 @@
 <template>
-	<Popup ref="popup" :model-value="show" @overlay-click="hide" :overlay-color="overlayColor" :z-index="zIndex" :timeout="timeout" :placement="placement" :round="round" :use-padding="usePadding" :mount-el="mountEl">
+	<Popup ref="popup" :model-value="show" @overlay-click="hide" :overlay-color="overlayColor" :z-index="zIndex" :timeout="timeout" :placement="placement" :round="round" :use-padding="usePadding" :mount-el="mountEl" :__contentPadding="false">
 		<div class="mvi-dropdown">
-			<div :disabled="itemDisabled(item) || null" :class="dropdownItemClass(item, index)" v-for="(item, index) in options" :key="'item-' + index" @click="doSelect(item, index)" :style="dropdownItemStyle(item, index)">
-				<div class="mvi-dropdown-item-label">
-					<Icon v-if="item.icon" :type="iconType(item.icon)" :url="iconUrl(item.icon)" :spin="iconSpin(item.icon)" class="mvi-dropdown-icon" :size="iconSize(item.icon)" :color="iconColor(item.icon)" />
+			<div :disabled="itemDisabled(item) || null" :class="dropdownItemClass(item, index)" v-for="(item, index) in options" @click="doSelect(item, index)" :style="dropdownItemStyle(item, index)">
+				<div class="mvi-dropdown-label">
+					<Icon v-if="item.icon" :type="parseIcon(item.icon).type" :url="parseIcon(item.icon).url" :spin="parseIcon(item.icon).spin" class="mvi-dropdown-label-icon" :size="parseIcon(item.icon).size" :color="parseIcon(item.icon).color" />
 					<span class="mvi-dropdown-label-text" v-text="item.label || ''"></span>
 				</div>
-				<div v-if="equalValue(item, index)" class="mvi-dropdown-item-checked" :data-placement="placement">
-					<Icon :type="selectIconType" :url="selectIconUrl" :spin="selectIconSpin" :size="selectIconSize" :color="selectIconColor" />
+				<div :class="['mvi-dropdown-icon', equalValue(item, index) ? 'checked' : '']" :data-placement="placement">
+					<Icon :type="parseIcon(selectedIcon).type" :url="parseIcon(selectedIcon).url" :spin="parseIcon(selectedIcon).spin" :size="parseIcon(selectedIcon).size" :color="parseIcon(selectedIcon).color" />
 				</div>
 			</div>
 		</div>
@@ -20,11 +20,6 @@ import { Icon } from '../icon'
 import { Popup } from '../popup'
 export default {
 	name: 'm-dropdown',
-	data() {
-		return {
-			oldIndex: null
-		}
-	},
 	emits: ['update:modelValue', 'update:show', 'select'],
 	props: {
 		//默认选中的选项
@@ -37,27 +32,22 @@ export default {
 			type: String,
 			default: null
 		},
-		//列表参数,含label,value,disabled,class,icon
+		//列表参数,含label,value,disabled,icon
 		options: {
 			type: Array,
 			default: function () {
 				return []
 			}
 		},
-		//列表项额外的class
-		itemClass: {
-			type: String,
-			default: null
-		},
 		//选择完毕后是否关闭
-		selectClose: {
+		selectedClose: {
 			type: Boolean,
 			default: true
 		},
 		//自定义右侧选中的图标
-		selectIcon: {
+		selectedIcon: {
 			type: [String, Object],
-			default: null
+			default: 'success'
 		},
 		//是否显示
 		show: {
@@ -108,119 +98,42 @@ export default {
 		usePadding: {
 			type: Boolean,
 			default: false
-		},
-		//未选中列表颜色
-		inactiveColor: {
-			type: String,
-			default: null
 		}
 	},
 	computed: {
 		$$el() {
 			return this.$refs.popup.$$el
 		},
-		selectIconType() {
-			let type = 'success'
-			if (Dap.common.isObject(this.selectIcon)) {
-				if (typeof this.selectIcon.type == 'string') {
-					type = this.selectIcon.type
+		//转换图标字段
+		parseIcon() {
+			return param => {
+				let icon = {
+					spin: false,
+					type: null,
+					url: null,
+					color: null,
+					size: null
 				}
-			} else if (typeof this.selectIcon == 'string') {
-				type = this.selectIcon
-			}
-			return type
-		},
-		selectIconUrl() {
-			let url = null
-			if (Dap.common.isObject(this.selectIcon)) {
-				if (typeof this.selectIcon.url == 'string') {
-					url = this.selectIcon.url
-				}
-			}
-			return url
-		},
-		selectIconSpin() {
-			let spin = false
-			if (Dap.common.isObject(this.selectIcon)) {
-				if (typeof this.selectIcon.spin == 'boolean') {
-					spin = this.selectIcon.spin
-				}
-			}
-			return spin
-		},
-		selectIconSize() {
-			let size = null
-			if (Dap.common.isObject(this.selectIcon)) {
-				if (typeof this.selectIcon.size == 'string') {
-					size = this.selectIcon.size
-				}
-			}
-			return size
-		},
-		selectIconColor() {
-			let color = null
-			if (Dap.common.isObject(this.selectIcon)) {
-				if (typeof this.selectIcon.color == 'string') {
-					color = this.selectIcon.color
-				}
-			}
-			return color
-		},
-		iconType() {
-			return icon => {
-				let type = null
-				if (Dap.common.isObject(icon)) {
-					if (typeof icon.type == 'string') {
-						type = icon.type
+				if (Dap.common.isObject(param)) {
+					if (typeof param.spin == 'boolean') {
+						icon.spin = param.spin
 					}
-				} else if (typeof icon == 'string') {
-					type = icon
-				}
-				return type
-			}
-		},
-		iconUrl() {
-			return icon => {
-				let url = null
-				if (Dap.common.isObject(icon)) {
-					if (typeof icon.url == 'string') {
-						url = icon.url
+					if (typeof param.type == 'string') {
+						icon.type = param.type
 					}
-				}
-				return url
-			}
-		},
-		iconSpin() {
-			return icon => {
-				let spin = false
-				if (Dap.common.isObject(icon)) {
-					if (typeof icon.spin == 'boolean') {
-						spin = icon.spin
+					if (typeof param.url == 'string') {
+						icon.url = param.url
 					}
-				}
-				return spin
-			}
-		},
-		iconSize() {
-			return icon => {
-				let size = null
-				if (Dap.common.isObject(icon)) {
-					if (typeof icon.size == 'string') {
-						size = icon.size
+					if (typeof param.color == 'string') {
+						icon.color = param.color
 					}
-				}
-				return size
-			}
-		},
-		iconColor() {
-			return icon => {
-				let color = null
-				if (Dap.common.isObject(icon)) {
-					if (typeof icon.color == 'string') {
-						color = icon.color
+					if (typeof param.size == 'string') {
+						icon.size = param.size
 					}
+				} else if (typeof param == 'string') {
+					icon.type = param
 				}
-				return color
+				return icon
 			}
 		},
 		//判断是否选中项
@@ -232,46 +145,34 @@ export default {
 				return Dap.common.equal(this.modelValue, item.value)
 			}
 		},
+		//选项是否禁用
 		itemDisabled() {
 			return item => {
 				if (typeof item.disabled == 'boolean') {
 					return item.disabled
-				} else {
-					return false
 				}
+				return false
 			}
 		},
+		//选项样式
 		dropdownItemStyle() {
 			return (item, index) => {
 				let style = {}
-				if (!this.itemDisabled(item)) {
-					//激活选中情况下
-					if (this.equalValue(item, index)) {
-						if (this.activeColor) {
-							style.color = this.activeColor
-						}
-					} else {
-						if (this.inactiveColor) {
-							style.color = this.inactiveColor
-						}
-					}
+				if (!this.itemDisabled(item) && this.equalValue(item, index) && this.activeColor) {
+					style.color = this.activeColor
 				}
 				return style
 			}
 		},
+		//选项class
 		dropdownItemClass() {
 			return (item, index) => {
 				let cls = ['mvi-dropdown-item']
-				if (item.class) {
-					cls.push(item.class)
-				} else if (this.itemClass) {
-					cls.push(this.itemClass)
-				}
-				if (this.equalValue(item, index)) {
-					cls.push('mvi-dropdown-checked')
+				if (this.equalValue(item, index) && !item.disabled) {
+					cls.push('checked')
 				}
 				if (this.active && !item.disabled) {
-					cls.push('mvi-dropdown-active')
+					cls.push('active')
 				}
 				return cls
 			}
@@ -280,9 +181,6 @@ export default {
 	components: {
 		Icon,
 		Popup
-	},
-	mounted() {
-		this.oldIndex = this.modelValue
 	},
 	methods: {
 		//点击遮罩关闭
@@ -300,33 +198,13 @@ export default {
 			if (item.disabled) {
 				return
 			}
-			//点击的是已选择的选项
-			if (Dap.common.equal(this.valueFilter(item.value, index), this.oldIndex)) {
-				this.$emit('select', {
-					item: Object.assign({}, item),
-					index: index
-				})
-				if (this.selectClose) {
-					this.doCancel()
-				}
-			} else {
-				this.$emit('update:modelValue', this.valueFilter(item.value, index))
-				this.$emit('select', {
-					item: Object.assign({}, item),
-					index: index
-				})
-				if (this.selectClose) {
-					this.doCancel()
-				}
-				this.oldIndex = this.valueFilter(item.value, index)
+			this.$emit('select', JSON.parse(JSON.stringify(item)), index)
+			if (!Dap.common.equal(item.value, this.modelValue)) {
+				this.$emit('update:modelValue', item.value)
 			}
-		},
-		//获取当前选择的value值
-		valueFilter(value, index) {
-			if (value === undefined || value === null) {
-				return index
+			if (this.selectedClose) {
+				this.doCancel()
 			}
-			return value
 		}
 	}
 }
@@ -339,81 +217,83 @@ export default {
 	display: block;
 	width: 100%;
 	position: relative;
-	color: @font-color-default;
-}
 
-.mvi-dropdown-item {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: flex-start;
-	align-items: center;
-	position: relative;
-	width: 100%;
-	height: @medium-height;
-	border-bottom: 1px solid @border-color;
-	padding: 0 @mp-sm;
-	font-size: @font-size-default;
-	cursor: pointer;
-}
+	.mvi-dropdown-item {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-start;
+		align-items: center;
+		position: relative;
+		width: 100%;
+		height: @medium-height;
+		border-bottom: 1px solid @border-color;
+		padding: 0 @mp-sm;
+		font-size: @font-size-default;
+		color: @font-color-default;
+		cursor: pointer;
+		user-select: none;
 
-.mvi-dropdown-active:active::before {
-	.mvi-active();
-}
+		&.active:active::before {
+			.mvi-active();
+		}
 
-.mvi-dropdown-item.mvi-dropdown-checked {
-	color: @info-normal;
-}
+		&.checked {
+			color: @info-normal;
+		}
 
-.mvi-dropdown-item[disabled] {
-	color: @font-color-mute;
-}
+		&[disabled] {
+			color: @font-color-mute;
+		}
 
-.mvi-dropdown-item:last-child {
-	border-bottom: none;
-}
+		&:last-child {
+			border-bottom: none;
+		}
 
-.mvi-dropdown-item-label {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: flex-start;
-	align-items: center;
-	height: 100%;
-	flex: 1;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	vertical-align: middle;
-	transition: color 200ms;
-	-webkit-transition: color 200ms;
-	-ms-transition: color 200ms;
-	-moz-transition: color 200ms;
-}
+		.mvi-dropdown-label {
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			height: 100%;
+			flex: 1;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			vertical-align: middle;
+			transition: color 200ms;
+			-webkit-transition: color 200ms;
+			-ms-transition: color 200ms;
+			-moz-transition: color 200ms;
 
-.mvi-dropdown-label-text {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
+			.mvi-dropdown-label-icon {
+				margin-right: @mp-xs;
+			}
 
-.mvi-dropdown-item-checked {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: center;
-	align-items: center;
-	padding-left: @mp-sm;
-	height: 100%;
-	transition: color 200ms;
-	-webkit-transition: color 200ms;
-	-ms-transition: color 200ms;
-	-moz-transition: color 200ms;
-}
+			.mvi-dropdown-label-text {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+		}
 
-.mvi-dropdown-item-checked[data-placement='left'],
-.mvi-dropdown-item-checked[data-placement='right'] {
-	margin-left: @mp-lg*5;
-}
+		.mvi-dropdown-icon {
+			display: flex;
+			display: -webkit-flex;
+			justify-content: center;
+			align-items: center;
+			padding-left: @mp-sm;
+			height: 100%;
+			opacity: 0;
+			transition: opacity 200ms, color 200ms;
 
-.mvi-dropdown-icon {
-	margin-right: @mp-xs;
+			&[data-placement='left'],
+			&[data-placement='right'] {
+				margin-left: @mp-lg*5;
+			}
+
+			&.checked {
+				opacity: 1;
+			}
+		}
+	}
 }
 </style>

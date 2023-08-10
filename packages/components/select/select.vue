@@ -7,7 +7,7 @@
 			<!-- 下拉图标 -->
 			<Icon v-show="!clearable || !showClearIcon" :class="iconClass" :type="icon" />
 		</div>
-		<Layer v-model="focus" :target="`[data-id='mvi-select-target-${uid}']`" :root="`[data-id='mvi-select-${uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :fixed="layerRealProps.fixed" :fixed-auto="layerRealProps.fixedAuto" :z-index="layerRealProps.zIndex" closable :show-triangle="layerRealProps.showTriangle" :wrapper-class="layerRealProps.wrapperClass" :animation="layerRealProps.animation" :timeout="layerRealProps.timeout" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :border-color="layerRealProps.borderColor" :background="layerRealProps.background" @showing="layerShow" ref="layer">
+		<Layer v-model="focus" :target="`[data-id='mvi-select-target-${uid}']`" :root="`[data-id='mvi-select-${uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :fixed="layerRealProps.fixed" :fixed-auto="layerRealProps.fixedAuto" :z-index="layerRealProps.zIndex" closable :show-triangle="layerRealProps.showTriangle" :animation="layerRealProps.animation" :timeout="layerRealProps.timeout" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :border-color="layerRealProps.borderColor" :width="layerRealProps.width" @showing="layerShow" ref="layer">
 			<div class="mvi-select-menu" ref="menu" :style="menuStyle">
 				<div :class="['mvi-option', 'mvi-option-' + size]" @click="optionClick(item)" @mouseenter="mouseEnter($event, item)" @mouseleave="mouseLeave($event, item)" v-for="(item, index) in options" :key="'mvi-select-option-' + index" :disabled="item.disabled || null">
 					<div class="mvi-option-value" v-html="item.label"></div>
@@ -307,14 +307,12 @@ export default {
 				width: this.layerProps.width,
 				zIndex: Dap.number.isNumber(this.layerProps.zIndex) ? this.layerProps.zIndex : 400,
 				offset: this.layerProps.offset ? this.layerProps.offset : '0.1rem',
-				wrapperClass: this.layerProps.wrapperClass,
 				animation: this.layerProps.animation,
 				timeout: Dap.number.isNumber(this.layerProps.timeout) ? this.layerProps.timeout : 200,
 				showTriangle: typeof this.layerProps.showTriangle == 'boolean' ? this.layerProps.showTriangle : false,
 				shadow: typeof this.layerProps.shadow == 'boolean' ? this.layerProps.shadow : true,
 				border: typeof this.layerProps.border == 'boolean' ? this.layerProps.border : false,
-				borderColor: this.layerProps.borderColor,
-				background: this.layerProps.background
+				borderColor: this.layerProps.borderColor
 			}
 		}
 	},
@@ -353,9 +351,7 @@ export default {
 		},
 		//layer显示前进行宽度设置
 		layerShow() {
-			if (this.layerRealProps.width) {
-				this.$refs.menu.style.width = this.layerRealProps.width
-			} else {
+			if (!this.layerRealProps.width) {
 				this.$refs.menu.style.width = this.$refs.target.offsetWidth + 'px'
 			}
 		},

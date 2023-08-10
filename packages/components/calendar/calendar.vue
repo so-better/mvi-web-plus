@@ -35,8 +35,8 @@
 	</div>
 </template>
 <script>
+import dayjs from 'dayjs'
 import { Dap } from '../dap'
-import moment from 'moment'
 export default {
 	name: 'm-calendar',
 	emits: ['update:modelValue', 'date-click', 'month-click', 'year-click'],
@@ -90,14 +90,14 @@ export default {
 		startDate: {
 			type: Date,
 			default: function () {
-				return moment('1970-01-01').toDate()
+				return dayjs('1970-01-01').toDate()
 			}
 		},
 		//截止日期
 		endDate: {
 			type: Date,
 			default: function () {
-				return moment('2099-01-01').toDate()
+				return dayjs('2099-01-01').toDate()
 			}
 		},
 		//非本月日期是否可以点击
@@ -129,11 +129,7 @@ export default {
 			//指定日期所在年份所在数组的序列,12个值为一个数组
 			let index = Math.floor((year - startYear) / 12)
 			for (let i = startYear + index * 12; i < startYear + index * 12 + 12; i++) {
-				let date = new Date()
-				date.setFullYear(i)
-				date.setMonth(this.modelValue.getMonth())
-				date.setDate(this.modelValue.getDate())
-				arr.push(date)
+				arr.push(dayjs(this.modelValue).year(i).toDate())
 			}
 			return arr
 		},
@@ -141,23 +137,18 @@ export default {
 		months() {
 			let arr = []
 			for (let i = 0; i < 12; i++) {
-				let date = new Date()
-				date.setFullYear(this.modelValue.getFullYear())
-				date.setMonth(i)
-				date.setDate(this.modelValue.getDate())
-				arr.push(date)
+				arr.push(dayjs(this.modelValue).month(i).toDate())
 			}
 			return arr
 		},
 		//显示在日期面板上的日期数组
 		days() {
 			//获取指定日期的总天数
-			let total = moment(this.modelValue).daysInMonth()
+			let total = dayjs(this.modelValue).daysInMonth()
 			let arr = []
-			for (let i = 0; i < total; i++) {
-				let month = this.modelValue.getMonth() + 1
+			for (let i = 1; i <= total; i++) {
 				arr.push({
-					date: moment(`${this.modelValue.getFullYear()}-${month < 10 ? '0' + month : month}-${i + 1 < 10 ? '0' + (i + 1) : i + 1}`).toDate(),
+					date: dayjs(`${dayjs(this.modelValue).format('YYYY-MM')}-${i < 10 ? '0' + i : i}`).toDate(),
 					nonCurrent: false
 				})
 			}
@@ -165,7 +156,7 @@ export default {
 			const firstDate = arr[0].date
 			let firstWeek = firstDate.getDay() //获取1号是周几
 			for (let i = 0; i < firstWeek; i++) {
-				let prevDate = moment(firstDate)
+				let prevDate = dayjs(firstDate)
 					.subtract(i + 1, 'day')
 					.toDate()
 				arr.unshift({
@@ -177,7 +168,7 @@ export default {
 			const lastDate = arr[arr.length - 1].date
 			let lastWeek = lastDate.getDay() //获取月末是周几
 			for (let i = 0; i < 6 - lastWeek; i++) {
-				let nextDate = moment(lastDate)
+				let nextDate = dayjs(lastDate)
 					.add(i + 1, 'day')
 					.toDate()
 				arr.push({
@@ -190,19 +181,19 @@ export default {
 		//指定年份值是否禁用
 		yearDisabled() {
 			return date => {
-				return moment(date).isBefore(moment(this.startDate), 'year') || moment(date).isAfter(moment(this.endDate), 'year')
+				return dayjs(date).isBefore(dayjs(this.startDate), 'year') || dayjs(date).isAfter(dayjs(this.endDate), 'year')
 			}
 		},
 		//指定月份值是否禁用
 		monthDisabled() {
 			return date => {
-				return moment(date).isBefore(moment(this.startDate), 'month') || moment(date).isAfter(moment(this.endDate), 'month')
+				return dayjs(date).isBefore(dayjs(this.startDate), 'month') || dayjs(date).isAfter(dayjs(this.endDate), 'month')
 			}
 		},
 		//指定日期值是否禁用
 		dateDisabled() {
 			return item => {
-				return moment(item.date).isBefore(moment(this.startDate), 'date') || moment(item.date).isAfter(moment(this.endDate), 'date')
+				return dayjs(item.date).isBefore(dayjs(this.startDate), 'date') || dayjs(item.date).isAfter(dayjs(this.endDate), 'date')
 			}
 		},
 		//年视图下每个年数值的样式
@@ -215,10 +206,10 @@ export default {
 				if (this.active) {
 					arr.push('active')
 				}
-				if (moment().isSame(moment(date), 'year')) {
+				if (dayjs().isSame(dayjs(date), 'year')) {
 					arr.push('now')
 				}
-				if (moment(this.modelValue).isSame(moment(date), 'year')) {
+				if (dayjs(this.modelValue).isSame(dayjs(date), 'year')) {
 					arr.push('current')
 				}
 				return arr
@@ -234,10 +225,10 @@ export default {
 				if (this.active) {
 					arr.push('active')
 				}
-				if (moment().isSame(moment(date), 'month')) {
+				if (dayjs().isSame(dayjs(date), 'month')) {
 					arr.push('now')
 				}
-				if (moment(this.modelValue).isSame(moment(date), 'month')) {
+				if (dayjs(this.modelValue).isSame(dayjs(date), 'month')) {
 					arr.push('current')
 				}
 				return arr
@@ -272,11 +263,11 @@ export default {
 						arr.push('active')
 					}
 					//如果是今天显示今天样式
-					if (moment().isSame(moment(item.date), 'date')) {
+					if (dayjs().isSame(dayjs(item.date), 'date')) {
 						arr.push('now')
 					}
 					//如果是当前日期值，显示当前值样式
-					if (moment(this.modelValue).isSame(moment(item.date), 'date')) {
+					if (dayjs(this.modelValue).isSame(dayjs(item.date), 'date')) {
 						arr.push('current')
 					}
 				}
