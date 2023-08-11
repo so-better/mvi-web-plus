@@ -1,5 +1,5 @@
 <template>
-	<div :class="['mvi-form-el', form.block ? 'mvi-form-el-block' : '']" :style="formElStyle">
+	<div :class="['mvi-form-el', form.block ? 'block' : '']" :style="formElStyle">
 		<div v-if="label" :class="labelCls" v-text="label" :style="labelStyle"></div>
 		<div v-if="$slots.default" class="mvi-form-container">
 			<slot></slot>
@@ -26,11 +26,6 @@ export default {
 			type: String,
 			default: ''
 		},
-		//标签额外样式
-		labelClass: {
-			type: String,
-			default: null
-		},
 		//标签宽度
 		labelWidth: {
 			type: String,
@@ -46,30 +41,18 @@ export default {
 	computed: {
 		labelCls() {
 			let cls = ['mvi-form-label']
-			if (this.form.labelClass) {
-				cls.push(this.form.labelClass)
-			}
-			if (this.labelClass) {
-				cls.push(this.labelClass)
-			}
 			if (this.form.labelBlock && this.form.block) {
-				cls.push('mvi-form-label-block')
+				cls.push('block')
 			}
 			return cls
 		},
 		labelStyle() {
 			let style = {}
-			if (this.form.labelWidth && !this.form.labelBlock) {
-				style.width = this.form.labelWidth
-			}
-			if (this.labelWidth && !this.form.labelBlock) {
-				style.width = this.labelWidth
-			}
-			if (this.form.labelOffset) {
-				if (this.form.labelBlock) {
-					style.marginBottom = this.form.labelOffset
-				} else {
-					style.marginRight = this.form.labelOffset
+			if (!this.form.labelBlock) {
+				if (this.labelWidth) {
+					style.width = this.labelWidth
+				} else if (this.form.labelWidth) {
+					style.width = this.form.labelWidth
 				}
 			}
 			if (this.labelOffset) {
@@ -78,19 +61,24 @@ export default {
 				} else {
 					style.marginRight = this.labelOffset
 				}
+			} else if (this.form.labelOffset) {
+				if (this.form.labelBlock) {
+					style.marginBottom = this.form.labelOffset
+				} else {
+					style.marginRight = this.form.labelOffset
+				}
 			}
 			return style
 		},
 		formElStyle() {
 			let style = {}
-			if (this.width && !this.form.block) {
+			if (this.width) {
 				style.width = this.width
-			}
-			if (this.form.align) {
-				style.alignItems = this.form.align
 			}
 			if (this.align) {
 				style.alignItems = this.align
+			} else if (this.form.align) {
+				style.alignItems = this.form.align
 			}
 			return style
 		}
@@ -111,7 +99,7 @@ export default {
 	width: 6.4rem;
 	padding: @mp-sm;
 
-	&.mvi-form-el-block {
+	&.block {
 		width: 100%;
 	}
 }
@@ -124,7 +112,7 @@ export default {
 	color: @font-color-default;
 	font-weight: bold;
 
-	&.mvi-form-label-block {
+	&.block {
 		width: 100%;
 		text-align: left;
 		margin: 0 0 @mp-sm 0;

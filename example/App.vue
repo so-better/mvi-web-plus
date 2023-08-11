@@ -1,9 +1,17 @@
 <template>
 	<div class="mvi-p-4">
 		<div>{{ dayjs(date).format('YYYY-MM-DD HH:mm') }}</div>
-		<m-date-chooser :layer-props="{ width: '4rem' }" style="width: 7rem" type="success" v-model="date" block mode="month" trigger="custom">
-			<m-field :model-value="dayjs(date).format('YYYY-MM-DD')"></m-field>
-		</m-date-chooser>
+		<m-form block width="10rem" labelOffset="1rem">
+			<m-form-el label="用户名" width="6rem">
+				<m-field placeholder="请输入用户名"></m-field>
+			</m-form-el>
+			<m-form-el label="手机号">
+				<m-field placeholder="请输入手机号"></m-field>
+			</m-form-el>
+			<m-form-el label="密码">
+				<m-field placeholder="请输入密码"></m-field>
+			</m-form-el>
+		</m-form>
 	</div>
 </template>
 <script>
@@ -13,7 +21,7 @@ export default {
 		return {
 			dayjs: dayjs,
 			date: dayjs('2021-06-29 14:31').toDate(),
-			value: 0,
+			value: '',
 			show: false,
 			options: [
 				{
@@ -42,9 +50,8 @@ export default {
 	},
 	mounted() {},
 	methods: {
-		change(val, index) {
-			console.log(val, index)
-			return index
+		change(val) {
+			console.log(val)
 		}
 	}
 }

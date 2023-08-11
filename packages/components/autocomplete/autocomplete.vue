@@ -150,7 +150,6 @@ export default {
 		show() {
 			return this.focus && this.computedFilter.length != 0
 		},
-		//左侧图标
 		parseIcon() {
 			return param => {
 				let icon = {

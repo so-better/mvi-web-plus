@@ -1,5 +1,5 @@
 <template>
-	<div :class="['mvi-form', block ? 'mvi-form-block' : '']" :style="formStyle">
+	<div :class="['mvi-form', block ? 'block' : '']" :style="formStyle">
 		<slot></slot>
 	</div>
 </template>
@@ -18,20 +18,15 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		//竖排显示时标签是否独立一行
-		labelBlock: {
-			type: Boolean,
-			default: false
-		},
 		//同form-el的align
 		align: {
 			type: String,
 			default: 'center'
 		},
-		//标签额外样式
-		labelClass: {
-			type: String,
-			default: null
+		//竖排显示时标签是否独立一行
+		labelBlock: {
+			type: Boolean,
+			default: false
 		},
 		//标签宽度
 		labelWidth: {
@@ -46,11 +41,9 @@ export default {
 	},
 	computed: {
 		formStyle() {
-			let style = {}
-			if (this.block && this.width) {
-				style.width = this.width
+			return {
+				width: this.block && this.width ? this.width : ''
 			}
-			return style
 		}
 	},
 	provide() {
@@ -73,7 +66,7 @@ export default {
 	flex-wrap: wrap;
 	-webkit-flex-wrap: wrap;
 
-	&.mvi-form-block {
+	&.block {
 		display: block;
 	}
 }
