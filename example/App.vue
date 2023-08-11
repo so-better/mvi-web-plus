@@ -1,17 +1,12 @@
 <template>
 	<div class="mvi-p-4">
 		<div>{{ dayjs(date).format('YYYY-MM-DD HH:mm') }}</div>
-		<m-form block width="10rem" labelOffset="1rem">
-			<m-form-el label="用户名" width="6rem">
-				<m-field placeholder="请输入用户名"></m-field>
-			</m-form-el>
-			<m-form-el label="手机号">
-				<m-field placeholder="请输入手机号"></m-field>
-			</m-form-el>
-			<m-form-el label="密码">
-				<m-field placeholder="请输入密码"></m-field>
-			</m-form-el>
-		</m-form>
+		<m-swiper ref="swiper" width="40vw" height="4rem" fade showControl showIndicators activeColor="#f30" inactiveColor="#000" :interval="1000" autoplay loop>
+			<m-swiper-slide class="mvi-bg-success">1</m-swiper-slide>
+			<m-swiper-slide class="mvi-bg-info">2</m-swiper-slide>
+			<m-swiper-slide class="mvi-bg-warn">3</m-swiper-slide>
+			<m-swiper-slide class="mvi-bg-error">4</m-swiper-slide>
+		</m-swiper>
 	</div>
 </template>
 <script>
@@ -51,7 +46,10 @@ export default {
 	mounted() {},
 	methods: {
 		change(val) {
-			console.log(val)
+			this.$showLoadingBar('#f30')
+			setTimeout(() => {
+				this.$hideLoadingBar()
+			}, 3000)
 		}
 	}
 }

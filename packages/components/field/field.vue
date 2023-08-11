@@ -15,9 +15,9 @@
 			<!-- textarea -->
 			<textarea ref="textarea" v-if="type == 'textarea'" :disabled="disabled || null" :readonly="readonly || null" class="mvi-field-input" :style="inputStyle" :placeholder="placeholder" v-model="realValue" autocomplete="off" @focus="inputFocus" @blur="inputBlur" :maxlength="maxlength" :name="name" :autofocus="autofocus" :rows="rowsFilter" @input="input"></textarea>
 			<!-- input -->
-			<input v-else ref="input" :disabled="disabled || null" :readonly="readonly || null" class="mvi-field-input" :style="inputStyle" :type="cmpType" :placeholder="placeholder" v-model="realValue" autocomplete="off" :inputmode="cmpInputMode" @focus="inputFocus" @blur="inputBlur" :maxlength="maxlength" :name="name" :autofocus="autofocus" @input="input" />
+			<input v-else ref="input" :disabled="disabled || null" :readonly="readonly || null" class="mvi-field-input" :style="inputStyle" :type="cmpType" :placeholder="placeholder" v-model="realValue" autocomplete="off" :inputmode="inputMode" @focus="inputFocus" @blur="inputBlur" :maxlength="maxlength" :name="name" :autofocus="autofocus" @input="input" />
 			<!-- 清除图标 -->
-			<div class="mvi-field-clear" v-if="clearable && type != 'textarea'" v-show="showClearIcon" :style="clearStyle" @click="doClear">
+			<div class="mvi-field-clear" v-if="clearable && type != 'textarea'" v-show="showClear" :style="clearStyle" @click="doClear">
 				<Icon type="times-o" />
 			</div>
 			<!-- 后缀区域 -->
@@ -69,7 +69,10 @@ export default {
 		//输入框类型
 		type: {
 			type: String,
-			default: 'text'
+			default: 'text',
+			validator(value) {
+				return ['text', 'password', 'number', 'tel', 'textarea'].includes(value)
+			}
 		},
 		//输入框大小
 		size: {
@@ -206,7 +209,7 @@ export default {
 			}
 		},
 		//是否显示清除图标
-		showClearIcon() {
+		showClear() {
 			if (this.disabled || this.readonly) {
 				return false
 			}
@@ -273,14 +276,6 @@ export default {
 				return 'text'
 			}
 			return this.type
-		},
-		//输入框键盘类型
-		cmpInputMode() {
-			let mode = false
-			if (typeof this.inputMode == 'string') {
-				mode = this.inputMode
-			}
-			return mode
 		},
 		//文本域的rows
 		rowsFilter() {
@@ -696,8 +691,6 @@ export default {
 
 	.mvi-field-input {
 		appearance: none;
-		-webkit-appearance: none;
-		-moz-appearance: none;
 		display: block;
 		width: 100%;
 		flex: 1;
@@ -725,6 +718,7 @@ export default {
 		&[disabled] {
 			background-color: inherit;
 			color: inherit;
+			opacity: 1;
 		}
 	}
 }

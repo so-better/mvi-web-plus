@@ -34,14 +34,14 @@ export default {
 			default: null
 		},
 		//进度条移除方法
-		remove: {
+		__remove: {
 			type: Function,
 			default: function () {
 				return function () {}
 			}
 		},
 		//进度条初始化方法
-		init: {
+		__init: {
 			type: Function,
 			default: function () {
 				return function () {}
@@ -49,14 +49,14 @@ export default {
 		}
 	},
 	computed: {
-		computedColor() {
+		cmpColor() {
 			if (typeof this.color == 'string' && this.color) {
 				return this.color
 			} else {
 				return null
 			}
 		},
-		computedZIndex() {
+		cmpZIndex() {
 			if (Dap.number.isNumber(this.zIndex)) {
 				return this.zIndex
 			} else {
@@ -65,17 +65,17 @@ export default {
 		},
 		barStyle() {
 			let style = {}
-			if (this.computedColor) {
-				style.background = this.computedColor
+			if (this.cmpColor) {
+				style.background = this.cmpColor
 			}
-			if (this.computedZIndex) {
-				style.zIndex = this.computedZIndex
+			if (this.cmpZIndex) {
+				style.zIndex = this.cmpZIndex
 			}
 			return style
 		}
 	},
 	mounted() {
-		this.init(this)
+		this.__init(this)
 		this.enter()
 	},
 	methods: {
@@ -83,7 +83,6 @@ export default {
 		enter() {
 			this.removeTransition()
 			this.$refs.bar.style.width = 0
-			const width = this.$refs.bar.offsetWidth
 			this.addTransition('enter')
 			this.$refs.bar.style.width = window.innerWidth * 0.9 + 'px'
 			this.$refs.bar.style.opacity = 1
@@ -98,7 +97,7 @@ export default {
 			this.$refs.bar.style.opacity = 0
 			this.timer = setTimeout(() => {
 				//执行移除方法
-				this.remove()
+				this.__remove()
 			}, this.widthLeaveTime + this.opacityTime)
 		},
 		//添加动画

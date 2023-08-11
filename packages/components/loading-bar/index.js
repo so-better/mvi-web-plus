@@ -28,11 +28,11 @@ const LoadingBar = {
 			document.body.appendChild(mountNode)
 			const instance = createApp(LoadingBarComponent, {
 				...opts,
-				init: vm => {
+				__init: vm => {
 					//获取组件实例进行保存
 					LoadingBar.$vm = vm
 				},
-				remove: () => {
+				__remove: () => {
 					instance.unmount()
 					mountNode.remove()
 					resolve()

@@ -1,5 +1,5 @@
 <template>
-	<div :class="['mvi-swiper-container', vertical ? 'mvi-swiper-vertical' : '']" :style="containerStyle">
+	<div :class="['mvi-swiper-container', vertical ? 'vertical' : '']" :style="containerStyle">
 		<div v-if="fade" class="mvi-swiper-fade">
 			<slot></slot>
 		</div>
@@ -9,13 +9,13 @@
 		<slot name="indicators" :active="indicatorsIndex" :total="indicatorsTotal" v-if="$slots.indicators"></slot>
 		<div v-else-if="showIndicators" class="mvi-swiper-indicators">
 			<template v-for="(item, index) in children">
-				<div :class="['mvi-swiper-indicator', isIndicatorActive(index) ? 'mvi-swiper-indicator-active' : '']" :style="indicatorStyle(index)" :key="'indicator-' + index" v-if="indicatorShow(index)" @click="slideTo(fade ? index : loop ? index - 1 : index)"></div>
+				<div :class="['mvi-swiper-indicator', isIndicatorActive(index) ? 'active' : '']" :style="indicatorStyle(index)" :key="'indicator-' + index" v-if="indicatorShow(index)" @click="slideTo(fade ? index : loop ? index - 1 : index)"></div>
 			</template>
 		</div>
-		<div :class="controlsClass" v-if="showControl" :style="controlStyle(0)" @click="slidePrev">
+		<div class="mvi-swiper-control" v-if="showControl" :style="controlStyle(0)" @click="slidePrev">
 			<Icon type="angle-left" />
 		</div>
-		<div :class="controlsClass" v-if="showControl" :style="controlStyle(1)" @click="slideNext">
+		<div class="mvi-swiper-control" v-if="showControl" :style="controlStyle(1)" @click="slideNext">
 			<Icon type="angle-right" />
 		</div>
 	</div>
@@ -27,6 +27,12 @@ import { Dap } from '../dap'
 import { Icon } from '../icon'
 export default {
 	name: 'm-swiper',
+	provide() {
+		return {
+			swiper: this
+		}
+	},
+	emits: ['before-change', 'change'],
 	data() {
 		return {
 			//组件元素
@@ -125,23 +131,12 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		//控制器额外样式
-		controlClass: {
-			type: String,
-			default: null
-		},
 		//是否使用渐变效果
 		fade: {
 			type: Boolean,
 			default: false
 		}
 	},
-	provide() {
-		return {
-			swiper: this
-		}
-	},
-	emits: ['before-change', 'change'],
 	computed: {
 		//指示器样式
 		indicatorStyle() {
@@ -256,7 +251,7 @@ export default {
 			return index
 		},
 		//初始化默认索引(非fade)
-		computedInitalSlide() {
+		cmpInitalSlide() {
 			if (this.loop) {
 				if (this.initialSlide < this.children.length - 2) {
 					return this.initialSlide + 1
@@ -284,48 +279,35 @@ export default {
 				return style
 			}
 		},
-		//控制器类
-		controlsClass() {
-			let cls = ['mvi-swiper-control']
-			if (this.controlClass) {
-				cls.push(this.controlClass)
-			}
-			return cls
-		},
 		//是否显示具体的每个指示器(区分slide和fade)
 		indicatorShow() {
 			return index => {
 				if (this.fade) {
 					return true
-				} else {
-					return this.loop ? index != 0 && index != this.children.length - 1 : true
 				}
+				return this.loop ? index != 0 && index != this.children.length - 1 : true
 			}
 		},
 		//分页器总数
 		indicatorsTotal() {
 			if (this.fade) {
 				return this.children.length
-			} else {
-				if (this.loop) {
-					return this.children.length - 2 > 0 ? this.children.length - 2 : 0
-				} else {
-					return this.children.length
-				}
 			}
+			if (this.loop) {
+				return this.children.length - 2 > 0 ? this.children.length - 2 : 0
+			}
+			return this.children.length
 		},
 		//判断分页器是否激活
 		isIndicatorActive() {
 			return index => {
 				if (this.fade) {
 					return this.indicatorsIndex == index
-				} else {
-					if (this.loop) {
-						return this.indicatorsIndex + 1 == index
-					} else {
-						return this.indicatorsIndex == index
-					}
 				}
+				if (this.loop) {
+					return this.indicatorsIndex + 1 == index
+				}
+				return this.indicatorsIndex == index
 			}
 		}
 	},
@@ -333,10 +315,10 @@ export default {
 		Icon
 	},
 	watch: {
-		autoplay(newValue, oldValue) {
+		autoplay() {
 			this.setAutoplay()
 		},
-		initialSlide(newValue, oldValue) {
+		initialSlide(newValue) {
 			if (this.fade) {
 				this.useOpacity = false
 				this.fadeActiveIndex = newValue
@@ -359,7 +341,6 @@ export default {
 	},
 	mounted() {
 		this.elm = this.$el
-
 		if (this.children.length == 0) {
 			return
 		}
@@ -587,7 +568,7 @@ export default {
 					return
 				}
 				this.removeTransition().then(() => {
-					this.transform = -Dap.number.mutiply(this.computedInitalSlide, this.slideSize)
+					this.transform = -Dap.number.mutiply(this.cmpInitalSlide, this.slideSize)
 					this.$nextTick(() => {
 						setTimeout(() => {
 							if (!this.$refs.wrapper) {
@@ -679,138 +660,6 @@ export default {
 				}
 			})
 		},
-		//跳转到下一个轮播(区分slide和fade)
-		slideNext() {
-			return new Promise((resolve, reject) => {
-				if (this.children.length == 0) {
-					resolve()
-					return
-				}
-				if (this.fade) {
-					if (this.loop) {
-						this.$emit('before-change', this.fadeActiveIndex)
-						//最后一个
-						if (this.fadeActiveIndex == this.children.length - 1) {
-							this.fadeActiveIndex = 0 //变为第一个
-						} else {
-							this.fadeActiveIndex++
-						}
-						if (this.timer) {
-							clearInterval(this.timer)
-							this.timer = null
-						}
-						setTimeout(() => {
-							this.$emit('change', this.fadeActiveIndex)
-							this.setAutoplay()
-							resolve()
-						}, this.speed)
-					} else {
-						//不是最后一个
-						if (this.fadeActiveIndex != this.children.length - 1) {
-							this.$emit('before-change', this.fadeActiveIndex)
-							this.fadeActiveIndex++
-							if (this.timer) {
-								clearInterval(this.timer)
-								this.timer = null
-							}
-							setTimeout(() => {
-								this.$emit('change', this.fadeActiveIndex)
-								this.setAutoplay()
-								resolve()
-							}, this.speed)
-						} else {
-							resolve()
-						}
-					}
-				} else {
-					if (this.transform <= -Dap.number.mutiply(this.children.length - 1, this.slideSize)) {
-						resolve()
-						return
-					}
-					this.apiDoSlide = true
-					this.$emit('before-change', this.oldIndex)
-					if (this.timer) {
-						clearInterval(this.timer)
-						this.timer = null
-					}
-					this.addTransition().then(() => {
-						this.transform = Dap.number.subtract(this.transform, this.slideSize)
-						setTimeout(() => {
-							this.slideDone().then(() => {
-								this.apiDoSlide = false
-								resolve()
-							})
-						}, this.speed)
-					})
-				}
-			})
-		},
-		//跳转到上一个轮播(区分slide和fade)
-		slidePrev() {
-			return new Promise((resolve, reject) => {
-				if (this.children.length == 0) {
-					resolve()
-					return
-				}
-				if (this.fade) {
-					if (this.loop) {
-						this.$emit('before-change', this.fadeActiveIndex)
-						//第一个
-						if (this.fadeActiveIndex == 0) {
-							this.fadeActiveIndex = this.children.length - 1 //变为最后一个
-						} else {
-							this.fadeActiveIndex--
-						}
-						if (this.timer) {
-							clearInterval(this.timer)
-							this.timer = null
-						}
-						setTimeout(() => {
-							this.$emit('change', this.fadeActiveIndex)
-							this.setAutoplay()
-							resolve()
-						}, this.speed)
-					} else {
-						//不是第一个
-						if (this.fadeActiveIndex != 0) {
-							this.$emit('before-change', this.fadeActiveIndex)
-							this.fadeActiveIndex--
-							if (this.timer) {
-								clearInterval(this.timer)
-								this.timer = null
-							}
-							setTimeout(() => {
-								this.$emit('change', this.fadeActiveIndex)
-								this.setAutoplay()
-								resolve()
-							}, this.speed)
-						} else {
-							resolve()
-						}
-					}
-				} else {
-					if (this.transform >= 0) {
-						resolve()
-						return
-					}
-					this.apiDoSlide = true
-					this.$emit('before-change', this.oldIndex)
-					if (this.timer) {
-						clearInterval(this.timer)
-						this.timer = null
-					}
-					this.addTransition().then(() => {
-						this.transform = Dap.number.add(this.transform, this.slideSize)
-						setTimeout(() => {
-							this.slideDone().then(() => {
-								this.apiDoSlide = false
-								resolve()
-							})
-						}, this.speed)
-					})
-				}
-			})
-		},
 		//+1取整(非fade)
 		mathNext(number) {
 			const num = Math.floor(number) //取整
@@ -831,7 +680,7 @@ export default {
 				return num + 1
 			}
 		},
-		//跳转指定的slide(区分slide和fade)
+		//api：跳转指定的slide(区分slide和fade)
 		slideTo(index) {
 			return new Promise((resolve, reject) => {
 				if (this.children.length == 0) {
@@ -905,6 +754,138 @@ export default {
 					}
 				}
 			})
+		},
+		//api：跳转到下一个轮播(区分slide和fade)
+		slideNext() {
+			return new Promise((resolve, reject) => {
+				if (this.children.length == 0) {
+					resolve()
+					return
+				}
+				if (this.fade) {
+					if (this.loop) {
+						this.$emit('before-change', this.fadeActiveIndex)
+						//最后一个
+						if (this.fadeActiveIndex == this.children.length - 1) {
+							this.fadeActiveIndex = 0 //变为第一个
+						} else {
+							this.fadeActiveIndex++
+						}
+						if (this.timer) {
+							clearInterval(this.timer)
+							this.timer = null
+						}
+						setTimeout(() => {
+							this.$emit('change', this.fadeActiveIndex)
+							this.setAutoplay()
+							resolve()
+						}, this.speed)
+					} else {
+						//不是最后一个
+						if (this.fadeActiveIndex != this.children.length - 1) {
+							this.$emit('before-change', this.fadeActiveIndex)
+							this.fadeActiveIndex++
+							if (this.timer) {
+								clearInterval(this.timer)
+								this.timer = null
+							}
+							setTimeout(() => {
+								this.$emit('change', this.fadeActiveIndex)
+								this.setAutoplay()
+								resolve()
+							}, this.speed)
+						} else {
+							resolve()
+						}
+					}
+				} else {
+					if (this.transform <= -Dap.number.mutiply(this.children.length - 1, this.slideSize)) {
+						resolve()
+						return
+					}
+					this.apiDoSlide = true
+					this.$emit('before-change', this.oldIndex)
+					if (this.timer) {
+						clearInterval(this.timer)
+						this.timer = null
+					}
+					this.addTransition().then(() => {
+						this.transform = Dap.number.subtract(this.transform, this.slideSize)
+						setTimeout(() => {
+							this.slideDone().then(() => {
+								this.apiDoSlide = false
+								resolve()
+							})
+						}, this.speed)
+					})
+				}
+			})
+		},
+		//api：跳转到上一个轮播(区分slide和fade)
+		slidePrev() {
+			return new Promise((resolve, reject) => {
+				if (this.children.length == 0) {
+					resolve()
+					return
+				}
+				if (this.fade) {
+					if (this.loop) {
+						this.$emit('before-change', this.fadeActiveIndex)
+						//第一个
+						if (this.fadeActiveIndex == 0) {
+							this.fadeActiveIndex = this.children.length - 1 //变为最后一个
+						} else {
+							this.fadeActiveIndex--
+						}
+						if (this.timer) {
+							clearInterval(this.timer)
+							this.timer = null
+						}
+						setTimeout(() => {
+							this.$emit('change', this.fadeActiveIndex)
+							this.setAutoplay()
+							resolve()
+						}, this.speed)
+					} else {
+						//不是第一个
+						if (this.fadeActiveIndex != 0) {
+							this.$emit('before-change', this.fadeActiveIndex)
+							this.fadeActiveIndex--
+							if (this.timer) {
+								clearInterval(this.timer)
+								this.timer = null
+							}
+							setTimeout(() => {
+								this.$emit('change', this.fadeActiveIndex)
+								this.setAutoplay()
+								resolve()
+							}, this.speed)
+						} else {
+							resolve()
+						}
+					}
+				} else {
+					if (this.transform >= 0) {
+						resolve()
+						return
+					}
+					this.apiDoSlide = true
+					this.$emit('before-change', this.oldIndex)
+					if (this.timer) {
+						clearInterval(this.timer)
+						this.timer = null
+					}
+					this.addTransition().then(() => {
+						this.transform = Dap.number.add(this.transform, this.slideSize)
+						setTimeout(() => {
+							this.slideDone().then(() => {
+								this.apiDoSlide = false
+								resolve()
+							})
+						}, this.speed)
+					})
+				}
+			})
 		}
 	},
 	beforeUnmount() {
@@ -930,92 +911,85 @@ export default {
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
-}
 
-.mvi-swiper-fade {
-	display: block;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-	position: relative;
-}
+	.mvi-swiper-fade {
+		display: block;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		position: relative;
+	}
 
-.mvi-swiper-wrapper {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: flex-start;
-	align-items: center;
-	height: 100%;
-	width: auto;
-}
+	.mvi-swiper-wrapper {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-start;
+		align-items: center;
+		height: 100%;
+		width: auto;
+	}
 
-.mvi-swiper-container.mvi-swiper-vertical > .mvi-swiper-wrapper {
-	width: 100%;
-	height: auto;
-	flex-direction: column;
-	-ms-flex-direction: column;
-	-webkit-flex-direction: column;
-}
+	.mvi-swiper-indicators {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-start;
+		position: absolute;
+		left: 50%;
+		top: auto;
+		bottom: @mp-xs;
+		transform: translateX(-50%);
+		-webkit-transform: translateX(-50%);
+		z-index: 20;
 
-.mvi-swiper-indicators {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: flex-start;
-	position: absolute;
-	left: 50%;
-	top: auto;
-	bottom: @mp-xs;
-	transform: translateX(-50%);
-	-webkit-transform: translateX(-50%);
-	z-index: 20;
-}
+		.mvi-swiper-indicator {
+			display: block;
+			width: 0.15rem;
+			height: 0.15rem;
+			border-radius: @radius-circle;
+			background-color: @bg-color-dark;
+			margin-right: @mp-xs;
+			cursor: pointer;
 
-.mvi-swiper-indicator {
-	display: block;
-	width: 0.15rem;
-	height: 0.15rem;
-	border-radius: @radius-circle;
-	background-color: @bg-color-dark;
-	margin-right: @mp-xs;
-	cursor: pointer;
-}
+			&:last-child {
+				margin-right: 0;
+			}
 
-.mvi-swiper-indicator:last-child {
-	margin-right: 0;
-}
+			&.active {
+				background-color: @info-normal;
+			}
+		}
+	}
 
-.mvi-swiper-indicators.mvi-swiper-indicators-vertical > .mvi-swiper-indicator {
-	margin-right: 0;
-	margin-bottom: @mp-xs;
-}
+	&.vertical {
+		.mvi-swiper-wrapper {
+			width: 100%;
+			height: auto;
+			flex-direction: column;
+			-ms-flex-direction: column;
+			-webkit-flex-direction: column;
+		}
+	}
 
-.mvi-swiper-indicators.mvi-swiper-indicators-vertical > .mvi-swiper-indicator.mvi-swiper-indicator:last-child {
-	margin-bottom: 0;
-}
+	.mvi-swiper-control {
+		position: absolute;
+		display: flex;
+		display: -webkit-flex;
+		justify-content: center;
+		align-items: center;
+		border-radius: 0;
+		z-index: 20;
+		width: 0.8rem;
+		height: 0.8rem;
+		color: #fff;
+		background-color: rgba(10, 20, 30, 0.5);
+		top: 50%;
+		transform: translateY(-50%);
+		-webkit-transform: translateY(-50%);
+		cursor: pointer;
 
-.mvi-swiper-indicator.mvi-swiper-indicator-active {
-	background-color: @info-normal;
-}
-
-.mvi-swiper-control {
-	position: absolute;
-	display: flex;
-	display: -webkit-flex;
-	justify-content: center;
-	align-items: center;
-	border-radius: 0;
-	z-index: 20;
-	width: 0.8rem;
-	height: 0.8rem;
-	color: #fff;
-	background-color: rgba(10, 20, 30, 0.5);
-	top: 50%;
-	transform: translateY(-50%);
-	-webkit-transform: translateY(-50%);
-	cursor: pointer;
-
-	&:active::before {
-		.mvi-active();
+		&:active::before {
+			.mvi-active();
+		}
 	}
 }
 </style>
