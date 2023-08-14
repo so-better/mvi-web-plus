@@ -21,13 +21,13 @@ const Msgbox = {
 
 	//弹窗调用
 	msgbox: options => {
-		return new Promise((resolve, reject) => {
+		return new Promise(resolve => {
 			let opts = Msgbox.initParams(options)
 			let mountNode = Dap.element.string2dom('<div></div>')
 			document.body.appendChild(mountNode)
 			const instance = createApp(MsgboxComponent, {
 				...opts,
-				remove: () => {
+				__remove: () => {
 					instance.unmount()
 					mountNode.remove()
 					resolve()

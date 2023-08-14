@@ -1,10 +1,12 @@
 <template>
 	<div class="mvi-pull-refresh">
 		<div ref="container" class="mvi-pull-refresh-container" :style="containerStyle">
-			<div ref="el" class="mvi-pull-refresh-el" :style="elStyle">
+			<div ref="el" class="mvi-pull-refresh-el">
 				<slot name="el" v-if="$slots.el" :status="status"></slot>
-				<Icon v-if="!$slots.el" :type="icon.type" :spin="icon.spin" :url="icon.url" :size="icon.size" :color="icon.color" />
-				<span v-if="!$slots.el" class="mvi-pull-refresh-text" v-text="message"></span>
+				<template v-else>
+					<Icon :type="icon.type" :spin="icon.spin" :url="icon.url" :size="icon.size" :color="icon.color" />
+					<span class="mvi-pull-refresh-text" v-text="message"></span>
+				</template>
 			</div>
 			<div ref="wrapper" class="mvi-pull-refresh-wrapper" @touchstart="startPull" @touchmove="onPull" @touchend="pulled" @mousedown="startPull2" :style="wrapperStyle">
 				<slot></slot>
@@ -70,47 +72,27 @@ export default {
 		//下拉图标
 		pullingIcon: {
 			type: [String, Object],
-			default: null
+			default: 'arrow-down'
 		},
 		//释放图标
 		loosingIcon: {
 			type: [String, Object],
-			default: null
+			default: 'arrow-up'
 		},
 		//刷新图标
 		loadingIcon: {
 			type: [String, Object],
-			default: null
+			default: function () {
+				return {
+					type: 'load-e',
+					spin: true
+				}
+			}
 		},
 		//是否禁用
 		disabled: {
 			type: Boolean,
 			default: false
-		},
-		//颜色
-		color: {
-			type: String,
-			default: null
-		},
-		//下拉颜色
-		pullingColor: {
-			type: String,
-			default: null
-		},
-		//释放颜色
-		loosingColor: {
-			type: String,
-			default: null
-		},
-		//刷新颜色
-		loadingColor: {
-			type: String,
-			default: null
-		},
-		//层级
-		zIndex: {
-			type: Number,
-			default: 4000
 		},
 		//下拉触发刷新的距离值
 		distance: {
@@ -120,209 +102,73 @@ export default {
 	},
 	computed: {
 		containerStyle() {
-			let style = {}
-			style.height = `calc(100% + ${this.elHeight}px)`
-			style.transform = `translateY(${this.translateY}px)`
+			let style = {
+				height: `calc(100% + ${this.elHeight}px)`,
+				transform: `translateY(${this.translateY}px)`
+			}
 			return style
 		},
 		wrapperStyle() {
-			let style = {}
-			style.height = this.rootHeight + 'px'
+			let style = {
+				height: this.rootHeight + 'px'
+			}
 			if (this.disableScroll) {
 				style.overflowY = 'hidden'
 			}
 			return style
 		},
-		elStyle() {
-			let style = {}
-			if (this.color) {
-				style.color = this.color
-			}
-			if (this.pullingColor && this.status == 0) {
-				style.color = this.pullingColor
-			} else if (this.loosingColor && this.status == 1) {
-				style.color = this.loosingColor
-			} else if (this.loadingColor && this.status == 2) {
-				style.color = this.loadingColor
-			}
-			return style
-		},
 		icon() {
 			if (this.status == 0) {
-				return {
-					type: this.pullingIconType,
-					spin: this.pullingIconSpin,
-					url: this.pullingIconUrl,
-					size: this.pullingIconSize,
-					color: this.pullingIconColor
-				}
-			} else if (this.status == 1) {
-				return {
-					type: this.loosingIconType,
-					spin: this.loosingIconSpin,
-					url: this.loosingIconUrl,
-					size: this.loosingIconSize,
-					color: this.loosingIconColor
-				}
-			} else if (this.status == 2) {
-				return {
-					type: this.loadingIconType,
-					spin: this.loadingIconSpin,
-					url: this.loadingIconUrl,
-					size: this.loadingIconSize,
-					color: this.loadingIconColor
-				}
+				return this.parseIcon(this.pullingIcon)
+			}
+			if (this.status == 1) {
+				return this.parseIcon(this.loosingIcon)
+			}
+			if (this.status == 2) {
+				return this.parseIcon(this.loadingIcon)
 			}
 		},
 		message() {
 			if (this.status == 0) {
 				return this.pullingText
-			} else if (this.status == 1) {
+			}
+			if (this.status == 1) {
 				return this.loosingText
-			} else if (this.status == 2) {
+			}
+			if (this.status == 2) {
 				return this.loadingText
 			}
 		},
-		pullingIconType() {
-			let type = 'arrow-down'
-			if (Dap.common.isObject(this.pullingIcon)) {
-				if (typeof this.pullingIcon.type == 'string') {
-					type = this.pullingIcon.type
+		parseIcon() {
+			return param => {
+				let icon = {
+					spin: false,
+					type: null,
+					url: null,
+					color: null,
+					size: null
 				}
-			} else if (typeof this.pullingIcon == 'string') {
-				type = this.pullingIcon
-			}
-			return type
-		},
-		pullingIconUrl() {
-			let url = null
-			if (Dap.common.isObject(this.pullingIcon)) {
-				if (typeof this.pullingIcon.url == 'string') {
-					url = this.pullingIcon.url
+				if (Dap.common.isObject(param)) {
+					if (typeof param.spin == 'boolean') {
+						icon.spin = param.spin
+					}
+					if (typeof param.type == 'string') {
+						icon.type = param.type
+					}
+					if (typeof param.url == 'string') {
+						icon.url = param.url
+					}
+					if (typeof param.color == 'string') {
+						icon.color = param.color
+					}
+					if (typeof param.size == 'string') {
+						icon.size = param.size
+					}
+				} else if (typeof param == 'string') {
+					icon.type = param
 				}
+				return icon
 			}
-			return url
-		},
-		pullingIconSpin() {
-			let spin = false
-			if (Dap.common.isObject(this.pullingIcon)) {
-				if (typeof this.pullingIcon.spin == 'boolean') {
-					spin = this.pullingIcon.spin
-				}
-			}
-			return spin
-		},
-		pullingIconSize() {
-			let size = null
-			if (Dap.common.isObject(this.pullingIcon)) {
-				if (typeof this.pullingIcon.size == 'string') {
-					size = this.pullingIcon.size
-				}
-			}
-			return size
-		},
-		pullingIconColor() {
-			let color = null
-			if (Dap.common.isObject(this.pullingIcon)) {
-				if (typeof this.pullingIcon.color == 'string') {
-					color = this.pullingIcon.color
-				}
-			}
-			return color
-		},
-		loosingIconType() {
-			let type = 'arrow-up'
-			if (Dap.common.isObject(this.loosingIcon)) {
-				if (typeof this.loosingIcon.type == 'string') {
-					type = this.loosingIcon.type
-				}
-			} else if (typeof this.loosingIcon == 'string') {
-				type = this.loosingIcon
-			}
-			return type
-		},
-		loosingIconUrl() {
-			let url = null
-			if (Dap.common.isObject(this.loosingIcon)) {
-				if (typeof this.loosingIcon.url == 'string') {
-					url = this.loosingIcon.url
-				}
-			}
-			return url
-		},
-		loosingIconSpin() {
-			let spin = false
-			if (Dap.common.isObject(this.loosingIcon)) {
-				if (typeof this.loosingIcon.spin == 'boolean') {
-					spin = this.loosingIcon.spin
-				}
-			}
-			return spin
-		},
-		loosingIconSize() {
-			let size = null
-			if (Dap.common.isObject(this.loosingIcon)) {
-				if (typeof this.loosingIcon.size == 'string') {
-					size = this.loosingIcon.size
-				}
-			}
-			return size
-		},
-		loosingIconColor() {
-			let color = null
-			if (Dap.common.isObject(this.loosingIcon)) {
-				if (typeof this.loosingIcon.color == 'string') {
-					color = this.loosingIcon.color
-				}
-			}
-			return color
-		},
-		loadingIconType() {
-			let type = 'load-e'
-			if (Dap.common.isObject(this.loadingIcon)) {
-				if (typeof this.loadingIcon.type == 'string') {
-					type = this.loadingIcon.type
-				}
-			} else if (typeof this.loadingIcon == 'string') {
-				type = this.loadingIcon
-			}
-			return type
-		},
-		loadingIconUrl() {
-			let url = null
-			if (Dap.common.isObject(this.loadingIcon)) {
-				if (typeof this.loadingIcon.url == 'string') {
-					url = this.loadingIcon.url
-				}
-			}
-			return url
-		},
-		loadingIconSpin() {
-			let spin = true
-			if (Dap.common.isObject(this.loadingIcon)) {
-				if (typeof this.loadingIcon.spin == 'boolean') {
-					spin = this.loadingIcon.spin
-				}
-			}
-			return spin
-		},
-		loadingIconSize() {
-			let size = null
-			if (Dap.common.isObject(this.loadingIcon)) {
-				if (typeof this.loadingIcon.size == 'string') {
-					size = this.loadingIcon.size
-				}
-			}
-			return size
-		},
-		loadingIconColor() {
-			let color = null
-			if (Dap.common.isObject(this.loadingIcon)) {
-				if (typeof this.loadingIcon.color == 'string') {
-					color = this.loadingIcon.color
-				}
-			}
-			return color
 		}
 	},
 	components: {
@@ -342,7 +188,7 @@ export default {
 		Dap.event.on(document.documentElement, `mouseup.pullRefresh_${this.uid}`, this.pulled2)
 	},
 	watch: {
-		modelValue(newValue) {
+		modelValue() {
 			this.changeStatus()
 		}
 	},
@@ -402,7 +248,7 @@ export default {
 			}
 			//内部含有滚动条元素且滚动条不在顶部时阻塞
 			let el = this.getScrollEl(event.target)
-			if (el != this.$refs.wrapper && Dap.element.getScrollTop(el) > 0) {
+			if (!el.isEqualNode(this.$refs.wrapper) && Dap.element.getScrollTop(el) > 0) {
 				this.firstStartY = this.startY
 				return
 			}
@@ -452,7 +298,7 @@ export default {
 			}
 			//内部含有滚动条元素且滚动条不在顶部时阻塞
 			let el = this.getScrollEl(event.target)
-			if (el != this.$refs.wrapper && Dap.element.getScrollTop(el) > 0) {
+			if (!el.isEqualNode(this.$refs.wrapper) && Dap.element.getScrollTop(el) > 0) {
 				this.firstStartY = this.startY
 				return
 			}
@@ -479,7 +325,7 @@ export default {
 			this.translateY = y
 		},
 		//下拉结束释放(移动端)
-		pulled(event) {
+		pulled() {
 			if (this.disabled) {
 				return
 			}
@@ -491,7 +337,7 @@ export default {
 			}
 		},
 		//下拉结束释放(PC端)
-		pulled2(event) {
+		pulled2() {
 			if (!this.mouseDown || this.disabled) {
 				return
 			}
@@ -549,8 +395,8 @@ export default {
 		},
 		//获取触摸元素最近的滚动容器
 		getScrollEl(el) {
-			if (el === this.$el) {
-				return this.$el
+			if (el.isEqualNode(this.$refs.wrapper) || !Dap.element.isContains(this.$refs.wrapper, el)) {
+				return this.$refs.wrapper
 			}
 			if (Dap.element.getScrollHeight(el) > el.clientHeight) {
 				return el
@@ -579,27 +425,27 @@ export default {
 		width: 100%;
 		position: relative;
 		overflow: hidden;
-	}
 
-	.mvi-pull-refresh-wrapper {
-		display: block;
-		position: relative;
-		width: 100%;
-		overflow-x: hidden;
-		overflow-y: auto;
-	}
+		.mvi-pull-refresh-wrapper {
+			display: block;
+			position: relative;
+			width: 100%;
+			overflow-x: hidden;
+			overflow-y: auto;
+		}
 
-	.mvi-pull-refresh-el {
-		display: flex;
-		display: -webkit-flex;
-		justify-content: center;
-		align-items: center;
-		color: @font-color-sub;
-		width: 100%;
-		padding: @mp-lg 0;
+		.mvi-pull-refresh-el {
+			display: flex;
+			display: -webkit-flex;
+			justify-content: center;
+			align-items: center;
+			color: @font-color-sub;
+			width: 100%;
+			padding: @mp-lg 0;
 
-		.mvi-pull-refresh-text {
-			margin-left: @mp-xs;
+			.mvi-pull-refresh-text {
+				margin-left: @mp-xs;
+			}
 		}
 	}
 }

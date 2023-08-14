@@ -1,10 +1,10 @@
 <template>
 	<teleport to="body">
 		<transition name="mvi-notify" @after-leave="afterLeave" @after-enter="afterEnter">
-			<div v-show="show" :class="['mvi-notify', 'mvi-notify-' + computedType]" :style="notifyStyle">
+			<div v-show="show" :class="['mvi-notify', cmpType]" :style="notifyStyle">
 				<div class="mvi-notify-content">
-					<Icon v-if="iconType || iconUrl" :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor" />
-					<span v-text="computedMessage"></span>
+					<Icon v-if="parseIcon(icon).type || parseIcon(icon).url" :type="parseIcon(icon).type" :url="parseIcon(icon).url" :spin="parseIcon(icon).spin" :size="parseIcon(icon).size" :color="parseIcon(icon).color" />
+					<span v-text="cmpMessage"></span>
 				</div>
 			</div>
 		</transition>
@@ -61,14 +61,14 @@ export default {
 			default: null
 		},
 		//移除方法
-		remove: {
+		__remove: {
 			type: Function,
 			default: function () {
 				return function () {}
 			}
 		},
 		//初始化方法
-		init: {
+		__init: {
 			type: Function,
 			default: function () {
 				return function () {}
@@ -77,117 +77,93 @@ export default {
 	},
 	computed: {
 		//类型
-		computedType() {
+		cmpType() {
 			let arr = ['success', 'info', 'primary', 'error', 'warn']
 			if (arr.includes(this.type)) {
 				return this.type
-			} else {
-				return 'success'
 			}
+			return 'success'
 		},
 		//消息文本
-		computedMessage() {
+		cmpMessage() {
 			if (typeof this.message == 'string') {
 				return this.message
-			} else if (Dap.common.isObject(this.message)) {
-				return JSON.stringify(this.message)
-			} else {
-				return String(this.message)
 			}
+			if (Dap.common.isObject(this.message)) {
+				return JSON.stringify(this.message)
+			}
+			return String(this.message)
 		},
 		//自定义文字颜色
-		computedColor() {
+		cmpColor() {
 			if (typeof this.color == 'string') {
 				return this.color
-			} else {
-				return null
 			}
+			return null
 		},
 		//自定义背景色
-		computedBackground() {
+		cmpBackground() {
 			if (typeof this.background == 'string') {
 				return this.background
-			} else {
-				return null
 			}
+			return null
 		},
 		//自定义zIndex
-		computedZIndex() {
+		cmpZIndex() {
 			if (Dap.number.isNumber(this.zIndex)) {
 				return this.zIndex
-			} else {
-				return 1100
 			}
+			return 1100
 		},
 		//自动关闭时间
-		computedTimeout() {
-			if (Dap.number.isNumber(this.timeout) && this.timeout > 0) {
+		cmpTimeout() {
+			if (Dap.number.isNumber(this.timeout)) {
 				return this.timeout
-			} else {
-				return 1500
 			}
+			return 1500
 		},
-		//图标类型
-		iconType() {
-			let type = null
-			if (Dap.common.isObject(this.icon)) {
-				if (typeof this.icon.type == 'string') {
-					type = this.icon.type
+		//转换图标
+		parseIcon() {
+			return param => {
+				let icon = {
+					spin: false,
+					type: null,
+					url: null,
+					color: null,
+					size: null
 				}
-			} else if (typeof this.icon == 'string') {
-				type = this.icon
-			}
-			return type
-		},
-		//图标url
-		iconUrl() {
-			let url = null
-			if (Dap.common.isObject(this.icon)) {
-				if (typeof this.icon.url == 'string') {
-					url = this.icon.url
+				if (Dap.common.isObject(param)) {
+					if (typeof param.spin == 'boolean') {
+						icon.spin = param.spin
+					}
+					if (typeof param.type == 'string') {
+						icon.type = param.type
+					}
+					if (typeof param.url == 'string') {
+						icon.url = param.url
+					}
+					if (typeof param.color == 'string') {
+						icon.color = param.color
+					}
+					if (typeof param.size == 'string') {
+						icon.size = param.size
+					}
+				} else if (typeof param == 'string') {
+					icon.type = param
 				}
+				return icon
 			}
-			return url
-		},
-		//图标是否旋转
-		iconSpin() {
-			let spin = false
-			if (Dap.common.isObject(this.icon)) {
-				if (typeof this.icon.spin == 'boolean') {
-					spin = this.icon.spin
-				}
-			}
-			return spin
-		},
-		//图标大小
-		iconSize() {
-			let size = null
-			if (Dap.common.isObject(this.icon)) {
-				if (typeof this.icon.size == 'string') {
-					size = this.icon.size
-				}
-			}
-			return size
-		},
-		//图标颜色
-		iconColor() {
-			let color = null
-			if (Dap.common.isObject(this.icon)) {
-				if (typeof this.icon.color == 'string') {
-					color = this.icon.color
-				}
-			}
-			return color
 		},
 		//通知样式
 		notifyStyle() {
-			let style = {}
-			style.zIndex = this.computedZIndex
-			if (this.computedBackground) {
-				style.backgroundColor = this.computedBackground
+			let style = {
+				zIndex: this.cmpZIndex
 			}
-			if (this.computedColor) {
-				style.color = this.computedColor
+			if (this.cmpBackground) {
+				style.backgroundColor = this.cmpBackground
+			}
+			if (this.cmpColor) {
+				style.color = this.cmpColor
 			}
 			return style
 		}
@@ -197,21 +173,21 @@ export default {
 	},
 	mounted() {
 		this.show = true
-		this.init(this)
+		this.__init(this)
 	},
 	methods: {
 		//完全显示后
-		afterEnter(el) {
-			if (this.computedTimeout > 0) {
+		afterEnter() {
+			if (this.cmpTimeout > 0) {
 				this.timer = setTimeout(() => {
 					this.show = false
-				}, this.computedTimeout)
+				}, this.cmpTimeout)
 			}
 		},
 		//完全隐藏后
-		afterLeave(el) {
+		afterLeave() {
 			this.clearTimer()
-			this.remove()
+			this.__remove()
 		},
 		//清除计时器
 		clearTimer() {
@@ -239,45 +215,45 @@ export default {
 	left: 0;
 	margin: 0;
 	padding: 0 @mp-sm;
-}
 
-.mvi-notify-success {
-	background-color: @success-normal;
-	color: #fff;
-}
-
-.mvi-notify-info {
-	background-color: @info-normal;
-	color: #fff;
-}
-
-.mvi-notify-primary {
-	background-color: @primary-normal;
-	color: #fff;
-}
-
-.mvi-notify-error {
-	background-color: @error-normal;
-	color: #fff;
-}
-
-.mvi-notify-warn {
-	background-color: @warn-normal;
-	color: #fff;
-}
-
-.mvi-notify-content {
-	display: block;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-
-	& > .mvi-icon {
-		margin-right: @mp-sm;
+	&.success {
+		background-color: @success-normal;
+		color: #fff;
 	}
 
-	& > span {
-		vertical-align: middle;
+	&.info {
+		background-color: @info-normal;
+		color: #fff;
+	}
+
+	&.primary {
+		background-color: @primary-normal;
+		color: #fff;
+	}
+
+	&.error {
+		background-color: @error-normal;
+		color: #fff;
+	}
+
+	&.warn {
+		background-color: @warn-normal;
+		color: #fff;
+	}
+
+	.mvi-notify-content {
+		display: block;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+
+		& > .mvi-icon {
+			margin-right: @mp-sm;
+		}
+
+		& > span {
+			vertical-align: middle;
+		}
 	}
 }
 

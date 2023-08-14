@@ -1,14 +1,14 @@
 <template>
-	<Overlay ref="overlay" :model-value="show" @show="overlayShow" @hide="overlayHide" :z-index="zIndex" :color="overlayColor" :timeout="timeout" @click.self="hide" :mount-el="mountEl" :use-padding="usePadding">
+	<Overlay ref="overlay" v-model="cmpShow" @show="overlayShow" @hide="overlayHide" :z-index="zIndex" :color="overlayColor" :closable="closable" :timeout="timeout" :mount-el="mountEl" :use-padding="usePadding">
 		<transition name="mvi-keyboard" @before-enter="beforeEnter" @after-enter="afterEnter" @before-leave="beforeLeave" @after-leave="afterLeave" @leave="leave" @enter="enter">
 			<div ref="keyboard" class="mvi-number-keyboard" v-if="firstShow" v-show="keyboardShow" :style="boardStyle" v-bind="$attrs">
-				<div v-if="!border && (title || $slots.title)" :class="['mvi-number-keyboard-title', border ? 'mvi-number-keyboard-border' : '']">
+				<div v-if="!border && (title || $slots.title)" class="mvi-number-keyboard-title">
 					<slot v-if="$slots.title"></slot>
-					<span v-else-if="title">{{ title }}</span>
+					<span v-else>{{ title }}</span>
 				</div>
-				<div :class="['mvi-number-keyboard-wrapper', border ? '' : 'mvi-number-keyboard-border']">
+				<div :class="['mvi-number-keyboard-wrapper', border ? '' : 'border']">
 					<div class="mvi-number-keyboard-left">
-						<template v-for="(item, index) in computedNumbers">
+						<template v-for="(item, index) in cpmNumbers">
 							<div :class="leftNumberClass(item, index)">
 								<div @click="numberClick(item)" :class="leftNumberElClass(item, index)">{{ item }}</div>
 							</div>
@@ -49,7 +49,7 @@ export default {
 			numbers: ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'X', '.', '0']
 		}
 	},
-	emits: ['update:modelValue', 'input', 'delete', 'complete', 'update:show', 'show', 'showing', 'shown', 'hide', 'hidding', 'hidden'],
+	emits: ['update:modelValue', 'update:show', 'input', 'delete', 'complete', 'show', 'showing', 'shown', 'hide', 'hidding', 'hidden'],
 	inheritAttrs: false,
 	props: {
 		//是否显示小数点
@@ -107,16 +107,6 @@ export default {
 			type: String,
 			default: '完成'
 		},
-		//完成按钮样式
-		completeClass: {
-			type: String,
-			default: null
-		},
-		//删除按钮样式
-		deleteClass: {
-			type: String,
-			default: null
-		},
 		//空值时完成按钮是否可点击
 		promiseEmpty: {
 			type: Boolean,
@@ -172,61 +162,65 @@ export default {
 		$$el() {
 			return this.$refs.overlay.$$el
 		},
-		computedValue: {
+		cmpShow: {
+			set(value) {
+				this.$emit('update:show', value)
+			},
+			get() {
+				return this.show
+			}
+		},
+		cmpValue: {
 			set(value) {
 				this.$emit('update:modelValue', value)
 			},
 			get() {
 				if (Dap.number.isNumber(this.modelValue)) {
 					return this.modelValue.toString()
-				} else {
-					return this.modelValue
 				}
+				return this.modelValue
 			}
 		},
 		boardStyle() {
-			let style = {}
-			style.transition = 'all ' + this.timeout + 'ms'
-			style.webkitTransition = 'all ' + this.timeout + 'ms'
-			style.zIndex = this.zIndex + 10
-			return style
+			return {
+				transition: 'all ' + this.timeout + 'ms',
+				zIndex: this.zIndex + 10
+			}
 		},
 		deleteDisabeld() {
 			if (this.modelValue === '') {
 				return true
-			} else {
-				return false
 			}
+			return false
 		},
 		completeDisabled() {
 			if (this.modelValue === '') {
 				return true
-			} else {
-				return false
 			}
+			return false
 		},
 		leftNumberClass() {
 			return (item, index) => {
 				let cls = ['mvi-number-keyboard-left-number']
 				//最后一个数值键盘宽度不一致
-				if (index == this.computedNumbers.length - 1) {
+				if (index == this.cpmNumbers.length - 1) {
 					if (this.showX || this.showDecimal) {
-						cls.push('mvi-number-keyboard-half')
+						cls.push('half')
 					} else {
-						cls.push('mvi-number-keyboard-full')
+						cls.push('full')
 					}
 				}
 				if (this.border) {
-					cls.push('mvi-number-keyboard-border')
+					cls.push('border')
 				}
 				return cls
 			}
 		},
 		leftNumberElClass() {
-			return (item, index) => {
+			return () => {
 				let cls = ['mvi-number-keyboard-left-number-el']
 				if (this.active) {
-					cls.push('mvi-number-keyboard-active')
+					cls.push('active')
 				}
 				return cls
 			}
@@ -234,35 +228,28 @@ export default {
 		deleteBtnClass() {
 			let cls = ['mvi-number-keyboard-delete']
 			if (this.border) {
-				cls.push('mvi-number-keyboard-border')
+				cls.push('border')
 			}
 			return cls
 		},
 		deleteBtnElClass() {
 			let cls = ['mvi-number-keyboard-delete-el']
-			if (this.deleteClass) {
-				cls.push(this.deleteClass)
-			}
 			if (this.active && !this.deleteDisabeld) {
-				cls.push('mvi-number-keyboard-active')
+				cls.push('active')
 			}
 			return cls
 		},
 		completeBtnClass() {
 			let cls = ['mvi-number-keyboard-complete']
-
 			if (this.border) {
-				cls.push('mvi-number-keyboard-border')
+				cls.push('border')
 			}
 			return cls
 		},
 		completeBtnElClass() {
 			let cls = ['mvi-number-keyboard-complete-el']
-			if (this.completeClass) {
-				cls.push(this.completeClass)
-			}
 			if (this.active && !(this.promiseEmpty ? false : this.completeDisabled)) {
-				cls.push('mvi-number-keyboard-active')
+				cls.push('active')
 			}
 			return cls
 		},
@@ -277,19 +264,22 @@ export default {
 				return true
 			}
 		},
-		computedNumbers() {
-			let numbers = this.numbers.filter(item => {
-				return this.showKeyBoard(item)
-			})
-			if (this.random) {
-				let arr = []
-				let length = numbers.length
-				for (let i = 0; i < length; i++) {
-					arr.push(this.getRandomNumber(arr))
+		cpmNumbers() {
+			if (this.show) {
+				let numbers = this.numbers.filter(item => {
+					return this.showKeyBoard(item)
+				})
+				if (this.random) {
+					let arr = []
+					let length = numbers.length
+					for (let i = 0; i < length; i++) {
+						arr.push(this.getRandomNumber(arr))
+					}
+					return arr
 				}
-				return arr
+				return numbers
 			}
-			return numbers
+			return this.numbers
 		}
 	},
 	components: {
@@ -308,22 +298,22 @@ export default {
 			return numbers[index]
 		},
 		//遮罩层显示前
-		overlayShow(el) {
+		overlayShow() {
 			if (!this.firstShow) {
 				this.firstShow = true
 			}
 			this.keyboardShow = true
 		},
 		//遮罩层隐藏前
-		overlayHide(el) {
+		overlayHide() {
 			this.keyboardShow = false
 		},
 		//数字点击
 		numberClick(item) {
-			if (this.computedValue.length >= this.maxlength && this.maxlength > 0) {
+			if (this.cmpValue.length >= this.maxlength && this.maxlength > 0) {
 				return
 			}
-			this.computedValue += item
+			this.cmpValue += item
 			this.$emit('input', item)
 		},
 		//删除点击
@@ -331,8 +321,8 @@ export default {
 			if (this.deleteDisabeld) {
 				return
 			}
-			let value = Dap.string.delete(this.computedValue, this.computedValue.length - 1, 1)
-			this.computedValue = value
+			let value = Dap.string.delete(this.cmpValue, this.cmpValue.length - 1, 1)
+			this.cmpValue = value
 			this.$emit('delete', value)
 		},
 		//完成点击
@@ -341,20 +331,10 @@ export default {
 				return
 			}
 			if (this.calibration) {
-				this.computedValue = parseFloat(this.computedValue) || ''
+				this.cmpValue = parseFloat(this.cmpValue) || ''
 			}
-			this.$emit('complete', this.computedValue)
-			this.hideKeyboard()
-		},
-		//点击遮罩层关闭
-		hide() {
-			if (this.closable) {
-				this.hideKeyboard()
-			}
-		},
-		//关闭
-		hideKeyboard() {
-			this.$emit('update:show', false)
+			this.$emit('complete', this.cmpValue)
+			this.cmpShow = false
 		},
 		//弹出层显示前
 		beforeEnter(el) {
@@ -431,149 +411,168 @@ export default {
 	-webkit-user-select: none;
 	font-size: @font-size-h6;
 	box-shadow: @boxshadow;
-}
 
-.mvi-number-keyboard-title {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding: @mp-sm @mp-sm 0 @mp-sm;
-	font-size: @font-size-default;
-	color: @font-color-sub;
-}
-
-.mvi-number-keyboard-wrapper {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: space-between;
-	width: 100%;
-	height: 4.8rem;
-
-	&.mvi-number-keyboard-border {
-		padding: @mp-sm;
+	.mvi-number-keyboard-title {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: @mp-sm @mp-sm 0 @mp-sm;
+		font-size: @font-size-default;
+		color: @font-color-sub;
 	}
-}
 
-.mvi-number-keyboard-left {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: space-between;
-	align-items: center;
-	flex-wrap: wrap;
-	-ms-flex-wrap: wrap;
-	-webkit-flex-wrap: wrap;
-	flex: 1;
-	height: 100%;
+	.mvi-number-keyboard-wrapper {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: space-between;
+		width: 100%;
+		height: 4.8rem;
 
-	.mvi-number-keyboard-left-number {
-		display: block;
-		width: calc(~'1/3 * 100%');
-		height: calc(~'1/4 * 100%');
-		margin: 0;
-		padding: @mp-xs;
-
-		& > .mvi-number-keyboard-left-number-el {
-			position: relative;
-			display: flex;
-			display: -webkit-flex;
-			justify-content: center;
-			align-items: center;
-			width: 100%;
-			height: 100%;
-			background-color: @bg-color-default;
-			border-radius: @radius-default;
-			cursor: pointer;
-			font-weight: bold;
+		&.border {
+			padding: @mp-sm;
 		}
 
-		&.mvi-number-keyboard-border {
-			border-top: 1px solid @border-color;
-			border-right: 1px solid @border-color;
-			padding: 0;
+		.mvi-number-keyboard-left {
+			display: flex;
+			display: -webkit-flex;
+			justify-content: space-between;
+			align-items: center;
+			flex-wrap: wrap;
+			-ms-flex-wrap: wrap;
+			-webkit-flex-wrap: wrap;
+			flex: 1;
+			height: 100%;
 
-			& > .mvi-number-keyboard-left-number-el {
-				background-color: transparent;
-				border-radius: 0;
+			.mvi-number-keyboard-left-number {
+				display: block;
+				width: calc(~'1/3 * 100%');
+				height: calc(~'1/4 * 100%');
+				margin: 0;
+				padding: @mp-xs;
+
+				& > .mvi-number-keyboard-left-number-el {
+					position: relative;
+					display: flex;
+					display: -webkit-flex;
+					justify-content: center;
+					align-items: center;
+					width: 100%;
+					height: 100%;
+					background-color: @bg-color-default;
+					border-radius: @radius-default;
+					cursor: pointer;
+					font-weight: bold;
+
+					&.active:active::before {
+						.mvi-active();
+					}
+				}
+
+				&.border {
+					border-top: 1px solid @border-color;
+					border-right: 1px solid @border-color;
+					padding: 0;
+
+					& > .mvi-number-keyboard-left-number-el {
+						background-color: transparent;
+						border-radius: 0;
+					}
+				}
+
+				&.half {
+					width: calc(~'2/3 * 100%');
+				}
+				&.full {
+					width: 100%;
+				}
 			}
 		}
 
-		&.mvi-number-keyboard-half {
-			width: calc(~'2/3 * 100%');
-		}
-		&.mvi-number-keyboard-full {
-			width: 100%;
-		}
-	}
-}
-
-.mvi-number-keyboard-right {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: flex-start;
-	flex-direction: column;
-	height: 100%;
-	width: 2.1rem;
-
-	.mvi-number-keyboard-delete {
-		display: block;
-		width: 100%;
-		flex: 1;
-		padding: @mp-xs;
-
-		& > .mvi-number-keyboard-delete-el {
-			position: relative;
+		.mvi-number-keyboard-right {
 			display: flex;
 			display: -webkit-flex;
-			justify-content: center;
-			align-items: center;
-			background-color: @bg-color-dark;
-			font-weight: bold;
-			cursor: pointer;
+			justify-content: flex-start;
+			flex-direction: column;
 			height: 100%;
-			width: 100%;
-			border-radius: @radius-default;
-		}
+			width: 2.1rem;
 
-		&.mvi-number-keyboard-border {
-			border-top: 1px solid @border-color;
-			padding: 0;
+			.mvi-number-keyboard-delete {
+				display: block;
+				width: 100%;
+				flex: 1;
+				padding: @mp-xs;
 
-			& > .mvi-number-keyboard-delete-el {
-				border-radius: 0;
+				.mvi-number-keyboard-delete-el {
+					position: relative;
+					display: flex;
+					display: -webkit-flex;
+					justify-content: center;
+					align-items: center;
+					background-color: @bg-color-dark;
+					font-weight: bold;
+					cursor: pointer;
+					height: 100%;
+					width: 100%;
+					border-radius: @radius-default;
+
+					&.active:active::before {
+						.mvi-active();
+					}
+
+					&[disabled] {
+						opacity: 0.6;
+					}
+				}
+
+				&.border {
+					border-top: 1px solid @border-color;
+					padding: 0;
+
+					& > .mvi-number-keyboard-delete-el {
+						border-radius: 0;
+					}
+				}
 			}
-		}
-	}
 
-	.mvi-number-keyboard-complete {
-		display: block;
-		width: 100%;
-		flex: 1;
-		padding: @mp-xs;
+			.mvi-number-keyboard-complete {
+				display: block;
+				width: 100%;
+				flex: 1;
+				padding: @mp-xs;
 
-		& > .mvi-number-keyboard-complete-el {
-			position: relative;
-			display: flex;
-			display: -webkit-flex;
-			justify-content: center;
-			align-items: center;
-			background-color: @bg-color-dark;
-			font-weight: bold;
-			cursor: pointer;
-			height: 100%;
-			width: 100%;
-			background-color: @primary-normal;
-			color: #fff;
-			font-weight: bold;
-			cursor: pointer;
-			border-radius: @radius-default;
-		}
+				.mvi-number-keyboard-complete-el {
+					position: relative;
+					display: flex;
+					display: -webkit-flex;
+					justify-content: center;
+					align-items: center;
+					background-color: @bg-color-dark;
+					font-weight: bold;
+					cursor: pointer;
+					height: 100%;
+					width: 100%;
+					background-color: @primary-normal;
+					color: #fff;
+					font-weight: bold;
+					cursor: pointer;
+					border-radius: @radius-default;
 
-		&.mvi-number-keyboard-border {
-			border-top: 1px solid @border-color;
-			padding: 0;
+					&.active:active::before {
+						.mvi-active();
+					}
+					&[disabled] {
+						opacity: 0.6;
+					}
+				}
 
-			& > .mvi-number-keyboard-complete-el {
-				border-radius: 0;
+				&.border {
+					border-top: 1px solid @border-color;
+					padding: 0;
+
+					& > .mvi-number-keyboard-complete-el {
+						border-radius: 0;
+					}
+				}
 			}
 		}
 	}
@@ -582,24 +581,5 @@ export default {
 .mvi-keyboard-enter-from,
 .mvi-keyboard-leave-to {
 	transform: translateY(100%);
-}
-
-.mvi-number-keyboard-active:active::before {
-	.mvi-active();
-}
-
-.mvi-number-keyboard-delete > div[disabled]::before,
-.mvi-number-keyboard-complete > div[disabled]::before {
-	content: ' ';
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 20;
-	background-color: #fff;
-	opacity: 0.6;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
 }
 </style>

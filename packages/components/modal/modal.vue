@@ -1,10 +1,10 @@
 <template>
-	<Overlay ref="overlay" :model-value="modelValue" @show="overlayShow" @hide="overlayHide" :use-padding="usePadding" :z-index="zIndex" @click.self="hide" :color="overlayColor" :timeout="timeout" :mount-el="mountEl">
+	<Overlay ref="overlay" v-model="show" @show="overlayShow" @hide="overlayHide" :use-padding="usePadding" :z-index="zIndex" :closable="closable" :color="overlayColor" :timeout="timeout" :mount-el="mountEl">
 		<div ref="modal" class="mvi-modal" :style="{ zIndex: zIndex + 10 }">
 			<transition :name="'mvi-modal-' + animation" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @before-leave="beforeLeave" @leave="leave" @after-leave="afterLeave">
 				<!-- 弹出层 -->
 				<div v-if="firstShow" v-show="modalShow" class="mvi-modal-wrapper" ref="wrapper" :style="wrapperStyle" v-bind="$attrs">
-					<div class="mvi-modal-times" @click="hideModal" v-if="showTimes">
+					<div class="mvi-modal-times" @click="show = false" v-if="showTimes">
 						<Icon type="times" />
 					</div>
 					<div ref="header" :class="['mvi-modal-title', ellipsis ? 'ellipsis' : '', center ? 'center' : '']" v-if="$slots.title || title" :style="headerStyle">
@@ -138,6 +138,14 @@ export default {
 		$$el() {
 			return this.$refs.overlay.$$el
 		},
+		show: {
+			get() {
+				return this.modelValue
+			},
+			set(value) {
+				this.$emit('update:modelValue', value)
+			}
+		},
 		wrapperStyle() {
 			let style = {}
 			if (this.radius) {
@@ -192,16 +200,6 @@ export default {
 		//遮罩层隐藏之前
 		overlayHide() {
 			this.modalShow = false
-		},
-		//点击遮罩层关闭
-		hide() {
-			if (this.closable) {
-				this.hideModal()
-			}
-		},
-		//点击关闭按钮
-		hideModal() {
-			this.$emit('update:modelValue', false)
 		},
 		//弹出层显示前
 		beforeEnter(el) {

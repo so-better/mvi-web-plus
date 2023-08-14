@@ -1,5 +1,5 @@
 <template>
-	<Popup ref="popup" :model-value="modelValue" @overlay-click="hide" :overlay-color="overlayColor" :z-index="zIndex" :timeout="timeout" placement="bottom" :round="round" :use-padding="usePadding" :mount-el="mountEl">
+	<Popup ref="popup" v-model="show" :overlay-color="overlayColor" :z-index="zIndex" :timeout="timeout" placement="bottom" :round="round" :use-padding="usePadding" :mount-el="mountEl" :closable="closable">
 		<div class="mvi-actionsheet">
 			<div :class="['mvi-actionsheet-title', size]" v-if="title" v-text="title"></div>
 			<div class="mvi-actionsheet-list">
@@ -13,7 +13,7 @@
 				</div>
 			</div>
 			<div class="mvi-actionsheet-divider"></div>
-			<div :class="['mvi-actionsheet-button', size, active ? 'active' : '']" v-if="showCancel" v-text="cancelText" @click="doCancel"></div>
+			<div :class="['mvi-actionsheet-button', size, active ? 'active' : '']" v-if="showCancel" v-text="cancelText" @click="show = false"></div>
 		</div>
 	</Popup>
 </template>
@@ -112,6 +112,14 @@ export default {
 		$$el() {
 			return this.$refs.popup.$$el
 		},
+		show: {
+			get() {
+				return this.modelValue
+			},
+			set(value) {
+				this.$emit('update:modelValue', value)
+			}
+		},
 		//转换图标字段
 		parseIcon() {
 			return param => {
@@ -169,23 +177,13 @@ export default {
 		Popup
 	},
 	methods: {
-		//点击遮罩关闭
-		hide() {
-			if (this.closable) {
-				this.doCancel()
-			}
-		},
-		//取消
-		doCancel() {
-			this.$emit('update:modelValue', false)
-		},
 		//点击选项
 		doSelect(item, index) {
 			if (item.disabled || item.loading) {
 				return
 			}
 			if (this.selectClose) {
-				this.$emit('update:modelValue', false)
+				this.show = false
 			}
 			this.$emit('select', { ...item }, index)
 		}

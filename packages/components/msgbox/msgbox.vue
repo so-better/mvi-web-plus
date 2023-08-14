@@ -1,7 +1,7 @@
 <template>
 	<teleport to="body">
-		<transition :name="boxAnimation" @after-enter="afterEnter" @after-leave="afterLeave">
-			<div v-show="show" v-bind="$attrs" :class="msgBoxClass" v-html="computedMessage" :style="msgBoxStyle"></div>
+		<transition :name="'mvi-msgbox-' + cmpAnimation" @after-enter="afterEnter" @after-leave="afterLeave">
+			<div v-show="show" v-bind="$attrs" :class="msgboxClass" v-text="cpmMessage" :style="msgboxStyle"></div>
 		</transition>
 	</teleport>
 </template>
@@ -47,7 +47,7 @@ export default {
 			default: null
 		},
 		//移除方法
-		remove: {
+		__remove: {
 			type: Function,
 			default: function () {
 				return function () {}
@@ -55,67 +55,60 @@ export default {
 		}
 	},
 	computed: {
-		computedMessage() {
+		cpmMessage() {
 			if (typeof this.message == 'string') {
 				return this.message
-			} else if (Dap.common.isObject(this.message)) {
-				return JSON.stringify(this.message)
-			} else {
-				return String(this.message)
 			}
+			if (Dap.common.isObject(this.message)) {
+				return JSON.stringify(this.message)
+			}
+			return String(this.message)
 		},
-		computedAnimation() {
+		cmpAnimation() {
 			if (typeof this.animation == 'string' && this.animation) {
 				return this.animation
-			} else {
-				return 'fade'
 			}
+			return 'fade'
 		},
-		computedTimeout() {
-			if (Dap.number.isNumber(this.timeout) && this.timeout > 0) {
+		cmpTimeout() {
+			if (Dap.number.isNumber(this.timeout)) {
 				return this.timeout
-			} else {
-				return 1500
 			}
+			return 1500
 		},
-		computedZIndex() {
+		cmpZIndex() {
 			if (Dap.number.isNumber(this.zIndex)) {
 				return this.zIndex
-			} else {
-				return 1100
 			}
+			return 1100
 		},
-		computedBackground() {
+		cmpBackground() {
 			if (typeof this.background == 'string' && this.background) {
 				return this.background
-			} else {
-				return null
 			}
+			return null
 		},
-		computedColor() {
+		cmpColor() {
 			if (typeof this.color == 'string' && this.color) {
 				return this.color
-			} else {
-				return null
 			}
+			return null
 		},
-		boxAnimation() {
-			return 'mvi-msgbox-' + this.computedAnimation
-		},
-		msgBoxStyle() {
-			let style = {}
-			style.zIndex = this.computedZIndex
-			if (this.computedBackground) {
-				style.backgroundColor = this.computedBackground
+		msgboxStyle() {
+			let style = {
+				zIndex: this.cmpZIndex
 			}
-			if (this.computedColor) {
-				style.color = this.computedColor
+			if (this.cmpBackground) {
+				style.backgroundColor = this.cmpBackground
+			}
+			if (this.cmpColor) {
+				style.color = this.cmpColor
 			}
 			return style
 		},
-		msgBoxClass() {
+		msgboxClass() {
 			let cls = ['mvi-msgbox']
-			if (this.computedAnimation == 'translate') {
+			if (this.cmpAnimation == 'translate') {
 				cls.push('mvi-msgbox-translate')
 			}
 			return cls
@@ -126,16 +119,16 @@ export default {
 	},
 	methods: {
 		//完全显示后
-		afterEnter(el) {
-			if (this.computedTimeout > 0) {
+		afterEnter() {
+			if (this.cmpTimeout > 0) {
 				setTimeout(() => {
 					this.show = false
-				}, this.computedTimeout)
+				}, this.cmpTimeout)
 			}
 		},
 		//完全隐藏后
-		afterLeave(el) {
-			this.remove()
+		afterLeave() {
+			this.__remove()
 		}
 	}
 }

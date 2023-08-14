@@ -1,20 +1,20 @@
 <template>
 	<div :class="navbarClass" :style="'z-index:' + (fixed ? zIndex : '')">
-		<div @click="leftClick" :class="['mvi-navbar-left', leftClass || '']" :style="leftStyle" v-if="leftIconType || leftIconUrl || $slots.left || leftText">
+		<div @click="leftClick" class="mvi-navbar-left" :style="leftStyle" v-if="showLeft">
 			<slot name="left" v-if="$slots.left"></slot>
-			<Icon :class="[leftText ? 'mvi-navbar-left-icon' : '']" v-if="(leftIconType || leftIconUrl) && !$slots.left" :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" :color="leftIconColor" />
+			<Icon :class="[leftText ? 'mvi-navbar-left-icon' : '']" v-if="(parseIcon(leftIcon).type || parseIcon(leftIcon).url) && !$slots.left" :type="parseIcon(leftIcon).type" :url="parseIcon(leftIcon).url" :spin="parseIcon(leftIcon).spin" :size="parseIcon(leftIcon).size" :color="parseIcon(leftIcon).color" />
 			<span class="mvi-navbar-left-text" v-if="leftText && !$slots.left" v-text="leftText"></span>
 		</div>
 		<div @click="titleClick" class="mvi-navbar-center" :style="centerStyle" v-if="$slots.title || title">
-			<div :class="['mvi-navbar-title', titleClass || '']">
+			<div class="mvi-navbar-title">
 				<slot name="title" v-if="$slots.title"></slot>
 				<span v-else-if="title" v-text="title"></span>
 			</div>
 		</div>
-		<div @click="rightClick" :class="['mvi-navbar-right', rightClass || '']" :style="rightStyle" v-if="rightIconType || rightIconUrl || $slots.right || rightText">
+		<div @click="rightClick" class="mvi-navbar-right" :style="rightStyle" v-if="showRight">
 			<slot name="right" v-if="$slots.right"></slot>
 			<span class="mvi-navbar-right-text" v-if="rightText && !$slots.right" v-text="rightText"></span>
-			<Icon :class="[rightText ? 'mvi-navbar-right-icon' : '']" v-if="(rightIconType || rightIconSpin) && !$slots.right" :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize" :color="rightIconColor" />
+			<Icon :class="[rightText ? 'mvi-navbar-right-icon' : '']" v-if="(parseIcon(rightIcon).type || parseIcon(rightIcon).url) && !$slots.right" :type="parseIcon(rightIcon).type" :url="parseIcon(rightIcon).url" :spin="parseIcon(rightIcon).spin" :size="parseIcon(rightIcon).size" :color="parseIcon(rightIcon).color" />
 		</div>
 	</div>
 </template>
@@ -64,30 +64,21 @@ export default {
 		zIndex: {
 			type: Number,
 			default: 400
-		},
-		//左侧class
-		leftClass: {
-			type: String,
-			default: null
-		},
-		//标题class
-		titleClass: {
-			type: String,
-			default: null
-		},
-		//右侧class
-		rightClass: {
-			type: String,
-			default: null
 		}
 	},
 	emits: ['left-click', 'right-click', 'title-click'],
 	computed: {
+		showLeft() {
+			return this.parseIcon(this.leftIcon).type || this.parseIcon(this.leftIcon).url || this.$slots.left || this.leftText
+		},
+		showRight() {
+			return this.parseIcon(this.rightIcon).type || this.parseIcon(this.rightIcon).url || this.$slots.right || this.rightText
+		},
 		leftStyle() {
 			let style = {}
 			if (this.title || this.$slots.title) {
 				style.width = '20%'
-			} else if (this.rightIconType || this.rightIconUrl || this.$slots.right || this.rightText) {
+			} else if (this.showRight) {
 				style.width = '50%'
 			} else {
 				style.width = '100%'
@@ -98,120 +89,57 @@ export default {
 			let style = {}
 			if (this.title || this.$slots.title) {
 				style.width = '20%'
-			} else if (this.leftIconType || this.leftIconUrl || this.$slots.left || this.leftText) {
+			} else if (this.showLeft) {
 				style.width = '50%'
 			} else {
 				style.width = '100%'
 			}
 			return style
 		},
-		leftIconType() {
-			let type = null
-			if (Dap.common.isObject(this.leftIcon)) {
-				if (typeof this.leftIcon.type == 'string') {
-					type = this.leftIcon.type
+		parseIcon() {
+			return param => {
+				let icon = {
+					spin: false,
+					type: null,
+					url: null,
+					color: null,
+					size: null
 				}
-			} else if (typeof this.leftIcon == 'string') {
-				type = this.leftIcon
-			}
-			return type
-		},
-		leftIconUrl() {
-			let url = null
-			if (Dap.common.isObject(this.leftIcon)) {
-				if (typeof this.leftIcon.url == 'string') {
-					url = this.leftIcon.url
+				if (Dap.common.isObject(param)) {
+					if (typeof param.spin == 'boolean') {
+						icon.spin = param.spin
+					}
+					if (typeof param.type == 'string') {
+						icon.type = param.type
+					}
+					if (typeof param.url == 'string') {
+						icon.url = param.url
+					}
+					if (typeof param.color == 'string') {
+						icon.color = param.color
+					}
+					if (typeof param.size == 'string') {
+						icon.size = param.size
+					}
+				} else if (typeof param == 'string') {
+					icon.type = param
 				}
+				return icon
 			}
-			return url
-		},
-		leftIconSpin() {
-			let spin = false
-			if (Dap.common.isObject(this.leftIcon)) {
-				if (typeof this.leftIcon.spin == 'boolean') {
-					spin = this.leftIcon.spin
-				}
-			}
-			return spin
-		},
-		leftIconSize() {
-			let size = null
-			if (Dap.common.isObject(this.leftIcon)) {
-				if (typeof this.leftIcon.size == 'string') {
-					size = this.leftIcon.size
-				}
-			}
-			return size
-		},
-		leftIconColor() {
-			let color = null
-			if (Dap.common.isObject(this.leftIcon)) {
-				if (typeof this.leftIcon.color == 'string') {
-					color = this.leftIcon.color
-				}
-			}
-			return color
-		},
-		rightIconType() {
-			let type = null
-			if (Dap.common.isObject(this.rightIcon)) {
-				if (typeof this.rightIcon.type == 'string') {
-					type = this.rightIcon.type
-				}
-			} else if (typeof this.rightIcon == 'string') {
-				type = this.rightIcon
-			}
-			return type
-		},
-		rightIconUrl() {
-			let url = null
-			if (Dap.common.isObject(this.rightIcon)) {
-				if (typeof this.rightIcon.url == 'string') {
-					url = this.rightIcon.url
-				}
-			}
-			return url
-		},
-		rightIconSpin() {
-			let spin = false
-			if (Dap.common.isObject(this.rightIcon)) {
-				if (typeof this.rightIcon.spin == 'boolean') {
-					spin = this.rightIcon.spin
-				}
-			}
-			return spin
-		},
-		rightIconSize() {
-			let size = null
-			if (Dap.common.isObject(this.rightIcon)) {
-				if (typeof this.rightIcon.size == 'string') {
-					size = this.rightIcon.size
-				}
-			}
-			return size
-		},
-		rightIconColor() {
-			let color = null
-			if (Dap.common.isObject(this.rightIcon)) {
-				if (typeof this.rightIcon.color == 'string') {
-					color = this.rightIcon.color
-				}
-			}
-			return color
 		},
 		navbarClass() {
 			let cls = ['mvi-navbar']
 			if (this.fixed) {
-				cls.push('mvi-navbar-fixed')
+				cls.push('fixed')
 			}
 			if (this.border) {
-				cls.push('mvi-navbar-border')
+				cls.push('border')
 			}
 			return cls
 		},
 		centerStyle() {
 			let style = {}
-			if (this.rightIconType || this.rightIconUrl || this.$slots.right || this.rightText || this.leftIconType || this.leftIconUrl || this.$slots.left || this.leftText) {
+			if (this.showLeft || this.showRight) {
 				style.width = '60%'
 			} else {
 				style.width = '100%'
@@ -251,84 +179,80 @@ export default {
 	position: relative;
 	color: @font-color-default;
 	font-size: @font-size-h6;
-}
 
-.mvi-navbar-border {
-	border-bottom: 1px solid @border-color;
-}
+	&.border {
+		border-bottom: 1px solid @border-color;
+	}
 
-.mvi-navbar-fixed {
-	position: fixed;
-	top: 0;
-	left: 0;
-}
+	&.fixed {
+		position: fixed;
+		top: 0;
+		left: 0;
+	}
 
-.mvi-navbar-left {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: flex-start;
-	align-items: center;
-	position: absolute;
-	left: 0;
-	top: 0;
-	height: 100%;
-	vertical-align: middle;
-	padding-left: @mp-sm;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	cursor: pointer;
-}
+	.mvi-navbar-left {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-start;
+		align-items: center;
+		position: absolute;
+		left: 0;
+		top: 0;
+		height: 100%;
+		vertical-align: middle;
+		padding-left: @mp-sm;
+		cursor: pointer;
+		user-select: none;
 
-.mvi-navbar-left-icon {
-	margin-right: @mp-xs;
-}
+		.mvi-navbar-left-icon {
+			margin-right: @mp-xs;
+		}
 
-.mvi-navbar-left-text {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
+		.mvi-navbar-left-text {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+	}
 
-.mvi-navbar-center {
-	display: flex;
-	display: -webkit-flex;
-	align-items: center;
-	height: 100%;
-}
+	.mvi-navbar-center {
+		display: flex;
+		display: -webkit-flex;
+		align-items: center;
+		height: 100%;
 
-.mvi-navbar-title {
-	display: block;
-	text-align: center;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	width: 100%;
-}
+		.mvi-navbar-title {
+			display: block;
+			text-align: center;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			width: 100%;
+		}
+	}
 
-.mvi-navbar-right {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: flex-end;
-	align-items: center;
-	position: absolute;
-	right: 0;
-	top: 0;
-	height: 100%;
-	padding-right: @mp-sm;
-	vertical-align: middle;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
+	.mvi-navbar-right {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-end;
+		align-items: center;
+		position: absolute;
+		right: 0;
+		top: 0;
+		height: 100%;
+		padding-right: @mp-sm;
+		vertical-align: middle;
+		user-select: none;
 
-.mvi-navbar-right-icon {
-	margin-left: @mp-xs;
-}
+		.mvi-navbar-right-icon {
+			margin-left: @mp-xs;
+		}
 
-.mvi-navbar-right-text {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+		.mvi-navbar-right-text {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+	}
 }
 </style>

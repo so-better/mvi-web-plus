@@ -1,11 +1,11 @@
 <template>
-	<Overlay ref="overlay" :model-value="modelValue" @show="overlayShow" @hide="overlayHide" :use-padding="usePadding" :z-index="zIndex" @click.self="hide" :color="overlayColor" :timeout="timeout" :mount-el="mountEl">
+	<Overlay ref="overlay" v-model="show" @show="overlayShow" @hide="overlayHide" :use-padding="usePadding" :z-index="zIndex" :color="overlayColor" :timeout="timeout" :mount-el="mountEl" :closable="closable">
 		<transition :name="'mvi-slide-' + placement" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @before-leave="beforeLeave" @leave="leave" @after-leave="afterLeave">
 			<!-- 弹出层 -->
 			<div v-if="firstShow" v-show="popupShow" :class="popupClass" :style="popupStyle" v-bind="$attrs">
 				<!-- 关闭图标 -->
 				<div v-if="showTimes" :class="['mvi-popup-times', timesPlacement]">
-					<Icon @click="hidePopup" type="times" />
+					<Icon @click="show = false" type="times" />
 				</div>
 				<!-- 正文内容 -->
 				<div class="mvi-popup-content" :style="{ padding: __contentPadding ? '' : 0 }">
@@ -30,7 +30,7 @@ export default {
 			firstShow: false
 		}
 	},
-	emits: ['update:modelValue', 'show', 'showing', 'shown', 'hide', 'hidding', 'hidden', 'overlay-click'],
+	emits: ['update:modelValue', 'show', 'showing', 'shown', 'hide', 'hidding', 'hidden'],
 	inheritAttrs: false,
 	props: {
 		//显示与否
@@ -109,6 +109,14 @@ export default {
 		$$el() {
 			return this.$refs.overlay.$$el
 		},
+		show: {
+			get() {
+				return this.modelValue
+			},
+			set(value) {
+				this.$emit('update:modelValue', value)
+			}
+		},
 		//弹出层类
 		popupClass() {
 			let cls = ['mvi-popup', this.placement]
@@ -158,17 +166,6 @@ export default {
 		//遮罩层隐藏之前
 		overlayHide() {
 			this.popupShow = false
-		},
-		//点击遮罩层关闭
-		hide(e) {
-			if (this.closable) {
-				this.hidePopup()
-			}
-			this.$emit('overlay-click', e)
-		},
-		//点击关闭按钮
-		hidePopup() {
-			this.$emit('update:modelValue', false)
 		},
 		//弹出层显示前
 		beforeEnter(el) {

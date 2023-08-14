@@ -1,5 +1,5 @@
 <template>
-	<Popup ref="popup" :model-value="show" @overlay-click="hide" :overlay-color="overlayColor" :z-index="zIndex" :timeout="timeout" :placement="placement" :round="round" :use-padding="usePadding" :mount-el="mountEl" :__contentPadding="false">
+	<Popup ref="popup" v-model="cmpShow" :overlay-color="overlayColor" :z-index="zIndex" :timeout="timeout" :placement="placement" :round="round" :use-padding="usePadding" :mount-el="mountEl" :closable="closable" :__contentPadding="false">
 		<div class="mvi-dropdown">
 			<div :disabled="itemDisabled(item) || null" :class="dropdownItemClass(item, index)" v-for="(item, index) in options" @click="doSelect(item, index)" :style="dropdownItemStyle(item, index)">
 				<div class="mvi-dropdown-label">
@@ -104,6 +104,14 @@ export default {
 		$$el() {
 			return this.$refs.popup.$$el
 		},
+		cmpShow: {
+			set(value) {
+				this.$emit('update:show', value)
+			},
+			get() {
+				return this.show
+			}
+		},
 		//转换图标字段
 		parseIcon() {
 			return param => {
@@ -183,16 +191,6 @@ export default {
 		Popup
 	},
 	methods: {
-		//点击遮罩关闭
-		hide() {
-			if (this.closable) {
-				this.doCancel()
-			}
-		},
-		//取消
-		doCancel() {
-			this.$emit('update:show', false)
-		},
 		//选择
 		doSelect(item, index) {
 			if (item.disabled) {
@@ -203,7 +201,7 @@ export default {
 				this.$emit('update:modelValue', item.value)
 			}
 			if (this.selectedClose) {
-				this.doCancel()
+				this.cmpShow = false
 			}
 		}
 	}

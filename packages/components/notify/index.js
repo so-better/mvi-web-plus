@@ -22,7 +22,7 @@ const Notify = {
 
 	//显示弹窗
 	showNotify: options => {
-		return new Promise((resolve, reject) => {
+		return new Promise(resolve => {
 			//如果已经存在弹窗，则关闭后再进行
 			if (Notify.$el && Notify.$instance) {
 				Notify.$instance.unmount()
@@ -33,11 +33,11 @@ const Notify = {
 			document.body.appendChild(mountNode)
 			const instance = createApp(NotifyComponent, {
 				...opts,
-				init: vm => {
+				__init: vm => {
 					//获取组件实例进行保存
 					Notify.$vm = vm
 				},
-				remove: () => {
+				__remove: () => {
 					instance.unmount()
 					mountNode.remove()
 					resolve()

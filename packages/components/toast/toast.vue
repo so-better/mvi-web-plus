@@ -1,5 +1,5 @@
 <template>
-	<Overlay ref="overlay" :color="computedOverlayColor" @hidden="toastHidden" :model-value="show" :use-padding="computedUsePadding" :zIndex="computedZIndex" fade :mount-el="computedMountEl" @shown="toastShown">
+	<Overlay ref="overlay" :color="computedOverlayColor" @hidden="toastHidden" v-model="show" :use-padding="computedUsePadding" :zIndex="computedZIndex" fade :mount-el="computedMountEl" @shown="toastShown">
 		<div :class="['mvi-toast', computedMessage ? '' : 'mvi-toast-iconless']" :style="toastStyle" v-bind="$attrs">
 			<div class="mvi-toast-icon">
 				<Loading :color="computedColor || '#fff'" v-if="computedType == 'loading' && !computedIcon.type && !computedIcon.url" :type="0" :size="computedIcon.size" />

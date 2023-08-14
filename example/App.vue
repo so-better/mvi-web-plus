@@ -1,13 +1,12 @@
 <template>
 	<div class="mvi-p-4">
 		<div>
-			<m-button @click="loading = !loading">打开图片预览</m-button>
+			{{ value }}
+			<m-button @click="show = !show">打开图片预览</m-button>
 		</div>
-		<m-pull-refresh v-model="refresh" @refresh="change" style="height: 8rem" id="a">
-			<m-list ref="list" :finished="finished" v-model:loading="loading" loading-icon="load-e" v-model:error="error" @load="loadMore" immediate-load scroll-el="#a .mvi-pull-refresh-wrapper">
-				<m-cell border v-for="(item, index) in list" :title="'单元格' + index"></m-cell>
-			</m-list>
-		</m-pull-refresh>
+		<div style="position: relative; width: 400px; height: 400px">
+			<m-number-keyboard showX random title="安全键盘" border closable v-model:show="show" v-model="value"></m-number-keyboard>
+		</div>
 	</div>
 </template>
 <script>
@@ -15,15 +14,29 @@ import dayjs from 'dayjs'
 export default {
 	data() {
 		return {
-			refresh: false,
-			error: false,
-			loading: false,
-			list: [],
-			finished: false
+			value: 0,
+			show: false,
+			options: [
+				{
+					label: '分享到朋友圈'
+				},
+				{
+					label: '分享给QQ好友'
+				},
+				{
+					label: '分享到QQ空间'
+				}
+			]
 		}
 	},
 	methods: {
-		change() {},
+		change() {
+			this.$showNotify({
+				message: '支付成功',
+				type: 'success',
+				icon: 'success-o'
+			})
+		},
 		loadMore() {
 			setTimeout(() => {
 				this.loading = false

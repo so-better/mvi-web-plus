@@ -38,7 +38,7 @@ const Dialog = {
 
 	//提示框
 	alert: function (options) {
-		return new Promise((resolve, reject) => {
+		return new Promise(resolve => {
 			let opts = Dialog.initParams('alert', options)
 			let mountNode = Dap.element.string2dom('<div></div>')
 			document.body.appendChild(mountNode)
@@ -60,7 +60,7 @@ const Dialog = {
 
 	//确认框
 	confirm: function (options) {
-		return new Promise((resolve, reject) => {
+		return new Promise(resolve => {
 			let opts = Dialog.initParams('confirm', options)
 			let mountNode = Dap.element.string2dom('<div></div>')
 			document.body.appendChild(mountNode)
@@ -82,7 +82,7 @@ const Dialog = {
 
 	//信息输入框
 	prompt: function (options) {
-		return new Promise((resolve, reject) => {
+		return new Promise(resolve => {
 			let opts = Dialog.initParams('prompt', options)
 			let mountNode = Dap.element.string2dom('<div></div>')
 			document.body.appendChild(mountNode)
@@ -107,7 +107,7 @@ const Dialog = {
 
 	//pc端提示框
 	Alert: function (options) {
-		return new Promise((resolve, reject) => {
+		return new Promise(resolve => {
 			let opts = Dialog.initParams('Alert', options)
 			let mountNode = Dap.element.string2dom('<div></div>')
 			document.body.appendChild(mountNode)
@@ -129,7 +129,7 @@ const Dialog = {
 
 	//pc端确认框
 	Confirm: function (options) {
-		return new Promise((resolve, reject) => {
+		return new Promise(resolve => {
 			let opts = Dialog.initParams('Confirm', options)
 			let mountNode = Dap.element.string2dom('<div></div>')
 			document.body.appendChild(mountNode)
@@ -151,7 +151,7 @@ const Dialog = {
 
 	//pc端信息输入框
 	Prompt: function (options) {
-		return new Promise((resolve, reject) => {
+		return new Promise(resolve => {
 			let opts = Dialog.initParams('Prompt', options)
 			let mountNode = Dap.element.string2dom('<div></div>')
 			document.body.appendChild(mountNode)
