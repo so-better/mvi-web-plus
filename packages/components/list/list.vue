@@ -72,17 +72,23 @@ export default {
 		content: {
 			type: String,
 			default: '点我加载更多'
+		},
+		//滚动元素
+		scrollEl: {
+			type: String,
+			default: null
 		}
 	},
 	mounted() {
+		this.initScroll()
 		if (this.immediateLoad) {
 			this.doLoad()
 		}
 	},
 	methods: {
 		//监听滚动元素到底部
-		initScrollBottom() {
-			const el = this.getScrollEl(this.$el)
+		initScroll() {
+			const el = document.body.querySelector(this.scrollEl)
 			if (!el) {
 				return
 			}
@@ -107,16 +113,6 @@ export default {
 			this.$emit('update:loading', true)
 			this.$emit('update:error', false)
 			this.$emit('load')
-		},
-		//获取最近的滚动容器
-		getScrollEl(el) {
-			if (!el) {
-				return null
-			}
-			if (Dap.element.getScrollHeight(el) > el.clientHeight) {
-				return el
-			}
-			return this.getScrollEl(el.parentNode)
 		}
 	}
 }

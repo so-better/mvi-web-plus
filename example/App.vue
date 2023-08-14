@@ -1,12 +1,13 @@
 <template>
 	<div class="mvi-p-4">
-		<div>{{ dayjs(date).format('YYYY-MM-DD HH:mm') }}</div>
-		<m-swiper ref="swiper" width="40vw" height="4rem" fade showControl showIndicators activeColor="#f30" inactiveColor="#000" :interval="1000" autoplay loop>
-			<m-swiper-slide class="mvi-bg-success">1</m-swiper-slide>
-			<m-swiper-slide class="mvi-bg-info">2</m-swiper-slide>
-			<m-swiper-slide class="mvi-bg-warn">3</m-swiper-slide>
-			<m-swiper-slide class="mvi-bg-error">4</m-swiper-slide>
-		</m-swiper>
+		<div>
+			<m-button @click="loading = !loading">打开图片预览</m-button>
+		</div>
+		<m-pull-refresh v-model="refresh" @refresh="change" style="height: 8rem" id="a">
+			<m-list ref="list" :finished="finished" v-model:loading="loading" loading-icon="load-e" v-model:error="error" @load="loadMore" immediate-load scroll-el="#a .mvi-pull-refresh-wrapper">
+				<m-cell border v-for="(item, index) in list" :title="'单元格' + index"></m-cell>
+			</m-list>
+		</m-pull-refresh>
 	</div>
 </template>
 <script>
@@ -14,42 +15,24 @@ import dayjs from 'dayjs'
 export default {
 	data() {
 		return {
-			dayjs: dayjs,
-			date: dayjs('2021-06-29 14:31').toDate(),
-			value: '',
-			show: false,
-			options: [
-				{
-					label: '选项A',
-					value: 0,
-					disabled: true,
-					icon: 'home'
-				},
-				{
-					label: '选项B',
-					value: 1,
-					icon: 'home'
-				},
-				{
-					label: '选项C',
-					value: 2,
-					icon: 'home'
-				},
-				{
-					label: '选项D',
-					value: 3,
-					icon: 'home'
-				}
-			]
+			refresh: false,
+			error: false,
+			loading: false,
+			list: [],
+			finished: false
 		}
 	},
-	mounted() {},
 	methods: {
-		change(val) {
-			this.$showLoadingBar('#f30')
+		change() {},
+		loadMore() {
 			setTimeout(() => {
-				this.$hideLoadingBar()
-			}, 3000)
+				this.loading = false
+				this.error = false
+				this.list = [...this.list, ...new Array(30)]
+				if (this.list.length > 100) {
+					this.finished = true
+				}
+			}, 2000)
 		}
 	}
 }

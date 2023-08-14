@@ -1,7 +1,7 @@
 <template>
-	<Overlay ref="overlay" :model-value="modelValue" color="#000" :fade="false" @showing="overlayShowing" :z-index="zIndex" :use-padding="usePadding" :mountEl="mountEl">
-		<Swiper v-if="firstShow" class="mvi-image-preview-swiper" :initial-slide="active" show-indicators ref="swiper" @change="swiperChange" :show-control="showControl" :fade="fade" :control-class="controlClass" :touchable="enableTouch">
-			<SwiperSlide v-for="(item, index) in images" :key="'image-' + index" class="mvi-preview-container">
+	<Overlay ref="overlay" v-model="show" color="#000" :fade="false" @showing="overlayShowing" :z-index="zIndex" :use-padding="usePadding" :mountEl="mountEl">
+		<Swiper v-if="firstShow" class="mvi-image-preview-swiper" :initial-slide="active" show-indicators ref="swiper" @change="swiperChange" :show-control="showControl" :fade="fade" :touchable="enableTouch">
+			<SwiperSlide v-for="(item, index) in images" class="mvi-preview-container">
 				<RichImage :ref="el => (imageRefs[index] = el)" @close-preview="closeOverlay" @disable-swiper-touch="enableTouch = false" @enable-swiper-touch="enableTouch = true" :src="item" :error-icon="errorIcon" :load-icon="loadIcon" :max-scale="maxScale" :min-scale="minScale"></RichImage>
 			</SwiperSlide>
 			<template #indicators="data">
@@ -98,11 +98,6 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		//控制器额外样式
-		controlClass: {
-			type: String,
-			default: null
-		},
 		//局部显示是否考虑滚动条影响
 		usePadding: {
 			type: Boolean,
@@ -145,6 +140,14 @@ export default {
 	computed: {
 		$$el() {
 			return this.$refs.overlay.$$el
+		},
+		show: {
+			set(value) {
+				this.$emit('update:modelValue', value)
+			},
+			get() {
+				return this.modelValue
+			}
 		}
 	},
 	components: {
@@ -186,7 +189,7 @@ export default {
 			for (let richImage of this.imageRefs) {
 				richImage.reset()
 			}
-			this.$emit('update:modelValue', false)
+			this.show = false
 		},
 		//图片变更
 		swiperChange(active) {
