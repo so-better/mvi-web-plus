@@ -1,12 +1,12 @@
 <template>
-	<div :class="'mvi-stepper mvi-stepper-' + size">
-		<div :disabled="disabledMinus || arrivalMin || disabled || null" :class="minusClass" v-if="showMinus" :style="minusStyle" @click="doMinus">
+	<div :class="['mvi-stepper', size]">
+		<div :disabled="disabledMinus || arrivalMin || disabled || null" :class="minusClass" v-if="showMinus" @click="doMinus">
 			<Icon type="minus" />
 		</div>
-		<div :disabled="disabled || disabledInput || null" :class="['mvi-stepper-input', border ? 'mvi-stepper-border' : '']" :style="inputStyle" v-if="showInput">
+		<div :disabled="disabled || disabledInput || null" :class="['mvi-stepper-input', border ? 'border' : '']" :style="inputStyle" v-if="showInput">
 			<input ref="input" v-model="realValue" :disabled="disabled || disabledInput || null" type="text" @blur="changeValue" @keyup.enter="changeValue" :style="inputElStyle" inputmode="numeric" />
 		</div>
-		<div :disabled="disabledPlus || arrivalMax || disabled || null" :class="plusClass" v-if="showPlus" :style="plusStyle" @click="doPlus">
+		<div :disabled="disabledPlus || arrivalMax || disabled || null" :class="plusClass" v-if="showPlus" @click="doPlus">
 			<Icon type="plus" />
 		</div>
 	</div>
@@ -17,7 +17,7 @@ import { Dap } from '../dap'
 import { Icon } from '../icon'
 export default {
 	name: 'm-stepper',
-	emits: ['update:modelValue'],
+	emits: ['update:modelValue', 'change'],
 	props: {
 		//输入框的值
 		modelValue: {
@@ -92,16 +92,6 @@ export default {
 			type: String,
 			default: null
 		},
-		//按钮与输入框的背景色
-		background: {
-			type: String,
-			default: null
-		},
-		//按钮与输入框的字体颜色
-		color: {
-			type: String,
-			default: null
-		},
 		//是否显示点击态
 		active: {
 			type: Boolean,
@@ -125,27 +115,19 @@ export default {
 		arrivalMin() {
 			if (this.min != null) {
 				return this.realValue <= this.min
-			} else {
-				return false
 			}
+			return false
 		},
 		arrivalMax() {
 			if (this.max != null) {
 				return this.realValue >= this.max
-			} else {
-				return false
 			}
+			return false
 		},
 		inputStyle() {
 			let style = {}
 			if (this.inputWidth) {
 				style.width = this.inputWidth
-			}
-			if (this.color) {
-				style.color = this.color
-			}
-			if (this.background) {
-				style.backgroundColor = this.background
 			}
 			return style
 		},
@@ -156,43 +138,23 @@ export default {
 			}
 			return style
 		},
-		minusStyle() {
-			let style = {}
-			if (this.color) {
-				style.color = this.color
-			}
-			if (this.background) {
-				style.backgroundColor = this.background
-			}
-			return style
-		},
-		plusStyle() {
-			let style = {}
-			if (this.color) {
-				style.color = this.color
-			}
-			if (this.background) {
-				style.backgroundColor = this.background
-			}
-			return style
-		},
 		minusClass() {
 			let cls = ['mvi-stepper-minus']
 			if (!(this.disabledMinus || this.arrivalMin || this.disabled) && this.active) {
-				cls.push('mvi-stepper-active')
+				cls.push('active')
 			}
 			if (this.border) {
-				cls.push('mvi-stepper-border')
+				cls.push('border')
 			}
 			return cls
 		},
 		plusClass() {
 			let cls = ['mvi-stepper-plus']
 			if (!(this.disabledPlus || this.arrivalMax || this.disabled) && this.active) {
-				cls.push('mvi-stepper-active')
+				cls.push('active')
 			}
 			if (this.border) {
-				cls.push('mvi-stepper-border')
+				cls.push('border')
 			}
 			return cls
 		},
@@ -201,6 +163,7 @@ export default {
 				let val = this.updateValue(value)
 				if (this.modelValue !== val) {
 					this.$emit('update:modelValue', val)
+					this.$emit('change', val)
 				}
 			},
 			get() {
@@ -276,108 +239,120 @@ export default {
 	justify-content: flex-start;
 	align-items: center;
 	position: relative;
-}
 
-.mvi-stepper-minus,
-.mvi-stepper-plus {
-	display: inline-flex;
-	display: -webkit-inline-flex;
-	justify-content: center;
-	align-items: center;
-	background-color: @bg-color-dark;
-	border-radius: @radius-default;
-	color: @font-color-sub;
-	position: relative;
-	cursor: pointer;
-	user-select: none;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-
-	&[disabled] {
-		opacity: 0.6;
-	}
-}
-
-.mvi-stepper-minus {
-	margin-right: @mp-xs;
-}
-
-.mvi-stepper-active:active::before {
-	.mvi-active();
-}
-
-.mvi-stepper-small > .mvi-stepper-minus,
-.mvi-stepper-small > .mvi-stepper-plus {
-	width: @small-height;
-	height: @small-height;
-	font-size: @font-size-small;
-}
-
-.mvi-stepper-medium > .mvi-stepper-minus,
-.mvi-stepper-medium > .mvi-stepper-plus {
-	width: @medium-height;
-	height: @medium-height;
-	font-size: @font-size-default;
-}
-
-.mvi-stepper-large > .mvi-stepper-minus,
-.mvi-stepper-large > .mvi-stepper-plus {
-	width: @large-height;
-	height: @large-height;
-	font-size: @font-size-h6;
-}
-
-.mvi-stepper-input {
-	min-width: 0;
-	background-color: @bg-color-dark;
-	margin-right: @mp-xs;
-	border-radius: @radius-default;
-	width: 1.5rem;
-	color: @font-color-sub;
-
-	& > input {
-		position: relative;
-		display: block;
-		background-color: transparent;
-		height: 100%;
-		width: 100%;
-		min-width: 0;
-		color: inherit;
-		font-size: inherit;
-		border: none;
+	.mvi-stepper-minus,
+	.mvi-stepper-plus {
+		display: inline-flex;
+		display: -webkit-inline-flex;
+		justify-content: center;
+		align-items: center;
+		background-color: @bg-color-dark;
 		border-radius: @radius-default;
-		font-family: @font-family;
-		background-image: none;
-		margin: 0;
-		font-size: inherit;
+		color: @font-color-sub;
+		position: relative;
+		cursor: pointer;
+		user-select: none;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+
+		&.active:active::before {
+			.mvi-active();
+		}
+
+		&.border {
+			border: 1px solid @border-color;
+		}
 
 		&[disabled] {
-			background-color: inherit;
-			color: inherit;
+			opacity: 0.6;
 		}
 	}
 
-	&[disabled] {
-		opacity: 0.6;
+	.mvi-stepper-minus {
+		margin-right: @mp-xs;
 	}
-}
 
-.mvi-stepper-small > .mvi-stepper-input {
-	height: @small-height;
-	font-size: @font-size-small;
-}
+	.mvi-stepper-input {
+		min-width: 0;
+		background-color: @bg-color-dark;
+		margin-right: @mp-xs;
+		border-radius: @radius-default;
+		width: 1.5rem;
+		color: @font-color-sub;
+		padding: 0 @mp-sm;
 
-.mvi-stepper-medium > .mvi-stepper-input {
-	height: @medium-height;
-	font-size: @font-size-default;
-}
+		&.border {
+			border: 1px solid @border-color;
+		}
 
-.mvi-stepper-large > .mvi-stepper-input {
-	height: @large-height;
-	font-size: @font-size-h6;
-}
+		input {
+			position: relative;
+			display: block;
+			background-color: transparent;
+			height: 100%;
+			width: 100%;
+			min-width: 0;
+			color: inherit;
+			font-size: inherit;
+			border: none;
+			border-radius: @radius-default;
+			font-family: @font-family;
+			background-image: none;
+			margin: 0;
+			padding: 0;
+			font-size: inherit;
 
-&.mvi-stepper-border {
-	border: 1px solid @border-color;
+			&[disabled] {
+				background-color: inherit;
+				color: inherit;
+			}
+		}
+
+		&[disabled] {
+			opacity: 0.6;
+		}
+	}
+
+	&.small {
+		.mvi-stepper-minus,
+		.mvi-stepper-plus {
+			width: @small-height;
+			height: @small-height;
+			font-size: @font-size-small;
+		}
+
+		.mvi-stepper-input {
+			height: @small-height;
+			font-size: @font-size-small;
+		}
+	}
+
+	&.medium {
+		.mvi-stepper-minus,
+		.mvi-stepper-plus {
+			width: @medium-height;
+			height: @medium-height;
+			font-size: @font-size-default;
+		}
+
+		.mvi-stepper-input {
+			height: @medium-height;
+			font-size: @font-size-default;
+		}
+	}
+
+	&.large {
+		.mvi-stepper-minus,
+		.mvi-stepper-plus {
+			width: @large-height;
+			height: @large-height;
+			font-size: @font-size-h6;
+		}
+
+		.mvi-stepper-input {
+			height: @large-height;
+			font-size: @font-size-h6;
+		}
+	}
 }
 </style>

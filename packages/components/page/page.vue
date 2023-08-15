@@ -1,35 +1,35 @@
 <template>
 	<div class="mvi-page">
-		<div v-if="firstText || firstIconType || firstIconUrl" :disabled="modelValue == 1 || null" @click="pageFirst" :class="['mvi-page-first', active && modelValue != 1 ? 'mvi-page-active' : '']" :style="{ color: modelValue == 1 ? '' : color || '' }">
-			<Icon :class="['mvi-page-icon', firstText ? 'mvi-page-margin-right' : '']" v-if="firstIconType || firstIconUrl" :type="firstIconType" :url="firstIconUrl" :spin="firstIconSpin" :size="firstIconSize" :color="firstIconColor" />
+		<div v-if="firstText || parseIcon(firstIcon).type || parseIcon(firstIcon).url" :disabled="modelValue == 1 || null" @click="pageFirst" :class="['mvi-page-first', active && modelValue != 1 ? 'active' : '']" :style="firstStyle">
+			<Icon :class="firstText ? 'margin-right' : ''" v-if="parseIcon(firstIcon).type || parseIcon(firstIcon).url" :type="parseIcon(firstIcon).type" :url="parseIcon(firstIcon).url" :spin="parseIcon(firstIcon).spin" :size="parseIcon(firstIcon).size" :color="parseIcon(firstIcon).color" />
 			<span v-if="firstText" v-text="firstText"></span>
 		</div>
-		<div v-if="prevText || prevIconType || prevIconUrl" :disabled="modelValue == 1 || null" @click="pagePrev" :class="['mvi-page-prev', active && modelValue != 1 ? 'mvi-page-active' : '']" :style="{ color: modelValue == 1 ? '' : color || '' }">
-			<Icon :class="['mvi-page-icon', prevText ? 'mvi-page-margin-right' : '']" v-if="prevIconType || prevIconUrl" :type="prevIconType" :url="prevIconUrl" :size="prevIconSize" :spin="prevIconSpin" :color="prevIconColor" />
+		<div v-if="prevText || parseIcon(prevIcon).type || parseIcon(prevIcon).url" :disabled="modelValue == 1 || null" @click="pagePrev" :class="['mvi-page-prev', active && modelValue != 1 ? 'active' : '']" :style="firstStyle">
+			<Icon :class="prevText ? 'margin-right' : ''" v-if="parseIcon(prevIcon).type || parseIcon(prevIcon).url" :type="parseIcon(prevIcon).type" :url="parseIcon(prevIcon).url" :size="parseIcon(prevIcon).size" :spin="parseIcon(prevIcon).spin" :color="parseIcon(prevIcon).color" />
 			<span v-if="prevText" v-text="prevText"></span>
 		</div>
 		<div class="mvi-page-numbers">
 			<div class="mvi-page-numbers-simple" v-if="simple">{{ modelValue }} / {{ total }}</div>
 			<div class="mvi-page-numbers-items" v-else>
 				<!--total不超过overNumber -->
-				<template v-for="(item, index) in total">
-					<div v-if="total <= overNumber" :class="['mvi-page-numbers-item', modelValue == item ? 'mvi-page-number-active' : '', active && modelValue != item ? 'mvi-page-active' : '']" :key="'page-' + index" v-text="item" @click="toPage(item)" :style="pageStyle(item)"></div>
+				<template v-for="item in total">
+					<div v-if="total <= overNumber" :class="['mvi-page-numbers-item', modelValue == item ? 'number-active' : '', active && modelValue != item ? 'active' : '']" v-text="item" @click="toPage(item)" :style="pageStyle(item)"></div>
 				</template>
 				<!-- total超过overNumber -->
-				<div v-if="total > overNumber && modelValue > (overNumber - 1) / 2 + 1" :class="['mvi-page-numbers-item', active ? 'mvi-page-active' : '']" @click="toPage(modelValue - (overNumber - 1))" :style="{ color: color || '' }">...</div>
-				<template v-for="(item, index) in arr">
-					<div v-if="total > overNumber" :class="['mvi-page-numbers-item', modelValue == item ? 'mvi-page-number-active' : '', active && modelValue != item ? 'mvi-page-active' : '']" :key="'page2-' + index" v-text="item" @click="toPage(item)" :style="pageStyle(item)"></div>
+				<div v-if="total > overNumber && modelValue > (overNumber - 1) / 2 + 1" :class="['mvi-page-numbers-item', active ? 'active' : '']" @click="toPage(modelValue - (overNumber - 1))" :style="{ color: color || '' }">...</div>
+				<template v-for="item in arr">
+					<div v-if="total > overNumber" :class="['mvi-page-numbers-item', modelValue == item ? 'number-active' : '', active && modelValue != item ? 'active' : '']" v-text="item" @click="toPage(item)" :style="pageStyle(item)"></div>
 				</template>
-				<div v-if="total > overNumber && modelValue < total - (overNumber - 1) / 2" :class="['mvi-page-numbers-item', active ? 'mvi-page-active' : '']" @click="toPage(modelValue + (overNumber - 1))" :style="{ color: color || '' }">...</div>
+				<div v-if="total > overNumber && modelValue < total - (overNumber - 1) / 2" :class="['mvi-page-numbers-item', active ? 'active' : '']" @click="toPage(modelValue + (overNumber - 1))" :style="{ color: color || '' }">...</div>
 			</div>
 		</div>
-		<div v-if="nextText || nextIconType || nextIconUrl" :disabled="modelValue == total || null" @click="pageNext" :class="['mvi-page-next', active && modelValue != total ? 'mvi-page-active' : '']" :style="{ color: modelValue == total ? '' : color || '' }">
+		<div v-if="nextText || parseIcon(nextIcon).type || parseIcon(nextIcon).url" :disabled="modelValue == total || null" @click="pageNext" :class="['mvi-page-next', active && modelValue != total ? 'active' : '']" :style="lastStyle">
 			<span v-if="nextText" v-text="nextText"></span>
-			<Icon :class="['mvi-page-icon', nextText ? 'mvi-page-margin-left' : '']" v-if="nextIconType || nextIconUrl" :type="nextIconType" :url="nextIconUrl" :size="nextIconSize" :spin="nextIconSpin" :color="nextIconColor" />
+			<Icon :class="nextText ? 'margin-left' : ''" v-if="parseIcon(nextIcon).type || parseIcon(nextIcon).url" :type="parseIcon(nextIcon).type" :url="parseIcon(nextIcon).url" :size="parseIcon(nextIcon).size" :spin="parseIcon(nextIcon).spin" :color="parseIcon(nextIcon).color" />
 		</div>
-		<div v-if="lastText || lastIconType || lastIconUrl" :disabled="modelValue == total || null" @click="pageLast" :class="['mvi-page-last', active && modelValue != total ? 'mvi-page-active' : '']" :style="{ color: modelValue == total ? '' : color || '' }">
+		<div v-if="lastText || parseIcon(lastIcon).type || parseIcon(lastIcon).url" :disabled="modelValue == total || null" @click="pageLast" :class="['mvi-page-last', active && modelValue != total ? 'active' : '']" :style="lastStyle">
 			<span v-if="lastText" v-text="lastText"></span>
-			<Icon :class="['mvi-page-icon', lastText ? 'mvi-page-margin-left' : '']" v-if="lastIconType || lastIconUrl" :type="lastIconType" :url="lastIconUrl" :size="lastIconSize" :spin="lastIconSpin" :color="lastIconColor" />
+			<Icon :class="lastText ? 'margin-left' : ''" v-if="parseIcon(lastIcon).type || parseIcon(lastIcon).url" :type="parseIcon(lastIcon).type" :url="parseIcon(lastIcon).url" :size="parseIcon(lastIcon).size" :spin="parseIcon(lastIcon).spin" :color="parseIcon(lastIcon).color" />
 		</div>
 	</div>
 </template>
@@ -77,12 +77,12 @@ export default {
 		//上一页显示的图标
 		prevIcon: {
 			type: [String, Object],
-			default: null
+			default: 'angle-left'
 		},
 		//下一页显示的图标
 		nextIcon: {
 			type: [String, Object],
-			default: null
+			default: 'angle-right'
 		},
 		//简单模式
 		simple: {
@@ -102,12 +102,12 @@ export default {
 		//首页显示的图标
 		firstIcon: {
 			type: [Object, String],
-			default: null
+			default: 'angle-double-left'
 		},
 		//尾页显示的图标
 		lastIcon: {
 			type: [Object, String],
-			default: null
+			default: 'angle-double-right'
 		},
 		//自定义字体颜色及选中的背景色
 		color: {
@@ -156,193 +156,50 @@ export default {
 			}
 			return arr
 		},
-		firstIconType() {
-			let type = 'angle-double-left'
-			if (Dap.common.isObject(this.firstIcon)) {
-				if (typeof this.firstIcon.type == 'string') {
-					type = this.firstIcon.type
+		parseIcon() {
+			return param => {
+				let icon = {
+					spin: false,
+					type: null,
+					url: null,
+					color: null,
+					size: null
 				}
-			} else if (typeof this.firstIcon == 'string') {
-				type = this.firstIcon
+				if (Dap.common.isObject(param)) {
+					if (typeof param.spin == 'boolean') {
+						icon.spin = param.spin
+					}
+					if (typeof param.type == 'string') {
+						icon.type = param.type
+					}
+					if (typeof param.url == 'string') {
+						icon.url = param.url
+					}
+					if (typeof param.color == 'string') {
+						icon.color = param.color
+					}
+					if (typeof param.size == 'string') {
+						icon.size = param.size
+					}
+				} else if (typeof param == 'string') {
+					icon.type = param
+				}
+				return icon
 			}
-			return type
 		},
-		firstIconUrl() {
-			let url = null
-			if (Dap.common.isObject(this.firstIcon)) {
-				if (typeof this.firstIcon.url == 'string') {
-					url = this.firstIcon.url
-				}
+		firstStyle() {
+			let style = {}
+			if (this.modelValue > 1 && this.color) {
+				style.color = this.color
 			}
-			return url
+			return style
 		},
-		firstIconSpin() {
-			let spin = false
-			if (Dap.common.isObject(this.firstIcon)) {
-				if (typeof this.firstIcon.spin == 'boolean') {
-					spin = this.firstIcon.spin
-				}
+		lastStyle() {
+			let style = {}
+			if (this.modelValue < this.total && this.color) {
+				style.color = this.color
 			}
-			return spin
-		},
-		firstIconSize() {
-			let size = null
-			if (Dap.common.isObject(this.firstIcon)) {
-				if (typeof this.firstIcon.size == 'string') {
-					size = this.firstIcon.size
-				}
-			}
-			return size
-		},
-		firstIconColor() {
-			let color = null
-			if (Dap.common.isObject(this.firstIcon)) {
-				if (typeof this.firstIcon.color == 'string') {
-					color = this.firstIcon.color
-				}
-			}
-			return color
-		},
-		lastIconType() {
-			let type = 'angle-double-right'
-			if (Dap.common.isObject(this.lastIcon)) {
-				if (typeof this.lastIcon.type == 'string') {
-					type = this.lastIcon.type
-				}
-			} else if (typeof this.lastIcon == 'string') {
-				type = this.lastIcon
-			}
-			return type
-		},
-		lastIconUrl() {
-			let url = null
-			if (Dap.common.isObject(this.lastIcon)) {
-				if (typeof this.lastIcon.url == 'string') {
-					url = this.lastIcon.url
-				}
-			}
-			return url
-		},
-		lastIconSpin() {
-			let spin = false
-			if (Dap.common.isObject(this.lastIcon)) {
-				if (typeof this.lastIcon.spin == 'boolean') {
-					spin = this.lastIcon.spin
-				}
-			}
-			return spin
-		},
-		lastIconSize() {
-			let size = null
-			if (Dap.common.isObject(this.lastIcon)) {
-				if (typeof this.lastIcon.size == 'string') {
-					size = this.lastIcon.size
-				}
-			}
-			return size
-		},
-		lastIconColor() {
-			let color = null
-			if (Dap.common.isObject(this.lastIcon)) {
-				if (typeof this.lastIcon.color == 'string') {
-					color = this.lastIcon.color
-				}
-			}
-			return color
-		},
-		prevIconType() {
-			let type = 'angle-left'
-			if (Dap.common.isObject(this.prevIcon)) {
-				if (typeof this.prevIcon.type == 'string') {
-					type = this.prevIcon.type
-				}
-			} else if (typeof this.prevIcon == 'string') {
-				type = this.prevIcon
-			}
-			return type
-		},
-		prevIconUrl() {
-			let url = null
-			if (Dap.common.isObject(this.prevIcon)) {
-				if (typeof this.prevIcon.url == 'string') {
-					url = this.prevIcon.url
-				}
-			}
-			return url
-		},
-		prevIconSpin() {
-			let spin = false
-			if (Dap.common.isObject(this.prevIcon)) {
-				if (typeof this.prevIcon.spin == 'boolean') {
-					spin = this.prevIcon.spin
-				}
-			}
-			return spin
-		},
-		prevIconSize() {
-			let size = null
-			if (Dap.common.isObject(this.prevIcon)) {
-				if (typeof this.prevIcon.size == 'string') {
-					size = this.prevIcon.size
-				}
-			}
-			return size
-		},
-		prevIconColor() {
-			let color = null
-			if (Dap.common.isObject(this.prevIcon)) {
-				if (typeof this.prevIcon.color == 'string') {
-					color = this.prevIcon.color
-				}
-			}
-			return color
-		},
-		nextIconType() {
-			let type = 'angle-right'
-			if (Dap.common.isObject(this.nextIcon)) {
-				if (typeof this.nextIcon.type == 'string') {
-					type = this.nextIcon.type
-				}
-			} else if (typeof this.nextIcon == 'string') {
-				type = this.nextIcon
-			}
-			return type
-		},
-		nextIconUrl() {
-			let url = null
-			if (Dap.common.isObject(this.nextIcon)) {
-				if (typeof this.nextIcon.url == 'string') {
-					url = this.nextIcon.url
-				}
-			}
-			return url
-		},
-		nextIconSpin() {
-			let spin = false
-			if (Dap.common.isObject(this.nextIcon)) {
-				if (typeof this.nextIcon.spin == 'boolean') {
-					spin = this.nextIcon.spin
-				}
-			}
-			return spin
-		},
-		nextIconSize() {
-			let size = null
-			if (Dap.common.isObject(this.nextIcon)) {
-				if (typeof this.nextIcon.size == 'string') {
-					size = this.nextIcon.size
-				}
-			}
-			return size
-		},
-		nextIconColor() {
-			let color = null
-			if (Dap.common.isObject(this.nextIcon)) {
-				if (typeof this.nextIcon.color == 'string') {
-					color = this.nextIcon.color
-				}
-			}
-			return color
+			return style
 		}
 	},
 	components: {
@@ -419,135 +276,168 @@ export default {
 	font-size: @font-size-default;
 	border-radius: @radius-default;
 	overflow: hidden;
-}
 
-.mvi-page-first {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: center;
-	align-items: center;
-	position: relative;
-	flex: 1;
-	height: 100%;
-	padding: 0 @mp-md;
-	border-right: 1px solid @border-color;
-	color: @info-normal;
-	white-space: nowrap;
-	cursor: pointer;
-}
+	.mvi-page-first {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: center;
+		align-items: center;
+		position: relative;
+		flex: 1;
+		height: 100%;
+		padding: 0 @mp-md;
+		border-right: 1px solid @border-color;
+		color: @info-normal;
+		white-space: nowrap;
+		cursor: pointer;
 
-.mvi-page-last {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: center;
-	align-items: center;
-	position: relative;
-	height: 100%;
-	flex: 1;
-	padding: 0 @mp-md;
-	border-left: 1px solid @border-color;
-	color: @info-normal;
-	white-space: nowrap;
-	cursor: pointer;
-}
+		&.active:active::before {
+			.mvi-active();
+		}
 
-.mvi-page-prev {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: center;
-	align-items: center;
-	position: relative;
-	flex: 1;
-	height: 100%;
-	padding: 0 @mp-md;
-	border-right: 1px solid @border-color;
-	color: @info-normal;
-	white-space: nowrap;
-	cursor: pointer;
-}
+		&[disabled] {
+			color: @font-color-mute;
+		}
 
-.mvi-page-next {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: center;
-	align-items: center;
-	position: relative;
-	height: 100%;
-	flex: 1;
-	padding: 0 @mp-md;
-	border-left: 1px solid @border-color;
-	color: @info-normal;
-	white-space: nowrap;
-	cursor: pointer;
-}
+		.mvi-icon.margin-right {
+			margin-right: @mp-xs;
+		}
+	}
 
-.mvi-page-active:active::before {
-	.mvi-active();
-}
-
-.mvi-page-prev[disabled],
-.mvi-page-next[disabled],
-.mvi-page-first[disabled],
-.mvi-page-last[disabled] {
-	color: @font-color-mute;
-}
-
-.mvi-page-numbers {
-	display: block;
-	height: 100%;
-}
-
-.mvi-page-numbers-simple {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	height: 100%;
-	color: @font-color-sub;
-	vertical-align: middle;
-	padding: 0 @mp-lg;
-	white-space: nowrap;
-}
-
-.mvi-page-numbers-items {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-	height: 100%;
-	position: relative;
-
-	.mvi-page-numbers-item {
-		width: @small-height;
+	.mvi-page-last {
 		display: flex;
 		display: -webkit-flex;
 		justify-content: center;
 		align-items: center;
 		position: relative;
 		height: 100%;
+		flex: 1;
+		padding: 0 @mp-md;
+		border-left: 1px solid @border-color;
+		color: @info-normal;
+		white-space: nowrap;
+		cursor: pointer;
+
+		&.active:active::before {
+			.mvi-active();
+		}
+
+		&[disabled] {
+			color: @font-color-mute;
+		}
+
+		.mvi-icon.margin-left {
+			margin-left: @mp-xs;
+		}
+	}
+
+	.mvi-page-prev {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: center;
+		align-items: center;
+		position: relative;
+		flex: 1;
+		height: 100%;
+		padding: 0 @mp-md;
 		border-right: 1px solid @border-color;
 		color: @info-normal;
 		white-space: nowrap;
 		cursor: pointer;
 
-		&:last-child {
-			border-right: none;
+		&.active:active::before {
+			.mvi-active();
 		}
 
-		&.mvi-page-number-active {
-			background-color: @info-normal;
-			color: #fff;
+		&[disabled] {
+			color: @font-color-mute;
+		}
+
+		.mvi-icon.margin-right {
+			margin-right: @mp-xs;
 		}
 	}
-}
 
-.mvi-page-icon.mvi-page-margin-right {
-	margin-right: @mp-xs;
-}
+	.mvi-page-next {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: center;
+		align-items: center;
+		position: relative;
+		height: 100%;
+		flex: 1;
+		padding: 0 @mp-md;
+		border-left: 1px solid @border-color;
+		color: @info-normal;
+		white-space: nowrap;
+		cursor: pointer;
 
-.mvi-page-icon.mvi-page-margin-left {
-	margin-left: @mp-xs;
+		&.active:active::before {
+			.mvi-active();
+		}
+
+		&[disabled] {
+			color: @font-color-mute;
+		}
+
+		.mvi-icon.margin-left {
+			margin-left: @mp-xs;
+		}
+	}
+
+	.mvi-page-numbers {
+		display: block;
+		height: 100%;
+
+		.mvi-page-numbers-simple {
+			display: flex;
+			display: -webkit-flex;
+			justify-content: center;
+			align-items: center;
+			width: 100%;
+			height: 100%;
+			color: @font-color-sub;
+			vertical-align: middle;
+			padding: 0 @mp-lg;
+			white-space: nowrap;
+		}
+
+		.mvi-page-numbers-items {
+			display: flex;
+			display: -webkit-flex;
+			justify-content: space-between;
+			align-items: center;
+			width: 100%;
+			height: 100%;
+			position: relative;
+
+			.mvi-page-numbers-item {
+				width: @small-height;
+				display: flex;
+				display: -webkit-flex;
+				justify-content: center;
+				align-items: center;
+				position: relative;
+				height: 100%;
+				border-right: 1px solid @border-color;
+				color: @info-normal;
+				white-space: nowrap;
+				cursor: pointer;
+
+				&:last-child {
+					border-right: none;
+				}
+
+				&.active:active::before {
+					.mvi-active();
+				}
+
+				&.number-active {
+					background-color: @info-normal;
+					color: #fff;
+				}
+			}
+		}
+	}
 }
 </style>

@@ -3,9 +3,15 @@
 		<div>
 			{{ value }}
 			<m-button @click="show = !show">打开图片预览</m-button>
-		</div>
-		<div style="position: relative; width: 400px; height: 400px">
-			<m-number-keyboard showX random title="安全键盘" border closable v-model:show="show" v-model="value"></m-number-keyboard>
+			<div class="mvi-mb-2">
+				<m-stepper v-model="page" size="small" inputAlign="left" :digit="2" :step="0.55"></m-stepper>
+			</div>
+			<div class="mvi-mb-2">
+				<m-stepper v-model="page" inputAlign="left" :digit="2" :step="0.55"></m-stepper>
+			</div>
+			<div class="mvi-mb-2">
+				<m-stepper v-model="page" border size="large" inputAlign="left" :digit="2" :step="0.55"></m-stepper>
+			</div>
 		</div>
 	</div>
 </template>
@@ -14,7 +20,8 @@ import dayjs from 'dayjs'
 export default {
 	data() {
 		return {
-			value: 0,
+			page: 1,
+			value: '',
 			show: false,
 			options: [
 				{
@@ -58,5 +65,12 @@ html {
 #app {
 	height: 100%;
 	overflow: auto;
+}
+
+.a {
+	.mvi-stepper-plus {
+		background-color: #f30 !important;
+		color: #fff !important;
+	}
 }
 </style>

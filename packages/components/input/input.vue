@@ -392,9 +392,9 @@ export default {
 			if (this.disabled) {
 				return
 			}
-			this.$emit('blur', this.realValue)
 			setTimeout(() => {
 				this.focus = false
+				this.$emit('blur', this.realValue)
 			}, 100)
 		},
 		//输入框监听

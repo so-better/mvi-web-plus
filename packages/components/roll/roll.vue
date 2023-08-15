@@ -1,6 +1,6 @@
 <template>
 	<div @click="clickStopFun" @mouseenter="hoverIn" @mouseleave="hoverOut" class="mvi-roll-container" :style="containerStyle">
-		<div :class="['mvi-roll', direction == 'left' || direction == 'right' ? 'mvi-roll-horizontal' : 'mvi-roll-vertical']" :style="rollStyle" ref="roll">
+		<div :class="['mvi-roll', direction == 'left' || direction == 'right' ? 'horizontal' : 'vertical']" :style="rollStyle" ref="roll">
 			<slot></slot>
 		</div>
 	</div>
@@ -115,7 +115,20 @@ export default {
 				}
 			}
 		},
-		//播放
+		//点击暂停
+		clickStopFun() {
+			if (this.clickStop) {
+				//滚动中可暂停
+				if (this.status == 0) {
+					this.pause()
+				}
+				//暂停时可开始
+				else if (this.status == 1) {
+					this.play()
+				}
+			}
+		},
+		//api：播放
 		play() {
 			if (!this.$refs.roll) {
 				return
@@ -163,9 +176,9 @@ export default {
 						this.play() //重新开始
 					}
 				}, interval)
-			}, 10)
+			}, 0)
 		},
-		//停止
+		//api：停止
 		stop() {
 			if (this.status == 2) {
 				return
@@ -193,7 +206,7 @@ export default {
 			}
 			this.$emit('stop')
 		},
-		//暂停
+		//api：暂停
 		pause() {
 			//只有滚动状态下才能暂停
 			if (this.status != 0) {
@@ -223,19 +236,6 @@ export default {
 				this.$refs.roll.style.top = 'auto'
 			}
 			this.$emit('pause')
-		},
-		//点击暂停
-		clickStopFun() {
-			if (this.clickStop) {
-				//滚动中可暂停
-				if (this.status == 0) {
-					this.pause()
-				}
-				//暂停时可开始
-				else if (this.status == 1) {
-					this.play()
-				}
-			}
 		}
 	},
 	beforeUnmount() {
@@ -253,20 +253,20 @@ export default {
 	position: relative;
 	overflow: hidden;
 	cursor: pointer;
-}
 
-.mvi-roll {
-	position: absolute;
-	left: 100%;
-	top: 100%;
-	white-space: nowrap;
-}
+	.mvi-roll {
+		position: absolute;
+		left: 100%;
+		top: 100%;
+		white-space: nowrap;
 
-.mvi-roll-vertical {
-	left: 0;
-}
+		&.vertical {
+			left: 0;
+		}
 
-.mvi-roll-horizontal {
-	top: 0;
+		&.horizontal {
+			top: 0;
+		}
+	}
 }
 </style>

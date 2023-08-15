@@ -51,7 +51,6 @@ import { Collapse } from './components/collapse'
 import { CollapseItem } from './components/collapse-item'
 import { Divider } from './components/divider'
 import { Roll } from './components/roll'
-import { Panel } from './components/panel'
 import { Steps } from './components/steps'
 import { Step } from './components/step'
 import { Label } from './components/label'
@@ -134,7 +133,6 @@ export * from './components/collapse'
 export * from './components/collapse-item'
 export * from './components/divider'
 export * from './components/roll'
-export * from './components/panel'
 export * from './components/steps'
 export * from './components/step'
 export * from './components/label'
@@ -218,7 +216,6 @@ const install = app => {
 		CollapseItem,
 		Divider,
 		Roll,
-		Panel,
 		Steps,
 		Step,
 		Label,
