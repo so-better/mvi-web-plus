@@ -48,15 +48,15 @@ export default {
 	},
 	emits: ['open', 'close'],
 	watch: {
-		disabled(newValue, oldValue) {
+		disabled() {
 			this.close(true)
 		}
 	},
 	computed: {
 		cellStyle() {
-			let style = {}
-			style.transform = `translateX(${this.transformX}px)`
-			return style
+			return {
+				transform: `translateX(${this.transformX}px)`
+			}
 		}
 	},
 	setup() {
@@ -260,7 +260,7 @@ export default {
 						this.$el.style.webkitTransition = ''
 						resolve()
 					}, 300)
-				}, 10)
+				}, 0)
 			})
 		},
 		//打开方法
@@ -340,32 +340,32 @@ export default {
 	align-items: center;
 	width: 100%;
 	height: auto;
-}
 
-.mvi-swipe-cell-left,
-.mvi-swipe-cell-right {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: flex-start;
-	align-items: center;
-	position: absolute;
-	height: 100%;
-	top: 0;
-}
+	.mvi-swipe-cell-left,
+	.mvi-swipe-cell-right {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-start;
+		align-items: center;
+		position: absolute;
+		height: 100%;
+		top: 0;
+	}
 
-.mvi-swipe-cell-left {
-	right: 100%;
-}
+	.mvi-swipe-cell-left {
+		right: 100%;
+	}
 
-.mvi-swipe-cell-right {
-	left: 100%;
-}
+	.mvi-swipe-cell-right {
+		left: 100%;
+	}
 
-.mvi-swipe-cell-center {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: flex-start;
-	align-items: center;
-	width: 100%;
+	.mvi-swipe-cell-center {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-start;
+		align-items: center;
+		width: 100%;
+	}
 }
 </style>

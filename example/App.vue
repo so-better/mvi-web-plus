@@ -2,16 +2,13 @@
 	<div class="mvi-p-4">
 		<div>
 			{{ value }}
-			<m-button @click="show = !show">打开图片预览</m-button>
-			<div class="mvi-mb-2">
-				<m-stepper v-model="page" size="small" inputAlign="left" :digit="2" :step="0.55"></m-stepper>
-			</div>
-			<div class="mvi-mb-2">
-				<m-stepper v-model="page" inputAlign="left" :digit="2" :step="0.55"></m-stepper>
-			</div>
-			<div class="mvi-mb-2">
-				<m-stepper v-model="page" border size="large" inputAlign="left" :digit="2" :step="0.55"></m-stepper>
-			</div>
+			<m-button @click="page++">打开图片预览</m-button>
+			<m-steps :active="page" vertical :activeIcon="{ type: 'success', color: '#7819a3' }" inactive-icon="times">
+				<m-step>买家下单</m-step>
+				<m-step>商家接单</m-step>
+				<m-step>买家提货</m-step>
+				<m-step>交易完成</m-step>
+			</m-steps>
 		</div>
 	</div>
 </template>
@@ -20,7 +17,7 @@ import dayjs from 'dayjs'
 export default {
 	data() {
 		return {
-			page: 1,
+			page: 0,
 			value: '',
 			show: false,
 			options: [
@@ -64,7 +61,8 @@ html {
 
 #app {
 	height: 100%;
-	overflow: auto;
+	overflow-x: hidden;
+	overflow-y: auto;
 }
 
 .a {

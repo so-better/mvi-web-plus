@@ -1,32 +1,32 @@
 <template>
 	<div class="mvi-step-vertical" v-if="steps.vertical">
-		<div :class="['mvi-step-vertical-label', stepIndex == steps.active ? 'mvi-step-label-finish' : '']" :style="labelStyle">
+		<div :class="['mvi-step-vertical-label', stepIndex == steps.active ? 'finish' : '']" :style="labelStyle">
 			<slot></slot>
 		</div>
 		<div class="mvi-step-vertical-container">
 			<div class="mvi-step-vertical-icon">
-				<Icon class="mvi-step-icon-active-el" v-if="steps.active == stepIndex && steps.activeIcon" :type="steps.activeIconType" :url="steps.activeIconUrl" :spin="steps.activeIconSpin" :size="steps.activeIconSize" :color="steps.activeIconColor" :style="activeIconStyle" />
+				<Icon class="mvi-step-icon-active-el" v-if="steps.active == stepIndex && (parseIcon(steps.activeIcon).type || parseIcon(steps.activeIcon).url)" :type="parseIcon(steps.activeIcon).type" :url="parseIcon(steps.activeIcon).url" :spin="parseIcon(steps.activeIcon).spin" :size="parseIcon(steps.activeIcon).size" :color="parseIcon(steps.activeIcon).color" :style="activeIconStyle" />
 				<div class="mvi-step-circle-active" v-else-if="steps.active == stepIndex" :style="activeCircleStyle"></div>
-				<Icon :class="['mvi-step-icon-inactive-el', stepIndex <= steps.active ? 'mvi-step-icon-inactive-finish' : '']" v-else-if="steps.inactiveIcon" :type="steps.inactiveIconType" :url="steps.inactiveIconUrl" :spin="steps.inactiveIconSpin" :style="inactiveIconStyle" :size="steps.inactiveIconSize" :color="steps.inactiveIconColor" />
-				<div :class="['mvi-step-circle', stepIndex <= steps.active ? 'mvi-step-circle-finish' : '']" v-else :style="circleStyle"></div>
+				<Icon :class="['mvi-step-icon-inactive-el', stepIndex <= steps.active ? 'finish' : '']" v-else-if="parseIcon(steps.inactiveIcon).type || parseIcon(steps.inactiveIcon).url" :type="parseIcon(steps.inactiveIcon).type" :url="parseIcon(steps.inactiveIcon).url" :spin="parseIcon(steps.inactiveIcon).spin" :size="parseIcon(steps.inactiveIcon).size" :color="parseIcon(steps.inactiveIcon).color" :style="inactiveIconStyle" />
+				<div :class="['mvi-step-circle', stepIndex <= steps.active ? 'finish' : '']" v-else :style="circleStyle"></div>
 			</div>
-			<div :class="['mvi-step-vertical-line', stepIndex == steps.children.length - 1 ? 'mvi-step-line-last' : '', stepIndex < steps.active ? 'mvi-step-line-finish' : '']" :style="lineStyle"></div>
+			<div :class="['mvi-step-vertical-line', stepIndex == steps.children.length - 1 ? 'last' : '', stepIndex < steps.active ? 'finish' : '']" :style="lineStyle"></div>
 		</div>
 	</div>
-	<div v-else :class="['mvi-step', stepIndex == steps.children.length - 1 ? 'mvi-step-last' : '']">
-		<div :class="['mvi-step-label', stepIndex == steps.children.length - 1 ? 'mvi-step-label-last' : '', stepIndex == 0 ? 'mvi-step-label-first' : '', stepIndex == steps.active ? 'mvi-step-label-finish' : '']" :style="labelStyle">
+	<div v-else :class="['mvi-step', stepIndex == steps.children.length - 1 ? 'last' : '']">
+		<div :class="['mvi-step-label', stepIndex == steps.children.length - 1 ? 'last' : '', stepIndex == 0 ? 'first' : '', stepIndex == steps.active ? 'finish' : '']" :style="labelStyle">
 			<div>
 				<slot></slot>
 			</div>
 		</div>
 		<div class="mvi-step-container">
-			<div :class="['mvi-step-icon', stepIndex == steps.children.length - 1 ? 'mvi-step-icon-last' : '']" :style="stepIconStyle">
-				<Icon class="mvi-step-icon-active-el" v-if="steps.active == stepIndex && steps.activeIcon" :type="steps.activeIconType" :url="steps.activeIconUrl" :spin="steps.activeIconSpin" :size="steps.activeIconSize" :color="steps.activeIconColor" :style="activeIconStyle" />
+			<div :class="['mvi-step-icon', stepIndex == steps.children.length - 1 ? 'last' : '']" :style="stepIconStyle">
+				<Icon class="mvi-step-icon-active-el" v-if="steps.active == stepIndex && (parseIcon(steps.activeIcon).type || parseIcon(steps.activeIcon).url)" :type="parseIcon(steps.activeIcon).type" :url="parseIcon(steps.activeIcon).url" :spin="parseIcon(steps.activeIcon).spin" :size="parseIcon(steps.activeIcon).size" :color="parseIcon(steps.activeIcon).color" :style="activeIconStyle" />
 				<div class="mvi-step-circle-active" v-else-if="steps.active == stepIndex" :style="activeCircleStyle"></div>
-				<Icon :class="['mvi-step-icon-inactive-el', stepIndex <= steps.active ? 'mvi-step-icon-inactive-finish' : '']" v-else-if="steps.inactiveIcon" :type="steps.inactiveIconType" :url="steps.inactiveIconUrl" :spin="steps.inactiveIconSpin" :style="inactiveIconStyle" :size="steps.inactiveIconSize" :color="steps.inactiveIconColor" />
-				<div :class="['mvi-step-circle', stepIndex <= steps.active ? 'mvi-step-circle-finish' : '']" v-else :style="circleStyle"></div>
+				<Icon :class="['mvi-step-icon-inactive-el', stepIndex <= steps.active ? 'finish' : '']" v-else-if="parseIcon(steps.inactiveIcon).type || parseIcon(steps.inactiveIcon).url" :type="parseIcon(steps.inactiveIcon).type" :url="parseIcon(steps.inactiveIcon).url" :spin="parseIcon(steps.inactiveIcon).spin" :size="parseIcon(steps.inactiveIcon).size" :color="parseIcon(steps.inactiveIcon).color" :style="inactiveIconStyle" />
+				<div :class="['mvi-step-circle', stepIndex <= steps.active ? 'finish' : '']" v-else :style="circleStyle"></div>
 			</div>
-			<div :class="['mvi-step-line', stepIndex == steps.children.length - 1 ? 'mvi-step-line-last' : '', stepIndex < steps.active ? 'mvi-step-line-finish' : '']" :style="lineStyle"></div>
+			<div :class="['mvi-step-line', stepIndex == steps.children.length - 1 ? 'last' : '', stepIndex < steps.active ? 'finish' : '']" :style="lineStyle"></div>
 		</div>
 	</div>
 </template>
@@ -56,6 +56,38 @@ export default {
 		this.elm = this.$el
 	},
 	computed: {
+		//转换图标
+		parseIcon() {
+			return param => {
+				let icon = {
+					spin: false,
+					type: null,
+					url: null,
+					color: null,
+					size: null
+				}
+				if (Dap.common.isObject(param)) {
+					if (typeof param.spin == 'boolean') {
+						icon.spin = param.spin
+					}
+					if (typeof param.type == 'string') {
+						icon.type = param.type
+					}
+					if (typeof param.url == 'string') {
+						icon.url = param.url
+					}
+					if (typeof param.color == 'string') {
+						icon.color = param.color
+					}
+					if (typeof param.size == 'string') {
+						icon.size = param.size
+					}
+				} else if (typeof param == 'string') {
+					icon.type = param
+				}
+				return icon
+			}
+		},
 		//step在steps中的序列值
 		stepIndex() {
 			return this.steps.children.findIndex(vm => {
@@ -161,62 +193,59 @@ export default {
 <style scoped lang="less">
 @import '../../css/mvi-basic.less';
 
-//以下为垂直方向的步骤条样式
 .mvi-step-vertical {
 	display: block;
 	width: 100%;
 	padding: @mp-sm 0 @mp-sm @mini-height;
 	position: relative;
-}
 
-.mvi-step-vertical-label {
-	display: block;
-	width: 100%;
-	font-size: @font-size-small;
-	color: @font-color-mute;
-	position: relative;
-	padding-left: @mp-sm;
-}
+	.mvi-step-vertical-label {
+		display: block;
+		width: 100%;
+		font-size: @font-size-small;
+		color: @font-color-mute;
+		position: relative;
+		padding-left: @mp-sm;
 
-.mvi-step-vertical-label.mvi-step-label-finish {
-	color: @success-normal;
-}
+		&.finish {
+			color: @success-normal;
+		}
+	}
 
-.mvi-step-vertical-container {
-	position: absolute;
-	left: 0;
-	top: 0.25rem;
-	width: @mini-height;
-	display: flex;
-	display: -webkit-flex;
-	justify-content: flex-start;
-	flex-direction: column;
-	-ms-flex-direction: column;
-	-webkit-flex-direction: column;
-	align-items: center;
-	height: 100%;
-}
+	.mvi-step-vertical-container {
+		position: absolute;
+		left: 0;
+		top: 0.25rem;
+		width: @mini-height;
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-start;
+		flex-direction: column;
+		align-items: center;
+		height: 100%;
 
-.mvi-step-vertical-icon {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: center;
-	align-items: center;
-}
+		.mvi-step-vertical-icon {
+			display: flex;
+			display: -webkit-flex;
+			justify-content: center;
+			align-items: center;
+		}
 
-.mvi-step-vertical-line {
-	display: block;
-	flex: 1;
-	width: 0;
-	border-right: 2px solid @font-color-mute;
-}
+		.mvi-step-vertical-line {
+			display: block;
+			flex: 1;
+			width: 0;
+			border-right: 2px solid @font-color-mute;
 
-.mvi-step-vertical-line.mvi-step-line-last {
-	display: none;
-}
+			&.finish {
+				border-right-color: @success-normal;
+			}
 
-.mvi-step-vertical-line.mvi-step-line-finish {
-	border-right-color: @success-normal;
+			&.last {
+				display: none;
+			}
+		}
+	}
 }
 
 //以下为水平方向的步骤条样式
@@ -226,68 +255,68 @@ export default {
 	position: relative;
 	flex: 1;
 	padding-bottom: @mini-height;
-}
 
-.mvi-step.mvi-step-last {
-	position: absolute;
-	right: @mp-sm;
-	width: auto;
-}
+	&.last {
+		position: absolute;
+		right: @mp-sm;
+		width: auto;
+	}
 
-.mvi-step-label {
-	display: block;
-	font-size: @font-size-small;
-	color: @font-color-mute;
-	transform: translateX(-50%);
-	-webkit-transform: translateX(-50%);
-	margin-left: 0.15rem;
-}
+	.mvi-step-label {
+		display: block;
+		font-size: @font-size-small;
+		color: @font-color-mute;
+		transform: translateX(-50%);
+		-webkit-transform: translateX(-50%);
+		margin-left: 0.15rem;
 
-.mvi-step-label.mvi-step-label-last,
-.mvi-step-label.mvi-step-label-first {
-	transform: none;
-	margin-left: 0;
-}
+		&.finish {
+			color: @success-normal;
+		}
 
-.mvi-step-label.mvi-step-label-finish {
-	color: @success-normal;
-}
+		&.first,
+		&.last {
+			transform: none;
+			margin-left: 0;
+		}
+	}
 
-.mvi-step-container {
-	position: absolute;
-	left: 0;
-	bottom: 0;
-	display: flex;
-	display: -webkit-flex;
-	justify-content: flex-start;
-	align-items: center;
-	height: @mini-height;
-	width: 100%;
-}
+	.mvi-step-container {
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-start;
+		align-items: center;
+		height: @mini-height;
+		width: 100%;
 
-.mvi-step-line {
-	display: block;
-	flex: 1;
-	height: 0;
-	border-top: 2px solid @font-color-mute;
-}
+		.mvi-step-icon {
+			display: block;
+			background-color: #fff;
 
-.mvi-step-line.mvi-step-line-last {
-	display: none;
-}
+			&.last {
+				position: absolute;
+				right: 0;
+			}
+		}
 
-.mvi-step-line.mvi-step-line-finish {
-	border-top-color: @success-normal;
-}
+		.mvi-step-line {
+			display: block;
+			flex: 1;
+			height: 0;
+			border-top: 2px solid @font-color-mute;
 
-.mvi-step-icon {
-	display: block;
-	background-color: #fff;
-}
+			&.finish {
+				border-top-color: @success-normal;
+			}
 
-.mvi-step-icon.mvi-step-icon-last {
-	position: absolute;
-	right: 0;
+			&.last {
+				display: none;
+			}
+		}
+	}
 }
 
 .mvi-step-icon-active-el {
@@ -296,10 +325,10 @@ export default {
 
 .mvi-step-icon-inactive-el {
 	color: @font-color-mute;
-}
 
-.mvi-step-icon-inactive-el.mvi-step-icon-inactive-finish {
-	color: @success-normal;
+	&.finish {
+		color: @success-normal;
+	}
 }
 
 .mvi-step-circle {
@@ -309,10 +338,10 @@ export default {
 	background-color: @font-color-mute;
 	border: none;
 	border-radius: @radius-circle;
-}
 
-.mvi-step-circle.mvi-step-circle-finish {
-	background-color: @success-normal;
+	&.finish {
+		background-color: @success-normal;
+	}
 }
 
 .mvi-step-circle-active {
