@@ -3,12 +3,9 @@
 		<div class="mvi-mb-4">
 			<m-button @click="change">打开图片预览</m-button>
 		</div>
-		<div>
-			{{ value }}
-		</div>
-		<div>
-			<m-sign background="#000" color="#fff" ref="sign"></m-sign>
-		</div>
+		<m-tooltip title="这是一个工具提示组件" block :showTriangle="false" width="4rem">
+			<m-button type="primary" block>工具提示</m-button>
+		</m-tooltip>
 	</div>
 </template>
 <script>
@@ -16,28 +13,51 @@ import dayjs from 'dayjs'
 export default {
 	data() {
 		return {
-			page: 0,
-			value: [],
-			show: true,
-			options: [
+			data: [
 				{
-					label: '分享到朋友圈',
-					value: 0
+					name: '张三',
+					age: 24,
+					sex: 1
 				},
 				{
-					label: '分享给QQ好友',
-					value: 1
+					name: '李四',
+					age: 20,
+					sex: 1
 				},
 				{
-					label: '分享到QQ空间',
-					value: 2
+					name: '王红',
+					age: 22,
+					sex: 0
+				},
+				{
+					name: '赵钱',
+					age: 30,
+					sex: 1
+				}
+			],
+			columns: [
+				{
+					key: 'checkbox',
+					value: '全选'
+				},
+				{
+					key: 'name',
+					value: '姓名'
+				},
+				{
+					key: 'age',
+					value: '年龄'
+				},
+				{
+					key: 'sex',
+					value: '性别'
 				}
 			]
 		}
 	},
 	methods: {
 		change(e) {
-			console.log(this.$refs.sign.getImage())
+			this.page = 2
 		}
 	}
 }
@@ -53,10 +73,18 @@ html {
 	overflow-y: auto;
 }
 
-.a {
-	.mvi-stepper-plus {
-		background-color: #f30 !important;
-		color: #fff !important;
+.a-tabs {
+	.mvi-tab-header.active {
+		background-color: #053b7e !important;
+		font-weight: bold;
+	}
+
+	.mvi-tabs-header.card {
+		border-color: #053b7e !important;
+	}
+
+	.mvi-tabs-header.card .mvi-tab-header {
+		border-right-color: #053b7e !important;
 	}
 }
 </style>

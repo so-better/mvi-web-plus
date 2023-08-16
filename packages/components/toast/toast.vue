@@ -1,11 +1,11 @@
 <template>
-	<Overlay ref="overlay" :color="computedOverlayColor" @hidden="toastHidden" v-model="show" :use-padding="computedUsePadding" :zIndex="computedZIndex" fade :mount-el="computedMountEl" @shown="toastShown">
-		<div :class="['mvi-toast', computedMessage ? '' : 'mvi-toast-iconless']" :style="toastStyle" v-bind="$attrs">
+	<Overlay ref="overlay" :color="cmpOverlayColor" @hidden="toastHidden" v-model="show" :use-padding="cmpUsePadding" :zIndex="cmpZIndex" fade :mount-el="cmpMountEl" @shown="toastShown">
+		<div :class="['mvi-toast', cmpMessage ? '' : 'iconless', cmpShadow ? 'shadow' : '']" :style="toastStyle" v-bind="$attrs">
 			<div class="mvi-toast-icon">
-				<Loading :color="computedColor || '#fff'" v-if="computedType == 'loading' && !computedIcon.type && !computedIcon.url" :type="0" :size="computedIcon.size" />
-				<Icon v-else :type="computedIcon.type" :url="computedIcon.url" :spin="computedIcon.spin" :size="computedIcon.size" :color="computedIcon.color" />
+				<Loading :color="cmpColor" v-if="cmpType == 'loading' && !cmpIcon.type && !cmpIcon.url" :size="cmpIcon.size" />
+				<Icon v-else :type="cmpIcon.type" :url="cmpIcon.url" :spin="cmpIcon.spin" :size="cmpIcon.size" :color="cmpIcon.color" />
 			</div>
-			<div v-if="computedMessage" class="mvi-toast-message" v-html="computedMessage"></div>
+			<div v-if="cmpMessage" class="mvi-toast-message" v-html="cmpMessage"></div>
 		</div>
 	</Overlay>
 </template>
@@ -20,9 +20,7 @@ export default {
 	data() {
 		return {
 			show: true,
-			//计时器
-			timer: null,
-			typeArray: ['success', 'error', 'loading', 'info']
+			timer: null
 		}
 	},
 	inheritAttrs: false,
@@ -76,15 +74,20 @@ export default {
 			type: String,
 			default: null
 		},
+		//是否显示阴影
+		shadow: {
+			type: Boolean,
+			default: null
+		},
 		//弹窗移除方法
-		remove: {
+		__remove: {
 			type: Function,
 			default: function () {
 				return function () {}
 			}
 		},
 		//弹窗初始化方法
-		init: {
+		__init: {
 			type: Function,
 			default: function () {
 				return function () {}
@@ -95,21 +98,33 @@ export default {
 		$$el() {
 			return this.$refs.overlay.$$el
 		},
-		computedUsePadding() {
+		cmpUsePadding() {
 			if (typeof this.usePadding == 'boolean') {
 				return this.usePadding
-			} else {
-				return false
 			}
+			return false
 		},
-		computedType() {
-			if (this.typeArray.includes(this.type)) {
+		cmpType() {
+			if (['success', 'error', 'loading', 'info'].includes(this.type)) {
 				return this.type
-			} else {
-				return 'info'
+			}
+			return 'info'
+		},
+		defaultIconType() {
+			if (this.cmpType == 'success') {
+				return 'success'
+			}
+			if (this.cmpType == 'error') {
+				return 'error-o'
+			}
+			if (this.cmpType == 'info') {
+				return 'info-o'
+			}
+			if (this.cmpType == 'loading') {
+				return null
 			}
 		},
-		computedIcon() {
+		cmpIcon() {
 			//默认图标
 			let icon = {
 				type: this.defaultIconType,
@@ -139,78 +154,71 @@ export default {
 			}
 			return icon
 		},
-		computedMessage() {
-			if (typeof this.message == 'string') {
+		cmpMessage() {
+			if (typeof this.message == 'string' && this.message) {
 				return this.message
-			} else if (Dap.common.isObject(this.message)) {
-				return JSON.stringify(this.message)
-			} else {
-				return String(this.message)
 			}
+			if (Dap.common.isObject(this.message)) {
+				return JSON.stringify(this.message)
+			}
+			if (this.message == undefined || this.message == null) {
+				return ''
+			}
+			return String(this.message)
 		},
-		computedTimeout() {
+		cmpTimeout() {
 			if (Dap.number.isNumber(this.timeout) && this.timeout > 0) {
 				return this.timeout
-			} else {
-				return -1
 			}
+			return 0
 		},
-		computedZIndex() {
+		cmpZIndex() {
 			if (Dap.number.isNumber(this.zIndex)) {
 				return this.zIndex
-			} else {
-				return 1100
 			}
+			return 1100
 		},
-		computedOverlayColor() {
+		cmpOverlayColor() {
 			if (typeof this.overlayColor == 'string' && this.overlayColor) {
 				return this.overlayColor
-			} else {
-				return 'rgba(0, 10, 20, .05)'
 			}
+			return 'rgba(0, 10, 20, .05)'
 		},
-		computedBackground() {
+		cmpBackground() {
 			if (typeof this.background == 'string' && this.background) {
 				return this.background
-			} else {
-				return null
 			}
+			return null
 		},
-		computedColor() {
+		cmpColor() {
 			if (typeof this.color == 'string' && this.color) {
 				return this.color
-			} else {
-				return null
 			}
+			return '#fff'
 		},
-		computedMountEl() {
+		cmpMountEl() {
 			if (typeof this.mountEl == 'string' && this.mountEl) {
 				return this.mountEl
-			} else {
-				return 'body'
 			}
+			return 'body'
+		},
+		cmpShadow() {
+			if (typeof this.shadow == 'boolean') {
+				return this.shadow
+			}
+			return true
 		},
 		toastStyle() {
-			let style = {}
-			style.zIndex = this.computedZIndex
-			if (this.computedBackground) {
-				style.backgroundColor = this.computedBackground
+			let style = {
+				zIndex: this.cmpZIndex
 			}
-			if (this.computedColor) {
-				style.color = this.computedColor
+			if (this.cmpBackground) {
+				style.backgroundColor = this.cmpBackground
+			}
+			if (this.cmpColor) {
+				style.color = this.cmpColor
 			}
 			return style
-		},
-		defaultIconType() {
-			if (this.computedType == 'success') {
-				return 'success'
-			} else if (this.computedType == 'error') {
-				return 'error-o'
-			} else if (this.computedType == 'info') {
-				return 'info-o'
-			} else if (this.computedType == 'loading') {
-				return null
-			}
 		}
 	},
 	components: {
@@ -219,21 +227,21 @@ export default {
 		Overlay
 	},
 	mounted() {
-		this.init(this)
+		this.__init(this)
 	},
 	methods: {
 		//弹窗完全显示后
 		toastShown() {
-			if (this.computedTimeout > 0) {
+			if (this.cmpTimeout > 0) {
 				this.timer = setTimeout(() => {
 					this.show = false
-				}, this.computedTimeout)
+				}, this.cmpTimeout)
 			}
 		},
 		//弹窗完全关闭后
 		toastHidden() {
 			this.clearTimer()
-			this.remove()
+			this.__remove()
 		},
 		//清除计时器
 		clearTimer() {
@@ -254,47 +262,47 @@ export default {
 	display: -webkit-flex;
 	justify-content: flex-start;
 	flex-direction: column;
-	-ms-flex-direction: column;
-	-webkit-flex-direction: column;
 	position: absolute;
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
-	-webkit-transform: translate(-50%, -50%);
-	width: 3rem;
+	min-width: 3rem;
+	max-width: 5rem;
 	margin: 0;
 	padding: @mp-md;
 	border-radius: @radius-default;
-	box-shadow: @boxshadow;
-	-webkit-box-shadow: @boxshadow;
 	background-color: rgba(0, 0, 0, 0.85);
 	color: #fff;
 
-	&.mvi-toast-iconless {
+	&.iconless {
 		justify-content: center;
 		align-items: center;
 		padding: 0;
 		width: 2.4rem;
 		height: 1.8rem;
 	}
-}
 
-.mvi-toast-icon {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-}
+	&.shadow {
+		box-shadow: @boxshadow;
+	}
 
-.mvi-toast-message {
-	display: block;
-	width: 100%;
-	text-align: center;
-	font-size: @font-size-default;
-	margin-top: @mp-sm;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	overflow: hidden;
+	.mvi-toast-icon {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+	}
+
+	.mvi-toast-message {
+		display: block;
+		width: 100%;
+		text-align: center;
+		font-size: @font-size-default;
+		margin-top: @mp-sm;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
 }
 </style>

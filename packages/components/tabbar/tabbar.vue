@@ -1,6 +1,6 @@
 <template>
-	<div :class="['mvi-tabbar', border ? 'mvi-tabbar-border' : '', fixed ? 'mvi-tabbar-fixed' : '']" :style="tabbarStyle">
-		<TabbarItem v-for="(item, index) in tabs" :key="'tab-' + index" :name="item.name" :value="item.value" :icon="item.icon" :disabled="item.disabled" :badge="item.badge" :route="item.route" :style="tabbarItemStyle(index)"></TabbarItem>
+	<div :class="['mvi-tabbar', border ? 'border' : '', fixed ? 'fixed' : '']" :style="tabbarStyle">
+		<TabbarItem v-for="(item, index) in tabs" :name="item.name" :value="item.value" :icon="item.icon" :disabled="item.disabled" :badge="item.badge" :route="item.route" :style="tabbarItemStyle(index)"></TabbarItem>
 	</div>
 </template>
 
@@ -12,7 +12,7 @@ export default {
 	components: {
 		TabbarItem
 	},
-	emits: ['item-click', 'update:modelValue', 'change'],
+	emits: ['update:modelValue', 'item-click', 'change'],
 	provide() {
 		return {
 			tabbar: this
@@ -92,17 +92,6 @@ export default {
 			}
 			return style
 		}
-	},
-	methods: {
-		//tab切换
-		getActiveValue(props) {
-			this.$emit('update:modelValue', props.value)
-			this.$emit('change', props)
-		},
-		//点击tab
-		itemClick(props) {
-			this.$emit('item-click', props)
-		}
 	}
 }
 </script>
@@ -116,19 +105,19 @@ export default {
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
-	height: @mini-height*2;
+	height: @mini-height * 2;
 	background-color: #fff;
 	padding: 0 @mp-xs;
 	color: @font-color-default;
-}
 
-.mvi-tabbar.mvi-tabbar-border {
-	border-top: 1px solid @border-color;
-}
+	&.border {
+		border-top: 1px solid @border-color;
+	}
 
-.mvi-tabbar-fixed {
-	position: fixed;
-	bottom: 0;
-	left: 0;
+	&.fixed {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+	}
 }
 </style>

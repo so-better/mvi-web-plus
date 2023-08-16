@@ -1,5 +1,5 @@
 <template>
-	<div :class="['mvi-tooltip', block ? 'mvi-tooltip-block' : '']" :data-id="'mvi-tooltip-' + uid">
+	<div :class="['mvi-tooltip', block ? 'block' : '']" :data-id="'mvi-tooltip-' + uid">
 		<div @click="clickShowTooltip" @mouseenter="hoverShowTooltip" @mouseleave="hoverHideToolTip" class="mvi-tooltip-toggle" ref="toggle" :data-id="'mvi-tooltip-target-' + uid">
 			<slot></slot>
 		</div>
@@ -31,10 +31,7 @@ export default {
 		//显示位置
 		placement: {
 			type: String,
-			default: 'bottom',
-			validator(value) {
-				return ['bottom', 'bottom-start', 'bottom-end', 'top', 'top-start', 'top-end', 'left', 'left-start', 'left-end', 'right', 'right-start', 'right-end'].includes(value)
-			}
+			default: 'bottom'
 		},
 		//是否禁用
 		disabled: {
@@ -154,14 +151,14 @@ export default {
 				}
 			}
 		},
-		//显示
+		//api：显示
 		showTooltip() {
 			if (this.disabled) {
 				return
 			}
 			this.show = true
 		},
-		//隐藏
+		//api：隐藏
 		hideTooltip() {
 			if (this.disabled) {
 				return
@@ -177,16 +174,14 @@ export default {
 
 .mvi-tooltip {
 	display: inline-flex;
-	display: -webkit-inline-flex;
 	position: relative;
 
 	.mvi-tooltip-toggle {
 		position: relative;
 		display: inline-flex;
-		display: -webkit-inline-flex;
 	}
 
-	&.mvi-tooltip-block {
+	&.block {
 		display: block;
 
 		.mvi-tooltip-toggle {

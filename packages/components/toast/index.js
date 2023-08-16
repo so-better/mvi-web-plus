@@ -17,6 +17,7 @@ const Toast = {
 			opts.usePadding = options.usePadding
 			opts.icon = options.icon
 			opts.mountEl = options.mountEl
+			opts.shadow = options.shadow
 		} else {
 			opts.message = options
 			opts.timeout = 1500
@@ -37,11 +38,11 @@ const Toast = {
 			document.body.appendChild(mountNode)
 			const instance = createApp(ToastComponent, {
 				...opts,
-				init: vm => {
+				__init: vm => {
 					//获取组件实例进行保存
 					Toast.$vm = vm
 				},
-				remove: () => {
+				__remove: () => {
 					instance.unmount()
 					mountNode.remove()
 					resolve()

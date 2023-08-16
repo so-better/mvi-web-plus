@@ -69,63 +69,22 @@ export default {
 				style.transition = 'opacity ' + this.tabs.timeout + 'ms'
 				style.webkitTransition = 'opacity ' + this.tabs.timeout + 'ms'
 			}
-			if (this.tabs.contentBackground) {
-				style.backgroundColor = this.tabs.contentBackground
-			}
 			return style
-		},
-		iconType() {
-			let type = null
-			if (Dap.common.isObject(this.icon)) {
-				if (typeof this.icon.type == 'string') {
-					type = this.icon.type
-				}
-			} else if (typeof this.icon == 'string') {
-				type = this.icon
-			}
-			return type
-		},
-		iconUrl() {
-			let url = null
-			if (Dap.common.isObject(this.icon)) {
-				if (typeof this.icon.url == 'string') {
-					url = this.icon.url
-				}
-			}
-			return url
-		},
-		iconSpin() {
-			let spin = false
-			if (Dap.common.isObject(this.icon)) {
-				if (typeof this.icon.spin == 'boolean') {
-					spin = this.icon.spin
-				}
-			}
-			return spin
-		},
-		iconSize() {
-			let size = null
-			if (Dap.common.isObject(this.icon)) {
-				if (typeof this.icon.size == 'string') {
-					size = this.icon.size
-				}
-			}
-			return size
-		},
-		iconColor() {
-			let color = null
-			if (Dap.common.isObject(this.icon)) {
-				if (typeof this.icon.color == 'string') {
-					color = this.icon.color
-				}
-			}
-			return color
 		},
 		//tab在tabs中的序列值
 		tabIndex() {
 			return this.tabs.children.findIndex(vm => {
 				return Dap.common.equal(vm.uid, this.uid)
 			})
+		}
+	},
+	unmounted() {
+		this.tabs.children.splice(this.tabIndex, 1)
+		if (this.tabs.modelValue > 0) {
+			this.tabs.$emit('update:modelValue', this.tabs.modelValue - 1)
+			this.tabs.$emit('change', this.tabs.modelValue - 1)
+		} else {
+			this.tabs.to(0, 0)
 		}
 	}
 }
@@ -140,7 +99,6 @@ export default {
 	left: 0;
 	top: 0;
 	width: 100%;
-	padding: 0;
 	background-color: #fff;
 }
 

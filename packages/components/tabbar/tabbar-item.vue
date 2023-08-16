@@ -1,11 +1,11 @@
 <template>
-	<div :disabled="disabled || null" :class="computedClass" :style="computedStyle" @click="setActive">
+	<div :disabled="disabled || null" :class="cmpClass" :style="cmpStyle" @click="setActive">
 		<Badge :show="badge?.show" class="mvi-tabbar-badge" :content="badge?.content" :background="badge?.background" :color="badge?.color" :dot="badge?.dot" :placement="badge?.placement" :offset="badge?.offset">
 			<div class="mvi-tabbar-item-child">
-				<span class="mvi-tabbar-icon" v-if="iconType || iconUrl" :style="{ marginBottom: name ? '' : '0px' }">
-					<Icon :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor" />
+				<span class="mvi-tabbar-icon" v-if="parseIcon(icon).type || parseIcon(icon).url" :style="{ marginBottom: name ? '' : '0px' }">
+					<Icon :type="parseIcon(icon).type" :url="parseIcon(icon).url" :spin="parseIcon(icon).spin" :size="parseIcon(icon).size" :color="parseIcon(icon).color" />
 				</span>
-				<span :class="['mvi-tabbar-name', iconType || iconUrl ? 'mvi-tabbar-name-small' : '']" v-text="name"></span>
+				<span :class="['mvi-tabbar-name', parseIcon(icon).type || parseIcon(icon).url ? 'small' : '']" v-text="name"></span>
 			</div>
 		</Badge>
 	</div>
@@ -51,64 +51,48 @@ export default {
 		}
 	},
 	computed: {
-		iconType() {
-			let type = null
-			if (Dap.common.isObject(this.icon)) {
-				if (typeof this.icon.type == 'string') {
-					type = this.icon.type
+		parseIcon() {
+			return param => {
+				let icon = {
+					spin: false,
+					type: null,
+					url: null,
+					color: null,
+					size: null
 				}
-			} else if (typeof this.icon == 'string') {
-				type = this.icon
-			}
-			return type
-		},
-		iconUrl() {
-			let url = null
-			if (Dap.common.isObject(this.icon)) {
-				if (typeof this.icon.url == 'string') {
-					url = this.icon.url
+				if (Dap.common.isObject(param)) {
+					if (typeof param.spin == 'boolean') {
+						icon.spin = param.spin
+					}
+					if (typeof param.type == 'string') {
+						icon.type = param.type
+					}
+					if (typeof param.url == 'string') {
+						icon.url = param.url
+					}
+					if (typeof param.color == 'string') {
+						icon.color = param.color
+					}
+					if (typeof param.size == 'string') {
+						icon.size = param.size
+					}
+				} else if (typeof param == 'string') {
+					icon.type = param
 				}
+				return icon
 			}
-			return url
 		},
-		iconSpin() {
-			let spin = false
-			if (Dap.common.isObject(this.icon)) {
-				if (typeof this.icon.spin == 'boolean') {
-					spin = this.icon.spin
-				}
-			}
-			return spin
-		},
-		iconSize() {
-			let size = null
-			if (Dap.common.isObject(this.icon)) {
-				if (typeof this.icon.size == 'string') {
-					size = this.icon.size
-				}
-			}
-			return size
-		},
-		iconColor() {
-			let color = null
-			if (Dap.common.isObject(this.icon)) {
-				if (typeof this.icon.color == 'string') {
-					color = this.icon.color
-				}
-			}
-			return color
-		},
-		computedClass() {
+		cmpClass() {
 			let cls = ['mvi-tabbar-item']
 			if (Dap.common.equal(this.value, this.tabbar.modelValue)) {
-				cls.push('mvi-tabbar-item-active')
+				cls.push('item-active')
 			}
 			if (this.tabbar.active && !this.disabled && !Dap.common.equal(this.value, this.tabbar.modelValue)) {
-				cls.push('mvi-tabbar-active')
+				cls.push('active')
 			}
 			return cls
 		},
-		computedStyle() {
+		cmpStyle() {
 			let style = {}
 			//激活
 			if (Dap.common.equal(this.value, this.tabbar.modelValue)) {
@@ -122,7 +106,7 @@ export default {
 			}
 			return style
 		},
-		computedRoute() {
+		cmpRoute() {
 			if (!this.route) {
 				return null
 			}
@@ -174,7 +158,9 @@ export default {
 	},
 	methods: {
 		setActive() {
-			this.tabbar.itemClick(Object.assign({}, this.$props))
+			//触发item-click事件
+			this.tabbar.$emit('item-click', JSON.parse(JSON.stringify(this.$props)))
+
 			if (this.disabled) {
 				return
 			}
@@ -182,41 +168,42 @@ export default {
 				return
 			}
 			//如果路由存在
-			if (this.computedRoute && this.$router && this.$router.replace && this.$router.push) {
+			if (this.cmpRoute && this.$router && this.$router.replace && this.$router.push) {
 				//path存在首先使用path
-				if (this.computedRoute.path) {
-					if (this.computedRoute.replace) {
+				if (this.cmpRoute.path) {
+					if (this.cmpRoute.replace) {
 						this.$router.replace({
-							path: this.computedRoute.path,
-							query: this.computedRoute.query,
-							params: this.computedRoute.params
+							path: this.cmpRoute.path,
+							query: this.cmpRoute.query,
+							params: this.cmpRoute.params
 						})
 					} else {
 						this.$router.push({
-							path: this.computedRoute.path,
-							query: this.computedRoute.query,
-							params: this.computedRoute.params
+							path: this.cmpRoute.path,
+							query: this.cmpRoute.query,
+							params: this.cmpRoute.params
 						})
 					}
 				}
 				//使用路由名称
-				else if (this.computedRoute.name) {
-					if (this.computedRoute.replace) {
+				else if (this.cmpRoute.name) {
+					if (this.cmpRoute.replace) {
 						this.$router.replace({
-							name: this.computedRoute.name,
-							query: this.computedRoute.query,
-							params: this.computedRoute.params
+							name: this.cmpRoute.name,
+							query: this.cmpRoute.query,
+							params: this.cmpRoute.params
 						})
 					} else {
 						this.$router.push({
-							name: this.computedRoute.name,
-							query: this.computedRoute.query,
-							params: this.computedRoute.params
+							name: this.cmpRoute.name,
+							query: this.cmpRoute.query,
+							params: this.cmpRoute.params
 						})
 					}
 				}
 			}
-			this.tabbar.getActiveValue(Object.assign({}, this.$props))
+			this.tabbar.$emit('update:modelValue', this.value)
+			this.tabbar.$emit('change', JSON.parse(JSON.stringify(this.$props)))
 		}
 	}
 }
@@ -236,55 +223,50 @@ export default {
 	padding: 0 @mp-lg;
 	cursor: pointer;
 	user-select: none;
-	-moz-user-select: none;
-	-webkit-user-select: none;
-}
 
-.mvi-tabbar-badge {
-	width: 100%;
-}
-
-.mvi-tabbar-item-child {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: flex-start;
-	align-items: center;
-	flex-direction: column;
-	-ms-flex-direction: column;
-	-webkit-flex-direction: column;
-	vertical-align: middle;
-}
-
-.mvi-tabbar-item.mvi-tabbar-item-active {
-	color: @info-normal;
-}
-
-.mvi-tabbar-icon {
-	display: block;
-	width: 100%;
-	text-align: center;
-	margin: 0;
-	padding: 0;
-	font-size: @font-size-h4;
-}
-
-.mvi-tabbar-name {
-	display: block;
-	width: 100%;
-	text-align: center;
-	font-size: @font-size-h6;
-	white-space: nowrap;
-
-	&.mvi-tabbar-name-small {
-		font-size: @font-size-small;
+	.mvi-tabbar-badge {
+		width: 100%;
 	}
-}
+	.mvi-tabbar-item-child {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-start;
+		align-items: center;
+		flex-direction: column;
+		vertical-align: middle;
 
-.mvi-tabbar-active:active::before {
-	.mvi-active();
-}
+		.mvi-tabbar-icon {
+			display: block;
+			width: 100%;
+			text-align: center;
+			margin: 0;
+			padding: 0;
+			font-size: @font-size-h4;
+		}
 
-.mvi-tabbar-item[disabled] {
-	opacity: 0.6;
+		.mvi-tabbar-name {
+			display: block;
+			width: 100%;
+			text-align: center;
+			font-size: @font-size-h6;
+			white-space: nowrap;
+
+			&.small {
+				font-size: @font-size-small;
+			}
+		}
+	}
+
+	&.item-active {
+		color: @info-normal;
+	}
+
+	&.active:active::before {
+		.mvi-active();
+	}
+
+	&[disabled] {
+		opacity: 0.6;
+	}
 }
 </style>
