@@ -1,14 +1,13 @@
 <template>
 	<div class="mvi-p-4">
+		<div class="mvi-mb-4">
+			<m-button @click="change">打开图片预览</m-button>
+		</div>
 		<div>
 			{{ value }}
-			<m-button @click="page++">打开图片预览</m-button>
-			<m-steps :active="page" vertical :activeIcon="{ type: 'success', color: '#7819a3' }" inactive-icon="times">
-				<m-step>买家下单</m-step>
-				<m-step>商家接单</m-step>
-				<m-step>买家提货</m-step>
-				<m-step>交易完成</m-step>
-			</m-steps>
+		</div>
+		<div>
+			<m-sign background="#000" color="#fff" ref="sign"></m-sign>
 		</div>
 	</div>
 </template>
@@ -18,38 +17,27 @@ export default {
 	data() {
 		return {
 			page: 0,
-			value: '',
-			show: false,
+			value: [],
+			show: true,
 			options: [
 				{
-					label: '分享到朋友圈'
+					label: '分享到朋友圈',
+					value: 0
 				},
 				{
-					label: '分享给QQ好友'
+					label: '分享给QQ好友',
+					value: 1
 				},
 				{
-					label: '分享到QQ空间'
+					label: '分享到QQ空间',
+					value: 2
 				}
 			]
 		}
 	},
 	methods: {
-		change() {
-			this.$showNotify({
-				message: '支付成功',
-				type: 'success',
-				icon: 'success-o'
-			})
-		},
-		loadMore() {
-			setTimeout(() => {
-				this.loading = false
-				this.error = false
-				this.list = [...this.list, ...new Array(30)]
-				if (this.list.length > 100) {
-					this.finished = true
-				}
-			}, 2000)
+		change(e) {
+			console.log(this.$refs.sign.getImage())
 		}
 	}
 }

@@ -1,12 +1,12 @@
 <template>
 	<div class="mvi-skeleton-container">
-		<div v-if="loading" :class="['mvi-skeleton', animation ? 'mvi-skeleton-animation' : '']">
+		<div v-if="loading" :class="['mvi-skeleton', animation ? 'animation' : '']">
 			<div v-if="avatar" class="mvi-skeleton-avatar">
-				<div :class="['mvi-skeleton-avatar-el', avatarRound ? 'mvi-skeleton-round' : '']" :style="avatarStyle"></div>
+				<div :class="['mvi-skeleton-avatar-el', avatarRound ? 'round' : '']" :style="avatarStyle"></div>
 			</div>
 			<div class="mvi-skeleton-rows">
-				<div v-if="title" :class="['mvi-skeleton-title', round ? 'mvi-skeleton-round' : '']" :style="titleStyle"></div>
-				<div v-for="item in rowsArray" :style="rowStyle(item)" :class="['mvi-skeleton-row', round ? 'mvi-skeleton-round' : '']"></div>
+				<div v-if="title" :class="['mvi-skeleton-title', round ? 'round' : '']" :style="titleStyle"></div>
+				<div v-for="item in rowsArray" :style="rowStyle(item)" :class="['mvi-skeleton-row', round ? 'round' : '']"></div>
 			</div>
 		</div>
 		<slot v-else></slot>
@@ -119,62 +119,63 @@ export default {
 	display: block;
 	width: 100%;
 	padding: 0 @mp-md;
-}
-.mvi-skeleton {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: flex-start;
-	align-items: flex-start;
-	width: 100%;
 
-	&.mvi-skeleton-animation {
-		animation: mvi-skeleton ease-in-out 1.2s infinite;
-	}
+	.mvi-skeleton {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-start;
+		align-items: flex-start;
+		width: 100%;
 
-	.mvi-skeleton-avatar {
-		display: block;
-		margin-right: @mp-md;
-		.mvi-skeleton-avatar-el {
-			display: block;
-			width: 1rem;
-			height: 1rem;
-			background: @bg-color-dark;
-
-			&.mvi-skeleton-round {
-				border-radius: 50%;
-			}
+		&.animation {
+			animation: mvi-skeleton ease-in-out 1.2s infinite;
 		}
-	}
 
-	.mvi-skeleton-rows {
-		display: block;
-		flex: 1;
-
-		.mvi-skeleton-title {
+		.mvi-skeleton-avatar {
 			display: block;
-			width: 40%;
-			height: @medium-height / 2;
-			background-color: @bg-color-dark;
-			margin-bottom: @mp-md;
+			margin-right: @mp-md;
+			.mvi-skeleton-avatar-el {
+				display: block;
+				width: 1rem;
+				height: 1rem;
+				background: @bg-color-dark;
 
-			&.mvi-skeleton-round {
-				border-radius: 999rem;
+				&.round {
+					border-radius: 50%;
+				}
 			}
 		}
 
-		.mvi-skeleton-row {
+		.mvi-skeleton-rows {
 			display: block;
-			width: 100%;
-			height: @small-height / 2;
-			background-color: @bg-color-dark;
-			margin-bottom: @mp-sm;
+			flex: 1;
 
-			&:last-of-type {
-				margin-bottom: 0;
+			.mvi-skeleton-title {
+				display: block;
+				width: 40%;
+				height: @medium-height / 2;
+				background-color: @bg-color-dark;
+				margin-bottom: @mp-md;
+
+				&.round {
+					border-radius: 999rem;
+				}
 			}
 
-			&.mvi-skeleton-round {
-				border-radius: 999rem;
+			.mvi-skeleton-row {
+				display: block;
+				width: 100%;
+				height: @small-height / 2;
+				background-color: @bg-color-dark;
+				margin-bottom: @mp-sm;
+
+				&:last-of-type {
+					margin-bottom: 0;
+				}
+
+				&.round {
+					border-radius: 999rem;
+				}
 			}
 		}
 	}

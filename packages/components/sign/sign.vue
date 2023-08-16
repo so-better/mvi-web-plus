@@ -21,7 +21,7 @@ export default {
 		//字体粗细 px值
 		width: {
 			type: Number,
-			default: 6
+			default: 0.05
 		}
 	},
 	data() {
@@ -74,7 +74,7 @@ export default {
 				const rect = Dap.element.getElementBounding(this.$el)
 				ctx.lineTo(e.pageX - rect.left, e.pageY - rect.top)
 				ctx.strokeStyle = this.color
-				ctx.lineWidth = this.width
+				ctx.lineWidth = Dap.element.rem2px(this.width)
 				ctx.stroke()
 			}
 		},
@@ -118,7 +118,7 @@ export default {
 			const rect = Dap.element.getElementBounding(this.$el)
 			ctx.lineTo(e.targetTouches[0].pageX - rect.left, e.targetTouches[0].pageY - rect.top)
 			ctx.strokeStyle = this.color
-			ctx.lineWidth = this.width
+			ctx.lineWidth = Dap.element.rem2px(this.width)
 			ctx.stroke()
 		},
 		//触摸结束
@@ -126,7 +126,7 @@ export default {
 			const ctx = this.$el.getContext('2d')
 			ctx.closePath()
 		},
-		//对外提供：清除画布
+		//api：清除画布
 		clear() {
 			const ctx = this.$el.getContext('2d')
 			ctx.beginPath()
@@ -136,9 +136,8 @@ export default {
 			ctx.fill()
 			ctx.closePath()
 		},
-		//对外提供：获取图片文件
+		//api：获取图片文件
 		getImage() {
-			const ctx = this.$el.getContext('2d')
 			const url = this.$el.toDataURL('image/png')
 			return url
 		}
@@ -156,7 +155,6 @@ export default {
 	width: 100%;
 	height: 100%;
 	user-select: none;
-	-webkit-user-select: none;
 
 	&:hover {
 		cursor: pointer;
