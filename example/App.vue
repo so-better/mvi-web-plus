@@ -1,6 +1,8 @@
 <template>
 	<div class="mvi-p-4">
-		<m-table :data="data" :columns="columns" :cell-class="cellClass"> </m-table>
+		<div>
+			<m-table :data="data" storage column-border :columns="columns" :cell-class="cellClass"> </m-table>
+		</div>
 	</div>
 </template>
 <script>
@@ -8,6 +10,7 @@ import dayjs from 'dayjs'
 export default {
 	data() {
 		return {
+			value: '',
 			dayjs: dayjs,
 			data: [
 				{
@@ -28,7 +31,8 @@ export default {
 			],
 			columns: [
 				{
-					type: 'selection'
+					type: 'selection',
+					prop: 'check'
 				},
 				{
 					prop: 'name',

@@ -1,10 +1,11 @@
 <template>
 	<div :class="['mvi-table', border ? 'border' : '']">
+		{{ dragConfig.columnWidth }}
 		<div class="mvi-table-header">
 			<!-- 表头 -->
 			<table cellpadding="0" cellspacing="0">
-				<tr>
-					<th v-for="(column, index) in columnData" :ref="el => (headerColumnEls[index] = el)" :class="headerColumnClass" :style="headerColumnStyle(column)">
+				<tr ref="headerRow">
+					<th v-for="(column, index) in columnData" :ref="el => (headerColumnRefs[index] = el)" :class="headerColumnClass" :style="headerColumnStyle(column)">
 						<div :class="['mvi-table-column', center ? 'center' : '']">
 							<!-- 复选框 -->
 							<Checkbox v-model="selectAll" v-if="column.type == 'selection'" size="0.24rem" @change="allSelect(column)" :color="activeColor"></Checkbox>
@@ -19,6 +20,7 @@
 								</span>
 							</template>
 						</div>
+						<div v-if="index < columnData.length - 1" @mousedown="resizeColumnWidth($event, column, index)" class="m-table-drag"></div>
 					</th>
 					<th class="placeholder" v-if="scrollWidth" :style="{ width: scrollWidth + 'px' }"></th>
 				</tr>
@@ -130,6 +132,11 @@ export default {
 		activeColor: {
 			type: String,
 			default: null
+		},
+		//列宽改变是否持久化
+		storage: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -143,7 +150,7 @@ export default {
 			//表格滚动条宽度
 			scrollWidth: 0,
 			//表头列元素数组
-			headerColumnEls: [],
+			headerColumnRefs: [],
 			//排序的字段，即依据此字段排序
 			sortBy: '',
 			//排序方式，asc还是desc
@@ -151,7 +158,18 @@ export default {
 			//复选框勾选的行
 			checkedRows: [],
 			//是否全选
-			selectAll: false
+			selectAll: false,
+			//拖拽改变列宽配置
+			dragConfig: {
+				//拖拽的列对象
+				column: null,
+				index: 0,
+				startX: 0,
+				//存储拖拽后的每列的宽度
+				columnWidth: {},
+				//列宽拖拽的最小宽度
+				minWidth: Dap.element.rem2px(0.8)
+			}
 		}
 	},
 	computed: {
@@ -167,7 +185,8 @@ export default {
 		headerColumnStyle() {
 			return column => {
 				return {
-					width: column.width || 'auto',
+					//列宽先从dragConfig.columnWith中读取
+					width: this.dragConfig.columnWidth[column.prop] || column.width || 'auto',
 					minWidth: column.minWidth || ''
 				}
 			}
@@ -194,7 +213,7 @@ export default {
 				//this.columnAlignKey只是为了刷新计算属性
 				this.columnAlignKey
 				return {
-					width: this.headerColumnEls[index] ? Dap.element.getCssStyle(this.headerColumnEls[index], 'width') : '0px'
+					width: this.headerColumnRefs[index] ? Dap.element.getCssStyle(this.headerColumnRefs[index], 'width') : '0px'
 				}
 			}
 		},
@@ -272,13 +291,73 @@ export default {
 			uid: instance.uid
 		}
 	},
+	created() {
+		if (this.storage) {
+			this.dragConfig.columnWidth = JSON.parse(localStorage.getItem(`mvi-table-${this.uid}-columnWidth-storage`))
+		}
+	},
 	mounted() {
 		this.columnAlignKey++
+		//屏幕大小变化
 		Dap.event.on(window, `resize.table_${this.uid}`, e => {
 			this.columnAlignKey++
 		})
+		//鼠标移动改变列宽
+		Dap.event.on(document.documentElement, `mousemove.table_${this.uid}`, e => {
+			//可以拖拽
+			if (this.dragConfig.column) {
+				const moveX = e.pageX - this.dragConfig.startX
+				//最小宽度
+				const minWidth = parseFloat(Dap.element.getCssStyle(this.headerColumnRefs[this.dragConfig.index], 'min-width')) || this.dragConfig.minWidth
+				//最大宽度
+				const maxWidth = parseFloat(Dap.element.getCssStyle(this.$refs.headerRow, 'width')) - this.getColumnTotalMinWidth(this.dragConfig.column)
+				//原宽度
+				let width = parseFloat(Dap.element.getCssStyle(this.headerColumnRefs[this.dragConfig.index], 'width'))
+				//拖拽后的宽度
+				width += moveX
+				//拖拽后的宽度大于最小宽度小于最大宽度，才可以继续设置
+				if (width >= minWidth && width <= maxWidth) {
+					this.dragConfig.columnWidth[this.dragConfig.column.prop] = width + 'px'
+					this.dragConfig.startX = e.pageX
+					this.$nextTick(() => {
+						this.columnAlignKey++
+					})
+				}
+			}
+		})
+		//鼠标松开
+		Dap.event.on(document.documentElement, `mouseup.table_${this.uid}`, e => {
+			//可以拖拽
+			if (this.dragConfig.column) {
+				if (this.storage) {
+					localStorage.setItem(`mvi-table-${this.uid}-columnWidth-storage`, JSON.stringify(this.dragConfig.columnWidth))
+				}
+				this.dragConfig.column = null
+			}
+		})
 	},
 	methods: {
+		//获取除指定列以外的其他列宽度总和的最小宽度
+		getColumnTotalMinWidth(currentColumn) {
+			let total = 0
+			this.columnData.forEach((column, index) => {
+				if (column.prop == currentColumn.prop) {
+					return
+				}
+				if ((column.width && column.width != 'auto') || this.dragConfig.columnWidth[column.prop]) {
+					total += parseFloat(Dap.element.getCssStyle(this.headerColumnRefs[index], 'width'))
+				} else {
+					total += this.dragConfig.minWidth
+				}
+			})
+			return total
+		},
+		//鼠标按下列宽拖拽
+		resizeColumnWidth(event, column, index) {
+			this.dragConfig.startX = event.pageX
+			this.dragConfig.column = column
+			this.dragConfig.index = index
+		},
 		//单个复选框勾选
 		doCheck(rowIndex, column) {
 			if (
@@ -387,6 +466,7 @@ export default {
 	},
 	beforeUnmount() {
 		Dap.event.off(window, `resize.table_${this.uid}`)
+		Dap.event.off(document.documentElement, `mousemove.table_${this.uid} mouseup.table_${this.uid}`)
 	}
 }
 </script>
@@ -398,9 +478,6 @@ export default {
 	background-color: #fff;
 	font-size: @font-size-default;
 	color: @font-color-default;
-
-	border-radius: 0.1rem;
-
 	&.border {
 		border: 1px solid @border-color;
 	}
@@ -425,6 +502,7 @@ export default {
 					padding: @mp-sm 0;
 					text-align: left;
 					border-bottom: 1px solid @border-color;
+					position: relative;
 
 					&.border {
 						border-right: 1px solid @border-color;
@@ -470,6 +548,19 @@ export default {
 					&.placeholder {
 						padding: 0;
 					}
+
+					.m-table-drag {
+						position: absolute;
+						right: 0;
+						top: 0;
+						height: 100%;
+						width: 0.3rem;
+						transform: translateX(50%);
+						background: transparent;
+						z-index: 10;
+						cursor: col-resize;
+						user-select: none;
+					}
 				}
 			}
 		}
@@ -501,6 +592,7 @@ export default {
 					padding: @mp-sm 0;
 					text-align: left;
 					border-bottom: 1px solid @border-color;
+					position: relative;
 
 					&.border {
 						border-right: 1px solid @border-color;
