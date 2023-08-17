@@ -1,6 +1,6 @@
 <template>
 	<div class="mvi-p-4">
-		<m-table :data="data" :columns="columns"></m-table>
+		<m-table center height="4rem" border column-border :data="data" :columns="columns"> </m-table>
 	</div>
 </template>
 <script>
@@ -8,6 +8,7 @@ import dayjs from 'dayjs'
 export default {
 	data() {
 		return {
+			dayjs: dayjs,
 			data: [
 				{
 					library_id: 31,
@@ -132,52 +133,50 @@ export default {
 			],
 			columns: [
 				{
+					type: 'selection',
+					selectable: (row, rowIndex) => {
+						if (row.library_id == 31) {
+							return false
+						}
+						return true
+					}
+				},
+				{
 					prop: 'library_id',
-					label: 'id'
+					label: 'id',
+					sortable: true
 				},
 				{
 					prop: 'library_name',
-					label: '插件名称'
+					label: '插件名称',
+					sortable: true
 				},
 				{
+					type: 'custom',
 					prop: 'library_description',
-					label: '插件描述'
-				},
-				{
-					prop: 'library_git',
-					label: 'git地址'
-				},
-				{
-					prop: 'library_npm',
-					label: 'npm地址'
-				},
-				{
-					prop: 'library_cnpm',
-					label: 'cnpm地址'
-				},
-				{
-					prop: 'library_public',
-					label: '是否公开'
+					label: '插件描述',
+					width: '4rem',
+					ellipsis: true
 				},
 				{
 					prop: 'library_create',
-					label: '创建时间'
+					label: '创建时间',
+					format: (val, row, column) => {
+						return dayjs(val).format('YYYY-MM-DD HH:mm')
+					}
 				},
 				{
 					prop: 'library_update',
-					label: '更新时间'
-				},
-				{
-					prop: 'library_label',
-					label: '标签'
+					label: '更新时间',
+					format: (val, row, column) => {
+						return dayjs(val).format('YYYY-MM-DD HH:mm')
+					}
 				}
 			]
 		}
 	},
 	methods: {
-		change(e) {
-			this.page = 2
-		}
+		change(column, data) {}
 	}
 }
 </script>
