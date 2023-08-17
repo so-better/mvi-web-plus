@@ -68,7 +68,7 @@ import { Tooltip } from '../tooltip'
 import { getCurrentInstance } from 'vue'
 export default {
 	name: 'm-table',
-	emits: ['check', 'sort-cancel', 'sort-asc', 'sort-desc'],
+	emits: ['check', 'sort-cancel', 'sort-asc', 'sort-desc', 'drag-start', 'drag-end'],
 	props: {
 		//表格数据
 		data: {
@@ -135,11 +135,6 @@ export default {
 		},
 		//列宽是否可拖拽
 		draggable: {
-			type: Boolean,
-			default: false
-		},
-		//列宽改变是否持久化
-		storage: {
 			type: Boolean,
 			default: false
 		}
@@ -296,11 +291,6 @@ export default {
 			uid: instance.uid
 		}
 	},
-	created() {
-		if (this.storage) {
-			this.dragConfig.columnWidth = JSON.parse(localStorage.getItem(`mvi-table-${this.uid}-columnWidth-storage`))
-		}
-	},
 	mounted() {
 		this.columnAlignKey++
 		//屏幕大小变化
@@ -334,10 +324,8 @@ export default {
 		Dap.event.on(document.documentElement, `mouseup.table_${this.uid}`, e => {
 			//可以拖拽
 			if (this.dragConfig.column) {
-				if (this.storage) {
-					localStorage.setItem(`mvi-table-${this.uid}-columnWidth-storage`, JSON.stringify(this.dragConfig.columnWidth))
-				}
 				this.dragConfig.column = null
+				this.$emit('drag-end')
 			}
 		})
 	},
@@ -362,6 +350,7 @@ export default {
 			this.dragConfig.startX = event.pageX
 			this.dragConfig.column = column
 			this.dragConfig.index = index
+			this.$emit('drag-start', column, index, event)
 		},
 		//单个复选框勾选
 		doCheck(rowIndex, column) {

@@ -1,7 +1,7 @@
 <template>
 	<div class="mvi-p-4">
 		<div>
-			<m-table :data="data" draggable column-border :columns="columns" :cell-class="cellClass">
+			<m-table :data="data" draggable column-border :columns="columns" @drag-end="change" :cell-class="cellClass">
 				<template #custom="data">
 					<div v-if="data.column.prop == 'opt'">
 						<m-button size="small">修改</m-button>
@@ -64,6 +64,9 @@ export default {
 		}
 	},
 	methods: {
+		change() {
+			console.log('拖拽结束')
+		},
 		cellClass(row, rowIndex, column, columnIndex) {
 			if (rowIndex == 0) {
 				return 'mvi-bg-success'
