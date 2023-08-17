@@ -20,7 +20,7 @@
 								</span>
 							</template>
 						</div>
-						<div v-if="index < columnData.length - 1" @mousedown="resizeColumnWidth($event, column, index)" class="m-table-drag"></div>
+						<div v-if="index < columnData.length - 1 && draggable" @mousedown="resizeColumnWidth($event, column, index)" class="m-table-drag"></div>
 					</th>
 					<th class="placeholder" v-if="scrollWidth" :style="{ width: scrollWidth + 'px' }"></th>
 				</tr>
@@ -132,6 +132,11 @@ export default {
 		activeColor: {
 			type: String,
 			default: null
+		},
+		//列宽是否可拖拽
+		draggable: {
+			type: Boolean,
+			default: false
 		},
 		//列宽改变是否持久化
 		storage: {

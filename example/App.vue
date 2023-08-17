@@ -1,7 +1,15 @@
 <template>
 	<div class="mvi-p-4">
 		<div>
-			<m-table :data="data" storage column-border :columns="columns" :cell-class="cellClass"> </m-table>
+			<m-table :data="data" draggable column-border :columns="columns" :cell-class="cellClass">
+				<template #custom="data">
+					<div v-if="data.column.prop == 'opt'">
+						<m-button size="small">修改</m-button>
+						<m-button class="mvi-ml-1" size="small" type="error">删除</m-button>
+						<m-button class="mvi-ml-1" size="small" type="success">复制</m-button>
+					</div>
+				</template>
+			</m-table>
 		</div>
 	</div>
 </template>
@@ -46,6 +54,11 @@ export default {
 				{
 					prop: 'score',
 					label: '分数'
+				},
+				{
+					type: 'custom',
+					prop: 'opt',
+					label: '操作'
 				}
 			]
 		}
