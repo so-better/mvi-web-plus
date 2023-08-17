@@ -14,8 +14,8 @@
 								<span>{{ column.label }}</span>
 								<!-- 排序 -->
 								<span class="mvi-table-sortable" v-if="column.sortable">
-									<Icon type="caret-up" :class="sortBy == column.prop && sortMethod == 'asc' ? 'active' : ''" @click="sortAsc(column)" :style="sortIconStyle('asc', column)" />
-									<Icon type="caret-down" :class="sortBy == column.prop && sortMethod == 'desc' ? 'active' : ''" @click="sortDesc(column)" :style="sortIconStyle('desc', column)" />
+									<Icon type="caret-up" :class="sortBy == column.prop && sortOrder == 'asc' ? 'active' : ''" @click="sortAsc(column)" :style="sortIconStyle('asc', column)" />
+									<Icon type="caret-down" :class="sortBy == column.prop && sortOrder == 'desc' ? 'active' : ''" @click="sortDesc(column)" :style="sortIconStyle('desc', column)" />
 								</span>
 							</template>
 						</div>
@@ -35,7 +35,7 @@
 				<table v-if="rowData.length" cellpadding="0" cellspacing="0">
 					<tr v-for="(row, rowIndex) in rowData" :class="stripe ? 'stripe' : ''">
 						<td v-for="(column, columnIndex) in columnData" :class="bodyColumnClass(row, rowIndex, column, columnIndex)" :style="bodyColumnStyle(columnIndex)">
-							<Tooltip :disabled="!column.ellipsis" block :title="dataFormat(row, column) + ''" trigger="hover">
+							<Tooltip :disabled="!column.ellipsis" block :title="dataFormat(row, column)" trigger="hover">
 								<div :class="['mvi-table-column', center ? 'center' : '']">
 									<!-- 复选框 -->
 									<Checkbox v-if="column.type == 'selection'" v-model="checkedRows" :value="rowIndex" size="0.24rem" @change="doCheck(rowIndex, column)" :color="activeColor" :disabled="!cmpSelectable(row, rowIndex, column)"></Checkbox>
@@ -66,6 +66,7 @@ import { Tooltip } from '../tooltip'
 import { getCurrentInstance } from 'vue'
 export default {
 	name: 'm-table',
+	emits: ['check', 'sort-cancel', 'sort-asc', 'sort-desc'],
 	props: {
 		//表格数据
 		data: {
@@ -146,7 +147,7 @@ export default {
 			//排序的字段，即依据此字段排序
 			sortBy: '',
 			//排序方式，asc还是desc
-			sortMethod: '',
+			sortOrder: '',
 			//复选框勾选的行
 			checkedRows: [],
 			//是否全选
@@ -199,9 +200,9 @@ export default {
 		},
 		//排序图标激活时设置主题色
 		sortIconStyle() {
-			return (sortMethod, column) => {
+			return (sortOrder, column) => {
 				let style = {}
-				if (this.sortBy == column.prop && this.sortMethod == sortMethod) {
+				if (this.sortBy == column.prop && this.sortOrder == sortOrder) {
 					style.color = this.activeColor || ''
 				}
 				return style
@@ -213,7 +214,7 @@ export default {
 				if (typeof column.format == 'function') {
 					return column.format.apply(this, [row[column.prop], row, column])
 				}
-				return row[column.prop]
+				return row[column.prop] + ''
 			}
 		},
 		//判断某一行复选框是否可以使用
@@ -312,16 +313,16 @@ export default {
 		//升序排序
 		sortAsc(column) {
 			//取消排序
-			if (this.sortBy == column.prop && this.sortMethod == 'asc') {
+			if (this.sortBy == column.prop && this.sortOrder == 'asc') {
 				this.sortBy = ''
-				this.sortMethod = ''
+				this.sortOrder = ''
 				this.rowData = this.deepClone(this.data)
 				this.$emit('sort-cancel', this.rowData)
 			}
 			//升序排序
 			else {
 				this.sortBy = column.prop
-				this.sortMethod = 'asc'
+				this.sortOrder = 'asc'
 				if (typeof column.sortMethod == 'function') {
 					this.rowData = column.sortMethod.apply(this, ['asc', this.rowData])
 				} else {
@@ -331,23 +332,23 @@ export default {
 						}
 						return rowA[column.prop].toString().localeCompare(rowB[column.prop].toString(), 'zh-CN')
 					})
+					this.$emit('sort-asc', this.rowData)
 				}
-				this.$emit('sort-asc', this.rowData)
 			}
 		},
 		//降序排序
 		sortDesc(column) {
 			//取消排序
-			if (this.sortBy == column.prop && this.sortMethod == 'desc') {
+			if (this.sortBy == column.prop && this.sortOrder == 'desc') {
 				this.sortBy = ''
-				this.sortMethod = ''
+				this.sortOrder = ''
 				this.rowData = this.deepClone(this.data)
 				this.$emit('sort-cancel', this.rowData)
 			}
 			//降序排序
 			else {
 				this.sortBy = column.prop
-				this.sortMethod = 'desc'
+				this.sortOrder = 'desc'
 				if (typeof column.sortMethod == 'function') {
 					this.rowData = column.sortMethod.apply(this, ['desc', this.rowData])
 				} else {
@@ -357,8 +358,8 @@ export default {
 						}
 						return -rowA[column.prop].toString().localeCompare(rowB[column.prop].toString(), 'zh-CN')
 					})
+					this.$emit('sort-desc', this.rowData)
 				}
-				this.$emit('sort-desc', this.rowData)
 			}
 		},
 		//获取表格主体滚动条宽度
