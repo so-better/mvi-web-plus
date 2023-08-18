@@ -1,6 +1,5 @@
 <template>
 	<div :class="['mvi-table', border ? 'border' : '']">
-		{{ dragConfig.columnWidth }}
 		<div class="mvi-table-header">
 			<!-- 表头 -->
 			<table cellpadding="0" cellspacing="0">

@@ -240,7 +240,7 @@ export default {
 		//监听编辑器range更新
 		this.editor.on('rangeUpdate', this.handleRangeUpdate)
 		//监听编辑器dom渲染
-		this.editor.on('domRender', this.handleDomRender)
+		this.editor.on('afterRender', this.handleAfterRender)
 		//监听编辑器粘贴html
 		this.editor.on('pasteHtml', this.handlePasteHtml)
 		//监听编辑器粘贴图片
@@ -587,7 +587,7 @@ export default {
 			}, 100)
 		},
 		//编辑器dom渲染
-		handleDomRender() {
+		handleAfterRender() {
 			const elements = AlexElement.flatElements(this.editor.stack)
 			const tables = elements.filter(el => {
 				return el.parsedom == 'table'
