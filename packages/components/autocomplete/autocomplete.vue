@@ -14,7 +14,7 @@
 		</div>
 		<Layer :model-value="show" :target="`[data-id='mvi-autocomplete-target-${uid}']`" :root="`[data-id='mvi-autocomplete-${uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :fixed="layerRealProps.fixed" :z-index="layerRealProps.zIndex" :fixed-auto="layerRealProps.fixedAuto" ref="layer" :animation="layerRealProps.animation" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :timeout="layerRealProps.timeout" :closable="false" :show-triangle="layerRealProps.showTriangle" :border-color="layerRealProps.borderColor" :width="layerRealProps.width" @showing="layerShow">
 			<div class="mvi-autocomplete-menu" :style="menuStyle" ref="menu">
-				<div class="mvi-autocomplete-list" v-for="item in computedFilter" v-text="item" @click="doSelect(item)"></div>
+				<div class="mvi-autocomplete-list" v-for="item in cmpFilter" v-text="item" @click="doSelect(item)"></div>
 			</div>
 		</Layer>
 	</div>
@@ -148,7 +148,7 @@ export default {
 	},
 	computed: {
 		show() {
-			return this.focus && this.computedFilter.length != 0
+			return this.focus && this.cmpFilter.length != 0
 		},
 		parseIcon() {
 			return param => {
@@ -204,7 +204,7 @@ export default {
 			}
 			return style
 		},
-		computedFilter() {
+		cmpFilter() {
 			if (typeof this.filterMethod == 'function') {
 				return this.filterMethod(this.realValue, this.list)
 			}

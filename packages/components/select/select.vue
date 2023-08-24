@@ -10,7 +10,7 @@
 		<Layer v-model="focus" :target="`[data-id='mvi-select-target-${uid}']`" :root="`[data-id='mvi-select-${uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :fixed="layerRealProps.fixed" :fixed-auto="layerRealProps.fixedAuto" :z-index="layerRealProps.zIndex" closable :show-triangle="layerRealProps.showTriangle" :animation="layerRealProps.animation" :timeout="layerRealProps.timeout" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :border-color="layerRealProps.borderColor" :width="layerRealProps.width" @showing="layerShow" ref="layer">
 			<div class="mvi-select-menu" ref="menu" :style="menuStyle">
 				<div :class="['mvi-option', size]" @click="optionClick(item)" v-for="item in options" :disabled="item.disabled || null">
-					<div class="mvi-option-value" v-html="item.label"></div>
+					<div class="mvi-option-value" v-html="item[props.label]"></div>
 					<Icon v-if="isSelect(item)" :type="parseIcon(selectedIcon).type" :spin="parseIcon(selectedIcon).spin" :size="parseIcon(selectedIcon).size" :url="parseIcon(selectedIcon).url" :color="parseIcon(selectedIcon).color" />
 				</div>
 			</div>
@@ -135,6 +135,16 @@ export default {
 		clearable: {
 			type: Boolean,
 			default: false
+		},
+		//选项字段配置
+		props: {
+			type: Object,
+			default: function () {
+				return {
+					label: 'label',
+					value: 'value'
+				}
+			}
 		}
 	},
 	setup() {
@@ -195,10 +205,10 @@ export default {
 				this.options.forEach((item, index) => {
 					if (Array.isArray(this.modelValue)) {
 						let flag = this.modelValue.some(i => {
-							return Dap.common.equal(i, item.value)
+							return Dap.common.equal(i, item[this.props.value])
 						})
 						if (flag) {
-							labels.push(item.label)
+							labels.push(item[this.props.label])
 						}
 					}
 				})
@@ -210,8 +220,8 @@ export default {
 			} else {
 				let label = ''
 				this.options.forEach((item, index) => {
-					if (Dap.common.equal(this.modelValue, item.value)) {
-						label = item.label
+					if (Dap.common.equal(this.modelValue, item[this.props.value])) {
+						label = item[this.props.label]
 					}
 				})
 				if (typeof this.filterMethod == 'function') {
@@ -225,7 +235,7 @@ export default {
 			return item => {
 				if (this.multiple) {
 					let flag = this.modelValue.some(i => {
-						return Dap.common.equal(i, item.value)
+						return Dap.common.equal(i, item[this.props.value])
 					})
 					return this.showSelected && flag
 				}
@@ -336,26 +346,26 @@ export default {
 					throw new TypeError('modelValue should be an array')
 				}
 				let flag = arr.some(tmp => {
-					return Dap.common.equal(tmp, item.value)
+					return Dap.common.equal(tmp, item[this.props.value])
 				})
 				if (flag) {
 					arr = arr.filter(tmp => {
-						return !Dap.common.equal(tmp, item.value)
+						return !Dap.common.equal(tmp, item[this.props.value])
 					})
 				} else {
-					arr.push(item.value)
+					arr.push(item[this.props.value])
 				}
 				this.$emit('update:modelValue', arr)
 				this.$emit(
 					'change',
 					this.options.filter(tmp => {
 						return arr.some(tmp2 => {
-							return Dap.common.equal(tmp.value, tmp2)
+							return Dap.common.equal(tmp[this.props.value], tmp2)
 						})
 					})
 				)
 			} else {
-				this.$emit('update:modelValue', item.value)
+				this.$emit('update:modelValue', item[this.props.value])
 				this.$emit('change', item)
 			}
 			this.trigger()

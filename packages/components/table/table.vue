@@ -35,8 +35,8 @@
 				<!-- 表体 -->
 				<table v-if="rowData.length" cellpadding="0" cellspacing="0">
 					<tr v-for="(row, rowIndex) in rowData" :class="stripe ? 'stripe' : ''">
-						<td v-for="(column, columnIndex) in columnData" :class="bodyColumnClass(row, rowIndex, column, columnIndex)" :style="bodyColumnStyle(columnIndex)">
-							<Tooltip :disabled="!column.ellipsis" block :title="dataFormat(row, column)" trigger="hover">
+						<td v-for="(column, columnIndex) in columnData" :class="bodyColumnClass(row, rowIndex, column, columnIndex)" :style="bodyColumnStyle(column, columnIndex)">
+							<Tooltip :disabled="!column.ellipsis" block :title="tooltipTitle(row, column)" trigger="hover" :placement="center ? 'bottom' : 'bottom-start'">
 								<div :class="['mvi-table-column', center ? 'center' : '']">
 									<!-- 复选框 -->
 									<Checkbox v-if="column.type == 'selection'" v-model="checkedRows" :value="rowIndex" size="0.24rem" @change="doCheck(rowIndex, column)" :color="activeColor" :disabled="!cmpSelectable(row, rowIndex, column)"></Checkbox>
@@ -45,7 +45,7 @@
 										<!-- 自定义单元格 -->
 										<slot v-if="column.type == 'custom' && $slots.custom" name="custom" :row="row" :row-index="rowIndex" :column="column" :column-index="columnIndex"></slot>
 										<!-- 默认内容 -->
-										<span v-else>{{ dataFormat(row, column) }}</span>
+										<span v-else v-html="dataFormat(row, column)"></span>
 									</div>
 								</div>
 							</Tooltip>
@@ -76,7 +76,7 @@ export default {
 				return []
 			}
 		},
-		//表格列配置：包括type(selection/custom/default)/label/prop/width/minWidth/className/hidden/sortable/format/selectable/sortMethod/ellipsis
+		//表格列配置：包括type(selection/custom/default)/label/prop/width/className/hidden/sortable/format/selectable/sortMethod/ellipsis
 		columns: {
 			type: Array,
 			default: function () {
@@ -185,8 +185,7 @@ export default {
 			return column => {
 				return {
 					//列宽先从dragConfig.columnWith中读取
-					width: this.dragConfig.columnWidth[column.prop] || column.width || 'auto',
-					minWidth: column.minWidth || ''
+					width: this.dragConfig.columnWidth[column.prop] || column.width || 'auto'
 				}
 			}
 		},
@@ -208,7 +207,7 @@ export default {
 		},
 		//表主体列的宽度设置
 		bodyColumnStyle() {
-			return index => {
+			return (column, index) => {
 				//this.columnAlignKey只是为了刷新计算属性
 				this.columnAlignKey
 				return {
@@ -242,6 +241,13 @@ export default {
 					return column.selectable.apply(this, [row, rowIndex])
 				}
 				return true
+			}
+		},
+		//工具提示内容
+		tooltipTitle() {
+			return (row, column) => {
+				const dom = Dap.element.string2dom(`<div>${this.dataFormat(row, column)}</div>`)
+				return dom.innerText
 			}
 		}
 	},
@@ -302,7 +308,7 @@ export default {
 			if (this.dragConfig.column) {
 				const moveX = e.pageX - this.dragConfig.startX
 				//最小宽度
-				const minWidth = parseFloat(Dap.element.getCssStyle(this.headerColumnRefs[this.dragConfig.index], 'min-width')) || this.dragConfig.minWidth
+				const minWidth = this.dragConfig.minWidth
 				//最大宽度
 				const maxWidth = parseFloat(Dap.element.getCssStyle(this.$refs.headerRow, 'width')) - this.getColumnTotalMinWidth(this.dragConfig.column)
 				//原宽度

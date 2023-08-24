@@ -11,7 +11,7 @@
 			<Icon v-else :type="parseIcon(errorIcon).type" :url="parseIcon(errorIcon).url" :spin="parseIcon(errorIcon).spin" :size="parseIcon(errorIcon).size" :color="parseIcon(errorIcon).color" />
 		</div>
 		<!-- 加载成功 -->
-		<img @load="loadSuccess" @error="loadError" :src="computedSrc" :alt="showError ? '' : alt" :class="imgClass" />
+		<img @load="loadSuccess" @error="loadError" :src="cmpSrc" :alt="showError ? '' : alt" :class="imgClass" />
 	</div>
 </template>
 <script>
@@ -162,7 +162,7 @@ export default {
 			}
 		},
 		//图片链接
-		computedSrc() {
+		cmpSrc() {
 			if (this.lazyLoad) {
 				return this.lazySrc
 			} else {
@@ -174,7 +174,7 @@ export default {
 		Icon
 	},
 	watch: {
-		computedSrc() {
+		cmpSrc() {
 			this.loading = true
 		}
 	},

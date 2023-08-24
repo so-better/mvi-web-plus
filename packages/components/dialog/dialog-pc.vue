@@ -10,8 +10,8 @@
 				<Icon v-if="cmpInput.clearable" ref="icon" v-show="showClear" type="times-o" class="mvi-dialog-times" @click="doClear" />
 			</div>
 			<div :class="['mvi-dialog-footer', center ? 'center' : '']">
-				<Button v-if="type != 'Alert'" :type="cmpBtns.cancel.type" :color="cmpBtns.cancel.color" :sub-color="cmpBtns.cancel.subColor" :plain="cmpBtns.cancel.plain" class="mvi-dialog-cancel" @click="cancelFun" :size="cmpBtns.cancel.size">{{ cmpBtns.cancel.text }}</Button>
-				<Button :type="cmpBtns.ok.type" :color="cmpBtns.ok.color" :sub-color="cmpBtns.ok.subColor" :plain="cmpBtns.ok.plain" @click="okFun" :size="cmpBtns.ok.size">{{ cmpBtns.ok.text }}</Button>
+				<Button v-if="type != 'Alert'" :type="cmpBtns.cancel.type" :color="cmpBtns.cancel.color" :sub-color="cmpBtns.cancel.subColor" :plain="cmpBtns.cancel.plain" class="mvi-dialog-cancel" @click="cancelFun" :size="cmpBtns.cancel.size" :round="cmpBtns.cancel.round" :square="cmpBtns.cancel.square" :loading="cmpBtns.cancel.loading" :load-text="cmpBtns.cancel.loadText" :load-icon="cmpBtns.cancel.loadIcon" :disabled="cmpBtns.cancel.disabled">{{ cmpBtns.cancel.text }}</Button>
+				<Button :type="cmpBtns.ok.type" :color="cmpBtns.ok.color" :sub-color="cmpBtns.ok.subColor" :plain="cmpBtns.ok.plain" @click="okFun" :size="cmpBtns.ok.size" :round="cmpBtns.ok.round" :square="cmpBtns.ok.square" :loading="cmpBtns.ok.loading" :load-text="cmpBtns.ok.loadText" :load-icon="cmpBtns.ok.loadIcon" :disabled="cmpBtns.ok.disabled">{{ cmpBtns.ok.text }}</Button>
 			</div>
 		</template>
 	</Modal>
@@ -161,7 +161,16 @@ export default {
 					subColor: null,
 					plain: false,
 					text: '确定',
-					size: 'medium'
+					size: 'medium',
+					round: false,
+					square: false,
+					disabled: false,
+					loading: false,
+					loadText: 'loading...',
+					loadIcon: {
+						type: 'load-e',
+						spin: true
+					}
 				},
 				cancel: {
 					type: 'default',
@@ -169,7 +178,16 @@ export default {
 					subColor: null,
 					plain: false,
 					text: '取消',
-					size: 'medium'
+					size: 'medium',
+					round: false,
+					square: false,
+					disabled: false,
+					loading: false,
+					loadText: 'loading...',
+					loadIcon: {
+						type: 'load-e',
+						spin: true
+					}
 				}
 			}
 			if (Dap.common.isObject(this.btns)) {
@@ -192,6 +210,24 @@ export default {
 					if (typeof this.btns.ok.size == 'string') {
 						btns.ok.size = this.btns.ok.size
 					}
+					if (typeof this.btns.ok.round == 'boolean') {
+						btns.ok.round = this.btns.ok.round
+					}
+					if (typeof this.btns.ok.square == 'boolean') {
+						btns.ok.square = this.btns.ok.square
+					}
+					if (typeof this.btns.ok.disabled == 'boolean') {
+						btns.ok.disabled = this.btns.ok.disabled
+					}
+					if (typeof this.btns.ok.loading == 'boolean') {
+						btns.ok.loading = this.btns.ok.loading
+					}
+					if (typeof this.btns.ok.loadText == 'string') {
+						btns.ok.loadText = this.btns.ok.loadText
+					}
+					if (typeof this.btns.ok.loadIcon == 'string' || Dap.common.isObject(this.btns.ok.loadIcon)) {
+						btns.ok.loadIcon = this.btns.ok.loadIcon
+					}
 				}
 				if (Dap.common.isObject(this.btns.cancel)) {
 					if (typeof this.btns.cancel.type == 'string') {
@@ -211,6 +247,24 @@ export default {
 					}
 					if (typeof this.btns.cancel.size == 'string') {
 						btns.cancel.size = this.btns.cancel.size
+					}
+					if (typeof this.btns.cancel.round == 'boolean') {
+						btns.cancel.round = this.btns.cancel.round
+					}
+					if (typeof this.btns.cancel.square == 'boolean') {
+						btns.cancel.square = this.btns.cancel.square
+					}
+					if (typeof this.btns.cancel.disabled == 'boolean') {
+						btns.cancel.disabled = this.btns.cancel.disabled
+					}
+					if (typeof this.btns.cancel.loading == 'boolean') {
+						btns.cancel.loading = this.btns.cancel.loading
+					}
+					if (typeof this.btns.cancel.loadText == 'string') {
+						btns.cancel.loadText = this.btns.cancel.loadText
+					}
+					if (typeof this.btns.cancel.loadIcon == 'string' || Dap.common.isObject(this.btns.cancel.loadIcon)) {
+						btns.cancel.loadIcon = this.btns.cancel.loadIcon
 					}
 				}
 			}

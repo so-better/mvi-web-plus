@@ -5,7 +5,7 @@
 		<div class="mvi-progress-bar" :style="progressBarStyle">
 			<div v-if="showTip" class="mvi-progress-tooltip" :style="tipStyle">
 				<slot name="tip" v-if="$slots.tip" :value="value"></slot>
-				<span v-else v-text="computedText"></span>
+				<span v-else v-text="cmpText"></span>
 			</div>
 		</div>
 	</div>
@@ -108,7 +108,7 @@ export default {
 
 			return style
 		},
-		computedText() {
+		cmpText() {
 			if (this.tipText) {
 				return this.tipText
 			} else {

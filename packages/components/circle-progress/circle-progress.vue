@@ -6,7 +6,7 @@
 		</svg>
 		<div v-if="showTip" class="mvi-circle-progress-tip">
 			<slot v-if="$slots.tip" name="tip" :value="value"></slot>
-			<span v-else v-text="computedValue"></span>
+			<span v-else v-text="cmpValue"></span>
 		</div>
 	</div>
 </template>
@@ -109,7 +109,7 @@ export default {
 			let width = Dap.element.rem2px(this.strokeWidth)
 			return `M ${this.pathSize / 2 + width} ${this.pathSize / 2 + width} m 0, -${this.pathSize / 2} a ${this.pathSize / 2}, ${this.pathSize / 2} 0 1, ${this.clockWise ? 1 : 0} 0, ${this.pathSize} a ${this.pathSize / 2}, ${this.pathSize / 2} 0 1, ${this.clockWise ? 1 : 0} 0, -${this.pathSize}`
 		},
-		computedValue() {
+		cmpValue() {
 			if (this.tipText) {
 				return this.tipText
 			} else {

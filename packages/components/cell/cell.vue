@@ -104,23 +104,23 @@ export default {
 				return icon
 			}
 		},
-		computedActive() {
+		cmpActive() {
 			if (typeof this.active == 'boolean') {
 				return this.active
-			} else if (this.$parent.$options.name == 'm-cell-group' && typeof this.$parent.active == 'boolean') {
-				return this.$parent.active
-			} else {
-				return true
 			}
+			if (this.$parent.$options.name == 'm-cell-group' && typeof this.$parent.active == 'boolean') {
+				return this.$parent.active
+			}
+			return true
 		},
-		computedBorder() {
+		cmpBorder() {
 			if (typeof this.border == 'boolean') {
 				return this.border
-			} else if (typeof this.$parent.border == 'boolean') {
-				return this.$parent.border
-			} else {
-				return false
 			}
+			if (typeof this.$parent.border == 'boolean') {
+				return this.$parent.border
+			}
+			return false
 		},
 		labelTextStyle() {
 			let style = {}
@@ -140,10 +140,10 @@ export default {
 		},
 		cellClass() {
 			let cls = ['mvi-cell']
-			if (this.computedBorder) {
+			if (this.cmpBorder) {
 				cls.push('border')
 			}
-			if (this.computedActive) {
+			if (this.cmpActive) {
 				cls.push('active')
 			}
 			return cls
