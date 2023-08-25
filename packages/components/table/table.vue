@@ -19,7 +19,6 @@
 								</span>
 							</template>
 						</div>
-						<div v-if="index < columnData.length - 1 && draggable" @mousedown="resizeColumnWidth($event, column, index)" class="m-table-drag"></div>
 					</th>
 					<th class="placeholder" v-if="scrollWidth" :style="{ width: scrollWidth + 'px' }"></th>
 				</tr>
@@ -67,7 +66,7 @@ import { Tooltip } from '../tooltip'
 import { getCurrentInstance } from 'vue'
 export default {
 	name: 'm-table',
-	emits: ['check', 'sort-cancel', 'sort-asc', 'sort-desc', 'drag-start', 'drag-end'],
+	emits: ['check', 'sort-cancel', 'sort-asc', 'sort-desc'],
 	props: {
 		//表格数据
 		data: {
@@ -131,11 +130,6 @@ export default {
 		activeColor: {
 			type: String,
 			default: null
-		},
-		//列宽是否可拖拽
-		draggable: {
-			type: Boolean,
-			default: false
 		}
 	},
 	data() {
@@ -157,18 +151,7 @@ export default {
 			//复选框勾选的行
 			checkedRows: [],
 			//是否全选
-			selectAll: false,
-			//拖拽改变列宽配置
-			dragConfig: {
-				//拖拽的列对象
-				column: null,
-				index: 0,
-				startX: 0,
-				//存储拖拽后的每列的宽度
-				columnWidth: {},
-				//列宽拖拽的最小宽度
-				minWidth: Dap.element.rem2px(0.8)
-			}
+			selectAll: false
 		}
 	},
 	computed: {
@@ -184,8 +167,7 @@ export default {
 		headerColumnStyle() {
 			return column => {
 				return {
-					//列宽先从dragConfig.columnWith中读取
-					width: this.dragConfig.columnWidth[column.prop] || column.width || 'auto'
+					width: column.width || 'auto'
 				}
 			}
 		},
@@ -302,61 +284,8 @@ export default {
 		Dap.event.on(window, `resize.table_${this.uid}`, e => {
 			this.columnAlignKey++
 		})
-		//鼠标移动改变列宽
-		Dap.event.on(document.documentElement, `mousemove.table_${this.uid}`, e => {
-			//可以拖拽
-			if (this.dragConfig.column) {
-				const moveX = e.pageX - this.dragConfig.startX
-				//最小宽度
-				const minWidth = this.dragConfig.minWidth
-				//最大宽度
-				const maxWidth = parseFloat(Dap.element.getCssStyle(this.$refs.headerRow, 'width')) - this.getColumnTotalMinWidth(this.dragConfig.column)
-				//原宽度
-				let width = parseFloat(Dap.element.getCssStyle(this.headerColumnRefs[this.dragConfig.index], 'width'))
-				//拖拽后的宽度
-				width += moveX
-				//拖拽后的宽度大于最小宽度小于最大宽度，才可以继续设置
-				if (width >= minWidth && width <= maxWidth) {
-					this.dragConfig.columnWidth[this.dragConfig.column.prop] = width + 'px'
-					this.dragConfig.startX = e.pageX
-					this.$nextTick(() => {
-						this.columnAlignKey++
-					})
-				}
-			}
-		})
-		//鼠标松开
-		Dap.event.on(document.documentElement, `mouseup.table_${this.uid}`, e => {
-			//可以拖拽
-			if (this.dragConfig.column) {
-				this.dragConfig.column = null
-				this.$emit('drag-end')
-			}
-		})
 	},
 	methods: {
-		//获取除指定列以外的其他列宽度总和的最小宽度
-		getColumnTotalMinWidth(currentColumn) {
-			let total = 0
-			this.columnData.forEach((column, index) => {
-				if (column.prop == currentColumn.prop) {
-					return
-				}
-				if ((column.width && column.width != 'auto') || this.dragConfig.columnWidth[column.prop]) {
-					total += parseFloat(Dap.element.getCssStyle(this.headerColumnRefs[index], 'width'))
-				} else {
-					total += this.dragConfig.minWidth
-				}
-			})
-			return total
-		},
-		//鼠标按下列宽拖拽
-		resizeColumnWidth(event, column, index) {
-			this.dragConfig.startX = event.pageX
-			this.dragConfig.column = column
-			this.dragConfig.index = index
-			this.$emit('drag-start', column, index, event)
-		},
 		//单个复选框勾选
 		doCheck(rowIndex, column) {
 			if (
@@ -465,7 +394,6 @@ export default {
 	},
 	beforeUnmount() {
 		Dap.event.off(window, `resize.table_${this.uid}`)
-		Dap.event.off(document.documentElement, `mousemove.table_${this.uid} mouseup.table_${this.uid}`)
 	}
 }
 </script>
@@ -546,19 +474,6 @@ export default {
 
 					&.placeholder {
 						padding: 0;
-					}
-
-					.m-table-drag {
-						position: absolute;
-						right: 0;
-						top: 0;
-						height: 100%;
-						width: 0.3rem;
-						transform: translateX(50%);
-						background: transparent;
-						z-index: 10;
-						cursor: col-resize;
-						user-select: none;
 					}
 				}
 			}

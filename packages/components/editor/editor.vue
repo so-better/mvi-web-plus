@@ -545,9 +545,8 @@ export default {
 		},
 		//编辑器部分删除情景
 		handleDelete(element) {
-			elementUtil.toParagraph(element)
-			if (element.isInblock()) {
-				element.convertToBlock()
+			if (element.isBlock()) {
+				elementUtil.toParagraph(element)
 			}
 		},
 		//编辑器range更新
