@@ -170,7 +170,7 @@ export default {
 				this.$emit('update:modelValue', val)
 			},
 			get() {
-				return this.modelValue
+				return this.modelValue || '<p><br></p>'
 			}
 		},
 		//编辑器区域样式设置
@@ -1136,7 +1136,7 @@ export default {
 		:deep(hr) {
 			display: block;
 			width: 100%;
-			margin: @mp-sm 0;
+			margin: 0;
 			padding: 0;
 			height: 0.02rem;
 			background-color: @bg-color-dark;
@@ -1192,6 +1192,7 @@ export default {
 			background-color: @bg-color-default;
 			font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
 			border: 1px solid @bg-color-dark;
+			text-indent: initial;
 		}
 		//表格样式
 		:deep(table) {

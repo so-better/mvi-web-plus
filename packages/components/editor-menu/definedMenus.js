@@ -305,6 +305,12 @@ export default [
 		title: '代码块'
 	},
 	{
+		name: 'empty',
+		type: 'default',
+		icon: 'trash',
+		title: '清空'
+	},
+	{
 		name: 'codeview',
 		type: 'default',
 		icon: 'eye',

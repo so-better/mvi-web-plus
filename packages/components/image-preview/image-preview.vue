@@ -106,10 +106,9 @@ export default {
 		//图片加载失败提示设置
 		errorIcon: {
 			type: [String, Object],
-			default: function () {
-				return {
-					size: '1rem'
-				}
+			default: {
+				size: '1rem',
+				type: 'image-error'
 			}
 		},
 		//图片加载中提示设置
@@ -117,7 +116,8 @@ export default {
 			type: [String, Object],
 			default: function () {
 				return {
-					size: '1rem'
+					size: '1rem',
+					type: 'image-alt'
 				}
 			}
 		},

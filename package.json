@@ -16,7 +16,7 @@
 		"lib": "vite build"
 	},
 	"dependencies": {
-		"alex-editor": "^0.0.6",
+		"alex-editor": "^0.0.84",
 		"dap-util": "^1.3.5",
 		"dayjs": "^1.11.9",
 		"rem-fit": "^1.5.4",

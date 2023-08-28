@@ -336,6 +336,7 @@ export default {
 			}
 			return style
 		},
+		//激活颜色
 		activeColor() {
 			if (this.cmpDisabled) {
 				return ''
@@ -398,13 +399,25 @@ export default {
 					}
 					this.hideLayer()
 				},
-				error: (state, message, file) => {
+				error: (errorType, file) => {
 					if (this.name == 'image') {
 						if (typeof this.menus.uploadImageError == 'function') {
-							this.menus.uploadImageError(state, message, file)
+							this.menus.uploadImageError(state, file)
 						} else {
+							let msg = ''
+							if (errorType == 'suffixError') {
+								msg = '文件后缀不符合'
+							} else if (errorType == 'maxSizeError') {
+								msg = '超出最大文件尺寸限制'
+							} else if (errorType == 'minSizeError') {
+								msg = '文件尺寸没有达到要求的最小值'
+							} else if (errorType == 'maxLengthError') {
+								msg = '文件数量超出限制'
+							} else if (errorType == 'minLengthError') {
+								msg = '文件数量没有达到最小值'
+							}
 							Msgbox.msgbox({
-								message: message,
+								message: msg,
 								animation: 'scale'
 							})
 						}
@@ -668,10 +681,20 @@ export default {
 			}
 			//分隔线
 			else if (this.name == 'divider') {
+				//创建段落
+				const paragraph = new AlexElement('block', AlexElement.BLOCK_NODE, null, null, null)
 				//创建分隔线
 				const divider = new AlexElement('closed', 'hr', null, null, null)
 				//插入分割线
-				editor.insertElement(divider)
+				editor.addElementTo(divider, paragraph)
+				editor.insertElement(paragraph)
+				const nextParagraph = new AlexElement('block', AlexElement.BLOCK_NODE, null, null, null)
+				const breakEl = new AlexElement('closed', 'br', null, null, null)
+				editor.addElementTo(breakEl, nextParagraph)
+				editor.addElementAfter(nextParagraph, paragraph)
+				//重新设置虚拟光标位置
+				editor.range.anchor.moveToEnd(nextParagraph)
+				editor.range.focus.moveToEnd(nextParagraph)
 				//重新渲染
 				editor.formatElementStack()
 				editor.domRender()
@@ -987,6 +1010,18 @@ export default {
 					}
 				}
 
+				editor.formatElementStack()
+				editor.domRender()
+				editor.rangeRender()
+			}
+			//清空
+			else if (this.name == 'empty') {
+				const paragraph = new AlexElement('block', 'p', null, null, null)
+				const breakEl = new AlexElement('closed', 'br', null, null, null)
+				editor.addElementTo(breakEl, paragraph)
+				editor.stack = [paragraph]
+				editor.range.anchor.moveToStart(breakEl)
+				editor.range.focus.moveToStart(breakEl)
 				editor.formatElementStack()
 				editor.domRender()
 				editor.rangeRender()

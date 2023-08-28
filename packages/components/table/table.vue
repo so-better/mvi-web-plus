@@ -35,7 +35,7 @@
 				<table v-if="rowData.length" cellpadding="0" cellspacing="0">
 					<tr v-for="(row, rowIndex) in rowData" :class="stripe ? 'stripe' : ''">
 						<td v-for="(column, columnIndex) in columnData" :class="bodyColumnClass(row, rowIndex, column, columnIndex)" :style="bodyColumnStyle(column, columnIndex)">
-							<Tooltip :disabled="!column.ellipsis" block :title="tooltipTitle(row, column)" trigger="hover" :placement="center ? 'bottom' : 'bottom-start'">
+							<Tooltip :disabled="!column.ellipsis" block :title="tooltipTitle(row, column)" trigger="hover" :placement="center ? 'bottom' : 'bottom-start'" :fixed="height ? true : false">
 								<div :class="['mvi-table-column', center ? 'center' : '']">
 									<!-- 复选框 -->
 									<Checkbox v-if="column.type == 'selection'" v-model="checkedRows" :value="rowIndex" size="0.24rem" @change="doCheck(rowIndex, column)" :color="activeColor" :disabled="!cmpSelectable(row, rowIndex, column)"></Checkbox>
@@ -331,7 +331,7 @@ export default {
 				this.sortBy = ''
 				this.sortOrder = ''
 				if (typeof column.sortMethod == 'function') {
-					column.sortMethod.apply(this, ['', this.rowData])
+					column.sortMethod.apply(this, ['', this.rowData, column])
 				} else {
 					this.rowData = this.deepClone(this.data)
 					this.$emit('sort-cancel', this.rowData)
@@ -342,7 +342,7 @@ export default {
 				this.sortBy = column.prop
 				this.sortOrder = 'asc'
 				if (typeof column.sortMethod == 'function') {
-					column.sortMethod.apply(this, ['asc', this.rowData])
+					column.sortMethod.apply(this, ['asc', this.rowData, column])
 				} else {
 					this.rowData = this.rowData.sort(function (rowA, rowB) {
 						if (Dap.number.isNumber(rowA[column.prop]) && Dap.number.isNumber(rowB[column.prop])) {
@@ -361,7 +361,7 @@ export default {
 				this.sortBy = ''
 				this.sortOrder = ''
 				if (typeof column.sortMethod == 'function') {
-					column.sortMethod.apply(this, ['', this.rowData])
+					column.sortMethod.apply(this, ['', this.rowData, column])
 				} else {
 					this.rowData = this.deepClone(this.data)
 					this.$emit('sort-cancel', this.rowData)
@@ -372,7 +372,7 @@ export default {
 				this.sortBy = column.prop
 				this.sortOrder = 'desc'
 				if (typeof column.sortMethod == 'function') {
-					column.sortMethod.apply(this, ['desc', this.rowData])
+					column.sortMethod.apply(this, ['desc', this.rowData, column])
 				} else {
 					this.rowData = this.rowData.sort(function (rowA, rowB) {
 						if (Dap.number.isNumber(rowA[column.prop]) && Dap.number.isNumber(rowB[column.prop])) {
