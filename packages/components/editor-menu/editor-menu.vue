@@ -47,7 +47,7 @@
 					<input :disabled="!linkParams.showText || null" ref="linkText" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.text" :placeholder="props.placeholder[0]" type="text" />
 					<input ref="linkUrl" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkParams.url" :placeholder="props.placeholder[1]" type="text" />
 					<div class="mvi-editor-menu-link-footer">
-						<Checkbox :label="props.targetText" label-placement="right" :icon="{ size: '0.24rem' }" label-size="0.28rem" label-color="#505050" :fill-color="activeColor" v-model="linkParams.target"> </Checkbox>
+						<Checkbox :label="props.targetText" label-placement="right" :icon="{ size: '0.24rem' }" label-size="0.28rem" :color="activeColor" v-model="linkParams.target"> </Checkbox>
 						<div class="mvi-editor-menu-link-operation">
 							<span class="mvi-editor-menu-link-delete" v-if="!linkParams.showText" @click="deleteLink">{{ props.removeText }}</span>
 							<span class="mvi-editor-menu-link-insert" :style="{ color: activeColor }" @click="insertLink">{{ props.insertText }}</span>
@@ -56,7 +56,7 @@
 				</div>
 				<!-- 图片或者视频 -->
 				<div v-else-if="name == 'image' || name == 'video'" class="mvi-editor-menu-media">
-					<Tabs @change="tabChange" v-model="mediaParams.tabIndex" flex="flex-start" offset="0.4rem" :active-color="activeColor" inactive-color="#808080">
+					<Tabs @change="tabChange" v-model="mediaParams.tabIndex" flex="flex-start" offset="0.4rem" :active-color="activeColor">
 						<Tab v-for="item in parseList" :title="item.label">
 							<div class="mvi-editor-menu-media-upload" v-if="item.value == 'upload'">
 								<Icon type="upload-square" />

@@ -245,6 +245,13 @@ export default {
 			immediate: true,
 			handler: function (newVal) {
 				this.rowData = this.deepClone(newVal)
+				this.$nextTick(() => {
+					this.scrollWidth = this.getScrollWidth()
+					//滚动条宽度获取后等待渲染完成重新对齐列
+					this.$nextTick(() => {
+						this.columnAlignKey++
+					})
+				})
 			}
 		},
 		//监听columns更新columnData
@@ -323,15 +330,19 @@ export default {
 			if (this.sortBy == column.prop && this.sortOrder == 'asc') {
 				this.sortBy = ''
 				this.sortOrder = ''
-				this.rowData = this.deepClone(this.data)
-				this.$emit('sort-cancel', this.rowData)
+				if (typeof column.sortMethod == 'function') {
+					column.sortMethod.apply(this, ['', this.rowData])
+				} else {
+					this.rowData = this.deepClone(this.data)
+					this.$emit('sort-cancel', this.rowData)
+				}
 			}
 			//升序排序
 			else {
 				this.sortBy = column.prop
 				this.sortOrder = 'asc'
 				if (typeof column.sortMethod == 'function') {
-					this.rowData = column.sortMethod.apply(this, ['asc', this.rowData])
+					column.sortMethod.apply(this, ['asc', this.rowData])
 				} else {
 					this.rowData = this.rowData.sort(function (rowA, rowB) {
 						if (Dap.number.isNumber(rowA[column.prop]) && Dap.number.isNumber(rowB[column.prop])) {
@@ -349,15 +360,19 @@ export default {
 			if (this.sortBy == column.prop && this.sortOrder == 'desc') {
 				this.sortBy = ''
 				this.sortOrder = ''
-				this.rowData = this.deepClone(this.data)
-				this.$emit('sort-cancel', this.rowData)
+				if (typeof column.sortMethod == 'function') {
+					column.sortMethod.apply(this, ['', this.rowData])
+				} else {
+					this.rowData = this.deepClone(this.data)
+					this.$emit('sort-cancel', this.rowData)
+				}
 			}
 			//降序排序
 			else {
 				this.sortBy = column.prop
 				this.sortOrder = 'desc'
 				if (typeof column.sortMethod == 'function') {
-					this.rowData = column.sortMethod.apply(this, ['desc', this.rowData])
+					column.sortMethod.apply(this, ['desc', this.rowData])
 				} else {
 					this.rowData = this.rowData.sort(function (rowA, rowB) {
 						if (Dap.number.isNumber(rowA[column.prop]) && Dap.number.isNumber(rowB[column.prop])) {

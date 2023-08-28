@@ -87,6 +87,11 @@ export default {
 		offset: {
 			type: String,
 			default: '0'
+		},
+		//激活颜色
+		activeColor: {
+			type: String,
+			default: null
 		}
 	},
 	computed: {
@@ -96,6 +101,9 @@ export default {
 				style.transition = 'left ' + this.timeout + 'ms,width ' + this.timeout + 'ms'
 				style.webkitTransition = 'left ' + this.timeout + 'ms,width ' + this.timeout + 'ms'
 			}
+			if (this.activeColor) {
+				style.background = this.activeColor
+			}
 			style.width = this.slideWidth + 'px'
 			style.left = this.slideLeft + 'px'
 			return style
@@ -104,6 +112,9 @@ export default {
 			let style = {}
 			if (this.flex && this.type == 'default') {
 				style.justifyContent = this.flex
+			}
+			if (this.type == 'card' && this.activeColor) {
+				style.borderColor = this.activeColor
 			}
 			return style
 		},
@@ -125,6 +136,17 @@ export default {
 				if (this.offset && index != 0 && this.type == 'default') {
 					style.marginLeft = this.offset
 				}
+				if (this.activeColor) {
+					style.borderColor = this.activeColor
+					if (this.modelValue == index) {
+						if (this.type == 'default') {
+							style.color = this.activeColor
+						} else {
+							style.background = this.activeColor
+						}
+					}
+				}
+
 				style.maxWidth = `calc(100% / ${this.children.length})`
 				return style
 			}
