@@ -45,7 +45,7 @@ import { Icon } from '../icon'
 import { Checkbox } from '../checkbox'
 export default {
 	name: 'm-editor',
-	emits: ['update:modelValue', 'focus', 'blur', 'change', 'paste-image', 'paste-video', 'range-update'],
+	emits: ['update:modelValue', 'focus', 'blur', 'change', 'paste-image', 'paste-video', 'range-update', 'after-render'],
 	props: {
 		//编辑器内容
 		modelValue: {
@@ -104,6 +104,13 @@ export default {
 		customVideoPaste: {
 			type: Boolean,
 			default: false
+		},
+		//自定义渲染规则
+		renderRules: {
+			type: Array,
+			default: function () {
+				return []
+			}
 		}
 	},
 	data() {
@@ -220,7 +227,7 @@ export default {
 		this.editor = new AlexEditor(this.$refs.content, {
 			disabled: this.disabled,
 			value: this.cmpValue,
-			renderRules: [this.orderListHandle, this.codeHandle, this.mediaHandle, this.thParseTdHandle, this.tableHandle],
+			renderRules: [this.orderListHandle, this.codeHandle, this.mediaHandle, this.thParseTdHandle, this.tableHandle, ...this.renderRules],
 			htmlPaste: this.htmlPaste
 		})
 		//编辑器渲染后会有一个渲染过程，会改变内容，因此重新获取内容的值来设置modelValue
@@ -597,6 +604,7 @@ export default {
 					this.setTabelColumnResize(table, firstRow, column, i)
 				})
 			})
+			this.$emit('after-render')
 		},
 		//粘贴html时过滤部分元素的样式和属性
 		handlePasteHtml(data, elements) {
