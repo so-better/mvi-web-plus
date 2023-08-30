@@ -44,7 +44,7 @@
 						<div :class="type" @click="updateYear(1)"><Icon type="angle-double-right" /></div>
 					</div>
 				</div>
-				<Calendar :view="view" v-model="selectedDate" :month-text="monthText" :week-text="weekText" :start-date="startDate" :end-year="endDate" :non-current-click="false" :active="active" :type="type" @date-click="dateClick" @month-click="monthClick" @year-click="yearClick" ref="calendar"></Calendar>
+				<Calendar :view="view" v-model="selectedDate" :month-text="monthText" :week-text="weekText" :start-date="startDate" :end-date="endDate" :non-current-click="false" :active="active" :type="type" @date-click="dateClick" @month-click="monthClick" @year-click="yearClick" ref="calendar"></Calendar>
 			</div>
 		</Layer>
 	</div>
