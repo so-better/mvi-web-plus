@@ -337,7 +337,7 @@ export default {
 				display: inline-block;
 				position: relative;
 				padding: @mp-xs @mp-sm;
-				font-size: @font-size-small;
+				font-size: @font-size-default;
 				border-radius: @radius-default / 2;
 				cursor: pointer;
 
@@ -412,7 +412,7 @@ export default {
 				display: inline-block;
 				position: relative;
 				padding: @mp-xs @mp-sm;
-				font-size: @font-size-small;
+				font-size: @font-size-default;
 				border-radius: @radius-default / 2;
 				cursor: pointer;
 

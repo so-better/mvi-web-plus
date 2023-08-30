@@ -1,5 +1,6 @@
 <template>
 	<div class="mvi-p-4">
+		<m-date-chooser v-model="date" :layer-props="{ width: '7rem' }"> <m-button>按钮</m-button></m-date-chooser>
 		<m-editor-menus ref="editor-menus">
 			<m-editor-menu v-for="item in EditorDefinedMenuConfig" :name="item.name"></m-editor-menu>
 		</m-editor-menus>
@@ -14,7 +15,8 @@ export default {
 		return {
 			EditorDefinedMenuConfig: EditorDefinedMenuConfig,
 			value: '',
-			dayjs: dayjs
+			dayjs: dayjs,
+			date: new Date()
 		}
 	},
 	mounted() {

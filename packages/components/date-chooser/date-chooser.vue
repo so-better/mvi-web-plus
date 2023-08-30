@@ -375,7 +375,7 @@ export default {
 		height: 100%;
 		padding: 0 @mp-md;
 		color: @font-color-default;
-		font-size: @font-size-small;
+		font-size: @font-size-h6;
 		transition: color 200ms linear;
 
 		&:hover {
@@ -407,7 +407,7 @@ export default {
 		display: flex;
 		justify-content: flex-start;
 		align-items: center;
-		font-size: @font-size-small;
+		font-size: @font-size-h6;
 		color: @font-color-default;
 
 		& > span:first-child + span {
@@ -433,7 +433,7 @@ export default {
 		height: 100%;
 		padding: 0 @mp-md;
 		color: @font-color-default;
-		font-size: @font-size-small;
+		font-size: @font-size-h6;
 		transition: color 200ms linear;
 
 		&:hover {
@@ -465,7 +465,7 @@ export default {
 		display: flex;
 		justify-content: flex-start;
 		align-items: center;
-		font-size: @font-size-small;
+		font-size: @font-size-h6;
 		color: @font-color-default;
 		transition: color 200ms linear;
 
@@ -518,7 +518,7 @@ export default {
 			height: 100%;
 			padding: 0 @mp-sm;
 			color: @font-color-default;
-			font-size: @font-size-small;
+			font-size: @font-size-h6;
 			transition: color 200ms linear;
 
 			&:hover {
@@ -551,7 +551,7 @@ export default {
 		display: flex;
 		justify-content: flex-start;
 		align-items: center;
-		font-size: @font-size-small;
+		font-size: @font-size-h6;
 		color: @font-color-default;
 
 		& > div {
