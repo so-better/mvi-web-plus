@@ -128,9 +128,15 @@ export default {
 		return {
 			//是否显示代码视图，代码视图下不可编辑
 			codeViewShow: false,
+			//光标是否在表格内
+			isTable: false,
+			//光标是否在代码块内
+			isPre: false,
+			//光标是否在链接内
+			isLink: false,
 			//编辑器实例
 			editor: null,
-			//中文输入
+			//是否在输入中文
 			compositionFlag: false,
 			//是否内部修改了modelValue的值
 			isModelChange: false,
@@ -138,6 +144,8 @@ export default {
 			useMenus: false,
 			//菜单栏是否可以使用
 			canUseMenus: false,
+			//是否在改变range
+			isUpdateRange: false,
 			//链接调整器参数
 			linkAdjusterProps: {
 				show: false,
@@ -511,7 +519,7 @@ export default {
 		//元素格式化时处理pre，将pre的内容根据语言进行样式处理
 		preHandle(element) {
 			//如果是pre标签进行处理
-			if (element.isPreStyle() && element.parsedom == 'pre') {
+			if (element.isPreStyle() && element.parsedom == 'pre' && !this.isUpdateRange) {
 				const marks = {
 					'mvi-editor-element-key': element.key
 				}
@@ -528,21 +536,19 @@ export default {
 				const textContent = originalTextElements.reduce((val, item) => {
 					return val + item.textContent
 				}, '')
-				// if (textContent == element.oldTextContent) {
-				// 	return
-				// }
-				// element.oldTextContent = textContent
 				//将文本元素的内容转为经过hljs处理的内容
 				const html = getHljsHtml(textContent, language)
-				//将经过hljs处理的内容转为元素数组
-				const newElements = this.editor.parseHtml(html)
-				//处理光标位置
-				this.updateRangeInPre(element, originalTextElements, newElements)
-				//将新文本元素全部加入到pre子元素数组中
-				element.children = newElements
-				newElements.forEach(newEl => {
-					newEl.parent = element
-				})
+				if (html) {
+					//将经过hljs处理的内容转为元素数组
+					const newElements = this.editor.parseHtml(html)
+					//处理光标位置
+					this.updateRangeInPre(element, originalTextElements, newElements)
+					//将新文本元素全部加入到pre子元素数组中
+					element.children = newElements
+					newElements.forEach(newEl => {
+						newEl.parent = element
+					})
+				}
 			}
 		},
 		//点击编辑器
@@ -623,12 +629,17 @@ export default {
 			if (this.disabled) {
 				return
 			}
+			this.isUpdateRange = true
 			this.$emit('range-update', range)
 			const img = this.getCurrentParsedomElement('img')
 			const link = this.getCurrentParsedomElement('a')
 			const video = this.getCurrentParsedomElement('video')
 			const table = this.getCurrentParsedomElement('table')
 			const pre = this.getCurrentParsedomElement('pre')
+			this.isTable = !!table
+			this.isPre = !!pre
+			this.isLink = !!link
+			this.isUpdateRange = false
 			setTimeout(() => {
 				if (img || video) {
 					const el = img || video

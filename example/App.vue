@@ -14,7 +14,7 @@ export default {
 	data() {
 		return {
 			EditorDefinedMenuConfig: EditorDefinedMenuConfig,
-			value: '<pre>const a = new Block()</pre>',
+			value: '',
 			dayjs: dayjs,
 			date: new Date()
 		}
