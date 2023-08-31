@@ -3,7 +3,7 @@
 		<!-- 代码视图 -->
 		<textarea v-if="codeViewShow" ref="code" readonly class="mvi-editor-code" :value="cmpValue" />
 		<!-- 编辑器视图 -->
-		<div ref="content" :data-placeholder="placeholder" :class="['mvi-editor-content', border ? 'border' : '', isEmpty ? 'empty' : '']" :style="contentStyle" @compositionstart="compositionFlag = true" @compositionend="compositionFlag = false" @click="clickEditor" :disabled="disabled || null"></div>
+		<div ref="content" :data-placeholder="placeholder" :class="['mvi-editor-content', border ? 'border' : '', isEmpty ? 'empty' : '']" :style="contentStyle" @compositionstart="compositionFlag = true" @compositionend="compositionFlag = false" @click="clickEditor" :disabled="disabled || null" @keydown="contentKeyDown"></div>
 		<!-- 链接调整器 -->
 		<m-layer v-model="linkAdjusterProps.show" fixed :target="linkAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#eee" offset="0.05rem" closable ref="linkLayer" @showing="autoLayerOffset('linkLayer')">
 			<div class="mvi-editor-layer-link">
@@ -308,6 +308,25 @@ export default {
 		}
 	},
 	methods: {
+		//编辑区域键盘按下
+		contentKeyDown(e) {
+			//增加缩进
+			if (e.keyCode == 9 && !e.metaKey && !e.shiftKey && !e.ctrlKey && !e.altKey) {
+				e.preventDefault()
+				this.setIndent()
+				this.editor.formatElementStack()
+				this.editor.domRender()
+				this.editor.rangeRender()
+			}
+			//减少缩进
+			else if (e.keyCode == 9 && !e.metaKey && e.shiftKey && !e.ctrlKey && !e.altKey) {
+				e.preventDefault()
+				this.setOutdent()
+				this.editor.formatElementStack()
+				this.editor.domRender()
+				this.editor.rangeRender()
+			}
+		},
 		//输入框获取焦点
 		inputFocus(event) {
 			event.currentTarget.style.borderColor = this.activeColor
@@ -627,46 +646,46 @@ export default {
 			}
 			this.isUpdateRange = true
 			this.$emit('range-update', range)
-			const img = this.getCurrentParsedomElement('img')
-			const link = this.getCurrentParsedomElement('a')
-			const video = this.getCurrentParsedomElement('video')
-			const table = this.getCurrentParsedomElement('table')
-			const pre = this.getCurrentParsedomElement('pre')
-			this.isTable = !!table
-			this.isPre = !!pre
-			this.isLink = !!link
-			this.isUpdateRange = false
-			if (!range.anchor.isEqual(range.focus)) {
+			const imgRes = this.getCurrentParsedomElement('img')
+			const linkRes = this.getCurrentParsedomElement('a')
+			const videoRes = this.getCurrentParsedomElement('video')
+			const tableRes = this.getCurrentParsedomElement('table')
+			const preRes = this.getCurrentParsedomElement('pre')
+			this.isTable = !!tableRes.result
+			this.isPre = !!preRes.result
+			this.isLink = !!linkRes.result
+			if (imgRes.effect || linkRes.effect || videoRes.effect || tableRes.effect || preRes.effect) {
 				this.editor.formatElementStack()
 			}
+			this.isUpdateRange = false
 			setTimeout(() => {
-				if (img || video) {
-					const el = img || video
+				if (imgRes.result || videoRes.result) {
+					const el = imgRes.result || videoRes.result
 					this.mediaAdjusterProps.target = `[mvi-editor-element-key='${el.key}']`
 					this.mediaAdjusterProps.element = el
 					this.mediaAdjusterProps.show = true
 					this.linkAdjusterProps.show = false
 					this.tableAdjusterProps.show = false
 					this.preAdjusterProps.show = false
-				} else if (link) {
-					this.linkAdjusterProps.target = `[mvi-editor-element-key='${link.key}']`
-					this.linkAdjusterProps.url = link.marks['href']
-					this.linkAdjusterProps.newWindow = link.marks['target'] == '_blank'
-					this.linkAdjusterProps.element = link
+				} else if (linkRes.result) {
+					this.linkAdjusterProps.target = `[mvi-editor-element-key='${linkRes.result.key}']`
+					this.linkAdjusterProps.url = linkRes.result.marks['href']
+					this.linkAdjusterProps.newWindow = linkRes.result.marks['target'] == '_blank'
+					this.linkAdjusterProps.element = linkRes.result
 					this.linkAdjusterProps.show = true
 					this.mediaAdjusterProps.show = false
 					this.tableAdjusterProps.show = false
 					this.preAdjusterProps.show = false
-				} else if (table) {
-					this.tableAdjusterProps.target = `[mvi-editor-element-key='${table.key}']`
+				} else if (tableRes.result) {
+					this.tableAdjusterProps.target = `[mvi-editor-element-key='${tableRes.result.key}']`
 					this.tableAdjusterProps.show = true
 					this.mediaAdjusterProps.show = false
 					this.linkAdjusterProps.show = false
 					this.preAdjusterProps.show = false
-				} else if (pre) {
-					this.preAdjusterProps.target = `[mvi-editor-element-key='${pre.key}']`
-					this.preAdjusterProps.language = pre.marks['mvi-hljs-language'] || ''
-					this.preAdjusterProps.element = pre
+				} else if (preRes.result) {
+					this.preAdjusterProps.target = `[mvi-editor-element-key='${preRes.result.key}']`
+					this.preAdjusterProps.language = preRes.result.marks['mvi-hljs-language'] || ''
+					this.preAdjusterProps.element = preRes.result
 					this.preAdjusterProps.show = true
 					this.mediaAdjusterProps.show = false
 					this.linkAdjusterProps.show = false
@@ -692,6 +711,9 @@ export default {
 					this.setTabelColumnResize(table, firstRow, column, i)
 				})
 			})
+			if (this.preAdjusterProps.show) {
+				this.autoLayerOffset('preLayer')
+			}
 			this.$emit('after-render')
 		},
 		//粘贴html时过滤部分元素的样式和属性
@@ -882,7 +904,7 @@ export default {
 				this.editor.range.anchor.element = this.editor.range.focus.element
 				this.editor.range.anchor.offset = this.editor.range.focus.offset
 			}
-			const row = this.getCurrentParsedomElement('tr')
+			const row = this.getCurrentParsedomElement('tr').result
 			const newRow = row.clone()
 			newRow.children.forEach(column => {
 				column.children = []
@@ -905,7 +927,7 @@ export default {
 				this.editor.range.anchor.element = this.editor.range.focus.element
 				this.editor.range.anchor.offset = this.editor.range.focus.offset
 			}
-			const row = this.getCurrentParsedomElement('tr')
+			const row = this.getCurrentParsedomElement('tr').result
 			const parent = row.parent
 			if (parent.children.length == 1) {
 				this.deleteTable()
@@ -935,8 +957,8 @@ export default {
 				this.editor.range.anchor.element = this.editor.range.focus.element
 				this.editor.range.anchor.offset = this.editor.range.focus.offset
 			}
-			const column = this.getCurrentParsedomElement('td')
-			const tbody = this.getCurrentParsedomElement('tbody')
+			const column = this.getCurrentParsedomElement('td').result
+			const tbody = this.getCurrentParsedomElement('tbody').result
 			const rows = tbody.children
 			const index = column.parent.children.findIndex(item => {
 				return item.isEqual(column)
@@ -963,8 +985,8 @@ export default {
 				this.editor.range.anchor.element = this.editor.range.focus.element
 				this.editor.range.anchor.offset = this.editor.range.focus.offset
 			}
-			const column = this.getCurrentParsedomElement('td')
-			const tbody = this.getCurrentParsedomElement('tbody')
+			const column = this.getCurrentParsedomElement('td').result
+			const tbody = this.getCurrentParsedomElement('tbody').result
 			const rows = tbody.children
 			const parent = column.parent
 			if (parent.children.length == 1) {
@@ -1089,6 +1111,90 @@ export default {
 				}
 			}
 		},
+		//增加缩进
+		setIndent() {
+			const fn = element => {
+				if (element.hasStyles()) {
+					if (element.styles.hasOwnProperty('text-indent')) {
+						let val = element.styles['text-indent']
+						if (val.endsWith('em')) {
+							val = parseFloat(val)
+						} else {
+							val = 0
+						}
+						element.styles['text-indent'] = `${val + 2}em`
+					} else {
+						element.styles['text-indent'] = '2em'
+					}
+				} else {
+					element.styles = {
+						'text-indent': '2em'
+					}
+				}
+			}
+			if (this.editor.range.anchor.isEqual(this.editor.range.focus)) {
+				const block = this.editor.range.anchor.element.getBlock()
+				const inblock = this.editor.range.anchor.element.getInblock()
+				if (inblock) {
+					if (inblock.isPreStyle()) {
+						this.editor.insertText('    ')
+					} else if (inblock.behavior == 'block') {
+						fn(inblock)
+					}
+				} else {
+					if (block.isPreStyle()) {
+						this.editor.insertText('    ')
+					} else {
+						fn(block)
+					}
+				}
+			} else {
+				const { elements } = this.editor.getElementsByRange(true, false)
+				elements.forEach(el => {
+					const block = el.getBlock()
+					const inblock = el.getInblock()
+					if (inblock && inblock.behavior == 'block') {
+						fn(inblock)
+					} else {
+						fn(block)
+					}
+				})
+			}
+		},
+		//减少缩进
+		setOutdent() {
+			const fn = element => {
+				if (element.hasStyles() && element.styles.hasOwnProperty('text-indent')) {
+					let val = element.styles['text-indent']
+					if (val.endsWith('em')) {
+						val = parseFloat(val)
+					} else {
+						val = 0
+					}
+					element.styles['text-indent'] = `${val - 2 >= 0 ? val - 2 : 0}em`
+				}
+			}
+			if (this.editor.range.anchor.isEqual(this.editor.range.focus)) {
+				const block = this.editor.range.anchor.element.getBlock()
+				const inblock = this.editor.range.anchor.element.getInblock()
+				if (inblock && inblock.behavior == 'block' && !inblock.isPreStyle()) {
+					fn(inblock)
+				} else if (!block.isPreStyle()) {
+					fn(block)
+				}
+			} else {
+				const { elements } = this.getElementsByRange(true, false)
+				elements.forEach(el => {
+					const block = el.getBlock()
+					const inblock = el.getInblock()
+					if (inblock && inblock.behavior == 'block') {
+						fn(inblock)
+					} else {
+						fn(block)
+					}
+				})
+			}
+		},
 		//api：注册菜单栏实例
 		use(menus) {
 			if (this.useMenus) {
@@ -1111,9 +1217,12 @@ export default {
 				return fn(element.parent)
 			}
 			if (this.editor.range.anchor.element.isEqual(this.editor.range.focus.element)) {
-				return fn(this.editor.range.anchor.element)
+				return {
+					result: fn(this.editor.range.anchor.element),
+					effect: false
+				}
 			}
-			const elements = this.editor.getElementsByRange(true, false)
+			const { elements, effect } = this.editor.getElementsByRange(true, false)
 			const arr = []
 			elements.forEach(el => {
 				arr.push(fn(el))
@@ -1123,11 +1232,17 @@ export default {
 			})
 			//如果存在null，则表示有的选区元素不在指定标签下，返回null
 			if (hasNull) {
-				return null
+				return {
+					result: null,
+					effect: effect
+				}
 			}
 			//如果只有一个元素，则返回该元素
 			if (arr.length == 1) {
-				return arr[0]
+				return {
+					result: arr[0],
+					effect: effect
+				}
 			}
 			//默认数组中的元素都相等
 			let flag = true
@@ -1139,9 +1254,15 @@ export default {
 			}
 			//如果相等，则返回该元素
 			if (flag) {
-				return arr[0]
+				return {
+					result: arr[0],
+					effect: effect
+				}
 			}
-			return null
+			return {
+				result: null,
+				effect: effect
+			}
 		},
 		//api：光标设置到文档底部
 		collapseToEnd() {

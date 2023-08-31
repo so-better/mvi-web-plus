@@ -521,14 +521,16 @@ export default {
 					//如果起点和终点不在一起，表示选区
 					if (!this.menus.instance.editor.range.anchor.isEqual(this.menus.instance.editor.range.focus)) {
 						let text = ''
-						const elements = this.menus.instance.editor.getElementsByRange(true, true)
+						const { elements, effect } = this.menus.instance.editor.getElementsByRange(true, true)
 						elements.forEach(el => {
 							if (el.isText()) {
 								text += el.textContent || ''
 							}
 						})
 						this.linkParams.text = text
-						this.menus.instance.editor.formatElementStack()
+						if (effect) {
+							this.menus.instance.editor.formatElementStack()
+						}
 					}
 				}
 			}
@@ -807,7 +809,7 @@ export default {
 					//设置标题
 					block.parsedom = item.value
 				} else {
-					const elements = editor.getElementsByRange(true, false)
+					const { elements } = editor.getElementsByRange(true, false)
 					elements.forEach(el => {
 						if (el.isBlock()) {
 							elementUtil.toParagraph(el)
@@ -889,7 +891,7 @@ export default {
 						}
 					}
 				} else {
-					const elements = editor.getElementsByRange(true, false)
+					const { elements } = editor.getElementsByRange(true, false)
 					elements.forEach(el => {
 						if (el.isBlock() || el.isInblock()) {
 							if (el.hasStyles()) {
@@ -938,7 +940,7 @@ export default {
 				}
 				//起点和终点不在一起
 				else {
-					const elements = editor.getElementsByRange(true, false)
+					const { elements } = editor.getElementsByRange(true, false)
 					elements.forEach(el => {
 						if (el.isBlock()) {
 							elementUtil.toParagraph(el)
@@ -976,12 +978,11 @@ export default {
 					}
 					//起点和终点不在一起
 					else {
-						let elements = editor.getElementsByRange(true, false)
+						let { elements } = editor.getElementsByRange(true, false)
 						editor.range.anchor.moveToStart(elements[0].getBlock())
 						editor.range.focus.moveToEnd(elements[elements.length - 1].getBlock())
-						elements = editor.getElementsByRange(true, true).filter(el => {
-							return el.isText()
-						})
+						const res = editor.getElementsByRange(true, true)
+						elements = res.elements.filter(el => el.isText())
 						const obj = {}
 						elements.forEach(el => {
 							if (obj[el.getBlock().key]) {
@@ -1049,50 +1050,59 @@ export default {
 				const editor = this.menus.instance.editor
 				//代码判定
 				if (this.name == 'code') {
-					this.active = editor.queryTextMark('data-code-style')
-					if (!range.anchor.isEqual(range.focus)) {
+					const { result, effect } = editor.queryTextMark('data-code-style')
+					this.active = result
+					if (effect) {
 						editor.formatElementStack()
 					}
 				}
 				//加粗判定
 				else if (this.name == 'bold') {
-					this.active = editor.queryTextStyle('font-weight', 'bold')
-					if (!range.anchor.isEqual(range.focus)) {
+					const { result, effect } = editor.queryTextStyle('font-weight', 'bold')
+					this.active = result
+					if (effect) {
 						editor.formatElementStack()
 					}
 				}
 				//斜体判定
 				else if (this.name == 'italic') {
-					this.active = editor.queryTextStyle('font-style', 'italic')
-					if (!range.anchor.isEqual(range.focus)) {
+					const { result, effect } = editor.queryTextStyle('font-style', 'italic')
+					this.active = result
+					if (effect) {
 						editor.formatElementStack()
 					}
 				}
 				//下划线判定
 				else if (this.name == 'underline') {
-					this.active = editor.queryTextStyle('text-decoration-line', 'underline') || editor.queryTextStyle('text-decoration', 'underline')
-					if (!range.anchor.isEqual(range.focus)) {
+					const res = editor.queryTextStyle('text-decoration-line', 'underline')
+					const res2 = editor.queryTextStyle('text-decoration', 'underline')
+					this.active = res.result || res2.result
+					if (res.effect || res2.effect) {
 						editor.formatElementStack()
 					}
 				}
 				//删除线判定
 				else if (this.name == 'strikethrough') {
-					this.active = editor.queryTextStyle('text-decoration-line', 'line-through') || editor.queryTextStyle('text-decoration', 'line-through')
-					if (!range.anchor.isEqual(range.focus)) {
+					const res = editor.queryTextStyle('text-decoration-line', 'line-through')
+					const res2 = editor.queryTextStyle('text-decoration', 'line-through')
+					this.active = res.result || res2.result
+					if (res.effect || res2.effect) {
 						editor.formatElementStack()
 					}
 				}
 				//下标判定
 				else if (this.name == 'subscript') {
-					this.active = editor.queryTextStyle('vertical-align', 'sub')
-					if (!range.anchor.isEqual(range.focus)) {
+					const { result, effect } = editor.queryTextStyle('vertical-align', 'sub')
+					this.active = result
+					if (effect) {
 						editor.formatElementStack()
 					}
 				}
 				//上标判定
 				else if (this.name == 'superscript') {
-					this.active = editor.queryTextStyle('vertical-align', 'super')
-					if (!range.anchor.isEqual(range.focus)) {
+					const { result, effect } = editor.queryTextStyle('vertical-align', 'super')
+					this.active = result
+					if (effect) {
 						editor.formatElementStack()
 					}
 				}
@@ -1103,7 +1113,7 @@ export default {
 							return item.value == editor.range.anchor.element.getBlock().parsedom
 						}) || { ...this.defaultVal }
 					} else {
-						const elements = editor.getElementsByRange(true, false)
+						const { elements, effect } = editor.getElementsByRange(true, false)
 						this.selectedVal = this.parseList.find(item => {
 							return elements.every(el => {
 								if (el.isBlock()) {
@@ -1113,44 +1123,66 @@ export default {
 								return block.parsedom == item.value
 							})
 						}) || { ...this.defaultVal }
-						editor.formatElementStack()
+						if (effect) {
+							editor.formatElementStack()
+						}
 					}
 				}
 				//字体判定
 				else if (this.name == 'fontfamily') {
+					let isEffect = false
 					this.selectedVal = this.parseList.find(item => {
-						return editor.queryTextStyle('font-family', item.value)
+						const { result, effect } = editor.queryTextStyle('font-family', item.value)
+						if (effect) {
+							isEffect = true
+						}
+						return result
 					}) || { ...this.defaultVal }
-					if (!range.anchor.isEqual(range.focus)) {
+					if (isEffect) {
 						editor.formatElementStack()
 					}
 				}
 				//字号判定
 				else if (this.name == 'fontsize') {
+					let isEffect = false
 					this.selectedVal = this.parseList.find(item => {
-						return editor.queryTextStyle('font-size', item.value)
+						const { result, effect } = editor.queryTextStyle('font-size', item.value)
+						if (effect) {
+							isEffect = true
+						}
+						return result
 					}) || { ...this.defaultVal }
-					if (!range.anchor.isEqual(range.focus)) {
+					if (isEffect) {
 						editor.formatElementStack()
 					}
 				}
 				//字体颜色判定
 				else if (this.name == 'forecolor') {
+					let isEffect = false
 					this.selectedVal =
 						this.parseList.find(item => {
-							return editor.queryTextStyle('color', item.value)
+							const { result, effect } = editor.queryTextStyle('color', item.value)
+							if (effect) {
+								isEffect = true
+							}
+							return result
 						}) || {}
-					if (!range.anchor.isEqual(range.focus)) {
+					if (isEffect) {
 						editor.formatElementStack()
 					}
 				}
 				//背景颜色判定
 				else if (this.name == 'backcolor') {
+					let isEffect = false
 					this.selectedVal =
 						this.parseList.find(item => {
-							return editor.queryTextStyle('background-color', item.value)
+							const { result, effect } = editor.queryTextStyle('background-color', item.value)
+							if (effect) {
+								isEffect = true
+							}
+							return result
 						}) || {}
-					if (!range.anchor.isEqual(range.focus)) {
+					if (isEffect) {
 						editor.formatElementStack()
 					}
 				}
@@ -1163,7 +1195,7 @@ export default {
 					}
 					//起点和终点不在一起
 					else {
-						const elements = editor.getElementsByRange(true, false)
+						const { elements, effect } = editor.getElementsByRange(true, false)
 						this.active = elements.every(el => {
 							if (el.isBlock()) {
 								return elementUtil.isList(el, this.name == 'ol')
@@ -1172,7 +1204,9 @@ export default {
 								return elementUtil.isList(block, this.name == 'ol')
 							}
 						})
-						editor.formatElementStack()
+						if (effect) {
+							editor.formatElementStack()
+						}
 					}
 				}
 				//对齐方式判定
@@ -1193,7 +1227,7 @@ export default {
 								}) || {}
 						}
 					} else {
-						const elements = editor.getElementsByRange(true, false)
+						const { elements, effect } = editor.getElementsByRange(true, false)
 						this.selectedVal =
 							this.parseList.find(item => {
 								return elements.every(el => {
@@ -1208,7 +1242,9 @@ export default {
 									return block.hasStyles() && block.styles['text-align'] == item.value
 								})
 							}) || {}
-						editor.formatElementStack()
+						if (effect) {
+							editor.formatElementStack()
+						}
 					}
 				}
 				//引用判定
@@ -1217,7 +1253,7 @@ export default {
 						const block = editor.range.anchor.element.getBlock()
 						this.active = block.parsedom == 'blockquote'
 					} else {
-						const elements = editor.getElementsByRange(true, false)
+						const { elements, effect } = editor.getElementsByRange(true, false)
 						this.active = elements.every(el => {
 							if (el.isBlock()) {
 								return el.parsedom == 'blockquote'
@@ -1226,7 +1262,9 @@ export default {
 								return block.parsedom == 'blockquote'
 							}
 						})
-						editor.formatElementStack()
+						if (effect) {
+							editor.formatElementStack()
+						}
 					}
 				}
 				//链接判定
@@ -1286,7 +1324,7 @@ export default {
 			}
 			//起点和终点不在一起
 			else {
-				const elements = this.menus.instance.editor.getElementsByRange(true, false)
+				const { elements } = this.menus.instance.editor.getElementsByRange(true, false)
 				elements.forEach(el => {
 					if (el.isBlock()) {
 						elementUtil.toParagraph(el)
@@ -1301,7 +1339,6 @@ export default {
 						}
 					}
 				})
-				this.menus.instance.editor.formatElementStack()
 			}
 		},
 		//插入链接
@@ -1437,7 +1474,7 @@ export default {
 				this.menus.instance.editor.range.anchor.element = this.menus.instance.editor.range.focus.element
 				this.menus.instance.editor.range.anchor.offset = this.menus.instance.editor.range.focus.offset
 			}
-			const row = this.menus.instance.getCurrentParsedomElement('tr')
+			const row = this.menus.instance.getCurrentParsedomElement('tr').result
 			const newRow = row.clone()
 			newRow.children.forEach(column => {
 				column.children = []
@@ -1461,7 +1498,7 @@ export default {
 				this.menus.instance.editor.range.anchor.element = this.menus.instance.editor.range.focus.element
 				this.menus.instance.editor.range.anchor.offset = this.menus.instance.editor.range.focus.offset
 			}
-			const row = this.menus.instance.getCurrentParsedomElement('tr')
+			const row = this.menus.instance.getCurrentParsedomElement('tr').result
 			const parent = row.parent
 			if (parent.children.length == 1) {
 				this.deleteTable()
@@ -1491,8 +1528,8 @@ export default {
 				this.menus.instance.editor.range.anchor.element = this.menus.instance.editor.range.focus.element
 				this.menus.instance.editor.range.anchor.offset = this.menus.instance.editor.range.focus.offset
 			}
-			const column = this.menus.instance.getCurrentParsedomElement('td')
-			const tbody = this.menus.instance.getCurrentParsedomElement('tbody')
+			const column = this.menus.instance.getCurrentParsedomElement('td').result
+			const tbody = this.menus.instance.getCurrentParsedomElement('tbody').result
 			const rows = tbody.children
 			const index = column.parent.children.findIndex(item => {
 				return item.isEqual(column)
@@ -1520,8 +1557,8 @@ export default {
 				this.menus.instance.editor.range.anchor.element = this.menus.instance.editor.range.focus.element
 				this.menus.instance.editor.range.anchor.offset = this.menus.instance.editor.range.focus.offset
 			}
-			const column = this.menus.instance.getCurrentParsedomElement('td')
-			const tbody = this.menus.instance.getCurrentParsedomElement('tbody')
+			const column = this.menus.instance.getCurrentParsedomElement('td').result
+			const tbody = this.menus.instance.getCurrentParsedomElement('tbody').result
 			const rows = tbody.children
 			const parent = column.parent
 			if (parent.children.length == 1) {
