@@ -152,6 +152,7 @@ export default {
 				target: '',
 				newWindow: false,
 				url: '',
+				element: null,
 				props: {
 					placeholder: '输入地址',
 					targetText: '新窗口打开',
@@ -162,12 +163,14 @@ export default {
 			//媒体调整器参数
 			mediaAdjusterProps: {
 				show: false,
-				target: ''
+				target: '',
+				element: null
 			},
 			//表格调整器参数
 			tableAdjusterProps: {
 				show: false,
 				target: '',
+				element: null,
 				props: {
 					insertRowText: '插入行',
 					removeRowText: '删除行',
@@ -179,6 +182,7 @@ export default {
 			preAdjusterProps: {
 				show: false,
 				target: '',
+				element: null,
 				languages: [
 					{
 						label: '自动识别',
@@ -327,18 +331,10 @@ export default {
 		onScroll() {
 			const setScroll = el => {
 				Dap.event.on(el, `scroll.editor_${this.uid}`, e => {
-					if (this.linkAdjusterProps.show) {
-						this.linkAdjusterProps.show = false
-					}
-					if (this.mediaAdjusterProps.show) {
-						this.mediaAdjusterProps.show = false
-					}
-					if (this.tableAdjusterProps.show) {
-						this.tableAdjusterProps.show = false
-					}
-					if (this.preAdjusterProps.show) {
-						this.preAdjusterProps.show = false
-					}
+					this.linkAdjusterProps.show = false
+					this.mediaAdjusterProps.show = false
+					this.tableAdjusterProps.show = false
+					this.preAdjusterProps.show = false
 				})
 				if (el.parentNode) {
 					setScroll(el.parentNode)
@@ -640,19 +636,24 @@ export default {
 			this.isPre = !!pre
 			this.isLink = !!link
 			this.isUpdateRange = false
+			if (!range.anchor.isEqual(range.focus)) {
+				this.editor.formatElementStack()
+			}
 			setTimeout(() => {
 				if (img || video) {
 					const el = img || video
 					this.mediaAdjusterProps.target = `[mvi-editor-element-key='${el.key}']`
+					this.mediaAdjusterProps.element = el
 					this.mediaAdjusterProps.show = true
 					this.linkAdjusterProps.show = false
 					this.tableAdjusterProps.show = false
 					this.preAdjusterProps.show = false
 				} else if (link) {
 					this.linkAdjusterProps.target = `[mvi-editor-element-key='${link.key}']`
-					this.linkAdjusterProps.show = true
 					this.linkAdjusterProps.url = link.marks['href']
 					this.linkAdjusterProps.newWindow = link.marks['target'] == '_blank'
+					this.linkAdjusterProps.element = link
+					this.linkAdjusterProps.show = true
 					this.mediaAdjusterProps.show = false
 					this.tableAdjusterProps.show = false
 					this.preAdjusterProps.show = false
@@ -664,6 +665,8 @@ export default {
 					this.preAdjusterProps.show = false
 				} else if (pre) {
 					this.preAdjusterProps.target = `[mvi-editor-element-key='${pre.key}']`
+					this.preAdjusterProps.language = pre.marks['mvi-hljs-language'] || ''
+					this.preAdjusterProps.element = pre
 					this.preAdjusterProps.show = true
 					this.mediaAdjusterProps.show = false
 					this.linkAdjusterProps.show = false
@@ -721,7 +724,7 @@ export default {
 			if (this.disabled) {
 				return
 			}
-			const element = this.getCurrentParsedomElement('a')
+			const element = this.linkAdjusterProps.element
 			element.parsedom = AlexElement.TEXT_NODE
 			delete element.marks.target
 			delete element.marks.href
@@ -738,7 +741,7 @@ export default {
 			if (!this.linkAdjusterProps.url) {
 				return
 			}
-			const element = this.getCurrentParsedomElement('a')
+			const element = this.linkAdjusterProps.element
 			element.marks.href = this.linkAdjusterProps.url
 			if (this.linkAdjusterProps.newWindow) {
 				element.marks.target = '_blank'
@@ -753,7 +756,7 @@ export default {
 			if (this.disabled) {
 				return
 			}
-			const element = this.getCurrentParsedomElement('img') || this.getCurrentParsedomElement('video')
+			const element = this.mediaAdjusterProps.element
 			const styles = {
 				width: value
 			}
@@ -855,7 +858,7 @@ export default {
 				this.editor.range.anchor.element = this.editor.range.focus.element
 				this.editor.range.anchor.offset = this.editor.range.focus.offset
 			}
-			const table = this.getCurrentParsedomElement('table')
+			const table = this.tableAdjusterProps.element
 			const paragraph = new AlexElement('block', AlexElement.BLOCK_NODE, null, null, null)
 			const breakEl = new AlexElement('closed', 'br', null, null, null)
 			this.editor.addElementTo(breakEl, paragraph)
@@ -996,7 +999,7 @@ export default {
 				this.editor.range.anchor.element = this.editor.range.focus.element
 				this.editor.range.anchor.offset = this.editor.range.focus.offset
 			}
-			const table = this.getCurrentParsedomElement('table')
+			const table = this.tableAdjusterProps.element
 			table.toEmpty()
 			this.editor.formatElementStack()
 			this.editor.domRender()
@@ -1011,7 +1014,7 @@ export default {
 				this.editor.range.anchor.element = this.editor.range.focus.element
 				this.editor.range.anchor.offset = this.editor.range.focus.offset
 			}
-			const pre = this.getCurrentParsedomElement('pre')
+			const pre = this.preAdjusterProps.element
 			const paragraph = new AlexElement('block', AlexElement.BLOCK_NODE, null, null, null)
 			const breakEl = new AlexElement('closed', 'br', null, null, null)
 			this.editor.addElementTo(breakEl, paragraph)
@@ -1031,7 +1034,7 @@ export default {
 			if (this.disabled) {
 				return
 			}
-			const element = this.getCurrentParsedomElement('pre')
+			const element = this.preAdjusterProps.element
 			Object.assign(element.marks, {
 				'mvi-hljs-language': data.value
 			})
@@ -1111,9 +1114,6 @@ export default {
 				return fn(this.editor.range.anchor.element)
 			}
 			const elements = this.editor.getElementsByRange(true, false)
-			if (!this.editor.range.anchor.isEqual(this.editor.range.focus)) {
-				this.editor.formatElementStack()
-			}
 			const arr = []
 			elements.forEach(el => {
 				arr.push(fn(el))

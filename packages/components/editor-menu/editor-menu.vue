@@ -498,7 +498,7 @@ export default {
 				//修改链接时预设值
 				if (this.active) {
 					this.linkParams.showText = false
-					const element = this.menus.instance.getCurrentParsedomElement('a')
+					const element = this.menus.instance.linkAdjusterProps.element
 					if (element) {
 						if (element.hasChildren()) {
 							const elements = AlexElement.flatElements(element.children)
@@ -961,7 +961,7 @@ export default {
 			//代码块
 			else if (this.name == 'codeblock') {
 				if (this.active) {
-					const pre = this.menus.instance.getCurrentParsedomElement('pre')
+					const pre = this.menus.instance.preAdjusterProps.element
 					elementUtil.toParagraph(pre)
 				} else {
 					//起点和终点在一起
@@ -1315,7 +1315,7 @@ export default {
 			}
 			//修改链接
 			if (this.active) {
-				const element = this.menus.instance.getCurrentParsedomElement('a')
+				const element = this.menus.instance.linkAdjusterProps.element
 				element.marks.href = this.linkParams.url
 				if (this.linkParams.target) {
 					element.marks.target = '_blank'
@@ -1349,7 +1349,7 @@ export default {
 			if (this.cmpDisabled) {
 				return
 			}
-			const element = this.menus.instance.getCurrentParsedomElement('a')
+			const element = this.menus.instance.linkAdjusterProps.element
 			element.parsedom = AlexElement.TEXT_NODE
 			delete element.marks.target
 			delete element.marks.href
@@ -1557,7 +1557,7 @@ export default {
 				this.menus.instance.editor.range.anchor.element = this.menus.instance.editor.range.focus.element
 				this.menus.instance.editor.range.anchor.offset = this.menus.instance.editor.range.focus.offset
 			}
-			const table = this.menus.instance.getCurrentParsedomElement('table')
+			const table = this.menus.instance.tableAdjusterProps.element
 			table.toEmpty()
 			this.menus.instance.editor.formatElementStack()
 			this.menus.instance.editor.domRender()
