@@ -9,8 +9,8 @@
 		</div>
 		<Layer v-model="focus" :target="`[data-id='mvi-select-target-${uid}']`" :root="`[data-id='mvi-select-${uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :fixed="layerRealProps.fixed" :fixed-auto="layerRealProps.fixedAuto" :z-index="layerRealProps.zIndex" closable :show-triangle="layerRealProps.showTriangle" :animation="layerRealProps.animation" :timeout="layerRealProps.timeout" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :border-color="layerRealProps.borderColor" :width="layerRealProps.width" @showing="layerShow" ref="layer">
 			<div class="mvi-select-menu" ref="menu" :style="menuStyle">
-				<div :class="['mvi-option', size]" @click="optionClick(item)" v-for="item in options" :disabled="item.disabled || null">
-					<div class="mvi-option-value" v-html="item[props.label]"></div>
+				<div :class="['mvi-option', size]" @click="optionClick(item)" v-for="item in cmpOptions" :disabled="item.disabled || null">
+					<div class="mvi-option-value" v-html="item.label"></div>
 					<Icon v-if="isSelect(item)" :type="parseIcon(selectedIcon).type" :spin="parseIcon(selectedIcon).spin" :size="parseIcon(selectedIcon).size" :url="parseIcon(selectedIcon).url" :color="parseIcon(selectedIcon).color" />
 				</div>
 			</div>
@@ -202,13 +202,13 @@ export default {
 		selectLabel() {
 			if (this.multiple) {
 				let labels = []
-				this.options.forEach((item, index) => {
+				this.cmpOptions.forEach(item => {
 					if (Array.isArray(this.modelValue)) {
 						let flag = this.modelValue.some(i => {
-							return Dap.common.equal(i, item[this.props.value])
+							return Dap.common.equal(i, item.value)
 						})
 						if (flag) {
-							labels.push(item[this.props.label])
+							labels.push(item.label)
 						}
 					}
 				})
@@ -219,9 +219,9 @@ export default {
 				}
 			} else {
 				let label = ''
-				this.options.forEach((item, index) => {
-					if (Dap.common.equal(this.modelValue, item[this.props.value])) {
-						label = item[this.props.label]
+				this.cmpOptions.forEach(item => {
+					if (Dap.common.equal(this.modelValue, item.value)) {
+						label = item.label
 					}
 				})
 				if (typeof this.filterMethod == 'function') {
@@ -235,7 +235,7 @@ export default {
 			return item => {
 				if (this.multiple) {
 					let flag = this.modelValue.some(i => {
-						return Dap.common.equal(i, item[this.props.value])
+						return Dap.common.equal(i, item.value)
 					})
 					return this.showSelected && flag
 				}
@@ -302,6 +302,23 @@ export default {
 				border: typeof this.layerProps.border == 'boolean' ? this.layerProps.border : false,
 				borderColor: this.layerProps.borderColor
 			}
+		},
+		cmpOptions() {
+			let options = []
+			this.options.forEach(opt => {
+				let item = {}
+				if (Dap.common.isObject(opt)) {
+					item.label = opt[this.props.label]
+					item.value = opt[this.props.value]
+					item.disabled = !!opt.disabled
+				} else {
+					item.label = opt
+					item.value = opt
+					item.disabled = false
+				}
+				options.push(item)
+			})
+			return options
 		}
 	},
 	components: {
@@ -346,26 +363,26 @@ export default {
 					throw new TypeError('modelValue should be an array')
 				}
 				let flag = arr.some(tmp => {
-					return Dap.common.equal(tmp, item[this.props.value])
+					return Dap.common.equal(tmp, item.value)
 				})
 				if (flag) {
 					arr = arr.filter(tmp => {
-						return !Dap.common.equal(tmp, item[this.props.value])
+						return !Dap.common.equal(tmp, item.value)
 					})
 				} else {
-					arr.push(item[this.props.value])
+					arr.push(item.value)
 				}
 				this.$emit('update:modelValue', arr)
 				this.$emit(
 					'change',
-					this.options.filter(tmp => {
+					this.cmpOptions.filter(tmp => {
 						return arr.some(tmp2 => {
-							return Dap.common.equal(tmp[this.props.value], tmp2)
+							return Dap.common.equal(tmp.value, tmp2)
 						})
 					})
 				)
 			} else {
-				this.$emit('update:modelValue', item[this.props.value])
+				this.$emit('update:modelValue', item.value)
 				this.$emit('change', item)
 			}
 			this.trigger()
@@ -579,10 +596,11 @@ export default {
 		}
 
 		.mvi-option-value {
-			display: flex;
-			display: -webkit-flex;
-			justify-content: flex-start;
-			align-items: center;
+			display: block;
+			max-width: 100%;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
 		}
 	}
 }

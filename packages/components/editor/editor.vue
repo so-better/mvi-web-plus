@@ -26,14 +26,24 @@
 		<!-- 表格调整器 -->
 		<m-layer v-model="tableAdjusterProps.show" fixed :target="tableAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#eee" offset="0.05rem" closable ref="tableLayer" @showing="autoLayerOffset('tableLayer')">
 			<div class="mvi-editor-layer">
-				<div @click="insertParagraph('up')" class="mvi-editor-layer-item"><Icon style="transform: rotate(180deg)" type="turn-arrow-text" /></div>
-				<div @click="insertParagraph('down')" class="mvi-editor-layer-item"><Icon type="turn-arrow-text" /></div>
+				<div @click="insertParagraphToTable('up')" class="mvi-editor-layer-item"><Icon style="transform: rotate(180deg)" type="turn-arrow-text" /></div>
+				<div @click="insertParagraphToTable('down')" class="mvi-editor-layer-item"><Icon type="turn-arrow-text" /></div>
 				<div @click="addTableRow" :style="{ color: activeColor }" class="mvi-editor-layer-item">{{ tableAdjusterProps.props.insertRowText }}</div>
 				<div @click="removeTableRow" class="mvi-editor-layer-item">{{ tableAdjusterProps.props.removeRowText }}</div>
 				<div @click="addTableColumn" :style="{ color: activeColor }" class="mvi-editor-layer-item">{{ tableAdjusterProps.props.insertColumnText }}</div>
 				<div @click="removeTableColumn" class="mvi-editor-layer-item">{{ tableAdjusterProps.props.removeColumnText }}</div>
 				<div @click="deleteTable" class="mvi-editor-layer-item"><Icon type="trash-alt" /></div></div
 		></m-layer>
+		<!-- 代码块调整器 -->
+		<m-layer v-model="preAdjusterProps.show" fixed :target="preAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#eee" offset="0.05rem" closable ref="preLayer" @showing="autoLayerOffset('preLayer')">
+			<div class="mvi-editor-layer">
+				<div @click="insertParagraphToPre('up')" class="mvi-editor-layer-item"><Icon style="transform: rotate(180deg)" type="turn-arrow-text" /></div>
+				<div @click="insertParagraphToPre('down')" class="mvi-editor-layer-item"><Icon type="turn-arrow-text" /></div>
+				<div class="mvi-editor-layer-item">
+					<m-select :active-color="activeColor" v-model="preAdjusterProps.language" :options="preAdjusterProps.languages" height="4rem" :layer-props="{ width: '2.4rem' }" icon="angle-down" @change="selectLanguage"></m-select>
+				</div>
+			</div>
+		</m-layer>
 	</div>
 </template>
 <script>
@@ -43,6 +53,7 @@ import { AlexElement, AlexEditor } from 'alex-editor'
 import elementUtil from '../editor-menu/elementUtil'
 import { Icon } from '../icon'
 import { Checkbox } from '../checkbox'
+import { getHljsHtml, languages } from './hljs'
 export default {
 	name: 'm-editor',
 	emits: ['update:modelValue', 'focus', 'blur', 'change', 'paste-image', 'paste-video', 'range-update', 'after-render'],
@@ -155,6 +166,19 @@ export default {
 					insertColumnText: '插入列',
 					removeColumnText: '删除列'
 				}
+			},
+			//代码块调整器参数
+			preAdjusterProps: {
+				show: false,
+				target: '',
+				languages: [
+					{
+						label: '自动识别',
+						value: ''
+					},
+					...languages
+				],
+				language: ''
 			}
 		}
 	},
@@ -227,7 +251,7 @@ export default {
 		this.editor = new AlexEditor(this.$refs.content, {
 			disabled: this.disabled,
 			value: this.cmpValue,
-			renderRules: [this.orderListHandle, this.codeHandle, this.mediaHandle, this.thParseTdHandle, this.tableHandle, ...this.renderRules],
+			renderRules: [this.orderListHandle, this.codeHandle, this.mediaHandle, this.thParseTdHandle, this.tableHandle, this.preHandle, ...this.renderRules],
 			htmlPaste: this.htmlPaste
 		})
 		//编辑器渲染后会有一个渲染过程，会改变内容，因此重新获取内容的值来设置modelValue
@@ -272,6 +296,66 @@ export default {
 		}
 	},
 	methods: {
+		//输入框获取焦点
+		inputFocus(event) {
+			event.currentTarget.style.borderColor = this.activeColor
+		},
+		//输入框失去焦点
+		inputBlur(event) {
+			event.currentTarget.style.borderColor = ''
+		},
+		//自动矫正调整器的位置
+		autoLayerOffset(refName) {
+			const b1 = Dap.element.getElementBounding(this.$el)
+			const b2 = Dap.element.getElementBounding(this.$refs[refName].$el)
+			if (b1.top >= b2.top || b1.bottom >= b2.bottom) {
+				this.$refs[refName].$el.style.bottom = b1.bottom + 'px'
+				this.$refs[refName].$el.style.top = 'auto'
+			} else {
+				this.$refs[refName].reset()
+			}
+		},
+		//监听滚动隐藏编辑器内的浮层
+		onScroll() {
+			const setScroll = el => {
+				Dap.event.on(el, `scroll.editor_${this.uid}`, e => {
+					if (this.linkAdjusterProps.show) {
+						this.linkAdjusterProps.show = false
+					}
+					if (this.mediaAdjusterProps.show) {
+						this.mediaAdjusterProps.show = false
+					}
+					if (this.tableAdjusterProps.show) {
+						this.tableAdjusterProps.show = false
+					}
+					if (this.preAdjusterProps.show) {
+						this.preAdjusterProps.show = false
+					}
+				})
+				if (el.parentNode) {
+					setScroll(el.parentNode)
+				}
+			}
+			setScroll(this.$refs.content)
+		},
+		//移除上述滚动事件的监听
+		removeScroll() {
+			const removeScroll = el => {
+				Dap.event.off(el, `scroll.editor_${this.uid}`)
+				if (el.parentNode) {
+					removeScroll(el.parentNode)
+				}
+			}
+			removeScroll(this.$refs.content)
+		},
+		//编辑器内部修改值的方法
+		internalModify(val) {
+			this.isModelChange = true
+			this.cmpValue = val
+			this.$nextTick(() => {
+				this.isModelChange = false
+			})
+		},
 		//元素格式化时转换ol和ul标签
 		orderListHandle(element) {
 			if (!element.isEmpty()) {
@@ -424,62 +508,42 @@ export default {
 				this.editor.addElementTo(colgroup, element)
 			}
 		},
-		//输入框获取焦点
-		inputFocus(event) {
-			event.currentTarget.style.borderColor = this.activeColor
-		},
-		//输入框失去焦点
-		inputBlur(event) {
-			event.currentTarget.style.borderColor = ''
-		},
-		//自动矫正调整器的位置
-		autoLayerOffset(refName) {
-			const b1 = Dap.element.getElementBounding(this.$el)
-			const b2 = Dap.element.getElementBounding(this.$refs[refName].$el)
-			if (b1.top >= b2.top || b1.bottom >= b2.bottom) {
-				this.$refs[refName].$el.style.bottom = b1.bottom + 'px'
-				this.$refs[refName].$el.style.top = 'auto'
-			} else {
-				this.$refs[refName].reset()
-			}
-		},
-		//监听滚动隐藏编辑器内的浮层
-		onScroll() {
-			const setScroll = el => {
-				Dap.event.on(el, `scroll.editor_${this.uid}`, e => {
-					if (this.linkAdjusterProps.show) {
-						this.linkAdjusterProps.show = false
-					}
-					if (this.mediaAdjusterProps.show) {
-						this.mediaAdjusterProps.show = false
-					}
-					if (this.tableAdjusterProps.show) {
-						this.tableAdjusterProps.show = false
-					}
+		//元素格式化时处理pre，将pre的内容根据语言进行样式处理
+		preHandle(element) {
+			//如果是pre标签进行处理
+			if (element.isPreStyle() && element.parsedom == 'pre') {
+				const marks = {
+					'mvi-editor-element-key': element.key
+				}
+				if (element.hasMarks()) {
+					Object.assign(element.marks, marks)
+				} else {
+					element.marks = marks
+				}
+				//获取语言类型
+				let language = element.marks['mvi-hljs-language']
+				//获取pre标签下所有的文本元素
+				const originalTextElements = AlexElement.flatElements(element.children).filter(el => el.isText() && !el.isEmpty())
+				//获取pre下的代码文本值
+				const textContent = originalTextElements.reduce((val, item) => {
+					return val + item.textContent
+				}, '')
+				// if (textContent == element.oldTextContent) {
+				// 	return
+				// }
+				// element.oldTextContent = textContent
+				//将文本元素的内容转为经过hljs处理的内容
+				const html = getHljsHtml(textContent, language)
+				//将经过hljs处理的内容转为元素数组
+				const newElements = this.editor.parseHtml(html)
+				//处理光标位置
+				this.updateRangeInPre(element, originalTextElements, newElements)
+				//将新文本元素全部加入到pre子元素数组中
+				element.children = newElements
+				newElements.forEach(newEl => {
+					newEl.parent = element
 				})
-				if (el.parentNode) {
-					setScroll(el.parentNode)
-				}
 			}
-			setScroll(this.$refs.content)
-		},
-		//移除上述滚动事件的监听
-		removeScroll() {
-			const removeScroll = el => {
-				Dap.event.off(el, `scroll.editor_${this.uid}`)
-				if (el.parentNode) {
-					removeScroll(el.parentNode)
-				}
-			}
-			removeScroll(this.$refs.content)
-		},
-		//编辑器内部修改值的方法
-		internalModify(val) {
-			this.isModelChange = true
-			this.cmpValue = val
-			this.$nextTick(() => {
-				this.isModelChange = false
-			})
 		},
 		//点击编辑器
 		clickEditor(e) {
@@ -564,6 +628,7 @@ export default {
 			const link = this.getCurrentParsedomElement('a')
 			const video = this.getCurrentParsedomElement('video')
 			const table = this.getCurrentParsedomElement('table')
+			const pre = this.getCurrentParsedomElement('pre')
 			setTimeout(() => {
 				if (img || video) {
 					const el = img || video
@@ -571,6 +636,7 @@ export default {
 					this.mediaAdjusterProps.show = true
 					this.linkAdjusterProps.show = false
 					this.tableAdjusterProps.show = false
+					this.preAdjusterProps.show = false
 				} else if (link) {
 					this.linkAdjusterProps.target = `[mvi-editor-element-key='${link.key}']`
 					this.linkAdjusterProps.show = true
@@ -578,24 +644,32 @@ export default {
 					this.linkAdjusterProps.newWindow = link.marks['target'] == '_blank'
 					this.mediaAdjusterProps.show = false
 					this.tableAdjusterProps.show = false
+					this.preAdjusterProps.show = false
 				} else if (table) {
 					this.tableAdjusterProps.target = `[mvi-editor-element-key='${table.key}']`
 					this.tableAdjusterProps.show = true
 					this.mediaAdjusterProps.show = false
 					this.linkAdjusterProps.show = false
+					this.preAdjusterProps.show = false
+				} else if (pre) {
+					this.preAdjusterProps.target = `[mvi-editor-element-key='${pre.key}']`
+					this.preAdjusterProps.show = true
+					this.mediaAdjusterProps.show = false
+					this.linkAdjusterProps.show = false
+					this.tableAdjusterProps.show = false
 				} else {
 					this.tableAdjusterProps.show = false
 					this.mediaAdjusterProps.show = false
 					this.linkAdjusterProps.show = false
+					this.preAdjusterProps.show = false
 				}
 			}, 100)
 		},
 		//编辑器dom渲染
 		handleAfterRender() {
 			const elements = AlexElement.flatElements(this.editor.stack)
-			const tables = elements.filter(el => {
-				return el.parsedom == 'table'
-			})
+			//对表格进行处理
+			const tables = elements.filter(el => el.parsedom == 'table')
 			tables.forEach(table => {
 				const firstRow = AlexElement.flatElements(table.children).filter(el => {
 					return el.parsedom == 'tr'
@@ -630,6 +704,69 @@ export default {
 					}
 				}
 			})
+		},
+		//删除当前链接
+		deleteLink() {
+			if (this.disabled) {
+				return
+			}
+			const element = this.getCurrentParsedomElement('a')
+			element.parsedom = AlexElement.TEXT_NODE
+			delete element.marks.target
+			delete element.marks.href
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+			this.linkAdjusterProps.show = false
+		},
+		//修改当前链接
+		updateLink() {
+			if (this.disabled) {
+				return
+			}
+			if (!this.linkAdjusterProps.url) {
+				return
+			}
+			const element = this.getCurrentParsedomElement('a')
+			element.marks.href = this.linkAdjusterProps.url
+			if (this.linkAdjusterProps.newWindow) {
+				element.marks.target = '_blank'
+			} else {
+				delete element.marks.target
+			}
+			this.editor.formatElementStack()
+			this.editor.domRender()
+		},
+		//设置媒体宽度
+		setMediaWidth(value) {
+			if (this.disabled) {
+				return
+			}
+			const element = this.getCurrentParsedomElement('img') || this.getCurrentParsedomElement('video')
+			const styles = {
+				width: value
+			}
+			if (element.hasStyles()) {
+				Object.assign(element.styles, styles)
+			} else {
+				element.styles = styles
+			}
+			this.editor.range.anchor.moveToEnd(element)
+			this.editor.range.focus.moveToEnd(element)
+			this.editor.domRender()
+			this.editor.rangeRender()
+			this.mediaAdjusterProps.show = false
+		},
+		//删除媒体
+		deleteMedia() {
+			if (this.disabled) {
+				return
+			}
+			this.editor.delete()
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+			this.mediaAdjusterProps.show = false
 		},
 		//设置表格列宽拖拽
 		setTabelColumnResize(table, firstRow, column, i) {
@@ -698,65 +835,8 @@ export default {
 				}
 			})
 		},
-		//删除当前链接
-		deleteLink() {
-			if (this.disabled) {
-				return
-			}
-			const element = this.getCurrentParsedomElement('a')
-			element.parsedom = AlexElement.TEXT_NODE
-			delete element.marks.target
-			delete element.marks.href
-			this.editor.formatElementStack()
-			this.editor.domRender()
-			this.editor.rangeRender()
-			this.linkAdjusterProps.show = false
-		},
-		//修改当前链接
-		updateLink() {
-			if (this.disabled) {
-				return
-			}
-			if (!this.linkAdjusterProps.url) {
-				return
-			}
-			const element = this.getCurrentParsedomElement('a')
-			element.marks.href = this.linkAdjusterProps.url
-			if (this.linkAdjusterProps.newWindow) {
-				element.marks.target = '_blank'
-			} else {
-				delete element.marks.target
-			}
-			this.editor.formatElementStack()
-			this.editor.domRender()
-		},
-		//设置媒体宽度
-		setMediaWidth(value) {
-			const element = this.getCurrentParsedomElement('img') || this.getCurrentParsedomElement('video')
-			const styles = {
-				width: value
-			}
-			if (element.hasStyles()) {
-				Object.assign(element.styles, styles)
-			} else {
-				element.styles = styles
-			}
-			this.editor.range.anchor.moveToEnd(element)
-			this.editor.range.focus.moveToEnd(element)
-			this.editor.domRender()
-			this.editor.rangeRender()
-			this.mediaAdjusterProps.show = false
-		},
-		//删除媒体
-		deleteMedia() {
-			this.editor.delete()
-			this.editor.formatElementStack()
-			this.editor.domRender()
-			this.editor.rangeRender()
-			this.mediaAdjusterProps.show = false
-		},
 		//在表格前或者后换行
-		insertParagraph(type) {
+		insertParagraphToTable(type) {
 			if (this.disabled) {
 				return
 			}
@@ -911,6 +991,90 @@ export default {
 			this.editor.domRender()
 			this.editor.rangeRender()
 		},
+		//在代码块前或者后换行
+		insertParagraphToPre(type) {
+			if (this.disabled) {
+				return
+			}
+			if (!this.editor.range.anchor.isEqual(this.editor.range.focus)) {
+				this.editor.range.anchor.element = this.editor.range.focus.element
+				this.editor.range.anchor.offset = this.editor.range.focus.offset
+			}
+			const pre = this.getCurrentParsedomElement('pre')
+			const paragraph = new AlexElement('block', AlexElement.BLOCK_NODE, null, null, null)
+			const breakEl = new AlexElement('closed', 'br', null, null, null)
+			this.editor.addElementTo(breakEl, paragraph)
+			if (type == 'up') {
+				this.editor.addElementBefore(paragraph, pre)
+			} else {
+				this.editor.addElementAfter(paragraph, pre)
+			}
+			this.editor.range.anchor.moveToEnd(paragraph)
+			this.editor.range.focus.moveToEnd(paragraph)
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//选择代码块语言
+		selectLanguage(data) {
+			if (this.disabled) {
+				return
+			}
+			const element = this.getCurrentParsedomElement('pre')
+			Object.assign(element.marks, {
+				'mvi-hljs-language': data.value
+			})
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//更新代码块内的光标位置
+		updateRangeInPre(element, originalTextElements, newElements) {
+			//如果虚拟光标的起点在代码块内对虚拟光标的起点进行重新定位
+			if (this.editor.range.anchor.element.getBlock().isEqual(element)) {
+				//获取起点所在文本元素的在所有文本元素中的序列
+				const elIndex = originalTextElements.findIndex(el => this.editor.range.anchor.element.isEqual(el))
+				//起点在整个代码内容中的位置
+				const offset = originalTextElements.filter((el, i) => i < elIndex).reduce((total, item, i) => total + item.textContent.length, 0) + this.editor.range.anchor.offset
+				//获取pre下新的子孙元素中全部的文本元素
+				const newTextElements = AlexElement.flatElements(newElements).filter(el => el.isText() && !el.isEmpty())
+				let i = 0
+				let index = 0
+				//遍历
+				while (i < newTextElements.length) {
+					let newIndex = index + newTextElements[i].textContent.length
+					if (offset >= index && offset <= newIndex) {
+						this.editor.range.anchor.element = newTextElements[i]
+						this.editor.range.anchor.offset = offset - index
+						break
+					}
+					i++
+					index = newIndex
+				}
+			}
+			//如果虚拟光标的终点在代码块内需要对虚拟光标的终点进行重新定位
+			if (this.editor.range.focus.element.getBlock().isEqual(element)) {
+				//获取终点所在文本元素的在所有文本元素中的序列
+				const elIndex = originalTextElements.findIndex(el => this.editor.range.focus.element.isEqual(el))
+				//终点在整个代码内容中的位置
+				const offset = originalTextElements.filter((el, i) => i < elIndex).reduce((total, item, i) => total + item.textContent.length, 0) + this.editor.range.focus.offset
+				//获取全部的新文本元素
+				const newTextElements = AlexElement.flatElements(newElements).filter(el => el.isText() && !el.isEmpty())
+				let i = 0
+				let index = 0
+				//遍历
+				while (i < newTextElements.length) {
+					let newIndex = index + newTextElements[i].textContent.length
+					if (offset >= index && offset <= newIndex) {
+						this.editor.range.focus.element = newTextElements[i]
+						this.editor.range.focus.offset = offset - index
+						break
+					}
+					i++
+					index = newIndex
+				}
+			}
+		},
 		//api：注册菜单栏实例
 		use(menus) {
 			if (this.useMenus) {
@@ -936,7 +1100,9 @@ export default {
 				return fn(this.editor.range.anchor.element)
 			}
 			const elements = this.editor.getElementsByRange(true, false)
-			this.editor.formatElementStack()
+			if (!this.editor.range.anchor.isEqual(this.editor.range.focus)) {
+				this.editor.formatElementStack()
+			}
 			const arr = []
 			elements.forEach(el => {
 				arr.push(fn(el))
@@ -1368,6 +1534,29 @@ export default {
 	&:hover {
 		cursor: pointer;
 		opacity: 1;
+	}
+
+	:deep(.mvi-select) {
+		.mvi-select-target {
+			height: @mini-height;
+			font-size: @font-size-small;
+			padding: 0 @mp-md * 2 0 @mp-sm;
+		}
+
+		.mvi-select-icon {
+			font-size: @font-size-small;
+			right: @mp-sm;
+			transform: scale(0.8);
+
+			&.active {
+				transform: scale(0.8) rotate(180deg);
+			}
+		}
+
+		.mvi-select-menu .mvi-option {
+			font-size: @font-size-small;
+			padding: @mp-sm;
+		}
 	}
 }
 

@@ -19,6 +19,7 @@
 		"alex-editor": "^0.0.84",
 		"dap-util": "^1.3.5",
 		"dayjs": "^1.11.9",
+		"highlight.js": "^11.8.0",
 		"rem-fit": "^1.5.4",
 		"vue": "^3.2.37"
 	},
