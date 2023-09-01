@@ -532,7 +532,7 @@ export default {
 		//元素格式化时处理pre，将pre的内容根据语言进行样式处理
 		preHandle(element) {
 			//如果是pre标签进行处理
-			if (element.isPreStyle() && element.parsedom == 'pre') {
+			if (element.isPreStyle() && element.parsedom == 'pre' && !element.isEmpty()) {
 				const marks = {
 					'mvi-editor-element-key': element.key
 				}
@@ -541,26 +541,28 @@ export default {
 				} else {
 					element.marks = marks
 				}
-				//获取语言类型
-				let language = element.marks['mvi-hljs-language']
-				//获取pre标签下所有的文本元素
-				const originalTextElements = AlexElement.flatElements(element.children).filter(el => el.isText() && !el.isEmpty())
-				//获取pre下的代码文本值
-				const textContent = originalTextElements.reduce((val, item) => {
-					return val + item.textContent
-				}, '')
-				//将文本元素的内容转为经过hljs处理的内容
-				const html = getHljsHtml(textContent, language)
-				if (html) {
-					//将经过hljs处理的内容转为元素数组
-					const newElements = this.editor.parseHtml(html)
-					//处理光标位置
-					this.updateRangeInPre(element, originalTextElements, newElements)
-					//将新文本元素全部加入到pre子元素数组中
-					element.children = newElements
-					newElements.forEach(newEl => {
-						newEl.parent = element
-					})
+				if (element.hasChildren()) {
+					//获取语言类型
+					let language = element.marks['mvi-hljs-language']
+					//获取pre标签下所有的文本元素
+					const originalTextElements = AlexElement.flatElements(element.children).filter(el => el.isText() && !el.isEmpty())
+					//获取pre下的代码文本值
+					const textContent = originalTextElements.reduce((val, item) => {
+						return val + item.textContent
+					}, '')
+					//将文本元素的内容转为经过hljs处理的内容
+					const html = getHljsHtml(textContent, language)
+					if (html) {
+						//将经过hljs处理的内容转为元素数组
+						const newElements = this.editor.parseHtml(html)
+						//处理光标位置
+						this.updateRangeInPre(element, originalTextElements, newElements)
+						//将新文本元素全部加入到pre子元素数组中
+						element.children = newElements
+						newElements.forEach(newEl => {
+							newEl.parent = element
+						})
+					}
 				}
 			}
 		},
