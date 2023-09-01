@@ -144,8 +144,6 @@ export default {
 			useMenus: false,
 			//菜单栏是否可以使用
 			canUseMenus: false,
-			//是否在改变range
-			isUpdateRange: false,
 			//链接调整器参数
 			linkAdjusterProps: {
 				show: false,
@@ -534,7 +532,7 @@ export default {
 		//元素格式化时处理pre，将pre的内容根据语言进行样式处理
 		preHandle(element) {
 			//如果是pre标签进行处理
-			if (element.isPreStyle() && element.parsedom == 'pre' && !this.isUpdateRange) {
+			if (element.isPreStyle() && element.parsedom == 'pre') {
 				const marks = {
 					'mvi-editor-element-key': element.key
 				}
@@ -644,7 +642,6 @@ export default {
 			if (this.disabled) {
 				return
 			}
-			this.isUpdateRange = true
 			this.$emit('range-update', range)
 			const imgRes = this.getCurrentParsedomElement('img')
 			const linkRes = this.getCurrentParsedomElement('a')
@@ -657,7 +654,6 @@ export default {
 			if (imgRes.effect || linkRes.effect || videoRes.effect || tableRes.effect || preRes.effect) {
 				this.editor.formatElementStack()
 			}
-			this.isUpdateRange = false
 			setTimeout(() => {
 				if (imgRes.result || videoRes.result) {
 					const el = imgRes.result || videoRes.result

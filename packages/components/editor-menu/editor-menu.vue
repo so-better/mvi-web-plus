@@ -1046,7 +1046,6 @@ export default {
 				this.rangeUpdateTimer = null
 			}
 			this.rangeUpdateTimer = setTimeout(() => {
-				this.menus.instance.isUpdateRange = true
 				const editor = this.menus.instance.editor
 				//代码判定
 				if (this.name == 'code') {
@@ -1308,7 +1307,6 @@ export default {
 						}
 					}
 				}
-				this.menus.instance.isUpdateRange = false
 			}, 100)
 		},
 		//插入有序列表或者无序列表
