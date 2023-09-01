@@ -1,4 +1,4 @@
-import hljs from 'highlight.js'
+import hljs from 'highlight.js/lib/core'
 import 'highlight.js/styles/github.css'
 hljs.configure({
 	cssSelector: 'pre',
