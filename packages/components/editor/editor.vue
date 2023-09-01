@@ -643,45 +643,43 @@ export default {
 				return
 			}
 			this.$emit('range-update', range)
-			const imgRes = this.getCurrentParsedomElement('img')
-			const linkRes = this.getCurrentParsedomElement('a')
-			const videoRes = this.getCurrentParsedomElement('video')
-			const tableRes = this.getCurrentParsedomElement('table')
-			const preRes = this.getCurrentParsedomElement('pre')
-			this.isTable = !!tableRes.result
-			this.isPre = !!preRes.result
-			this.isLink = !!linkRes.result
-			if (imgRes.effect || linkRes.effect || videoRes.effect || tableRes.effect || preRes.effect) {
-				this.editor.formatElementStack()
-			}
+			const img = this.getCurrentParsedomElement('img')
+			const link = this.getCurrentParsedomElement('a')
+			const video = this.getCurrentParsedomElement('video')
+			const table = this.getCurrentParsedomElement('table')
+			const pre = this.getCurrentParsedomElement('pre')
+			this.isTable = !!table
+			this.isPre = !!pre
+			this.isLink = !!link
 			setTimeout(() => {
-				if (imgRes.result || videoRes.result) {
-					const el = imgRes.result || videoRes.result
+				if (img || video) {
+					const el = img || video
 					this.mediaAdjusterProps.target = `[mvi-editor-element-key='${el.key}']`
 					this.mediaAdjusterProps.element = el
 					this.mediaAdjusterProps.show = true
 					this.linkAdjusterProps.show = false
 					this.tableAdjusterProps.show = false
 					this.preAdjusterProps.show = false
-				} else if (linkRes.result) {
-					this.linkAdjusterProps.target = `[mvi-editor-element-key='${linkRes.result.key}']`
-					this.linkAdjusterProps.url = linkRes.result.marks['href']
-					this.linkAdjusterProps.newWindow = linkRes.result.marks['target'] == '_blank'
-					this.linkAdjusterProps.element = linkRes.result
+				} else if (link) {
+					this.linkAdjusterProps.target = `[mvi-editor-element-key='${link.key}']`
+					this.linkAdjusterProps.url = link.marks['href']
+					this.linkAdjusterProps.newWindow = link.marks['target'] == '_blank'
+					this.linkAdjusterProps.element = link
 					this.linkAdjusterProps.show = true
 					this.mediaAdjusterProps.show = false
 					this.tableAdjusterProps.show = false
 					this.preAdjusterProps.show = false
-				} else if (tableRes.result) {
-					this.tableAdjusterProps.target = `[mvi-editor-element-key='${tableRes.result.key}']`
+				} else if (table) {
+					this.tableAdjusterProps.target = `[mvi-editor-element-key='${table.key}']`
+					this.tableAdjusterProps.element = table
 					this.tableAdjusterProps.show = true
 					this.mediaAdjusterProps.show = false
 					this.linkAdjusterProps.show = false
 					this.preAdjusterProps.show = false
-				} else if (preRes.result) {
-					this.preAdjusterProps.target = `[mvi-editor-element-key='${preRes.result.key}']`
-					this.preAdjusterProps.language = preRes.result.marks['mvi-hljs-language'] || ''
-					this.preAdjusterProps.element = preRes.result
+				} else if (pre) {
+					this.preAdjusterProps.target = `[mvi-editor-element-key='${pre.key}']`
+					this.preAdjusterProps.language = pre.marks['mvi-hljs-language'] || ''
+					this.preAdjusterProps.element = pre
 					this.preAdjusterProps.show = true
 					this.mediaAdjusterProps.show = false
 					this.linkAdjusterProps.show = false
@@ -900,7 +898,7 @@ export default {
 				this.editor.range.anchor.element = this.editor.range.focus.element
 				this.editor.range.anchor.offset = this.editor.range.focus.offset
 			}
-			const row = this.getCurrentParsedomElement('tr').result
+			const row = this.getCurrentParsedomElement('tr')
 			const newRow = row.clone()
 			newRow.children.forEach(column => {
 				column.children = []
@@ -923,7 +921,7 @@ export default {
 				this.editor.range.anchor.element = this.editor.range.focus.element
 				this.editor.range.anchor.offset = this.editor.range.focus.offset
 			}
-			const row = this.getCurrentParsedomElement('tr').result
+			const row = this.getCurrentParsedomElement('tr')
 			const parent = row.parent
 			if (parent.children.length == 1) {
 				this.deleteTable()
@@ -953,8 +951,8 @@ export default {
 				this.editor.range.anchor.element = this.editor.range.focus.element
 				this.editor.range.anchor.offset = this.editor.range.focus.offset
 			}
-			const column = this.getCurrentParsedomElement('td').result
-			const tbody = this.getCurrentParsedomElement('tbody').result
+			const column = this.getCurrentParsedomElement('td')
+			const tbody = this.getCurrentParsedomElement('tbody')
 			const rows = tbody.children
 			const index = column.parent.children.findIndex(item => {
 				return item.isEqual(column)
@@ -981,8 +979,8 @@ export default {
 				this.editor.range.anchor.element = this.editor.range.focus.element
 				this.editor.range.anchor.offset = this.editor.range.focus.offset
 			}
-			const column = this.getCurrentParsedomElement('td').result
-			const tbody = this.getCurrentParsedomElement('tbody').result
+			const column = this.getCurrentParsedomElement('td')
+			const tbody = this.getCurrentParsedomElement('tbody')
 			const rows = tbody.children
 			const parent = column.parent
 			if (parent.children.length == 1) {
@@ -1145,10 +1143,10 @@ export default {
 					}
 				}
 			} else {
-				const { elements } = this.editor.getElementsByRange(true, false)
-				elements.forEach(el => {
-					const block = el.getBlock()
-					const inblock = el.getInblock()
+				const result = this.editor.getElementsByRange(true, false)
+				result.forEach(item => {
+					const block = item.element.getBlock()
+					const inblock = item.element.getInblock()
 					if (inblock && inblock.behavior == 'block') {
 						fn(inblock)
 					} else {
@@ -1179,10 +1177,10 @@ export default {
 					fn(block)
 				}
 			} else {
-				const { elements } = this.getElementsByRange(true, false)
-				elements.forEach(el => {
-					const block = el.getBlock()
-					const inblock = el.getInblock()
+				const result = this.getElementsByRange(true, false)
+				result.forEach(item => {
+					const block = item.element.getBlock()
+					const inblock = item.element.getInblock()
 					if (inblock && inblock.behavior == 'block') {
 						fn(inblock)
 					} else {
@@ -1213,32 +1211,21 @@ export default {
 				return fn(element.parent)
 			}
 			if (this.editor.range.anchor.element.isEqual(this.editor.range.focus.element)) {
-				return {
-					result: fn(this.editor.range.anchor.element),
-					effect: false
-				}
+				return fn(this.editor.range.anchor.element)
 			}
-			const { elements, effect } = this.editor.getElementsByRange(true, false)
-			const arr = []
-			elements.forEach(el => {
-				arr.push(fn(el))
+			const arr = this.editor.getElementsByRange(true, false).map(item => {
+				return fn(item.element)
 			})
 			let hasNull = arr.some(el => {
 				return el == null
 			})
 			//如果存在null，则表示有的选区元素不在指定标签下，返回null
 			if (hasNull) {
-				return {
-					result: null,
-					effect: effect
-				}
+				return null
 			}
 			//如果只有一个元素，则返回该元素
 			if (arr.length == 1) {
-				return {
-					result: arr[0],
-					effect: effect
-				}
+				return arr[0]
 			}
 			//默认数组中的元素都相等
 			let flag = true
@@ -1250,15 +1237,9 @@ export default {
 			}
 			//如果相等，则返回该元素
 			if (flag) {
-				return {
-					result: arr[0],
-					effect: effect
-				}
+				return arr[0]
 			}
-			return {
-				result: null,
-				effect: effect
-			}
+			return null
 		},
 		//api：光标设置到文档底部
 		collapseToEnd() {
