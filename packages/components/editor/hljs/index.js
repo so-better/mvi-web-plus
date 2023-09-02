@@ -33,11 +33,15 @@ hljs.registerLanguage('nginx', nginx)
 hljs.registerLanguage('php', php)
 hljs.registerLanguage('python', python)
 //引入css样式主题
-import 'highlight.js/styles/github.css'
-
+//import 'highlight.js/styles/atom-one-light.css'
+//import 'highlight.js/styles/github.css'
+//import 'highlight.js/styles/lightfair.css'
+//import 'highlight.js/styles/color-brewer.css'
+import '../../../css/mvi-hljs.less'
 //全局设置
 hljs.configure({
 	cssSelector: 'pre',
+	classPrefix: 'mvi-hljs-',
 	ignoreUnescapedHTML: true
 })
 

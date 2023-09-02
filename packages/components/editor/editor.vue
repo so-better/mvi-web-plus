@@ -1543,7 +1543,7 @@ export default {
 			padding: @mp-sm;
 			margin: 0 0 @mp-sm;
 			font-size: @font-size-default;
-			font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
+			font-family: Consolas, monospace, Monaco, Andale Mono, Ubuntu Mono;
 			line-height: 1.5;
 			color: @font-color-default;
 			background-color: @bg-color-default;
