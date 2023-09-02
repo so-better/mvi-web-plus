@@ -536,7 +536,7 @@ export default {
 		//元素格式化时处理pre，将pre的内容根据语言进行样式处理
 		preHandle(element) {
 			//如果是pre标签进行处理
-			if (this.highlight && element.isPreStyle() && !element.isEmpty()) {
+			if (this.highlight && (element.isBlock() || element.isInblock()) && element.isPreStyle() && !element.isEmpty()) {
 				const marks = {
 					'mvi-editor-element-key': element.key
 				}
