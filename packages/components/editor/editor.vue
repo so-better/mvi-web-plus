@@ -39,7 +39,7 @@
 			<div class="mvi-editor-layer">
 				<div @click="insertParagraphToPre('up')" class="mvi-editor-layer-item"><Icon style="transform: rotate(180deg)" type="turn-arrow-text" /></div>
 				<div @click="insertParagraphToPre('down')" class="mvi-editor-layer-item"><Icon type="turn-arrow-text" /></div>
-				<div class="mvi-editor-layer-item">
+				<div class="mvi-editor-layer-item" v-if="highlight">
 					<m-select :active-color="activeColor" v-model="preAdjusterProps.language" :options="preAdjusterProps.languages" height="4rem" :layer-props="{ width: '2.4rem' }" icon="angle-down" @change="selectLanguage"></m-select>
 				</div>
 			</div>
@@ -122,6 +122,11 @@ export default {
 			default: function () {
 				return []
 			}
+		},
+		//是否使用代码高亮处理
+		highlight: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -249,9 +254,8 @@ export default {
 			//如果是外部修改，需要重新渲染编辑器
 			this.editor.stack = this.editor.parseHtml(newVal)
 			this.editor.formatElementStack()
-			const elements = AlexElement.flatElements(this.editor.stack)
-			this.editor.range.anchor.moveToEnd(elements[elements.length - 1])
-			this.editor.range.focus.moveToEnd(elements[elements.length - 1])
+			this.editor.range.anchor.moveToStart(this.editor.stack[0])
+			this.editor.range.focus.moveToStart(this.editor.stack[0])
 			this.editor.domRender()
 			this.editor.rangeRender()
 		}
@@ -532,7 +536,7 @@ export default {
 		//元素格式化时处理pre，将pre的内容根据语言进行样式处理
 		preHandle(element) {
 			//如果是pre标签进行处理
-			if (element.isPreStyle() && element.parsedom == 'pre' && !element.isEmpty()) {
+			if (this.highlight && element.isPreStyle() && !element.isEmpty()) {
 				const marks = {
 					'mvi-editor-element-key': element.key
 				}
