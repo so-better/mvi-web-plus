@@ -535,8 +535,8 @@ export default {
 		},
 		//元素格式化时处理pre，将pre的内容根据语言进行样式处理
 		preHandle(element) {
-			//如果是pre标签进行处理
-			if (this.highlight && (element.isBlock() || element.isInblock()) && element.isPreStyle() && !element.isEmpty()) {
+			//如果是代码块进行处理
+			if ((element.isBlock() || element.isInblock()) && element.isPreStyle() && !element.isEmpty()) {
 				const marks = {
 					'mvi-editor-element-key': element.key
 				}
@@ -545,7 +545,8 @@ export default {
 				} else {
 					element.marks = marks
 				}
-				if (element.hasChildren()) {
+				//高亮处理
+				if (this.highlight && element.hasChildren()) {
 					//获取语言类型
 					let language = element.marks['mvi-hljs-language']
 					//获取pre标签下所有的文本元素
