@@ -25,7 +25,13 @@ export default defineConfig({
 			}
 		},
 		//是否构建source map 文件
-		sourcemap: false
+		sourcemap: false,
+		terserOptions: {
+			// 生产环境移除console
+			compress: {
+				drop_console: true
+			}
+		}
 	},
 	css: {
 		preprocessorOptions: {

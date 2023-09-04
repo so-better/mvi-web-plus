@@ -29,15 +29,24 @@
 .mvi-hljs-keyword,
 .mvi-hljs-name,
 .mvi-hljs-section,
-.mvi-hljs-selector-class,
-.mvi-hljs-selector-id,
-.mvi-hljs-selector-tag,
 .mvi-hljs-strong,
 .mvi-hljs-tag,
-.mvi-hljs-title,
 .mvi-hljs-literal,
 .mvi-hljs-type,
 .mvi-hljs-attr,
-.mvi-hljs-attribute {
+.mvi-hljs-attribute,
+.mvi-hljs-title {
 	color: @primary-normal;
+}
+
+.mvi-hljs-selector-tag {
+	color: @error-normal;
+}
+
+.mvi-hljs-selector-class {
+	color: @warn-normal;
+}
+
+.mvi-hljs-selector-id {
+	color: @info-normal;
 }
