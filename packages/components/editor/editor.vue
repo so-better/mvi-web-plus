@@ -9,7 +9,7 @@
 			<div class="mvi-editor-layer-link">
 				<input @change="updateLink" ref="linkUrl" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkAdjusterProps.url" :placeholder="linkAdjusterProps.props.placeholder" type="text" />
 				<div class="mvi-editor-layer-link-footer">
-					<Checkbox @change="updateLink" :label="linkAdjusterProps.props.targetText" label-placement="right" :icon="{ size: '0.24rem' }" label-size="0.28rem" :color="activeColor" v-model="linkAdjusterProps.newWindow"> </Checkbox>
+					<Checkbox @change="updateLink" :label="linkAdjusterProps.props.targetText" placement="right" size="0.24rem" :color="activeColor" v-model="linkAdjusterProps.newWindow"> </Checkbox>
 					<span class="mvi-editor-layer-link-delete" @click="deleteLink">{{ linkAdjusterProps.props.removeText }}</span>
 				</div>
 			</div>
