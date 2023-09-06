@@ -120,7 +120,7 @@ export default {
 				return
 			}
 			//如果点击了除编辑器菜单栏和编辑区域外的地方，菜单栏不可使用
-			if (!Dap.element.isContains(this.$el, e.target) && !Dap.element.isContains(this.instance.$el, e.target)) {
+			if (!Dap.element.isContains(this.$el, e.target) && !Dap.element.isContains(this.instance.$el, e.target) && !this.instance.codeViewShow) {
 				this.instance.canUseMenus = false
 			}
 		})

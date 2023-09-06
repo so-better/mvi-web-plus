@@ -1037,6 +1037,7 @@ export default {
 			//源码视图
 			else if (this.name == 'codeview') {
 				this.menus.instance.codeViewShow = !this.menus.instance.codeViewShow
+				this.active = this.menus.instance.codeViewShow
 			}
 		},
 		//监听range更新
