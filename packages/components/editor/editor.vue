@@ -918,6 +918,7 @@ export default {
 			this.editor.range.focus.moveToStart(newRow)
 			this.editor.domRender()
 			this.editor.rangeRender()
+			this.autoLayerOffset('tableLayer')
 		},
 		//删除表格行
 		removeTableRow() {
@@ -947,7 +948,7 @@ export default {
 			}
 			this.editor.domRender()
 			this.editor.rangeRender()
-			this.$refs.tableLayer.reset()
+			this.autoLayerOffset('tableLayer')
 		},
 		//插入表格列
 		addTableColumn() {
