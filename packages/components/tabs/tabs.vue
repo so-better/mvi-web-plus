@@ -250,6 +250,9 @@ export default {
 			if (this.type == 'card') {
 				return
 			}
+			if (!this.$refs.headers) {
+				return
+			}
 			this.slideWidth = parseFloat(Dap.element.getCssStyle(this.$refs.headers.querySelector('.mvi-tab-header.active'), 'width'))
 			this.slideLeft = Dap.element.getElementPoint(this.$refs.headers.querySelector('.mvi-tab-header.active'), this.$refs.headers).left
 		}
