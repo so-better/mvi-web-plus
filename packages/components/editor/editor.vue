@@ -1868,7 +1868,7 @@ export default {
 		//代码样式
 		:deep([data-code-style]) {
 			display: inline-block;
-			padding: @mp-xs;
+			padding: @mp-xs / 2;
 			margin: 0 @mp-xs / 2;
 			color: @font-color-default;
 			border-radius: @radius-default;
