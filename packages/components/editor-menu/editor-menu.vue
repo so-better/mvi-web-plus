@@ -523,11 +523,11 @@ export default {
 						let text = ''
 						const result = this.menus.instance.editor.getElementsByRange(true, true)
 						result.forEach(item => {
-							if (el.isText()) {
+							if (item.element.isText()) {
 								if (item.offset) {
-									tetx += el.textContent.substring(item.offset[0], item.offset[1])
+									text += item.element.textContent.substring(item.offset[0], item.offset[1])
 								} else {
-									text += el.textContent || ''
+									text += item.element.textContent || ''
 								}
 							}
 						})
@@ -647,380 +647,94 @@ export default {
 			const editor = this.menus.instance.editor
 			//撤销
 			if (this.name == 'undo') {
-				const historyRecord = editor.history.get(-1)
-				if (historyRecord) {
-					editor.stack = historyRecord.stack
-					editor.range = historyRecord.range
-					editor.formatElementStack()
-					editor.domRender(true)
-					editor.rangeRender()
-				}
+				this.menus.instance.undo()
 			}
 			//重做
 			else if (this.name == 'redo') {
-				const historyRecord = editor.history.get(1)
-				if (historyRecord) {
-					editor.stack = historyRecord.stack
-					editor.range = historyRecord.range
-					editor.formatElementStack()
-					editor.domRender(true)
-					editor.rangeRender()
-				}
+				this.menus.instance.redo()
 			}
 			//清除格式
 			else if (this.name == 'removeformat') {
-				editor.removeTextStyle()
-				editor.removeTextMark()
-				editor.formatElementStack()
-				editor.domRender()
-				editor.rangeRender()
+				this.menus.instance.removeFormat()
 			}
 			//缩进
 			else if (this.name == 'indent') {
 				//增加缩进
 				if (item.value == 'indent-right') {
-					editor.setIndent()
+					this.menus.instance.setIndent()
 				}
 				//减少缩进
 				else {
-					editor.setOutdent()
+					this.menus.instance.setOutdent()
 				}
-				editor.formatElementStack()
-				editor.domRender()
-				editor.rangeRender()
 			}
 			//分隔线
 			else if (this.name == 'divider') {
-				//创建段落
-				const paragraph = new AlexElement('block', AlexElement.BLOCK_NODE, null, null, null)
-				//创建分隔线
-				const divider = new AlexElement('closed', 'hr', null, null, null)
-				//插入分割线
-				editor.addElementTo(divider, paragraph)
-				editor.insertElement(paragraph)
-				const nextParagraph = new AlexElement('block', AlexElement.BLOCK_NODE, null, null, null)
-				const breakEl = new AlexElement('closed', 'br', null, null, null)
-				editor.addElementTo(breakEl, nextParagraph)
-				editor.addElementAfter(nextParagraph, paragraph)
-				//重新设置虚拟光标位置
-				editor.range.anchor.moveToEnd(nextParagraph)
-				editor.range.focus.moveToEnd(nextParagraph)
-				//重新渲染
-				editor.formatElementStack()
-				editor.domRender()
-				editor.rangeRender()
+				this.menus.instance.insertDivider()
 			}
 			//代码
 			else if (this.name == 'code') {
-				if (this.active) {
-					editor.removeTextMark(['data-code-style'])
-				} else {
-					editor.setTextMark({
-						'data-code-style': 'mvi-editor-code'
-					})
-				}
-				editor.formatElementStack()
-				editor.domRender()
-				editor.rangeRender()
+				this.menus.instance.setCodeStyle()
 			}
 			//加粗
 			else if (this.name == 'bold') {
-				if (this.active) {
-					editor.removeTextStyle(['font-weight'])
-				} else {
-					editor.setTextStyle({
-						'font-weight': 'bold'
-					})
-				}
-				editor.formatElementStack()
-				editor.domRender()
-				editor.rangeRender()
+				this.menus.instance.setBold()
 			}
 			//斜体
 			else if (this.name == 'italic') {
-				if (this.active) {
-					editor.removeTextStyle(['font-style'])
-				} else {
-					editor.setTextStyle({
-						'font-style': 'italic'
-					})
-				}
-				editor.formatElementStack()
-				editor.domRender()
-				editor.rangeRender()
+				this.menus.instance.setItalic()
 			}
 			//下划线
 			else if (this.name == 'underline') {
-				if (this.active) {
-					editor.removeTextStyle(['text-decoration-line', 'text-decoration'])
-				} else {
-					editor.setTextStyle({
-						'text-decoration-line': 'underline'
-					})
-				}
-				editor.formatElementStack()
-				editor.domRender()
-				editor.rangeRender()
+				this.menus.instance.setUnderline()
 			}
 			//删除线
 			else if (this.name == 'strikethrough') {
-				if (this.active) {
-					editor.removeTextStyle(['text-decoration-line', 'text-decoration'])
-				} else {
-					editor.setTextStyle({
-						'text-decoration-line': 'line-through'
-					})
-				}
-				editor.formatElementStack()
-				editor.domRender()
-				editor.rangeRender()
+				this.menus.instance.setStrikeThrough()
 			}
 			//下标
 			else if (this.name == 'subscript') {
-				if (this.active) {
-					editor.removeTextStyle(['vertical-align'])
-				} else {
-					editor.setTextStyle({
-						'vertical-align': 'sub'
-					})
-				}
-				editor.formatElementStack()
-				editor.domRender()
-				editor.rangeRender()
+				this.menus.instance.setSub()
 			}
 			//上标
 			else if (this.name == 'superscript') {
-				if (this.active) {
-					editor.removeTextStyle(['vertical-align'])
-				} else {
-					editor.setTextStyle({
-						'vertical-align': 'super'
-					})
-				}
-				editor.formatElementStack()
-				editor.domRender()
-				editor.rangeRender()
+				this.menus.instance.setSuper()
 			}
 			//标题
 			else if (this.name == 'title') {
-				if (editor.range.anchor.isEqual(editor.range.focus)) {
-					const block = editor.range.anchor.element.getBlock()
-					//先转为段落
-					elementUtil.toParagraph(block)
-					//设置标题
-					block.parsedom = item.value
-				} else {
-					const result = editor.getElementsByRange(true, false)
-					result.forEach(el => {
-						if (el.element.isBlock()) {
-							elementUtil.toParagraph(el.element)
-							el.element.parsedom = item.value
-						} else {
-							const block = el.element.getBlock()
-							elementUtil.toParagraph(block)
-							block.parsedom = item.value
-						}
-					})
-				}
-				editor.formatElementStack()
-				editor.domRender()
-				editor.rangeRender()
+				this.menus.instance.setTitle(item.value)
 			}
 			//字体
 			else if (this.name == 'fontfamily') {
-				editor.setTextStyle({
-					'font-family': item.value
-				})
-				editor.formatElementStack()
-				editor.domRender()
-				editor.rangeRender()
+				this.menus.instance.setFontFamily(item.value)
 			}
 			//字号
 			else if (this.name == 'fontsize') {
-				editor.setTextStyle({
-					'font-size': item.value
-				})
-				editor.formatElementStack()
-				editor.domRender()
-				editor.rangeRender()
+				this.menus.instance.setFontSize(item.value)
 			}
 			//字体颜色
 			else if (this.name == 'forecolor') {
-				editor.setTextStyle({
-					color: item.value
-				})
-				editor.formatElementStack()
-				editor.domRender()
-				editor.rangeRender()
+				this.menus.instance.setForeColor(item.value)
 			}
 			//背景颜色
 			else if (this.name == 'backcolor') {
-				editor.setTextStyle({
-					'background-color': item.value
-				})
-				editor.formatElementStack()
-				editor.domRender()
-				editor.rangeRender()
+				this.menus.instance.setBackColor(item.value)
 			}
 			//有序列表和无序列表
 			else if (this.name == 'ol' || this.name == 'ul') {
-				this.insertList(this.name == 'ol')
-				editor.formatElementStack()
-				editor.domRender()
-				editor.rangeRender()
+				this.menus.instance.setList(this.name == 'ol')
 			}
 			//对齐方式
 			else if (this.name == 'justify') {
-				if (editor.range.anchor.isEqual(editor.range.focus)) {
-					const block = editor.range.anchor.element.getBlock()
-					const inblock = editor.range.anchor.element.getInblock()
-					if (inblock) {
-						if (inblock.hasStyles()) {
-							inblock.styles['text-align'] = item.value
-						} else {
-							inblock.styles = {
-								'text-align': item.value
-							}
-						}
-					} else {
-						if (block.hasStyles()) {
-							block.styles['text-align'] = item.value
-						} else {
-							block.styles = {
-								'text-align': item.value
-							}
-						}
-					}
-				} else {
-					const result = editor.getElementsByRange(true, false)
-					result.forEach(el => {
-						if (el.element.isBlock() || el.element.isInblock()) {
-							if (el.element.hasStyles()) {
-								el.element.styles['text-align'] = item.value
-							} else {
-								el.element.styles = {
-									'text-align': item.value
-								}
-							}
-						} else {
-							const block = el.element.getBlock()
-							const inblock = el.element.getInblock()
-							if (inblock) {
-								if (inblock.hasStyles()) {
-									inblock.styles['text-align'] = item.value
-								} else {
-									inblock.styles = {
-										'text-align': item.value
-									}
-								}
-							} else {
-								if (block.hasStyles()) {
-									block.styles['text-align'] = item.value
-								} else {
-									block.styles = {
-										'text-align': item.value
-									}
-								}
-							}
-						}
-					})
-				}
-				editor.formatElementStack()
-				editor.domRender()
-				editor.rangeRender()
+				this.menus.instance.setJustify(item.value)
 			}
 			//引用
 			else if (this.name == 'quote') {
-				//起点和终点在一起
-				if (editor.range.anchor.isEqual(editor.range.focus)) {
-					const block = editor.range.anchor.element.getBlock()
-					elementUtil.toParagraph(block)
-					if (!this.active) {
-						block.parsedom = 'blockquote'
-					}
-				}
-				//起点和终点不在一起
-				else {
-					const result = editor.getElementsByRange(true, false)
-					result.forEach(el => {
-						if (el.element.isBlock()) {
-							elementUtil.toParagraph(el.element)
-							if (!this.active) {
-								el.element.parsedom = 'blockquote'
-							}
-						} else {
-							const block = el.element.getBlock()
-							elementUtil.toParagraph(block)
-							if (!this.active) {
-								block.parsedom = 'blockquote'
-							}
-						}
-					})
-				}
-				editor.formatElementStack()
-				editor.domRender()
-				editor.rangeRender()
+				this.menus.instance.setQuote()
 			}
 			//代码块
 			else if (this.name == 'codeblock') {
-				if (this.active) {
-					const pre = this.menus.instance.preAdjusterProps.element
-					elementUtil.toParagraph(pre)
-				} else {
-					//起点和终点在一起
-					if (editor.range.anchor.isEqual(editor.range.focus)) {
-						const block = editor.range.anchor.element.getBlock()
-						elementUtil.toParagraph(block)
-						block.parsedom = 'pre'
-						const paragraph = new AlexElement('block', AlexElement.BLOCK_NODE, null, null, null)
-						const breakEl = new AlexElement('closed', 'br', null, null, null)
-						editor.addElementTo(breakEl, paragraph)
-						editor.addElementAfter(paragraph, block)
-					}
-					//起点和终点不在一起
-					else {
-						let result = editor.getElementsByRange(true, false)
-						editor.range.anchor.moveToStart(result[0].element.getBlock())
-						editor.range.focus.moveToEnd(result[result.length - 1].element.getBlock())
-						const res = editor.getElementsByRange(true, true).filter(el => el.element.isText())
-						const obj = {}
-						res.forEach(el => {
-							if (obj[el.element.getBlock().key]) {
-								obj[el.element.getBlock().key].push(el.element.clone())
-							} else {
-								obj[el.element.getBlock().key] = [el.element.clone()]
-							}
-						})
-						const pre = new AlexElement('block', 'pre', null, null, null)
-						Object.keys(obj).forEach((key, index) => {
-							if (index > 0) {
-								const text = new AlexElement('text', null, null, null, '\n')
-								if (pre.hasChildren()) {
-									editor.addElementTo(text, pre, pre.children.length)
-								} else {
-									editor.addElementTo(text, pre)
-								}
-							}
-							obj[key].forEach(el => {
-								if (pre.hasChildren()) {
-									editor.addElementTo(el, pre, pre.children.length)
-								} else {
-									editor.addElementTo(el, pre)
-								}
-							})
-						})
-						editor.delete()
-						editor.insertElement(pre)
-						const paragraph = new AlexElement('block', AlexElement.BLOCK_NODE, null, null, null)
-						const breakEl = new AlexElement('closed', 'br', null, null, null)
-						editor.addElementTo(breakEl, paragraph)
-						editor.addElementAfter(paragraph, pre)
-					}
-				}
-
-				editor.formatElementStack()
-				editor.domRender()
-				editor.rangeRender()
+				this.menus.instance.setCodeBlock()
 			}
 			//清空
 			else if (this.name == 'empty') {
@@ -1234,36 +948,6 @@ export default {
 					}
 				}
 			}, 100)
-		},
-		//插入有序列表或者无序列表
-		insertList(ordered = false) {
-			const editor = this.menus.instance.editor
-			//起点和终点在一起
-			if (editor.range.anchor.isEqual(editor.range.focus)) {
-				const block = editor.range.anchor.element.getBlock()
-				elementUtil.toParagraph(block)
-				if (!this.active) {
-					elementUtil.toList(block, ordered)
-				}
-			}
-			//起点和终点不在一起
-			else {
-				const result = this.menus.instance.editor.getElementsByRange(true, false)
-				result.forEach(item => {
-					if (item.element.isBlock()) {
-						elementUtil.toParagraph(item.element)
-						if (!this.active) {
-							elementUtil.toList(item.element, ordered)
-						}
-					} else {
-						const block = item.element.getBlock()
-						elementUtil.toParagraph(block)
-						if (!this.active) {
-							elementUtil.toList(block, ordered)
-						}
-					}
-				})
-			}
 		},
 		//插入链接
 		insertLink() {

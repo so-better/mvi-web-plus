@@ -316,17 +316,11 @@ export default {
 			if (e.keyCode == 9 && !e.metaKey && !e.shiftKey && !e.ctrlKey && !e.altKey) {
 				e.preventDefault()
 				this.setIndent()
-				this.editor.formatElementStack()
-				this.editor.domRender()
-				this.editor.rangeRender()
 			}
 			//减少缩进
 			else if (e.keyCode == 9 && !e.metaKey && e.shiftKey && !e.ctrlKey && !e.altKey) {
 				e.preventDefault()
 				this.setOutdent()
-				this.editor.formatElementStack()
-				this.editor.domRender()
-				this.editor.rangeRender()
 			}
 		},
 		//输入框获取焦点
@@ -1113,90 +1107,7 @@ export default {
 				}
 			}
 		},
-		//增加缩进
-		setIndent() {
-			const fn = element => {
-				if (element.hasStyles()) {
-					if (element.styles.hasOwnProperty('text-indent')) {
-						let val = element.styles['text-indent']
-						if (val.endsWith('em')) {
-							val = parseFloat(val)
-						} else {
-							val = 0
-						}
-						element.styles['text-indent'] = `${val + 2}em`
-					} else {
-						element.styles['text-indent'] = '2em'
-					}
-				} else {
-					element.styles = {
-						'text-indent': '2em'
-					}
-				}
-			}
-			if (this.editor.range.anchor.isEqual(this.editor.range.focus)) {
-				const block = this.editor.range.anchor.element.getBlock()
-				const inblock = this.editor.range.anchor.element.getInblock()
-				if (inblock) {
-					if (inblock.isPreStyle()) {
-						this.editor.insertText('    ')
-					} else if (inblock.behavior == 'block') {
-						fn(inblock)
-					}
-				} else {
-					if (block.isPreStyle()) {
-						this.editor.insertText('    ')
-					} else {
-						fn(block)
-					}
-				}
-			} else {
-				const result = this.editor.getElementsByRange(true, false)
-				result.forEach(item => {
-					const block = item.element.getBlock()
-					const inblock = item.element.getInblock()
-					if (inblock && inblock.behavior == 'block') {
-						fn(inblock)
-					} else {
-						fn(block)
-					}
-				})
-			}
-		},
-		//减少缩进
-		setOutdent() {
-			const fn = element => {
-				if (element.hasStyles() && element.styles.hasOwnProperty('text-indent')) {
-					let val = element.styles['text-indent']
-					if (val.endsWith('em')) {
-						val = parseFloat(val)
-					} else {
-						val = 0
-					}
-					element.styles['text-indent'] = `${val - 2 >= 0 ? val - 2 : 0}em`
-				}
-			}
-			if (this.editor.range.anchor.isEqual(this.editor.range.focus)) {
-				const block = this.editor.range.anchor.element.getBlock()
-				const inblock = this.editor.range.anchor.element.getInblock()
-				if (inblock && inblock.behavior == 'block' && !inblock.isPreStyle()) {
-					fn(inblock)
-				} else if (!block.isPreStyle()) {
-					fn(block)
-				}
-			} else {
-				const result = this.getElementsByRange(true, false)
-				result.forEach(item => {
-					const block = item.element.getBlock()
-					const inblock = item.element.getInblock()
-					if (inblock && inblock.behavior == 'block') {
-						fn(inblock)
-					} else {
-						fn(block)
-					}
-				})
-			}
-		},
+
 		//api：注册菜单栏实例
 		use(menus) {
 			if (this.useMenus) {
@@ -1340,6 +1251,491 @@ export default {
 				return
 			}
 			this.editor.insertText(text)
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//api：撤销
+		undo() {
+			const historyRecord = this.editor.history.get(-1)
+			if (historyRecord) {
+				this.editor.stack = historyRecord.stack
+				this.editor.range = historyRecord.range
+				this.editor.formatElementStack()
+				this.editor.domRender(true)
+				this.editor.rangeRender()
+			}
+		},
+		//api：重做
+		redo() {
+			const historyRecord = this.editor.history.get(1)
+			if (historyRecord) {
+				this.editor.stack = historyRecord.stack
+				this.editor.range = historyRecord.range
+				this.editor.formatElementStack()
+				this.editor.domRender(true)
+				this.editor.rangeRender()
+			}
+		},
+		//api：清除格式
+		removeFormat() {
+			this.editor.removeTextStyle()
+			this.editor.removeTextMark()
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//api：增加缩进
+		setIndent() {
+			const fn = element => {
+				if (element.hasStyles()) {
+					if (element.styles.hasOwnProperty('text-indent')) {
+						let val = element.styles['text-indent']
+						if (val.endsWith('em')) {
+							val = parseFloat(val)
+						} else {
+							val = 0
+						}
+						element.styles['text-indent'] = `${val + 2}em`
+					} else {
+						element.styles['text-indent'] = '2em'
+					}
+				} else {
+					element.styles = {
+						'text-indent': '2em'
+					}
+				}
+			}
+			if (this.editor.range.anchor.isEqual(this.editor.range.focus)) {
+				const block = this.editor.range.anchor.element.getBlock()
+				const inblock = this.editor.range.anchor.element.getInblock()
+				if (inblock) {
+					if (inblock.isPreStyle()) {
+						this.editor.insertText('    ')
+					} else if (inblock.behavior == 'block') {
+						fn(inblock)
+					}
+				} else {
+					if (block.isPreStyle()) {
+						this.editor.insertText('    ')
+					} else {
+						fn(block)
+					}
+				}
+			} else {
+				const result = this.editor.getElementsByRange(true, false)
+				result.forEach(item => {
+					const block = item.element.getBlock()
+					const inblock = item.element.getInblock()
+					if (inblock && inblock.behavior == 'block') {
+						fn(inblock)
+					} else {
+						fn(block)
+					}
+				})
+			}
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//api：减少缩进
+		setOutdent() {
+			const fn = element => {
+				if (element.hasStyles() && element.styles.hasOwnProperty('text-indent')) {
+					let val = element.styles['text-indent']
+					if (val.endsWith('em')) {
+						val = parseFloat(val)
+					} else {
+						val = 0
+					}
+					element.styles['text-indent'] = `${val - 2 >= 0 ? val - 2 : 0}em`
+				}
+			}
+			if (this.editor.range.anchor.isEqual(this.editor.range.focus)) {
+				const block = this.editor.range.anchor.element.getBlock()
+				const inblock = this.editor.range.anchor.element.getInblock()
+				if (inblock && inblock.behavior == 'block' && !inblock.isPreStyle()) {
+					fn(inblock)
+				} else if (!block.isPreStyle()) {
+					fn(block)
+				}
+			} else {
+				const result = this.getElementsByRange(true, false)
+				result.forEach(item => {
+					const block = item.element.getBlock()
+					const inblock = item.element.getInblock()
+					if (inblock && inblock.behavior == 'block') {
+						fn(inblock)
+					} else {
+						fn(block)
+					}
+				})
+			}
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//api：插入分隔线
+		insertDivider() {
+			//创建段落
+			const paragraph = new AlexElement('block', AlexElement.BLOCK_NODE, null, null, null)
+			//创建分隔线
+			const divider = new AlexElement('closed', 'hr', null, null, null)
+			//插入分割线
+			this.editor.addElementTo(divider, paragraph)
+			this.editor.insertElement(paragraph)
+			const nextParagraph = new AlexElement('block', AlexElement.BLOCK_NODE, null, null, null)
+			const breakEl = new AlexElement('closed', 'br', null, null, null)
+			this.editor.addElementTo(breakEl, nextParagraph)
+			this.editor.addElementAfter(nextParagraph, paragraph)
+			//重新设置虚拟光标位置
+			this.editor.range.anchor.moveToEnd(nextParagraph)
+			this.editor.range.focus.moveToEnd(nextParagraph)
+			//重新渲染
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//api：设置/清除代码样式
+		setCodeStyle() {
+			const active = this.editor.queryTextMark('data-code-style')
+			if (active) {
+				this.editor.removeTextMark(['data-code-style'])
+			} else {
+				this.editor.setTextMark({
+					'data-code-style': 'mvi-editor-code'
+				})
+			}
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//api：加粗
+		setBold() {
+			const active = this.editor.queryTextStyle('font-weight', 'bold')
+			if (active) {
+				this.editor.removeTextStyle(['font-weight'])
+			} else {
+				this.editor.setTextStyle({
+					'font-weight': 'bold'
+				})
+			}
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//api：斜体
+		setItalic() {
+			const active = this.editor.queryTextStyle('font-style', 'italic')
+			if (active) {
+				this.editor.removeTextStyle(['font-style'])
+			} else {
+				this.editor.setTextStyle({
+					'font-style': 'italic'
+				})
+			}
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//api：下划线
+		setUnderline() {
+			const active = this.editor.queryTextStyle('text-decoration-line', 'underline') || this.editor.queryTextStyle('text-decoration', 'underline')
+			if (active) {
+				this.editor.removeTextStyle(['text-decoration-line', 'text-decoration'])
+			} else {
+				this.editor.setTextStyle({
+					'text-decoration-line': 'underline'
+				})
+			}
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//api：删除线
+		setStrikeThrough() {
+			const active = this.editor.queryTextStyle('text-decoration-line', 'line-through') || this.editor.queryTextStyle('text-decoration', 'line-through')
+			if (active) {
+				this.editor.removeTextStyle(['text-decoration-line', 'text-decoration'])
+			} else {
+				this.editor.setTextStyle({
+					'text-decoration-line': 'line-through'
+				})
+			}
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//api：下标
+		setSub() {
+			const active = this.editor.queryTextStyle('vertical-align', 'sub')
+			if (active) {
+				this.editor.removeTextStyle(['vertical-align'])
+			} else {
+				this.editor.setTextStyle({
+					'vertical-align': 'sub'
+				})
+			}
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//api：上标
+		setSuper() {
+			const active = this.editor.queryTextStyle('vertical-align', 'super')
+			if (active) {
+				this.editor.removeTextStyle(['vertical-align'])
+			} else {
+				this.editor.setTextStyle({
+					'vertical-align': 'super'
+				})
+			}
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//设置标题
+		setTitle(value) {
+			if (this.editor.range.anchor.isEqual(this.editor.range.focus)) {
+				const block = this.editor.range.anchor.element.getBlock()
+				//先转为段落
+				elementUtil.toParagraph(block)
+				//设置标题
+				block.parsedom = value
+			} else {
+				const result = this.editor.getElementsByRange(true, false)
+				result.forEach(el => {
+					if (el.element.isBlock()) {
+						elementUtil.toParagraph(el.element)
+						el.element.parsedom = value
+					} else {
+						const block = el.element.getBlock()
+						elementUtil.toParagraph(block)
+						block.parsedom = value
+					}
+				})
+			}
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//api：设置字体
+		setFontFamily(value) {
+			this.editor.setTextStyle({
+				'font-family': value
+			})
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//api：设置字号
+		setFontSize(value) {
+			this.editor.setTextStyle({
+				'font-size': value
+			})
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//api：设置字体颜色
+		setForeColor(value) {
+			this.editor.setTextStyle({
+				color: value
+			})
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//设置背景颜色
+		setBackColor(value) {
+			this.editor.setTextStyle({
+				'background-color': value
+			})
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//api：插入有序列表 ordered为true表示有序列表
+		setList(ordered) {
+			//起点和终点在一起
+			if (this.editor.range.anchor.isEqual(this.editor.range.focus)) {
+				const block = this.editor.range.anchor.element.getBlock()
+				elementUtil.toParagraph(block)
+				if (!elementUtil.isList(block, ordered)) {
+					elementUtil.toList(block, ordered)
+				}
+			}
+			//起点和终点不在一起
+			else {
+				const result = this.editor.getElementsByRange(true, false)
+				result.forEach(item => {
+					if (item.element.isBlock()) {
+						elementUtil.toParagraph(item.element)
+						if (!elementUtil.isList(block, ordered)) {
+							elementUtil.toList(item.element, ordered)
+						}
+					} else {
+						const block = item.element.getBlock()
+						elementUtil.toParagraph(block)
+						if (!elementUtil.isList(block, ordered)) {
+							elementUtil.toList(block, ordered)
+						}
+					}
+				})
+			}
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//api：设置对齐方式,参数取值justify/left/right/center
+		setJustify(value) {
+			if (this.editor.range.anchor.isEqual(this.editor.range.focus)) {
+				const block = this.editor.range.anchor.element.getBlock()
+				const inblock = this.editor.range.anchor.element.getInblock()
+				if (inblock) {
+					if (inblock.hasStyles()) {
+						inblock.styles['text-align'] = value
+					} else {
+						inblock.styles = {
+							'text-align': value
+						}
+					}
+				} else {
+					if (block.hasStyles()) {
+						block.styles['text-align'] = value
+					} else {
+						block.styles = {
+							'text-align': value
+						}
+					}
+				}
+			} else {
+				const result = this.editor.getElementsByRange(true, false)
+				result.forEach(el => {
+					if (el.element.isBlock() || el.element.isInblock()) {
+						if (el.element.hasStyles()) {
+							el.element.styles['text-align'] = value
+						} else {
+							el.element.styles = {
+								'text-align': value
+							}
+						}
+					} else {
+						const block = el.element.getBlock()
+						const inblock = el.element.getInblock()
+						if (inblock) {
+							if (inblock.hasStyles()) {
+								inblock.styles['text-align'] = value
+							} else {
+								inblock.styles = {
+									'text-align': value
+								}
+							}
+						} else {
+							if (block.hasStyles()) {
+								block.styles['text-align'] = value
+							} else {
+								block.styles = {
+									'text-align': value
+								}
+							}
+						}
+					}
+				})
+			}
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//api：插入引用
+		setQuote() {
+			//起点和终点在一起
+			if (this.editor.range.anchor.isEqual(this.editor.range.focus)) {
+				const block = this.editor.range.anchor.element.getBlock()
+				elementUtil.toParagraph(block)
+				if (block.parsedom != 'blockquote') {
+					block.parsedom = 'blockquote'
+				}
+			}
+			//起点和终点不在一起
+			else {
+				const result = this.editor.getElementsByRange(true, false)
+				result.forEach(el => {
+					if (el.element.isBlock()) {
+						elementUtil.toParagraph(el.element)
+						if (block.parsedom != 'blockquote') {
+							el.element.parsedom = 'blockquote'
+						}
+					} else {
+						const block = el.element.getBlock()
+						elementUtil.toParagraph(block)
+						if (block.parsedom != 'blockquote') {
+							block.parsedom = 'blockquote'
+						}
+					}
+				})
+			}
+			this.editor.formatElementStack()
+			this.editor.domRender()
+			this.editor.rangeRender()
+		},
+		//api：插入代码块
+		setCodeBlock() {
+			if (this.isPre) {
+				const pre = this.preAdjusterProps.element
+				elementUtil.toParagraph(pre)
+			} else {
+				//起点和终点在一起
+				if (this.editor.range.anchor.isEqual(this.editor.range.focus)) {
+					const block = this.editor.range.anchor.element.getBlock()
+					elementUtil.toParagraph(block)
+					block.parsedom = 'pre'
+					const paragraph = new AlexElement('block', AlexElement.BLOCK_NODE, null, null, null)
+					const breakEl = new AlexElement('closed', 'br', null, null, null)
+					this.editor.addElementTo(breakEl, paragraph)
+					this.editor.addElementAfter(paragraph, block)
+				}
+				//起点和终点不在一起
+				else {
+					let result = this.editor.getElementsByRange(true, false)
+					this.editor.range.anchor.moveToStart(result[0].element.getBlock())
+					this.editor.range.focus.moveToEnd(result[result.length - 1].element.getBlock())
+					const res = this.editor.getElementsByRange(true, true).filter(el => el.element.isText())
+					const obj = {}
+					res.forEach(el => {
+						if (obj[el.element.getBlock().key]) {
+							obj[el.element.getBlock().key].push(el.element.clone())
+						} else {
+							obj[el.element.getBlock().key] = [el.element.clone()]
+						}
+					})
+					const pre = new AlexElement('block', 'pre', null, null, null)
+					Object.keys(obj).forEach((key, index) => {
+						if (index > 0) {
+							const text = new AlexElement('text', null, null, null, '\n')
+							if (pre.hasChildren()) {
+								this.editor.addElementTo(text, pre, pre.children.length)
+							} else {
+								this.editor.addElementTo(text, pre)
+							}
+						}
+						obj[key].forEach(el => {
+							if (pre.hasChildren()) {
+								this.editor.addElementTo(el, pre, pre.children.length)
+							} else {
+								this.editor.addElementTo(el, pre)
+							}
+						})
+					})
+					this.editor.delete()
+					this.editor.insertElement(pre)
+					const paragraph = new AlexElement('block', AlexElement.BLOCK_NODE, null, null, null)
+					const breakEl = new AlexElement('closed', 'br', null, null, null)
+					this.editor.addElementTo(breakEl, paragraph)
+					this.editor.addElementAfter(paragraph, pre)
+				}
+			}
+
 			this.editor.formatElementStack()
 			this.editor.domRender()
 			this.editor.rangeRender()
