@@ -1223,7 +1223,7 @@ export default {
 		justify-content: flex-start;
 		align-items: center;
 		white-space: nowrap;
-		padding: @mp-sm;
+		padding: @mp-xs;
 		border-radius: @radius-default;
 		opacity: 0.8;
 		line-height: 1;
