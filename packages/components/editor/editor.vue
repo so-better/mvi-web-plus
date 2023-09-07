@@ -542,7 +542,10 @@ export default {
 				//高亮处理
 				if (this.highlight && element.hasChildren()) {
 					//获取语言类型
-					let language = element.marks['mvi-hljs-language']
+					let language = element.marks['mvi-hljs-language'] || ''
+					if (language && !this.preAdjusterProps.languages.includes(language)) {
+						language = ''
+					}
 					//获取pre标签下所有的文本元素
 					const originalTextElements = AlexElement.flatElements(element.children).filter(el => el.isText() && !el.isEmpty())
 					//获取pre下的代码文本值
