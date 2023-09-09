@@ -270,8 +270,8 @@ export default {
 	justify-content: space-between;
 	align-items: center;
 	background-color: #fff;
-	width: 100%;
-	height: @medium-height;
+	width: auto;
+	height: @small-height;
 	border: 1px solid @border-color;
 	font-size: @font-size-default;
 	border-radius: @radius-default;
@@ -283,7 +283,6 @@ export default {
 		justify-content: center;
 		align-items: center;
 		position: relative;
-		flex: 1;
 		height: 100%;
 		padding: 0 @mp-md;
 		border-right: 1px solid @border-color;
@@ -311,7 +310,6 @@ export default {
 		align-items: center;
 		position: relative;
 		height: 100%;
-		flex: 1;
 		padding: 0 @mp-md;
 		border-left: 1px solid @border-color;
 		color: @info-normal;
@@ -337,7 +335,6 @@ export default {
 		justify-content: center;
 		align-items: center;
 		position: relative;
-		flex: 1;
 		height: 100%;
 		padding: 0 @mp-md;
 		border-right: 1px solid @border-color;
@@ -365,7 +362,6 @@ export default {
 		align-items: center;
 		position: relative;
 		height: 100%;
-		flex: 1;
 		padding: 0 @mp-md;
 		border-left: 1px solid @border-color;
 		color: @info-normal;
