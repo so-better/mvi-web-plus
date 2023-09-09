@@ -1878,7 +1878,7 @@ export default {
 			font-size: @font-size-default;
 			line-height: 1;
 			background-color: @bg-color-default;
-			font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
+			font-family: Consolas, monospace, Monaco, Andale Mono, Ubuntu Mono;
 			border: 1px solid @bg-color-dark;
 			text-indent: initial;
 		}
