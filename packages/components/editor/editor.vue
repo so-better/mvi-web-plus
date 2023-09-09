@@ -702,11 +702,13 @@ export default {
 			//对表格进行处理
 			const tables = elements.filter(el => el.parsedom == 'table')
 			tables.forEach(table => {
-				const firstRow = AlexElement.flatElements(table.children).filter(el => {
+				const rows = AlexElement.flatElements(table.children).filter(el => {
 					return el.parsedom == 'tr'
-				})[0]
-				firstRow.children.forEach((column, i) => {
-					this.setTabelColumnResize(table, firstRow, column, i)
+				})
+				rows.forEach((row, rowIndex) => {
+					row.children.forEach((column, columnIndex) => {
+						this.setTabelColumnResize(table, row, rowIndex, column, columnIndex)
+					})
 				})
 			})
 			if (this.preAdjusterProps.show) {
@@ -803,25 +805,21 @@ export default {
 			this.mediaAdjusterProps.show = false
 		},
 		//设置表格列宽拖拽
-		setTabelColumnResize(table, firstRow, column, i) {
+		setTabelColumnResize(table, row, rowIndex, column, columnIndex) {
 			if (this.disabled) {
 				return
 			}
 			//最后一个列不设置拖拽
-			if (i == firstRow.children.length - 1) {
+			if (columnIndex == row.children.length - 1) {
 				return
 			}
-			//列在行中的序列
-			const index = column.parent.children.findIndex(item => {
-				return item.isEqual(column)
-			})
 			//colgroup
 			const colgroup = table.children.find(item => {
 				return item.parsedom == 'colgroup'
 			})
 			//先移除事件
 			Dap.event.off(column._elm, 'mousedown')
-			Dap.event.off(document.documentElement, `mousemove.editor_table_${table.key}_${index}_${this.uid} mouseup.editor_table_${table.key}_${index}_${this.uid}`)
+			Dap.event.off(document.documentElement, `mousemove.editor_table_${table.key}_${rowIndex}_${columnIndex}_${this.uid} mouseup.editor_table_${table.key}_${rowIndex}_${columnIndex}_${this.uid}`)
 			//是否可以拖拽
 			let canResize = false
 			//按下时的位置
@@ -841,25 +839,25 @@ export default {
 				}
 			})
 			//鼠标移动
-			Dap.event.on(document.documentElement, `mousemove.editor_table_${table.key}_${index}_${this.uid}`, e => {
+			Dap.event.on(document.documentElement, `mousemove.editor_table_${table.key}_${rowIndex}_${columnIndex}_${this.uid}`, e => {
 				if (this.disabled) {
 					return
 				}
 				if (canResize) {
-					colgroup.children[index].marks['width'] = `${column._elm.offsetWidth + e.pageX - start}`
-					colgroup.children[index]._elm.setAttribute('width', `${column._elm.offsetWidth + e.pageX - start}`)
+					colgroup.children[columnIndex].marks['width'] = `${column._elm.offsetWidth + e.pageX - start}`
+					colgroup.children[columnIndex]._elm.setAttribute('width', `${column._elm.offsetWidth + e.pageX - start}`)
 					start = e.pageX
 				}
 			})
 			//鼠标松开
-			Dap.event.on(document.documentElement, `mouseup.editor_table_${table.key}_${index}_${this.uid}`, e => {
+			Dap.event.on(document.documentElement, `mouseup.editor_table_${table.key}_${rowIndex}_${columnIndex}_${this.uid}`, e => {
 				if (this.disabled) {
 					return
 				}
 				if (canResize) {
-					const width = Number(colgroup.children[index].marks['width'])
+					const width = Number(colgroup.children[columnIndex].marks['width'])
 					if (!isNaN(width)) {
-						colgroup.children[index].marks['width'] = `${Number(((width / firstRow._elm.offsetWidth) * 100).toFixed(2))}%`
+						colgroup.children[columnIndex].marks['width'] = `${Number(((width / row._elm.offsetWidth) * 100).toFixed(2))}%`
 						this.editor.formatElementStack()
 						this.editor.domRender()
 						this.editor.rangeRender()
@@ -1915,18 +1913,6 @@ export default {
 						td {
 							font-weight: bold;
 							position: relative;
-
-							&:not(:last-child)::after {
-								position: absolute;
-								right: -@mp-lg / 2;
-								top: 0;
-								width: @mp-lg;
-								height: 100%;
-								content: '';
-								z-index: 1;
-								cursor: col-resize;
-								user-select: none;
-							}
 						}
 					}
 
@@ -1941,6 +1927,18 @@ export default {
 
 						&:last-child {
 							border-right: none;
+						}
+
+						&:not(:last-child)::after {
+							position: absolute;
+							right: -@mp-lg / 2;
+							top: 0;
+							width: @mp-lg;
+							height: 100%;
+							content: '';
+							z-index: 1;
+							cursor: col-resize;
+							user-select: none;
 						}
 					}
 				}
