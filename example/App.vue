@@ -1,5 +1,6 @@
 <template>
 	<div class="mvi-p-4">
+		<m-table border columnBorder :data="data" height="2rem" :columns="columns"> </m-table>
 		<m-editor-menus ref="editor-menus">
 			<m-editor-menu v-for="item in EditorDefinedMenuConfig" :name="item.name"></m-editor-menu>
 		</m-editor-menus>
@@ -16,7 +17,43 @@ export default {
 			EditorDefinedMenuConfig: EditorDefinedMenuConfig,
 			value: ``,
 			dayjs: dayjs,
-			date: new Date()
+			date: new Date(),
+			data: [
+				{
+					name: '1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111',
+					age: 14,
+					score: 80
+				},
+				{
+					name: '李四',
+					age: 16,
+					score: 55
+				},
+				{
+					name: '小王',
+					age: 15,
+					score: 77
+				}
+			],
+			columns: [
+				{
+					prop: 'name',
+					label: '姓名',
+					ellipsis: true
+				},
+				{
+					prop: 'age',
+					label: '年龄年龄年龄年龄年龄',
+					width: '600px',
+					ellipsis: true
+				},
+				{
+					prop: 'score',
+					label: '分数',
+					ellipsis: true,
+					width: '600px'
+				}
+			]
 		}
 	},
 	mounted() {

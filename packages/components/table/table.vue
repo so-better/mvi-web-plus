@@ -1,59 +1,61 @@
 <template>
 	<div :class="['mvi-table', border ? 'border' : '']">
-		<div class="mvi-table-header">
-			<!-- 表头 -->
-			<table cellpadding="0" cellspacing="0">
-				<tr ref="headerRow">
-					<th v-for="(column, index) in columnData" :ref="el => (headerColumnRefs[index] = el)" :class="headerColumnClass" :style="headerColumnStyle(column)">
-						<div :class="['mvi-table-column', center ? 'center' : '']">
-							<!-- 复选框 -->
-							<Checkbox v-model="selectAll" v-if="column.type == 'selection'" size="0.24rem" @change="allSelect(column)" :color="activeColor"></Checkbox>
-							<!-- 其他 -->
-							<template v-else>
-								<!-- 列标题 -->
-								<span>{{ column.label }}</span>
-								<!-- 排序 -->
-								<span class="mvi-table-sortable" v-if="column.sortable">
-									<Icon type="caret-up" :class="sortBy == column.prop && sortOrder == 'asc' ? 'active' : ''" @click="sortAsc(column)" :style="sortIconStyle('asc', column)" />
-									<Icon type="caret-down" :class="sortBy == column.prop && sortOrder == 'desc' ? 'active' : ''" @click="sortDesc(column)" :style="sortIconStyle('desc', column)" />
-								</span>
-							</template>
-						</div>
-					</th>
-					<th class="placeholder" v-if="scrollWidth" :style="{ width: scrollWidth + 'px' }"></th>
-				</tr>
-			</table>
-		</div>
-		<div ref="body" :class="['mvi-table-body', height ? 'overflow' : '']" :style="{ maxHeight: height }">
-			<!-- 加载状态 -->
-			<div class="mvi-table-loading" v-if="loading">
-				<Loading color="#bbb" size="0.3rem" />
-				<span>{{ loadText }}</span>
-			</div>
-			<template v-else>
-				<!-- 表体 -->
-				<table v-if="rowData.length" cellpadding="0" cellspacing="0">
-					<tr v-for="(row, rowIndex) in rowData" :class="stripe ? 'stripe' : ''">
-						<td v-for="(column, columnIndex) in columnData" :class="bodyColumnClass(row, rowIndex, column, columnIndex)" :style="bodyColumnStyle(column, columnIndex)">
-							<Tooltip :disabled="!column.ellipsis" block :title="tooltipTitle(row, column)" trigger="hover" :placement="center ? 'bottom' : 'bottom-start'" :fixed="height ? true : false">
-								<div :class="['mvi-table-column', center ? 'center' : '']">
-									<!-- 复选框 -->
-									<Checkbox v-if="column.type == 'selection'" v-model="checkedRows" :value="rowIndex" size="0.24rem" @change="doCheck(rowIndex, column)" :color="activeColor" :disabled="!cmpSelectable(row, rowIndex, column)"></Checkbox>
-									<!-- 其他 -->
-									<div v-else :class="[column.ellipsis ? 'ellipsis' : '']">
-										<!-- 自定义单元格 -->
-										<slot v-if="column.type == 'custom' && $slots.custom" name="custom" :row="row" :row-index="rowIndex" :column="column" :column-index="columnIndex"></slot>
-										<!-- 默认内容 -->
-										<span v-else v-html="dataFormat(row, column)"></span>
-									</div>
-								</div>
-							</Tooltip>
-						</td>
+		<div class="mvi-table-wrap" :style="{ width: wrapWidth }">
+			<div class="mvi-table-header">
+				<!-- 表头 -->
+				<table cellpadding="0" cellspacing="0">
+					<tr>
+						<th v-for="(column, index) in columnData" :ref="el => (headerColumnRefs[index] = el)" :class="headerColumnClass" :style="headerColumnStyle(column)">
+							<div :class="['mvi-table-column', center ? 'center' : '']">
+								<!-- 复选框 -->
+								<Checkbox v-model="selectAll" v-if="column.type == 'selection'" size="0.24rem" @change="allSelect(column)" :color="activeColor"></Checkbox>
+								<!-- 其他 -->
+								<template v-else>
+									<!-- 列标题 -->
+									<span>{{ column.label }}</span>
+									<!-- 排序 -->
+									<span class="mvi-table-sortable" v-if="column.sortable">
+										<Icon type="caret-up" :class="sortBy == column.prop && sortOrder == 'asc' ? 'active' : ''" @click="sortAsc(column)" :style="sortIconStyle('asc', column)" />
+										<Icon type="caret-down" :class="sortBy == column.prop && sortOrder == 'desc' ? 'active' : ''" @click="sortDesc(column)" :style="sortIconStyle('desc', column)" />
+									</span>
+								</template>
+							</div>
+						</th>
+						<th class="placeholder" v-if="scrollWidth" :style="{ width: scrollWidth + 'px' }"></th>
 					</tr>
 				</table>
-				<!-- 无数据提示 -->
-				<div v-else class="mvi-table-nodata">{{ noDataMsg }}</div>
-			</template>
+			</div>
+			<div ref="body" :class="['mvi-table-body', height ? 'overflow' : '']" :style="{ maxHeight: height }">
+				<!-- 加载状态 -->
+				<div class="mvi-table-loading" v-if="loading">
+					<Loading color="#bbb" size="0.3rem" />
+					<span>{{ loadText }}</span>
+				</div>
+				<template v-else>
+					<!-- 表体 -->
+					<table v-if="rowData.length" cellpadding="0" cellspacing="0">
+						<tr v-for="(row, rowIndex) in rowData" :class="stripe ? 'stripe' : ''">
+							<td v-for="(column, columnIndex) in columnData" :class="bodyColumnClass(row, rowIndex, column, columnIndex)" :style="bodyColumnStyle(column, columnIndex)">
+								<Tooltip :disabled="!column.ellipsis" block :title="tooltipTitle(row, column)" trigger="hover" :placement="center ? 'bottom' : 'bottom-start'" :fixed="height ? true : false">
+									<div :class="['mvi-table-column', center ? 'center' : '']">
+										<!-- 复选框 -->
+										<Checkbox v-if="column.type == 'selection'" v-model="checkedRows" :value="rowIndex" size="0.24rem" @change="doCheck(rowIndex, column)" :color="activeColor" :disabled="!cmpSelectable(row, rowIndex, column)"></Checkbox>
+										<!-- 其他 -->
+										<div v-else :class="[column.ellipsis ? 'ellipsis' : '']">
+											<!-- 自定义单元格 -->
+											<slot v-if="column.type == 'custom' && $slots.custom" name="custom" :row="row" :row-index="rowIndex" :column="column" :column-index="columnIndex"></slot>
+											<!-- 默认内容 -->
+											<span v-else v-html="dataFormat(row, column)"></span>
+										</div>
+									</div>
+								</Tooltip>
+							</td>
+						</tr>
+					</table>
+					<!-- 无数据提示 -->
+					<div v-else class="mvi-table-nodata">{{ noDataMsg }}</div>
+				</template>
+			</div>
 		</div>
 	</div>
 </template>
@@ -142,8 +144,6 @@ export default {
 			columnData: [],
 			//表格滚动条宽度
 			scrollWidth: 0,
-			//表头列元素数组
-			headerColumnRefs: [],
 			//排序的字段，即依据此字段排序
 			sortBy: '',
 			//排序方式，asc还是desc
@@ -151,10 +151,32 @@ export default {
 			//复选框勾选的行
 			checkedRows: [],
 			//是否全选
-			selectAll: false
+			selectAll: false,
+			//表头列元素数组
+			headerColumnRefs: []
 		}
 	},
 	computed: {
+		//表格整体宽度
+		wrapWidth() {
+			//this.columnAlignKey只是为了刷新计算属性
+			this.columnAlignKey
+			if (this.headerColumnRefs.length) {
+				//获取列宽总和，没有设置列宽的按照最小宽度算
+				let width = this.headerColumnRefs.reduce((total, item, index) => {
+					const width = this.columnData[index].width ? this.parseWidth(this.columnData[index].width) : Dap.element.rem2px(2)
+					return (total += width)
+				}, 0)
+				if (this.scrollWidth) {
+					width += this.scrollWidth
+				}
+				//获取表格组件总宽度
+				const tableWidth = Dap.element.width(this.$el)
+				//如果列宽总和还没有达到表格组件总宽度，则没有设置列宽的无需按照最小宽度算
+				return width > tableWidth ? width + 'px' : tableWidth + 'px'
+			}
+			return ''
+		},
 		//表头列class
 		headerColumnClass() {
 			let cls = []
@@ -167,7 +189,7 @@ export default {
 		headerColumnStyle() {
 			return column => {
 				return {
-					width: column.width || 'auto'
+					width: column.width ? this.parseWidth(column.width) + 'px' : 'auto'
 				}
 			}
 		},
@@ -193,7 +215,7 @@ export default {
 				//this.columnAlignKey只是为了刷新计算属性
 				this.columnAlignKey
 				return {
-					width: this.headerColumnRefs[index] ? Dap.element.getCssStyle(this.headerColumnRefs[index], 'width') : '0px'
+					width: this.headerColumnRefs[index] ? Dap.element.getCssStyle(this.headerColumnRefs[index], 'width') : ''
 				}
 			}
 		},
@@ -405,6 +427,21 @@ export default {
 				return cloneData
 			}
 			return data
+		},
+		//列宽数值转换
+		parseWidth(val) {
+			if (Dap.number.isNumber(val)) {
+				return val
+			}
+			if (typeof val == 'string' && val) {
+				if (val.endsWith('px')) {
+					return parseFloat(val)
+				}
+				if (val.endsWith('rem')) {
+					return Dap.element.rem2px(parseFloat(val))
+				}
+			}
+			return 0
 		}
 	},
 	beforeUnmount() {
@@ -417,168 +454,176 @@ export default {
 .mvi-table {
 	display: block;
 	width: 100%;
+	overflow-x: auto;
+	overflow-y: hidden;
 	background-color: #fff;
 	font-size: @font-size-default;
 	color: @font-color-default;
+
 	&.border {
 		border: 1px solid @border-color;
 	}
 
-	.mvi-table-header {
+	.mvi-table-wrap {
 		display: block;
-		width: 100%;
+		min-width: 100%;
 
-		table {
+		.mvi-table-header {
+			display: block;
 			width: 100%;
-			padding: 0;
-			margin: 0;
-			border-collapse: collapse;
-			table-layout: fixed;
 
-			tr {
+			table {
 				width: 100%;
-				background: @bg-color-dark;
+				padding: 0;
+				margin: 0;
+				border-collapse: collapse;
+				table-layout: fixed;
 
-				th {
-					font-weight: bold;
-					padding: @mp-sm 0;
-					text-align: left;
-					border-bottom: 1px solid @border-color;
-					position: relative;
+				tr {
+					width: 100%;
+					background: @bg-color-dark;
 
-					&.border {
-						border-right: 1px solid @border-color;
+					th {
+						font-weight: bold;
+						padding: @mp-sm 0;
+						text-align: left;
+						border-bottom: 1px solid @border-color;
+						position: relative;
 
-						&:last-child {
-							border-right: none;
+						&.border {
+							border-right: 1px solid @border-color;
+
+							&:last-child {
+								border-right: none;
+							}
+						}
+
+						.mvi-table-column {
+							display: flex;
+							justify-content: flex-start;
+							align-items: center;
+							padding: 0 @mp-sm;
+							width: 100%;
+							white-space: normal;
+							word-break: break-all;
+
+							&.center {
+								justify-content: center;
+							}
+
+							.mvi-table-sortable {
+								display: inline-flex;
+								justify-content: space-between;
+								align-items: center;
+								flex-direction: column;
+								margin-left: @mp-xs;
+								font-size: @font-size-small;
+								color: @font-color-mute;
+								transform: scale(0.8);
+
+								.mvi-icon {
+									cursor: pointer;
+
+									&.active {
+										color: @info-normal;
+									}
+								}
+							}
+						}
+
+						&.placeholder {
+							padding: 0;
 						}
 					}
+				}
+			}
+		}
 
-					.mvi-table-column {
-						display: flex;
-						justify-content: flex-start;
-						align-items: center;
-						padding: 0 @mp-sm;
-						white-space: normal;
-						word-break: break-all;
-						width: 100%;
+		.mvi-table-body {
+			display: block;
+			width: 100%;
 
-						&.center {
-							justify-content: center;
+			&.overflow {
+				overflow-x: hidden;
+				overflow-y: auto;
+			}
+
+			table {
+				width: 100%;
+				padding: 0;
+				margin: 0;
+				border-collapse: collapse;
+				table-layout: fixed;
+
+				tr {
+					width: 100%;
+					&.stripe:nth-child(2n) {
+						background: @bg-color-default;
+					}
+
+					td {
+						padding: @mp-sm 0;
+						text-align: left;
+						border-bottom: 1px solid @border-color;
+						position: relative;
+
+						&.border {
+							border-right: 1px solid @border-color;
+
+							&:last-child {
+								border-right: none;
+							}
 						}
 
-						.mvi-table-sortable {
-							display: inline-flex;
-							justify-content: space-between;
+						.mvi-table-column {
+							display: flex;
+							justify-content: flex-start;
 							align-items: center;
-							flex-direction: column;
-							margin-left: @mp-xs;
-							font-size: @font-size-small;
-							color: @font-color-mute;
-							transform: scale(0.8);
+							padding: 0 @mp-sm;
+							width: 100%;
+							white-space: normal;
+							word-break: break-all;
 
-							.mvi-icon {
-								cursor: pointer;
+							&.center {
+								justify-content: center;
+							}
 
-								&.active {
-									color: @info-normal;
-								}
+							.ellipsis {
+								text-overflow: ellipsis;
+								overflow: hidden;
+								white-space: nowrap;
 							}
 						}
 					}
 
-					&.placeholder {
-						padding: 0;
+					&:last-child > td {
+						border-bottom: none;
 					}
 				}
 			}
-		}
-	}
 
-	.mvi-table-body {
-		display: block;
-		width: 100%;
-
-		&.overflow {
-			overflow-x: hidden;
-			overflow-y: auto;
-		}
-
-		table {
-			width: 100%;
-			padding: 0;
-			margin: 0;
-			border-collapse: collapse;
-			table-layout: fixed;
-
-			tr {
+			.mvi-table-loading {
+				display: flex;
+				justify-content: center;
+				align-items: center;
 				width: 100%;
-				&.stripe:nth-child(2n) {
-					background: @bg-color-default;
-				}
+				padding: @mp-lg 0;
+				color: @font-color-mute;
+				font-size: @font-size-small;
 
-				td {
-					padding: @mp-sm 0;
-					text-align: left;
-					border-bottom: 1px solid @border-color;
-					position: relative;
-
-					&.border {
-						border-right: 1px solid @border-color;
-
-						&:last-child {
-							border-right: none;
-						}
-					}
-
-					.mvi-table-column {
-						display: flex;
-						justify-content: flex-start;
-						align-items: center;
-						white-space: normal;
-						word-break: break-all;
-						padding: 0 @mp-sm;
-						width: 100%;
-
-						&.center {
-							justify-content: center;
-						}
-
-						.ellipsis {
-							text-overflow: ellipsis;
-							overflow: hidden;
-							white-space: nowrap;
-						}
-					}
-				}
-
-				&:last-child > td {
-					border-bottom: none;
+				& > span {
+					margin-left: @mp-xs;
 				}
 			}
-		}
 
-		.mvi-table-loading {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			width: 100%;
-			padding: @mp-lg 0;
-			color: @font-color-mute;
-			font-size: @font-size-small;
-
-			& > span {
-				margin-left: @mp-xs;
+			.mvi-table-nodata {
+				display: block;
+				width: 100%;
+				text-align: center;
+				padding: @mp-lg 0;
+				color: @font-color-mute;
+				font-size: @font-size-small;
 			}
-		}
-
-		.mvi-table-nodata {
-			display: block;
-			width: 100%;
-			text-align: center;
-			padding: @mp-lg 0;
-			color: @font-color-mute;
-			font-size: @font-size-small;
 		}
 	}
 }
