@@ -547,6 +547,10 @@ export default {
 					}
 				}
 			}
+			//打开表格时初始化设置
+			else if (this.name == 'table') {
+				this.tableParams.grids = getTableGrids()
+			}
 		},
 		//tab切换时
 		tabChange() {
