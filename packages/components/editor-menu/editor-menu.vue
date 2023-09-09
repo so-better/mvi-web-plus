@@ -1087,18 +1087,20 @@ export default {
 				this.menus.instance.editor.range.anchor.offset = this.menus.instance.editor.range.focus.offset
 			}
 			const row = this.menus.instance.getCurrentParsedomElement('tr')
-			const newRow = row.clone()
-			newRow.children.forEach(column => {
-				column.children = []
-				const breakEl = new AlexElement('closed', 'br', null, null, null)
-				this.menus.instance.editor.addElementTo(breakEl, column)
-			})
-			this.menus.instance.editor.addElementAfter(newRow, row)
-			this.menus.instance.editor.formatElementStack()
-			this.menus.instance.editor.range.anchor.moveToStart(newRow)
-			this.menus.instance.editor.range.focus.moveToStart(newRow)
-			this.menus.instance.editor.domRender()
-			this.menus.instance.editor.rangeRender()
+			if (row) {
+				const newRow = row.clone()
+				newRow.children.forEach(column => {
+					column.children = []
+					const breakEl = new AlexElement('closed', 'br', null, null, null)
+					this.menus.instance.editor.addElementTo(breakEl, column)
+				})
+				this.menus.instance.editor.addElementAfter(newRow, row)
+				this.menus.instance.editor.formatElementStack()
+				this.menus.instance.editor.range.anchor.moveToStart(newRow)
+				this.menus.instance.editor.range.focus.moveToStart(newRow)
+				this.menus.instance.editor.domRender()
+				this.menus.instance.editor.rangeRender()
+			}
 			this.hideLayer()
 		},
 		//删除表格行
@@ -1111,24 +1113,26 @@ export default {
 				this.menus.instance.editor.range.anchor.offset = this.menus.instance.editor.range.focus.offset
 			}
 			const row = this.menus.instance.getCurrentParsedomElement('tr')
-			const parent = row.parent
-			if (parent.children.length == 1) {
-				this.deleteTable()
-				return
+			if (row) {
+				const parent = row.parent
+				if (parent.children.length == 1) {
+					this.deleteTable()
+					return
+				}
+				const previousRow = this.menus.instance.editor.getPreviousElement(row)
+				const nextRow = this.menus.instance.editor.getNextElement(row)
+				row.toEmpty()
+				this.menus.instance.editor.formatElementStack()
+				if (previousRow) {
+					this.menus.instance.editor.range.anchor.moveToEnd(previousRow.children[0])
+					this.menus.instance.editor.range.focus.moveToEnd(previousRow.children[0])
+				} else {
+					this.menus.instance.editor.range.anchor.moveToEnd(nextRow.children[0])
+					this.menus.instance.editor.range.focus.moveToEnd(nextRow.children[0])
+				}
+				this.menus.instance.editor.domRender()
+				this.menus.instance.editor.rangeRender()
 			}
-			const previousRow = this.menus.instance.editor.getPreviousElement(row)
-			const nextRow = this.menus.instance.editor.getNextElement(row)
-			row.toEmpty()
-			this.menus.instance.editor.formatElementStack()
-			if (previousRow) {
-				this.menus.instance.editor.range.anchor.moveToEnd(previousRow.children[0])
-				this.menus.instance.editor.range.focus.moveToEnd(previousRow.children[0])
-			} else {
-				this.menus.instance.editor.range.anchor.moveToEnd(nextRow.children[0])
-				this.menus.instance.editor.range.focus.moveToEnd(nextRow.children[0])
-			}
-			this.menus.instance.editor.domRender()
-			this.menus.instance.editor.rangeRender()
 			this.hideLayer()
 		},
 		//插入表格列
@@ -1142,22 +1146,24 @@ export default {
 			}
 			const column = this.menus.instance.getCurrentParsedomElement('td')
 			const tbody = this.menus.instance.getCurrentParsedomElement('tbody')
-			const rows = tbody.children
-			const index = column.parent.children.findIndex(item => {
-				return item.isEqual(column)
-			})
-			rows.forEach(row => {
-				const newColumn = column.clone(false)
-				const breakEl = new AlexElement('closed', 'br', null, null, null)
-				this.menus.instance.editor.addElementTo(breakEl, newColumn)
-				this.menus.instance.editor.addElementTo(newColumn, row, index + 1)
-			})
-			this.menus.instance.editor.formatElementStack()
-			const nextColumn = this.menus.instance.editor.getNextElement(column)
-			this.menus.instance.editor.range.anchor.moveToStart(nextColumn)
-			this.menus.instance.editor.range.focus.moveToStart(nextColumn)
-			this.menus.instance.editor.domRender()
-			this.menus.instance.editor.rangeRender()
+			if (column && tbody) {
+				const rows = tbody.children
+				const index = column.parent.children.findIndex(item => {
+					return item.isEqual(column)
+				})
+				rows.forEach(row => {
+					const newColumn = column.clone(false)
+					const breakEl = new AlexElement('closed', 'br', null, null, null)
+					this.menus.instance.editor.addElementTo(breakEl, newColumn)
+					this.menus.instance.editor.addElementTo(newColumn, row, index + 1)
+				})
+				this.menus.instance.editor.formatElementStack()
+				const nextColumn = this.menus.instance.editor.getNextElement(column)
+				this.menus.instance.editor.range.anchor.moveToStart(nextColumn)
+				this.menus.instance.editor.range.focus.moveToStart(nextColumn)
+				this.menus.instance.editor.domRender()
+				this.menus.instance.editor.rangeRender()
+			}
 			this.hideLayer()
 		},
 		//删除表格列
@@ -1171,30 +1177,32 @@ export default {
 			}
 			const column = this.menus.instance.getCurrentParsedomElement('td')
 			const tbody = this.menus.instance.getCurrentParsedomElement('tbody')
-			const rows = tbody.children
-			const parent = column.parent
-			if (parent.children.length == 1) {
-				this.deleteTable()
-				return
+			if (column && tbody) {
+				const rows = tbody.children
+				const parent = column.parent
+				if (parent.children.length == 1) {
+					this.deleteTable()
+					return
+				}
+				const previousColumn = this.menus.instance.editor.getPreviousElement(column)
+				const nextColumn = this.menus.instance.editor.getNextElement(column)
+				const index = column.parent.children.findIndex(item => {
+					return item.isEqual(column)
+				})
+				rows.forEach(row => {
+					row.children[index].toEmpty()
+				})
+				this.menus.instance.editor.formatElementStack()
+				if (previousColumn) {
+					this.menus.instance.editor.range.anchor.moveToEnd(previousColumn)
+					this.menus.instance.editor.range.focus.moveToEnd(previousColumn)
+				} else {
+					this.menus.instance.editor.range.anchor.moveToEnd(nextColumn)
+					this.menus.instance.editor.range.focus.moveToEnd(nextColumn)
+				}
+				this.menus.instance.editor.domRender()
+				this.menus.instance.editor.rangeRender()
 			}
-			const previousColumn = this.menus.instance.editor.getPreviousElement(column)
-			const nextColumn = this.menus.instance.editor.getNextElement(column)
-			const index = column.parent.children.findIndex(item => {
-				return item.isEqual(column)
-			})
-			rows.forEach(row => {
-				row.children[index].toEmpty()
-			})
-			this.menus.instance.editor.formatElementStack()
-			if (previousColumn) {
-				this.menus.instance.editor.range.anchor.moveToEnd(previousColumn)
-				this.menus.instance.editor.range.focus.moveToEnd(previousColumn)
-			} else {
-				this.menus.instance.editor.range.anchor.moveToEnd(nextColumn)
-				this.menus.instance.editor.range.focus.moveToEnd(nextColumn)
-			}
-			this.menus.instance.editor.domRender()
-			this.menus.instance.editor.rangeRender()
 			this.hideLayer()
 		},
 		//删除表格

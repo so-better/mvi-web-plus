@@ -903,19 +903,21 @@ export default {
 				this.editor.range.anchor.offset = this.editor.range.focus.offset
 			}
 			const row = this.getCurrentParsedomElement('tr')
-			const newRow = row.clone()
-			newRow.children.forEach(column => {
-				column.children = []
-				const breakEl = new AlexElement('closed', 'br', null, null, null)
-				this.editor.addElementTo(breakEl, column)
-			})
-			this.editor.addElementAfter(newRow, row)
-			this.editor.formatElementStack()
-			this.editor.range.anchor.moveToStart(newRow)
-			this.editor.range.focus.moveToStart(newRow)
-			this.editor.domRender()
-			this.editor.rangeRender()
-			this.autoLayerOffset('tableLayer')
+			if (row) {
+				const newRow = row.clone()
+				newRow.children.forEach(column => {
+					column.children = []
+					const breakEl = new AlexElement('closed', 'br', null, null, null)
+					this.editor.addElementTo(breakEl, column)
+				})
+				this.editor.addElementAfter(newRow, row)
+				this.editor.formatElementStack()
+				this.editor.range.anchor.moveToStart(newRow)
+				this.editor.range.focus.moveToStart(newRow)
+				this.editor.domRender()
+				this.editor.rangeRender()
+				this.autoLayerOffset('tableLayer')
+			}
 		},
 		//删除表格行
 		removeTableRow() {
@@ -927,25 +929,27 @@ export default {
 				this.editor.range.anchor.offset = this.editor.range.focus.offset
 			}
 			const row = this.getCurrentParsedomElement('tr')
-			const parent = row.parent
-			if (parent.children.length == 1) {
-				this.deleteTable()
-				return
+			if (row) {
+				const parent = row.parent
+				if (parent.children.length == 1) {
+					this.deleteTable()
+					return
+				}
+				const previousRow = this.editor.getPreviousElement(row)
+				const nextRow = this.editor.getNextElement(row)
+				row.toEmpty()
+				this.editor.formatElementStack()
+				if (previousRow) {
+					this.editor.range.anchor.moveToEnd(previousRow.children[0])
+					this.editor.range.focus.moveToEnd(previousRow.children[0])
+				} else {
+					this.editor.range.anchor.moveToEnd(nextRow.children[0])
+					this.editor.range.focus.moveToEnd(nextRow.children[0])
+				}
+				this.editor.domRender()
+				this.editor.rangeRender()
+				this.autoLayerOffset('tableLayer')
 			}
-			const previousRow = this.editor.getPreviousElement(row)
-			const nextRow = this.editor.getNextElement(row)
-			row.toEmpty()
-			this.editor.formatElementStack()
-			if (previousRow) {
-				this.editor.range.anchor.moveToEnd(previousRow.children[0])
-				this.editor.range.focus.moveToEnd(previousRow.children[0])
-			} else {
-				this.editor.range.anchor.moveToEnd(nextRow.children[0])
-				this.editor.range.focus.moveToEnd(nextRow.children[0])
-			}
-			this.editor.domRender()
-			this.editor.rangeRender()
-			this.autoLayerOffset('tableLayer')
 		},
 		//插入表格列
 		addTableColumn() {
@@ -958,22 +962,24 @@ export default {
 			}
 			const column = this.getCurrentParsedomElement('td')
 			const tbody = this.getCurrentParsedomElement('tbody')
-			const rows = tbody.children
-			const index = column.parent.children.findIndex(item => {
-				return item.isEqual(column)
-			})
-			rows.forEach(row => {
-				const newColumn = column.clone(false)
-				const breakEl = new AlexElement('closed', 'br', null, null, null)
-				this.editor.addElementTo(breakEl, newColumn)
-				this.editor.addElementTo(newColumn, row, index + 1)
-			})
-			this.editor.formatElementStack()
-			const nextColumn = this.editor.getNextElement(column)
-			this.editor.range.anchor.moveToStart(nextColumn)
-			this.editor.range.focus.moveToStart(nextColumn)
-			this.editor.domRender()
-			this.editor.rangeRender()
+			if (column && tbody) {
+				const rows = tbody.children
+				const index = column.parent.children.findIndex(item => {
+					return item.isEqual(column)
+				})
+				rows.forEach(row => {
+					const newColumn = column.clone(false)
+					const breakEl = new AlexElement('closed', 'br', null, null, null)
+					this.editor.addElementTo(breakEl, newColumn)
+					this.editor.addElementTo(newColumn, row, index + 1)
+				})
+				this.editor.formatElementStack()
+				const nextColumn = this.editor.getNextElement(column)
+				this.editor.range.anchor.moveToStart(nextColumn)
+				this.editor.range.focus.moveToStart(nextColumn)
+				this.editor.domRender()
+				this.editor.rangeRender()
+			}
 		},
 		//删除表格列
 		removeTableColumn() {
@@ -986,30 +992,32 @@ export default {
 			}
 			const column = this.getCurrentParsedomElement('td')
 			const tbody = this.getCurrentParsedomElement('tbody')
-			const rows = tbody.children
-			const parent = column.parent
-			if (parent.children.length == 1) {
-				this.deleteTable()
-				return
+			if (column && tbody) {
+				const rows = tbody.children
+				const parent = column.parent
+				if (parent.children.length == 1) {
+					this.deleteTable()
+					return
+				}
+				const previousColumn = this.editor.getPreviousElement(column)
+				const nextColumn = this.editor.getNextElement(column)
+				const index = column.parent.children.findIndex(item => {
+					return item.isEqual(column)
+				})
+				rows.forEach(row => {
+					row.children[index].toEmpty()
+				})
+				this.editor.formatElementStack()
+				if (previousColumn) {
+					this.editor.range.anchor.moveToEnd(previousColumn)
+					this.editor.range.focus.moveToEnd(previousColumn)
+				} else {
+					this.editor.range.anchor.moveToEnd(nextColumn)
+					this.editor.range.focus.moveToEnd(nextColumn)
+				}
+				this.editor.domRender()
+				this.editor.rangeRender()
 			}
-			const previousColumn = this.editor.getPreviousElement(column)
-			const nextColumn = this.editor.getNextElement(column)
-			const index = column.parent.children.findIndex(item => {
-				return item.isEqual(column)
-			})
-			rows.forEach(row => {
-				row.children[index].toEmpty()
-			})
-			this.editor.formatElementStack()
-			if (previousColumn) {
-				this.editor.range.anchor.moveToEnd(previousColumn)
-				this.editor.range.focus.moveToEnd(previousColumn)
-			} else {
-				this.editor.range.anchor.moveToEnd(nextColumn)
-				this.editor.range.focus.moveToEnd(nextColumn)
-			}
-			this.editor.domRender()
-			this.editor.rangeRender()
 		},
 		//删除表格
 		deleteTable() {
