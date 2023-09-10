@@ -1569,8 +1569,9 @@ export default {
 			//起点和终点在一起
 			if (this.editor.range.anchor.isEqual(this.editor.range.focus)) {
 				const block = this.editor.range.anchor.element.getBlock()
+				const isList = elementUtil.isList(block, ordered)
 				elementUtil.toParagraph(block)
-				if (!elementUtil.isList(block, ordered)) {
+				if (!isList) {
 					elementUtil.toList(block, ordered)
 				}
 			}
@@ -1579,14 +1580,16 @@ export default {
 				const result = this.editor.getElementsByRange(true, false)
 				result.forEach(item => {
 					if (item.element.isBlock()) {
+						const isList = elementUtil.isList(item.element, ordered)
 						elementUtil.toParagraph(item.element)
-						if (!elementUtil.isList(block, ordered)) {
+						if (!isList) {
 							elementUtil.toList(item.element, ordered)
 						}
 					} else {
 						const block = item.element.getBlock()
+						const isList = elementUtil.isList(block, ordered)
 						elementUtil.toParagraph(block)
-						if (!elementUtil.isList(block, ordered)) {
+						if (!isList) {
 							elementUtil.toList(block, ordered)
 						}
 					}
@@ -1661,8 +1664,9 @@ export default {
 			//起点和终点在一起
 			if (this.editor.range.anchor.isEqual(this.editor.range.focus)) {
 				const block = this.editor.range.anchor.element.getBlock()
+				const oldParsedom = block.parsedom
 				elementUtil.toParagraph(block)
-				if (block.parsedom != 'blockquote') {
+				if (oldParsedom != 'blockquote') {
 					block.parsedom = 'blockquote'
 				}
 			}
@@ -1671,14 +1675,16 @@ export default {
 				const result = this.editor.getElementsByRange(true, false)
 				result.forEach(el => {
 					if (el.element.isBlock()) {
+						const oldParsedom = el.element.parsedom
 						elementUtil.toParagraph(el.element)
-						if (block.parsedom != 'blockquote') {
+						if (oldParsedom != 'blockquote') {
 							el.element.parsedom = 'blockquote'
 						}
 					} else {
 						const block = el.element.getBlock()
+						const oldParsedom = block.parsedom
 						elementUtil.toParagraph(block)
-						if (block.parsedom != 'blockquote') {
+						if (oldParsedom != 'blockquote') {
 							block.parsedom = 'blockquote'
 						}
 					}
