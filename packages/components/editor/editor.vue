@@ -1788,12 +1788,7 @@ export default {
 		//卸载滚动监听事件
 		this.removeScroll()
 		//卸载绑定在document.documentElement上的事件
-		const data = Dap.event.get(document.documentElement)
-		for (let key in data) {
-			if (key.startsWith('mousemove.editor_') || key.startsWith('mouseup.editor_')) {
-				Dap.event.off(document.documentElement, key)
-			}
-		}
+		Dap.event.off(document.documentElement, `mousedown.editor_${this.uid} mousemove.editor_${this.uid} mouseup.editor_${this.uid}`)
 	}
 }
 </script>
