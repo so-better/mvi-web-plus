@@ -1146,17 +1146,26 @@ export default {
 			}
 			const column = this.menus.instance.getCurrentParsedomElement('td')
 			const tbody = this.menus.instance.getCurrentParsedomElement('tbody')
-			if (column && tbody) {
+			const table = this.menus.instance.getCurrentParsedomElement('table')
+			if (column && table && tbody) {
 				const rows = tbody.children
 				const index = column.parent.children.findIndex(item => {
 					return item.isEqual(column)
 				})
+				//插入列
 				rows.forEach(row => {
 					const newColumn = column.clone(false)
 					const breakEl = new AlexElement('closed', 'br', null, null, null)
 					this.menus.instance.editor.addElementTo(breakEl, newColumn)
 					this.menus.instance.editor.addElementTo(newColumn, row, index + 1)
 				})
+				//插入col
+				const colgroup = table.children.find(item => {
+					return item.parsedom == 'colgroup'
+				})
+				const col = new AlexElement('closed', 'col', null, null, null)
+				this.menus.instance.editor.addElementTo(col, colgroup, index + 1)
+				//渲染
 				this.menus.instance.editor.formatElementStack()
 				const nextColumn = this.menus.instance.editor.getNextElement(column)
 				this.menus.instance.editor.range.anchor.moveToStart(nextColumn)
@@ -1177,7 +1186,8 @@ export default {
 			}
 			const column = this.menus.instance.getCurrentParsedomElement('td')
 			const tbody = this.menus.instance.getCurrentParsedomElement('tbody')
-			if (column && tbody) {
+			const table = this.menus.instance.getCurrentParsedomElement('table')
+			if (column && table && tbody) {
 				const rows = tbody.children
 				const parent = column.parent
 				if (parent.children.length == 1) {
@@ -1189,9 +1199,16 @@ export default {
 				const index = column.parent.children.findIndex(item => {
 					return item.isEqual(column)
 				})
+				//删除列
 				rows.forEach(row => {
 					row.children[index].toEmpty()
 				})
+				//删除col
+				const colgroup = table.children.find(item => {
+					return item.parsedom == 'colgroup'
+				})
+				colgroup.children[index].toEmpty()
+				//渲染
 				this.menus.instance.editor.formatElementStack()
 				if (previousColumn) {
 					this.menus.instance.editor.range.anchor.moveToEnd(previousColumn)

@@ -194,6 +194,11 @@ export default {
 					...languages
 				],
 				language: ''
+			},
+			//表格列宽拖拽记录数据
+			tableColumnResizeParams: {
+				element: null, //被拖拽的td
+				start: 0 //水平方向起点位置
 			}
 		}
 	},
@@ -308,8 +313,89 @@ export default {
 		if (this.autofocus && !this.codeViewShow && !this.disabled) {
 			this.collapseToEnd()
 		}
+		//鼠标按下监听
+		Dap.event.on(document.documentElement, `mousedown.editor_${this.uid}`, this.documentMouseDown)
+		//鼠标移动监听
+		Dap.event.on(document.documentElement, `mousemove.editor_${this.uid}`, this.documentMouseMove)
+		//鼠标松开监听
+		Dap.event.on(document.documentElement, `mouseup.editor_${this.uid}`, this.documentMouseUp)
 	},
 	methods: {
+		//鼠标在页面按下
+		documentMouseDown(e) {
+			if (this.disabled) {
+				return
+			}
+			const elm = e.target
+			const key = Dap.data.get(elm, 'data-alex-editor-key')
+			if (key) {
+				const element = this.editor.getElementByKey(key)
+				if (element.parsedom == 'td') {
+					const length = element.parent.children.length
+					//最后一个td不设置
+					if (element.parent.children[length - 1].isEqual(element)) {
+						return
+					}
+					const rect = Dap.element.getElementBounding(elm)
+					//在可拖拽范围内
+					if (Math.abs(rect.left + elm.offsetWidth - e.pageX) < Dap.element.rem2px(0.2)) {
+						this.tableColumnResizeParams.element = element
+						this.tableColumnResizeParams.start = e.pageX
+					}
+				}
+			}
+		},
+		//鼠标在页面移动
+		documentMouseMove(e) {
+			if (this.disabled) {
+				return
+			}
+			if (!this.tableColumnResizeParams.element) {
+				return
+			}
+			const table = this.getCurrentParsedomElement('table')
+			if (!table) {
+				return
+			}
+			const colgroup = table.children.find(item => {
+				return item.parsedom == 'colgroup'
+			})
+			const index = this.tableColumnResizeParams.element.parent.children.findIndex(el => {
+				return el.isEqual(this.tableColumnResizeParams.element)
+			})
+			const width = `${this.tableColumnResizeParams.element._elm.offsetWidth + e.pageX - this.tableColumnResizeParams.start}`
+			colgroup.children[index].marks['width'] = width
+			colgroup.children[index]._elm.setAttribute('width', width)
+			this.tableColumnResizeParams.start = e.pageX
+		},
+		//鼠标在页面松开
+		documentMouseUp(e) {
+			if (this.disabled) {
+				return
+			}
+			if (!this.tableColumnResizeParams.element) {
+				return
+			}
+			const table = this.getCurrentParsedomElement('table')
+			if (!table) {
+				return
+			}
+			const colgroup = table.children.find(item => {
+				return item.parsedom == 'colgroup'
+			})
+			const index = this.tableColumnResizeParams.element.parent.children.findIndex(el => {
+				return el.isEqual(this.tableColumnResizeParams.element)
+			})
+			const width = Number(colgroup.children[index].marks['width'])
+			if (!isNaN(width)) {
+				colgroup.children[index].marks['width'] = `${Number(((width / this.tableColumnResizeParams.element.parent._elm.offsetWidth) * 100).toFixed(2))}%`
+				this.editor.formatElementStack()
+				this.editor.domRender()
+				this.editor.rangeRender()
+			}
+			this.tableColumnResizeParams.element = null
+			this.tableColumnResizeParams.start = 0
+		},
 		//编辑区域键盘按下
 		contentKeyDown(e) {
 			//增加缩进
@@ -698,19 +784,7 @@ export default {
 		},
 		//编辑器dom渲染
 		handleAfterRender() {
-			const elements = AlexElement.flatElements(this.editor.stack)
-			//对表格进行处理
-			const tables = elements.filter(el => el.parsedom == 'table')
-			tables.forEach(table => {
-				const rows = AlexElement.flatElements(table.children).filter(el => {
-					return el.parsedom == 'tr'
-				})
-				rows.forEach((row, rowIndex) => {
-					row.children.forEach((column, columnIndex) => {
-						this.setTabelColumnResize(table, row, rowIndex, column, columnIndex)
-					})
-				})
-			})
+			//解决代码块内输入内容导致代码块高度变化而浮层不更新位置的bug
 			if (this.preAdjusterProps.show) {
 				this.autoLayerOffset('preLayer')
 			}
@@ -803,69 +877,6 @@ export default {
 			this.editor.domRender()
 			this.editor.rangeRender()
 			this.mediaAdjusterProps.show = false
-		},
-		//设置表格列宽拖拽
-		setTabelColumnResize(table, row, rowIndex, column, columnIndex) {
-			if (this.disabled) {
-				return
-			}
-			//最后一个列不设置拖拽
-			if (columnIndex == row.children.length - 1) {
-				return
-			}
-			//colgroup
-			const colgroup = table.children.find(item => {
-				return item.parsedom == 'colgroup'
-			})
-			//先移除事件
-			Dap.event.off(column._elm, 'mousedown')
-			Dap.event.off(document.documentElement, `mousemove.editor_table_${table.key}_${rowIndex}_${columnIndex}_${this.uid} mouseup.editor_table_${table.key}_${rowIndex}_${columnIndex}_${this.uid}`)
-			//是否可以拖拽
-			let canResize = false
-			//按下时的位置
-			let start = 0
-			//鼠标按下
-			Dap.event.on(column._elm, 'mousedown', e => {
-				if (this.disabled) {
-					return
-				}
-				const rect = Dap.element.getElementBounding(column._elm)
-				//在可拖拽范围内
-				if (Math.abs(rect.left + column._elm.offsetWidth - e.pageX) < Dap.element.rem2px(0.2)) {
-					canResize = true
-					start = e.pageX
-				} else {
-					canResize = false
-				}
-			})
-			//鼠标移动
-			Dap.event.on(document.documentElement, `mousemove.editor_table_${table.key}_${rowIndex}_${columnIndex}_${this.uid}`, e => {
-				if (this.disabled) {
-					return
-				}
-				if (canResize) {
-					colgroup.children[columnIndex].marks['width'] = `${column._elm.offsetWidth + e.pageX - start}`
-					colgroup.children[columnIndex]._elm.setAttribute('width', `${column._elm.offsetWidth + e.pageX - start}`)
-					start = e.pageX
-				}
-			})
-			//鼠标松开
-			Dap.event.on(document.documentElement, `mouseup.editor_table_${table.key}_${rowIndex}_${columnIndex}_${this.uid}`, e => {
-				if (this.disabled) {
-					return
-				}
-				if (canResize) {
-					const width = Number(colgroup.children[columnIndex].marks['width'])
-					if (!isNaN(width)) {
-						colgroup.children[columnIndex].marks['width'] = `${Number(((width / row._elm.offsetWidth) * 100).toFixed(2))}%`
-						this.editor.formatElementStack()
-						this.editor.domRender()
-						this.editor.rangeRender()
-					}
-					canResize = false
-					start = 0
-				}
-			})
 		},
 		//在表格前或者后换行
 		insertParagraphToTable(type) {
@@ -960,17 +971,26 @@ export default {
 			}
 			const column = this.getCurrentParsedomElement('td')
 			const tbody = this.getCurrentParsedomElement('tbody')
-			if (column && tbody) {
+			const table = this.getCurrentParsedomElement('table')
+			if (column && table && tbody) {
 				const rows = tbody.children
 				const index = column.parent.children.findIndex(item => {
 					return item.isEqual(column)
 				})
+				//插入列
 				rows.forEach(row => {
 					const newColumn = column.clone(false)
 					const breakEl = new AlexElement('closed', 'br', null, null, null)
 					this.editor.addElementTo(breakEl, newColumn)
 					this.editor.addElementTo(newColumn, row, index + 1)
 				})
+				//插入col
+				const colgroup = table.children.find(item => {
+					return item.parsedom == 'colgroup'
+				})
+				const col = new AlexElement('closed', 'col', null, null, null)
+				this.editor.addElementTo(col, colgroup, index + 1)
+				//渲染
 				this.editor.formatElementStack()
 				const nextColumn = this.editor.getNextElement(column)
 				this.editor.range.anchor.moveToStart(nextColumn)
@@ -990,7 +1010,8 @@ export default {
 			}
 			const column = this.getCurrentParsedomElement('td')
 			const tbody = this.getCurrentParsedomElement('tbody')
-			if (column && tbody) {
+			const table = this.getCurrentParsedomElement('table')
+			if (column && table && tbody) {
 				const rows = tbody.children
 				const parent = column.parent
 				if (parent.children.length == 1) {
@@ -1002,9 +1023,16 @@ export default {
 				const index = column.parent.children.findIndex(item => {
 					return item.isEqual(column)
 				})
+				//删除列
 				rows.forEach(row => {
 					row.children[index].toEmpty()
 				})
+				//删除col
+				const colgroup = table.children.find(item => {
+					return item.parsedom == 'colgroup'
+				})
+				colgroup.children[index].toEmpty()
+				//渲染
 				this.editor.formatElementStack()
 				if (previousColumn) {
 					this.editor.range.anchor.moveToEnd(previousColumn)
