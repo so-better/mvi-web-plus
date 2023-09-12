@@ -1245,14 +1245,14 @@ export default {
 @import '../../css/mvi-basic.less';
 .mvi-editor-menu {
 	display: block;
-	padding: @mp-xs;
+	padding: 0;
 
 	.mvi-editor-menu-el {
 		display: flex;
 		justify-content: flex-start;
 		align-items: center;
 		white-space: nowrap;
-		padding: @mp-xs;
+		padding: @mp-sm;
 		border-radius: @radius-default;
 		opacity: 0.8;
 		line-height: 1;
