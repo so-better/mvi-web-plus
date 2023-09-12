@@ -312,11 +312,11 @@ export default {
 				return true
 			}
 			//如果是代码块内，则禁用部分菜单
-			if (this.menus.instance.isPre && !['codeblock', 'undo', 'redo'].includes(this.name)) {
+			if (this.menus.instance.getCurrentParsedomElement('pre') && !['codeblock', 'undo', 'redo'].includes(this.name)) {
 				return true
 			}
 			//如果是在表格内，则禁用部分菜单
-			if (this.menus.instance.isTable && ['indent', 'divider', 'title', 'ol', 'ul', 'codeblock'].includes(this.name)) {
+			if (this.menus.instance.getCurrentParsedomElement('table') && ['indent', 'divider', 'title', 'ol', 'ul', 'codeblock'].includes(this.name)) {
 				return true
 			}
 			return false
@@ -912,15 +912,15 @@ export default {
 				}
 				//链接判定
 				else if (this.name == 'link') {
-					this.active = this.menus.instance.isLink
+					this.active = !!this.menus.instance.getCurrentParsedomElement('a')
 				}
 				//表格判定
 				else if (this.name == 'table') {
-					this.active = this.menus.instance.isTable
+					this.active = !!this.menus.instance.getCurrentParsedomElement('table')
 				}
 				//代码块判定
 				else if (this.name == 'codeblock') {
-					this.active = this.menus.instance.isPre
+					this.active = !!this.menus.instance.getCurrentParsedomElement('pre')
 				}
 				//自定义菜单项的激活判定
 				else if (!this.isDefinedMenu && typeof this.customActive == 'function') {

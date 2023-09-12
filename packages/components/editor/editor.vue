@@ -133,12 +133,6 @@ export default {
 		return {
 			//是否显示代码视图，代码视图下不可编辑
 			codeViewShow: false,
-			//光标是否在表格内
-			isTable: false,
-			//光标是否在代码块内
-			isPre: false,
-			//光标是否在链接内
-			isLink: false,
 			//编辑器实例
 			editor: null,
 			//是否在输入中文
@@ -744,9 +738,6 @@ export default {
 			const video = this.getCurrentParsedomElement('video')
 			const table = this.getCurrentParsedomElement('table')
 			const pre = this.getCurrentParsedomElement('pre')
-			this.isTable = !!table
-			this.isPre = !!pre
-			this.isLink = !!link
 			setTimeout(() => {
 				if (img || video) {
 					const el = img || video
@@ -1730,8 +1721,8 @@ export default {
 		},
 		//api：插入代码块
 		setCodeBlock() {
-			if (this.isPre) {
-				const pre = this.preAdjusterProps.element
+			const pre = this.getCurrentParsedomElement('pre')
+			if (pre) {
 				elementUtil.toParagraph(pre)
 			} else {
 				//起点和终点在一起
@@ -1784,7 +1775,6 @@ export default {
 					this.editor.addElementAfter(paragraph, pre)
 				}
 			}
-
 			this.editor.formatElementStack()
 			this.editor.domRender()
 			this.editor.rangeRender()
