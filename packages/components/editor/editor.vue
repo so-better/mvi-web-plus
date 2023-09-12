@@ -419,13 +419,19 @@ export default {
 		},
 		//自动矫正调整器的位置
 		autoLayerOffset(refName) {
-			const b1 = Dap.element.getElementBounding(this.$el)
-			const b2 = Dap.element.getElementBounding(this.$refs[refName].$el)
+			let b1 = Dap.element.getElementBounding(this.$el)
+			let b2 = Dap.element.getElementBounding(this.$refs[refName].$el)
 			if (b1.top >= b2.top || b1.bottom >= b2.bottom) {
 				this.$refs[refName].$el.style.bottom = b1.bottom + 'px'
 				this.$refs[refName].$el.style.top = 'auto'
 			} else {
 				this.$refs[refName].reset()
+			}
+			b1 = Dap.element.getElementBounding(this.$el)
+			b2 = Dap.element.getElementBounding(this.$refs[refName].$el)
+			if (b1.top >= b2.top || b1.bottom >= b2.bottom) {
+				this.$refs[refName].$el.style.bottom = b1.bottom + 'px'
+				this.$refs[refName].$el.style.top = 'auto'
 			}
 		},
 		//监听滚动隐藏编辑器内的浮层
