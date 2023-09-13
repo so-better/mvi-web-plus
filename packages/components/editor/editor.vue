@@ -270,7 +270,7 @@ export default {
 		this.editor = new AlexEditor(this.$refs.content, {
 			disabled: this.disabled,
 			value: this.cmpValue,
-			renderRules: [this.orderListHandle, this.codeHandle, this.mediaHandle, this.thParseTdHandle, this.tableHandle, this.preHandle, ...this.renderRules],
+			renderRules: [this.orderListHandle, this.codeHandle, this.mediaHandle, this.tableHandle, this.preHandle, ...this.renderRules],
 			htmlPaste: this.htmlPaste
 		})
 		//编辑器渲染后会有一个渲染过程，会改变内容，因此重新获取内容的值来设置modelValue
@@ -469,87 +469,83 @@ export default {
 		},
 		//元素格式化时转换ol和ul标签
 		orderListHandle(element) {
-			if (!element.isEmpty()) {
-				//ol标签和ul标签转为div
-				if (element.parsedom == 'ol' || element.parsedom == 'ul') {
-					if (element.hasChildren()) {
-						element.children.forEach((el, index) => {
-							const newEl = el.clone()
-							newEl.parsedom = 'div'
-							newEl.type = 'block'
-							if (!newEl.hasMarks()) {
-								newEl.marks = {}
-							}
-							newEl.marks['data-list'] = element.parsedom
-							if (element.parsedom == 'ol') {
-								newEl.marks['data-value'] = index + 1
-							}
-							//插入到该元素之前
-							this.editor.addElementBefore(newEl, element)
-						})
-					}
-					element.toEmpty()
+			//ol标签和ul标签转为div
+			if (element.parsedom == 'ol' || element.parsedom == 'ul') {
+				if (element.hasChildren()) {
+					element.children.forEach((el, index) => {
+						const newEl = el.clone()
+						newEl.parsedom = 'div'
+						newEl.type = 'block'
+						if (!newEl.hasMarks()) {
+							newEl.marks = {}
+						}
+						newEl.marks['data-list'] = element.parsedom
+						if (element.parsedom == 'ol') {
+							newEl.marks['data-value'] = index + 1
+						}
+						//插入到该元素之后
+						this.editor.addElementAfter(newEl, element)
+					})
 				}
-				//有序列表的序号处理
-				if (element.type == 'block' && element.hasMarks() && element.marks['data-list'] == 'ol') {
-					//获取前一个元素
-					const previousElement = this.editor.getPreviousElement(element)
-					//如果前一个元素存在并且也是有序列表
-					if (previousElement && previousElement.hasMarks() && previousElement.marks['data-list'] == 'ol') {
-						const previousValue = Number(previousElement.marks['data-value'])
-						element.marks['data-value'] = previousValue + 1
-					}
-					//前一个元素不是有序列表，则从0开始
-					else {
-						element.marks['data-value'] = 1
-					}
+				element.toEmpty()
+			}
+			//有序列表的序号处理
+			if (element.type == 'block' && element.hasMarks() && element.marks['data-list'] == 'ol') {
+				//获取前一个元素
+				const previousElement = this.editor.getPreviousElement(element)
+				//如果前一个元素存在并且也是有序列表
+				if (previousElement && previousElement.hasMarks() && previousElement.marks['data-list'] == 'ol') {
+					const previousValue = Number(previousElement.marks['data-value'])
+					element.marks['data-value'] = previousValue + 1
+				}
+				//前一个元素不是有序列表，则从0开始
+				else {
+					element.marks['data-value'] = 1
 				}
 			}
 		},
 		//元素格式化时处理媒体元素和链接
 		mediaHandle(element) {
-			if (!element.isEmpty()) {
-				//图片增加marks
-				if (element.parsedom == 'img') {
-					const marks = {
-						'mvi-editor-element-key': element.key
-					}
-					if (element.hasMarks()) {
-						Object.assign(element.marks, marks)
-					} else {
-						element.marks = marks
-					}
+			//图片增加marks
+			if (element.parsedom == 'img') {
+				const marks = {
+					'mvi-editor-element-key': element.key
 				}
-				//视频增加marks
-				if (element.parsedom == 'video') {
-					const marks = {
-						controls: true,
-						autoplay: true,
-						muted: true,
-						'mvi-editor-element-key': element.key
-					}
-					if (element.hasMarks()) {
-						Object.assign(element.marks, marks)
-					} else {
-						element.marks = marks
-					}
+				if (element.hasMarks()) {
+					Object.assign(element.marks, marks)
+				} else {
+					element.marks = marks
 				}
-				//链接增加marks
-				if (element.parsedom == 'a') {
-					const marks = {
-						'mvi-editor-element-key': element.key
-					}
-					if (element.hasMarks()) {
-						Object.assign(element.marks, marks)
-					} else {
-						element.marks = marks
-					}
+			}
+			//视频增加marks
+			if (element.parsedom == 'video') {
+				const marks = {
+					controls: true,
+					autoplay: true,
+					muted: true,
+					'mvi-editor-element-key': element.key
+				}
+				if (element.hasMarks()) {
+					Object.assign(element.marks, marks)
+				} else {
+					element.marks = marks
+				}
+			}
+			//链接增加marks
+			if (element.parsedom == 'a') {
+				const marks = {
+					'mvi-editor-element-key': element.key
+				}
+				if (element.hasMarks()) {
+					Object.assign(element.marks, marks)
+				} else {
+					element.marks = marks
 				}
 			}
 		},
 		//元素格式化时转换code标签
 		codeHandle(element) {
-			if (!element.isEmpty() && element.parsedom == 'code') {
+			if (element.parsedom == 'code') {
 				element.parsedom = 'span'
 				const marks = {
 					'data-code-style': true
@@ -561,15 +557,9 @@ export default {
 				}
 			}
 		},
-		//元素格式化时表格th转td
-		thParseTdHandle(element) {
-			if (element.parsedom == 'th') {
-				element.parsedom = 'td'
-			}
-		},
 		//元素格式化时处理表格
 		tableHandle(element) {
-			if (element.parsedom == 'table' && !element.isEmpty()) {
+			if (element.parsedom == 'table') {
 				const marks = {
 					'mvi-editor-element-key': element.key
 				}
@@ -617,12 +607,14 @@ export default {
 				})
 				this.editor.addElementTo(tbody, element)
 				this.editor.addElementTo(colgroup, element)
+			} else if (element.parsedom == 'th') {
+				element.parsedom = 'td'
 			}
 		},
 		//元素格式化时处理pre，将pre的内容根据语言进行样式处理
 		preHandle(element) {
 			//如果是代码块进行处理
-			if ((element.isBlock() || element.isInblock()) && element.isPreStyle() && !element.isEmpty()) {
+			if ((element.isBlock() || element.isInblock()) && element.isPreStyle()) {
 				const marks = {
 					'mvi-editor-element-key': element.key
 				}
