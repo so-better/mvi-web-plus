@@ -406,22 +406,22 @@ export default {
 					this.hideLayer()
 				},
 				error: (errorType, file) => {
+					let msg = ''
+					if (errorType == 'suffixError') {
+						msg = '文件后缀不符合'
+					} else if (errorType == 'maxSizeError') {
+						msg = '超出最大文件尺寸限制'
+					} else if (errorType == 'minSizeError') {
+						msg = '文件尺寸没有达到要求的最小值'
+					} else if (errorType == 'maxLengthError') {
+						msg = '文件数量超出限制'
+					} else if (errorType == 'minLengthError') {
+						msg = '文件数量没有达到最小值'
+					}
 					if (this.name == 'image') {
 						if (typeof this.menus.uploadImageError == 'function') {
-							this.menus.uploadImageError(state, file)
+							this.menus.uploadImageError(errorType, msg, file)
 						} else {
-							let msg = ''
-							if (errorType == 'suffixError') {
-								msg = '文件后缀不符合'
-							} else if (errorType == 'maxSizeError') {
-								msg = '超出最大文件尺寸限制'
-							} else if (errorType == 'minSizeError') {
-								msg = '文件尺寸没有达到要求的最小值'
-							} else if (errorType == 'maxLengthError') {
-								msg = '文件数量超出限制'
-							} else if (errorType == 'minLengthError') {
-								msg = '文件数量没有达到最小值'
-							}
 							Msgbox.msgbox({
 								message: msg,
 								animation: 'scale'
@@ -429,10 +429,10 @@ export default {
 						}
 					} else if (this.name == 'video') {
 						if (typeof this.menus.uploadVideoError == 'function') {
-							this.menus.uploadVideoError(state, message, file)
+							this.menus.uploadVideoError(errorType, msg, file)
 						} else {
 							Msgbox.msgbox({
-								message: message,
+								message: msg,
 								animation: 'scale'
 							})
 						}
