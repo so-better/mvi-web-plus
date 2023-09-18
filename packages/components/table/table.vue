@@ -36,19 +36,22 @@
 					<table v-if="rowData.length" cellpadding="0" cellspacing="0">
 						<tr v-for="(row, rowIndex) in rowData" :class="stripe ? 'stripe' : ''">
 							<td v-for="(column, columnIndex) in columnData" :class="bodyColumnClass(row, rowIndex, column, columnIndex)" :style="bodyColumnStyle(column, columnIndex)">
-								<Tooltip :disabled="!column.ellipsis" block :title="tooltipTitle(row, column)" trigger="hover" :placement="center ? 'bottom' : 'bottom-start'" :fixed="height ? true : false">
-									<div :class="['mvi-table-column', center ? 'center' : '']">
-										<!-- 复选框 -->
-										<Checkbox v-if="column.type == 'selection'" v-model="checkedRows" :value="rowIndex" size="0.24rem" @change="doCheck(rowIndex, column)" :color="activeColor" :disabled="!cmpSelectable(row, rowIndex, column)"></Checkbox>
-										<!-- 其他 -->
-										<div v-else :class="[column.ellipsis ? 'ellipsis' : '']">
-											<!-- 自定义单元格 -->
-											<slot v-if="column.type == 'custom' && $slots.custom" name="custom" :row="row" :row-index="rowIndex" :column="column" :column-index="columnIndex"></slot>
-											<!-- 默认内容 -->
-											<span v-else v-html="dataFormat(row, column)"></span>
-										</div>
+								<div class="mvi-table-column">
+									<!-- 复选框 -->
+									<div v-if="column.type == 'selection'" :class="['mvi-table-column-item', center ? 'center' : '']">
+										<Checkbox v-model="checkedRows" :value="rowIndex" size="0.24rem" @change="doCheck(rowIndex, column)" :color="activeColor" :disabled="!cmpSelectable(row, rowIndex, column)"></Checkbox>
 									</div>
-								</Tooltip>
+									<!-- 自定义单元格 -->
+									<div v-else-if="column.type == 'custom' && $slots.custom" :class="['mvi-table-column-item', center ? 'center' : '']">
+										<slot name="custom" :row="row" :row-index="rowIndex" :column="column" :column-index="columnIndex"></slot>
+									</div>
+									<!-- 其他 -->
+									<Tooltip v-else class="mvi-table-column-tooltip" :disabled="!column.ellipsis || !tooltipTitle(row, column)" block :title="tooltipTitle(row, column)" trigger="hover" :placement="center ? 'bottom' : 'bottom-start'" :fixed="height ? true : false">
+										<div :class="['mvi-table-column-item', center ? 'center' : '']">
+											<div v-html="dataFormat(row, column)" :class="[column.ellipsis ? 'ellipsis' : '']"></div>
+										</div>
+									</Tooltip>
+								</div>
 							</td>
 						</tr>
 					</table>
@@ -233,9 +236,9 @@ export default {
 		dataFormat() {
 			return (row, column) => {
 				if (typeof column.format == 'function') {
-					return column.format.apply(this, [row[column.prop], row, column])
+					return column.format.apply(this, [row[column.prop], row, column]) || ''
 				}
-				return row[column.prop] + ''
+				return row[column.prop] ? row[column.prop] + '' : ''
 			}
 		},
 		//判断某一行复选框是否可以使用
@@ -353,7 +356,7 @@ export default {
 				this.sortBy = ''
 				this.sortOrder = ''
 				if (typeof column.sortMethod == 'function') {
-					column.sortMethod.apply(this, ['', this.rowData, column])
+					column.sortMethod.apply(this, [this.sortOrder, this.sortBy, this.rowData, column])
 				} else {
 					this.rowData = this.deepClone(this.data)
 					this.$emit('sort-cancel', this.rowData)
@@ -364,7 +367,7 @@ export default {
 				this.sortBy = column.prop
 				this.sortOrder = 'asc'
 				if (typeof column.sortMethod == 'function') {
-					column.sortMethod.apply(this, ['asc', this.rowData, column])
+					column.sortMethod.apply(this, [this.sortOrder, this.sortBy, this.rowData, column])
 				} else {
 					this.rowData = this.rowData.sort(function (rowA, rowB) {
 						if (Dap.number.isNumber(rowA[column.prop]) && Dap.number.isNumber(rowB[column.prop])) {
@@ -383,7 +386,7 @@ export default {
 				this.sortBy = ''
 				this.sortOrder = ''
 				if (typeof column.sortMethod == 'function') {
-					column.sortMethod.apply(this, ['', this.rowData, column])
+					column.sortMethod.apply(this, [this.sortOrder, this.sortBy, this.rowData, column])
 				} else {
 					this.rowData = this.deepClone(this.data)
 					this.$emit('sort-cancel', this.rowData)
@@ -394,7 +397,7 @@ export default {
 				this.sortBy = column.prop
 				this.sortOrder = 'desc'
 				if (typeof column.sortMethod == 'function') {
-					column.sortMethod.apply(this, ['desc', this.rowData, column])
+					column.sortMethod.apply(this, [this.sortOrder, this.sortBy, this.rowData, column])
 				} else {
 					this.rowData = this.rowData.sort(function (rowA, rowB) {
 						if (Dap.number.isNumber(rowA[column.prop]) && Dap.number.isNumber(rowB[column.prop])) {
@@ -576,22 +579,31 @@ export default {
 						}
 
 						.mvi-table-column {
-							display: flex;
-							justify-content: flex-start;
-							align-items: center;
+							display: block;
 							padding: 0 @mp-sm;
 							width: 100%;
 							white-space: normal;
 							word-break: break-all;
 
-							&.center {
-								justify-content: center;
+							.mvi-table-column-tooltip {
+								width: 100%;
+
+								.ellipsis {
+									text-overflow: ellipsis;
+									overflow: hidden;
+									white-space: nowrap;
+								}
 							}
 
-							.ellipsis {
-								text-overflow: ellipsis;
-								overflow: hidden;
-								white-space: nowrap;
+							.mvi-table-column-item {
+								display: flex;
+								justify-content: flex-start;
+								align-items: center;
+								width: 100%;
+
+								&.center {
+									justify-content: center;
+								}
 							}
 						}
 					}
