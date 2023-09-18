@@ -110,8 +110,8 @@ const getTableGrids = function () {
 		let row = []
 		for (let j = 0; j < 10; j++) {
 			row.push({
-				x: j + 1,
-				y: i + 1,
+				x: i + 1,
+				y: j + 1,
 				inside: false //是否被选中
 			})
 		}
@@ -1031,8 +1031,8 @@ export default {
 			if (this.cmpDisabled) {
 				return
 			}
-			const rowLength = this.tableParams.size[1]
-			const colLength = this.tableParams.size[0]
+			const rowLength = this.tableParams.size[0]
+			const colLength = this.tableParams.size[1]
 			const table = new AlexElement('block', 'table', null, null, null)
 			const tbody = new AlexElement('inblock', 'tbody', null, null, null)
 			this.menus.instance.editor.addElementTo(tbody, table)
