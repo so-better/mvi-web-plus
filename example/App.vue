@@ -1,11 +1,15 @@
 <template>
 	<div class="mvi-p-4">
-		<m-table border columnBorder :data="data" height="2rem" :columns="columns"> </m-table>
+		<div style="height: 300px; width: 80%; overflow: auto" id="root">
+			<div style="height: 400px"></div>
+			<div v-spy="spyOpt" style="height: 30px; width: 100%" class="mvi-bg-success"></div>
+			<div style="height: 400px"></div>
+		</div>
+		<!-- <m-table border columnBorder :data="data" height="2rem" :columns="columns"> </m-table>
 		<m-editor-menus ref="editor-menus">
 			<m-editor-menu v-for="item in EditorDefinedMenuConfig" :name="item.name"></m-editor-menu>
 		</m-editor-menus>
-		<m-editor v-model="value" ref="editor"></m-editor>
-		<div id="res"></div>
+		<m-editor v-model="value" ref="editor"></m-editor> -->
 	</div>
 </template>
 <script>
@@ -14,6 +18,21 @@ import { EditorDefinedMenuConfig } from '../packages'
 export default {
 	data() {
 		return {
+			spyOpt: {
+				el: '#root',
+				beforeEnter(el) {
+					console.log('beforeEnter', el)
+				},
+				enter(el) {
+					console.log('enter', el)
+				},
+				beforeLeave(el) {
+					console.log('beforeLeave', el)
+				},
+				leave(el) {
+					console.log('leave', el)
+				}
+			},
 			EditorDefinedMenuConfig: EditorDefinedMenuConfig,
 			value: `<ol><li>1</li><li>1</li><li>1</li><li>1</li><li>1</li></ol><table ><tbody><tr><th><br></th><th><br></th><th><br></th><th><br></th><th><br></th><th><br></th><th><br></th></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr></tbody></table>`,
 			dayjs: dayjs,
@@ -57,7 +76,7 @@ export default {
 		}
 	},
 	mounted() {
-		this.$refs.editor.use(this.$refs['editor-menus'])
+		//this.$refs.editor.use(this.$refs['editor-menus'])
 	},
 	methods: {}
 }
