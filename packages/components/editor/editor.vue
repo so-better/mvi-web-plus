@@ -56,7 +56,7 @@ import { Checkbox } from '../checkbox'
 import { getHljsHtml, languages } from './hljs'
 export default {
 	name: 'm-editor',
-	emits: ['update:modelValue', 'focus', 'blur', 'change', 'paste-image', 'paste-video', 'range-update', 'after-render'],
+	emits: ['update:modelValue', 'focus', 'blur', 'change', 'paste-image', 'paste-video', 'range-update', 'after-render', 'keydown'],
 	props: {
 		//编辑器内容
 		modelValue: {
@@ -407,6 +407,10 @@ export default {
 			else if (e.keyCode == 9 && !e.metaKey && e.shiftKey && !e.ctrlKey && !e.altKey) {
 				e.preventDefault()
 				this.setOutdent()
+			}
+			//自定义键盘按下操作
+			else {
+				this.$emit('keydown', e)
 			}
 		},
 		//输入框获取焦点
