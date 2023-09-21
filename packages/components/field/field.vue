@@ -229,7 +229,7 @@ export default {
 		inputStyle() {
 			return {
 				paddingLeft: this.showPrefix ? 0 : '',
-				paddingRight: this.showSuffix ? 0 : '',
+				paddingRight: this.showSuffix || (this.showClear && this.clearable) ? 0 : '',
 				textAlign: this.align ? this.align : ''
 			}
 		},
@@ -502,7 +502,7 @@ export default {
 	background-color: #fff;
 
 	&.small {
-		font-size: @font-size-small;
+		font-size: @font-size-default;
 
 		&:not([data-type='textarea']) {
 			height: @small-height;
@@ -526,7 +526,7 @@ export default {
 	}
 
 	&.medium {
-		font-size: @font-size-default;
+		font-size: @font-size-h6;
 
 		&:not([data-type='textarea']) {
 			height: @medium-height;
@@ -550,7 +550,7 @@ export default {
 	}
 
 	&.large {
-		font-size: @font-size-h6;
+		font-size: @font-size-h5;
 
 		&:not([data-type='textarea']) {
 			height: @large-height;

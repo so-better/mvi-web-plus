@@ -372,7 +372,7 @@ export default {
 	}
 
 	&.small {
-		font-size: @font-size-small;
+		font-size: @font-size-default;
 		height: @small-height;
 
 		.mvi-autocomplete-left-icon,
@@ -391,7 +391,7 @@ export default {
 	}
 
 	&.medium {
-		font-size: @font-size-default;
+		font-size: @font-size-h6;
 		height: @medium-height;
 
 		.mvi-autocomplete-left-icon,
@@ -410,7 +410,7 @@ export default {
 	}
 
 	&.large {
-		font-size: @font-size-h6;
+		font-size: @font-size-h5;
 		height: @large-height;
 
 		.mvi-autocomplete-left-icon,

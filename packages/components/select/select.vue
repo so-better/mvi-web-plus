@@ -9,8 +9,8 @@
 		</div>
 		<Layer v-model="focus" :target="`[data-id='mvi-select-target-${uid}']`" :root="`[data-id='mvi-select-${uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :fixed="layerRealProps.fixed" :fixed-auto="layerRealProps.fixedAuto" :z-index="layerRealProps.zIndex" closable :show-triangle="layerRealProps.showTriangle" :animation="layerRealProps.animation" :timeout="layerRealProps.timeout" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :border-color="layerRealProps.borderColor" :width="layerRealProps.width" @showing="layerShow" ref="layer">
 			<div class="mvi-select-menu" ref="menu" :style="menuStyle">
-				<div :class="['mvi-option', size]" @click="optionClick(item)" v-for="item in cmpOptions" :disabled="item.disabled || null">
-					<div class="mvi-option-value" v-html="item.label"></div>
+				<div :class="['mvi-select-option', size]" @click="optionClick(item)" v-for="item in cmpOptions" :disabled="item.disabled || null">
+					<div class="mvi-select-option-value" v-html="item.label"></div>
 					<Icon v-if="isSelect(item)" :type="parseIcon(selectedIcon).type" :spin="parseIcon(selectedIcon).spin" :size="parseIcon(selectedIcon).size" :url="parseIcon(selectedIcon).url" :color="parseIcon(selectedIcon).color" />
 				</div>
 			</div>
@@ -499,9 +499,9 @@ export default {
 
 	&.small {
 		.mvi-select-target {
-			height: @small-height;
-			font-size: @font-size-small;
 			padding: 0 @mp-sm*3 0 @mp-sm;
+			height: @small-height;
+			font-size: @font-size-default;
 		}
 
 		.mvi-select-icon,
@@ -513,9 +513,9 @@ export default {
 
 	&.medium {
 		.mvi-select-target {
-			height: @medium-height;
-			font-size: @font-size-default;
 			padding: 0 @mp-md*3 0 @mp-md;
+			height: @medium-height;
+			font-size: @font-size-h6;
 		}
 
 		.mvi-select-icon,
@@ -527,9 +527,9 @@ export default {
 
 	&.large {
 		.mvi-select-target {
-			height: @large-height;
-			font-size: @font-size-h6;
 			padding: 0 @mp-lg*3 0 @mp-lg;
+			height: @large-height;
+			font-size: @font-size-h5;
 		}
 
 		.mvi-select-icon,
@@ -563,25 +563,26 @@ export default {
 	overflow-x: hidden;
 	padding: @mp-xs 0;
 
-	.mvi-option {
+	.mvi-select-option {
 		display: flex;
 		display: -webkit-flex;
 		justify-content: space-between;
 		align-items: center;
+		line-height: 1;
 
 		&.small {
-			padding: @mp-xs @mp-sm;
-			font-size: @font-size-small;
-		}
-
-		&.medium {
-			padding: @mp-sm @mp-md;
+			padding: @mp-sm;
 			font-size: @font-size-default;
 		}
 
-		&.large {
+		&.medium {
+			padding: @mp-md;
 			font-size: @font-size-h6;
+		}
+
+		&.large {
 			padding: @mp-md @mp-lg;
+			font-size: @font-size-h5;
 		}
 
 		&:hover:not([disabled]) {
@@ -595,7 +596,7 @@ export default {
 			user-select: none;
 		}
 
-		.mvi-option-value {
+		.mvi-select-option-value {
 			display: block;
 			max-width: 100%;
 			overflow: hidden;
