@@ -687,7 +687,7 @@ export default {
 			if (this.disabled) {
 				return
 			}
-			if (this.border && this.activeColor) {
+			if (this.border && this.activeColor && this.$refs.content) {
 				this.$refs.content.style.borderColor = this.activeColor
 				const rgb = Dap.color.hex2rgb(this.activeColor)
 				this.$refs.content.style.boxShadow = `0 0 0.16rem rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.5)`
@@ -703,7 +703,7 @@ export default {
 			if (this.disabled) {
 				return
 			}
-			if (this.border && this.activeColor) {
+			if (this.border && this.activeColor && this.$refs.content) {
 				this.$refs.content.style.borderColor = ''
 				this.$refs.content.style.boxShadow = ''
 			}
