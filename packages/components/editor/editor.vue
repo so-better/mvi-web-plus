@@ -2105,7 +2105,7 @@ export default {
 			}
 		}
 
-		.mvi-select-menu .mvi-option {
+		.mvi-select-menu .mvi-select-option {
 			font-size: @font-size-small;
 			padding: @mp-sm;
 		}
