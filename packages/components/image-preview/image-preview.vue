@@ -160,23 +160,23 @@ export default {
 	methods: {
 		//重置图片
 		resetImage(active) {
-			this.imageRefs[active].reset()
+			this.imageRefs[active]?.reset()
 		},
 		//放大图片
 		plusImage(active) {
-			this.imageRefs[active].scalePlus()
+			this.imageRefs[active]?.scalePlus()
 		},
 		//缩小图片
 		minusImage(active) {
-			this.imageRefs[active].scaleMinus()
+			this.imageRefs[active]?.scaleMinus()
 		},
 		//左旋转图片
 		leftRotateImage(active) {
-			this.imageRefs[active].leftRotate()
+			this.imageRefs[active]?.leftRotate()
 		},
 		//右旋转图片
 		rightRotateImage(active) {
-			this.imageRefs[active].rightRotate()
+			this.imageRefs[active]?.rightRotate()
 		},
 		//遮罩层显示时
 		overlayShowing() {
@@ -187,14 +187,14 @@ export default {
 		//关闭遮罩
 		closeOverlay(e) {
 			for (let richImage of this.imageRefs) {
-				richImage.reset()
+				richImage?.reset()
 			}
 			this.show = false
 		},
 		//图片变更
 		swiperChange(active) {
 			for (let richImage of this.imageRefs) {
-				richImage.reset()
+				richImage?.reset()
 			}
 			this.$emit('change', active)
 		}
