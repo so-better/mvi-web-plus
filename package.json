@@ -10,7 +10,7 @@
 	"main": "lib/mvi.umd.js",
 	"module": "lib/mvi.es.js",
 	"license": "MIT",
-	"description": "一个基于Vue3的高度自定义的前端样式框架",
+	"description": "一个基于Vue3的前端开发组件库",
 	"scripts": {
 		"dev": "vite",
 		"lib": "vite build"
