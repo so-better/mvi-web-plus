@@ -5,7 +5,7 @@
 			<div v-if="parseIcon(leftIcon).type || parseIcon(leftIcon).url" class="mvi-search-left-icon" @click="leftClick">
 				<Icon :type="parseIcon(leftIcon).type" :url="parseIcon(leftIcon).url" :spin="parseIcon(leftIcon).spin" :size="parseIcon(leftIcon).size" :color="parseIcon(leftIcon).color" />
 			</div>
-			<input ref="input" class="mvi-search-input" :type="cmpType" @keypress.enter="doSearch" autocomplete="off" :placeholder="placeholder" :maxlength="maxlength" :autofocus="autofocus" :disabled="disabled" :readonly="readonly" :inputmode="cmpInputMode" v-model="realValue" @input="searchInput" @focus="inputFocus" @blur="inputBlur" :style="inputStyle" />
+			<input ref="input" class="mvi-search-input" :type="cmpType" @keypress.enter="doSearch" autocomplete="off" :placeholder="placeholder" :maxlength="maxlength" :autofocus="autofocus" :disabled="disabled" :readonly="readonly" :inputmode="cmpInputMode" v-model="realValue" @input="searchInput" @focus="inputFocus" @blur="inputBlur" @keydown="keydown" @keyup="keyup" :style="inputStyle" />
 			<div v-if="clearable" class="mvi-search-clear" @click="clearInput" v-show="showClear">
 				<Icon type="times-o" />
 			</div>
@@ -22,7 +22,7 @@ import { Dap } from '../dap'
 import { Icon } from '../icon'
 export default {
 	name: 'm-search',
-	emits: ['update:modelValue', 'search', 'cancel', 'left-click', 'right-click', 'focus', 'blur', 'input', 'clear'],
+	emits: ['update:modelValue', 'search', 'cancel', 'left-click', 'right-click', 'focus', 'blur', 'input', 'clear', 'keydown', 'keyup'],
 	data() {
 		return {
 			focus: false
@@ -217,6 +217,20 @@ export default {
 		Icon
 	},
 	methods: {
+		//输入框键盘按下
+		keydown(e) {
+			if (this.disabled) {
+				return
+			}
+			this.$emit('keydown', e, this.realValue)
+		},
+		//输入框键盘松开
+		keyup(e) {
+			if (this.disabled) {
+				return
+			}
+			this.$emit('keyup', e, this.realValue)
+		},
 		//输入框获取焦点
 		inputFocus() {
 			if (this.disabled) {

@@ -13,9 +13,9 @@
 				<Icon v-else :type="parseIcon(this.prefix).type" :url="parseIcon(this.prefix).url" :spin="parseIcon(this.prefix).spin" :size="parseIcon(this.prefix).size" :color="parseIcon(this.prefix).color" />
 			</div>
 			<!-- textarea -->
-			<textarea ref="textarea" v-if="type == 'textarea'" :disabled="disabled || null" :readonly="readonly || null" class="mvi-field-input" :style="inputStyle" :placeholder="placeholder" v-model="realValue" autocomplete="off" @focus="inputFocus" @blur="inputBlur" :maxlength="maxlength" :name="name" :autofocus="autofocus" :rows="rowsFilter" @input="input"></textarea>
+			<textarea ref="textarea" v-if="type == 'textarea'" :disabled="disabled || null" :readonly="readonly || null" class="mvi-field-input" :style="inputStyle" :placeholder="placeholder" v-model="realValue" autocomplete="off" @focus="inputFocus" @blur="inputBlur" :maxlength="maxlength" :name="name" :autofocus="autofocus" :rows="rowsFilter" @input="input" @keydown="keydown" @keyup="keyup"></textarea>
 			<!-- input -->
-			<input v-else ref="input" :disabled="disabled || null" :readonly="readonly || null" class="mvi-field-input" :style="inputStyle" :type="cmpType" :placeholder="placeholder" v-model="realValue" autocomplete="off" :inputmode="inputMode" @focus="inputFocus" @blur="inputBlur" :maxlength="maxlength" :name="name" :autofocus="autofocus" @input="input" />
+			<input v-else ref="input" :disabled="disabled || null" :readonly="readonly || null" class="mvi-field-input" :style="inputStyle" :type="cmpType" :placeholder="placeholder" v-model="realValue" autocomplete="off" :inputmode="inputMode" @focus="inputFocus" @blur="inputBlur" :maxlength="maxlength" :name="name" :autofocus="autofocus" @input="input" @keydown="keydown" @keyup="keyup" />
 			<!-- 清除图标 -->
 			<div class="mvi-field-clear" v-if="clearable && type != 'textarea'" v-show="showClear" :style="clearStyle" @click="doClear">
 				<Icon type="times-o" />
@@ -39,7 +39,7 @@ import { Dap } from '../dap'
 import { Icon } from '../icon'
 export default {
 	name: 'm-field',
-	emits: ['update:modelValue', 'prepend-click', 'prefix-click', 'append-click', 'suffix-click', 'focus', 'blur', 'input', 'clear'],
+	emits: ['update:modelValue', 'prepend-click', 'prefix-click', 'append-click', 'suffix-click', 'focus', 'blur', 'input', 'clear', 'keydown', 'keyup'],
 	data() {
 		return {
 			focus: false
@@ -415,6 +415,20 @@ export default {
 				this.$refs.textarea.style.maxHeight = ''
 				this.$refs.textarea.style.minHeight = ''
 			}
+		},
+		//输入框键盘按下
+		keydown(e) {
+			if (this.disabled) {
+				return
+			}
+			this.$emit('keydown', e, this.realValue)
+		},
+		//输入框键盘松开
+		keyup(e) {
+			if (this.disabled) {
+				return
+			}
+			this.$emit('keyup', e, this.realValue)
 		},
 		//输入框获取焦点
 		inputFocus() {

@@ -4,7 +4,7 @@
 			<div @click="leftClick" v-if="parseIcon(leftIcon).type || parseIcon(leftIcon).url" class="mvi-autocomplete-left-icon">
 				<Icon :type="parseIcon(leftIcon).type" :url="parseIcon(leftIcon).url" :spin="parseIcon(leftIcon).spin" :size="parseIcon(leftIcon).size" :color="parseIcon(leftIcon).color" />
 			</div>
-			<input ref="input" @input="input" v-model="realValue" type="text" :placeholder="placeholder" :style="inputStyle" :name="name" @focus="inputFocus" @blur="inputBlur" :disabled="disabled || null" autocomplete="off" />
+			<input ref="input" @input="input" v-model="realValue" type="text" :placeholder="placeholder" :style="inputStyle" :name="name" @focus="inputFocus" @blur="inputBlur" :disabled="disabled || null" autocomplete="off" @keydown="keydown" @keyup="keyup" />
 			<div @click="doClear" v-if="clearable" v-show="showClearIcon" class="mvi-autocomplete-clear" :style="clearStyle">
 				<Icon type="times-o" />
 			</div>
@@ -32,7 +32,7 @@ export default {
 			focus: false
 		}
 	},
-	emits: ['update:modelValue', 'focus', 'blur', 'input', 'left-click', 'right-click', 'select', 'clear'],
+	emits: ['update:modelValue', 'focus', 'blur', 'input', 'left-click', 'right-click', 'select', 'clear', 'keydown', 'keyup'],
 	props: {
 		//输入框的值
 		modelValue: {
@@ -296,6 +296,20 @@ export default {
 				return
 			}
 			this.$emit('left-click', this.realValue)
+		},
+		//输入框键盘按下
+		keydown(e) {
+			if (this.disabled) {
+				return
+			}
+			this.$emit('keydown', e, this.realValue)
+		},
+		//输入框键盘松开
+		keyup(e) {
+			if (this.disabled) {
+				return
+			}
+			this.$emit('keyup', e, this.realValue)
 		},
 		input() {
 			if (this.disabled) {

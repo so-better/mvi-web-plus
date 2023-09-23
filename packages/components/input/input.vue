@@ -8,9 +8,9 @@
 		<!-- 左侧文本 -->
 		<div class="mvi-input-label" v-if="label" :style="labelStyle"><span v-text="label"></span></div>
 		<!-- 文本域 -->
-		<textarea v-if="type == 'textarea'" :placeholder="placeholder" :maxlength="maxlength" :disabled="disabled" :readonly="readonly" :autofocus="autofocus" class="mvi-textarea" v-model="realValue" @input="input" ref="textarea" :rows="rowsFilter" :name="name" :style="inputStyle" @focus="inputFocus" @blur="inputBlur" autocomplete="off"></textarea>
+		<textarea v-if="type == 'textarea'" :placeholder="placeholder" :maxlength="maxlength" :disabled="disabled" :readonly="readonly" :autofocus="autofocus" class="mvi-textarea" v-model="realValue" @input="input" ref="textarea" :rows="rowsFilter" :name="name" :style="inputStyle" @focus="inputFocus" @blur="inputBlur" autocomplete="off" @keydown="keydown" @keyup="keyup"></textarea>
 		<!-- 输入框 -->
-		<input v-else :type="cmpType" :inputmode="inputMode" :placeholder="placeholder" :maxlength="maxlength" :disabled="disabled" :readonly="readonly" :autofocus="autofocus" class="mvi-input" v-model="realValue" @input="input" ref="input" :name="name" :style="inputStyle" @focus="inputFocus" @blur="inputBlur" autocomplete="off" />
+		<input v-else :type="cmpType" :inputmode="inputMode" :placeholder="placeholder" :maxlength="maxlength" :disabled="disabled" :readonly="readonly" :autofocus="autofocus" class="mvi-input" v-model="realValue" @input="input" ref="input" :name="name" :style="inputStyle" @focus="inputFocus" @blur="inputBlur" autocomplete="off" @keydown="keydown" @keyup="keyup" />
 		<!-- 清除图标 -->
 		<div @click="doClear" class="mvi-input-clear" v-if="clearable" v-show="showClear">
 			<Icon type="times-o" />
@@ -36,7 +36,7 @@ export default {
 			focus: false
 		}
 	},
-	emits: ['update:modelValue', 'left-click', 'right-click', 'focus', 'blur', 'input', 'clear'],
+	emits: ['update:modelValue', 'left-click', 'right-click', 'focus', 'blur', 'input', 'clear', 'keydown', 'keyup'],
 	props: {
 		//输入框的值
 		modelValue: {
@@ -378,6 +378,20 @@ export default {
 				this.$refs.textarea.style.maxHeight = ''
 				this.$refs.textarea.style.minHeight = ''
 			}
+		},
+		//输入框键盘按下
+		keydown(e) {
+			if (this.disabled) {
+				return
+			}
+			this.$emit('keydown', e, this.realValue)
+		},
+		//输入框键盘松开
+		keyup(e) {
+			if (this.disabled) {
+				return
+			}
+			this.$emit('keyup', e, this.realValue)
 		},
 		//输入框获取焦点
 		inputFocus() {
