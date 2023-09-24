@@ -1991,8 +1991,9 @@ export default {
 		}
 
 		&[disabled] {
+			cursor: auto !important;
 			&.empty::before {
-				cursor: not-allowed;
+				cursor: auto;
 			}
 			:deep(table) tr:first-child td:not(:last-child)::after {
 				cursor: not-allowed !important;
