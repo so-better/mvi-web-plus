@@ -1995,8 +1995,8 @@ export default {
 			&.empty::before {
 				cursor: auto;
 			}
-			:deep(table) tr:first-child td:not(:last-child)::after {
-				cursor: not-allowed !important;
+			:deep(table) tr td:not(:last-child)::after {
+				cursor: auto !important;
 			}
 		}
 	}
