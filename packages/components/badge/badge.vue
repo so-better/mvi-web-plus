@@ -1,5 +1,5 @@
 <template>
-	<div class="mvi-badge">
+	<div :class="['mvi-badge', block ? 'block' : '']">
 		<slot></slot>
 		<span v-if="dot && show" class="mvi-badge-el mvi-badge-dot" :data-placement="placement" :style="badgeStyle"></span>
 		<span v-else-if="badgeShow" class="mvi-badge-el" :data-placement="placement" :style="badgeStyle">{{ content }}</span>
@@ -50,6 +50,11 @@ export default {
 		color: {
 			type: String,
 			default: null
+		},
+		//是否块级
+		block: {
+			type: Boolean,
+			default: false
 		}
 	},
 	computed: {
@@ -95,8 +100,12 @@ export default {
 
 .mvi-badge {
 	position: relative;
-	display: block;
-	width: fit-content;
+	display: inline-block;
+
+	&.block {
+		display: block;
+		width: 100%;
+	}
 
 	.mvi-badge-el {
 		position: absolute;

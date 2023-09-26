@@ -1,5 +1,8 @@
 <template>
 	<div class="mvi-p-4">
+		<m-badge content="99" block>
+			<m-button block>按钮</m-button>
+		</m-badge>
 		<!-- <m-table border columnBorder :data="data" height="2rem" :columns="columns"> </m-table>
 		<m-editor-menus ref="editor-menus">
 			<m-editor-menu v-for="item in EditorDefinedMenuConfig" :name="item.name"></m-editor-menu>
