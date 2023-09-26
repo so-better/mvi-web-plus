@@ -89,7 +89,8 @@ export default {
 		//选择时间
 		selectDate() {
 			if (this.$el.value) {
-				const date = dayjs(this.$el.value)
+				let val = this.type == 'time' ? `${dayjs(this.modelValue).format('YYYY-MM-DD')} ${this.$el.value}` : this.$el.value
+				const date = dayjs(val)
 				if (this.min && date.isBefore(dayjs(this.min))) {
 					this.$emit('error', 0, 'The date is less than min')
 					return
