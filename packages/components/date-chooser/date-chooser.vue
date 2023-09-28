@@ -363,9 +363,8 @@ export default {
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
-	height: @small-height;
 	user-select: none;
-	padding: 0 @mp-sm;
+	padding: @mp-sm;
 
 	.mvi-date-chooser-year-left,
 	.mvi-date-chooser-year-right {
@@ -421,9 +420,8 @@ export default {
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
-	height: @small-height;
 	user-select: none;
-	padding: 0 @mp-sm;
+	padding: @mp-sm;
 
 	.mvi-date-chooser-month-left,
 	.mvi-date-chooser-month-right {
@@ -500,9 +498,8 @@ export default {
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
-	height: @small-height;
 	user-select: none;
-	padding: 0 @mp-sm;
+	padding: @mp-sm;
 
 	.mvi-date-chooser-date-left,
 	.mvi-date-chooser-date-right {
