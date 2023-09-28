@@ -375,7 +375,7 @@ export default {
 		height: 100%;
 		padding: 0 @mp-md;
 		color: @font-color-default;
-		font-size: @font-size-h6;
+		font-size: @font-size-default;
 		transition: color 200ms linear;
 
 		&:hover {
@@ -433,7 +433,7 @@ export default {
 		height: 100%;
 		padding: 0 @mp-md;
 		color: @font-color-default;
-		font-size: @font-size-h6;
+		font-size: @font-size-default;
 		transition: color 200ms linear;
 
 		&:hover {
@@ -518,7 +518,7 @@ export default {
 			height: 100%;
 			padding: 0 @mp-sm;
 			color: @font-color-default;
-			font-size: @font-size-h6;
+			font-size: @font-size-default;
 			transition: color 200ms linear;
 
 			&:hover {
