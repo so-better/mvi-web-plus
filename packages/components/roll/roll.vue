@@ -30,7 +30,7 @@ export default {
 			type: String,
 			default: 'left',
 			validator(value) {
-				return ['left', 'right', 'top', 'bottom'].includes(value)
+				return ['left', 'right', 'up', 'down'].includes(value)
 			}
 		},
 		//是否自动滚动
@@ -83,10 +83,10 @@ export default {
 			} else if (this.direction == 'right') {
 				obj.right = '100%'
 				obj.left = 'auto'
-			} else if (this.direction == 'top') {
+			} else if (this.direction == 'up') {
 				obj.top = '100%'
 				obj.bottom = 'auto'
-			} else if (this.direction == 'bottom') {
+			} else if (this.direction == 'down') {
 				obj.bottom = '100%'
 				obj.top = 'auto'
 			}
@@ -148,9 +148,9 @@ export default {
 				interval = Math.round(((placement.left + this.$refs.roll.offsetWidth) / (this.$el.offsetWidth + this.$refs.roll.offsetWidth)) * this.interval)
 			} else if (this.direction == 'right') {
 				interval = Math.round(((placement.right + this.$refs.roll.offsetWidth) / (this.$el.offsetWidth + this.$refs.roll.offsetWidth)) * this.interval)
-			} else if (this.direction == 'top') {
+			} else if (this.direction == 'up') {
 				interval = Math.round(((placement.top + this.$refs.roll.offsetHeight) / (this.$el.offsetHeight + this.$refs.roll.offsetHeight)) * this.interval)
-			} else if (this.direction == 'bottom') {
+			} else if (this.direction == 'down') {
 				interval = Math.round(((placement.bottom + this.$refs.roll.offsetHeight) / (this.$el.offsetHeight + this.$refs.roll.offsetHeight)) * this.interval)
 			}
 			//设置动画和速度
@@ -167,10 +167,10 @@ export default {
 				} else if (this.direction == 'right') {
 					this.$refs.roll.style.right = -this.$refs.roll.offsetWidth + 'px'
 					this.$refs.roll.style.left = 'auto'
-				} else if (this.direction == 'top') {
+				} else if (this.direction == 'up') {
 					this.$refs.roll.style.top = -this.$refs.roll.offsetHeight + 'px'
 					this.$refs.roll.style.bottom = 'auto'
-				} else if (this.direction == 'bottom') {
+				} else if (this.direction == 'down') {
 					this.$refs.roll.style.bottom = -this.$refs.roll.offsetHeight + 'px'
 					this.$refs.roll.style.top = 'auto'
 				}
@@ -198,10 +198,10 @@ export default {
 			} else if (this.direction == 'right') {
 				this.$refs.roll.style.right = '100%'
 				this.$refs.roll.style.left = 'auto'
-			} else if (this.direction == 'top') {
+			} else if (this.direction == 'up') {
 				this.$refs.roll.style.top = '100%'
 				this.$refs.roll.style.bottom = 'auto'
-			} else if (this.direction == 'bottom') {
+			} else if (this.direction == 'down') {
 				this.$refs.roll.style.bottom = '100%'
 				this.$refs.roll.style.top = 'auto'
 			}
@@ -233,10 +233,10 @@ export default {
 			} else if (this.direction == 'right') {
 				this.$refs.roll.style.right = placement.right + 'px'
 				this.$refs.roll.style.left = 'auto'
-			} else if (this.direction == 'top') {
+			} else if (this.direction == 'up') {
 				this.$refs.roll.style.top = placement.top + 'px'
 				this.$refs.roll.style.bottom = 'auto'
-			} else if (this.direction == 'bottom') {
+			} else if (this.direction == 'down') {
 				this.$refs.roll.style.bottom = placement.bottom + 'px'
 				this.$refs.roll.style.top = 'auto'
 			}
