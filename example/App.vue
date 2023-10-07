@@ -1,8 +1,7 @@
 <template>
 	<div class="mvi-p-4">
-		<m-badge content="99" block>
-			<m-button block>按钮</m-button>
-		</m-badge>
+		<m-button @click="show = !show">按钮</m-button>
+		<m-number-keyboard v-model="value" :timeout="1000" v-model:show="show" random></m-number-keyboard>
 		<!-- <m-table border columnBorder :data="data" height="2rem" :columns="columns"> </m-table>
 		<m-editor-menus ref="editor-menus">
 			<m-editor-menu v-for="item in EditorDefinedMenuConfig" :name="item.name"></m-editor-menu>
@@ -16,6 +15,7 @@ import { EditorDefinedMenuConfig } from '../packages'
 export default {
 	data() {
 		return {
+			value: 3,
 			spyOpt: {
 				el: '#root',
 				beforeEnter(el) {
@@ -31,7 +31,7 @@ export default {
 					console.log('leave', el)
 				}
 			},
-			show: true,
+			show: false,
 			EditorDefinedMenuConfig: EditorDefinedMenuConfig,
 			// value: `<ol><li>1</li><li>1</li><li>1</li><li>1</li><li>1</li></ol><table ><tbody><tr><th><br></th><th><br></th><th><br></th><th><br></th><th><br></th><th><br></th><th><br></th></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr></tbody></table>`,
 			dayjs: dayjs,

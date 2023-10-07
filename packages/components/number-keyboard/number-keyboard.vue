@@ -46,7 +46,9 @@ export default {
 			//键盘是否显示
 			keyboardShow: false,
 			//键盘按键
-			numbers: ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'X', '.', '0']
+			numbers: ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'X', '.', '0'],
+			//每次打开时的键盘布局缓存
+			oldNumbers: []
 		}
 	},
 	emits: ['update:modelValue', 'update:show', 'input', 'delete', 'complete', 'show', 'showing', 'shown', 'hide', 'hidding', 'hidden'],
@@ -265,21 +267,19 @@ export default {
 			}
 		},
 		cpmNumbers() {
-			if (this.show) {
-				let numbers = this.numbers.filter(item => {
-					return this.showKeyBoard(item)
-				})
-				if (this.random) {
-					let arr = []
-					let length = numbers.length
-					for (let i = 0; i < length; i++) {
-						arr.push(this.getRandomNumber(arr))
-					}
-					return arr
+			let numbers = this.numbers.filter(item => {
+				return this.showKeyBoard(item)
+			})
+			if (this.show && this.random) {
+				let arr = []
+				let length = numbers.length
+				for (let i = 0; i < length; i++) {
+					arr.push(this.getRandomNumber(arr))
 				}
-				return numbers
+				this.oldNumbers = [...arr]
+				return arr
 			}
-			return this.numbers
+			return this.oldNumbers
 		}
 	},
 	components: {
