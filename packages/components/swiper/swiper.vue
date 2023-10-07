@@ -586,8 +586,10 @@ export default {
 		//添加动画效果(非fade)
 		addTransition() {
 			return new Promise((resolve, reject) => {
-				this.$refs.wrapper.style.transition = 'transform ' + this.speed + 'ms'
-				this.$refs.wrapper.style.webkitTransition = 'transform ' + this.speed + 'ms'
+				if (this.$refs.wrapper) {
+					this.$refs.wrapper.style.transition = 'transform ' + this.speed + 'ms'
+					this.$refs.wrapper.style.webkitTransition = 'transform ' + this.speed + 'ms'
+				}
 				setTimeout(() => {
 					resolve()
 				}, 10)
@@ -596,8 +598,10 @@ export default {
 		//移除动画效果(非fade)
 		removeTransition() {
 			return new Promise((resolve, reject) => {
-				this.$refs.wrapper.style.transition = ''
-				this.$refs.wrapper.style.webkitTransition = ''
+				if (this.$refs.wrapper) {
+					this.$refs.wrapper.style.transition = ''
+					this.$refs.wrapper.style.webkitTransition = ''
+				}
 				setTimeout(() => {
 					resolve()
 				}, 10)
