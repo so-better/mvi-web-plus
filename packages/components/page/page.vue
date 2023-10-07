@@ -270,7 +270,7 @@ export default {
 	justify-content: space-between;
 	align-items: center;
 	background-color: #fff;
-	width: auto;
+	width: fit-content;
 	height: @small-height;
 	border: 1px solid @border-color;
 	font-size: @font-size-default;
