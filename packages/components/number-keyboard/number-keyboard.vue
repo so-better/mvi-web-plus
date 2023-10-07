@@ -270,16 +270,19 @@ export default {
 			let numbers = this.numbers.filter(item => {
 				return this.showKeyBoard(item)
 			})
-			if (this.show && this.random) {
-				let arr = []
-				let length = numbers.length
-				for (let i = 0; i < length; i++) {
-					arr.push(this.getRandomNumber(arr))
+			if (this.random) {
+				if (this.show) {
+					let arr = []
+					let length = numbers.length
+					for (let i = 0; i < length; i++) {
+						arr.push(this.getRandomNumber(arr))
+					}
+					this.oldNumbers = [...arr]
+					return arr
 				}
-				this.oldNumbers = [...arr]
-				return arr
+				return this.oldNumbers
 			}
-			return this.oldNumbers
+			return numbers
 		}
 	},
 	components: {
