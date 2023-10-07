@@ -1,6 +1,6 @@
 <template>
 	<div @click="clickStopFun" @mouseenter="hoverIn" @mouseleave="hoverOut" class="mvi-roll-container" :style="containerStyle">
-		<div :class="['mvi-roll', direction == 'left' || direction == 'right' ? 'horizontal' : 'vertical']" :style="rollStyle" ref="roll">
+		<div :class="['mvi-roll', direction == 'left' || direction == 'right' ? 'horizontal' : 'vertical', center ? 'center' : '']" :style="rollStyle" ref="roll">
 			<slot></slot>
 		</div>
 	</div>
@@ -58,6 +58,11 @@ export default {
 		},
 		//是否悬浮暂停
 		hoverStop: {
+			type: Boolean,
+			default: false
+		},
+		//垂直方向滚动时内容是否居中
+		center: {
 			type: Boolean,
 			default: false
 		}
@@ -262,6 +267,11 @@ export default {
 
 		&.vertical {
 			left: 0;
+
+			&.center {
+				left: 50%;
+				transform: translateX(-50%);
+			}
 		}
 
 		&.horizontal {
