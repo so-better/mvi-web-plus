@@ -1,6 +1,6 @@
 {
 	"name": "mvi-web-plus",
-	"version": "1.8.0",
+	"version": "1.8.1",
 	"private": false,
 	"sideEffects": [
 		"*.css"
@@ -16,6 +16,7 @@
 		"lib": "vite build"
 	},
 	"dependencies": {
+		"alex-editor": "^1.0.0",
 		"dap-util": "^1.3.5",
 		"dayjs": "^1.11.9",
 		"highlight.js": "^11.8.0",
