@@ -15,7 +15,7 @@
 			<!-- textarea -->
 			<textarea ref="textarea" v-if="type == 'textarea'" :disabled="disabled || null" :readonly="readonly || null" class="mvi-field-input" :style="inputStyle" :placeholder="placeholder" v-model="realValue" autocomplete="off" @focus="inputFocus" @blur="inputBlur" :maxlength="maxlength" :name="name" :autofocus="autofocus" :rows="rowsFilter" @input="input" @keydown="keydown" @keyup="keyup"></textarea>
 			<!-- input -->
-			<input v-else ref="input" :disabled="disabled || null" :readonly="readonly || null" class="mvi-field-input" :style="inputStyle" :type="cmpType" :placeholder="placeholder" v-model="realValue" autocomplete="off" :inputmode="inputMode" @focus="inputFocus" @blur="inputBlur" :maxlength="maxlength" :name="name" :autofocus="autofocus" @input="input" @keydown="keydown" @keyup="keyup" />
+			<input v-else ref="input" :disabled="disabled || null" :readonly="readonly || null" :class="['mvi-field-input', showPrefix ? 'left-none-radius' : '', showSuffix || (clearable && showClear && type != 'textarea') ? 'right-none-radius' : '']" :style="inputStyle" :type="cmpType" :placeholder="placeholder" v-model="realValue" autocomplete="off" :inputmode="inputMode" @focus="inputFocus" @blur="inputBlur" :maxlength="maxlength" :name="name" :autofocus="autofocus" @input="input" @keydown="keydown" @keyup="keyup" />
 			<!-- 清除图标 -->
 			<div class="mvi-field-clear" v-if="clearable && type != 'textarea'" v-show="showClear" :style="clearStyle" @click="doClear">
 				<Icon type="times-o" />
@@ -712,7 +712,7 @@ export default {
 		padding: 0;
 		border: none;
 		border-radius: inherit;
-		background-color: inherit;
+		background-color: #f30;
 		color: inherit;
 		font-size: inherit;
 		height: 100%;
@@ -727,6 +727,16 @@ export default {
 			font-size: inherit;
 			opacity: 0.5;
 			vertical-align: middle;
+		}
+
+		&.left-none-radius {
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+
+		&.right-none-radius {
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
 		}
 
 		&[disabled] {

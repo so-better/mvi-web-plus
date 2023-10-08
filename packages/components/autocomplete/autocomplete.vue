@@ -4,7 +4,7 @@
 			<div @click="leftClick" v-if="parseIcon(leftIcon).type || parseIcon(leftIcon).url" class="mvi-autocomplete-left-icon">
 				<Icon :type="parseIcon(leftIcon).type" :url="parseIcon(leftIcon).url" :spin="parseIcon(leftIcon).spin" :size="parseIcon(leftIcon).size" :color="parseIcon(leftIcon).color" />
 			</div>
-			<input ref="input" @input="input" v-model="realValue" type="text" :placeholder="placeholder" :style="inputStyle" :name="name" @focus="inputFocus" @blur="inputBlur" :disabled="disabled || null" autocomplete="off" @keydown="keydown" @keyup="keyup" />
+			<input ref="input" @input="input" v-model="realValue" type="text" :placeholder="placeholder" :style="inputStyle" :name="name" @focus="inputFocus" @blur="inputBlur" :disabled="disabled || null" autocomplete="off" @keydown="keydown" @keyup="keyup" :class="[parseIcon(leftIcon).type || parseIcon(leftIcon).url ? 'left-none-radius' : '', parseIcon(rightIcon).type || parseIcon(rightIcon).url || (clearable && showClearIcon) ? 'right-none-radius' : '']" />
 			<div @click="doClear" v-if="clearable" v-show="showClearIcon" class="mvi-autocomplete-clear" :style="clearStyle">
 				<Icon type="times-o" />
 			</div>
@@ -483,6 +483,16 @@ export default {
 			font-size: inherit;
 			opacity: 0.5;
 			vertical-align: middle;
+		}
+
+		&.left-none-radius {
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+
+		&.right-none-radius {
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
 		}
 
 		&[disabled] {

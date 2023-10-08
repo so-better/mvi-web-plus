@@ -5,7 +5,7 @@
 			<div v-if="parseIcon(leftIcon).type || parseIcon(leftIcon).url" class="mvi-search-left-icon" @click="leftClick">
 				<Icon :type="parseIcon(leftIcon).type" :url="parseIcon(leftIcon).url" :spin="parseIcon(leftIcon).spin" :size="parseIcon(leftIcon).size" :color="parseIcon(leftIcon).color" />
 			</div>
-			<input ref="input" class="mvi-search-input" :type="cmpType" @keypress.enter="doSearch" autocomplete="off" :placeholder="placeholder" :maxlength="maxlength" :autofocus="autofocus" :disabled="disabled" :readonly="readonly" :inputmode="cmpInputMode" v-model="realValue" @input="searchInput" @focus="inputFocus" @blur="inputBlur" @keydown="keydown" @keyup="keyup" :style="inputStyle" />
+			<input ref="input" :class="['mvi-search-input', parseIcon(leftIcon).type || parseIcon(leftIcon).url ? 'left-none-radius' : '', parseIcon(rightIcon).type || parseIcon(rightIcon).url || (clearable && showClear) ? 'right-none-radius' : '']" :type="cmpType" @keypress.enter="doSearch" autocomplete="off" :placeholder="placeholder" :maxlength="maxlength" :autofocus="autofocus" :disabled="disabled" :readonly="readonly" :inputmode="cmpInputMode" v-model="realValue" @input="searchInput" @focus="inputFocus" @blur="inputBlur" @keydown="keydown" @keyup="keyup" :style="inputStyle" />
 			<div v-if="clearable" class="mvi-search-clear" @click="clearInput" v-show="showClear">
 				<Icon type="times-o" />
 			</div>
@@ -401,6 +401,16 @@ export default {
 				vertical-align: middle;
 				font-family: inherit;
 				font-size: inherit;
+			}
+
+			&.left-none-radius {
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
+			}
+
+			&.right-none-radius {
+				border-top-right-radius: 0;
+				border-bottom-right-radius: 0;
 			}
 		}
 	}
