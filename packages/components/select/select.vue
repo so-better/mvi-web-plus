@@ -384,8 +384,8 @@ export default {
 			} else {
 				this.$emit('update:modelValue', item.value)
 				this.$emit('change', item)
+				this.trigger()
 			}
-			this.trigger()
 		},
 		//触发选择打开或关闭
 		trigger() {
