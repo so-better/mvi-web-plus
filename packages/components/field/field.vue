@@ -712,7 +712,7 @@ export default {
 		padding: 0;
 		border: none;
 		border-radius: inherit;
-		background-color: #f30;
+		background-color: inherit;
 		color: inherit;
 		font-size: inherit;
 		height: 100%;
