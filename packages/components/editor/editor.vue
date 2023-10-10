@@ -398,6 +398,9 @@ export default {
 		},
 		//编辑区域键盘按下
 		contentKeyDown(e) {
+			if (this.disabled) {
+				return
+			}
 			//增加缩进
 			if (e.keyCode == 9 && !e.metaKey && !e.shiftKey && !e.ctrlKey && !e.altKey) {
 				e.preventDefault()
@@ -415,10 +418,16 @@ export default {
 		},
 		//输入框获取焦点
 		inputFocus(event) {
+			if (this.disabled) {
+				return
+			}
 			event.currentTarget.style.borderColor = this.activeColor
 		},
 		//输入框失去焦点
 		inputBlur(event) {
+			if (this.disabled) {
+				return
+			}
 			event.currentTarget.style.borderColor = ''
 		},
 		//自动矫正调整器的位置
@@ -1159,6 +1168,9 @@ export default {
 		},
 		//api：获取光标是否在指定标签元素下，如果是返回元素，否则返回null
 		getCurrentParsedomElement(parsedom) {
+			if (this.disabled) {
+				return null
+			}
 			const fn = element => {
 				if (element.isBlock()) {
 					return element.parsedom == parsedom ? element : null
@@ -1229,6 +1241,9 @@ export default {
 		},
 		//api：插入图片
 		insertImage(url) {
+			if (this.disabled) {
+				return
+			}
 			const image = new AlexElement(
 				'closed',
 				'img',
@@ -1245,6 +1260,9 @@ export default {
 		},
 		//api：插入视频
 		insertVideo(url) {
+			if (this.disabled) {
+				return
+			}
 			const video = new AlexElement(
 				'closed',
 				'video',
@@ -1267,6 +1285,9 @@ export default {
 		},
 		//api：插入html
 		insertHtml(html) {
+			if (this.disabled) {
+				return
+			}
 			if (!html) {
 				return
 			}
@@ -1286,6 +1307,9 @@ export default {
 		},
 		//api：插入文本
 		insertText(text) {
+			if (this.disabled) {
+				return
+			}
 			if (!text) {
 				return
 			}
@@ -1296,6 +1320,9 @@ export default {
 		},
 		//api：撤销
 		undo() {
+			if (this.disabled) {
+				return
+			}
 			const historyRecord = this.editor.history.get(-1)
 			if (historyRecord) {
 				this.editor.stack = historyRecord.stack
@@ -1307,6 +1334,9 @@ export default {
 		},
 		//api：重做
 		redo() {
+			if (this.disabled) {
+				return
+			}
 			const historyRecord = this.editor.history.get(1)
 			if (historyRecord) {
 				this.editor.stack = historyRecord.stack
@@ -1318,6 +1348,9 @@ export default {
 		},
 		//api：清除格式
 		removeFormat() {
+			if (this.disabled) {
+				return
+			}
 			this.editor.removeTextStyle()
 			this.editor.removeTextMark()
 			this.editor.formatElementStack()
@@ -1326,6 +1359,9 @@ export default {
 		},
 		//api：增加缩进
 		setIndent() {
+			if (this.disabled) {
+				return
+			}
 			const fn = element => {
 				if (element.hasStyles()) {
 					if (element.styles.hasOwnProperty('text-indent')) {
@@ -1379,6 +1415,9 @@ export default {
 		},
 		//api：减少缩进
 		setOutdent() {
+			if (this.disabled) {
+				return
+			}
 			const fn = element => {
 				if (element.hasStyles() && element.styles.hasOwnProperty('text-indent')) {
 					let val = element.styles['text-indent']
@@ -1416,6 +1455,9 @@ export default {
 		},
 		//api：插入分隔线
 		insertDivider() {
+			if (this.disabled) {
+				return
+			}
 			//创建段落
 			const paragraph = new AlexElement('block', AlexElement.BLOCK_NODE, null, null, null)
 			//创建分隔线
@@ -1437,6 +1479,9 @@ export default {
 		},
 		//api：设置/清除代码样式
 		setCodeStyle() {
+			if (this.disabled) {
+				return
+			}
 			const active = this.editor.queryTextMark('data-code-style')
 			if (active) {
 				this.editor.removeTextMark(['data-code-style'])
@@ -1451,6 +1496,9 @@ export default {
 		},
 		//api：加粗
 		setBold() {
+			if (this.disabled) {
+				return
+			}
 			const active = this.editor.queryTextStyle('font-weight', 'bold')
 			if (active) {
 				this.editor.removeTextStyle(['font-weight'])
@@ -1465,6 +1513,9 @@ export default {
 		},
 		//api：斜体
 		setItalic() {
+			if (this.disabled) {
+				return
+			}
 			const active = this.editor.queryTextStyle('font-style', 'italic')
 			if (active) {
 				this.editor.removeTextStyle(['font-style'])
@@ -1479,6 +1530,9 @@ export default {
 		},
 		//api：下划线
 		setUnderline() {
+			if (this.disabled) {
+				return
+			}
 			const active = this.editor.queryTextStyle('text-decoration-line', 'underline') || this.editor.queryTextStyle('text-decoration', 'underline')
 			if (active) {
 				this.editor.removeTextStyle(['text-decoration-line', 'text-decoration'])
@@ -1493,6 +1547,9 @@ export default {
 		},
 		//api：删除线
 		setStrikeThrough() {
+			if (this.disabled) {
+				return
+			}
 			const active = this.editor.queryTextStyle('text-decoration-line', 'line-through') || this.editor.queryTextStyle('text-decoration', 'line-through')
 			if (active) {
 				this.editor.removeTextStyle(['text-decoration-line', 'text-decoration'])
@@ -1507,6 +1564,9 @@ export default {
 		},
 		//api：下标
 		setSub() {
+			if (this.disabled) {
+				return
+			}
 			const active = this.editor.queryTextStyle('vertical-align', 'sub')
 			if (active) {
 				this.editor.removeTextStyle(['vertical-align'])
@@ -1521,6 +1581,9 @@ export default {
 		},
 		//api：上标
 		setSuper() {
+			if (this.disabled) {
+				return
+			}
 			const active = this.editor.queryTextStyle('vertical-align', 'super')
 			if (active) {
 				this.editor.removeTextStyle(['vertical-align'])
@@ -1535,6 +1598,9 @@ export default {
 		},
 		//设置标题
 		setTitle(value) {
+			if (this.disabled) {
+				return
+			}
 			if (this.editor.range.anchor.isEqual(this.editor.range.focus)) {
 				const block = this.editor.range.anchor.element.getBlock()
 				//先转为段落
@@ -1560,6 +1626,9 @@ export default {
 		},
 		//api：设置字体
 		setFontFamily(value) {
+			if (this.disabled) {
+				return
+			}
 			this.editor.setTextStyle({
 				'font-family': value
 			})
@@ -1569,6 +1638,9 @@ export default {
 		},
 		//api：设置字号
 		setFontSize(value) {
+			if (this.disabled) {
+				return
+			}
 			this.editor.setTextStyle({
 				'font-size': value
 			})
@@ -1578,6 +1650,9 @@ export default {
 		},
 		//api：设置字体颜色
 		setForeColor(value) {
+			if (this.disabled) {
+				return
+			}
 			this.editor.setTextStyle({
 				color: value
 			})
@@ -1585,8 +1660,11 @@ export default {
 			this.editor.domRender()
 			this.editor.rangeRender()
 		},
-		//设置背景颜色
+		//api：设置背景颜色
 		setBackColor(value) {
+			if (this.disabled) {
+				return
+			}
 			this.editor.setTextStyle({
 				'background-color': value
 			})
@@ -1596,6 +1674,9 @@ export default {
 		},
 		//api：插入有序列表 ordered为true表示有序列表
 		setList(ordered) {
+			if (this.disabled) {
+				return
+			}
 			//起点和终点在一起
 			if (this.editor.range.anchor.isEqual(this.editor.range.focus)) {
 				const block = this.editor.range.anchor.element.getBlock()
@@ -1631,6 +1712,9 @@ export default {
 		},
 		//api：设置对齐方式,参数取值justify/left/right/center
 		setJustify(value) {
+			if (this.disabled) {
+				return
+			}
 			if (this.editor.range.anchor.isEqual(this.editor.range.focus)) {
 				const block = this.editor.range.anchor.element.getBlock()
 				const inblock = this.editor.range.anchor.element.getInblock()
@@ -1691,6 +1775,9 @@ export default {
 		},
 		//api：插入引用
 		setQuote() {
+			if (this.disabled) {
+				return
+			}
 			//起点和终点在一起
 			if (this.editor.range.anchor.isEqual(this.editor.range.focus)) {
 				const block = this.editor.range.anchor.element.getBlock()
@@ -1726,6 +1813,9 @@ export default {
 		},
 		//api：插入代码块
 		setCodeBlock() {
+			if (this.disabled) {
+				return
+			}
 			const pre = this.getCurrentParsedomElement('pre')
 			if (pre) {
 				elementUtil.toParagraph(pre)
