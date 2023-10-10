@@ -1,6 +1,5 @@
 <template>
 	<div class="mvi-p-4">
-		<m-search right-icon="user" clearable v-model="value" round></m-search>
 		<!-- <m-table border columnBorder :data="data" height="2rem" :columns="columns"> </m-table>
 		<m-editor-menus ref="editor-menus">
 			<m-editor-menu v-for="item in EditorDefinedMenuConfig" :name="item.name"></m-editor-menu>

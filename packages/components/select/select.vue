@@ -9,10 +9,13 @@
 		</div>
 		<Layer v-model="focus" :target="`[data-id='mvi-select-target-${uid}']`" :root="`[data-id='mvi-select-${uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :fixed="layerRealProps.fixed" :fixed-auto="layerRealProps.fixedAuto" :z-index="layerRealProps.zIndex" closable :show-triangle="layerRealProps.showTriangle" :animation="layerRealProps.animation" :timeout="layerRealProps.timeout" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :border-color="layerRealProps.borderColor" :width="layerRealProps.width" @showing="layerShow" ref="layer">
 			<div class="mvi-select-menu" ref="menu" :style="menuStyle">
-				<div :class="['mvi-select-option', size]" @click="optionClick(item)" v-for="item in cmpOptions" :disabled="item.disabled || null">
-					<div class="mvi-select-option-value" v-html="item.label"></div>
-					<Icon v-if="isSelect(item)" :type="parseIcon(selectedIcon).type" :spin="parseIcon(selectedIcon).spin" :size="parseIcon(selectedIcon).size" :url="parseIcon(selectedIcon).url" :color="parseIcon(selectedIcon).color" />
-				</div>
+				<template v-if="cmpOptions.length">
+					<div :class="['mvi-select-option', size]" @click="optionClick(item)" v-for="item in cmpOptions" :disabled="item.disabled || null">
+						<div class="mvi-select-option-value" v-html="item.label"></div>
+						<Icon v-if="isSelect(item)" :type="parseIcon(selectedIcon).type" :spin="parseIcon(selectedIcon).spin" :size="parseIcon(selectedIcon).size" :url="parseIcon(selectedIcon).url" :color="parseIcon(selectedIcon).color" />
+					</div>
+				</template>
+				<div v-else :class="['mvi-select-empty', size]">{{ emptyText }}</div>
 			</div>
 		</Layer>
 		<input type="hidden" :value="formData" :name="name" />
@@ -145,6 +148,11 @@ export default {
 					value: 'value'
 				}
 			}
+		},
+		//无选项提示文字
+		emptyText: {
+			type: String,
+			default: '暂无数据'
 		}
 	},
 	setup() {
@@ -562,6 +570,28 @@ export default {
 	overflow: auto;
 	overflow-x: hidden;
 	padding: @mp-xs 0;
+
+	.mvi-select-empty {
+		display: block;
+		width: 100%;
+		text-align: center;
+		color: @font-color-mute;
+
+		&.small {
+			padding: @mp-sm;
+			font-size: @font-size-default;
+		}
+
+		&.medium {
+			padding: @mp-md;
+			font-size: @font-size-h6;
+		}
+
+		&.large {
+			padding: @mp-lg;
+			font-size: @font-size-h5;
+		}
+	}
 
 	.mvi-select-option {
 		display: flex;
