@@ -1878,6 +1878,8 @@ export default {
 		this.removeScroll()
 		//卸载绑定在document.documentElement上的事件
 		Dap.event.off(document.documentElement, `mousedown.editor_${this.uid} mousemove.editor_${this.uid} mouseup.editor_${this.uid}`)
+		//销毁编辑器
+		this.editor.destroy()
 	}
 }
 </script>
