@@ -1688,21 +1688,20 @@ export default {
 			}
 			//起点和终点不在一起
 			else {
+				let blocks = []
 				const result = this.editor.getElementsByRange(true, false)
 				result.forEach(item => {
-					if (item.element.isBlock()) {
-						const isList = elementUtil.isList(item.element, ordered)
-						elementUtil.toParagraph(item.element)
-						if (!isList) {
-							elementUtil.toList(item.element, ordered)
-						}
-					} else {
-						const block = item.element.getBlock()
-						const isList = elementUtil.isList(block, ordered)
-						elementUtil.toParagraph(block)
-						if (!isList) {
-							elementUtil.toList(block, ordered)
-						}
+					const block = item.element.getBlock()
+					const exist = blocks.some(el => block.isEqual(el))
+					if (!exist) {
+						blocks.push(block)
+					}
+				})
+				blocks.forEach(block => {
+					const isList = elementUtil.isList(block, ordered)
+					elementUtil.toParagraph(block)
+					if (!isList) {
+						elementUtil.toList(block, ordered)
 					}
 				})
 			}
@@ -1789,21 +1788,20 @@ export default {
 			}
 			//起点和终点不在一起
 			else {
+				let blocks = []
 				const result = this.editor.getElementsByRange(true, false)
-				result.forEach(el => {
-					if (el.element.isBlock()) {
-						const oldParsedom = el.element.parsedom
-						elementUtil.toParagraph(el.element)
-						if (oldParsedom != 'blockquote') {
-							el.element.parsedom = 'blockquote'
-						}
-					} else {
-						const block = el.element.getBlock()
-						const oldParsedom = block.parsedom
-						elementUtil.toParagraph(block)
-						if (oldParsedom != 'blockquote') {
-							block.parsedom = 'blockquote'
-						}
+				result.forEach(item => {
+					const block = item.element.getBlock()
+					const exist = blocks.some(el => block.isEqual(el))
+					if (!exist) {
+						blocks.push(block)
+					}
+				})
+				blocks.forEach(block => {
+					const oldParsedom = block.parsedom
+					elementUtil.toParagraph(block)
+					if (oldParsedom != 'blockquote') {
+						block.parsedom = 'blockquote'
 					}
 				})
 			}
