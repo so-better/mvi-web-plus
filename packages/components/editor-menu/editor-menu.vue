@@ -1246,6 +1246,7 @@ export default {
 .mvi-editor-menu {
 	display: block;
 	padding: 0;
+	position: relative;
 
 	.mvi-editor-menu-el {
 		display: flex;
