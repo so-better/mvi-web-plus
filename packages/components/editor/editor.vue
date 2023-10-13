@@ -330,7 +330,7 @@ export default {
 			const key = Dap.data.get(elm, 'data-alex-editor-key')
 			if (key) {
 				const element = this.editor.getElementByKey(key)
-				if (element.parsedom == 'td') {
+				if (element && element.parsedom == 'td') {
 					const length = element.parent.children.length
 					//最后一个td不设置
 					if (element.parent.children[length - 1].isEqual(element)) {
