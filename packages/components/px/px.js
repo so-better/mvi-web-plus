@@ -34,10 +34,10 @@ class Px {
 			let style = document.createElement('style')
 			style.type = 'text/css'
 			if (this.isBefore) {
-				style.innerHTML = `.${className}::before {${this.attrName}:${value}px !important;}`
+				style.innerHTML += ` .${className}::before {${this.attrName}:${value}px !important;}`
 			}
 			if (this.isAfter) {
-				style.innerHTML = `.${className}::after {${this.attrName}:${value}px !important;}`
+				style.innerHTML += ` .${className}::after {${this.attrName}:${value}px !important;}`
 			}
 			document.querySelector('head').appendChild(style)
 		} else {
