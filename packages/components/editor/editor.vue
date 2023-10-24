@@ -2044,6 +2044,7 @@ export default {
 						border-right: 1px solid @border-color;
 						padding: @mp-sm;
 						position: relative;
+						word-break: break-word;
 
 						&:last-child {
 							border-right: none;

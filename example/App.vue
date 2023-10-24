@@ -4,7 +4,7 @@
 		<m-editor-menus ref="editor-menus">
 			<m-editor-menu v-for="item in EditorDefinedMenuConfig" :name="item.name"></m-editor-menu>
 		</m-editor-menus>
-		<m-editor v-model="value" ref="editor"></m-editor>
+		<m-editor highlight v-model="value" ref="editor"></m-editor>
 	</div>
 </template>
 <script>
@@ -13,7 +13,7 @@ import { EditorDefinedMenuConfig } from '../packages'
 export default {
 	data() {
 		return {
-			value: `<p><br></p>`,
+			value: `<p><code>const</code></p>`,
 			spyOpt: {
 				el: '#root',
 				beforeEnter(el) {
