@@ -13,7 +13,7 @@ import { EditorDefinedMenuConfig } from '../packages'
 export default {
 	data() {
 		return {
-			value: `<p><code>const</code></p>`,
+			value: `<p><span data-code-style="true">const</span><span>&#xFEFF;</span><video src="https://video-js.51miz.com/preview/video/00/00/17/94/V-179427-F70F7EC2.mp4" mvi-editor-element-key="6"></video><span>&#xFEFF;</span></p>`,
 			spyOpt: {
 				el: '#root',
 				beforeEnter(el) {

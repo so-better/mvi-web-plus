@@ -15,12 +15,37 @@
 			</div>
 		</m-layer>
 		<!-- 图片调整器 -->
-		<m-layer v-model="mediaAdjusterProps.show" fixed :target="mediaAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#eee" offset="0.05rem" closable ref="mediaLayer" @showing="autoLayerOffset('mediaLayer')">
+		<m-layer v-model="imageAdjusterProps.show" fixed :target="imageAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#eee" offset="0.05rem" closable ref="imageLayer" @showing="autoLayerOffset('imageLayer')">
 			<div class="mvi-editor-layer">
-				<div @click="setMediaWidth('20%')" class="mvi-editor-layer-item">20%</div>
-				<div @click="setMediaWidth('50%')" class="mvi-editor-layer-item">50%</div>
-				<div @click="setMediaWidth('100%')" class="mvi-editor-layer-item">100%</div>
-				<div @click="deleteMedia" class="mvi-editor-layer-item"><Icon type="trash-alt" /></div>
+				<div @click="setMediaWidth('image', '20%')" class="mvi-editor-layer-item">20%</div>
+				<div @click="setMediaWidth('image', '50%')" class="mvi-editor-layer-item">50%</div>
+				<div @click="setMediaWidth('image', '100%')" class="mvi-editor-layer-item">100%</div>
+				<div @click="deleteMedia('image')" class="mvi-editor-layer-item"><Icon type="trash" /></div>
+			</div>
+		</m-layer>
+		<!-- 视频调整器 -->
+		<m-layer v-model="videoAdjusterProps.show" fixed :target="videoAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#eee" offset="0.05rem" closable ref="videoLayer" @showing="autoLayerOffset('videoLayer')">
+			<div class="mvi-editor-layer">
+				<div @click="setMediaWidth('video', '20%')" class="mvi-editor-layer-item">20%</div>
+				<div @click="setMediaWidth('video', '50%')" class="mvi-editor-layer-item">50%</div>
+				<div @click="setMediaWidth('video', '100%')" class="mvi-editor-layer-item">100%</div>
+				<div @click="setVideo('autoplay')" class="mvi-editor-layer-item">
+					<Icon v-if="videoAdjusterProps.autoplay" type="pause" />
+					<Icon v-else type="play" />
+				</div>
+				<div @click="setVideo('controls')" class="mvi-editor-layer-item">
+					<Icon v-if="videoAdjusterProps.controls" type="computer"></Icon>
+					<Icon v-else type="computer-alt"></Icon>
+				</div>
+				<div @click="setVideo('loop')" class="mvi-editor-layer-item">
+					<Icon v-if="videoAdjusterProps.loop" type="exchange" />
+					<Icon v-else type="single-loop" />
+				</div>
+				<div @click="setVideo('muted')" class="mvi-editor-layer-item">
+					<Icon v-if="videoAdjusterProps.muted" type="horn-mute" />
+					<Icon v-else type="horn-up" />
+				</div>
+				<div @click="deleteMedia('video')" class="mvi-editor-layer-item"><Icon type="trash" /></div>
 			</div>
 		</m-layer>
 		<!-- 表格调整器 -->
@@ -32,7 +57,7 @@
 				<div @click="removeTableRow" class="mvi-editor-layer-item">{{ tableAdjusterProps.props.removeRowText }}</div>
 				<div @click="addTableColumn" :style="{ color: activeColor }" class="mvi-editor-layer-item">{{ tableAdjusterProps.props.insertColumnText }}</div>
 				<div @click="removeTableColumn" class="mvi-editor-layer-item">{{ tableAdjusterProps.props.removeColumnText }}</div>
-				<div @click="deleteTable" class="mvi-editor-layer-item"><Icon type="trash-alt" /></div></div
+				<div @click="deleteTable" class="mvi-editor-layer-item"><Icon type="trash" /></div></div
 		></m-layer>
 		<!-- 代码块调整器 -->
 		<m-layer v-model="preAdjusterProps.show" fixed :target="preAdjusterProps.target" placement="bottom-start" animation="mvi-editor-layer-animation" :timeout="50" border background="#fff" border-color="#eee" offset="0.05rem" closable ref="preLayer" @showing="autoLayerOffset('preLayer')">
@@ -56,7 +81,7 @@ import { Checkbox } from '../checkbox'
 import { getHljsHtml, languages } from './hljs'
 export default {
 	name: 'm-editor',
-	emits: ['update:modelValue', 'focus', 'blur', 'change', 'paste-image', 'paste-video', 'range-update', 'after-render', 'keydown'],
+	emits: ['update:modelValue', 'focus', 'blur', 'change', 'paste-image', 'paste-video', 'range-update', 'before-render', 'after-render', 'keydown'],
 	props: {
 		//编辑器内容
 		modelValue: {
@@ -127,6 +152,11 @@ export default {
 		highlight: {
 			type: Boolean,
 			default: false
+		},
+		//插入的视频宽高比例
+		ratio: {
+			type: Number,
+			default: 16 / 9
 		}
 	},
 	data() {
@@ -163,11 +193,21 @@ export default {
 					insertText: '插入'
 				}
 			},
-			//媒体调整器参数
-			mediaAdjusterProps: {
+			//图片调整器参数
+			imageAdjusterProps: {
 				show: false,
 				target: '',
 				element: null
+			},
+			//视频调整器参数
+			videoAdjusterProps: {
+				show: false,
+				target: '',
+				element: null,
+				controls: false,
+				muted: true,
+				loop: false,
+				autoplay: false
 			},
 			//表格调整器参数
 			tableAdjusterProps: {
@@ -186,14 +226,14 @@ export default {
 				show: false,
 				target: '',
 				element: null,
+				language: '',
 				languages: [
 					{
 						label: '自动识别',
 						value: ''
 					},
 					...languages
-				],
-				language: ''
+				]
 			},
 			//表格列宽拖拽记录数据
 			tableColumnResizeParams: {
@@ -287,6 +327,8 @@ export default {
 		this.editor.on('deleteInStart', this.handleDelete)
 		//监听编辑器range更新
 		this.editor.on('rangeUpdate', this.handleRangeUpdate)
+		//监听编辑器dom渲染之前
+		this.editor.on('beforeRender', this.handleBeforeRender)
 		//监听编辑器dom渲染
 		this.editor.on('afterRender', this.handleAfterRender)
 		//监听编辑器粘贴html
@@ -452,7 +494,8 @@ export default {
 			const setScroll = el => {
 				Dap.event.on(el, `scroll.editor_${this.uid}`, e => {
 					this.linkAdjusterProps.show = false
-					this.mediaAdjusterProps.show = false
+					this.imageAdjusterProps.show = false
+					this.videoAdjusterProps.show = false
 					this.tableAdjusterProps.show = false
 					this.preAdjusterProps.show = false
 				})
@@ -519,33 +562,8 @@ export default {
 		},
 		//元素格式化时处理媒体元素和链接
 		mediaHandle(element) {
-			//图片增加marks
-			if (element.parsedom == 'img') {
-				const marks = {
-					'mvi-editor-element-key': element.key
-				}
-				if (element.hasMarks()) {
-					Object.assign(element.marks, marks)
-				} else {
-					element.marks = marks
-				}
-			}
-			//视频增加marks
-			if (element.parsedom == 'video') {
-				const marks = {
-					controls: true,
-					autoplay: true,
-					muted: true,
-					'mvi-editor-element-key': element.key
-				}
-				if (element.hasMarks()) {
-					Object.assign(element.marks, marks)
-				} else {
-					element.marks = marks
-				}
-			}
-			//链接增加marks
-			if (element.parsedom == 'a') {
+			//图片、视频和链接设置marks
+			if (element.parsedom == 'img' || element.parsedom == 'video' || element.parsedom == 'a') {
 				const marks = {
 					'mvi-editor-element-key': element.key
 				}
@@ -753,11 +771,23 @@ export default {
 			this.isPre = !!pre
 			this.isLink = !!link
 			setTimeout(() => {
-				if (img || video) {
-					const el = img || video
-					this.mediaAdjusterProps.target = `[mvi-editor-element-key='${el.key}']`
-					this.mediaAdjusterProps.element = el
-					this.mediaAdjusterProps.show = true
+				if (img) {
+					this.imageAdjusterProps.target = `[mvi-editor-element-key='${img.key}']`
+					this.imageAdjusterProps.element = img
+					this.imageAdjusterProps.show = true
+					this.videoAdjusterProps.show = false
+					this.linkAdjusterProps.show = false
+					this.tableAdjusterProps.show = false
+					this.preAdjusterProps.show = false
+				} else if (video) {
+					this.videoAdjusterProps.target = `[mvi-editor-element-key='${video.key}']`
+					this.videoAdjusterProps.element = video
+					this.videoAdjusterProps.controls = !!video.marks['controls']
+					this.videoAdjusterProps.autoplay = !!video.marks['autoplay']
+					this.videoAdjusterProps.loop = !!video.marks['loop']
+					this.videoAdjusterProps.muted = !!video.marks['muted']
+					this.videoAdjusterProps.show = true
+					this.imageAdjusterProps.show = false
 					this.linkAdjusterProps.show = false
 					this.tableAdjusterProps.show = false
 					this.preAdjusterProps.show = false
@@ -767,14 +797,16 @@ export default {
 					this.linkAdjusterProps.newWindow = link.marks['target'] == '_blank'
 					this.linkAdjusterProps.element = link
 					this.linkAdjusterProps.show = true
-					this.mediaAdjusterProps.show = false
+					this.imageAdjusterProps.show = false
+					this.videoAdjusterProps.show = false
 					this.tableAdjusterProps.show = false
 					this.preAdjusterProps.show = false
 				} else if (table) {
 					this.tableAdjusterProps.target = `[mvi-editor-element-key='${table.key}']`
 					this.tableAdjusterProps.element = table
 					this.tableAdjusterProps.show = true
-					this.mediaAdjusterProps.show = false
+					this.imageAdjusterProps.show = false
+					this.videoAdjusterProps.show = false
 					this.linkAdjusterProps.show = false
 					this.preAdjusterProps.show = false
 				} else if (pre) {
@@ -782,16 +814,22 @@ export default {
 					this.preAdjusterProps.language = pre.marks['mvi-hljs-language'] || ''
 					this.preAdjusterProps.element = pre
 					this.preAdjusterProps.show = true
-					this.mediaAdjusterProps.show = false
+					this.imageAdjusterProps.show = false
+					this.videoAdjusterProps.show = false
 					this.linkAdjusterProps.show = false
 					this.tableAdjusterProps.show = false
 				} else {
 					this.tableAdjusterProps.show = false
-					this.mediaAdjusterProps.show = false
+					this.imageAdjusterProps.show = false
+					this.videoAdjusterProps.show = false
 					this.linkAdjusterProps.show = false
 					this.preAdjusterProps.show = false
 				}
 			}, 100)
+		},
+		//编辑器dom渲染之前
+		handleBeforeRender() {
+			this.$emit('before-render')
 		},
 		//编辑器dom渲染
 		handleAfterRender() {
@@ -799,6 +837,10 @@ export default {
 			if (this.preAdjusterProps.show) {
 				this.autoLayerOffset('preLayer')
 			}
+			//设定视频高度
+			this.$refs.content.querySelectorAll('video').forEach(video => {
+				video.style.height = video.offsetWidth / this.ratio + 'px'
+			})
 			this.$emit('after-render')
 		},
 		//粘贴html时过滤部分元素的样式和属性
@@ -858,12 +900,33 @@ export default {
 			this.editor.formatElementStack()
 			this.editor.domRender()
 		},
-		//设置媒体宽度
-		setMediaWidth(value) {
+		//设置视频
+		setVideo(prop) {
 			if (this.disabled) {
 				return
 			}
-			const element = this.mediaAdjusterProps.element
+			const element = this.videoAdjusterProps.element
+			//当前是拥有该属性
+			if (this.videoAdjusterProps[prop]) {
+				delete element.marks[prop]
+			}
+			//当前无该属性
+			else {
+				element.marks[prop] = true
+			}
+			this.videoAdjusterProps[prop] = !this.videoAdjusterProps[prop]
+			this.editor.range.anchor.moveToEnd(element)
+			this.editor.range.focus.moveToEnd(element)
+			this.editor.domRender()
+			this.editor.rangeRender()
+			this.videoAdjusterProps.show = false
+		},
+		//设置媒体宽度
+		setMediaWidth(type = 'image', value) {
+			if (this.disabled) {
+				return
+			}
+			const element = type == 'image' ? this.imageAdjusterProps.element : this.videoAdjusterProps.element
 			const styles = {
 				width: value
 			}
@@ -876,10 +939,14 @@ export default {
 			this.editor.range.focus.moveToEnd(element)
 			this.editor.domRender()
 			this.editor.rangeRender()
-			this.mediaAdjusterProps.show = false
+			if (type == 'image') {
+				this.imageAdjusterProps.show = false
+			} else {
+				this.videoAdjusterProps.show = false
+			}
 		},
 		//删除媒体
-		deleteMedia() {
+		deleteMedia(type = 'image') {
 			if (this.disabled) {
 				return
 			}
@@ -887,7 +954,11 @@ export default {
 			this.editor.formatElementStack()
 			this.editor.domRender()
 			this.editor.rangeRender()
-			this.mediaAdjusterProps.show = false
+			if (type == 'image') {
+				this.imageAdjusterProps.show = false
+			} else {
+				this.videoAdjusterProps.show = false
+			}
 		},
 		//在表格前或者后换行
 		insertParagraphToTable(type) {
@@ -1986,13 +2057,21 @@ export default {
 			color: @font-color-sub;
 			border-radius: 0;
 		}
-		//视频样式
-		:deep(video),
+		//图片样式
 		:deep(img) {
 			position: relative;
 			display: inline-block;
 			width: 20%;
 			border-radius: 0.04rem;
+		}
+		//视频样式
+		:deep(video) {
+			position: relative;
+			display: inline-block;
+			width: 20%;
+			border-radius: 0.04rem;
+			background-color: #000;
+			object-fit: scale-down;
 		}
 		//代码样式
 		:deep([data-code-style]) {
