@@ -4,7 +4,7 @@
 		<m-editor-menus class="mvi-mb-4" border ref="editor-menus">
 			<m-editor-menu v-for="item in EditorDefinedMenuConfig" :name="item.name"></m-editor-menu>
 		</m-editor-menus>
-		<m-editor border highlight v-model="value" ref="editor"></m-editor>
+		<m-editor allow-paste-html border highlight v-model="value" ref="editor"></m-editor>
 	</div>
 </template>
 <script>

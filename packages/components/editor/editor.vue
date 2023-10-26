@@ -81,7 +81,7 @@ import { Checkbox } from '../checkbox'
 import { getHljsHtml, languages } from './hljs'
 export default {
 	name: 'm-editor',
-	emits: ['update:modelValue', 'focus', 'blur', 'change', 'paste-image', 'paste-video', 'range-update', 'before-render', 'after-render', 'keydown'],
+	emits: ['update:modelValue', 'focus', 'blur', 'change', 'range-update', 'before-render', 'after-render', 'keydown', 'paste-text', 'paste-video', 'paste-html', 'paste-image', 'copy', 'cut'],
 	props: {
 		//编辑器内容
 		modelValue: {
@@ -126,20 +126,35 @@ export default {
 				return Dap.common.matchingText(value, 'hex')
 			}
 		},
-		//粘贴文本时是否粘贴html
-		htmlPaste: {
+		//是否允许复制
+		allowCopy: {
+			type: Boolean,
+			default: true
+		},
+		//是否允许剪切
+		allowCut: {
+			type: Boolean,
+			default: true
+		},
+		//是否允许粘贴
+		allowPaste: {
+			type: Boolean,
+			default: true
+		},
+		//是否允许粘贴html
+		allowPasteHtml: {
 			type: Boolean,
 			default: false
 		},
-		//是否自定义图片粘贴
+		//自定义图片粘贴
 		customImagePaste: {
-			type: Boolean,
-			default: false
+			type: Function,
+			default: null
 		},
 		//自定义视频粘贴
 		customVideoPaste: {
-			type: Boolean,
-			default: false
+			type: Function,
+			default: null
 		},
 		//自定义渲染规则
 		renderRules: {
@@ -239,7 +254,11 @@ export default {
 			tableColumnResizeParams: {
 				element: null, //被拖拽的td
 				start: 0 //水平方向起点位置
-			}
+			},
+			//记录的内部属性
+			innerMarks: ['data-list', 'data-value', 'data-code-style'],
+			//记录的内部样式
+			innerStyles: ['text-indent', 'text-align']
 		}
 	},
 	setup() {
@@ -311,40 +330,43 @@ export default {
 			disabled: this.disabled,
 			value: this.cmpValue,
 			renderRules: [this.orderListHandle, this.codeHandle, this.mediaHandle, this.tableHandle, this.preHandle, ...this.renderRules],
-			htmlPaste: this.htmlPaste
+			allowCopy: this.allowCopy,
+			allowCut: this.allowCut,
+			allowPaste: this.allowPaste,
+			allowPasteHtml: this.allowPasteHtml,
+			customImagePaste: this.customImagePaste,
+			customVideoPaste: this.customVideoPaste
 		})
 		//编辑器渲染后会有一个渲染过程，会改变内容，因此重新获取内容的值来设置modelValue
 		this.internalModify(this.editor.value)
 		//监听编辑器内容变更
 		this.editor.on('change', this.handleContentChange)
-		//监听编辑器聚焦
-		this.editor.on('focus', this.handleContentFocus)
 		//监听编辑器失去焦点
 		this.editor.on('blur', this.handleContentBlur)
-		//监听编辑器换行
-		this.editor.on('insertParagraph', this.handleInsertParagraph)
-		//监听编辑器删除事件
-		this.editor.on('deleteInStart', this.handleDelete)
+		//监听编辑器聚焦
+		this.editor.on('focus', this.handleContentFocus)
 		//监听编辑器range更新
 		this.editor.on('rangeUpdate', this.handleRangeUpdate)
+		//监听编辑器换行
+		this.editor.on('insertParagraph', this.handleInsertParagraph)
+		//监听复制
+		this.editor.on('copy', this.handleCopy)
+		//监听剪切
+		this.editor.on('cut', this.handleCut)
+		//监听粘贴纯文本
+		this.editor.on('pasteText', this.handlePasteText)
+		//监听编辑器粘贴html
+		this.editor.on('pasteHtml', this.handlePasteHtml)
+		//监听粘贴图片
+		this.editor.on('pasteImage', this.handlePasteImage)
+		//监听粘贴视频
+		this.editor.on('pasteVideo', this.handlePasteVideo)
+		//监听编辑器删除事件
+		this.editor.on('deleteInStart', this.handleDelete)
 		//监听编辑器dom渲染之前
 		this.editor.on('beforeRender', this.handleBeforeRender)
 		//监听编辑器dom渲染
 		this.editor.on('afterRender', this.handleAfterRender)
-		//监听编辑器粘贴html
-		this.editor.on('pasteHtml', this.handlePasteHtml)
-		//监听编辑器粘贴图片
-		if (this.customImagePaste) {
-			this.editor.on('pasteImage', url => {
-				this.$emit('paste-image', url)
-			})
-		}
-		//监听编辑器粘贴视频
-		if (this.customVideoPaste) {
-			this.editor.on('pasteVideo', url => {
-				this.$emit('paste-video', url)
-			})
-		}
 		//监听滚动
 		this.onScroll()
 		//格式化
@@ -843,30 +865,54 @@ export default {
 			})
 			this.$emit('after-render')
 		},
-		//粘贴html时过滤部分元素的样式和属性
+		//编辑器复制
+		handleCopy() {
+			this.$emit('copy')
+		},
+		//编辑器剪切
+		handleCut() {
+			this.$emit('cut')
+		},
+		//编辑器纯文本粘贴
+		handlePasteText(data) {
+			this.$emit('paste-text', data)
+		},
+		//编辑器粘贴html
 		handlePasteHtml(data, elements) {
+			//粘贴html时过滤元素的样式和属性
 			AlexElement.flatElements(elements).forEach(el => {
-				//粘贴时以下元素应当改为内部定义的样式，因此需要移除原来的属性和样式
-				if (['table', 'tr', 'th', 'td', 'tbody', 'br', 'blockquote', 'ol', 'ul', 'li', 'pre', 'code', 'label', 'hr', 'colgroup'].includes(el.parsedom)) {
-					el.marks = null
-					//根级块元素和内部块元素
-					if (el.isBlock() || el.isInblock()) {
-						if (el.hasStyles()) {
-							let styles = {}
-							for (let key in el.styles) {
-								if (['text-indent', 'text-align'].includes(key)) {
-									styles[key] = el.styles[key]
-								}
-							}
-							el.styles = styles
+				//所有元素保留内部属性，过滤其他属性
+				if (el.hasMarks()) {
+					let marks = {}
+					for (let key in el.marks) {
+						if (this.innerMarks.includes(key)) {
+							marks[key] = el.marks[key]
 						}
 					}
-					//其他元素
-					else {
-						el.styles = null
+					el.marks = marks
+				}
+				//根级块元素和内部块元素保留内部样式，过滤其他样式
+				if (el.isBlock() || el.isInblock()) {
+					if (el.hasStyles()) {
+						let styles = {}
+						for (let key in el.styles) {
+							if (this.innerStyles.includes(key)) {
+								styles[key] = el.styles[key]
+							}
+						}
+						el.styles = styles
 					}
 				}
 			})
+			this.$emit('paste-html', elements)
+		},
+		//编辑器粘贴图片
+		handlePasteImage(url) {
+			this.$emit('paste-image', url)
+		},
+		//编辑器粘贴视频
+		handlePasteVideo(url) {
+			this.$emit('paste-video', url)
 		},
 		//删除当前链接
 		deleteLink() {
