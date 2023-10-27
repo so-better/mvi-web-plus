@@ -10,7 +10,7 @@
 				<Icon v-if="type == 'select' || type == 'display'" type="caret-down" class="mvi-editor-menu-caret"></Icon>
 			</div>
 		</Tooltip>
-		<Layer v-if="type == 'select' || type == 'display'" v-model="layerShow" ref="layer" :placement="menus.combinedLayerProps.placement" :z-index="menus.combinedLayerProps.zIndex" :fixed="menus.combinedLayerProps.fixed" :fixed-auto="menus.combinedLayerProps.fixedAuto" :offset="menus.combinedLayerProps.offset" :timeout="menus.combinedLayerProps.timeout" :show-triangle="menus.combinedLayerProps.showTriangle" :animation="menus.combinedLayerProps.animation" :shadow="menus.combinedLayerProps.shadow" :border="menus.combinedLayerProps.border" :width="menus.combinedLayerProps.width" :closable="menus.trigger == 'click'" :target="`[data-id='mvi-editor-menu-el-${uid}']`" :root="`[data-id='mvi-editor-menu-${uid}']`" @showing="beforeLayerShow">
+		<Layer v-if="type == 'select' || type == 'display'" v-model="layerShow" ref="layer" :placement="menus.combinedLayerProps.placement" :z-index="menus.combinedLayerProps.zIndex" :fixed="menus.combinedLayerProps.fixed" :fixed-auto="menus.combinedLayerProps.fixedAuto" :offset="menus.combinedLayerProps.offset" :timeout="menus.combinedLayerProps.timeout" :show-triangle="menus.combinedLayerProps.showTriangle" :animation="menus.combinedLayerProps.animation" :shadow="menus.combinedLayerProps.shadow" :border="menus.combinedLayerProps.border" :width="menus.combinedLayerProps.width" :closable="menus.trigger == 'click'" :target="`[data-id='mvi-editor-menu-el-${uid}']`" :root="`[data-id='mvi-editor-menu-${uid}']`" @hidden="afterLayerHide" @showing="beforeLayerShow">
 			<!-- 自定义浮层内容 -->
 			<slot name="layer" v-if="$slots.layer"></slot>
 			<template v-else>
@@ -56,7 +56,7 @@
 				</div>
 				<!-- 图片或者视频 -->
 				<div v-else-if="name == 'image' || name == 'video'" class="mvi-editor-menu-media">
-					<Tabs @change="tabChange" v-model="mediaParams.tabIndex" flex="flex-start" offset="0.4rem" :active-color="activeColor">
+					<Tabs v-if="mediaParams.renderTabs" @change="setUpload" v-model="mediaParams.tabIndex" flex="flex-start" offset="0.4rem" :active-color="activeColor">
 						<Tab v-for="item in parseList" :title="item.label">
 							<div class="mvi-editor-menu-media-upload" v-if="item.value == 'upload'">
 								<Icon type="upload-square" />
@@ -222,7 +222,9 @@ export default {
 				//选项卡值
 				tabIndex: 0,
 				//远程地址
-				remoteUrl: ''
+				remoteUrl: '',
+				//选项卡是否渲染
+				renderTabs: false
 			},
 			//表格相关参数
 			tableParams: {
@@ -485,6 +487,13 @@ export default {
 		})
 	},
 	methods: {
+		//浮层隐藏后
+		afterLayerHide() {
+			//上传视频或者图片的浮层隐藏后不渲染选项卡
+			if (this.name == 'image' || this.name == 'video') {
+				this.mediaParams.renderTabs = false
+			}
+		},
 		//浮层显示时
 		beforeLayerShow() {
 			//链接浮层打开时的初始化设置
@@ -539,13 +548,8 @@ export default {
 			else if (this.name == 'image' || this.name == 'video') {
 				this.mediaParams.tabIndex = 0
 				this.mediaParams.remoteUrl = ''
-				const elements = this.$el.querySelectorAll('.mvi-editor-menu-media-upload')
-				if (elements.length) {
-					for (let i = 0; i < elements.length; i++) {
-						let upload = new Upload(elements[i], { ...this.uploadOptions })
-						upload.init()
-					}
-				}
+				this.mediaParams.renderTabs = true
+				this.setUpload()
 			}
 			//打开表格时初始化设置
 			else if (this.name == 'table') {
@@ -553,7 +557,7 @@ export default {
 			}
 		},
 		//tab切换时
-		tabChange() {
+		setUpload() {
 			this.$nextTick(() => {
 				const elements = this.$el.querySelectorAll('.mvi-editor-menu-media-upload')
 				if (elements.length) {

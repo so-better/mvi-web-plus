@@ -4,7 +4,7 @@
 		<m-editor-menus class="mvi-mb-4" border ref="editor-menus">
 			<m-editor-menu v-for="item in EditorDefinedMenuConfig" :name="item.name"></m-editor-menu>
 		</m-editor-menus>
-		<m-editor allow-paste-html border highlight v-model="value" ref="editor"></m-editor>
+		<m-editor placeholder="请输入正文..." @paste-html="paste" allow-paste-html border highlight v-model="value" ref="editor"></m-editor>
 	</div>
 </template>
 <script>
@@ -147,7 +147,11 @@ export default {
 	mounted() {
 		this.$refs.editor.use(this.$refs['editor-menus'])
 	},
-	methods: {}
+	methods: {
+		paste(data, elements) {
+			console.log('执行粘贴操作', data, elements)
+		}
+	}
 }
 </script>
 <style lang="less">

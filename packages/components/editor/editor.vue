@@ -256,7 +256,7 @@ export default {
 				start: 0 //水平方向起点位置
 			},
 			//记录的内部属性
-			innerMarks: ['data-list', 'data-value', 'data-code-style'],
+			innerMarks: ['data-list', 'data-value', 'data-code-style', 'src', 'autoplay', 'loop', 'muted', 'href', 'target', 'alt', 'controls', 'name', 'disabled'],
 			//记录的内部样式
 			innerStyles: ['text-indent', 'text-align']
 		}
@@ -902,6 +902,10 @@ export default {
 						}
 						el.styles = styles
 					}
+				}
+				//行内元素和自闭合元素移除全部样式
+				else if (el.isInline() || el.isClosed()) {
+					el.styles = null
 				}
 			})
 			this.$emit('paste-html', elements)
