@@ -1,6 +1,7 @@
 <template>
 	<div class="mvi-p-4">
 		<!-- <m-table border columnBorder :data="data" height="2rem" :columns="columns"> </m-table> -->
+		{{ value }}
 		<m-editor-menus class="mvi-mb-4" border ref="editor-menus">
 			<m-editor-menu v-for="item in EditorDefinedMenuConfig" :name="item.name"></m-editor-menu>
 		</m-editor-menus>
