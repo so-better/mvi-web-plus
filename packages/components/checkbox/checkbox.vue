@@ -3,7 +3,7 @@
 		<span v-if="placement == 'left' && label" class="mvi-checkbox-label" :data-placement="placement" v-text="label"></span>
 		<input @change="change" :value="value" :disabled="disabled" :checked="check" type="checkbox" :name="name" />
 		<span :class="['mvi-checkbox-item', check ? 'check' : '', round ? 'round' : '']" :style="itemStyle">
-			<Icon type="success" :style="{ opacity: this.check ? '' : 0 }" />
+			<Icon type="success" :style="{ opacity: check ? '' : 0 }" />
 		</span>
 		<span v-if="placement == 'right' && label" class="mvi-checkbox-label" :data-placement="placement" v-text="label"></span>
 	</label>
