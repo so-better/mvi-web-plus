@@ -18,14 +18,14 @@
 	"dependencies": {
 		"dap-util": "^1.4.1",
 		"dayjs": "^1.11.9",
-		"vue": "^3.2.37"
+		"vue": "^3.3.7"
 	},
 	"devDependencies": {
-		"@vitejs/plugin-vue": "^3.0.3",
+		"@vitejs/plugin-vue": "^4.2.0",
 		"less": "^3.0.4",
 		"less-loader": "^5.0.0",
 		"terser": "^5.16.9",
-		"vite": "^3.0.7"
+		"vite": "^4.3.5"
 	},
 	"browserslist": [
 		"> 1%",
