@@ -1,20 +1,14 @@
 <template>
 	<div class="mvi-p-4">
-		<!-- <m-table border columnBorder :data="data" height="2rem" :columns="columns"> </m-table> -->
-		{{ value }}
-		<m-editor-menus class="mvi-mb-4" border ref="editor-menus">
-			<m-editor-menu v-for="item in EditorDefinedMenuConfig" :name="item.name"></m-editor-menu>
-		</m-editor-menus>
-		<m-editor placeholder="请输入正文..." @paste-html="paste" allow-paste-html border highlight v-model="value" ref="editor"></m-editor>
+		<m-button>按钮</m-button>
 	</div>
 </template>
 <script>
 import dayjs from 'dayjs'
-import { EditorDefinedMenuConfig } from '../packages'
 export default {
 	data() {
 		return {
-			value: `<p><br></p>`,
+			value: ``,
 			spyOpt: {
 				el: '#root',
 				beforeEnter(el) {
@@ -31,56 +25,12 @@ export default {
 				}
 			},
 			show: false,
-			EditorDefinedMenuConfig: EditorDefinedMenuConfig,
-			// value: `<ol><li>1</li><li>1</li><li>1</li><li>1</li><li>1</li></ol><table ><tbody><tr><th><br></th><th><br></th><th><br></th><th><br></th><th><br></th><th><br></th><th><br></th></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr></tbody></table>`,
 			dayjs: dayjs,
-			date: new Date(),
-			data: [
-				{
-					name: '1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111',
-					age: 14,
-					score: 80
-				},
-				{
-					name: '李四',
-					age: 16,
-					score: 55
-				},
-				{
-					name: '小王',
-					age: 15,
-					score: 77
-				}
-			],
-			columns: [
-				{
-					prop: 'name',
-					label: '姓名',
-					ellipsis: true
-				},
-				{
-					prop: 'age',
-					label: '年龄年龄年龄年龄年龄',
-					width: '600px',
-					ellipsis: true
-				},
-				{
-					prop: 'score',
-					label: '分数',
-					ellipsis: true,
-					width: '600px'
-				}
-			]
+			date: new Date()
 		}
 	},
-	mounted() {
-		this.$refs.editor.use(this.$refs['editor-menus'])
-	},
-	methods: {
-		paste(data, elements) {
-			console.log('执行粘贴操作', data, elements)
-		}
-	}
+	mounted() {},
+	methods: {}
 }
 </script>
 <style lang="less">

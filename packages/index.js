@@ -78,9 +78,6 @@ import { Select } from './components/select'
 import { Autocomplete } from './components/autocomplete'
 import { DateChooser } from './components/date-chooser'
 import { Field } from './components/field'
-import { Editor } from './components/editor'
-import { EditorMenus } from './components/editor-menus'
-import { EditorMenu } from './components/editor-menu'
 import { Row } from './components/row'
 import { Col } from './components/col'
 import { Form } from './components/form'
@@ -159,9 +156,6 @@ export * from './components/select'
 export * from './components/autocomplete'
 export * from './components/date-chooser'
 export * from './components/field'
-export * from './components/editor'
-export * from './components/editor-menus'
-export * from './components/editor-menu'
 export * from './components/row'
 export * from './components/col'
 export * from './components/form'
@@ -242,9 +236,6 @@ const install = app => {
 		Autocomplete,
 		DateChooser,
 		Field,
-		Editor,
-		EditorMenus,
-		EditorMenu,
 		Row,
 		Col,
 		Form,
@@ -257,7 +248,7 @@ const install = app => {
 }
 
 /***** 版本号 *****/
-const version = '1.8.51'
+const version = '1.8.52'
 
 const stdin_default = {
 	install,

@@ -1,12 +1,12 @@
 {
 	"name": "mvi-web-plus",
-	"version": "1.8.51",
+	"version": "1.8.52",
 	"private": false,
 	"sideEffects": [
 		"*.css"
 	],
 	"type": "module",
-	"author": "lingkai",
+	"author": "ling0523",
 	"main": "lib/mvi.umd.js",
 	"module": "lib/mvi.es.js",
 	"license": "MIT",
@@ -16,10 +16,8 @@
 		"lib": "vite build"
 	},
 	"dependencies": {
-		"alex-editor": "^1.0.37",
-		"dap-util": "^1.3.9",
+		"dap-util": "^1.4.1",
 		"dayjs": "^1.11.9",
-		"highlight.js": "^11.8.0",
 		"vue": "^3.2.37"
 	},
 	"devDependencies": {
@@ -36,6 +34,6 @@
 	],
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/lovelin0523/mvi-web-plus"
+		"url": "https://github.com/ling0523/mvi-web-plus"
 	}
 }
