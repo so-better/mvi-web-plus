@@ -147,10 +147,10 @@ export default {
 		align-items: center;
 		position: relative;
 		margin: 0;
-		padding: @mp-xs / 2;
+		padding: @mp-xs / 5;
 		border: 1px solid @border-color;
 		background-color: #fff;
-		font-size: @font-size-small;
+		font-size: @font-size-default;
 		border-radius: @radius-default / 2;
 		color: #fff;
 		transition: border-color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46), background-color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46), color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46);
