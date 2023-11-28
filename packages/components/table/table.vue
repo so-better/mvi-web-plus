@@ -271,11 +271,7 @@ export default {
 			handler: function (newVal) {
 				this.rowData = this.deepClone(newVal)
 				this.$nextTick(() => {
-					this.scrollWidth = this.getScrollWidth()
-					//滚动条宽度获取后等待渲染完成重新对齐列
-					this.$nextTick(() => {
-						this.columnAlignKey++
-					})
+					this.doLayout()
 				})
 			}
 		},
@@ -293,13 +289,9 @@ export default {
 		height: {
 			immediate: true,
 			handler: function () {
-				//在高度设置后获取滚动条宽度
+				//在高度设置后
 				this.$nextTick(() => {
-					this.scrollWidth = this.getScrollWidth()
-					//滚动条宽度获取后等待渲染完成重新对齐列
-					this.$nextTick(() => {
-						this.columnAlignKey++
-					})
+					this.doLayout()
 				})
 			}
 		}
@@ -311,13 +303,23 @@ export default {
 		}
 	},
 	mounted() {
-		this.columnAlignKey++
+		//设置表格列对齐
+		this.doLayout()
 		//屏幕大小变化
 		Dap.event.on(window, `resize.table_${this.uid}`, e => {
-			this.columnAlignKey++
+			this.doLayout()
 		})
 	},
 	methods: {
+		//设置表格列对齐
+		doLayout() {
+			//设置滚动条宽度
+			this.scrollWidth = this.getScrollWidth()
+			//滚动条宽度获取后等待渲染完成重新对齐列
+			this.$nextTick(() => {
+				this.columnAlignKey++
+			})
+		},
 		//单个复选框勾选
 		doCheck(rowIndex, column) {
 			if (
