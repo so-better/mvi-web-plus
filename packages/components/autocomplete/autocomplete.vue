@@ -326,7 +326,7 @@ export default {
 			setTimeout(() => {
 				this.focus = false
 				this.$emit('blur', this.realValue)
-			}, 100)
+			}, 200)
 		},
 		inputFocus() {
 			if (this.disabled) {
@@ -346,7 +346,7 @@ export default {
 				this.realValue = ''
 				this.$emit('clear', '')
 				this.$refs.input.focus()
-			}, 110)
+			}, 210)
 		},
 		doSelect(item) {
 			if (this.disabled) {

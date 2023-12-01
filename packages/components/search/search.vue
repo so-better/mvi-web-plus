@@ -247,7 +247,7 @@ export default {
 			setTimeout(() => {
 				this.focus = false
 				this.$emit('blur', this.realValue)
-			}, 100)
+			}, 200)
 		},
 		//输入监听
 		searchInput() {
@@ -296,7 +296,7 @@ export default {
 				this.realValue = ''
 				this.$refs.input.focus()
 				this.$emit('clear', this.realValue)
-			}, 110)
+			}, 210)
 		}
 	}
 }

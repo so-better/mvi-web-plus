@@ -400,7 +400,7 @@ export default {
 		inputBlur() {
 			setTimeout(() => {
 				this.focus = false
-			}, 100)
+			}, 200)
 		},
 		//输入监听
 		inputFun() {
@@ -421,7 +421,7 @@ export default {
 			setTimeout(() => {
 				this.value = ''
 				this.$refs.input.focus()
-			}, 110)
+			}, 210)
 		},
 		//确定
 		okFun() {

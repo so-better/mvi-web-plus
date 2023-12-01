@@ -409,7 +409,7 @@ export default {
 			setTimeout(() => {
 				this.focus = false
 				this.$emit('blur', this.realValue)
-			}, 100)
+			}, 200)
 		},
 		//输入框监听
 		input() {
@@ -445,7 +445,7 @@ export default {
 				let el = this.$refs.input || this.$refs.textarea
 				el.focus()
 				this.$emit('clear', this.realValue)
-			}, 110)
+			}, 210)
 		}
 	}
 }
