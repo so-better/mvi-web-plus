@@ -1,6 +1,6 @@
 {
 	"name": "mvi-web-plus",
-	"version": "1.8.57",
+	"version": "1.8.58",
 	"private": false,
 	"sideEffects": [
 		"*.css"
@@ -16,7 +16,7 @@
 		"lib": "vite build"
 	},
 	"dependencies": {
-		"dap-util": "^1.4.1",
+		"dap-util": "^1.4.2",
 		"dayjs": "^1.11.9",
 		"vue": "^3.3.7"
 	},
