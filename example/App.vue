@@ -1,6 +1,7 @@
 <template>
 	<div class="mvi-p-4">
-		<m-button>按钮</m-button>
+		<m-button @click="show = !show">按钮</m-button>
+		<m-search show-cancel v-model="value" placeholder="请输入"></m-search>
 	</div>
 </template>
 <script>
@@ -8,24 +9,8 @@ import dayjs from 'dayjs'
 export default {
 	data() {
 		return {
-			value: ``,
-			spyOpt: {
-				el: '#root',
-				beforeEnter(el) {
-					console.log('beforeEnter', el)
-				},
-				enter(el) {
-					console.log('enter', el)
-				},
-				beforeLeave(el) {
-					console.log('beforeLeave', el)
-				},
-				leave(el) {
-					console.log('leave', el)
-				}
-			},
 			show: false,
-			dayjs: dayjs,
+			value: '',
 			date: new Date()
 		}
 	},
@@ -42,20 +27,6 @@ html {
 	height: 100%;
 	overflow-x: hidden;
 	overflow-y: auto;
-}
-
-.a-tabs {
-	.mvi-tab-header.active {
-		background-color: #053b7e !important;
-		font-weight: bold;
-	}
-
-	.mvi-tabs-header.card {
-		border-color: #053b7e !important;
-	}
-
-	.mvi-tabs-header.card .mvi-tab-header {
-		border-right-color: #053b7e !important;
-	}
+	position: relative;
 }
 </style>
