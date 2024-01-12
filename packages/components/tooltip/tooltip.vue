@@ -193,11 +193,11 @@ export default {
 .mvi-tooltip-content {
 	position: relative;
 	display: block;
-	padding: @mp-sm;
+	padding: @mp-xs @mp-sm;
 	font-size: @font-size-small;
 	margin: 0;
 	white-space: nowrap;
-	line-height: 1;
+	line-height: 1.5;
 	text-align: center;
 }
 
