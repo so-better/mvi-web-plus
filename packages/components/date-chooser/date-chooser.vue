@@ -1,9 +1,9 @@
 <template>
-	<div :class="['mvi-date-chooser', block ? 'block' : '']" :data-id="`mvi-date-chooser-${uid}`">
-		<div class="mvi-date-chooser-target" :data-id="`mvi-date-chooser-target-${uid}`" ref="target" @click="clickCalendar">
+	<div :class="['mvi-date-chooser', block ? 'block' : '']">
+		<div class="mvi-date-chooser-relate" :data-id="`mvi-date-chooser-relate-${uid}`" ref="relate" @click="clickCalendar">
 			<slot></slot>
 		</div>
-		<Layer :target="`[data-id='mvi-date-chooser-target-${uid}']`" :root="`[data-id='mvi-date-chooser-${uid}']`" v-model="show" :placement="layerRealProps.placement" :fixed="layerRealProps.fixed" :fixed-auto="layerRealProps.fixedAuto" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :animation="layerRealProps.animation" :border-color="layerRealProps.borderColor" :timeout="layerRealProps.timeout" :closable="closable" :show-triangle="layerRealProps.showTriangle" :width="layerRealProps.width" @showing="layerShow">
+		<Layer :relate="`[data-id='mvi-date-chooser-relate-${uid}']`" v-model="show" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :animation="layerRealProps.animation" :border-color="layerRealProps.borderColor" :timeout="layerRealProps.timeout" :closable="closable" :show-triangle="layerRealProps.showTriangle" :width="layerRealProps.width" @showing="layerShow">
 			<div class="mvi-date-chooser-layer" ref="panel">
 				<!-- 年视图头部 -->
 				<div v-if="view == 'year'" class="mvi-date-chooser-year-header">
@@ -169,8 +169,6 @@ export default {
 		layerRealProps() {
 			return {
 				placement: this.layerProps.placement ? this.layerProps.placement : 'bottom-start',
-				fixed: typeof this.layerProps.fixed == 'boolean' ? this.layerProps.fixed : false,
-				fixedAuto: typeof this.layerProps.fixedAuto == 'boolean' ? this.layerProps.fixedAuto : false,
 				width: this.layerProps.width,
 				zIndex: Dap.number.isNumber(this.layerProps.zIndex) ? this.layerProps.zIndex : 400,
 				offset: this.layerProps.offset ? this.layerProps.offset : '0.2rem',
@@ -234,7 +232,7 @@ export default {
 		//悬浮层显示前进行宽度设置
 		layerShow() {
 			if (!this.layerRealProps.width) {
-				this.$refs.panel.style.width = this.$refs.target.offsetWidth + 'px'
+				this.$refs.panel.style.width = this.$refs.relate.offsetWidth + 'px'
 			}
 		},
 		//点击打开/关闭日历弹窗
@@ -334,7 +332,7 @@ export default {
 	position: relative;
 	display: inline-block;
 
-	.mvi-date-chooser-target {
+	.mvi-date-chooser-relate {
 		position: relative;
 		display: inline-block;
 	}
@@ -342,7 +340,7 @@ export default {
 	&.block {
 		display: block;
 
-		.mvi-date-chooser-target {
+		.mvi-date-chooser-relate {
 			display: block;
 		}
 	}

@@ -1,7 +1,8 @@
 <template>
-	<div class="mvi-p-4">
-		<m-button @click="show = !show">按钮</m-button>
-		<m-search show-cancel v-model="value" placeholder="请输入"></m-search>
+	<div style="padding: 200px">
+		<m-tooltip trigger="hover" title="这是一个工具提示组件" ref="tooltip">
+			<m-button type="primary">工具提示</m-button>
+		</m-tooltip>
 	</div>
 </template>
 <script>
@@ -11,7 +12,30 @@ export default {
 		return {
 			show: false,
 			value: '',
-			date: new Date()
+			list: ['佛罗里达州', '加利福利亚州', '北京', '伦敦'],
+			date: new Date(),
+			options: [
+				{
+					label: '选项1',
+					value: 0
+				},
+				{
+					label: '选项2',
+					value: 1
+				},
+				{
+					label: '选项3',
+					value: 2
+				},
+				{
+					label: '选项4',
+					value: 3
+				},
+				{
+					label: '选项5',
+					value: 4
+				}
+			]
 		}
 	},
 	mounted() {},
@@ -28,5 +52,12 @@ html {
 	overflow-x: hidden;
 	overflow-y: auto;
 	position: relative;
+}
+</style>
+<style lang="less">
+.slide-enter-from,
+.slide-leave-to {
+	transform: rotate(40deg);
+	opacity: 0;
 }
 </style>

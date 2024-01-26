@@ -1,9 +1,9 @@
 <template>
-	<div :class="['mvi-tooltip', block ? 'block' : '']" :data-id="'mvi-tooltip-' + uid">
-		<div @click="clickShowTooltip" @mouseenter="hoverShowTooltip" @mouseleave="hoverHideToolTip" class="mvi-tooltip-toggle" ref="toggle" :data-id="'mvi-tooltip-target-' + uid">
+	<div :class="['mvi-tooltip', block ? 'block' : '']">
+		<div @click="clickShowTooltip" @mouseenter="hoverShowTooltip" @mouseleave="hoverHideToolTip" class="mvi-tooltip-toggle" ref="toggle" :data-id="'mvi-tooltip-relate-' + uid">
 			<slot></slot>
 		</div>
-		<Layer v-model="show" :offset="offset" :background="color" border :border-color="borderColor" closable :show-triangle="showTriangle" :z-index="zIndex" :target="`[data-id='mvi-tooltip-target-${uid}']`" :root="`[data-id='mvi-tooltip-${uid}']`" :placement="placement" :fixed="fixed" :fixed-auto="fixedAuto" :width="width" :timeout="timeout" :animation="animation || 'mvi-tooltip'" :shadow="false">
+		<Layer v-model="show" :offset="offset" :background="color" border :border-color="borderColor" closable :show-triangle="showTriangle" :z-index="zIndex" :relate="`[data-id='mvi-tooltip-relate-${uid}']`" :placement="placement" :width="width" :timeout="timeout" :animation="animation || 'mvi-tooltip'" :shadow="false">
 			<div class="mvi-tooltip-content" ref="content" :style="contentStyle">
 				<slot v-if="$slots.title" name="title"></slot>
 				<span v-else v-text="title"></span>
@@ -75,16 +75,6 @@ export default {
 		zIndex: {
 			type: Number,
 			default: 20
-		},
-		//是否fixed定位
-		fixed: {
-			type: Boolean,
-			default: false
-		},
-		//此属性用以解决fixed模式下layer父元素存在transform属性样式时fixed失效的bug
-		fixedAuto: {
-			type: Boolean,
-			default: false
 		},
 		//宽度
 		width: {

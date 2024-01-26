@@ -1,6 +1,6 @@
 <template>
-	<div :data-id="'mvi-autocomplete-' + uid" :class="autocompleteClass" :disabled="disabled || null">
-		<div :class="targetClass" :style="targetStyle" :data-id="'mvi-autocomplete-target-' + uid" ref="target">
+	<div :class="autocompleteClass" :disabled="disabled || null">
+		<div :class="relateClass" :style="relateStyle" :data-id="'mvi-autocomplete-relate-' + uid" ref="relate">
 			<div @click="leftClick" v-if="parseIcon(leftIcon).type || parseIcon(leftIcon).url" class="mvi-autocomplete-left-icon">
 				<Icon :type="parseIcon(leftIcon).type" :url="parseIcon(leftIcon).url" :spin="parseIcon(leftIcon).spin" :size="parseIcon(leftIcon).size" :color="parseIcon(leftIcon).color" />
 			</div>
@@ -12,8 +12,8 @@
 				<Icon :type="parseIcon(rightIcon).type" :url="parseIcon(rightIcon).url" :spin="parseIcon(rightIcon).spin" :size="parseIcon(rightIcon).size" :color="parseIcon(rightIcon).color" />
 			</div>
 		</div>
-		<Layer :model-value="show" :target="`[data-id='mvi-autocomplete-target-${uid}']`" :root="`[data-id='mvi-autocomplete-${uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :fixed="layerRealProps.fixed" :z-index="layerRealProps.zIndex" :fixed-auto="layerRealProps.fixedAuto" ref="layer" :animation="layerRealProps.animation" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :timeout="layerRealProps.timeout" :closable="false" :show-triangle="layerRealProps.showTriangle" :border-color="layerRealProps.borderColor" :width="layerRealProps.width" @showing="layerShow">
-			<div class="mvi-autocomplete-menu" :style="menuStyle" ref="menu">
+		<Layer :model-value="show" :relate="`[data-id='mvi-autocomplete-relate-${uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" ref="layer" :animation="layerRealProps.animation" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :timeout="layerRealProps.timeout" :closable="false" :show-triangle="layerRealProps.showTriangle" :border-color="layerRealProps.borderColor" :width="layerRealProps.width" @showing="layerShow">
+			<div :class="['mvi-autocomplete-menu', size]" :style="menuStyle" ref="menu">
 				<div class="mvi-autocomplete-list" v-for="item in cmpFilter" v-text="item" @click="doSelect(item)"></div>
 			</div>
 		</Layer>
@@ -235,7 +235,7 @@ export default {
 			}
 			return cls
 		},
-		targetStyle() {
+		relateStyle() {
 			let style = {}
 			if (this.activeColor && this.focus) {
 				style.borderColor = this.activeColor
@@ -244,8 +244,8 @@ export default {
 			}
 			return style
 		},
-		targetClass() {
-			let cls = ['mvi-autocomplete-target']
+		relateClass() {
+			let cls = ['mvi-autocomplete-relate']
 			if (this.activeType && !this.activeColor && this.focus) {
 				cls.push(this.activeType)
 			}
@@ -264,8 +264,6 @@ export default {
 		layerRealProps() {
 			return {
 				placement: this.layerProps.placement ? this.layerProps.placement : 'bottom-start',
-				fixed: typeof this.layerProps.fixed == 'boolean' ? this.layerProps.fixed : false,
-				fixedAuto: typeof this.layerProps.fixedAuto == 'boolean' ? this.layerProps.fixedAuto : false,
 				width: this.layerProps.width,
 				zIndex: Dap.number.isNumber(this.layerProps.zIndex) ? this.layerProps.zIndex : 400,
 				offset: this.layerProps.offset ? this.layerProps.offset : '0.1rem',
@@ -282,7 +280,7 @@ export default {
 		//悬浮层显示前进行宽度设置
 		layerShow() {
 			if (!this.layerRealProps.width) {
-				this.$refs.menu.style.width = this.$refs.target.offsetWidth + 'px'
+				this.$refs.menu.style.width = this.$refs.relate.offsetWidth + 'px'
 			}
 		},
 		rightClick(e) {
@@ -398,10 +396,6 @@ export default {
 		input {
 			padding: 0 @mp-sm;
 		}
-
-		.mvi-autocomplete-list {
-			padding: @mp-sm;
-		}
 	}
 
 	&.medium {
@@ -416,10 +410,6 @@ export default {
 
 		input {
 			padding: 0 @mp-md;
-		}
-
-		.mvi-autocomplete-list {
-			padding: @mp-md;
 		}
 	}
 
@@ -436,10 +426,6 @@ export default {
 		input {
 			padding: 0 @mp-lg;
 		}
-
-		.mvi-autocomplete-list {
-			padding: @mp-lg;
-		}
 	}
 
 	&[disabled] {
@@ -447,7 +433,7 @@ export default {
 	}
 }
 
-.mvi-autocomplete-target {
+.mvi-autocomplete-relate {
 	display: flex;
 	display: -webkit-flex;
 	justify-content: flex-start;
@@ -575,6 +561,30 @@ export default {
 	.mvi-autocomplete-list:hover {
 		cursor: pointer;
 		background-color: @bg-color-default;
+	}
+
+	&.small {
+		.mvi-autocomplete-list {
+			font-size: @font-size-default;
+			height: @small-height;
+			padding: @mp-sm;
+		}
+	}
+
+	&.medium {
+		.mvi-autocomplete-list {
+			font-size: @font-size-h6;
+			height: @medium-height;
+			padding: @mp-md;
+		}
+	}
+
+	&.large {
+		.mvi-autocomplete-list {
+			font-size: @font-size-h5;
+			height: @large-height;
+			padding: @mp-lg;
+		}
 	}
 }
 </style>

@@ -1,21 +1,21 @@
 <template>
-	<div :data-id="'mvi-select-' + uid" :class="selectClass" :disabled="disabled || null">
-		<div @mouseenter="hover = true" @mouseleave="hover = false" :data-id="'mvi-select-target-' + uid" :class="targetClass" :style="targetStyle" ref="target" @click="trigger">
+	<div :class="selectClass" :disabled="disabled || null">
+		<div @mouseenter="hover = true" @mouseleave="hover = false" :data-id="'mvi-select-relate-' + uid" :class="relateClass" :style="relateStyle" ref="relate" @click="trigger">
 			<span :class="['mvi-select-label', selectLabel ? '' : 'placeholder']" :data-placeholder="placeholder" v-html="selectLabel"></span>
 			<!-- 清除图标 -->
 			<Icon @click="doClear" class="mvi-clear-icon" type="times-o" v-if="clearable" v-show="showClearIcon" />
 			<!-- 下拉图标 -->
 			<Icon v-show="!clearable || !showClearIcon" :class="iconClass" :type="icon" />
 		</div>
-		<Layer v-model="focus" :target="`[data-id='mvi-select-target-${uid}']`" :root="`[data-id='mvi-select-${uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :fixed="layerRealProps.fixed" :fixed-auto="layerRealProps.fixedAuto" :z-index="layerRealProps.zIndex" closable :show-triangle="layerRealProps.showTriangle" :animation="layerRealProps.animation" :timeout="layerRealProps.timeout" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :border-color="layerRealProps.borderColor" :width="layerRealProps.width" @showing="layerShow" ref="layer">
-			<div class="mvi-select-menu" ref="menu" :style="menuStyle">
+		<Layer v-model="focus" :relate="`[data-id='mvi-select-relate-${uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" closable :show-triangle="layerRealProps.showTriangle" :animation="layerRealProps.animation" :timeout="layerRealProps.timeout" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :border-color="layerRealProps.borderColor" :width="layerRealProps.width" @showing="layerShow" ref="layer">
+			<div :class="['mvi-select-menu', size]" ref="menu" :style="menuStyle">
 				<template v-if="cmpOptions.length">
-					<div :class="['mvi-select-option', size]" @click="optionClick(item)" v-for="item in cmpOptions" :disabled="item.disabled || null">
+					<div class="mvi-select-option" @click="optionClick(item)" v-for="item in cmpOptions" :disabled="item.disabled || null">
 						<div class="mvi-select-option-value" v-html="item.label"></div>
 						<Icon v-if="isSelect(item)" :type="parseIcon(selectedIcon).type" :spin="parseIcon(selectedIcon).spin" :size="parseIcon(selectedIcon).size" :url="parseIcon(selectedIcon).url" :color="parseIcon(selectedIcon).color" />
 					</div>
 				</template>
-				<div v-else :class="['mvi-select-empty', size]">{{ emptyText }}</div>
+				<div v-else class="mvi-select-empty">{{ emptyText }}</div>
 			</div>
 		</Layer>
 		<input type="hidden" :value="formData" :name="name" />
@@ -33,8 +33,7 @@ export default {
 	data() {
 		return {
 			hover: false,
-			focus: false,
-			target: null
+			focus: false
 		}
 	},
 	props: {
@@ -184,14 +183,14 @@ export default {
 			}
 			return cls
 		},
-		targetClass() {
-			let cls = ['mvi-select-target']
+		relateClass() {
+			let cls = ['mvi-select-relate']
 			if (this.activeType && !this.activeColor && this.focus) {
 				cls.push(this.activeType)
 			}
 			return cls
 		},
-		targetStyle() {
+		relateStyle() {
 			let style = {}
 			if (this.activeColor && this.focus) {
 				style.borderColor = this.activeColor
@@ -298,8 +297,6 @@ export default {
 		layerRealProps() {
 			return {
 				placement: this.layerProps.placement ? this.layerProps.placement : 'bottom-start',
-				fixed: typeof this.layerProps.fixed == 'boolean' ? this.layerProps.fixed : false,
-				fixedAuto: typeof this.layerProps.fixedAuto == 'boolean' ? this.layerProps.fixedAuto : false,
 				width: this.layerProps.width,
 				zIndex: Dap.number.isNumber(this.layerProps.zIndex) ? this.layerProps.zIndex : 400,
 				offset: this.layerProps.offset ? this.layerProps.offset : '0.1rem',
@@ -357,7 +354,7 @@ export default {
 		//layer显示前进行宽度设置
 		layerShow() {
 			if (!this.layerRealProps.width) {
-				this.$refs.menu.style.width = this.$refs.target.offsetWidth + 'px'
+				this.$refs.menu.style.width = this.$refs.relate.offsetWidth + 'px'
 			}
 		},
 		//点击选项
@@ -417,7 +414,7 @@ export default {
 	color: @font-color-default;
 	border-radius: @radius-default;
 	background-color: #fff;
-	.mvi-select-target {
+	.mvi-select-relate {
 		display: flex;
 		display: -webkit-flex;
 		justify-content: flex-start;
@@ -506,7 +503,7 @@ export default {
 	}
 
 	&.small {
-		.mvi-select-target {
+		.mvi-select-relate {
 			padding: 0 @mp-sm*3 0 @mp-sm;
 			height: @small-height;
 			font-size: @font-size-default;
@@ -520,7 +517,7 @@ export default {
 	}
 
 	&.medium {
-		.mvi-select-target {
+		.mvi-select-relate {
 			padding: 0 @mp-md*3 0 @mp-md;
 			height: @medium-height;
 			font-size: @font-size-h6;
@@ -534,7 +531,7 @@ export default {
 	}
 
 	&.large {
-		.mvi-select-target {
+		.mvi-select-relate {
 			padding: 0 @mp-lg*3 0 @mp-lg;
 			height: @large-height;
 			font-size: @font-size-h5;
@@ -558,7 +555,7 @@ export default {
 	&[disabled] {
 		opacity: 0.6;
 
-		.mvi-select-target {
+		.mvi-select-relate {
 			cursor: not-allowed;
 		}
 	}
@@ -576,21 +573,6 @@ export default {
 		width: 100%;
 		text-align: center;
 		color: @font-color-mute;
-
-		&.small {
-			padding: @mp-sm;
-			font-size: @font-size-default;
-		}
-
-		&.medium {
-			padding: @mp-md;
-			font-size: @font-size-h6;
-		}
-
-		&.large {
-			padding: @mp-lg;
-			font-size: @font-size-h5;
-		}
 	}
 
 	.mvi-select-option {
@@ -599,21 +581,6 @@ export default {
 		justify-content: space-between;
 		align-items: center;
 		line-height: 1;
-
-		&.small {
-			padding: @mp-sm;
-			font-size: @font-size-default;
-		}
-
-		&.medium {
-			padding: @mp-md;
-			font-size: @font-size-h6;
-		}
-
-		&.large {
-			padding: @mp-md @mp-lg;
-			font-size: @font-size-h5;
-		}
 
 		&:hover:not([disabled]) {
 			cursor: pointer;
@@ -632,6 +599,40 @@ export default {
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
+		}
+	}
+
+	&.small {
+		.mvi-select-empty {
+			padding: @mp-sm;
+			font-size: @font-size-default;
+		}
+
+		.mvi-select-option {
+			padding: @mp-sm;
+			font-size: @font-size-default;
+		}
+	}
+
+	&.medium {
+		.mvi-select-empty {
+			padding: @mp-md;
+			font-size: @font-size-h6;
+		}
+		.mvi-select-option {
+			padding: @mp-md;
+			font-size: @font-size-h6;
+		}
+	}
+
+	&.large {
+		.mvi-select-empty {
+			padding: @mp-lg;
+			font-size: @font-size-h5;
+		}
+		.mvi-select-option {
+			padding: @mp-md @mp-lg;
+			font-size: @font-size-h5;
 		}
 	}
 }
