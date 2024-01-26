@@ -1,7 +1,7 @@
 <template>
 	<teleport to="body">
 		<transition :name="animation || 'mvi-layer'" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @leave="leave" @before-leave="beforeLeave" @after-leave="afterLeave">
-			<div v-if="firstShow" v-show="layerShow" ref="layer" class="mvi-layer" :style="layerStyle">
+			<div v-if="firstShow" v-show="layerShow" ref="layer" class="mvi-layer" :style="layerStyle" v-bind="$attrs">
 				<div :class="wrapperClass" :style="wrapperStyle">
 					<Triangle v-if="showTriangle" ref="triangle" class="mvi-layer-triangle" :placement="trianglePlacement" :background="background" :border-color="border && borderColor ? borderColor : background" size="0.14rem"></Triangle>
 					<slot></slot>
@@ -25,6 +25,7 @@ export default {
 		}
 	},
 	emits: ['update:modelValue', 'show', 'showing', 'shown', 'hide', 'hidding', 'hidden'],
+	inheritAttrs: false,
 	props: {
 		//是否显示悬浮层
 		modelValue: {

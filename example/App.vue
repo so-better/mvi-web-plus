@@ -1,8 +1,7 @@
 <template>
 	<div style="padding: 200px">
-		<m-tooltip trigger="hover" title="这是一个工具提示组件" ref="tooltip">
-			<m-button type="primary">工具提示</m-button>
-		</m-tooltip>
+		<m-button block @click="show = !show" id="btn">按钮</m-button>
+		<m-layer class="a" closable showTriangle relate="#btn" v-model="show" width="10rem" placement="bottom" border borderColor="#f30" background="#f30" :shadow="false"> <div style="height: 100px"></div></m-layer>
 	</div>
 </template>
 <script>
@@ -12,7 +11,6 @@ export default {
 		return {
 			show: false,
 			value: '',
-			list: ['佛罗里达州', '加利福利亚州', '北京', '伦敦'],
 			date: new Date(),
 			options: [
 				{
