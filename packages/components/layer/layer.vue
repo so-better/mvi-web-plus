@@ -117,6 +117,10 @@ export default {
 		}
 	},
 	computed: {
+		//浮层dom
+		$$el() {
+			return this.$refs.layer
+		},
 		//三角形位置
 		trianglePlacement() {
 			if (this.realPlacement == 'bottom-start' || this.realPlacement == 'bottom' || this.realPlacement == 'bottom-end') {
