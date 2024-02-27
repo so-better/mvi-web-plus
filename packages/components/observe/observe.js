@@ -1,4 +1,4 @@
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 /**
  * 实现监听元素的属性变更
  */

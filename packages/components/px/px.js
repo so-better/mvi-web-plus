@@ -1,4 +1,4 @@
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 /**
  * 1px适配实现
  */

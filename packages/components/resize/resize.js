@@ -1,4 +1,4 @@
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 /**
  * 拖拽改变元素大小
  */

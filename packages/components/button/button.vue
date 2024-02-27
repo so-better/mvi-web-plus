@@ -11,7 +11,7 @@
 
 <script>
 import { h } from 'vue'
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 import { Icon } from '../icon'
 export default {
 	name: 'm-button',

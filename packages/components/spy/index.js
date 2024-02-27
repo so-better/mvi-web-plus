@@ -1,4 +1,4 @@
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 import Spy from './spy'
 
 Spy.install = app => {

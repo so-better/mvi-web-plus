@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 import { Modal } from '../modal'
 import { Icon } from '../icon'
 export default {

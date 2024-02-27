@@ -36,7 +36,7 @@
 </template>
 <script>
 import dayjs from 'dayjs'
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 export default {
 	name: 'm-calendar',
 	emits: ['update:modelValue', 'date-click', 'month-click', 'year-click'],

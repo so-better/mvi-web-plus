@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 import { Popup } from '../popup'
 import { Loading } from '../loading'
 import { Icon } from '../icon'

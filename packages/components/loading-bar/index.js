@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 import LoadingBarComponent from './loading-bar.vue'
 
 const LoadingBar = {

@@ -1,4 +1,4 @@
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 import Drag from './drag'
 
 Drag.install = app => {

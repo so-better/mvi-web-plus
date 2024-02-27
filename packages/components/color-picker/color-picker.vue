@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 import { Drag } from '../drag'
 import { Prop } from '../prop'
 import { Slider } from '../slider'

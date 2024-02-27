@@ -1,5 +1,5 @@
 import Prop from './prop'
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 
 Prop.install = app => {
 	//高度比例系数指令

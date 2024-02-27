@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 import { Overlay } from '../overlay'
 import { Icon } from '../icon'
 export default {

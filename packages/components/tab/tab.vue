@@ -8,7 +8,7 @@
 
 <script>
 import { getCurrentInstance } from 'vue'
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 export default {
 	name: 'm-tab',
 	inject: ['tabs'],

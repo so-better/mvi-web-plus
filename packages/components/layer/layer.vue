@@ -13,7 +13,7 @@
 
 <script>
 import { getCurrentInstance } from 'vue'
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 import { Triangle } from '../triangle'
 export default {
 	name: 'm-layer',

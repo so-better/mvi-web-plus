@@ -12,7 +12,7 @@
 
 <script>
 import { getCurrentInstance } from 'vue'
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 import { Cell } from '../cell'
 import { TransitionSlide } from '../transition-slide'
 export default {

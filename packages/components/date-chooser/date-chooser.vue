@@ -52,7 +52,7 @@
 
 <script>
 import { getCurrentInstance } from 'vue'
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 import { Layer } from '../layer'
 import { Icon } from '../icon'
 import { Calendar } from '../calendar'

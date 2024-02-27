@@ -1,9 +1,11 @@
+import Dap from 'dap-util'
+//解决ios系统下css伪类无效的问题
+Dap.event.on(window, 'touchstart.ios', e => {})
+
 /***** 全局默认样式 *****/
 import './css/mvi-default.less'
 /***** 辅助样式 *****/
 import './css/mvi-support.less'
-/***** dap工具类 *****/
-import { Dap } from './components/dap'
 /***** 指令 *****/
 import { Anchor } from './components/anchor'
 import { Resize } from './components/resize'
@@ -84,7 +86,6 @@ import { Form } from './components/form'
 import { FormEl } from './components/form-el'
 
 /***** 按需导出 *****/
-export * from './components/dap'
 export * from './components/anchor'
 export * from './components/resize'
 export * from './components/drag'
@@ -164,7 +165,6 @@ export * from './components/form-el'
 /***** 全局导出 *****/
 const install = app => {
 	const components = {
-		Dap,
 		Anchor,
 		Resize,
 		Drag,
@@ -248,7 +248,7 @@ const install = app => {
 }
 
 /***** 版本号 *****/
-const version = '1.9.0'
+const version = '1.9.1'
 
 const stdin_default = {
 	install,

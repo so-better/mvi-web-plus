@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 import NotifyComponent from './notify.vue'
 
 const Notify = {

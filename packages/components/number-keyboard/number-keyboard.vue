@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 import { Overlay } from '../overlay'
 export default {
 	name: 'm-number-keyboard',

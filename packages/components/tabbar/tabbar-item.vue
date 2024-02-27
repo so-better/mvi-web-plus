@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { Badge } from '../badge'
 export default {

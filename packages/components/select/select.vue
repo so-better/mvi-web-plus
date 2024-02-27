@@ -24,7 +24,7 @@
 
 <script>
 import { getCurrentInstance } from 'vue'
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { Layer } from '../layer'
 export default {

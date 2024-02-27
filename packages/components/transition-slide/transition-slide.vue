@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 export default {
 	name: 'm-transition-slide',
 	data() {

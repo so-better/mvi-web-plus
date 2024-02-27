@@ -4,7 +4,7 @@
 
 <script>
 import dayjs from 'dayjs'
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 export default {
 	name: 'm-date-native-picker',
 	emits: ['update:modelValue', 'error', 'change'],

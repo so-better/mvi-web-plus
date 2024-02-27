@@ -20,7 +20,7 @@
 
 <script>
 import { getCurrentInstance } from 'vue'
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 import { Loading } from '../loading'
 export default {
 	name: 'm-picker',

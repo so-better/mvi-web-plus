@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 import dialogComponent from './dialog.vue'
 import dialogPcComponent from './dialog-pc.vue'
 

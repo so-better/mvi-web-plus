@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { Dap } from '../dap'
+import Dap from 'dap-util'
 import { Icon } from '../icon'
 export default {
 	name: 'm-page',
