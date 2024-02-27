@@ -1,6 +1,6 @@
 <template>
-	<i v-if="url" :class="['mvi-icon-url', spin ? 'spin' : '']" :style="iconStyle"></i>
-	<i v-else :class="['mvi-icon', 'icon-' + type, spin ? 'spin' : '']" :style="iconStyle"></i>
+	<i v-if="url" class="mvi-icon-url" :class="{ spin: spin }" :style="iconStyle"></i>
+	<i v-else class="mvi-icon" :class="['icon-' + type, spin ? 'spin' : '']" :style="iconStyle"></i>
 </template>
 
 <script>
@@ -37,7 +37,7 @@ export default {
 		iconStyle() {
 			let style = {}
 			if (this.url) {
-				style.backgroundImage = 'url(' + this.url + ')'
+				style.backgroundImage = `url(${this.url})`
 				if (this.size) {
 					style.width = this.size
 					style.height = this.size

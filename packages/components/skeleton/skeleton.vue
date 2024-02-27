@@ -1,12 +1,12 @@
 <template>
 	<div class="mvi-skeleton-container">
-		<div v-if="loading" :class="['mvi-skeleton', animation ? 'animation' : '']">
+		<div v-if="loading" class="mvi-skeleton" :class="{ animation: animation }">
 			<div v-if="avatar" class="mvi-skeleton-avatar">
-				<div :class="['mvi-skeleton-avatar-el', avatarRound ? 'round' : '']" :style="avatarStyle"></div>
+				<div class="mvi-skeleton-avatar-el" :class="{ round: avatarRound }" :style="{ width: avatarSize || '', height: avatarSize || '' }"></div>
 			</div>
 			<div class="mvi-skeleton-rows">
-				<div v-if="title" :class="['mvi-skeleton-title', round ? 'round' : '']" :style="titleStyle"></div>
-				<div v-for="item in rowsArray" :style="rowStyle(item)" :class="['mvi-skeleton-row', round ? 'round' : '']"></div>
+				<div v-if="title" class="mvi-skeleton-title" :class="{ round: round }" :style="{ width: titleWidth || '' }"></div>
+				<div v-for="item in rowsArray" :style="rowStyle(item)" class="mvi-skeleton-row" :class="{ round: round }"></div>
 			</div>
 		</div>
 		<slot v-else></slot>
@@ -72,15 +72,6 @@ export default {
 		}
 	},
 	computed: {
-		//头像样式
-		avatarStyle() {
-			let style = {}
-			if (this.avatarSize) {
-				style.width = this.avatarSize
-				style.height = this.avatarSize
-			}
-			return style
-		},
 		//每行样式
 		rowStyle() {
 			return index => {
@@ -92,14 +83,6 @@ export default {
 				}
 				return style
 			}
-		},
-		//标题样式
-		titleStyle() {
-			let style = {}
-			if (this.titleWidth) {
-				style.width = this.titleWidth
-			}
-			return style
 		},
 		//行数
 		rowsArray() {

@@ -5,7 +5,7 @@
 				<span class="mvi-tabbar-icon" v-if="parseIcon(icon).type || parseIcon(icon).url" :style="{ marginBottom: name ? '' : '0px' }">
 					<Icon :type="parseIcon(icon).type" :url="parseIcon(icon).url" :spin="parseIcon(icon).spin" :size="parseIcon(icon).size" :color="parseIcon(icon).color" />
 				</span>
-				<span :class="['mvi-tabbar-name', parseIcon(icon).type || parseIcon(icon).url ? 'small' : '']" v-text="name"></span>
+				<span class="mvi-tabbar-name" :class="{ small: parseIcon(icon).type || parseIcon(icon).url }" v-text="name"></span>
 			</div>
 		</Badge>
 	</div>
@@ -52,7 +52,7 @@ export default {
 	},
 	computed: {
 		parseIcon() {
-			return param => {
+			return params => {
 				let icon = {
 					spin: false,
 					type: null,
@@ -60,24 +60,24 @@ export default {
 					color: null,
 					size: null
 				}
-				if (Dap.common.isObject(param)) {
-					if (typeof param.spin == 'boolean') {
-						icon.spin = param.spin
+				if (Dap.common.isObject(params)) {
+					if (typeof params.spin == 'boolean') {
+						icon.spin = params.spin
 					}
-					if (typeof param.type == 'string') {
-						icon.type = param.type
+					if (typeof params.type == 'string') {
+						icon.type = params.type
 					}
-					if (typeof param.url == 'string') {
-						icon.url = param.url
+					if (typeof params.url == 'string') {
+						icon.url = params.url
 					}
-					if (typeof param.color == 'string') {
-						icon.color = param.color
+					if (typeof params.color == 'string') {
+						icon.color = params.color
 					}
-					if (typeof param.size == 'string') {
-						icon.size = param.size
+					if (typeof params.size == 'string') {
+						icon.size = params.size
 					}
-				} else if (typeof param == 'string') {
-					icon.type = param
+				} else if (typeof params == 'string') {
+					icon.type = params
 				}
 				return icon
 			}

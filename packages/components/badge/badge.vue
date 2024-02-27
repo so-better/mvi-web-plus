@@ -1,5 +1,5 @@
 <template>
-	<div :class="['mvi-badge', block ? 'block' : '']">
+	<div class="mvi-badge" :class="{ block: block }">
 		<slot></slot>
 		<span v-if="dot && show" class="mvi-badge-el mvi-badge-dot" :data-placement="placement" :style="badgeStyle"></span>
 		<span v-else-if="badgeShow" class="mvi-badge-el" :data-placement="placement" :style="badgeStyle">{{ content }}</span>

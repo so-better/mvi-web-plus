@@ -6,6 +6,7 @@ class Upload {
 	constructor(element, options) {
 		//组件容器
 		this.$el = element
+		//参数配置
 		options = Dap.common.isObject(options) ? options : {}
 		//文件上传元素
 		this.$selectInput = null

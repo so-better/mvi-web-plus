@@ -1,5 +1,5 @@
 <template>
-	<Button :disabled="disabled || null" :class="btnClass" :style="btnStyle">
+	<Button :disabled="disabled || null" :class="btnClass">
 		<slot name="loading" v-if="loading && $slots.loading"></slot>
 		<template v-else-if="loading">
 			<Icon :type="parseIcon(loadIcon).type" :color="parseIcon(loadIcon).color" :url="parseIcon(loadIcon).url" :spin="parseIcon(loadIcon).spin" :size="parseIcon(loadIcon).size" />
@@ -42,16 +42,6 @@ export default {
 			type: String,
 			default: 'button'
 		},
-		//是否显示加载状态
-		loading: {
-			type: Boolean,
-			default: false
-		},
-		//加载文字
-		loadText: {
-			type: String,
-			default: 'loading...'
-		},
 		//是否独占一行
 		block: {
 			type: Boolean,
@@ -66,16 +56,6 @@ export default {
 		plain: {
 			type: Boolean,
 			default: false
-		},
-		//自定义按钮颜色
-		color: {
-			type: String,
-			default: null
-		},
-		//自定义文字颜色
-		subColor: {
-			type: String,
-			default: null
 		},
 		//圆形按钮
 		round: {
@@ -92,6 +72,16 @@ export default {
 			type: Boolean,
 			default: true
 		},
+		//是否显示加载状态
+		loading: {
+			type: Boolean,
+			default: false
+		},
+		//加载文字
+		loadText: {
+			type: String,
+			default: 'loading...'
+		},
 		//加载图标
 		loadIcon: {
 			type: [String, Object],
@@ -105,7 +95,7 @@ export default {
 	},
 	computed: {
 		parseIcon() {
-			return param => {
+			return params => {
 				let icon = {
 					spin: false,
 					type: null,
@@ -113,45 +103,27 @@ export default {
 					color: null,
 					size: null
 				}
-				if (Dap.common.isObject(param)) {
-					if (typeof param.spin == 'boolean') {
-						icon.spin = param.spin
+				if (Dap.common.isObject(params)) {
+					if (typeof params.spin == 'boolean') {
+						icon.spin = params.spin
 					}
-					if (typeof param.type == 'string') {
-						icon.type = param.type
+					if (typeof params.type == 'string') {
+						icon.type = params.type
 					}
-					if (typeof param.url == 'string') {
-						icon.url = param.url
+					if (typeof params.url == 'string') {
+						icon.url = params.url
 					}
-					if (typeof param.color == 'string') {
-						icon.color = param.color
+					if (typeof params.color == 'string') {
+						icon.color = params.color
 					}
-					if (typeof param.size == 'string') {
-						icon.size = param.size
+					if (typeof params.size == 'string') {
+						icon.size = params.size
 					}
-				} else if (typeof param == 'string') {
-					icon.type = param
+				} else if (typeof params == 'string') {
+					icon.type = params
 				}
 				return icon
 			}
-		},
-		btnStyle() {
-			let obj = {}
-			//单色
-			if (this.plain) {
-				if (this.color) {
-					obj.color = this.color
-					obj.borderColor = this.color
-					obj.background = this.subColor || '#fff'
-				}
-			} else {
-				if (this.color) {
-					obj.background = this.color
-					obj.borderColor = this.color
-					obj.color = this.subColor || '#fff'
-				}
-			}
-			return obj
 		},
 		btnClass() {
 			let cls = ['mvi-button']
@@ -225,9 +197,9 @@ export default {
 	cursor: pointer;
 
 	&.default {
-		background: #fff;
-		border-color: @border-color;
 		color: @font-color-default;
+		border-color: @border-color;
+		background: #fff;
 	}
 
 	&.warn {
@@ -236,21 +208,29 @@ export default {
 		color: #fff;
 
 		&.plain {
+			color: @warn-normal;
 			border-color: @warn-normal;
 			background: #fff;
-			color: @warn-normal;
+
+			&.active:active::before {
+				.mvi-active(@warn-normal);
+			}
 		}
 	}
 
 	&.error {
 		background: @error-normal;
-		color: #fff;
 		border-color: @error-normal;
+		color: #fff;
 
 		&.plain {
+			color: @error-normal;
 			border-color: @error-normal;
 			background: #fff;
-			color: @error-normal;
+
+			&.active:active::before {
+				.mvi-active(@error-normal);
+			}
 		}
 	}
 
@@ -260,33 +240,44 @@ export default {
 		color: #fff;
 
 		&.plain {
+			color: @success-normal;
 			border-color: @success-normal;
 			background: #fff;
-			color: @success-normal;
+
+			&.active:active::before {
+				.mvi-active(@success-normal);
+			}
 		}
 	}
 
 	&.info {
 		background: @info-normal;
-		color: #fff;
 		border-color: @info-normal;
+		color: #fff;
 
 		&.plain {
-			border-color: @info-normal;
 			color: @info-normal;
+			border-color: @info-normal;
 			background: #fff;
+
+			&.active:active::before {
+				.mvi-active(@info-normal);
+			}
 		}
 	}
 
 	&.primary {
 		background: @primary-normal;
-		color: #fff;
 		border-color: @primary-normal;
+		color: #fff;
 
 		&.plain {
-			background: #fff;
 			color: @primary-normal;
 			border-color: @primary-normal;
+			background: #fff;
+			&.active:active::before {
+				.mvi-active(@primary-normal);
+			}
 		}
 	}
 

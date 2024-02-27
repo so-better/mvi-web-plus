@@ -68,7 +68,7 @@ export default {
 	methods: {
 		//api：触发日期选择弹窗
 		trigger() {
-			if (this.ios) {
+			if (this.ios && !this.iPad) {
 				this.$el.focus()
 			} else {
 				this.$el.click()

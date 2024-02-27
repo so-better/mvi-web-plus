@@ -1,5 +1,5 @@
 <template>
-	<div :disabled="disabled || null" :class="sliderClass" :style="sliderStyle" @click="dragTo">
+	<div :disabled="disabled || null" class="mvi-slider" :class="{ round: round, square: !round && square, vertical: vertical }" :style="sliderStyle" @click="dragTo">
 		<div ref="bar" class="mvi-slider-bar" :style="sliderBarStyle"></div>
 		<div class="mvi-slider-button" ref="btn">
 			<slot name="button" v-if="$slots.button"></slot>
@@ -107,18 +107,6 @@ export default {
 				style.height = `calc(${this.strokeWidth} * 2)`
 			}
 			return style
-		},
-		sliderClass() {
-			let cls = ['mvi-slider']
-			if (this.round) {
-				cls.push('round')
-			} else if (this.square) {
-				cls.push('square')
-			}
-			if (this.vertical) {
-				cls.push('vertical')
-			}
-			return cls
 		}
 	},
 	mounted() {

@@ -1,5 +1,5 @@
 <template>
-	<Col :class="colStyle">
+	<Col :class="colClass">
 		<slot></slot>
 	</Col>
 </template>
@@ -53,7 +53,7 @@ export default {
 	},
 	inject: ['row'],
 	computed: {
-		colStyle() {
+		colClass() {
 			let cls = []
 			if (this.span) {
 				cls.push('mvi-col-' + this.span)

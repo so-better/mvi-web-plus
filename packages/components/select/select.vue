@@ -1,14 +1,14 @@
 <template>
-	<div :class="selectClass" :disabled="disabled || null">
-		<div @mouseenter="hover = true" @mouseleave="hover = false" :data-id="'mvi-select-relate-' + uid" :class="relateClass" :style="relateStyle" ref="relate" @click="trigger">
-			<span :class="['mvi-select-label', selectLabel ? '' : 'placeholder']" :data-placeholder="placeholder" v-html="selectLabel"></span>
+	<div class="mvi-select" :class="[size, { round: round, square: !round && square }]" :disabled="disabled || null">
+		<div @mouseenter="hover = true" @mouseleave="hover = false" :data-id="'mvi-select-relate-' + uid" class="mvi-select-relate" :class="relateClass" :style="relateStyle" ref="relate" @click="trigger">
+			<span class="mvi-select-label" :class="{ placeholder: !selectLabel }" :data-placeholder="placeholder" v-html="selectLabel"></span>
 			<!-- 清除图标 -->
 			<Icon @click="doClear" class="mvi-clear-icon" type="times-o" v-if="clearable" v-show="showClearIcon" />
 			<!-- 下拉图标 -->
-			<Icon v-show="!clearable || !showClearIcon" :class="iconClass" :type="icon" />
+			<Icon v-show="!clearable || !showClearIcon" class="mvi-select-icon" :class="{ active: focus }" :type="icon" />
 		</div>
 		<Layer v-model="focus" :relate="`[data-id='mvi-select-relate-${uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" closable :show-triangle="layerRealProps.showTriangle" :animation="layerRealProps.animation" :timeout="layerRealProps.timeout" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :border-color="layerRealProps.borderColor" :width="layerRealProps.width" @showing="layerShow" ref="layer">
-			<div :class="['mvi-select-menu', size]" ref="menu" :style="menuStyle">
+			<div class="mvi-select-menu" :class="[size]" ref="menu" :style="{ maxHeight: height }">
 				<template v-if="cmpOptions.length">
 					<div class="mvi-select-option" @click="optionClick(item)" v-for="item in cmpOptions" :disabled="item.disabled || null">
 						<div class="mvi-select-option-value" v-html="item.label"></div>
@@ -167,24 +167,8 @@ export default {
 			}
 			return this.modelValue
 		},
-		menuStyle() {
-			let style = {}
-			if (this.height) {
-				style.maxHeight = this.height
-			}
-			return style
-		},
-		selectClass() {
-			let cls = ['mvi-select', this.size]
-			if (this.round) {
-				cls.push('round')
-			} else if (this.square) {
-				cls.push('square')
-			}
-			return cls
-		},
 		relateClass() {
-			let cls = ['mvi-select-relate']
+			let cls = []
 			if (this.activeType && !this.activeColor && this.focus) {
 				cls.push(this.activeType)
 			}
@@ -198,13 +182,6 @@ export default {
 				style.boxShadow = `0 0 0.16rem rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.5)`
 			}
 			return style
-		},
-		iconClass() {
-			let cls = ['mvi-select-icon']
-			if (this.focus) {
-				cls.push('active')
-			}
-			return cls
 		},
 		selectLabel() {
 			if (this.multiple) {
@@ -250,7 +227,7 @@ export default {
 			}
 		},
 		parseIcon() {
-			return param => {
+			return params => {
 				let icon = {
 					spin: false,
 					type: null,
@@ -258,24 +235,24 @@ export default {
 					color: null,
 					size: null
 				}
-				if (Dap.common.isObject(param)) {
-					if (typeof param.spin == 'boolean') {
-						icon.spin = param.spin
+				if (Dap.common.isObject(params)) {
+					if (typeof params.spin == 'boolean') {
+						icon.spin = params.spin
 					}
-					if (typeof param.type == 'string') {
-						icon.type = param.type
+					if (typeof params.type == 'string') {
+						icon.type = params.type
 					}
-					if (typeof param.url == 'string') {
-						icon.url = param.url
+					if (typeof params.url == 'string') {
+						icon.url = params.url
 					}
-					if (typeof param.color == 'string') {
-						icon.color = param.color
+					if (typeof params.color == 'string') {
+						icon.color = params.color
 					}
-					if (typeof param.size == 'string') {
-						icon.size = param.size
+					if (typeof params.size == 'string') {
+						icon.size = params.size
 					}
-				} else if (typeof param == 'string') {
-					icon.type = param
+				} else if (typeof params == 'string') {
+					icon.type = params
 				}
 				return icon
 			}

@@ -1,5 +1,5 @@
 <template>
-	<div :class="['mvi-tooltip', block ? 'block' : '']">
+	<div class="mvi-tooltip" :class="{ block: block }">
 		<div @click="clickShowTooltip" @mouseenter="hoverShowTooltip" @mouseleave="hoverHideToolTip" class="mvi-tooltip-toggle" ref="toggle" :data-id="'mvi-tooltip-relate-' + uid">
 			<slot></slot>
 		</div>

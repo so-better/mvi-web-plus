@@ -1,11 +1,10 @@
 <template>
-	<div :class="['mvi-steps', vertical ? 'vertical' : '']">
+	<div class="mvi-steps" :class="{ vertical: vertical }">
 		<slot></slot>
 	</div>
 </template>
 
 <script>
-import { Dap } from '../dap'
 export default {
 	name: 'm-steps',
 	data() {

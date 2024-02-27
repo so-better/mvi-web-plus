@@ -1,10 +1,10 @@
 <template>
-	<div :class="['mvi-stepper', size]">
+	<div class="mvi-stepper" :class="[size]">
 		<div :disabled="disabledMinus || arrivalMin || disabled || null" :class="minusClass" v-if="showMinus" @click="doMinus">
 			<Icon type="minus" />
 		</div>
-		<div :disabled="disabled || disabledInput || null" :class="['mvi-stepper-input', border ? 'border' : '']" :style="inputStyle" v-if="showInput">
-			<input ref="input" v-model="realValue" :disabled="disabled || disabledInput || null" type="text" @blur="changeValue" @keyup.enter="changeValue" :style="inputElStyle" inputmode="numeric" />
+		<div :disabled="disabled || disabledInput || null" class="mvi-stepper-input" :class="{ border: border }" :style="{ width: inputWidth || '' }" v-if="showInput">
+			<input ref="input" v-model="realValue" :disabled="disabled || disabledInput || null" type="text" @blur="changeValue" @keyup.enter="changeValue" :style="{ textAlign: inputAlign }" inputmode="numeric" />
 		</div>
 		<div :disabled="disabledPlus || arrivalMax || disabled || null" :class="plusClass" v-if="showPlus" @click="doPlus">
 			<Icon type="plus" />
@@ -123,20 +123,6 @@ export default {
 				return this.realValue >= this.max
 			}
 			return false
-		},
-		inputStyle() {
-			let style = {}
-			if (this.inputWidth) {
-				style.width = this.inputWidth
-			}
-			return style
-		},
-		inputElStyle() {
-			let style = {}
-			if (this.inputAlign) {
-				style.textAlign = this.inputAlign
-			}
-			return style
 		},
 		minusClass() {
 			let cls = ['mvi-stepper-minus']

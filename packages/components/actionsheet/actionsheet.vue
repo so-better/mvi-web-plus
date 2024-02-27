@@ -1,9 +1,9 @@
 <template>
 	<Popup ref="popup" v-model="show" :overlay-color="overlayColor" :z-index="zIndex" :timeout="timeout" placement="bottom" :round="round" :use-padding="usePadding" :mount-el="mountEl" :closable="closable">
 		<div class="mvi-actionsheet">
-			<div :class="['mvi-actionsheet-title', size]" v-if="title" v-text="title"></div>
+			<div class="mvi-actionsheet-title" :class="[size]" v-if="title" v-text="title"></div>
 			<div class="mvi-actionsheet-list">
-				<div :class="itemClass(item)" v-for="(item, index) in options" :disabled="itemDisabled(item) || null" @click="doSelect(item, index)">
+				<div class="mvi-actionsheet-item" :class="itemClass(item)" v-for="(item, index) in options" :disabled="itemDisabled(item) || null" @click="doSelect(item, index)">
 					<Loading :size="size == 'large' ? '0.4rem' : '0.36rem'" color="#bbb" v-if="item.loading || false"></Loading>
 					<div class="mvi-actionsheet-content" v-else-if="item.label || parseIcon(item.icon).type || parseIcon(item.icon).url">
 						<Icon data-placement="left" v-if="(parseIcon(item.icon).type || parseIcon(item.icon).url) && item.placement != 'right'" :type="parseIcon(item.icon).type" :url="parseIcon(item.icon).url" :spin="parseIcon(item.icon).spin" :size="parseIcon(item.icon).size" :color="parseIcon(item.icon).color" />
@@ -13,7 +13,7 @@
 				</div>
 			</div>
 			<div class="mvi-actionsheet-divider"></div>
-			<div :class="['mvi-actionsheet-button', size, active ? 'active' : '']" v-if="showCancel" v-text="cancelText" @click="show = false"></div>
+			<div class="mvi-actionsheet-button" :class="[size, { active: active }]" v-if="showCancel" v-text="cancelText" @click="show = false"></div>
 		</div>
 	</Popup>
 </template>
@@ -122,7 +122,7 @@ export default {
 		},
 		//转换图标字段
 		parseIcon() {
-			return param => {
+			return params => {
 				let icon = {
 					spin: false,
 					type: null,
@@ -130,31 +130,31 @@ export default {
 					color: null,
 					size: null
 				}
-				if (Dap.common.isObject(param)) {
-					if (typeof param.spin == 'boolean') {
-						icon.spin = param.spin
+				if (Dap.common.isObject(params)) {
+					if (typeof params.spin == 'boolean') {
+						icon.spin = params.spin
 					}
-					if (typeof param.type == 'string') {
-						icon.type = param.type
+					if (typeof params.type == 'string') {
+						icon.type = params.type
 					}
-					if (typeof param.url == 'string') {
-						icon.url = param.url
+					if (typeof params.url == 'string') {
+						icon.url = params.url
 					}
-					if (typeof param.color == 'string') {
-						icon.color = param.color
+					if (typeof params.color == 'string') {
+						icon.color = params.color
 					}
-					if (typeof param.size == 'string') {
-						icon.size = param.size
+					if (typeof params.size == 'string') {
+						icon.size = params.size
 					}
-				} else if (typeof param == 'string') {
-					icon.type = param
+				} else if (typeof params == 'string') {
+					icon.type = params
 				}
 				return icon
 			}
 		},
 		itemClass() {
 			return item => {
-				let cls = ['mvi-actionsheet-item', this.size]
+				let cls = [this.size]
 				if (this.active && !item.loading && !item.disabled) {
 					cls.push('active')
 				}
@@ -165,9 +165,8 @@ export default {
 			return item => {
 				if (typeof item.disabled == 'boolean') {
 					return item.disabled
-				} else {
-					return false
 				}
+				return false
 			}
 		}
 	},

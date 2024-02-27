@@ -1,6 +1,6 @@
 <template>
-	<div :class="['mvi-form-el', form.block ? 'block' : '']" :style="formElStyle">
-		<div v-if="label" :class="labelCls" v-text="label" :style="labelStyle"></div>
+	<div class="mvi-form-el" :class="{ block: form.block }" :style="formElStyle">
+		<div v-if="label" class="mvi-form-label" :class="{ block: form.labelBlock && form.block }" v-text="label" :style="labelStyle"></div>
 		<div v-if="$slots.default" class="mvi-form-container">
 			<slot></slot>
 		</div>
@@ -39,13 +39,6 @@ export default {
 	},
 	inject: ['form'],
 	computed: {
-		labelCls() {
-			let cls = ['mvi-form-label']
-			if (this.form.labelBlock && this.form.block) {
-				cls.push('block')
-			}
-			return cls
-		},
 		labelStyle() {
 			let style = {}
 			if (!this.form.labelBlock) {

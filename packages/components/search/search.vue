@@ -1,11 +1,11 @@
 <template>
 	<div class="mvi-search" :disabled="disabled || null">
 		<div v-if="label" class="mvi-search-label" v-text="label"></div>
-		<div :class="['mvi-search-input-container', round ? 'round' : '']">
+		<div class="mvi-search-input-container" :class="{ round: round }">
 			<div v-if="parseIcon(leftIcon).type || parseIcon(leftIcon).url" class="mvi-search-left-icon" @click="leftClick">
 				<Icon :type="parseIcon(leftIcon).type" :url="parseIcon(leftIcon).url" :spin="parseIcon(leftIcon).spin" :size="parseIcon(leftIcon).size" :color="parseIcon(leftIcon).color" />
 			</div>
-			<input ref="input" :class="['mvi-search-input', parseIcon(leftIcon).type || parseIcon(leftIcon).url ? 'left-none-radius' : '', parseIcon(rightIcon).type || parseIcon(rightIcon).url || (clearable && showClear) ? 'right-none-radius' : '']" :type="cmpType" @keypress.enter="doSearch" autocomplete="off" :placeholder="placeholder" :maxlength="maxlength" :autofocus="autofocus" :disabled="disabled" :readonly="readonly" :inputmode="cmpInputMode" v-model="realValue" @input="searchInput" @focus="inputFocus" @blur="inputBlur" @keydown="keydown" @keyup="keyup" :style="inputStyle" />
+			<input ref="input" class="mvi-search-input" :class="{ 'left-none-radius': parseIcon(leftIcon).type || parseIcon(leftIcon).url, 'right-none-radius': parseIcon(rightIcon).type || parseIcon(rightIcon).url || (clearable && showClear) }" :type="cmpType" @keypress.enter="doSearch" autocomplete="off" :placeholder="placeholder" :maxlength="maxlength" :autofocus="autofocus" :disabled="disabled" :readonly="readonly" :inputmode="cmpInputMode" v-model="realValue" @input="searchInput" @focus="inputFocus" @blur="inputBlur" @keydown="keydown" @keyup="keyup" :style="inputStyle" />
 			<div v-if="clearable" class="mvi-search-clear" @click="clearInput" v-show="showClear">
 				<Icon type="times-o" />
 			</div>
@@ -121,7 +121,7 @@ export default {
 	},
 	computed: {
 		parseIcon() {
-			return param => {
+			return params => {
 				let icon = {
 					spin: false,
 					type: null,
@@ -129,24 +129,24 @@ export default {
 					color: null,
 					size: null
 				}
-				if (Dap.common.isObject(param)) {
-					if (typeof param.spin == 'boolean') {
-						icon.spin = param.spin
+				if (Dap.common.isObject(params)) {
+					if (typeof params.spin == 'boolean') {
+						icon.spin = params.spin
 					}
-					if (typeof param.type == 'string') {
-						icon.type = param.type
+					if (typeof params.type == 'string') {
+						icon.type = params.type
 					}
-					if (typeof param.url == 'string') {
-						icon.url = param.url
+					if (typeof params.url == 'string') {
+						icon.url = params.url
 					}
-					if (typeof param.color == 'string') {
-						icon.color = param.color
+					if (typeof params.color == 'string') {
+						icon.color = params.color
 					}
-					if (typeof param.size == 'string') {
-						icon.size = param.size
+					if (typeof params.size == 'string') {
+						icon.size = params.size
 					}
-				} else if (typeof param == 'string') {
-					icon.type = param
+				} else if (typeof params == 'string') {
+					icon.type = params
 				}
 				return icon
 			}
@@ -166,9 +166,8 @@ export default {
 		cmpType() {
 			if (this.type == 'number') {
 				return 'text'
-			} else {
-				return this.type
 			}
+			return this.type
 		},
 		cmpInputMode() {
 			let mode = false

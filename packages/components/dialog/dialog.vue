@@ -6,7 +6,7 @@
 		</template>
 		<template #default v-if="contentShow">
 			<div v-if="!cmpIos && cmpMessage" v-html="cmpMessage" class="mvi-dialog-content"></div>
-			<div v-if="type == 'prompt'" :class="['mvi-dialog-input', !cmpIos && cmpMessage ? 'mvi-dialog-input-mt' : '']">
+			<div v-if="type == 'prompt'" class="mvi-dialog-input" :class="{ 'mvi-dialog-input-mt': !cmpIos && cmpMessage }">
 				<input ref="input" :type="cmpInput.type == 'number' ? 'text' : cmpInput.type" :placeholder="cmpInput.placeholder" :maxlength="cmpInput.maxlength" :class="inputClass" :style="inputStyle" v-model.trim="value" @input="inputFun" @focus="inputFocus" @blur="inputBlur" :inputmode="inputMode" />
 				<Icon v-if="cmpInput.clearable" ref="icon" v-show="showClear" type="times-o" class="mvi-dialog-times" @click="doClear" />
 			</div>

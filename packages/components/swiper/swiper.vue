@@ -1,5 +1,5 @@
 <template>
-	<div :class="['mvi-swiper-container', vertical ? 'vertical' : '']" :style="containerStyle">
+	<div class="mvi-swiper-container" :class="{ vertical: vertical }" :style="{ width: width, height: height }">
 		<div v-if="fade" class="mvi-swiper-fade">
 			<slot></slot>
 		</div>
@@ -9,7 +9,7 @@
 		<slot name="indicators" :active="indicatorsIndex" :total="indicatorsTotal" v-if="$slots.indicators"></slot>
 		<div v-else-if="showIndicators" class="mvi-swiper-indicators">
 			<template v-for="(item, index) in children">
-				<div :class="['mvi-swiper-indicator', isIndicatorActive(index) ? 'active' : '']" :style="indicatorStyle(index)" :key="'indicator-' + index" v-if="indicatorShow(index)" @click="slideTo(fade ? index : loop ? index - 1 : index)"></div>
+				<div class="mvi-swiper-indicator" :class="{ active: isIndicatorActive(index) }" :style="indicatorStyle(index)" v-if="indicatorShow(index)" @click="slideTo(fade ? index : loop ? index - 1 : index)"></div>
 			</template>
 		</div>
 		<div class="mvi-swiper-control" v-if="showControl" :style="controlStyle(0)" @click="slidePrev">
@@ -168,17 +168,6 @@ export default {
 			}
 			return style
 		},
-		//swiper容器层
-		containerStyle() {
-			let style = {}
-			if (this.width) {
-				style.width = this.width
-			}
-			if (this.height) {
-				style.height = this.height
-			}
-			return style
-		},
 		//slide宽度或者高度(非fade)
 		slideSize() {
 			//单纯的为了刷新slideSize更新
@@ -255,12 +244,10 @@ export default {
 			if (this.loop) {
 				if (this.initialSlide < this.children.length - 2) {
 					return this.initialSlide + 1
-				} else {
-					return 1
 				}
-			} else {
-				return this.initialSlide
+				return 1
 			}
+			return this.initialSlide
 		},
 		//控制器样式
 		controlStyle() {

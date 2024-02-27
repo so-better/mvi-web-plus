@@ -1,12 +1,12 @@
 <template>
-	<div :class="cellClass">
+	<div class="mvi-cell" :class="{ border: cmpBorder, active: cmpActive }">
 		<div class="mvi-cell-item">
 			<Icon class="mvi-cell-icon" v-if="parseIcon(icon).type || parseIcon(icon).url" :type="parseIcon(icon).type" :url="parseIcon(icon).url" :spin="parseIcon(icon).spin" :size="parseIcon(icon).size" :color="parseIcon(icon).color" />
-			<div :class="['mvi-cell-title', noWrap ? 'nowrap' : '']">
+			<div class="mvi-cell-title" :class="{ nowrap: noWrap }">
 				<slot name="title" v-if="$slots.title"></slot>
 				<span v-else v-text="title"></span>
 			</div>
-			<div :class="['mvi-cell-content', noWrap ? 'nowrap' : '']" v-if="$slots.content || content">
+			<div class="mvi-cell-content" :class="{ nowrap: noWrap }" v-if="$slots.content || content">
 				<slot name="content" v-if="$slots.content"></slot>
 				<span v-else-if="content" v-text="content"></span>
 			</div>
@@ -74,7 +74,7 @@ export default {
 	computed: {
 		//转换图标字段
 		parseIcon() {
-			return param => {
+			return params => {
 				let icon = {
 					spin: false,
 					type: null,
@@ -82,24 +82,24 @@ export default {
 					color: null,
 					size: null
 				}
-				if (Dap.common.isObject(param)) {
-					if (typeof param.spin == 'boolean') {
-						icon.spin = param.spin
+				if (Dap.common.isObject(params)) {
+					if (typeof params.spin == 'boolean') {
+						icon.spin = params.spin
 					}
-					if (typeof param.type == 'string') {
-						icon.type = param.type
+					if (typeof params.type == 'string') {
+						icon.type = params.type
 					}
-					if (typeof param.url == 'string') {
-						icon.url = param.url
+					if (typeof params.url == 'string') {
+						icon.url = params.url
 					}
-					if (typeof param.color == 'string') {
-						icon.color = param.color
+					if (typeof params.color == 'string') {
+						icon.color = params.color
 					}
-					if (typeof param.size == 'string') {
-						icon.size = param.size
+					if (typeof params.size == 'string') {
+						icon.size = params.size
 					}
-				} else if (typeof param == 'string') {
-					icon.type = param
+				} else if (typeof params == 'string') {
+					icon.type = params
 				}
 				return icon
 			}
@@ -137,16 +137,6 @@ export default {
 				}
 			}
 			return style
-		},
-		cellClass() {
-			let cls = ['mvi-cell']
-			if (this.cmpBorder) {
-				cls.push('border')
-			}
-			if (this.cmpActive) {
-				cls.push('active')
-			}
-			return cls
 		}
 	},
 	components: {

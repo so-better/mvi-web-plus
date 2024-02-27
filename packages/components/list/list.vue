@@ -21,7 +21,6 @@
 </template>
 
 <script>
-import { Dap } from '../dap'
 import { Scroll } from '../scroll'
 export default {
 	name: 'm-list',

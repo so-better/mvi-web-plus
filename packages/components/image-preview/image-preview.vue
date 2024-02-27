@@ -22,7 +22,7 @@
 						<Icon @click="rightRotateImage(data.active)" class="mvi-image-preview-tools-icon" type="right-rotate" />
 						<slot name="tools" v-if="$slots.tools"></slot>
 					</div>
-					<div v-if="$slots.descriptions || descriptions.length > 0" :class="['mvi-image-preview-description', useTools ? 'mvi-image-preview-description-margin' : '']">
+					<div v-if="$slots.descriptions || descriptions.length > 0" class="mvi-image-preview-description" :class="{ 'mvi-image-preview-description-margin': useTools }">
 						<slot name="descriptions" :total="data.total" :current="data.active" v-if="$slots.descriptions"> </slot>
 						<div v-else-if="descriptions.length > 0" class="mvi-image-preview-description-el" v-text="descriptions[data.active]"></div>
 					</div>

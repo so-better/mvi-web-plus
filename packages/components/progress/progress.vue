@@ -1,9 +1,9 @@
 <template>
 	<!-- 进度条 -->
-	<div :class="progressClass" :style="progressStyle">
+	<div class="mvi-progress" :class="{ round: round, square: !round && square }" :style="progressStyle">
 		<!-- 进度条进度 -->
 		<div class="mvi-progress-bar" :style="progressBarStyle">
-			<div v-if="showTip" class="mvi-progress-tooltip" :style="tipStyle">
+			<div v-if="showTip" class="mvi-progress-tooltip" :style="{ color: tipColor || '' }">
 				<slot name="tip" v-if="$slots.tip" :value="value"></slot>
 				<span v-else v-text="cmpText"></span>
 			</div>
@@ -111,25 +111,8 @@ export default {
 		cmpText() {
 			if (this.tipText) {
 				return this.tipText
-			} else {
-				return Math.round(((this.value - this.min < 0 ? 0 : this.value - this.min) / (this.max - this.min)) * 100) + '%'
 			}
-		},
-		tipStyle() {
-			let style = {}
-			if (this.tipColor) {
-				style.color = this.tipColor
-			}
-			return style
-		},
-		progressClass() {
-			let cls = ['mvi-progress']
-			if (this.round) {
-				cls.push('round')
-			} else if (this.square) {
-				cls.push('square')
-			}
-			return cls
+			return Math.round(((this.value - this.min < 0 ? 0 : this.value - this.min) / (this.max - this.min)) * 100) + '%'
 		}
 	}
 }

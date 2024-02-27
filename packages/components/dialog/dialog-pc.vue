@@ -4,12 +4,12 @@
 			<div v-html="cmpTitle" class="mvi-dialog-title"></div>
 		</template>
 		<template #default v-if="contentShow">
-			<div v-if="cmpMessage" v-html="cmpMessage" :class="['mvi-dialog-content', center ? 'center' : '']"></div>
+			<div v-if="cmpMessage" v-html="cmpMessage" class="mvi-dialog-content" :class="{ center: center }"></div>
 			<div v-if="type == 'Prompt'" class="mvi-dialog-input">
 				<input ref="input" :type="cmpInput.type == 'number' ? 'text' : cmpInput.type" :placeholder="cmpInput.placeholder" :maxlength="cmpInput.maxlength" :class="inputClass" :style="inputStyle" v-model.trim="value" @input="inputFun" @focus="inputFocus" @blur="inputBlur" @keyup.enter="okFun" />
 				<Icon v-if="cmpInput.clearable" ref="icon" v-show="showClear" type="times-o" class="mvi-dialog-times" @click="doClear" />
 			</div>
-			<div :class="['mvi-dialog-footer', center ? 'center' : '']">
+			<div class="mvi-dialog-footer" :class="{ center: center }">
 				<Button v-if="type != 'Alert'" :type="cmpBtns.cancel.type" :color="cmpBtns.cancel.color" :sub-color="cmpBtns.cancel.subColor" :plain="cmpBtns.cancel.plain" class="mvi-dialog-cancel" @click="cancelFun" :size="cmpBtns.cancel.size" :round="cmpBtns.cancel.round" :square="cmpBtns.cancel.square" :loading="cmpBtns.cancel.loading" :load-text="cmpBtns.cancel.loadText" :load-icon="cmpBtns.cancel.loadIcon" :disabled="cmpBtns.cancel.disabled">{{ cmpBtns.cancel.text }}</Button>
 				<Button :type="cmpBtns.ok.type" :color="cmpBtns.ok.color" :sub-color="cmpBtns.ok.subColor" :plain="cmpBtns.ok.plain" @click="okFun" :size="cmpBtns.ok.size" :round="cmpBtns.ok.round" :square="cmpBtns.ok.square" :loading="cmpBtns.ok.loading" :load-text="cmpBtns.ok.loadText" :load-icon="cmpBtns.ok.loadIcon" :disabled="cmpBtns.ok.disabled">{{ cmpBtns.ok.text }}</Button>
 			</div>

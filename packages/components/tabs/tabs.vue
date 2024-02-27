@@ -1,14 +1,14 @@
 <template>
 	<div class="mvi-tabs">
 		<!-- 选项卡头部 -->
-		<div ref="headers" :class="['mvi-tabs-header', type == 'card' ? 'card' : '', type == 'default' && border ? 'border' : '']" :style="headersStyle">
+		<div ref="headers" class="mvi-tabs-header" :class="{ card: type == 'card', border: type == 'default' && border }" :style="headersStyle">
 			<!-- 选项卡滑动条 -->
 			<div v-if="type == 'default'" class="mvi-tabs-slider" :style="sliderStyle"></div>
 			<!-- 选项卡头部卡片 -->
 			<div :class="headerClass(item, index)" v-for="(item, index) in children" @click="clickHeader(item, index)" :style="headerStyle(item, index)" :disabled="item.disabled || null">
-				<Icon v-if="item.placement == 'left' && (parseIcon(item.icon).type || parseIcon(item.icon).url)" :class="['mvi-tab-icon', item.title ? 'left' : '']" :type="parseIcon(item.icon).type" :url="parseIcon(item.icon).url" :spin="parseIcon(item.icon).spin" :size="parseIcon(item.icon).size" :color="parseIcon(item.icon).color" />
+				<Icon v-if="item.placement == 'left' && (parseIcon(item.icon).type || parseIcon(item.icon).url)" class="mvi-tab-icon" :class="{ left: !!item.title }" :type="parseIcon(item.icon).type" :url="parseIcon(item.icon).url" :spin="parseIcon(item.icon).spin" :size="parseIcon(item.icon).size" :color="parseIcon(item.icon).color" />
 				<span class="mvi-tab-header-text" v-html="item.title" v-if="item.title"></span>
-				<Icon v-if="item.placement == 'right' && (parseIcon(item.icon).type || parseIcon(item.icon).url)" :class="['mvi-tab-icon', item.title ? 'right' : '']" :type="parseIcon(item.icon).type" :url="parseIcon(item.icon).url" :spin="parseIcon(item.icon).spin" :size="parseIcon(item.icon).size" :color="parseIcon(item.icon).color" />
+				<Icon v-if="item.placement == 'right' && (parseIcon(item.icon).type || parseIcon(item.icon).url)" class="mvi-tab-icon" :class="{ right: !!item.title }" :type="parseIcon(item.icon).type" :url="parseIcon(item.icon).url" :spin="parseIcon(item.icon).spin" :size="parseIcon(item.icon).size" :color="parseIcon(item.icon).color" />
 			</div>
 		</div>
 		<div class="mvi-tabs-content" ref="content">
@@ -152,7 +152,7 @@ export default {
 			}
 		},
 		parseIcon() {
-			return param => {
+			return params => {
 				let icon = {
 					spin: false,
 					type: null,
@@ -160,24 +160,24 @@ export default {
 					color: null,
 					size: null
 				}
-				if (Dap.common.isObject(param)) {
-					if (typeof param.spin == 'boolean') {
-						icon.spin = param.spin
+				if (Dap.common.isObject(params)) {
+					if (typeof params.spin == 'boolean') {
+						icon.spin = params.spin
 					}
-					if (typeof param.type == 'string') {
-						icon.type = param.type
+					if (typeof params.type == 'string') {
+						icon.type = params.type
 					}
-					if (typeof param.url == 'string') {
-						icon.url = param.url
+					if (typeof params.url == 'string') {
+						icon.url = params.url
 					}
-					if (typeof param.color == 'string') {
-						icon.color = param.color
+					if (typeof params.color == 'string') {
+						icon.color = params.color
 					}
-					if (typeof param.size == 'string') {
-						icon.size = param.size
+					if (typeof params.size == 'string') {
+						icon.size = params.size
 					}
-				} else if (typeof param == 'string') {
-					icon.type = param
+				} else if (typeof params == 'string') {
+					icon.type = params
 				}
 				return icon
 			}

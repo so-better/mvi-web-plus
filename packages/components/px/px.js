@@ -6,6 +6,7 @@ class Px {
 	constructor(element, options) {
 		//指定的元素
 		this.$el = element
+		//参数配置
 		options = Dap.common.isObject(options) ? options : {}
 		//适配的样式名称
 		this.attrName = options.attrName
@@ -32,7 +33,6 @@ class Px {
 			Dap.element.addClass(this.$el, className)
 			//生成style标签
 			let style = document.createElement('style')
-			style.type = 'text/css'
 			if (this.isBefore) {
 				style.innerHTML += ` .${className}::before {${this.attrName}:${value}px !important;}`
 			}

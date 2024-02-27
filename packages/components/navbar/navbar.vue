@@ -1,8 +1,8 @@
 <template>
-	<div :class="navbarClass" :style="'z-index:' + (fixed ? zIndex : '')">
+	<div class="mvi-navbar" :class="{ fixed: fixed, border: border }" :style="'z-index:' + (fixed ? zIndex : '')">
 		<div @click="leftClick" class="mvi-navbar-left" :style="leftStyle" v-if="showLeft">
 			<slot name="left" v-if="$slots.left"></slot>
-			<Icon :class="[leftText ? 'mvi-navbar-left-icon' : '']" v-if="(parseIcon(leftIcon).type || parseIcon(leftIcon).url) && !$slots.left" :type="parseIcon(leftIcon).type" :url="parseIcon(leftIcon).url" :spin="parseIcon(leftIcon).spin" :size="parseIcon(leftIcon).size" :color="parseIcon(leftIcon).color" />
+			<Icon :class="{ 'mvi-navbar-left-icon': !!leftText }" v-if="(parseIcon(leftIcon).type || parseIcon(leftIcon).url) && !$slots.left" :type="parseIcon(leftIcon).type" :url="parseIcon(leftIcon).url" :spin="parseIcon(leftIcon).spin" :size="parseIcon(leftIcon).size" :color="parseIcon(leftIcon).color" />
 			<span class="mvi-navbar-left-text" v-if="leftText && !$slots.left" v-text="leftText"></span>
 		</div>
 		<div @click="titleClick" class="mvi-navbar-center" :style="centerStyle" v-if="$slots.title || title">
@@ -14,7 +14,7 @@
 		<div @click="rightClick" class="mvi-navbar-right" :style="rightStyle" v-if="showRight">
 			<slot name="right" v-if="$slots.right"></slot>
 			<span class="mvi-navbar-right-text" v-if="rightText && !$slots.right" v-text="rightText"></span>
-			<Icon :class="[rightText ? 'mvi-navbar-right-icon' : '']" v-if="(parseIcon(rightIcon).type || parseIcon(rightIcon).url) && !$slots.right" :type="parseIcon(rightIcon).type" :url="parseIcon(rightIcon).url" :spin="parseIcon(rightIcon).spin" :size="parseIcon(rightIcon).size" :color="parseIcon(rightIcon).color" />
+			<Icon :class="{ 'mvi-navbar-right-icon': !!rightText }" v-if="(parseIcon(rightIcon).type || parseIcon(rightIcon).url) && !$slots.right" :type="parseIcon(rightIcon).type" :url="parseIcon(rightIcon).url" :spin="parseIcon(rightIcon).spin" :size="parseIcon(rightIcon).size" :color="parseIcon(rightIcon).color" />
 		</div>
 	</div>
 </template>
@@ -97,7 +97,7 @@ export default {
 			return style
 		},
 		parseIcon() {
-			return param => {
+			return params => {
 				let icon = {
 					spin: false,
 					type: null,
@@ -105,37 +105,27 @@ export default {
 					color: null,
 					size: null
 				}
-				if (Dap.common.isObject(param)) {
-					if (typeof param.spin == 'boolean') {
-						icon.spin = param.spin
+				if (Dap.common.isObject(params)) {
+					if (typeof params.spin == 'boolean') {
+						icon.spin = params.spin
 					}
-					if (typeof param.type == 'string') {
-						icon.type = param.type
+					if (typeof params.type == 'string') {
+						icon.type = params.type
 					}
-					if (typeof param.url == 'string') {
-						icon.url = param.url
+					if (typeof params.url == 'string') {
+						icon.url = params.url
 					}
-					if (typeof param.color == 'string') {
-						icon.color = param.color
+					if (typeof params.color == 'string') {
+						icon.color = params.color
 					}
-					if (typeof param.size == 'string') {
-						icon.size = param.size
+					if (typeof params.size == 'string') {
+						icon.size = params.size
 					}
-				} else if (typeof param == 'string') {
-					icon.type = param
+				} else if (typeof params == 'string') {
+					icon.type = params
 				}
 				return icon
 			}
-		},
-		navbarClass() {
-			let cls = ['mvi-navbar']
-			if (this.fixed) {
-				cls.push('fixed')
-			}
-			if (this.border) {
-				cls.push('border')
-			}
-			return cls
 		},
 		centerStyle() {
 			let style = {}

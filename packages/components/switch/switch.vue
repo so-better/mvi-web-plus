@@ -1,6 +1,6 @@
 <template>
-	<label :class="['mvi-switch', modelValue ? 'checked' : '']" :style="switchStyle" :disabled="disabled || null">
-		<span :class="['mvi-switch-el', modelValue ? 'checked' : '']" :style="elStyle">
+	<label class="mvi-switch" :class="{ checked: modelValue }" :style="switchStyle" :disabled="disabled || null">
+		<span class="mvi-switch-el" :class="{ checked: modelValue }" :style="elStyle">
 			<Icon v-if="loading && !disabled" type="load-e" spin size="0.8em" />
 		</span>
 		<input @change="change" type="checkbox" :checked="modelValue" :disabled="disabled || loading" />

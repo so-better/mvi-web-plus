@@ -6,7 +6,7 @@
 @font-color-default: #505050;
 @font-color-sub: #808080;
 @font-color-mute: #bbb;
-@font-color-link: #0a9455;
+@font-color-link: #0547c3;
 
 //背景色
 @bg-color-default: #f7f8fa;
@@ -72,15 +72,15 @@
 @boxshadow:0.01rem 0.04rem 0.2rem rgba(0,0,0,.1);
 
 //点击态
-.mvi-active() {
+.mvi-active(@background:#032237) {
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	width: 100%;
 	height: 100%;
-	background-color: #032237;
+	background-color: @background;
 	border: inherit;
-	border-color: #032237;
+	border-color: @background;
 	border-radius: inherit;
 	-webkit-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);

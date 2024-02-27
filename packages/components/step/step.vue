@@ -1,6 +1,6 @@
 <template>
 	<div class="mvi-step-vertical" v-if="steps.vertical">
-		<div :class="['mvi-step-vertical-label', stepIndex == steps.active ? 'finish' : '']" :style="labelStyle">
+		<div class="mvi-step-vertical-label" :class="{ finish: stepIndex == steps.active }" :style="labelStyle">
 			<slot></slot>
 		</div>
 		<div class="mvi-step-vertical-container">
@@ -8,25 +8,25 @@
 				<Icon class="mvi-step-icon-active-el" v-if="steps.active == stepIndex && (parseIcon(steps.activeIcon).type || parseIcon(steps.activeIcon).url)" :type="parseIcon(steps.activeIcon).type" :url="parseIcon(steps.activeIcon).url" :spin="parseIcon(steps.activeIcon).spin" :size="parseIcon(steps.activeIcon).size" :color="parseIcon(steps.activeIcon).color" :style="activeIconStyle" />
 				<div class="mvi-step-circle-active" v-else-if="steps.active == stepIndex" :style="activeCircleStyle"></div>
 				<Icon :class="['mvi-step-icon-inactive-el', stepIndex <= steps.active ? 'finish' : '']" v-else-if="parseIcon(steps.inactiveIcon).type || parseIcon(steps.inactiveIcon).url" :type="parseIcon(steps.inactiveIcon).type" :url="parseIcon(steps.inactiveIcon).url" :spin="parseIcon(steps.inactiveIcon).spin" :size="parseIcon(steps.inactiveIcon).size" :color="parseIcon(steps.inactiveIcon).color" :style="inactiveIconStyle" />
-				<div :class="['mvi-step-circle', stepIndex <= steps.active ? 'finish' : '']" v-else :style="circleStyle"></div>
+				<div class="mvi-step-circle" :class="{ finish: stepIndex <= steps.active }" v-else :style="circleStyle"></div>
 			</div>
-			<div :class="['mvi-step-vertical-line', stepIndex == steps.children.length - 1 ? 'last' : '', stepIndex < steps.active ? 'finish' : '']" :style="lineStyle"></div>
+			<div class="mvi-step-vertical-line" :class="{ last: stepIndex == steps.children.length - 1, finish: stepIndex < steps.active }" :style="lineStyle"></div>
 		</div>
 	</div>
-	<div v-else :class="['mvi-step', stepIndex == steps.children.length - 1 ? 'last' : '']">
-		<div :class="['mvi-step-label', stepIndex == steps.children.length - 1 ? 'last' : '', stepIndex == 0 ? 'first' : '', stepIndex == steps.active ? 'finish' : '']" :style="labelStyle">
+	<div v-else class="mvi-step" :class="{ last: stepIndex == steps.children.length - 1 }">
+		<div class="mvi-step-label" :class="{ last: stepIndex == steps.children.length - 1, first: stepIndex == 0, finish: stepIndex == steps.active }" :style="labelStyle">
 			<div>
 				<slot></slot>
 			</div>
 		</div>
 		<div class="mvi-step-container">
-			<div :class="['mvi-step-icon', stepIndex == steps.children.length - 1 ? 'last' : '']" :style="stepIconStyle">
+			<div class="mvi-step-icon" :class="{ last: stepIndex == steps.children.length - 1 }" :style="stepIconStyle">
 				<Icon class="mvi-step-icon-active-el" v-if="steps.active == stepIndex && (parseIcon(steps.activeIcon).type || parseIcon(steps.activeIcon).url)" :type="parseIcon(steps.activeIcon).type" :url="parseIcon(steps.activeIcon).url" :spin="parseIcon(steps.activeIcon).spin" :size="parseIcon(steps.activeIcon).size" :color="parseIcon(steps.activeIcon).color" :style="activeIconStyle" />
 				<div class="mvi-step-circle-active" v-else-if="steps.active == stepIndex" :style="activeCircleStyle"></div>
-				<Icon :class="['mvi-step-icon-inactive-el', stepIndex <= steps.active ? 'finish' : '']" v-else-if="parseIcon(steps.inactiveIcon).type || parseIcon(steps.inactiveIcon).url" :type="parseIcon(steps.inactiveIcon).type" :url="parseIcon(steps.inactiveIcon).url" :spin="parseIcon(steps.inactiveIcon).spin" :size="parseIcon(steps.inactiveIcon).size" :color="parseIcon(steps.inactiveIcon).color" :style="inactiveIconStyle" />
-				<div :class="['mvi-step-circle', stepIndex <= steps.active ? 'finish' : '']" v-else :style="circleStyle"></div>
+				<Icon class="mvi-step-icon-inactive-el" :class="{ finish: stepIndex <= steps.active }" v-else-if="parseIcon(steps.inactiveIcon).type || parseIcon(steps.inactiveIcon).url" :type="parseIcon(steps.inactiveIcon).type" :url="parseIcon(steps.inactiveIcon).url" :spin="parseIcon(steps.inactiveIcon).spin" :size="parseIcon(steps.inactiveIcon).size" :color="parseIcon(steps.inactiveIcon).color" :style="inactiveIconStyle" />
+				<div class="mvi-step-circle" :class="{ finish: stepIndex <= steps.active }" v-else :style="circleStyle"></div>
 			</div>
-			<div :class="['mvi-step-line', stepIndex == steps.children.length - 1 ? 'last' : '', stepIndex < steps.active ? 'finish' : '']" :style="lineStyle"></div>
+			<div class="mvi-step-line" :class="{ last: stepIndex == steps.children.length - 1, finish: stepIndex < steps.active }" :style="lineStyle"></div>
 		</div>
 	</div>
 </template>
@@ -58,7 +58,7 @@ export default {
 	computed: {
 		//转换图标
 		parseIcon() {
-			return param => {
+			return params => {
 				let icon = {
 					spin: false,
 					type: null,
@@ -66,24 +66,24 @@ export default {
 					color: null,
 					size: null
 				}
-				if (Dap.common.isObject(param)) {
-					if (typeof param.spin == 'boolean') {
-						icon.spin = param.spin
+				if (Dap.common.isObject(params)) {
+					if (typeof params.spin == 'boolean') {
+						icon.spin = params.spin
 					}
-					if (typeof param.type == 'string') {
-						icon.type = param.type
+					if (typeof params.type == 'string') {
+						icon.type = params.type
 					}
-					if (typeof param.url == 'string') {
-						icon.url = param.url
+					if (typeof params.url == 'string') {
+						icon.url = params.url
 					}
-					if (typeof param.color == 'string') {
-						icon.color = param.color
+					if (typeof params.color == 'string') {
+						icon.color = params.color
 					}
-					if (typeof param.size == 'string') {
-						icon.size = param.size
+					if (typeof params.size == 'string') {
+						icon.size = params.size
 					}
-				} else if (typeof param == 'string') {
-					icon.type = param
+				} else if (typeof params == 'string') {
+					icon.type = params
 				}
 				return icon
 			}

@@ -1,5 +1,5 @@
 <template>
-	<div :class="['mvi-tabbar', border ? 'border' : '', fixed ? 'fixed' : '']" :style="tabbarStyle">
+	<div class="mvi-tabbar" :class="{ border: border, fixed: fixed }" :style="tabbarStyle">
 		<TabbarItem v-for="(item, index) in tabs" :name="item.name" :value="item.value" :icon="item.icon" :disabled="item.disabled" :badge="item.badge" :route="item.route" :style="tabbarItemStyle(index)"></TabbarItem>
 	</div>
 </template>

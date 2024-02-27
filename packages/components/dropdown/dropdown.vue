@@ -1,12 +1,12 @@
 <template>
 	<Popup ref="popup" v-model="cmpShow" :overlay-color="overlayColor" :z-index="zIndex" :timeout="timeout" :placement="placement" :round="round" :use-padding="usePadding" :mount-el="mountEl" :closable="closable" :__contentPadding="false">
 		<div class="mvi-dropdown">
-			<div :disabled="itemDisabled(item) || null" :class="dropdownItemClass(item, index)" v-for="(item, index) in options" @click="doSelect(item, index)" :style="dropdownItemStyle(item, index)">
+			<div :disabled="itemDisabled(item) || null" class="mvi-dropdown-item" :class="dropdownItemClass(item, index)" v-for="(item, index) in options" @click="doSelect(item, index)" :style="dropdownItemStyle(item, index)">
 				<div class="mvi-dropdown-label">
 					<Icon v-if="item.icon" :type="parseIcon(item.icon).type" :url="parseIcon(item.icon).url" :spin="parseIcon(item.icon).spin" class="mvi-dropdown-label-icon" :size="parseIcon(item.icon).size" :color="parseIcon(item.icon).color" />
 					<span class="mvi-dropdown-label-text" v-text="item.label || ''"></span>
 				</div>
-				<div :class="['mvi-dropdown-icon', equalValue(item, index) ? 'checked' : '']" :data-placement="placement">
+				<div class="mvi-dropdown-icon" :class="{ checked: equalValue(item, index) }" :data-placement="placement">
 					<Icon :type="parseIcon(selectedIcon).type" :url="parseIcon(selectedIcon).url" :spin="parseIcon(selectedIcon).spin" :size="parseIcon(selectedIcon).size" :color="parseIcon(selectedIcon).color" />
 				</div>
 			</div>
@@ -114,7 +114,7 @@ export default {
 		},
 		//转换图标字段
 		parseIcon() {
-			return param => {
+			return params => {
 				let icon = {
 					spin: false,
 					type: null,
@@ -122,24 +122,24 @@ export default {
 					color: null,
 					size: null
 				}
-				if (Dap.common.isObject(param)) {
-					if (typeof param.spin == 'boolean') {
-						icon.spin = param.spin
+				if (Dap.common.isObject(params)) {
+					if (typeof params.spin == 'boolean') {
+						icon.spin = params.spin
 					}
-					if (typeof param.type == 'string') {
-						icon.type = param.type
+					if (typeof params.type == 'string') {
+						icon.type = params.type
 					}
-					if (typeof param.url == 'string') {
-						icon.url = param.url
+					if (typeof params.url == 'string') {
+						icon.url = params.url
 					}
-					if (typeof param.color == 'string') {
-						icon.color = param.color
+					if (typeof params.color == 'string') {
+						icon.color = params.color
 					}
-					if (typeof param.size == 'string') {
-						icon.size = param.size
+					if (typeof params.size == 'string') {
+						icon.size = params.size
 					}
-				} else if (typeof param == 'string') {
-					icon.type = param
+				} else if (typeof params == 'string') {
+					icon.type = params
 				}
 				return icon
 			}
@@ -175,7 +175,7 @@ export default {
 		//选项class
 		dropdownItemClass() {
 			return (item, index) => {
-				let cls = ['mvi-dropdown-item']
+				let cls = []
 				if (this.equalValue(item, index) && !item.disabled) {
 					cls.push('checked')
 				}

@@ -1,11 +1,11 @@
 <template>
 	<div class="mvi-page">
-		<div v-if="firstText || parseIcon(firstIcon).type || parseIcon(firstIcon).url" :disabled="modelValue == 1 || null" @click="pageFirst" :class="['mvi-page-first', active && modelValue != 1 ? 'active' : '']" :style="firstStyle">
-			<Icon :class="firstText ? 'margin-right' : ''" v-if="parseIcon(firstIcon).type || parseIcon(firstIcon).url" :type="parseIcon(firstIcon).type" :url="parseIcon(firstIcon).url" :spin="parseIcon(firstIcon).spin" :size="parseIcon(firstIcon).size" :color="parseIcon(firstIcon).color" />
+		<div v-if="firstText || parseIcon(firstIcon).type || parseIcon(firstIcon).url" :disabled="modelValue == 1 || null" @click="pageFirst" class="mvi-page-first" :class="{ active: active && modelValue != 1 }" :style="firstStyle">
+			<Icon :class="{ 'margin-right': !!firstText }" v-if="parseIcon(firstIcon).type || parseIcon(firstIcon).url" :type="parseIcon(firstIcon).type" :url="parseIcon(firstIcon).url" :spin="parseIcon(firstIcon).spin" :size="parseIcon(firstIcon).size" :color="parseIcon(firstIcon).color" />
 			<span v-if="firstText" v-text="firstText"></span>
 		</div>
-		<div v-if="prevText || parseIcon(prevIcon).type || parseIcon(prevIcon).url" :disabled="modelValue == 1 || null" @click="pagePrev" :class="['mvi-page-prev', active && modelValue != 1 ? 'active' : '']" :style="firstStyle">
-			<Icon :class="prevText ? 'margin-right' : ''" v-if="parseIcon(prevIcon).type || parseIcon(prevIcon).url" :type="parseIcon(prevIcon).type" :url="parseIcon(prevIcon).url" :size="parseIcon(prevIcon).size" :spin="parseIcon(prevIcon).spin" :color="parseIcon(prevIcon).color" />
+		<div v-if="prevText || parseIcon(prevIcon).type || parseIcon(prevIcon).url" :disabled="modelValue == 1 || null" @click="pagePrev" class="mvi-page-prev" :class="{ active: active && modelValue != 1 }" :style="firstStyle">
+			<Icon :class="{ 'margin-right': !!prevText }" v-if="parseIcon(prevIcon).type || parseIcon(prevIcon).url" :type="parseIcon(prevIcon).type" :url="parseIcon(prevIcon).url" :size="parseIcon(prevIcon).size" :spin="parseIcon(prevIcon).spin" :color="parseIcon(prevIcon).color" />
 			<span v-if="prevText" v-text="prevText"></span>
 		</div>
 		<div class="mvi-page-numbers">
@@ -13,23 +13,23 @@
 			<div class="mvi-page-numbers-items" v-else>
 				<!--total不超过overNumber -->
 				<template v-for="item in total">
-					<div v-if="total <= overNumber" :class="['mvi-page-numbers-item', modelValue == item ? 'number-active' : '', active && modelValue != item ? 'active' : '']" v-text="item" @click="toPage(item)" :style="pageStyle(item)"></div>
+					<div v-if="total <= overNumber" class="mvi-page-numbers-item" :class="{ 'number-active': modelValue == item, active: active && modelValue != item }" v-text="item" @click="toPage(item)" :style="pageStyle(item)"></div>
 				</template>
 				<!-- total超过overNumber -->
-				<div v-if="total > overNumber && modelValue > (overNumber - 1) / 2 + 1" :class="['mvi-page-numbers-item', active ? 'active' : '']" @click="toPage(modelValue - (overNumber - 1))" :style="{ color: color || '' }">...</div>
+				<div v-if="total > overNumber && modelValue > (overNumber - 1) / 2 + 1" class="mvi-page-numbers-item" :class="{ active: active }" @click="toPage(modelValue - (overNumber - 1))" :style="{ color: color || '' }">...</div>
 				<template v-for="item in arr">
-					<div v-if="total > overNumber" :class="['mvi-page-numbers-item', modelValue == item ? 'number-active' : '', active && modelValue != item ? 'active' : '']" v-text="item" @click="toPage(item)" :style="pageStyle(item)"></div>
+					<div v-if="total > overNumber" class="mvi-page-numbers-item" :class="{ 'number-active': modelValue == item, active: active && modelValue != item }" v-text="item" @click="toPage(item)" :style="pageStyle(item)"></div>
 				</template>
-				<div v-if="total > overNumber && modelValue < total - (overNumber - 1) / 2" :class="['mvi-page-numbers-item', active ? 'active' : '']" @click="toPage(modelValue + (overNumber - 1))" :style="{ color: color || '' }">...</div>
+				<div v-if="total > overNumber && modelValue < total - (overNumber - 1) / 2" class="mvi-page-numbers-item" :class="{ active: active }" @click="toPage(modelValue + (overNumber - 1))" :style="{ color: color || '' }">...</div>
 			</div>
 		</div>
-		<div v-if="nextText || parseIcon(nextIcon).type || parseIcon(nextIcon).url" :disabled="modelValue == total || null" @click="pageNext" :class="['mvi-page-next', active && modelValue != total ? 'active' : '']" :style="lastStyle">
+		<div v-if="nextText || parseIcon(nextIcon).type || parseIcon(nextIcon).url" :disabled="modelValue == total || null" @click="pageNext" class="mvi-page-next" :class="{ active: active && modelValue != total }" :style="lastStyle">
 			<span v-if="nextText" v-text="nextText"></span>
 			<Icon :class="nextText ? 'margin-left' : ''" v-if="parseIcon(nextIcon).type || parseIcon(nextIcon).url" :type="parseIcon(nextIcon).type" :url="parseIcon(nextIcon).url" :size="parseIcon(nextIcon).size" :spin="parseIcon(nextIcon).spin" :color="parseIcon(nextIcon).color" />
 		</div>
-		<div v-if="lastText || parseIcon(lastIcon).type || parseIcon(lastIcon).url" :disabled="modelValue == total || null" @click="pageLast" :class="['mvi-page-last', active && modelValue != total ? 'active' : '']" :style="lastStyle">
+		<div v-if="lastText || parseIcon(lastIcon).type || parseIcon(lastIcon).url" :disabled="modelValue == total || null" @click="pageLast" class="mvi-page-last" :class="{ active: active && modelValue != total }" :style="lastStyle">
 			<span v-if="lastText" v-text="lastText"></span>
-			<Icon :class="lastText ? 'margin-left' : ''" v-if="parseIcon(lastIcon).type || parseIcon(lastIcon).url" :type="parseIcon(lastIcon).type" :url="parseIcon(lastIcon).url" :size="parseIcon(lastIcon).size" :spin="parseIcon(lastIcon).spin" :color="parseIcon(lastIcon).color" />
+			<Icon :class="{ 'margin-left': !!lastText }" v-if="parseIcon(lastIcon).type || parseIcon(lastIcon).url" :type="parseIcon(lastIcon).type" :url="parseIcon(lastIcon).url" :size="parseIcon(lastIcon).size" :spin="parseIcon(lastIcon).spin" :color="parseIcon(lastIcon).color" />
 		</div>
 	</div>
 </template>
@@ -157,7 +157,7 @@ export default {
 			return arr
 		},
 		parseIcon() {
-			return param => {
+			return params => {
 				let icon = {
 					spin: false,
 					type: null,
@@ -165,24 +165,24 @@ export default {
 					color: null,
 					size: null
 				}
-				if (Dap.common.isObject(param)) {
-					if (typeof param.spin == 'boolean') {
-						icon.spin = param.spin
+				if (Dap.common.isObject(params)) {
+					if (typeof params.spin == 'boolean') {
+						icon.spin = params.spin
 					}
-					if (typeof param.type == 'string') {
-						icon.type = param.type
+					if (typeof params.type == 'string') {
+						icon.type = params.type
 					}
-					if (typeof param.url == 'string') {
-						icon.url = param.url
+					if (typeof params.url == 'string') {
+						icon.url = params.url
 					}
-					if (typeof param.color == 'string') {
-						icon.color = param.color
+					if (typeof params.color == 'string') {
+						icon.color = params.color
 					}
-					if (typeof param.size == 'string') {
-						icon.size = param.size
+					if (typeof params.size == 'string') {
+						icon.size = params.size
 					}
-				} else if (typeof param == 'string') {
-					icon.type = param
+				} else if (typeof params == 'string') {
+					icon.type = params
 				}
 				return icon
 			}

@@ -1,7 +1,7 @@
 <template>
 	<teleport to="body">
 		<transition :name="'mvi-msgbox-' + cmpAnimation" @after-enter="afterEnter" @after-leave="afterLeave">
-			<div v-show="show" v-bind="$attrs" :class="msgboxClass" v-text="cpmMessage" :style="msgboxStyle"></div>
+			<div v-show="show" v-bind="$attrs" class="mvi-msgbox" :class="{ 'mvi-msgbox-translate': cmpAnimation == 'translate' }" v-text="cpmMessage" :style="msgboxStyle"></div>
 		</transition>
 	</teleport>
 </template>
@@ -105,13 +105,6 @@ export default {
 				style.color = this.cmpColor
 			}
 			return style
-		},
-		msgboxClass() {
-			let cls = ['mvi-msgbox']
-			if (this.cmpAnimation == 'translate') {
-				cls.push('mvi-msgbox-translate')
-			}
-			return cls
 		}
 	},
 	mounted() {

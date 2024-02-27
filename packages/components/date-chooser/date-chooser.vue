@@ -1,5 +1,5 @@
 <template>
-	<div :class="['mvi-date-chooser', block ? 'block' : '']">
+	<div class="mvi-date-chooser" :class="{ block: block }">
 		<div class="mvi-date-chooser-relate" :data-id="`mvi-date-chooser-relate-${uid}`" ref="relate" @click="clickCalendar">
 			<slot></slot>
 		</div>
@@ -7,7 +7,7 @@
 			<div class="mvi-date-chooser-layer" ref="panel">
 				<!-- 年视图头部 -->
 				<div v-if="view == 'year'" class="mvi-date-chooser-year-header">
-					<div :class="['mvi-date-chooser-year-left', type]" @click="updateYear(-1)">
+					<div class="mvi-date-chooser-year-left" :class="[type]" @click="updateYear(-1)">
 						<Icon type="angle-double-left" />
 					</div>
 					<div class="mvi-date-chooser-year-center">
@@ -15,17 +15,17 @@
 						<span>-</span>
 						<span>{{ formatShow('year', years[years.length - 1]) }}</span>
 					</div>
-					<div :class="['mvi-date-chooser-year-right', type]" @click="updateYear(1)">
+					<div class="mvi-date-chooser-year-right" :class="[type]" @click="updateYear(1)">
 						<Icon type="angle-double-right" />
 					</div>
 				</div>
 				<!-- 月视图头部 -->
 				<div v-else-if="view == 'month'" class="mvi-date-chooser-month-header">
-					<div :class="['mvi-date-chooser-month-left', type]" @click="updateYear(-1)">
+					<div class="mvi-date-chooser-month-left" :class="[type]" @click="updateYear(-1)">
 						<Icon type="angle-double-left" />
 					</div>
-					<div :class="['mvi-date-chooser-month-center', type]" @click="goYear">{{ formatShow('year', selectedDate) }}</div>
-					<div :class="['mvi-date-chooser-month-right', type]" @click="updateYear(1)">
+					<div class="mvi-date-chooser-month-center" :class="[type]" @click="goYear">{{ formatShow('year', selectedDate) }}</div>
+					<div class="mvi-date-chooser-month-right" :class="[type]" @click="updateYear(1)">
 						<Icon type="angle-double-right" />
 					</div>
 				</div>

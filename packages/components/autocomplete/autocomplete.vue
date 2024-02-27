@@ -1,10 +1,10 @@
 <template>
-	<div :class="autocompleteClass" :disabled="disabled || null">
-		<div :class="relateClass" :style="relateStyle" :data-id="'mvi-autocomplete-relate-' + uid" ref="relate">
+	<div class="mvi-autocomplete" :class="[size, { round: round, square: !round && square }]" :disabled="disabled || null">
+		<div class="mvi-autocomplete-relate" :class="relateClass" :style="relateStyle" :data-id="'mvi-autocomplete-relate-' + uid" ref="relate">
 			<div @click="leftClick" v-if="parseIcon(leftIcon).type || parseIcon(leftIcon).url" class="mvi-autocomplete-left-icon">
 				<Icon :type="parseIcon(leftIcon).type" :url="parseIcon(leftIcon).url" :spin="parseIcon(leftIcon).spin" :size="parseIcon(leftIcon).size" :color="parseIcon(leftIcon).color" />
 			</div>
-			<input ref="input" @input="input" v-model="realValue" type="text" :placeholder="placeholder" :style="inputStyle" :name="name" @focus="inputFocus" @blur="inputBlur" :disabled="disabled || null" autocomplete="off" @keydown="keydown" @keyup="keyup" :class="[parseIcon(leftIcon).type || parseIcon(leftIcon).url ? 'left-none-radius' : '', parseIcon(rightIcon).type || parseIcon(rightIcon).url || (clearable && showClearIcon) ? 'right-none-radius' : '']" />
+			<input ref="input" @input="input" v-model="realValue" type="text" :placeholder="placeholder" :style="inputStyle" :name="name" @focus="inputFocus" @blur="inputBlur" :disabled="disabled || null" autocomplete="off" @keydown="keydown" @keyup="keyup" :class="{ 'left-none-radius': parseIcon(leftIcon).type || parseIcon(leftIcon).url, 'right-none-radius': parseIcon(rightIcon).type || parseIcon(rightIcon).url || (clearable && showClearIcon) }" />
 			<div @click="doClear" v-if="clearable" v-show="showClearIcon" class="mvi-autocomplete-clear" :style="clearStyle">
 				<Icon type="times-o" />
 			</div>
@@ -13,7 +13,7 @@
 			</div>
 		</div>
 		<Layer :model-value="show" :relate="`[data-id='mvi-autocomplete-relate-${uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" ref="layer" :animation="layerRealProps.animation" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :timeout="layerRealProps.timeout" :closable="false" :show-triangle="layerRealProps.showTriangle" :border-color="layerRealProps.borderColor" :width="layerRealProps.width" @showing="layerShow">
-			<div :class="['mvi-autocomplete-menu', size]" :style="menuStyle" ref="menu">
+			<div class="mvi-autocomplete-menu" :class="[size]" :style="{ maxHeight: height }" ref="menu">
 				<div class="mvi-autocomplete-list" v-for="item in cmpFilter" v-text="item" @click="doSelect(item)"></div>
 			</div>
 		</Layer>
@@ -151,7 +151,7 @@ export default {
 			return this.focus && this.cmpFilter.length != 0
 		},
 		parseIcon() {
-			return param => {
+			return params => {
 				let icon = {
 					spin: false,
 					type: null,
@@ -159,24 +159,24 @@ export default {
 					color: null,
 					size: null
 				}
-				if (Dap.common.isObject(param)) {
-					if (typeof param.spin == 'boolean') {
-						icon.spin = param.spin
+				if (Dap.common.isObject(params)) {
+					if (typeof params.spin == 'boolean') {
+						icon.spin = params.spin
 					}
-					if (typeof param.type == 'string') {
-						icon.type = param.type
+					if (typeof params.type == 'string') {
+						icon.type = params.type
 					}
-					if (typeof param.url == 'string') {
-						icon.url = param.url
+					if (typeof params.url == 'string') {
+						icon.url = params.url
 					}
-					if (typeof param.color == 'string') {
-						icon.color = param.color
+					if (typeof params.color == 'string') {
+						icon.color = params.color
 					}
-					if (typeof param.size == 'string') {
-						icon.size = param.size
+					if (typeof params.size == 'string') {
+						icon.size = params.size
 					}
-				} else if (typeof param == 'string') {
-					icon.type = param
+				} else if (typeof params == 'string') {
+					icon.type = params
 				}
 				return icon
 			}
@@ -194,13 +194,6 @@ export default {
 			let style = {}
 			if (this.parseIcon(this.rightIcon).type || this.parseIcon(this.rightIcon).url) {
 				style.borderRadius = 0
-			}
-			return style
-		},
-		menuStyle() {
-			let style = {}
-			if (this.height) {
-				style.maxHeight = this.height
 			}
 			return style
 		},
@@ -226,15 +219,6 @@ export default {
 			}
 			return style
 		},
-		autocompleteClass() {
-			let cls = ['mvi-autocomplete', this.size]
-			if (this.round) {
-				cls.push('round')
-			} else if (this.square) {
-				cls.push('square')
-			}
-			return cls
-		},
 		relateStyle() {
 			let style = {}
 			if (this.activeColor && this.focus) {
@@ -245,7 +229,7 @@ export default {
 			return style
 		},
 		relateClass() {
-			let cls = ['mvi-autocomplete-relate']
+			let cls = []
 			if (this.activeType && !this.activeColor && this.focus) {
 				cls.push(this.activeType)
 			}

@@ -6,6 +6,7 @@ class Ripple {
 	constructor(element, options) {
 		//指定的元素
 		this.$el = element
+		//参数配置
 		options = Dap.common.isObject(options) ? options : {}
 		//水波纹颜色
 		this.color = options.color

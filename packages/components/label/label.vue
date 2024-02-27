@@ -1,13 +1,13 @@
 <template>
 	<transition v-if="closable" name="mvi-label">
-		<div v-if="show" :class="labelClass" :style="labelStyle">
+		<div v-if="show" :class="labelClass">
 			<slot></slot>
 			<span class="mvi-label-closable" @click="closeLabel">
 				<Icon type="times" />
 			</span>
 		</div>
 	</transition>
-	<div v-else :class="labelClass" :style="labelStyle">
+	<div v-else :class="labelClass">
 		<slot></slot>
 	</div>
 </template>
@@ -38,11 +38,6 @@ export default {
 				return ['medium', 'large'].includes(value)
 			}
 		},
-		//自定义颜色
-		color: {
-			type: String,
-			default: null
-		},
 		//是否为朴素样式
 		plain: {
 			type: Boolean,
@@ -57,11 +52,6 @@ export default {
 		mark: {
 			type: Boolean,
 			default: false
-		},
-		//文本颜色
-		subColor: {
-			type: String,
-			default: null
 		},
 		//是否可关闭
 		closable: {
@@ -96,21 +86,6 @@ export default {
 				}
 			}
 			return cls
-		},
-		labelStyle() {
-			let style = {}
-			if (this.color) {
-				if (this.plain) {
-					style.borderColor = this.color
-					style.color = this.color
-					style.backgroundColor = this.subColor || '#fff'
-				} else {
-					style.backgroundColor = this.color
-					style.borderColor = this.color
-					style.color = this.subColor || '#fff'
-				}
-			}
-			return style
 		}
 	},
 	components: {
@@ -149,14 +124,9 @@ export default {
 	}
 
 	&.default {
-		background-color: @light-default;
-		border-color: @light-default;
+		background-color: rgba(@border-color, 0.05);
+		border-color: @border-color;
 		color: @font-color-sub;
-
-		&.plain {
-			border-color: @border-color;
-			color: @font-color-sub;
-		}
 	}
 
 	&.success {
@@ -167,6 +137,7 @@ export default {
 		&.plain {
 			border-color: @success-normal;
 			color: @success-normal;
+			background-color: rgba(@success-normal, 0.05);
 		}
 	}
 
@@ -176,6 +147,7 @@ export default {
 		color: #fff;
 
 		&.plain {
+			background-color: rgba(@warn-normal, 0.05);
 			border-color: @warn-normal;
 			color: @warn-normal;
 		}
@@ -187,6 +159,7 @@ export default {
 		color: #fff;
 
 		&.plain {
+			background-color: rgba(@error-normal, 0.05);
 			border-color: @error-normal;
 			color: @error-normal;
 		}
@@ -198,6 +171,7 @@ export default {
 		color: #fff;
 
 		&.plain {
+			background-color: rgba(@info-normal, 0.05);
 			border-color: @info-normal;
 			color: @info-normal;
 		}
@@ -209,6 +183,7 @@ export default {
 		color: #fff;
 
 		&.plain {
+			background-color: rgba(@primary-normal, 0.05);
 			border-color: @primary-normal;
 			color: @primary-normal;
 		}

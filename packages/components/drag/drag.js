@@ -6,6 +6,7 @@ class Drag {
 	constructor(element, options) {
 		//被拖拽的元素
 		this.$el = element
+		//参数配置
 		options = Dap.common.isObject(options) ? options : {}
 		//可拖拽的区域
 		this.$container = options.container

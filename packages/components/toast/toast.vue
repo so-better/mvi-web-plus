@@ -1,6 +1,6 @@
 <template>
 	<Overlay ref="overlay" :color="cmpOverlayColor" @hidden="toastHidden" v-model="show" :use-padding="cmpUsePadding" :zIndex="cmpZIndex" fade :mount-el="cmpMountEl" @shown="toastShown">
-		<div :class="['mvi-toast', cmpMessage ? '' : 'iconless', cmpShadow ? 'shadow' : '']" :style="toastStyle" v-bind="$attrs">
+		<div class="mvi-toast" :class="{ iconless: cmpMessage, shadow: cmpShadow }" :style="toastStyle" v-bind="$attrs">
 			<div class="mvi-toast-icon">
 				<Loading :color="cmpColor" v-if="cmpType == 'loading' && !cmpIcon.type && !cmpIcon.url" :size="cmpIcon.size" />
 				<Icon v-else :type="cmpIcon.type" :url="cmpIcon.url" :spin="cmpIcon.spin" :size="cmpIcon.size" :color="cmpIcon.color" />

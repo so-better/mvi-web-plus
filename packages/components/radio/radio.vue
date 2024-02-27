@@ -2,7 +2,7 @@
 	<label class="mvi-radio" :disabled="disabled || null">
 		<span v-if="placement == 'left' && label" class="mvi-radio-label" :data-placement="placement" v-text="label"></span>
 		<input @change="change" :value="value" :disabled="disabled" :checked="check" type="radio" :name="name" />
-		<span :class="['mvi-radio-item', check ? 'check' : '', round ? 'round' : '']" :style="itemStyle">
+		<span class="mvi-radio-item" :class="{ check: check, round: round }" :style="itemStyle">
 			<Icon type="success" :style="{ opacity: this.check ? '' : 0 }" />
 		</span>
 		<span v-if="placement == 'right' && label" class="mvi-radio-label" :data-placement="placement" v-text="label"></span>
@@ -69,9 +69,8 @@ export default {
 		check() {
 			if (typeof this.modelValue == 'boolean') {
 				return this.modelValue
-			} else {
-				return Dap.common.equal(this.modelValue, this.value)
 			}
+			return Dap.common.equal(this.modelValue, this.value)
 		},
 		itemStyle() {
 			let style = {}

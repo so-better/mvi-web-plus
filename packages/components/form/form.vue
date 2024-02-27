@@ -1,5 +1,5 @@
 <template>
-	<div :class="['mvi-form', block ? 'block' : '']" :style="formStyle">
+	<div class="mvi-form" :class="{ block: block }" :style="{ width: block && width ? width : '' }">
 		<slot></slot>
 	</div>
 </template>
@@ -37,13 +37,6 @@ export default {
 		labelOffset: {
 			type: String,
 			default: null
-		}
-	},
-	computed: {
-		formStyle() {
-			return {
-				width: this.block && this.width ? this.width : ''
-			}
 		}
 	},
 	provide() {

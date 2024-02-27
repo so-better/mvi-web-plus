@@ -7,7 +7,7 @@
 					<div class="mvi-modal-times" @click="show = false" v-if="showTimes">
 						<Icon type="times" />
 					</div>
-					<div ref="header" :class="['mvi-modal-title', ellipsis ? 'ellipsis' : '', center ? 'center' : '']" v-if="$slots.title || title" :style="headerStyle">
+					<div ref="header" class="mvi-modal-title" :class="{ ellipsis: ellipsis, center: center }" v-if="$slots.title || title" :style="headerStyle">
 						<slot name="title" v-if="$slots.title"></slot>
 						<span v-html="title" v-else-if="title"></span>
 					</div>

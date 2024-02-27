@@ -1,6 +1,6 @@
 <template>
 	<div @click="clickStopFun" @mouseenter="hoverIn" @mouseleave="hoverOut" class="mvi-roll-container" :style="containerStyle">
-		<div :class="['mvi-roll', direction == 'left' || direction == 'right' ? 'horizontal' : 'vertical', center ? 'center' : '']" :style="rollStyle" ref="roll">
+		<div class="mvi-roll" :class="[direction == 'left' || direction == 'right' ? 'horizontal' : 'vertical', { center: center }]" :style="rollStyle" ref="roll">
 			<slot></slot>
 		</div>
 	</div>

@@ -1,7 +1,17 @@
 <template>
-	<div style="padding: 200px">
-		<m-button block @click="show = !show" id="btn">按钮</m-button>
-		<m-layer class="a" closable showTriangle relate="#btn" v-model="show" width="10rem" placement="bottom" border borderColor="#f30" background="#f30" :shadow="false"> <div style="height: 100px"></div></m-layer>
+	<div style="padding: 20px">
+		<m-button @click="show = !show">按钮</m-button>
+		<m-form block width="6rem">
+			<m-form-el label="用户名">
+				<m-field placeholder="请输入用户名"></m-field>
+			</m-form-el>
+			<m-form-el label="手机号">
+				<m-field placeholder="请输入手机号"></m-field>
+			</m-form-el>
+			<m-form-el label="密码">
+				<m-field placeholder="请输入密码"></m-field>
+			</m-form-el>
+		</m-form>
 	</div>
 </template>
 <script>
@@ -9,35 +19,25 @@ import dayjs from 'dayjs'
 export default {
 	data() {
 		return {
-			show: false,
 			value: '',
+			show: false,
 			date: new Date(),
-			options: [
-				{
-					label: '选项1',
-					value: 0
-				},
-				{
-					label: '选项2',
-					value: 1
-				},
-				{
-					label: '选项3',
-					value: 2
-				},
-				{
-					label: '选项4',
-					value: 3
-				},
-				{
-					label: '选项5',
-					value: 4
-				}
-			]
+			list: ['佛罗里达州', '加利福利亚州', '北京', '伦敦']
 		}
 	},
 	mounted() {},
-	methods: {}
+	methods: {
+		loadMore() {
+			setTimeout(() => {
+				this.loading = false
+				this.error = false
+				this.list = [...this.list, ...new Array(30)]
+				if (this.list.length > 100) {
+					this.finished = true
+				}
+			}, 1000)
+		}
+	}
 }
 </script>
 <style lang="less">

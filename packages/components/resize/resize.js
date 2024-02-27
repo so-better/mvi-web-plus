@@ -6,6 +6,7 @@ class Resize {
 	constructor(element, options) {
 		//拖拽元素
 		this.$el = element
+		//配置参数
 		options = Dap.common.isObject(options) ? options : {}
 		//水平方向是否可拖拽
 		this.draggableX = options.draggableX

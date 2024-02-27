@@ -2,7 +2,7 @@
 	<label class="mvi-checkbox" :disabled="disabled || null">
 		<span v-if="placement == 'left' && label" class="mvi-checkbox-label" :data-placement="placement" v-text="label"></span>
 		<input @change="change" :value="value" :disabled="disabled" :checked="check" type="checkbox" :name="name" />
-		<span :class="['mvi-checkbox-item', check ? 'check' : '', round ? 'round' : '']" :style="itemStyle">
+		<span class="mvi-checkbox-item" :class="{ check: check, round: round }" :style="itemStyle">
 			<Icon type="success" :style="{ opacity: check ? '' : 0 }" />
 		</span>
 		<span v-if="placement == 'right' && label" class="mvi-checkbox-label" :data-placement="placement" v-text="label"></span>
@@ -69,14 +69,14 @@ export default {
 		check() {
 			if (typeof this.modelValue == 'boolean') {
 				return this.modelValue
-			} else if (Array.isArray(this.modelValue)) {
+			}
+			if (Array.isArray(this.modelValue)) {
 				//数组中是否已包含此复选框的值
 				return this.modelValue.some(item => {
 					return Dap.common.equal(item, this.value)
 				})
-			} else {
-				return false
 			}
+			return false
 		},
 		itemStyle() {
 			let style = {}
