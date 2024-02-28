@@ -74,7 +74,10 @@ export default {
 		//类型
 		type: {
 			type: String,
-			default: 'default'
+			default: 'default',
+			validator(value) {
+				return ['default', 'circle', 'dots', 'spin', 'transfer'].includes(value)
+			}
 		},
 		//颜色
 		color: {
