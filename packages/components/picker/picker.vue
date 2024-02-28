@@ -10,7 +10,9 @@
 		</div>
 		<div v-if="!loading" class="mvi-picker-content" :style="contentStyle" ref="content" @touchmove="contentTouchMove">
 			<div v-for="(column, index) in cmpOptions" class="mvi-picker-items" :ref="el => (itemRefs[index] = el)" :style="columnStyle(column, index)" @touchstart="touchstart($event, index)" @touchmove="touchmove" @touchend="touchend" @mousedown="mousedown($event, index)">
-				<div class="mvi-picker-item" v-for="item in column.values" v-text="item" :style="{ height: selectHeight || '' }"></div>
+				<div class="mvi-picker-item" v-for="item in column.values" :style="{ height: selectHeight || '' }">
+					<div v-text="item"></div>
+				</div>
 			</div>
 			<div class="mvi-picker-active" :style="{ height: selectHeight || '' }"></div>
 			<div class="mvi-picker-mask" :style="maskStyle"></div>
@@ -500,6 +502,15 @@ export default {
 				display: -webkit-flex;
 				justify-content: center;
 				align-items: center;
+				padding: 0 @mp-xs;
+
+				& > div {
+					overflow: hidden;
+					text-overflow: ellipsis;
+					display: -webkit-box;
+					-webkit-line-clamp: 1;
+					-webkit-box-orient: vertical;
+				}
 			}
 		}
 

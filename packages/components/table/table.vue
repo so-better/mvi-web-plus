@@ -28,7 +28,7 @@
 			<div ref="body" class="mvi-table-body" :class="{ overflow: !!height }" :style="{ maxHeight: height }">
 				<!-- 加载状态 -->
 				<div class="mvi-table-loading" v-if="loading">
-					<Loading color="#bbb" size="0.3rem" />
+					<Loading color="#bbb" size="0.32rem" />
 					<span>{{ loadText }}</span>
 				</div>
 				<template v-else>

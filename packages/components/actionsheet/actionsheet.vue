@@ -4,7 +4,7 @@
 			<div class="mvi-actionsheet-title" :class="[size]" v-if="title" v-text="title"></div>
 			<div class="mvi-actionsheet-list">
 				<div class="mvi-actionsheet-item" :class="itemClass(item)" v-for="(item, index) in options" :disabled="itemDisabled(item) || null" @click="doSelect(item, index)">
-					<Loading :size="size == 'large' ? '0.4rem' : '0.36rem'" color="#bbb" v-if="item.loading || false"></Loading>
+					<Loading :size="size == 'large' ? '0.5rem' : '0.4rem'" color="#bbb" v-if="item.loading || false"></Loading>
 					<div class="mvi-actionsheet-content" v-else-if="item.label || parseIcon(item.icon).type || parseIcon(item.icon).url">
 						<Icon data-placement="left" v-if="(parseIcon(item.icon).type || parseIcon(item.icon).url) && item.placement != 'right'" :type="parseIcon(item.icon).type" :url="parseIcon(item.icon).url" :spin="parseIcon(item.icon).spin" :size="parseIcon(item.icon).size" :color="parseIcon(item.icon).color" />
 						<span v-if="item.label" class="mvi-actionsheet-item-label" v-text="item.label"></span>

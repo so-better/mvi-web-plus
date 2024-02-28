@@ -1,27 +1,26 @@
 <template>
 	<div style="padding: 20px">
 		<m-button @click="show = !show">按钮</m-button>
-		<m-picker :options="options"></m-picker>
+		<div>
+			<m-loading color="#108af3" />
+			<m-loading type="circle" class="mvi-ml-4" color="#108af3" />
+			<m-loading type="dots" class="mvi-ml-4" color="#108af3" />
+			<m-loading type="spin" class="mvi-ml-4" color="#108af3" />
+			<m-loading type="transfer" class="mvi-ml-4" color="#108af3" />
+		</div>
 	</div>
 </template>
 <script>
-import dayjs from 'dayjs'
 export default {
 	data() {
 		return {
 			value: '',
 			show: false,
 			date: new Date(),
-			options: [
-				{
-					values: ['iPhone15', 'iPhone14 Pro Max', 'HUAWEI Mate60 Pro', 'Samsung Galaxy S23 FE'],
-					defaultIndex: 0
-				},
-				{
-					values: ['Apple', 'Samsung', 'HUAWEI'],
-					defaultIndex: 1
-				}
-			]
+			options: {
+				values: ['mvi', 'elementUI', 'iView', 'vant'], //设置选项
+				defaultIndex: 0 //设置默认选项序列
+			}
 		}
 	},
 	mounted() {},
