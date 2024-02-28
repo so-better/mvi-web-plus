@@ -10,7 +10,7 @@
 		</div>
 		<div v-if="!loading" class="mvi-picker-content" :style="contentStyle" ref="content" @touchmove="contentTouchMove">
 			<div v-for="(column, index) in cmpOptions" class="mvi-picker-items" :ref="el => (itemRefs[index] = el)" :style="columnStyle(column, index)" @touchstart="touchstart($event, index)" @touchmove="touchmove" @touchend="touchend" @mousedown="mousedown($event, index)">
-				<div class="mvi-picker-item" v-for="(item, index2) in column.values" v-text="item" :style="{ height: selectHeight || '' }"></div>
+				<div class="mvi-picker-item" v-for="item in column.values" v-text="item" :style="{ height: selectHeight || '' }"></div>
 			</div>
 			<div class="mvi-picker-active" :style="{ height: selectHeight || '' }"></div>
 			<div class="mvi-picker-mask" :style="maskStyle"></div>

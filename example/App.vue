@@ -1,17 +1,7 @@
 <template>
 	<div style="padding: 20px">
 		<m-button @click="show = !show">按钮</m-button>
-		<m-form block width="6rem">
-			<m-form-el label="用户名">
-				<m-field placeholder="请输入用户名"></m-field>
-			</m-form-el>
-			<m-form-el label="手机号">
-				<m-field placeholder="请输入手机号"></m-field>
-			</m-form-el>
-			<m-form-el label="密码">
-				<m-field placeholder="请输入密码"></m-field>
-			</m-form-el>
-		</m-form>
+		<m-picker :options="options"></m-picker>
 	</div>
 </template>
 <script>
@@ -22,7 +12,16 @@ export default {
 			value: '',
 			show: false,
 			date: new Date(),
-			list: ['佛罗里达州', '加利福利亚州', '北京', '伦敦']
+			options: [
+				{
+					values: ['iPhone15', 'iPhone14 Pro Max', 'HUAWEI Mate60 Pro', 'Samsung Galaxy S23 FE'],
+					defaultIndex: 0
+				},
+				{
+					values: ['Apple', 'Samsung', 'HUAWEI'],
+					defaultIndex: 1
+				}
+			]
 		}
 	},
 	mounted() {},
