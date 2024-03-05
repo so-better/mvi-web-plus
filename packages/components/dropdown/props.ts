@@ -1,11 +1,5 @@
 import { PropType } from 'vue'
-
-interface OptionItem {
-	label?: any
-	value?: any
-	disabled?: any
-	icon?: any
-}
+import { OptionsItem } from './OptionsItem'
 
 export default {
 	//默认选中的选项
@@ -20,7 +14,7 @@ export default {
 	},
 	//列表参数,含label,value,disabled,icon
 	options: {
-		type: Array as PropType<OptionItem[]>,
+		type: Array as PropType<OptionsItem[]>,
 		default: function () {
 			return []
 		}

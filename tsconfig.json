@@ -5,7 +5,6 @@
 		"module": "ESNext",
 		"lib": ["ES2020", "DOM", "DOM.Iterable"],
 		"skipLibCheck": true,
-		"allowJs": true,
 		"allowSyntheticDefaultImports": true,
 		"types": ["node"],
 
@@ -23,6 +22,6 @@
 		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true
 	},
-	"include": ["packages/**/*.ts", "packages/**/*.tsx", "packages/**/*.vue"],
+	"include": ["packages/**/*.ts", "packages/**/*.vue", "vite-env.d.ts"],
 	"references": [{ "path": "./tsconfig.node.json" }]
 }
