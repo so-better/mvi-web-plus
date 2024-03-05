@@ -1,0 +1,167 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-button {
+	position: relative;
+	display: inline-flex;
+	display: -webkit-inline-flex;
+	justify-content: center;
+	align-items: center;
+	vertical-align: middle;
+	text-align: center;
+	white-space: nowrap;
+	border: 1px solid transparent;
+	background: none;
+	outline: 0;
+	touch-action: manipulation;
+	appearance: none;
+	-webkit-appearance: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	margin: 0;
+	padding: 0;
+	border-radius: @radius-default;
+	cursor: pointer;
+
+	&.default {
+		color: @font-color-default;
+		border-color: @border-color;
+		background: #fff;
+	}
+
+	&.warn {
+		background: @warn-normal;
+		border-color: @warn-normal;
+		color: #fff;
+
+		&.plain {
+			color: @warn-normal;
+			border-color: @warn-normal;
+			background: #fff;
+
+			&.active:active::before {
+				.mvi-active(@warn-normal);
+			}
+		}
+	}
+
+	&.error {
+		background: @error-normal;
+		border-color: @error-normal;
+		color: #fff;
+
+		&.plain {
+			color: @error-normal;
+			border-color: @error-normal;
+			background: #fff;
+
+			&.active:active::before {
+				.mvi-active(@error-normal);
+			}
+		}
+	}
+
+	&.success {
+		background: @success-normal;
+		border-color: @success-normal;
+		color: #fff;
+
+		&.plain {
+			color: @success-normal;
+			border-color: @success-normal;
+			background: #fff;
+
+			&.active:active::before {
+				.mvi-active(@success-normal);
+			}
+		}
+	}
+
+	&.info {
+		background: @info-normal;
+		border-color: @info-normal;
+		color: #fff;
+
+		&.plain {
+			color: @info-normal;
+			border-color: @info-normal;
+			background: #fff;
+
+			&.active:active::before {
+				.mvi-active(@info-normal);
+			}
+		}
+	}
+
+	&.primary {
+		background: @primary-normal;
+		border-color: @primary-normal;
+		color: #fff;
+
+		&.plain {
+			color: @primary-normal;
+			border-color: @primary-normal;
+			background: #fff;
+			&.active:active::before {
+				.mvi-active(@primary-normal);
+			}
+		}
+	}
+
+	&.mini {
+		height: @mini-height;
+		padding: 0 @mp-xs;
+		font-size: @font-size-small;
+	}
+
+	&.small {
+		font-size: @font-size-default;
+		height: @small-height;
+		padding: 0 @mp-sm;
+	}
+
+	&.medium {
+		font-size: @font-size-h6;
+		height: @medium-height;
+		padding: 0 @mp-md;
+	}
+
+	&.large {
+		font-size: @font-size-h5;
+		height: @large-height;
+		padding: 0 @mp-lg;
+	}
+
+	&.round {
+		border-radius: @radius-round;
+	}
+
+	&.square {
+		border-radius: 0;
+	}
+
+	&.active:active::before {
+		.mvi-active();
+	}
+
+	&[disabled] {
+		opacity: 0.6;
+		touch-action: none;
+	}
+
+	&.block {
+		display: flex;
+		display: -webkit-flex;
+		width: 100%;
+	}
+
+	&.loading {
+		pointer-events: none;
+		touch-action: none;
+		opacity: 0.8;
+	}
+
+	.mvi-button-load-text {
+		margin-left: @mp-sm;
+	}
+}

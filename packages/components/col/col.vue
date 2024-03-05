@@ -1,197 +1,96 @@
-<template>
-	<Col :class="colClass">
-		<slot></slot>
-	</Col>
-</template>
-
-<script>
-import { h } from 'vue'
+<script setup name="m-col" lang="ts">
+import { computed, defineComponent, h, useSlots } from 'vue'
 import Dap from 'dap-util'
-export default {
-	name: 'm-col',
-	props: {
-		//栅格占据的列数
-		span: {
-			type: Number,
-			default: 24
-		},
-		//栅格左侧的间隔格数
-		offset: {
-			type: Number,
-			default: 0
-		},
-		//渲染标签
-		tag: {
-			type: String,
-			default: 'div'
-		},
-		// >=0px 响应式栅格数或者栅格属性对象
-		xs: {
-			type: [Number, Object],
-			default: null
-		},
-		// >=640px 响应式栅格数或者栅格属性对象
-		sm: {
-			type: [Number, Object],
-			default: null
-		},
-		// >=992px 响应式栅格数或者栅格属性对象
-		md: {
-			type: [Number, Object],
-			default: null
-		},
-		// >=1440px 响应式栅格数或者栅格属性对象
-		lg: {
-			type: [Number, Object],
-			default: null
-		},
-		// >=1920px 响应式栅格数或者栅格属性对象
-		xl: {
-			type: [Number, Object],
-			default: null
-		}
-	},
-	inject: ['row'],
-	computed: {
-		colClass() {
-			let cls = []
-			if (this.span) {
-				cls.push('mvi-col-' + this.span)
-			}
-			if (this.offset) {
-				cls.push('mvi-col-offset-' + this.offset)
-			}
 
-			if (Dap.common.isObject(this.xs)) {
-				if (Dap.number.isNumber(this.xs.span)) {
-					cls.push('mvi-col-xs-' + this.xs.span)
-				}
-				if (Dap.number.isNumber(this.xs.offset)) {
-					cls.push('mvi-col-offset-xs-' + this.xs.offset)
-				}
-			} else if (Dap.number.isNumber(this.xs)) {
-				cls.push('mvi-col-xs-' + this.xs)
-			}
+import ColProps from './props'
 
-			if (Dap.common.isObject(this.sm)) {
-				if (Dap.number.isNumber(this.sm.span)) {
-					cls.push('mvi-col-sm-' + this.sm.span)
-				}
-				if (Dap.number.isNumber(this.sm.offset)) {
-					cls.push('mvi-col-offset-sm-' + this.sm.offset)
-				}
-			} else if (Dap.number.isNumber(this.sm)) {
-				cls.push('mvi-col-sm-' + this.sm)
-			}
+const props = defineProps(ColProps)
 
-			if (Dap.common.isObject(this.md)) {
-				if (Dap.number.isNumber(this.md.span)) {
-					cls.push('mvi-col-md-' + this.md.span)
-				}
-				if (Dap.number.isNumber(this.md.offset)) {
-					cls.push('mvi-col-offset-md-' + this.md.offset)
-				}
-			} else if (Dap.number.isNumber(this.md)) {
-				cls.push('mvi-col-md-' + this.md)
-			}
+const colClass = computed(() => {
+    let cls = []
+    if (props.span) {
+        cls.push('mvi-col-' + props.span)
+    }
+    if (props.offset) {
+        cls.push('mvi-col-offset-' + props.offset)
+    }
 
-			if (Dap.common.isObject(this.lg)) {
-				if (Dap.number.isNumber(this.lg.span)) {
-					cls.push('mvi-col-lg-' + this.lg.span)
-				}
-				if (Dap.number.isNumber(this.lg.offset)) {
-					cls.push('mvi-col-offset-lg-' + this.lg.offset)
-				}
-			} else if (Dap.number.isNumber(this.lg)) {
-				cls.push('mvi-col-lg-' + this.lg)
-			}
+    if (Dap.common.isObject(props.xs)) {
+        if (Dap.number.isNumber((<any>(props.xs)).span)) {
+            cls.push('mvi-col-xs-' + (<any>(props.xs)).span)
+        }
+        if (Dap.number.isNumber((<any>(props.xs)).offset)) {
+            cls.push('mvi-col-offset-xs-' + (<any>(props.xs)).offset)
+        }
+    } else if (Dap.number.isNumber(props.xs)) {
+        cls.push('mvi-col-xs-' + props.xs)
+    }
 
-			if (Dap.common.isObject(this.xl)) {
-				if (Dap.number.isNumber(this.xl.span)) {
-					cls.push('mvi-col-xl-' + this.xl.span)
-				}
-				if (Dap.number.isNumber(this.xl.offset)) {
-					cls.push('mvi-col-offset-xl-' + this.xl.offset)
-				}
-			} else if (Dap.number.isNumber(this.xl)) {
-				cls.push('mvi-col-xl-' + this.xl)
-			}
+    if (Dap.common.isObject(props.sm)) {
+        if (Dap.number.isNumber((<any>(props.sm)).span)) {
+            cls.push('mvi-col-sm-' + (<any>(props.sm)).span)
+        }
+        if (Dap.number.isNumber((<any>(props.sm)).offset)) {
+            cls.push('mvi-col-offset-sm-' + (<any>(props.sm)).offset)
+        }
+    } else if (Dap.number.isNumber(props.sm)) {
+        cls.push('mvi-col-sm-' + props.sm)
+    }
 
-			return cls
-		}
-	},
-	components: {
-		Col: {
-			render() {
-				return h(
-					this.$parent.tag,
-					{},
-					{
-						default: this.$slots.default
-					}
-				)
-			}
-		}
-	}
-}
+    if (Dap.common.isObject(props.md)) {
+        if (Dap.number.isNumber((<any>(props.md)).span)) {
+            cls.push('mvi-col-md-' + (<any>(props.md)).span)
+        }
+        if (Dap.number.isNumber((<any>(props.md)).offset)) {
+            cls.push('mvi-col-offset-md-' + (<any>(props.md)).offset)
+        }
+    } else if (Dap.number.isNumber(props.md)) {
+        cls.push('mvi-col-md-' + props.md)
+    }
+
+    if (Dap.common.isObject(props.lg)) {
+        if (Dap.number.isNumber((<any>(props.lg)).span)) {
+            cls.push('mvi-col-lg-' + (<any>(props.lg)).span)
+        }
+        if (Dap.number.isNumber((<any>(props.lg)).offset)) {
+            cls.push('mvi-col-offset-lg-' + (<any>(props.lg)).offset)
+        }
+    } else if (Dap.number.isNumber(props.lg)) {
+        cls.push('mvi-col-lg-' + props.lg)
+    }
+
+    if (Dap.common.isObject(props.xl)) {
+        if (Dap.number.isNumber((<any>(props.xl)).span)) {
+            cls.push('mvi-col-xl-' + (<any>(props.xl)).span)
+        }
+        if (Dap.number.isNumber((<any>(props.xl)).offset)) {
+            cls.push('mvi-col-offset-xl-' + (<any>(props.xl)).offset)
+        }
+    } else if (Dap.number.isNumber(props.xl)) {
+        cls.push('mvi-col-xl-' + props.xl)
+    }
+
+    return cls
+})
+
+const Col = defineComponent(() => {
+    return () => {
+        return h(
+            props.tag,
+            {},
+            {
+                default: useSlots().default
+            }
+        )
+    }
+})
+
 </script>
 
-<style scoped lang="less">
-.span(@num) when (@num >=0) {
-	.mvi-col-@{num} {
-		width: calc(~'100% / 24 * @{num}');
-	}
+<template>
+    <Col :class="colClass">
+    <slot></slot>
+    </Col>
+</template>
 
-	.span(@num - 1);
-}
-
-.offset(@num) when (@num >=0) {
-	.mvi-col-offset-@{num} {
-		margin-left: calc(~'100% / 24 * @{num}');
-	}
-
-	.offset(@num - 1);
-}
-
-.span(24);
-.offset(24);
-
-.spanResponse(@num, @grid) when (@num >=0) {
-	.mvi-col-@{grid}-@{num} {
-		width: calc(~'100% / 24 * @{num}');
-	}
-
-	.spanResponse(@num - 1, @grid);
-}
-
-.offsetResponse(@num, @grid) when (@num >=0) {
-	.mvi-col-offset-@{grid}-@{num} {
-		margin-left: calc(~'100% / 24 * @{num}');
-	}
-
-	.offsetResponse(@num - 1, @grid);
-}
-
-.spanResponse(24, xs);
-.offsetResponse(24, xs);
-
-@media only screen and (min-width: 640px) {
-	.spanResponse(24, sm);
-	.offsetResponse(24, sm);
-}
-
-@media only screen and (min-width: 992px) {
-	.spanResponse(24, md);
-	.offsetResponse(24, md);
-}
-
-@media only screen and (min-width: 1440px) {
-	.spanResponse(24, lg);
-	.offsetResponse(24, lg);
-}
-
-@media only screen and (min-width: 1920px) {
-	.spanResponse(24, xl);
-	.offsetResponse(24, xl);
-}
-</style>
+<style scoped src="./col.less"></style>

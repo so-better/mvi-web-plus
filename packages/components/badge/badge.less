@@ -1,0 +1,67 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-badge {
+	position: relative;
+	display: inline-block;
+
+	&.block {
+		display: block;
+		width: 100%;
+	}
+
+	.mvi-badge-el {
+		position: absolute;
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		background: @error-normal;
+		color: #fff;
+		padding: 0 @mp-xs;
+		border-radius: 999rem;
+		font-size: @font-size-small;
+		line-height: 1;
+		min-width: 0.34rem;
+		height: 0.34rem;
+		z-index: 40;
+
+		&[data-placement='top-right'] {
+			left: auto;
+			bottom: auto;
+			right: 0;
+			top: 0;
+			transform: translate(50%, -50%);
+		}
+
+		&[data-placement='top-left'] {
+			left: 0;
+			top: 0;
+			right: auto;
+			bottom: auto;
+			transform: translate(-50%, -50%);
+		}
+
+		&[data-placement='bottom-right'] {
+			right: 0;
+			bottom: 0;
+			left: auto;
+			top: auto;
+			transform: translate(50%, 50%);
+		}
+
+		&[data-placement='bottom-left'] {
+			left: 0;
+			bottom: 0;
+			right: auto;
+			top: auto;
+			transform: translate(-50%, 50%);
+		}
+
+		&.mvi-badge-dot {
+			padding: 0;
+			border-radius: 50%;
+			min-width: 0;
+			width: 0.18rem;
+			height: 0.18rem;
+		}
+	}
+}

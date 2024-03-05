@@ -1,0 +1,31 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-layer {
+	position: fixed;
+	z-index: 400;
+
+	.mvi-layer-wrapper {
+		display: block;
+		position: relative;
+		width: 100%;
+		border-radius: @radius-default;
+
+		&.shadow {
+			box-shadow: @boxshadow;
+		}
+
+		&.border {
+			border: 1px solid #eee;
+		}
+
+		.mvi-layer-triangle {
+			position: absolute;
+		}
+	}
+}
+
+.mvi-layer-enter-from,
+.mvi-layer-leave-to {
+	opacity: 0;
+	transform: translateY(0.6rem);
+}

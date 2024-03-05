@@ -1,0 +1,58 @@
+@import '../../css/mvi-basic.less';
+@import '../../css/mvi-icon.less';
+
+.mvi-icon {
+	display: inline-flex;
+	font-family: 'mvi-icon' !important;
+	font-style: normal;
+	vertical-align: middle;
+	justify-content: center;
+	align-items: center;
+	font-size: inherit;
+	line-height: 1;
+
+	&.spin {
+		animation: spin 1.4s linear infinite;
+		-webkit-animation: spin 1.4s linear infinite;
+	}
+}
+
+.mvi-icon-url {
+	display: inline-block;
+	width: 0.28rem;
+	height: 0.28rem;
+	vertical-align: middle;
+	background-size: cover;
+	-webkit-background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+
+	&.spin {
+		animation: spin 1.4s linear infinite;
+		-webkit-animation: spin 1.4s linear infinite;
+	}
+}
+
+//旋转
+@keyframes spin {
+	from {
+		transform: rotateZ(0deg);
+		transform-origin: center;
+	}
+
+	to {
+		transform: rotateZ(360deg);
+		transform-origin: center;
+	}
+}
+@-webkit-keyframes spin {
+	from {
+		transform: rotateZ(0deg);
+		transform-origin: center;
+	}
+
+	to {
+		transform: rotateZ(360deg);
+		transform-origin: center;
+	}
+}

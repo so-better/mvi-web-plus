@@ -1,0 +1,30 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-tooltip {
+	display: inline-flex;
+	position: relative;
+
+	.mvi-tooltip-toggle {
+		position: relative;
+		display: inline-flex;
+	}
+
+	&.block {
+		display: block;
+
+		.mvi-tooltip-toggle {
+			display: block;
+		}
+	}
+}
+
+.mvi-tooltip-content {
+	position: relative;
+	display: block;
+	padding: @mp-xs @mp-sm;
+	font-size: @font-size-small;
+	margin: 0;
+	white-space: nowrap;
+	line-height: 1.5;
+	text-align: center;
+}

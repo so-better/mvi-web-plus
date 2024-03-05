@@ -1,0 +1,17 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-cell-group {
+	display: block;
+	width: 100%;
+	margin-bottom: @mp-md;
+
+	.mvi-cell-group-title {
+		padding: @mp-md @mp-sm;
+		color: @font-color-sub;
+		font-size: @font-size-default;
+	}
+
+	&.border :deep(.mvi-cell.border:last-child::after) {
+		border: none;
+	}
+}

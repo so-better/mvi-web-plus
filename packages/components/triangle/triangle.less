@@ -1,0 +1,76 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-triangle {
+	position: relative;
+	display: inline-block;
+	width: 0;
+	height: 0;
+	border-color: transparent;
+	border-style: solid;
+
+	&[data-placement='top'] {
+		border-top: none;
+		border-bottom-color: @border-color;
+	}
+
+	&[data-placement='bottom'] {
+		border-bottom: none;
+		border-top-color: @border-color;
+	}
+
+	&[data-placement='left'] {
+		border-left: none;
+		border-right-color: @border-color;
+	}
+
+	&[data-placement='right'] {
+		border-right: none;
+		border-left-color: @border-color;
+	}
+}
+
+//内部背景色
+.mvi-triangle-el {
+	position: absolute;
+	display: inline-block;
+	width: 0;
+	height: 0;
+	border-color: transparent;
+	border-style: solid;
+
+	&[data-placement='top'] {
+		border-top: none;
+		border-bottom-color: @bg-color-default;
+		left: 1px;
+		top: 1.5px;
+		right: auto;
+		bottom: 0;
+	}
+
+	&[data-placement='bottom'] {
+		border-bottom: none;
+		border-top-color: @bg-color-default;
+		left: 1px;
+		bottom: 1.5px;
+		top: auto;
+		right: auto;
+	}
+
+	&[data-placement='left'] {
+		border-left: none;
+		border-right-color: @bg-color-default;
+		left: 1.5px;
+		top: 1px;
+		right: auto;
+		bottom: auto;
+	}
+
+	&[data-placement='right'] {
+		border-right: none;
+		border-left-color: @bg-color-default;
+		right: 1.5px;
+		top: 1px;
+		bottom: auto;
+		left: auto;
+	}
+}

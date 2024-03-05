@@ -1,0 +1,140 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-popup {
+	display: block;
+	position: absolute;
+	background-color: #fff;
+	transition-timing-function: linear;
+	overflow: hidden;
+	color: @font-color-default;
+	font-size: @font-size-default;
+
+	&.padding-top {
+		padding: @small-height 0 0 0;
+	}
+
+	&.padding-bottom {
+		padding: 0 0 @small-height 0;
+	}
+
+	&.left {
+		left: 0;
+		right: auto;
+		top: 0;
+		bottom: auto;
+		height: 100%;
+		max-width: 100%;
+
+		&.round {
+			border-top-right-radius: 0.4rem;
+			border-bottom-right-radius: 0.4rem;
+		}
+	}
+
+	&.right {
+		left: auto;
+		right: 0;
+		top: 0;
+		bottom: auto;
+		height: 100%;
+		max-width: 100%;
+
+		&.round {
+			border-top-left-radius: 0.4rem;
+			border-bottom-left-radius: 0.4rem;
+		}
+	}
+
+	&.top {
+		left: 0;
+		right: auto;
+		top: 0;
+		bottom: auto;
+		width: 100%;
+		max-height: 100%;
+
+		&.round {
+			border-bottom-left-radius: 0.4rem;
+			border-bottom-right-radius: 0.4rem;
+		}
+	}
+
+	&.bottom {
+		left: 0;
+		right: auto;
+		top: auto;
+		bottom: 0;
+		width: 100%;
+		max-height: 100%;
+
+		&.round {
+			border-top-left-radius: 0.4rem;
+			border-top-right-radius: 0.4rem;
+		}
+	}
+
+	.mvi-popup-times {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: absolute;
+		height: @small-height;
+		padding: 0 @mp-sm;
+		cursor: pointer;
+		font-size: @font-size-default;
+		color: @font-color-mute;
+		line-height: 1;
+		opacity: 0.8;
+
+		&:hover {
+			opacity: 1;
+		}
+
+		&.top-left {
+			left: 0;
+			top: 0;
+		}
+
+		&.top-right {
+			right: 0;
+			top: 0;
+		}
+
+		&.bottom-left {
+			left: 0;
+			bottom: 0;
+		}
+
+		&.bottom-right {
+			right: 0;
+			bottom: 0;
+		}
+	}
+
+	.mvi-popup-content {
+		width: 100%;
+		height: 100%;
+		overflow: auto;
+		padding: 0;
+	}
+}
+
+.mvi-slide-left-enter-from,
+.mvi-slide-left-leave-to {
+	transform: translateX(-100%);
+}
+
+.mvi-slide-right-enter-from,
+.mvi-slide-right-leave-to {
+	transform: translateX(100%);
+}
+
+.mvi-slide-top-enter-from,
+.mvi-slide-top-leave-to {
+	transform: translateY(-100%);
+}
+
+.mvi-slide-bottom-enter-from,
+.mvi-slide-bottom-leave-to {
+	transform: translateY(100%);
+}

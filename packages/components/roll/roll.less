@@ -1,0 +1,29 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-roll-container {
+	display: block;
+	width: 100%;
+	position: relative;
+	overflow: hidden;
+	cursor: pointer;
+
+	.mvi-roll {
+		position: absolute;
+		left: 100%;
+		top: 100%;
+		white-space: nowrap;
+
+		&.vertical {
+			left: 0;
+
+			&.center {
+				left: 50%;
+				transform: translateX(-50%);
+			}
+		}
+
+		&.horizontal {
+			top: 0;
+		}
+	}
+}

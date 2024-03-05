@@ -1,0 +1,57 @@
+.span(@num) when (@num >=0) {
+	.mvi-col-@{num} {
+		width: calc(~'100% / 24 * @{num}');
+	}
+
+	.span(@num - 1);
+}
+
+.offset(@num) when (@num >=0) {
+	.mvi-col-offset-@{num} {
+		margin-left: calc(~'100% / 24 * @{num}');
+	}
+
+	.offset(@num - 1);
+}
+
+.span(24);
+.offset(24);
+
+.spanResponse(@num, @grid) when (@num >=0) {
+	.mvi-col-@{grid}-@{num} {
+		width: calc(~'100% / 24 * @{num}');
+	}
+
+	.spanResponse(@num - 1, @grid);
+}
+
+.offsetResponse(@num, @grid) when (@num >=0) {
+	.mvi-col-offset-@{grid}-@{num} {
+		margin-left: calc(~'100% / 24 * @{num}');
+	}
+
+	.offsetResponse(@num - 1, @grid);
+}
+
+.spanResponse(24, xs);
+.offsetResponse(24, xs);
+
+@media only screen and (min-width: 640px) {
+	.spanResponse(24, sm);
+	.offsetResponse(24, sm);
+}
+
+@media only screen and (min-width: 992px) {
+	.spanResponse(24, md);
+	.offsetResponse(24, md);
+}
+
+@media only screen and (min-width: 1440px) {
+	.spanResponse(24, lg);
+	.offsetResponse(24, lg);
+}
+
+@media only screen and (min-width: 1920px) {
+	.spanResponse(24, xl);
+	.offsetResponse(24, xl);
+}

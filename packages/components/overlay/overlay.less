@@ -1,0 +1,23 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-overlay {
+	display: block;
+	background-color: @overlay;
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border-radius: inherit;
+}
+
+.mvi-overlay-fade-enter-from,
+.mvi-overlay-fade-leave-to {
+	opacity: 0;
+}
+
+.mvi-overlay-fade-enter-to,
+.mvi-overlay-fade-leave-from {
+	opacity: 1;
+}

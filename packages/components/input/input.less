@@ -1,0 +1,210 @@
+@import '../../css/mvi-basic.less';
+
+//输入框组件容器
+.mvi-input-container {
+	display: flex;
+	display: -webkit-flex;
+	justify-content: flex-start;
+	align-items: center;
+	position: relative;
+	background-color: #fff;
+	color: @font-color-default;
+	margin: 0;
+	vertical-align: middle;
+	width: 100%;
+	padding: @mp-sm @mp-md;
+
+	&.border::after {
+		display: block;
+		content: '';
+		position: absolute;
+		left: @mp-sm;
+		bottom: 0;
+		width: calc(~'100% - @{mp-sm}');
+		height: 0;
+		border-bottom: 1px solid @border-color;
+		box-sizing: content-box;
+	}
+
+	&.required::before {
+		position: absolute;
+		left: @mp-xs;
+		top: 50%;
+		transform: translateY(-50%);
+		display: flex;
+		display: -webkit-flex;
+		justify-content: center;
+		align-items: center;
+		content: '*';
+		font-family: '宋体', 'SimSun';
+		color: @error-normal;
+	}
+
+	&[disabled] {
+		opacity: 0.6;
+	}
+
+	.mvi-input-label {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-start;
+		align-items: center;
+		padding: 0;
+		position: relative;
+		width: 2rem;
+		margin-right: @mp-sm;
+		vertical-align: middle;
+
+		span {
+			display: block;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+		}
+	}
+
+	.mvi-input-left {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: center;
+		align-items: center;
+		vertical-align: middle;
+		height: 100%;
+		margin-right: @mp-sm;
+	}
+
+	.mvi-input-right {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: center;
+		align-items: center;
+		vertical-align: middle;
+		height: 100%;
+		margin-left: @mp-sm;
+	}
+
+	.mvi-input-clear {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: center;
+		align-items: center;
+		opacity: 0.5;
+		padding: 0;
+		vertical-align: middle;
+		cursor: pointer;
+		height: 100%;
+		margin-left: @mp-sm;
+	}
+
+	&[data-type='textarea'] {
+		align-items: flex-start;
+	}
+
+	.mvi-input {
+		appearance: none;
+		display: block;
+		width: 100%;
+		padding: 0;
+		border: none;
+		border-radius: 0;
+		color: inherit;
+		background-color: inherit;
+		flex: 1;
+		font-family: @font-family;
+		background-image: none;
+		font-size: inherit;
+		margin: 0;
+
+		&::-webkit-input-placeholder,
+		&::placeholder {
+			color: inherit;
+			font-family: inherit;
+			font-size: inherit;
+			opacity: 0.5;
+			vertical-align: middle;
+		}
+
+		&[disabled] {
+			background-color: inherit;
+			color: inherit;
+			opacity: 1;
+		}
+	}
+
+	.mvi-textarea {
+		appearance: none;
+		display: block;
+		width: 100%;
+		padding: 0;
+		border: none;
+		border-radius: 0;
+		color: inherit;
+		background-color: inherit;
+		margin: 0;
+		width: 100%;
+		flex: 1;
+		font-family: @font-family;
+		background-image: none;
+		margin: 0;
+		height: auto;
+		resize: none;
+		font-size: inherit;
+
+		&::-webkit-input-placeholder,
+		&::placeholder {
+			color: inherit;
+			opacity: 0.5;
+			font-family: inherit;
+			font-size: inherit;
+			vertical-align: middle;
+		}
+	}
+
+	&.words {
+		padding-bottom: @mp-lg+ @mp-xs;
+
+		.mvi-input-words {
+			position: absolute;
+			bottom: @mp-xs;
+			right: @mp-sm;
+			width: 100%;
+			line-height: 1;
+			text-align: right;
+			color: inherit;
+			opacity: 0.5;
+			font-size: @font-size-small;
+		}
+	}
+
+	&.medium {
+		font-size: @font-size-default;
+
+		.mvi-input,
+		.mvi-input-left,
+		.mvi-input-right,
+		.mvi-input-clear,
+		.mvi-input-label {
+			height: 0.48rem;
+		}
+
+		.mvi-textarea {
+			line-height: 0.48rem;
+		}
+	}
+
+	&.large {
+		font-size: @font-size-h6;
+
+		.mvi-input,
+		.mvi-input-left,
+		.mvi-input-right,
+		.mvi-input-clear,
+		.mvi-input-label {
+			height: 0.6rem;
+		}
+
+		.mvi-textarea {
+			line-height: 0.6rem;
+		}
+	}
+}

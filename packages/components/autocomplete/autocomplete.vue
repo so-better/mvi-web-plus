@@ -1,574 +1,268 @@
-<template>
-	<div class="mvi-autocomplete" :class="[size, { round: round, square: !round && square }]" :disabled="disabled || null">
-		<div class="mvi-autocomplete-relate" :class="relateClass" :style="relateStyle" :data-id="'mvi-autocomplete-relate-' + uid" ref="relate">
-			<div @click="leftClick" v-if="parseIcon(leftIcon).type || parseIcon(leftIcon).url" class="mvi-autocomplete-left-icon">
-				<Icon :type="parseIcon(leftIcon).type" :url="parseIcon(leftIcon).url" :spin="parseIcon(leftIcon).spin" :size="parseIcon(leftIcon).size" :color="parseIcon(leftIcon).color" />
-			</div>
-			<input ref="input" @input="input" v-model="realValue" type="text" :placeholder="placeholder" :style="inputStyle" :name="name" @focus="inputFocus" @blur="inputBlur" :disabled="disabled || null" autocomplete="off" @keydown="keydown" @keyup="keyup" :class="{ 'left-none-radius': parseIcon(leftIcon).type || parseIcon(leftIcon).url, 'right-none-radius': parseIcon(rightIcon).type || parseIcon(rightIcon).url || (clearable && showClearIcon) }" />
-			<div @click="doClear" v-if="clearable" v-show="showClearIcon" class="mvi-autocomplete-clear" :style="clearStyle">
-				<Icon type="times-o" />
-			</div>
-			<div class="mvi-autocomplete-right-icon" v-if="parseIcon(rightIcon).type || parseIcon(rightIcon).url" @click="rightClick">
-				<Icon :type="parseIcon(rightIcon).type" :url="parseIcon(rightIcon).url" :spin="parseIcon(rightIcon).spin" :size="parseIcon(rightIcon).size" :color="parseIcon(rightIcon).color" />
-			</div>
-		</div>
-		<Layer :model-value="show" :relate="`[data-id='mvi-autocomplete-relate-${uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" ref="layer" :animation="layerRealProps.animation" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :timeout="layerRealProps.timeout" :closable="false" :show-triangle="layerRealProps.showTriangle" :border-color="layerRealProps.borderColor" :width="layerRealProps.width" @showing="layerShow">
-			<div class="mvi-autocomplete-menu" :class="[size]" :style="{ maxHeight: height }" ref="menu">
-				<div class="mvi-autocomplete-list" v-for="item in cmpFilter" v-text="item" @click="doSelect(item)"></div>
-			</div>
-		</Layer>
-	</div>
-</template>
-
-<script>
-import { getCurrentInstance } from 'vue'
+<script setup name="m-autocomplete" lang="ts">
+import { DefineComponent, computed, getCurrentInstance, ref } from 'vue'
 import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { Layer } from '../layer'
-export default {
-	name: 'm-autocomplete',
-	data() {
-		return {
-			focus: false
-		}
-	},
-	emits: ['update:modelValue', 'focus', 'blur', 'input', 'left-click', 'right-click', 'select', 'clear', 'keydown', 'keyup'],
-	props: {
-		//输入框的值
-		modelValue: {
-			type: String,
-			default: ''
-		},
-		//占位符
-		placeholder: {
-			type: String,
-			default: ''
-		},
-		//组件大小
-		size: {
-			type: String,
-			default: 'medium',
-			validator(value) {
-				return ['small', 'medium', 'large'].includes(value)
-			}
-		},
-		//可选值数组
-		list: {
-			type: Array,
-			default: function () {
-				return []
-			}
-		},
-		//激活样式
-		activeType: {
-			type: String,
-			default: 'info',
-			validator(value) {
-				return ['info', 'success', 'warn', 'error', 'primary'].includes(value)
-			}
-		},
-		//激活颜色
-		activeColor: {
-			type: String,
-			default: null,
-			validator(value) {
-				return Dap.common.matchingText(value, 'hex')
-			}
-		},
-		//过滤方法
-		filterMethod: {
-			type: [Function, Boolean],
-			default: false
-		},
-		//是否启用清除图标
-		clearable: {
-			type: Boolean,
-			default: false
-		},
-		//是否禁用
-		disabled: {
-			type: Boolean,
-			default: false
-		},
-		//layer组件参数
-		layerProps: {
-			type: Object,
-			default: function () {
-				return {}
-			}
-		},
-		//提示框最大高度
-		height: {
-			type: String,
-			default: null
-		},
-		//原生name
-		name: {
-			type: String,
-			default: null
-		},
-		//左侧图标
-		leftIcon: {
-			type: [String, Object],
-			default: null
-		},
-		//右侧图标
-		rightIcon: {
-			type: [String, Object],
-			default: null
-		},
-		//是否圆角
-		round: {
-			type: Boolean,
-			default: false
-		},
-		//是否方形
-		square: {
-			type: Boolean,
-			default: false
-		},
-		//对齐方式
-		align: {
-			type: String,
-			default: 'left',
-			validator(value) {
-				return ['left', 'right', 'center'].includes(value)
-			}
-		}
-	},
-	components: {
-		Icon,
-		Layer
-	},
-	setup() {
-		const instance = getCurrentInstance()
-		return {
-			uid: instance.uid
-		}
-	},
-	computed: {
-		show() {
-			return this.focus && this.cmpFilter.length != 0
-		},
-		parseIcon() {
-			return params => {
-				let icon = {
-					spin: false,
-					type: null,
-					url: null,
-					color: null,
-					size: null
-				}
-				if (Dap.common.isObject(params)) {
-					if (typeof params.spin == 'boolean') {
-						icon.spin = params.spin
-					}
-					if (typeof params.type == 'string') {
-						icon.type = params.type
-					}
-					if (typeof params.url == 'string') {
-						icon.url = params.url
-					}
-					if (typeof params.color == 'string') {
-						icon.color = params.color
-					}
-					if (typeof params.size == 'string') {
-						icon.size = params.size
-					}
-				} else if (typeof params == 'string') {
-					icon.type = params
-				}
-				return icon
-			}
-		},
-		showClearIcon() {
-			if (this.disabled) {
-				return false
-			}
-			if (this.realValue && this.focus) {
-				return true
-			}
-			return false
-		},
-		clearStyle() {
-			let style = {}
-			if (this.parseIcon(this.rightIcon).type || this.parseIcon(this.rightIcon).url) {
-				style.borderRadius = 0
-			}
-			return style
-		},
-		cmpFilter() {
-			if (typeof this.filterMethod == 'function') {
-				return this.filterMethod(this.realValue, this.list)
-			}
-			if (this.filterMethod) {
-				return this.defaultFilter()
-			}
-			return this.list
-		},
-		inputStyle() {
-			let style = {}
-			if (this.parseIcon(this.leftIcon).type || this.parseIcon(this.leftIcon).url) {
-				style.paddingLeft = 0
-			}
-			if ((this.showClearIcon && this.clearable) || this.parseIcon(this.rightIcon).type || this.parseIcon(this.rightIcon).url) {
-				style.paddingRight = 0
-			}
-			if (this.align) {
-				style.textAlign = this.align
-			}
-			return style
-		},
-		relateStyle() {
-			let style = {}
-			if (this.activeColor && this.focus) {
-				style.borderColor = this.activeColor
-				const rgb = Dap.color.hex2rgb(this.activeColor)
-				style.boxShadow = `0 0 0.16rem rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.5)`
-			}
-			return style
-		},
-		relateClass() {
-			let cls = []
-			if (this.activeType && !this.activeColor && this.focus) {
-				cls.push(this.activeType)
-			}
-			return cls
-		},
-		realValue: {
-			set(value) {
-				if (this.modelValue !== value) {
-					this.$emit('update:modelValue', value)
-				}
-			},
-			get() {
-				return this.modelValue
-			}
-		},
-		layerRealProps() {
-			return {
-				placement: this.layerProps.placement ? this.layerProps.placement : 'bottom-start',
-				width: this.layerProps.width,
-				zIndex: Dap.number.isNumber(this.layerProps.zIndex) ? this.layerProps.zIndex : 400,
-				offset: this.layerProps.offset ? this.layerProps.offset : '0.1rem',
-				animation: this.layerProps.animation,
-				timeout: Dap.number.isNumber(this.layerProps.timeout) ? this.layerProps.timeout : 200,
-				showTriangle: typeof this.layerProps.showTriangle == 'boolean' ? this.layerProps.showTriangle : false,
-				shadow: typeof this.layerProps.shadow == 'boolean' ? this.layerProps.shadow : true,
-				border: typeof this.layerProps.border == 'boolean' ? this.layerProps.border : false,
-				borderColor: this.layerProps.borderColor
-			}
-		}
-	},
-	methods: {
-		//悬浮层显示前进行宽度设置
-		layerShow() {
-			if (!this.layerRealProps.width) {
-				this.$refs.menu.style.width = this.$refs.relate.offsetWidth + 'px'
-			}
-		},
-		rightClick(e) {
-			if (this.disabled) {
-				return
-			}
-			this.$emit('right-click', this.realValue)
-		},
-		leftClick(e) {
-			if (this.disabled) {
-				return
-			}
-			this.$emit('left-click', this.realValue)
-		},
-		//输入框键盘按下
-		keydown(e) {
-			if (this.disabled) {
-				return
-			}
-			this.$emit('keydown', e, this.realValue)
-		},
-		//输入框键盘松开
-		keyup(e) {
-			if (this.disabled) {
-				return
-			}
-			this.$emit('keyup', e, this.realValue)
-		},
-		input() {
-			if (this.disabled) {
-				return
-			}
-			this.focus = true
-			this.$refs.layer.reset()
-			this.$emit('input', this.realValue)
-		},
-		inputBlur() {
-			if (this.disabled) {
-				return
-			}
-			setTimeout(() => {
-				this.focus = false
-				this.$emit('blur', this.realValue)
-			}, 200)
-		},
-		inputFocus() {
-			if (this.disabled) {
-				return
-			}
-			this.focus = true
-			this.$emit('focus', this.realValue)
-		},
-		doClear() {
-			if (this.disabled) {
-				return
-			}
-			if (!this.clearable) {
-				return
-			}
-			setTimeout(() => {
-				this.realValue = ''
-				this.$emit('clear', '')
-				this.$refs.input.focus()
-			}, 210)
-		},
-		doSelect(item) {
-			if (this.disabled) {
-				return
-			}
-			this.realValue = item
-			this.$emit('select', item)
-			this.focus = false
-		},
-		//默认过滤方法
-		defaultFilter() {
-			return this.list.filter(item => {
-				return String(item).toLocaleLowerCase().includes(this.realValue.toLocaleLowerCase())
-			})
-		}
-	}
+import AutocompleteProps from './props'
+
+//获取实例
+const instance = getCurrentInstance()!
+
+//uid
+const uid = instance.uid
+
+//属性
+const props = defineProps(AutocompleteProps)
+
+//事件
+const emits = defineEmits(['update:modelValue', 'focus', 'blur', 'input', 'left-click', 'right-click', 'select', 'clear', 'keydown', 'keyup'])
+
+//是否获取焦点
+const focus = ref<boolean>(false)
+//menu
+const menuRef = ref<HTMLElement | null>(null)
+//relate
+const relateRef = ref<HTMLElement | null>(null)
+//layer
+const layerRef = ref<DefineComponent | null>(null)
+//input
+const inputRef = ref<HTMLElement | null>(null)
+
+const realValue = computed<string>({
+    set: (value) => {
+        if (props.modelValue !== value) {
+            emits('update:modelValue', value)
+        }
+    },
+    get: () => {
+        return props.modelValue
+    }
+})
+const cmpFilter = computed<Array<string>>(() => {
+    if (typeof props.filterMethod == 'function') {
+        return props.filterMethod(realValue.value, props.list)
+    }
+    if (props.filterMethod) {
+        return defaultFilter()
+    }
+    return props.list
+})
+const show = computed<boolean>(() => {
+    return focus.value && cmpFilter.value.length != 0
+})
+const parseIcon = computed<(params: any) => any>(() => {
+    return (params: any) => {
+        let icon: any = {
+            spin: false,
+            type: null,
+            url: null,
+            color: null,
+            size: null
+        }
+        if (Dap.common.isObject(params)) {
+            if (typeof params.spin == 'boolean') {
+                icon.spin = params.spin
+            }
+            if (typeof params.type == 'string') {
+                icon.type = params.type
+            }
+            if (typeof params.url == 'string') {
+                icon.url = params.url
+            }
+            if (typeof params.color == 'string') {
+                icon.color = params.color
+            }
+            if (typeof params.size == 'string') {
+                icon.size = params.size
+            }
+        } else if (typeof params == 'string') {
+            icon.type = params
+        }
+        return icon
+    }
+})
+const showClearIcon = computed<boolean>(() => {
+    if (props.disabled) {
+        return false
+    }
+    if (realValue.value && focus.value) {
+        return true
+    }
+    return false
+})
+const clearStyle = computed<any>(() => {
+    let style: any = {}
+    if (parseIcon.value(props.rightIcon).type || parseIcon.value(props.rightIcon).url) {
+        style.borderRadius = 0
+    }
+    return style
+})
+const inputStyle = computed<any>(() => {
+    let style: any = {}
+    if (parseIcon.value(props.leftIcon).type || parseIcon.value(props.leftIcon).url) {
+        style.paddingLeft = 0
+    }
+    if ((showClearIcon.value && props.clearable) || parseIcon.value(props.rightIcon).type || parseIcon.value(props.rightIcon).url) {
+        style.paddingRight = 0
+    }
+    if (props.align) {
+        style.textAlign = props.align
+    }
+    return style
+})
+const relateStyle = computed<any>(() => {
+    let style: any = {}
+    if (props.activeColor && focus.value) {
+        style.borderColor = props.activeColor
+        const rgb = Dap.color.hex2rgb(props.activeColor)
+        style.boxShadow = `0 0 0.16rem rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.5)`
+    }
+    return style
+})
+const relateClass = computed<string[]>(() => {
+    let cls = []
+    if (props.activeType && !props.activeColor && focus.value) {
+        cls.push(props.activeType)
+    }
+    return cls
+})
+const layerRealProps = computed<any>(() => {
+    return {
+        placement: props.layerProps.placement ? props.layerProps.placement : 'bottom-start',
+        width: props.layerProps.width,
+        zIndex: Dap.number.isNumber(props.layerProps.zIndex) ? props.layerProps.zIndex : 400,
+        offset: props.layerProps.offset ? props.layerProps.offset : '0.1rem',
+        animation: props.layerProps.animation,
+        timeout: Dap.number.isNumber(props.layerProps.timeout) ? props.layerProps.timeout : 200,
+        showTriangle: typeof props.layerProps.showTriangle == 'boolean' ? props.layerProps.showTriangle : false,
+        shadow: typeof props.layerProps.shadow == 'boolean' ? props.layerProps.shadow : true,
+        border: typeof props.layerProps.border == 'boolean' ? props.layerProps.border : false,
+        borderColor: props.layerProps.borderColor
+    }
+})
+
+//悬浮层显示前进行宽度设置
+const layerShow = () => {
+    if (!layerRealProps.value.width) {
+        menuRef.value!.style.width = relateRef.value!.offsetWidth + 'px'
+    }
+}
+const rightClick = () => {
+    if (props.disabled) {
+        return
+    }
+    emits('right-click', realValue.value)
+}
+const leftClick = () => {
+    if (props.disabled) {
+        return
+    }
+    emits('left-click', realValue.value)
+}
+//输入框键盘按下
+const keydown = (e: KeyboardEvent) => {
+    if (props.disabled) {
+        return
+    }
+    emits('keydown', e, realValue.value)
+}
+//输入框键盘松开
+const keyup = (e: KeyboardEvent) => {
+    if (props.disabled) {
+        return
+    }
+    emits('keyup', e, realValue.value)
+}
+const input = () => {
+    if (props.disabled) {
+        return
+    }
+    focus.value = true
+    layerRef.value!.update()
+    emits('input', realValue.value)
+}
+const inputBlur = () => {
+    if (props.disabled) {
+        return
+    }
+    setTimeout(() => {
+        focus.value = false
+        emits('blur', realValue.value)
+    }, 200)
+}
+const inputFocus = () => {
+    if (props.disabled) {
+        return
+    }
+    focus.value = true
+    emits('focus', realValue.value)
+}
+const doClear = () => {
+    if (props.disabled) {
+        return
+    }
+    if (!props.clearable) {
+        return
+    }
+    setTimeout(() => {
+        realValue.value = ''
+        emits('clear', '')
+        inputRef.value!.focus()
+    }, 210)
+}
+const doSelect = (item: any) => {
+    if (props.disabled) {
+        return
+    }
+    realValue.value = item
+    emits('select', item)
+    focus.value = false
+}
+//默认过滤方法
+const defaultFilter = () => {
+    return props.list.filter(item => {
+        return String(item).toLocaleLowerCase().includes(realValue.value.toLocaleLowerCase())
+    })
 }
 </script>
 
-<style scoped lang="less">
-@import '../../css/mvi-basic.less';
+<template>
+    <div class="mvi-autocomplete" :class="[size, { round: round, square: !round && square }]"
+        :disabled="disabled || null">
+        <div class="mvi-autocomplete-relate" :class="relateClass" :style="relateStyle"
+            :data-id="'mvi-autocomplete-relate-' + uid" ref="relateRef">
+            <div @click="leftClick" v-if="parseIcon(leftIcon).type || parseIcon(leftIcon).url"
+                class="mvi-autocomplete-left-icon">
+                <Icon :type="parseIcon(leftIcon).type" :url="parseIcon(leftIcon).url" :spin="parseIcon(leftIcon).spin"
+                    :size="parseIcon(leftIcon).size" :color="parseIcon(leftIcon).color" />
+            </div>
+            <input ref="inputRef" @input="input" v-model="realValue" type="text" :placeholder="placeholder"
+                :style="inputStyle" :name="name" @focus="inputFocus" @blur="inputBlur" :disabled="disabled"
+                autocomplete="off" @keydown="keydown" @keyup="keyup"
+                :class="{ 'left-none-radius': parseIcon(leftIcon).type || parseIcon(leftIcon).url, 'right-none-radius': parseIcon(rightIcon).type || parseIcon(rightIcon).url || (clearable && showClearIcon) }" />
+            <div @click="doClear" v-if="clearable" v-show="showClearIcon" class="mvi-autocomplete-clear"
+                :style="clearStyle">
+                <Icon type="times-o" />
+            </div>
+            <div class="mvi-autocomplete-right-icon" v-if="parseIcon(rightIcon).type || parseIcon(rightIcon).url"
+                @click="rightClick">
+                <Icon :type="parseIcon(rightIcon).type" :url="parseIcon(rightIcon).url"
+                    :spin="parseIcon(rightIcon).spin" :size="parseIcon(rightIcon).size"
+                    :color="parseIcon(rightIcon).color" />
+            </div>
+        </div>
+        <Layer :model-value="show" :relate="`[data-id='mvi-autocomplete-relate-${uid}']`"
+            :placement="layerRealProps.placement" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex"
+            ref="layerRef" :animation="layerRealProps.animation" :shadow="layerRealProps.shadow"
+            :border="layerRealProps.border" :timeout="layerRealProps.timeout" :closable="false"
+            :show-triangle="layerRealProps.showTriangle" :border-color="layerRealProps.borderColor"
+            :width="layerRealProps.width" @showing="layerShow">
+            <div class="mvi-autocomplete-menu" :class="[size]" :style="{ maxHeight: height }" ref="menuRef">
+                <div class="mvi-autocomplete-list" v-for="item in cmpFilter" v-text="item" @click="doSelect(item)">
+                </div>
+            </div>
+        </Layer>
+    </div>
+</template>
 
-.mvi-autocomplete {
-	display: block;
-	width: 100%;
-	border-radius: @radius-default;
-	color: @font-color-default;
-	position: relative;
-	background-color: #fff;
-
-	&.round {
-		border-radius: @radius-round;
-	}
-
-	&.square {
-		border-radius: 0;
-	}
-
-	&.small {
-		font-size: @font-size-default;
-		height: @small-height;
-
-		.mvi-autocomplete-left-icon,
-		.mvi-autocomplete-right-icon,
-		.mvi-autocomplete-clear {
-			padding: 0 @mp-sm;
-		}
-
-		input {
-			padding: 0 @mp-sm;
-		}
-	}
-
-	&.medium {
-		font-size: @font-size-h6;
-		height: @medium-height;
-
-		.mvi-autocomplete-left-icon,
-		.mvi-autocomplete-right-icon,
-		.mvi-autocomplete-clear {
-			padding: 0 @mp-md;
-		}
-
-		input {
-			padding: 0 @mp-md;
-		}
-	}
-
-	&.large {
-		font-size: @font-size-h5;
-		height: @large-height;
-
-		.mvi-autocomplete-left-icon,
-		.mvi-autocomplete-right-icon,
-		.mvi-autocomplete-clear {
-			padding: 0 @mp-lg;
-		}
-
-		input {
-			padding: 0 @mp-lg;
-		}
-	}
-
-	&[disabled] {
-		opacity: 0.6;
-	}
-}
-
-.mvi-autocomplete-relate {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: flex-start;
-	align-items: center;
-	width: 100%;
-	height: 100%;
-	border-radius: inherit;
-	border: 1px solid @border-color;
-	transition: border-color 600ms, box-shadow 600ms;
-	-webkit-transition: border-color 600ms, box-shadow 600ms;
-	box-shadow: none;
-
-	input {
-		appearance: none;
-		-moz-appearance: none;
-		-webkit-appearance: none;
-		display: block;
-		width: 100%;
-		height: 100%;
-		flex: 1;
-		margin: 0;
-		padding: 0;
-		border: none;
-		border-radius: inherit;
-		background-color: inherit;
-		color: inherit;
-		font-size: inherit;
-
-		&::-webkit-input-placeholder,
-		&::placeholder {
-			color: inherit;
-			font-family: inherit;
-			font-size: inherit;
-			opacity: 0.5;
-			vertical-align: middle;
-		}
-
-		&.left-none-radius {
-			border-top-left-radius: 0;
-			border-bottom-left-radius: 0;
-		}
-
-		&.right-none-radius {
-			border-top-right-radius: 0;
-			border-bottom-right-radius: 0;
-		}
-
-		&[disabled] {
-			background-color: inherit;
-			color: inherit;
-		}
-	}
-
-	//左侧图标、右侧图标、清除图标
-	.mvi-autocomplete-left-icon,
-	.mvi-autocomplete-right-icon,
-	.mvi-autocomplete-clear {
-		display: flex;
-		display: -webkit-flex;
-		justify-content: center;
-		align-items: center;
-		height: 100%;
-		border-radius: 0;
-
-		&:hover {
-			cursor: pointer;
-		}
-	}
-
-	.mvi-autocomplete-clear {
-		opacity: 0.6;
-	}
-
-	.mvi-autocomplete-left-icon {
-		border-top-left-radius: inherit;
-		border-bottom-left-radius: inherit;
-	}
-
-	.mvi-autocomplete-right-icon,
-	.mvi-autocomplete-clear {
-		border-top-right-radius: inherit;
-		border-bottom-right-radius: inherit;
-	}
-
-	&.info {
-		border-color: @info-normal;
-		box-shadow: 0 0 0.16rem @info-shadow;
-	}
-
-	&.success {
-		border-color: @success-normal;
-		box-shadow: 0 0 0.16rem @success-shadow;
-	}
-
-	&.primary {
-		border-color: @primary-normal;
-		box-shadow: 0 0 0.16rem @primary-shadow;
-	}
-
-	&.warn {
-		border-color: @warn-normal;
-		box-shadow: 0 0 0.16rem @warn-shadow;
-	}
-
-	&.error {
-		border-color: @error-normal;
-		box-shadow: 0 0 0.16rem @error-shadow;
-	}
-}
-
-//悬浮层
-.mvi-autocomplete-menu {
-	display: block;
-	padding: @mp-xs 0;
-	overflow: auto;
-	overflow-x: hidden;
-	width: 100%;
-
-	.mvi-autocomplete-list {
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
-
-	.mvi-autocomplete-list:hover {
-		cursor: pointer;
-		background-color: @bg-color-default;
-	}
-
-	&.small {
-		.mvi-autocomplete-list {
-			font-size: @font-size-default;
-			height: @small-height;
-			padding: @mp-sm;
-		}
-	}
-
-	&.medium {
-		.mvi-autocomplete-list {
-			font-size: @font-size-h6;
-			height: @medium-height;
-			padding: @mp-md;
-		}
-	}
-
-	&.large {
-		.mvi-autocomplete-list {
-			font-size: @font-size-h5;
-			height: @large-height;
-			padding: @mp-lg;
-		}
-	}
-}
-</style>
+<style scoped src="./autocomplete.less"></style>
