@@ -47,6 +47,7 @@ export * from './components/calendar';
 export * from './components/circle-progress';
 export * from './components/collapse';
 export * from './components/collapse-item';
+export * from './components/date-chooser';
 /***** 全局导出 *****/
 declare const install: (app: App) => void;
 /***** 版本号 *****/

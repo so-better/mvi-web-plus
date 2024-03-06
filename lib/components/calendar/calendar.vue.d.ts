@@ -4,7 +4,7 @@ declare const _default: import("vue").DefineComponent<{
         default: () => Date;
     };
     view: {
-        type: import("vue").PropType<"date" | "month" | "year">;
+        type: import("vue").PropType<import("./props").CalendarViewType>;
         default: string;
         validator(value: any): boolean;
     };
@@ -50,7 +50,7 @@ declare const _default: import("vue").DefineComponent<{
         default: () => Date;
     };
     view: {
-        type: import("vue").PropType<"date" | "month" | "year">;
+        type: import("vue").PropType<import("./props").CalendarViewType>;
         default: string;
         validator(value: any): boolean;
     };
@@ -93,7 +93,7 @@ declare const _default: import("vue").DefineComponent<{
 }, {
     modelValue: Date;
     type: "info" | "success" | "warn" | "error" | "primary";
-    view: "date" | "month" | "year";
+    view: import("./props").CalendarViewType;
     active: boolean;
     monthText: unknown[];
     weekText: unknown[];

@@ -1,24 +1,43 @@
-import Dap from 'dap-util'
-import dayjs from 'dayjs'
 import { ExtractPublicPropTypes, PropType } from 'vue'
+import { LayerPropsType } from '../layer/props'
+import dayjs from 'dayjs'
+import { CalendarViewType } from '../calendar/props'
 
-export type CalendarDayType = {
-	date?: Date
-	nonCurrent?: boolean
-}
-
-export type CalendarViewType = 'year' | 'month' | 'date'
-
-export const CalendarProps = {
-	//指定显示的日期
+export const DateChooserProps = {
+	//当前日期
 	modelValue: {
 		type: Date,
 		default: function () {
 			return new Date()
 		}
 	},
-	//视图类型
-	view: {
+	//是否禁用
+	disabled: {
+		type: Boolean,
+		default: false
+	},
+	//layer组件参数
+	layerProps: {
+		type: Object as PropType<LayerPropsType>,
+		default: function () {
+			return {}
+		}
+	},
+	//点击其他地方是否关闭日历
+	closable: {
+		type: Boolean,
+		default: true
+	},
+	//触发方法
+	trigger: {
+		type: String as PropType<'hover' | 'click' | 'custom'>,
+		default: 'click',
+		validator(value: any) {
+			return ['hover', 'click', 'custom'].includes(value)
+		}
+	},
+	//模式
+	mode: {
 		type: String as PropType<CalendarViewType>,
 		default: 'date',
 		validator(value: any) {
@@ -27,32 +46,16 @@ export const CalendarProps = {
 	},
 	//月份面板显示的月份数组文字
 	monthText: {
-		type: Array,
+		type: Array as PropType<string[]>,
 		default: function () {
 			return ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
-		},
-		validator(value: any) {
-			if (value.length != 12) {
-				return false
-			}
-			return value.every((item: any) => {
-				return Dap.number.isNumber(item) || (typeof item == 'string' && item)
-			})
 		}
 	},
 	//头部显示的星期数组
 	weekText: {
-		type: Array,
+		type: Array as PropType<string[]>,
 		default: function () {
 			return ['日', '一', '二', '三', '四', '五', '六']
-		},
-		validator(value: any) {
-			if (value.length != 7) {
-				return false
-			}
-			return value.every((item: any) => {
-				return Dap.number.isNumber(item) || (typeof item == 'string' && item)
-			})
 		}
 	},
 	//开始日期
@@ -69,12 +72,7 @@ export const CalendarProps = {
 			return dayjs('2099-01-01').toDate()
 		}
 	},
-	//非本月日期是否可以点击
-	nonCurrentClick: {
-		type: Boolean,
-		default: false
-	},
-	//点击态
+	//日历面板点击态
 	active: {
 		type: Boolean,
 		default: true
@@ -86,7 +84,17 @@ export const CalendarProps = {
 		validator(value: any) {
 			return ['info', 'primary', 'error', 'warn', 'success'].includes(value)
 		}
+	},
+	//是否块级
+	block: {
+		type: Boolean,
+		default: false
+	},
+	//头部年月显示格式化
+	headerFormatter: {
+		type: Function as PropType<(type: CalendarViewType, val: number) => string>,
+		default: null
 	}
 }
 
-export type CalendarPropsType = ExtractPublicPropTypes<typeof CalendarProps>
+export type DateChooserPropsType = ExtractPublicPropTypes<typeof DateChooserProps>

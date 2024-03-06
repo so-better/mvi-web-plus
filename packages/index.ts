@@ -52,6 +52,7 @@ import { Calendar } from './components/calendar'
 import { CircleProgress } from './components/circle-progress'
 import { Collapse } from './components/collapse'
 import { CollapseItem } from './components/collapse-item'
+import { DateChooser } from './components/date-chooser'
 
 /***** 按需导出 *****/
 export * from './directives/anchor'
@@ -97,6 +98,7 @@ export * from './components/calendar'
 export * from './components/circle-progress'
 export * from './components/collapse'
 export * from './components/collapse-item'
+export * from './components/date-chooser'
 
 /***** 全局导出 *****/
 const install = (app: App) => {
@@ -143,7 +145,8 @@ const install = (app: App) => {
 		Calendar,
 		CircleProgress,
 		Collapse,
-		CollapseItem
+		CollapseItem,
+		DateChooser
 	}
 	//注册组件和指令
 	Object.values(components).map(component => {

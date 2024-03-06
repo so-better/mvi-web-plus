@@ -3,13 +3,14 @@ export type CalendarDayType = {
     date?: Date;
     nonCurrent?: boolean;
 };
+export type CalendarViewType = 'year' | 'month' | 'date';
 export declare const CalendarProps: {
     modelValue: {
         type: DateConstructor;
         default: () => Date;
     };
     view: {
-        type: PropType<"date" | "month" | "year">;
+        type: PropType<CalendarViewType>;
         default: string;
         validator(value: any): boolean;
     };

@@ -1,0 +1,256 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-date-chooser {
+	position: relative;
+	display: inline-block;
+
+	.mvi-date-chooser-relate {
+		position: relative;
+		display: inline-block;
+	}
+
+	&.block {
+		display: block;
+
+		.mvi-date-chooser-relate {
+			display: block;
+		}
+	}
+}
+
+.mvi-date-chooser-layer {
+	display: block;
+	width: 100%;
+	position: relative;
+	overflow: hidden;
+	background-color: #fff;
+	color: @font-color-default;
+	border-radius: inherit;
+}
+
+.mvi-date-chooser-year-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	user-select: none;
+	padding: @mp-sm;
+
+	.mvi-date-chooser-year-left,
+	.mvi-date-chooser-year-right {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+		padding: 0 @mp-md;
+		color: @font-color-default;
+		font-size: @font-size-default;
+		transition: color 200ms linear;
+
+		&:hover {
+			cursor: pointer;
+
+			&.info {
+				color: @info-normal;
+			}
+
+			&.success {
+				color: @success-normal;
+			}
+
+			&.warn {
+				color: @warn-normal;
+			}
+
+			&.error {
+				color: @error-normal;
+			}
+
+			&.primary {
+				color: @primary-normal;
+			}
+		}
+	}
+
+	.mvi-date-chooser-year-center {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		font-size: @font-size-h6;
+		color: @font-color-default;
+
+		& > span:first-child + span {
+			margin: 0 @mp-sm;
+		}
+	}
+}
+
+.mvi-date-chooser-month-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	user-select: none;
+	padding: @mp-sm;
+
+	.mvi-date-chooser-month-left,
+	.mvi-date-chooser-month-right {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+		padding: 0 @mp-md;
+		color: @font-color-default;
+		font-size: @font-size-default;
+		transition: color 200ms linear;
+
+		&:hover {
+			cursor: pointer;
+
+			&.info {
+				color: @info-normal;
+			}
+
+			&.success {
+				color: @success-normal;
+			}
+
+			&.warn {
+				color: @warn-normal;
+			}
+
+			&.error {
+				color: @error-normal;
+			}
+
+			&.primary {
+				color: @primary-normal;
+			}
+		}
+	}
+
+	.mvi-date-chooser-month-center {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		font-size: @font-size-h6;
+		color: @font-color-default;
+		transition: color 200ms linear;
+
+		&:hover {
+			cursor: pointer;
+
+			&.info {
+				color: @info-normal;
+			}
+
+			&.success {
+				color: @success-normal;
+			}
+
+			&.warn {
+				color: @warn-normal;
+			}
+
+			&.error {
+				color: @error-normal;
+			}
+
+			&.primary {
+				color: @primary-normal;
+			}
+		}
+	}
+}
+
+.mvi-date-chooser-date-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	user-select: none;
+	padding: @mp-sm;
+
+	.mvi-date-chooser-date-left,
+	.mvi-date-chooser-date-right {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		height: 100%;
+
+		& > div {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100%;
+			padding: 0 @mp-sm;
+			color: @font-color-default;
+			font-size: @font-size-default;
+			transition: color 200ms linear;
+
+			&:hover {
+				cursor: pointer;
+
+				&.info {
+					color: @info-normal;
+				}
+
+				&.success {
+					color: @success-normal;
+				}
+
+				&.warn {
+					color: @warn-normal;
+				}
+
+				&.error {
+					color: @error-normal;
+				}
+
+				&.primary {
+					color: @primary-normal;
+				}
+			}
+		}
+	}
+
+	.mvi-date-chooser-date-center {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		font-size: @font-size-h6;
+		color: @font-color-default;
+
+		& > div {
+			transition: color 200ms linear;
+
+			&:first-child {
+				margin-right: @mp-md;
+			}
+
+			&:hover {
+				cursor: pointer;
+
+				&.info {
+					color: @info-normal;
+				}
+
+				&.success {
+					color: @success-normal;
+				}
+
+				&.warn {
+					color: @warn-normal;
+				}
+
+				&.error {
+					color: @error-normal;
+				}
+
+				&.primary {
+					color: @primary-normal;
+				}
+			}
+		}
+	}
+}

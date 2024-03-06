@@ -130,8 +130,8 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     showTriangle: boolean;
     animation: string;
     block: boolean;
-    textColor: string;
     trigger: "click" | "hover" | "custom";
+    textColor: string;
 }, {}>, {
     default?(_: {}): any;
     title?(_: {}): any;

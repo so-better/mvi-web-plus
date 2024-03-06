@@ -8,6 +8,13 @@ import { CollapseItemProps } from './props'
 //实例
 const instance = getCurrentInstance()!
 
+if (!instance.parent || instance.parent.type.name != 'm-collapse') {
+    throw new Error(`The component 'CollapseItem' must be used as a subcomponent of the component 'Collapse'`)
+}
+
+//加入到collapse的children去
+instance.parent!.exposed!.children.push(instance)
+
 //uid
 const uid = instance.uid
 
@@ -126,8 +133,6 @@ const changeCollapse = () => {
     }
 }
 
-//加入到collapse的children去
-instance.parent!.exposed!.children.push(instance)
 
 
 </script>

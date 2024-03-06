@@ -88,7 +88,7 @@ const dateDisabled = computed<(item: CalendarDayType) => boolean>(() => {
 //年视图下每个年数值的样式
 const yearClass = computed<(date: Date) => string[]>(() => {
     return (date: Date) => {
-        let arr = ['mvi-calendar-year-item', props.type]
+        let arr: string[] = [props.type]
         if (yearDisabled.value(date)) {
             return arr
         }
@@ -107,7 +107,7 @@ const yearClass = computed<(date: Date) => string[]>(() => {
 //月视图下每个月数值的样式
 const monthClass = computed<(date: Date) => string[]>(() => {
     return (date: Date) => {
-        let arr = ['mvi-calendar-month-item', props.type]
+        let arr: string[] = [props.type]
         if (monthDisabled.value(date)) {
             return arr
         }
@@ -126,7 +126,7 @@ const monthClass = computed<(date: Date) => string[]>(() => {
 //日期视图下每个日期数值的样式	
 const dateClass = computed<(item: CalendarDayType) => string[]>(() => {
     return (item: CalendarDayType) => {
-        let arr = ['mvi-calendar-date-item', props.type]
+        let arr: string[] = [props.type]
         //在日期范围之外直接返回
         if (dateDisabled.value(item)) {
             return arr
@@ -202,7 +202,8 @@ const dateClick = (item: CalendarDayType) => {
         <template v-if="view == 'year'">
             <div class="mvi-calendar-years" v-for="item in [0, 1, 2]">
                 <div class="mvi-calendar-year" v-for="el in years.slice(item * 4, item * 4 + 4)">
-                    <div :class="yearClass(el)" :disabled="yearDisabled(el) || null" @click="yearClick(el)">
+                    <div class="mvi-calendar-year-item" :class="yearClass(el)" :disabled="yearDisabled(el) || null"
+                        @click="yearClick(el)">
                         {{ el.getFullYear() }}
                     </div>
                 </div>
@@ -212,7 +213,8 @@ const dateClick = (item: CalendarDayType) => {
         <template v-else-if="view == 'month'">
             <div class="mvi-calendar-months" v-for="item in [0, 1, 2]">
                 <div class="mvi-calendar-month" v-for="el in months.slice(item * 4, item * 4 + 4)">
-                    <div :class="monthClass(el)" :disabled="monthDisabled(el) || null" @click="monthClick(el)">
+                    <div class="mvi-calendar-month-item" :class="monthClass(el)" :disabled="monthDisabled(el) || null"
+                        @click="monthClick(el)">
                         {{ monthText[el.getMonth()] }}
                     </div>
                 </div>
@@ -225,7 +227,8 @@ const dateClick = (item: CalendarDayType) => {
             <div class="mvi-calendar-date-body">
                 <div v-for="item in [0, 1, 2, 3, 4, 5]" class="mvi-calendar-date-row">
                     <div class="mvi-calendar-date-column" v-for="el in days.slice(item * 7, item * 7 + 7)">
-                        <div :class="dateClass(el)" :disabled="dateDisabled(el) || null" @click="dateClick(el)">
+                        <div class="mvi-calendar-date-item" :class="dateClass(el)" :disabled="dateDisabled(el) || null"
+                            @click="dateClick(el)">
                             {{ el.date!.getDate() }}
                         </div>
                     </div>
