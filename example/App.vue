@@ -1,3 +1,12 @@
+<template>
+    <div class="mvi-p-10">
+        <m-button @click="onClick">Button</m-button>
+        <m-navbar border left-icon="angle-left" title="MVI移动端组件库">
+            <template #right>333</template>
+        </m-navbar>
+    </div>
+</template>
+
 <script>
 export default {
     data() {
@@ -32,15 +41,6 @@ export default {
     }
 }
 </script>
-
-<template>
-    <div class="mvi-p-10">
-        <m-button @click="onClick">Button</m-button>
-        <m-navbar border left-icon="angle-left" title="MVI移动端组件库">
-            <template #right>333</template>
-        </m-navbar>
-    </div>
-</template>
 
 <style lang="less">
 html {

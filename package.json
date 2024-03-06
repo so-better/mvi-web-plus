@@ -9,7 +9,7 @@
 	"author": "ling0523",
 	"main": "lib/mvi.umd.js",
 	"module": "lib/mvi.es.js",
-	"typings": "lib/index.d.ts",
+	"types": "lib/index.d.ts",
 	"license": "MIT",
 	"description": "一个基于Vue3的前端开发组件库",
 	"scripts": {
