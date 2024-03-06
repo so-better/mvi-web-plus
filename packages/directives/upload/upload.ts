@@ -12,8 +12,7 @@ enum ErrorType {
 	//文件数量没有达到最小值
 	FILE_MINLENGTH_ERROR = 'minLengthError'
 }
-
-interface Opts {
+type UploadOptionsType = {
 	accept?: string
 	capture?: boolean
 	allowedFileType?: Array<string>
@@ -75,7 +74,7 @@ class Upload {
 	//install函数
 	static install: (...args: any) => void
 
-	constructor(element: HTMLElement, options: Opts) {
+	constructor(element: HTMLElement, options: UploadOptionsType) {
 		options = Dap.common.isObject(options) ? options : {}
 		this.$el = element
 		this.accept = options.accept

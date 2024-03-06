@@ -3,7 +3,7 @@ import Dap from 'dap-util'
  * 实现监听元素的属性变更
  */
 
-interface Opts {
+type ObserveOptionsType = {
 	attributes?: boolean
 	childList?: boolean
 	subtree?: boolean
@@ -33,7 +33,7 @@ class Observe {
 	//install函数
 	static install: (...args: any) => void
 
-	constructor(el: HTMLElement, options: Opts) {
+	constructor(el: HTMLElement, options: ObserveOptionsType) {
 		this.$el = el
 		options = Dap.common.isObject(options) ? options : {}
 		this.attributes = options.attributes

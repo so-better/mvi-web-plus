@@ -200,8 +200,8 @@ const dateClick = (item: CalendarDayType) => {
 <template>
     <div class="mvi-calendar">
         <template v-if="view == 'year'">
-            <div class="mvi-calendar-years" v-for="(item, index) in new Array(3)">
-                <div class="mvi-calendar-year" v-for="el in years.slice(index * 4, index * 4 + 4)">
+            <div class="mvi-calendar-years" v-for="item in [0, 1, 2]">
+                <div class="mvi-calendar-year" v-for="el in years.slice(item * 4, item * 4 + 4)">
                     <div :class="yearClass(el)" :disabled="yearDisabled(el) || null" @click="yearClick(el)">
                         {{ el.getFullYear() }}
                     </div>
@@ -210,8 +210,8 @@ const dateClick = (item: CalendarDayType) => {
         </template>
 
         <template v-else-if="view == 'month'">
-            <div class="mvi-calendar-months" v-for="(item, index) in new Array(3)">
-                <div class="mvi-calendar-month" v-for="el in months.slice(index * 4, index * 4 + 4)">
+            <div class="mvi-calendar-months" v-for="item in [0, 1, 2]">
+                <div class="mvi-calendar-month" v-for="el in months.slice(item * 4, item * 4 + 4)">
                     <div :class="monthClass(el)" :disabled="monthDisabled(el) || null" @click="monthClick(el)">
                         {{ monthText[el.getMonth()] }}
                     </div>
@@ -223,8 +223,8 @@ const dateClick = (item: CalendarDayType) => {
                 <div class="mvi-calendar-date-header-item" v-for="item in weekText">{{ item }}</div>
             </div>
             <div class="mvi-calendar-date-body">
-                <div v-for="(item, index) in new Array(6)" class="mvi-calendar-date-row">
-                    <div class="mvi-calendar-date-column" v-for="el in days.slice(index * 7, index * 7 + 7)">
+                <div v-for="item in [0, 1, 2, 3, 4, 5]" class="mvi-calendar-date-row">
+                    <div class="mvi-calendar-date-column" v-for="el in days.slice(item * 7, item * 7 + 7)">
                         <div :class="dateClass(el)" :disabled="dateDisabled(el) || null" @click="dateClick(el)">
                             {{ el.date!.getDate() }}
                         </div>

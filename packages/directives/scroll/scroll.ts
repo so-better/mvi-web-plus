@@ -3,7 +3,7 @@ import Dap from 'dap-util'
  * 监听元素滚动条到达顶部或者底部
  */
 
-interface Opts {
+type ScrollOptionsType = {
 	top?: (...args: any) => void
 	bottom?: (...args: any) => void
 }
@@ -21,7 +21,7 @@ class Scroll {
 	//install函数
 	static install: (...args: any) => void
 
-	constructor(element: HTMLElement, options: Opts) {
+	constructor(element: HTMLElement, options: ScrollOptionsType) {
 		options = Dap.common.isObject(options) ? options : {}
 		this.$el = element
 		this.top = options.top

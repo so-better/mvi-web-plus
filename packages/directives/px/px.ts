@@ -3,7 +3,7 @@ import Dap from 'dap-util'
  * 1px适配实现
  */
 
-interface Opts {
+type PxOptionsType = {
 	attrName?: string
 	after?: boolean
 	before?: boolean
@@ -24,7 +24,7 @@ class Px {
 	//install函数
 	static install: (...args: any) => void
 
-	constructor(element: HTMLElement, options: Opts) {
+	constructor(element: HTMLElement, options: PxOptionsType) {
 		options = Dap.common.isObject(options) ? options : {}
 		this.$el = element
 		this.attrName = options.attrName

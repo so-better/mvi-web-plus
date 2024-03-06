@@ -43,6 +43,10 @@ export * from './components/switch';
 export * from './components/navbar';
 export * from './components/notify';
 export * from './components/actionsheet';
+export * from './components/calendar';
+export * from './components/circle-progress';
+export * from './components/collapse';
+export * from './components/collapse-item';
 /***** 全局导出 *****/
 declare const install: (app: App) => void;
 /***** 版本号 *****/

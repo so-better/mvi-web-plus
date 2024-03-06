@@ -1,6 +1,6 @@
 import Dap from 'dap-util'
 
-interface Opts {
+type DragOptionsType = {
 	container?: HTMLElement | string
 	mode?: string
 	draggableX?: boolean
@@ -51,7 +51,7 @@ class Drag {
 	//install函数
 	static install: (...args: any) => void
 
-	constructor(element: HTMLElement, options: Opts) {
+	constructor(element: HTMLElement, options: DragOptionsType) {
 		options = Dap.common.isObject(options) ? options : {}
 		this.$el = element
 		this.$container = options.container

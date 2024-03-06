@@ -3,7 +3,7 @@ import Dap from 'dap-util'
  * 水波纹效果
  */
 
-interface Opts {
+type RippleOptionsType = {
 	color?: string
 	duration?: number
 	finalOpacity?: number
@@ -38,7 +38,7 @@ class Ripple {
 	//install函数
 	static install: (...args: any) => void
 
-	constructor(element: HTMLElement, options: Opts) {
+	constructor(element: HTMLElement, options: RippleOptionsType) {
 		options = Dap.common.isObject(options) ? options : {}
 		this.$el = element
 		this.color = options.color

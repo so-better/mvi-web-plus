@@ -1,6 +1,6 @@
 import Dap from 'dap-util'
 
-interface Opts {
+type AnchorOptionsType = {
 	target?: HTMLElement | string
 	root?: HTMLElement | string
 	time?: number
@@ -30,7 +30,7 @@ class Anchor {
 	//install函数
 	static install: (...args: any) => void
 
-	constructor(element: HTMLElement, options: Opts) {
+	constructor(element: HTMLElement, options: AnchorOptionsType) {
 		options = Dap.common.isObject(options) ? options : {}
 		this.$el = element
 		this.$target = options.target

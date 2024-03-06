@@ -1,4 +1,4 @@
-interface Opts {
+type DragOptionsType = {
     container?: HTMLElement | string;
     mode?: string;
     draggableX?: boolean;
@@ -8,7 +8,7 @@ interface Opts {
     drag?: (...args: any) => void;
     dragged?: (...args: any) => void;
     ready?: (...args: any) => void;
-}
+};
 /**
  * Drag拖拽插件
  */
@@ -29,7 +29,7 @@ declare class Drag {
     private pageY;
     private guid;
     static install: (...args: any) => void;
-    constructor(element: HTMLElement, options: Opts);
+    constructor(element: HTMLElement, options: DragOptionsType);
     private setOn;
     private resize;
     private createGuid;

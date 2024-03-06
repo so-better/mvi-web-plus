@@ -1,6 +1,6 @@
 import Dap from 'dap-util'
 
-interface Opts {
+type SpyOptionsType = {
 	el?: HTMLElement | string
 	beforeEnter?: (...args: any) => void
 	enter?: (...args: any) => void
@@ -37,7 +37,7 @@ class Spy {
 	//install函数
 	static install: (...args: any) => void
 
-	constructor(element: HTMLElement, options: Opts) {
+	constructor(element: HTMLElement, options: SpyOptionsType) {
 		options = Dap.common.isObject(options) ? options : {}
 		this.$el = element
 		this.$root = options.el

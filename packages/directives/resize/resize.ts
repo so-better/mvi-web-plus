@@ -1,16 +1,16 @@
 import Dap from 'dap-util'
 
-interface Mode {
+type ResizeModeType = {
 	left: boolean
 	top: boolean
 	right: boolean
 	bottom: boolean
 }
 
-interface Opts {
+type ResizeOptionsType = {
 	draggableX?: boolean
 	draggableY?: boolean
-	mode?: Mode
+	mode?: ResizeModeType
 	beforeResize?: (...args: any) => boolean
 	resize?: (...args: any) => void
 	trigger?: (...args: any) => void
@@ -19,13 +19,13 @@ interface Opts {
 	range?: number
 }
 
-interface Range {
-	x: Array<number>
-	y: Array<number>
+type ResizeRangeType = {
+	x?: number[]
+	y?: number[]
 }
 
 //拖动的区域范围
-enum AreaValue {
+enum ResizeAreaValue {
 	LEFT = 'left',
 	TOP = 'top',
 	RIGHT = 'right',
@@ -37,7 +37,7 @@ enum AreaValue {
 }
 
 //模式默认值
-const ModeValue = {
+const ResizeModeValue = {
 	LEFT: true,
 	TOP: true,
 	BOTTOM: true,
@@ -55,7 +55,7 @@ class Resize {
 	//垂直方向是否可拖拽
 	private draggableY?: boolean
 	//拖拽模式
-	private mode?: Mode
+	private mode?: ResizeModeType
 	//元素大小改变之前触发
 	private beforeResize?: (...args: any) => boolean
 	//元素大小改变时触发
@@ -72,21 +72,21 @@ class Resize {
 	//是否可拖动的标识
 	private draggable: boolean = false
 	//左侧可拖动范围
-	private leftRange: Range = { x: [], y: [] }
+	private leftRange: ResizeRangeType = {}
 	//右侧可拖动范围
-	private rightRange: Range = { x: [], y: [] }
+	private rightRange: ResizeRangeType = {}
 	//顶部可拖动范围
-	private topRange: Range = { x: [], y: [] }
+	private topRange: ResizeRangeType = {}
 	//底部可拖动范围
-	private bottomRange: Range = { x: [], y: [] }
+	private bottomRange: ResizeRangeType = {}
 	//左上可拖动范围
-	private leftTopRange: Range = { x: [], y: [] }
+	private leftTopRange: ResizeRangeType = {}
 	//右上可拖动范围
-	private rightTopRange: Range = { x: [], y: [] }
+	private rightTopRange: ResizeRangeType = {}
 	//左下可拖动范围
-	private leftBottomRange: Range = { x: [], y: [] }
+	private leftBottomRange: ResizeRangeType = {}
 	//右下可拖动范围
-	private rightBottomRange: Range = { x: [], y: [] }
+	private rightBottomRange: ResizeRangeType = {}
 	//水平开始的位置
 	private startX: number = 0
 	//垂直开始的位置
@@ -109,7 +109,7 @@ class Resize {
 	//install函数
 	static install: (...args: any) => void
 
-	constructor(element: HTMLElement, options: Opts) {
+	constructor(element: HTMLElement, options: ResizeOptionsType) {
 		options = Dap.common.isObject(options) ? options : {}
 		this.$el = element
 		this.draggableX = options.draggableX
@@ -124,9 +124,9 @@ class Resize {
 	}
 
 	///判断点击的点是否在指定区域范围内
-	private getIsInRange(x: number, y: number, range: Range) {
-		let conditions1 = x >= range.x[0] && x <= range.x[1]
-		let conditions2 = y >= range.y[0] && y <= range.y[1]
+	private getIsInRange(x: number, y: number, range: ResizeRangeType) {
+		let conditions1 = x >= range.x![0] && x <= range.x![1]
+		let conditions2 = y >= range.y![0] && y <= range.y![1]
 		if (conditions1 && conditions2) {
 			return true
 		}
@@ -150,7 +150,7 @@ class Resize {
 					this.trigger!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.LEFTTOP
+							area: ResizeAreaValue.LEFTTOP
 						}
 					])
 				}
@@ -163,7 +163,7 @@ class Resize {
 					this.trigger!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.LEFTBOTTOM
+							area: ResizeAreaValue.LEFTBOTTOM
 						}
 					])
 				}
@@ -176,7 +176,7 @@ class Resize {
 					this.trigger!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.RIGHTTOP
+							area: ResizeAreaValue.RIGHTTOP
 						}
 					])
 				}
@@ -189,7 +189,7 @@ class Resize {
 					this.trigger!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.RIGHTBOTTOM
+							area: ResizeAreaValue.RIGHTBOTTOM
 						}
 					])
 				}
@@ -202,7 +202,7 @@ class Resize {
 					this.trigger!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.LEFT
+							area: ResizeAreaValue.LEFT
 						}
 					])
 				}
@@ -215,7 +215,7 @@ class Resize {
 					this.trigger!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.RIGHT
+							area: ResizeAreaValue.RIGHT
 						}
 					])
 				}
@@ -228,7 +228,7 @@ class Resize {
 					this.trigger!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.TOP
+							area: ResizeAreaValue.TOP
 						}
 					])
 				}
@@ -241,7 +241,7 @@ class Resize {
 					this.trigger!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.BOTTOM
+							area: ResizeAreaValue.BOTTOM
 						}
 					])
 				}
@@ -257,7 +257,7 @@ class Resize {
 					this.trigger!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.LEFT
+							area: ResizeAreaValue.LEFT
 						}
 					])
 				}
@@ -270,7 +270,7 @@ class Resize {
 					this.trigger!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.RIGHT
+							area: ResizeAreaValue.RIGHT
 						}
 					])
 				}
@@ -286,7 +286,7 @@ class Resize {
 					this.trigger!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.TOP
+							area: ResizeAreaValue.TOP
 						}
 					])
 				}
@@ -299,7 +299,7 @@ class Resize {
 					this.trigger!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.BOTTOM
+							area: ResizeAreaValue.BOTTOM
 						}
 					])
 				}
@@ -321,7 +321,7 @@ class Resize {
 							this.beforeResize!.apply(this, [
 								{
 									event: e,
-									area: AreaValue.LEFTTOP,
+									area: ResizeAreaValue.LEFTTOP,
 									width: this.$el.offsetWidth,
 									height: this.$el.offsetHeight,
 									moveX: moveX,
@@ -343,7 +343,7 @@ class Resize {
 					if (this.mode!.left || this.mode!.top) {
 						this.resize!.apply(this, [
 							{
-								area: AreaValue.LEFTTOP,
+								area: ResizeAreaValue.LEFTTOP,
 								event: e,
 								width: this.$el.offsetWidth,
 								height: this.$el.offsetHeight,
@@ -359,7 +359,7 @@ class Resize {
 						if (
 							this.beforeResize!.apply(this, [
 								{
-									area: AreaValue.LEFTBOTTOM,
+									area: ResizeAreaValue.LEFTBOTTOM,
 									event: e,
 									width: this.$el.offsetWidth,
 									height: this.$el.offsetHeight,
@@ -381,7 +381,7 @@ class Resize {
 					if (this.mode!.left || this.mode!.bottom) {
 						this.resize!.apply(this, [
 							{
-								area: AreaValue.LEFTBOTTOM,
+								area: ResizeAreaValue.LEFTBOTTOM,
 								event: e,
 								width: this.$el.offsetWidth,
 								height: this.$el.offsetHeight,
@@ -397,7 +397,7 @@ class Resize {
 						if (
 							this.beforeResize!.apply(this, [
 								{
-									area: AreaValue.RIGHTTOP,
+									area: ResizeAreaValue.RIGHTTOP,
 									event: e,
 									width: this.$el.offsetWidth,
 									height: this.$el.offsetHeight,
@@ -419,7 +419,7 @@ class Resize {
 					if (this.mode!.top || this.mode!.right) {
 						this.resize!.apply(this, [
 							{
-								area: AreaValue.RIGHTTOP,
+								area: ResizeAreaValue.RIGHTTOP,
 								event: e,
 								width: this.$el.offsetWidth,
 								height: this.$el.offsetHeight,
@@ -435,7 +435,7 @@ class Resize {
 						if (
 							this.beforeResize!.apply(this, [
 								{
-									area: AreaValue.RIGHTBOTTOM,
+									area: ResizeAreaValue.RIGHTBOTTOM,
 									event: e,
 									width: this.$el.offsetWidth,
 									height: this.$el.offsetHeight,
@@ -456,7 +456,7 @@ class Resize {
 					if (this.mode!.right || this.mode!.bottom) {
 						this.resize!.apply(this, [
 							{
-								area: AreaValue.RIGHTBOTTOM,
+								area: ResizeAreaValue.RIGHTBOTTOM,
 								event: e,
 								width: this.$el.offsetWidth,
 								height: this.$el.offsetHeight,
@@ -472,7 +472,7 @@ class Resize {
 						if (
 							this.beforeResize!.apply(this, [
 								{
-									area: AreaValue.LEFT,
+									area: ResizeAreaValue.LEFT,
 									event: e,
 									width: this.$el.offsetWidth,
 									height: this.$el.offsetHeight,
@@ -487,7 +487,7 @@ class Resize {
 						this.$el.style.left = this._left + moveX + 'px'
 						this.resize!.apply(this, [
 							{
-								area: AreaValue.LEFT,
+								area: ResizeAreaValue.LEFT,
 								event: e,
 								width: this.$el.offsetWidth,
 								height: this.$el.offsetHeight,
@@ -503,7 +503,7 @@ class Resize {
 						if (
 							this.beforeResize!.apply(this, [
 								{
-									area: AreaValue.RIGHT,
+									area: ResizeAreaValue.RIGHT,
 									event: e,
 									width: this.$el.offsetWidth,
 									height: this.$el.offsetHeight,
@@ -517,7 +517,7 @@ class Resize {
 						this.$el.style.width = this._width + moveX + 'px'
 						this.resize!.apply(this, [
 							{
-								area: AreaValue.RIGHT,
+								area: ResizeAreaValue.RIGHT,
 								event: e,
 								width: this.$el.offsetWidth,
 								height: this.$el.offsetHeight,
@@ -533,7 +533,7 @@ class Resize {
 						if (
 							this.beforeResize!.apply(this, [
 								{
-									area: AreaValue.TOP,
+									area: ResizeAreaValue.TOP,
 									event: e,
 									width: this.$el.offsetWidth,
 									height: this.$el.offsetHeight,
@@ -548,7 +548,7 @@ class Resize {
 						this.$el.style.top = this._top + moveY + 'px'
 						this.resize!.apply(this, [
 							{
-								area: AreaValue.TOP,
+								area: ResizeAreaValue.TOP,
 								event: e,
 								width: this.$el.offsetWidth,
 								height: this.$el.offsetHeight,
@@ -564,7 +564,7 @@ class Resize {
 						if (
 							this.beforeResize!.apply(this, [
 								{
-									area: AreaValue.BOTTOM,
+									area: ResizeAreaValue.BOTTOM,
 									event: e,
 									width: this.$el.offsetWidth,
 									height: this.$el.offsetHeight,
@@ -578,7 +578,7 @@ class Resize {
 						this.$el.style.height = this._height + moveY + 'px'
 						this.resize!.apply(this, [
 							{
-								area: AreaValue.BOTTOM,
+								area: ResizeAreaValue.BOTTOM,
 								event: e,
 								width: this.$el.offsetWidth,
 								height: this.$el.offsetHeight,
@@ -597,7 +597,7 @@ class Resize {
 						if (
 							this.beforeResize!.apply(this, [
 								{
-									area: AreaValue.LEFT,
+									area: ResizeAreaValue.LEFT,
 									event: e,
 									width: this.$el.offsetWidth,
 									height: this.$el.offsetHeight,
@@ -612,7 +612,7 @@ class Resize {
 						this.$el.style.left = this._left + moveX + 'px'
 						this.resize!.apply(this, [
 							{
-								area: AreaValue.LEFT,
+								area: ResizeAreaValue.LEFT,
 								event: e,
 								width: this.$el.offsetWidth,
 								height: this.$el.offsetHeight,
@@ -628,7 +628,7 @@ class Resize {
 						if (
 							this.beforeResize!.apply(this, [
 								{
-									area: AreaValue.RIGHT,
+									area: ResizeAreaValue.RIGHT,
 									event: e,
 									width: this.$el.offsetWidth,
 									height: this.$el.offsetHeight,
@@ -642,7 +642,7 @@ class Resize {
 						this.$el.style.width = this._width + moveX + 'px'
 						this.resize!.apply(this, [
 							{
-								area: AreaValue.RIGHT,
+								area: ResizeAreaValue.RIGHT,
 								event: e,
 								width: this.$el.offsetWidth,
 								height: this.$el.offsetHeight,
@@ -661,7 +661,7 @@ class Resize {
 						if (
 							this.beforeResize!.apply(this, [
 								{
-									area: AreaValue.TOP,
+									area: ResizeAreaValue.TOP,
 									event: e,
 									width: this.$el.offsetWidth,
 									height: this.$el.offsetHeight,
@@ -676,7 +676,7 @@ class Resize {
 						this.$el.style.top = this._top + moveY + 'px'
 						this.resize!.apply(this, [
 							{
-								area: AreaValue.TOP,
+								area: ResizeAreaValue.TOP,
 								event: e,
 								width: this.$el.offsetWidth,
 								height: this.$el.offsetHeight,
@@ -692,7 +692,7 @@ class Resize {
 						if (
 							this.beforeResize!.apply(this, [
 								{
-									area: AreaValue.BOTTOM,
+									area: ResizeAreaValue.BOTTOM,
 									event: e,
 									width: this.$el.offsetWidth,
 									height: this.$el.offsetHeight,
@@ -706,7 +706,7 @@ class Resize {
 						this.$el.style.height = this._height + moveY + 'px'
 						this.resize!.apply(this, [
 							{
-								area: AreaValue.BOTTOM,
+								area: ResizeAreaValue.BOTTOM,
 								event: e,
 								width: this.$el.offsetWidth,
 								height: this.$el.offsetHeight,
@@ -732,7 +732,7 @@ class Resize {
 					this.end!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.LEFTTOP
+							area: ResizeAreaValue.LEFTTOP
 						}
 					])
 				}
@@ -741,7 +741,7 @@ class Resize {
 					this.end!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.LEFTBOTTOM
+							area: ResizeAreaValue.LEFTBOTTOM
 						}
 					])
 				}
@@ -750,7 +750,7 @@ class Resize {
 					this.end!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.RIGHTTOP
+							area: ResizeAreaValue.RIGHTTOP
 						}
 					])
 				}
@@ -759,7 +759,7 @@ class Resize {
 					this.end!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.RIGHTBOTTOM
+							area: ResizeAreaValue.RIGHTBOTTOM
 						}
 					])
 				}
@@ -768,7 +768,7 @@ class Resize {
 					this.end!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.LEFT
+							area: ResizeAreaValue.LEFT
 						}
 					])
 				}
@@ -777,7 +777,7 @@ class Resize {
 					this.end!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.RIGHT
+							area: ResizeAreaValue.RIGHT
 						}
 					])
 				}
@@ -786,7 +786,7 @@ class Resize {
 					this.end!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.TOP
+							area: ResizeAreaValue.TOP
 						}
 					])
 				}
@@ -795,7 +795,7 @@ class Resize {
 					this.end!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.BOTTOM
+							area: ResizeAreaValue.BOTTOM
 						}
 					])
 				}
@@ -807,7 +807,7 @@ class Resize {
 					this.end!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.LEFT
+							area: ResizeAreaValue.LEFT
 						}
 					])
 				}
@@ -816,7 +816,7 @@ class Resize {
 					this.end!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.RIGHT
+							area: ResizeAreaValue.RIGHT
 						}
 					])
 				}
@@ -828,7 +828,7 @@ class Resize {
 					this.end!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.TOP
+							area: ResizeAreaValue.TOP
 						}
 					])
 				}
@@ -837,7 +837,7 @@ class Resize {
 					this.end!.apply(this, [
 						{
 							event: e,
-							area: AreaValue.BOTTOM
+							area: ResizeAreaValue.BOTTOM
 						}
 					])
 				}
@@ -906,23 +906,23 @@ class Resize {
 		}
 		if (!Dap.common.isObject(this.mode)) {
 			this.mode = {
-				left: ModeValue.LEFT,
-				top: ModeValue.TOP,
-				bottom: ModeValue.BOTTOM,
-				right: ModeValue.RIGHT
+				left: ResizeModeValue.LEFT,
+				top: ResizeModeValue.TOP,
+				bottom: ResizeModeValue.BOTTOM,
+				right: ResizeModeValue.RIGHT
 			}
 		} else {
 			if (typeof this.mode!.left != 'boolean') {
-				this.mode!.left = ModeValue.LEFT
+				this.mode!.left = ResizeModeValue.LEFT
 			}
 			if (typeof this.mode!.top != 'boolean') {
-				this.mode!.top = ModeValue.TOP
+				this.mode!.top = ResizeModeValue.TOP
 			}
 			if (typeof this.mode!.bottom != 'boolean') {
-				this.mode!.bottom = ModeValue.BOTTOM
+				this.mode!.bottom = ResizeModeValue.BOTTOM
 			}
 			if (typeof this.mode!.right != 'boolean') {
-				this.mode!.right = ModeValue.RIGHT
+				this.mode!.right = ResizeModeValue.RIGHT
 			}
 		}
 		if (typeof this.beforeResize != 'function') {

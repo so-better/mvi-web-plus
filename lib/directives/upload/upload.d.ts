@@ -1,4 +1,4 @@
-interface Opts {
+type UploadOptionsType = {
     accept?: string;
     capture?: boolean;
     allowedFileType?: Array<string>;
@@ -13,7 +13,7 @@ interface Opts {
     select?: (...args: any) => void;
     ready?: (...args: any) => void;
     extraData?: object;
-}
+};
 /**
  * 文件上传
  */
@@ -37,7 +37,7 @@ declare class Upload {
     private files;
     private hasInit;
     static install: (...args: any) => void;
-    constructor(element: HTMLElement, options: Opts);
+    constructor(element: HTMLElement, options: UploadOptionsType);
     private judgeSuffix;
     init(): void;
     getFiles(): {
