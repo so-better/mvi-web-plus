@@ -1,5 +1,5 @@
+import { ActionsheetOptionsItemType } from './props';
 import { DefineComponent } from 'vue';
-import { ActionsheetOptionsItemType } from '../../types/ActionsheetOptionsItem';
 declare const _default: DefineComponent<{
     modelValue: {
         type: BooleanConstructor;

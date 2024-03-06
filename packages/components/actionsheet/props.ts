@@ -1,7 +1,15 @@
-import { PropType } from 'vue'
-import { ActionsheetOptionsItemType } from '../../types/ActionsheetOptionsItem'
+import { ExtractPropTypes, PropType } from 'vue'
+import { IconPropsType } from '../icon/props'
 
-export default {
+export type ActionsheetOptionsItemType = {
+	label?: string
+	loading?: boolean
+	icon?: IconPropsType
+	placement?: 'left' | 'right'
+	disabled?: boolean
+}
+
+export const ActionsheetProps = {
 	//是否显示
 	modelValue: {
 		type: Boolean,
@@ -83,3 +91,5 @@ export default {
 		}
 	}
 }
+
+export type ActionsheetPropsType = ExtractPropTypes<typeof ActionsheetProps>

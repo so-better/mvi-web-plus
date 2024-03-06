@@ -1,4 +1,5 @@
-declare const _default: {
+import { ExtractPropTypes } from 'vue';
+export declare const IconProps: {
     type: {
         type: StringConstructor;
         default: string;
@@ -20,4 +21,4 @@ declare const _default: {
         default: null;
     };
 };
-export default _default;
+export type IconPropsType = ExtractPropTypes<typeof IconProps>;

@@ -1,4 +1,6 @@
-export default {
+import { ExtractPropTypes } from 'vue'
+
+export const IconProps = {
 	//图标类型
 	type: {
 		type: String,
@@ -25,3 +27,5 @@ export default {
 		default: null
 	}
 }
+
+export type IconPropsType = ExtractPropTypes<typeof IconProps>

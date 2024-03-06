@@ -3,10 +3,9 @@ import Dap from 'dap-util'
 import { Popup } from '../popup'
 import { Loading } from '../loading'
 import { Icon } from '../icon'
-import ActionsheetProps from './props'
+import { ActionsheetProps, ActionsheetOptionsItemType } from './props'
 import { DefineComponent, computed, ref } from 'vue'
-import { IconType } from '../../types/Icon'
-import { ActionsheetOptionsItemType } from '../../types/ActionsheetOptionsItem'
+import { IconPropsType } from '../icon/props'
 
 //属性
 const props = defineProps(ActionsheetProps)
@@ -29,9 +28,9 @@ const show = computed<boolean>({
     }
 })
 //转换图标字段
-const parseIcon = computed<(params: any) => IconType>(() => {
+const parseIcon = computed<(params: any) => IconPropsType>(() => {
     return (params: any) => {
-        let icon: IconType = {
+        let icon: IconPropsType = {
             spin: false,
             type: '',
             url: '',

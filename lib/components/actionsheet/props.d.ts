@@ -1,6 +1,13 @@
-import { PropType } from 'vue';
-import { ActionsheetOptionsItemType } from '../../types/ActionsheetOptionsItem';
-declare const _default: {
+import { ExtractPropTypes, PropType } from 'vue';
+import { IconPropsType } from '../icon/props';
+export type ActionsheetOptionsItemType = {
+    label?: string;
+    loading?: boolean;
+    icon?: IconPropsType;
+    placement?: 'left' | 'right';
+    disabled?: boolean;
+};
+export declare const ActionsheetProps: {
     modelValue: {
         type: BooleanConstructor;
         default: boolean;
@@ -63,4 +70,4 @@ declare const _default: {
         validator(value: any): boolean;
     };
 };
-export default _default;
+export type ActionsheetPropsType = ExtractPropTypes<typeof ActionsheetProps>;
