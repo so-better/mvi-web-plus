@@ -53,6 +53,10 @@ import { CircleProgress } from './components/circle-progress'
 import { Collapse } from './components/collapse'
 import { CollapseItem } from './components/collapse-item'
 import { DateChooser } from './components/date-chooser'
+import { DateNativePicker } from './components/date-native-picker'
+import { Picker } from './components/picker'
+import { Progress } from './components/progress'
+import { Slider } from './components/slider'
 
 /***** 按需导出 *****/
 export * from './directives/anchor'
@@ -99,6 +103,10 @@ export * from './components/circle-progress'
 export * from './components/collapse'
 export * from './components/collapse-item'
 export * from './components/date-chooser'
+export * from './components/date-native-picker'
+export * from './components/picker'
+export * from './components/progress'
+export * from './components/slider'
 
 /***** 全局导出 *****/
 const install = (app: App) => {
@@ -146,7 +154,11 @@ const install = (app: App) => {
 		CircleProgress,
 		Collapse,
 		CollapseItem,
-		DateChooser
+		DateChooser,
+		DateNativePicker,
+		Picker,
+		Progress,
+		Slider
 	}
 	//注册组件和指令
 	Object.values(components).map(component => {

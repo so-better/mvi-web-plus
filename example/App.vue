@@ -1,68 +1,37 @@
 <template>
-    <div class="mvi-p-10">
-        <m-button @click="onClick">Button</m-button>
-        <m-date-chooser :headerFormatter="headerFormatter" v-model="date" :layerProps="{ width: '8rem' }">
-            <m-button>按钮</m-button>
-        </m-date-chooser>
-    </div>
+	<div class="mvi-p-10">
+		<m-button @click="onClick">Button</m-button>
+		<m-slider v-model="value"></m-slider>
+	</div>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            show: false,
-            value: 0,
-            date: new Date(),
-            options: [
-                {
-                    label: '选项A',
-                    value: 0
-                },
-                {
-                    label: '选项B',
-                    value: 1
-                },
-                {
-                    label: '选项C',
-                    value: 2
-                },
-                {
-                    label: '选项D',
-                    value: 3
-                }
-            ]
-        }
-    },
-    mounted() { },
-    methods: {
-        onClick() {
-            // this.show = !this.show
-            this.$showNotify({
-                timeout: 3000,
-                message: 'wocao'
-            })
-            setTimeout(() => {
-                this.$hideNotify()
-            }, 500);
-        },
-        headerFormatter(type, num) {
-            if (type == 'year') {
-                return num
-            }
-            return num + '号'
-        }
-    }
+	data() {
+		return {
+			show: false,
+			value: 0,
+			date: new Date(),
+			options: {
+				values: ['mvi', 'elementUI', 'iView', 'vant'], //设置选项
+				defaultIndex: 0 //设置默认选项序列
+			}
+		}
+	},
+	mounted() {},
+	methods: {
+		onClick() {}
+	}
 }
 </script>
 
 <style lang="less">
 html {
-    font-size: 50px;
+	font-size: 50px;
 }
 
 #app {
-    height: 100%;
-    overflow: auto;
+	height: 100%;
+	overflow: auto;
 }
 </style>

@@ -48,6 +48,10 @@ export * from './components/circle-progress';
 export * from './components/collapse';
 export * from './components/collapse-item';
 export * from './components/date-chooser';
+export * from './components/date-native-picker';
+export * from './components/picker';
+export * from './components/progress';
+export * from './components/slider';
 /***** 全局导出 *****/
 declare const install: (app: App) => void;
 /***** 版本号 *****/

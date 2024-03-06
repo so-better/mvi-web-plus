@@ -29,7 +29,7 @@ declare const _default: __VLS_WithTemplateSlots<DefineComponent<{
         default: boolean;
     };
 }, {
-    children: DefineComponent[];
+    children: import("vue").Ref<DefineComponent[]>;
     props: {
         readonly modelValue: number | unknown[];
         readonly disabled: boolean;
