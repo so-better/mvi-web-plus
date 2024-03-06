@@ -135,16 +135,16 @@ declare const _default: __VLS_WithTemplateSlots<DefineComponent<{
     onHidding?: ((...args: any[]) => any) | undefined;
     onHidden?: ((...args: any[]) => any) | undefined;
 }, {
-    background: string;
-    borderColor: string;
-    placement: string;
-    modelValue: boolean;
-    relate: string;
-    offset: string;
     zIndex: number;
-    width: string;
+    modelValue: boolean;
     timeout: number;
     closable: boolean;
+    placement: string;
+    width: string;
+    offset: string;
+    background: string;
+    borderColor: string;
+    relate: string;
     showTriangle: boolean;
     animation: string;
     shadow: boolean;

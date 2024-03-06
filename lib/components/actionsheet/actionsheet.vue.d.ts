@@ -1,10 +1,7 @@
 import { DefineComponent } from 'vue';
-declare const _default: __VLS_WithTemplateSlots<DefineComponent<{
+import { ActionsheetOptionsItemType } from '../../types/ActionsheetOptionsItem';
+declare const _default: DefineComponent<{
     modelValue: {
-        type: BooleanConstructor;
-        default: boolean;
-    };
-    closable: {
         type: BooleanConstructor;
         default: boolean;
     };
@@ -20,59 +17,61 @@ declare const _default: __VLS_WithTemplateSlots<DefineComponent<{
         type: NumberConstructor;
         default: number;
     };
-    placement: {
-        type: StringConstructor;
-        default: string;
-        validator(value: any): boolean;
-    };
     round: {
         type: BooleanConstructor;
         default: boolean;
     };
-    width: {
+    title: {
         type: StringConstructor;
         default: null;
     };
-    showTimes: {
+    closable: {
         type: BooleanConstructor;
         default: boolean;
     };
-    timesPlacement: {
+    options: {
+        type: import("vue").PropType<ActionsheetOptionsItemType[]>;
+        default: () => never[];
+    };
+    showCancel: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
+    cancelText: {
         type: StringConstructor;
         default: string;
-        validator(value: any): boolean;
+    };
+    active: {
+        type: BooleanConstructor;
+        default: boolean;
     };
     mountEl: {
         type: StringConstructor;
         default: null;
     };
+    selectClose: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
     usePadding: {
         type: BooleanConstructor;
         default: boolean;
     };
-    __contentPadding: {
-        type: BooleanConstructor;
-        default: boolean;
+    size: {
+        type: import("vue").PropType<"medium" | "large">;
+        default: string;
+        validator(value: any): boolean;
     };
 }, {
-    $$el: import("vue").ComputedRef<any>;
+    $$el: import("vue").ComputedRef<HTMLElement>;
 }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
-    show: (...args: any[]) => void;
-    showing: (...args: any[]) => void;
-    shown: (...args: any[]) => void;
-    hide: (...args: any[]) => void;
-    hidding: (...args: any[]) => void;
-    hidden: (...args: any[]) => void;
+    select: (...args: any[]) => void;
 }, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     modelValue: {
         type: BooleanConstructor;
         default: boolean;
     };
-    closable: {
-        type: BooleanConstructor;
-        default: boolean;
-    };
     overlayColor: {
         type: StringConstructor;
         default: null;
@@ -85,48 +84,54 @@ declare const _default: __VLS_WithTemplateSlots<DefineComponent<{
         type: NumberConstructor;
         default: number;
     };
-    placement: {
-        type: StringConstructor;
-        default: string;
-        validator(value: any): boolean;
-    };
     round: {
         type: BooleanConstructor;
         default: boolean;
     };
-    width: {
+    title: {
         type: StringConstructor;
         default: null;
     };
-    showTimes: {
+    closable: {
         type: BooleanConstructor;
         default: boolean;
     };
-    timesPlacement: {
+    options: {
+        type: import("vue").PropType<ActionsheetOptionsItemType[]>;
+        default: () => never[];
+    };
+    showCancel: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
+    cancelText: {
         type: StringConstructor;
         default: string;
-        validator(value: any): boolean;
+    };
+    active: {
+        type: BooleanConstructor;
+        default: boolean;
     };
     mountEl: {
         type: StringConstructor;
         default: null;
     };
+    selectClose: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
     usePadding: {
         type: BooleanConstructor;
         default: boolean;
     };
-    __contentPadding: {
-        type: BooleanConstructor;
-        default: boolean;
+    size: {
+        type: import("vue").PropType<"medium" | "large">;
+        default: string;
+        validator(value: any): boolean;
     };
 }>> & {
     "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
-    onShow?: ((...args: any[]) => any) | undefined;
-    onShowing?: ((...args: any[]) => any) | undefined;
-    onShown?: ((...args: any[]) => any) | undefined;
-    onHide?: ((...args: any[]) => any) | undefined;
-    onHidding?: ((...args: any[]) => any) | undefined;
-    onHidden?: ((...args: any[]) => any) | undefined;
+    onSelect?: ((...args: any[]) => any) | undefined;
 }, {
     mountEl: string;
     zIndex: number;
@@ -134,19 +139,14 @@ declare const _default: __VLS_WithTemplateSlots<DefineComponent<{
     timeout: number;
     closable: boolean;
     usePadding: boolean;
+    title: string;
+    size: "medium" | "large";
     overlayColor: string;
-    placement: string;
     round: boolean;
-    width: string;
-    showTimes: boolean;
-    timesPlacement: string;
-    __contentPadding: boolean;
-}, {}>, {
-    default?(_: {}): any;
-}>;
+    options: ActionsheetOptionsItemType[];
+    showCancel: boolean;
+    cancelText: string;
+    active: boolean;
+    selectClose: boolean;
+}, {}>;
 export default _default;
-type __VLS_WithTemplateSlots<T, S> = T & {
-    new (): {
-        $slots: S;
-    };
-};

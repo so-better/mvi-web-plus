@@ -116,16 +116,16 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     };
 }>>, {
     type: string;
-    size: string;
     disabled: boolean;
+    size: string;
     round: boolean;
+    loading: boolean;
+    active: boolean;
     square: boolean;
     block: boolean;
     nativeType: string;
     tag: string;
     plain: boolean;
-    active: boolean;
-    loading: boolean;
     loadText: string;
     loadIcon: string | Record<string, any>;
 }, {}>, {

@@ -5,6 +5,8 @@ import { Loading } from '../loading'
 import { Icon } from '../icon'
 import ActionsheetProps from './props'
 import { DefineComponent, computed, ref } from 'vue'
+import { IconType } from '../../types/Icon'
+import { ActionsheetOptionsItemType } from '../../types/ActionsheetOptionsItem'
 
 //属性
 const props = defineProps(ActionsheetProps)
@@ -27,14 +29,14 @@ const show = computed<boolean>({
     }
 })
 //转换图标字段
-const parseIcon = computed<any>(() => {
+const parseIcon = computed<(params: any) => IconType>(() => {
     return (params: any) => {
-        let icon: any = {
+        let icon: IconType = {
             spin: false,
-            type: null,
-            url: null,
-            color: null,
-            size: null
+            type: '',
+            url: '',
+            color: '',
+            size: ''
         }
         if (Dap.common.isObject(params)) {
             if (typeof params.spin == 'boolean') {
@@ -58,17 +60,17 @@ const parseIcon = computed<any>(() => {
         return icon
     }
 })
-const itemClass = computed<(item: any) => string[]>(() => {
-    return (item: any) => {
-        let cls = [props.size]
+const itemClass = computed<(item: ActionsheetOptionsItemType) => string[]>(() => {
+    return (item: ActionsheetOptionsItemType) => {
+        let cls: string[] = [props.size]
         if (props.active && !item.loading && !item.disabled) {
             cls.push('active')
         }
         return cls
     }
 })
-const itemDisabled = computed<(item: any) => boolean>(() => {
-    return (item: any) => {
+const itemDisabled = computed<(item: ActionsheetOptionsItemType) => boolean>(() => {
+    return (item: ActionsheetOptionsItemType) => {
         if (typeof item.disabled == 'boolean') {
             return item.disabled
         }
@@ -76,7 +78,7 @@ const itemDisabled = computed<(item: any) => boolean>(() => {
     }
 })
 //点击选项
-const doSelect = (item: any, index: number) => {
+const doSelect = (item: ActionsheetOptionsItemType, index: number) => {
     if (item.disabled || item.loading) {
         return
     }
@@ -123,7 +125,5 @@ defineExpose({
         </div>
     </Popup>
 </template>
-
-
 
 <style scoped src="./actionsheet.less"></style>

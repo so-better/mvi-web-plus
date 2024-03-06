@@ -1,5 +1,5 @@
 import { PropType } from 'vue'
-import { OptionsItem } from './OptionsItem'
+import { ActionsheetOptionsItemType } from '../../types/ActionsheetOptionsItem'
 
 export default {
 	//是否显示
@@ -39,7 +39,7 @@ export default {
 	},
 	//配置项，每个配置项包含label、loading、icon、placement、disabled
 	options: {
-		type: Array as PropType<OptionsItem[]>,
+		type: Array as PropType<ActionsheetOptionsItemType[]>,
 		default: function () {
 			return []
 		}
@@ -76,7 +76,7 @@ export default {
 	},
 	//尺寸
 	size: {
-		type: String,
+		type: String as PropType<'medium' | 'large'>,
 		default: 'medium',
 		validator(value: any) {
 			return ['medium', 'large'].includes(value)

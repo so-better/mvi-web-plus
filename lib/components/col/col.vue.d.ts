@@ -12,23 +12,23 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: string;
     };
     xs: {
-        type: (ObjectConstructor | NumberConstructor)[];
+        type: (NumberConstructor | ObjectConstructor)[];
         default: null;
     };
     sm: {
-        type: (ObjectConstructor | NumberConstructor)[];
+        type: (NumberConstructor | ObjectConstructor)[];
         default: null;
     };
     md: {
-        type: (ObjectConstructor | NumberConstructor)[];
+        type: (NumberConstructor | ObjectConstructor)[];
         default: null;
     };
     lg: {
-        type: (ObjectConstructor | NumberConstructor)[];
+        type: (NumberConstructor | ObjectConstructor)[];
         default: null;
     };
     xl: {
-        type: (ObjectConstructor | NumberConstructor)[];
+        type: (NumberConstructor | ObjectConstructor)[];
         default: null;
     };
 }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
@@ -45,23 +45,23 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: string;
     };
     xs: {
-        type: (ObjectConstructor | NumberConstructor)[];
+        type: (NumberConstructor | ObjectConstructor)[];
         default: null;
     };
     sm: {
-        type: (ObjectConstructor | NumberConstructor)[];
+        type: (NumberConstructor | ObjectConstructor)[];
         default: null;
     };
     md: {
-        type: (ObjectConstructor | NumberConstructor)[];
+        type: (NumberConstructor | ObjectConstructor)[];
         default: null;
     };
     lg: {
-        type: (ObjectConstructor | NumberConstructor)[];
+        type: (NumberConstructor | ObjectConstructor)[];
         default: null;
     };
     xl: {
-        type: (ObjectConstructor | NumberConstructor)[];
+        type: (NumberConstructor | ObjectConstructor)[];
         default: null;
     };
 }>>, {

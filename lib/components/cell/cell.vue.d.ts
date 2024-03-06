@@ -28,7 +28,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: null;
     };
     ellipsis: {
-        type: (BooleanConstructor | NumberConstructor)[];
+        type: (NumberConstructor | BooleanConstructor)[];
         default: null;
     };
     noWrap: {
@@ -65,7 +65,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: null;
     };
     ellipsis: {
-        type: (BooleanConstructor | NumberConstructor)[];
+        type: (NumberConstructor | BooleanConstructor)[];
         default: null;
     };
     noWrap: {
@@ -73,12 +73,12 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: boolean;
     };
 }>>, {
-    icon: string | Record<string, any>;
     label: string;
     title: string;
+    icon: string | Record<string, any>;
+    active: boolean;
     border: boolean;
     content: string;
-    active: boolean;
     arrow: string | Record<string, any>;
     ellipsis: number | boolean;
     noWrap: boolean;

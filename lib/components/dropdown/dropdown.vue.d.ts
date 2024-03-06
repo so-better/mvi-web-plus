@@ -1,7 +1,7 @@
 import { DefineComponent } from 'vue';
 declare const _default: DefineComponent<{
     modelValue: {
-        type: (StringConstructor | ObjectConstructor | ArrayConstructor | NumberConstructor)[];
+        type: (StringConstructor | NumberConstructor | ObjectConstructor | ArrayConstructor)[];
         default: null;
     };
     activeColor: {
@@ -63,12 +63,12 @@ declare const _default: DefineComponent<{
 }, {
     $$el: import("vue").ComputedRef<any>;
 }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
-    select: (...args: any[]) => void;
     "update:modelValue": (...args: any[]) => void;
+    select: (...args: any[]) => void;
     "update:show": (...args: any[]) => void;
 }, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     modelValue: {
-        type: (StringConstructor | ObjectConstructor | ArrayConstructor | NumberConstructor)[];
+        type: (StringConstructor | NumberConstructor | ObjectConstructor | ArrayConstructor)[];
         default: null;
     };
     activeColor: {
@@ -128,23 +128,23 @@ declare const _default: DefineComponent<{
         default: boolean;
     };
 }>> & {
-    onSelect?: ((...args: any[]) => any) | undefined;
     "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
+    onSelect?: ((...args: any[]) => any) | undefined;
     "onUpdate:show"?: ((...args: any[]) => any) | undefined;
 }, {
-    placement: string;
-    show: boolean;
-    modelValue: string | number | Record<string, any> | unknown[];
+    mountEl: string;
     zIndex: number;
+    modelValue: string | number | Record<string, any> | unknown[];
     timeout: number;
     closable: boolean;
-    activeColor: string;
-    round: boolean;
-    active: boolean;
-    mountEl: string;
     usePadding: boolean;
+    show: boolean;
     overlayColor: string;
+    placement: string;
+    round: boolean;
     options: import("./OptionsItem").OptionsItem[];
+    active: boolean;
+    activeColor: string;
     selectedClose: boolean;
     selectedIcon: string | Record<string, any>;
 }, {}>;

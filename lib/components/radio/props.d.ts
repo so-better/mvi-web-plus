@@ -4,7 +4,7 @@ declare const _default: {
         default: boolean;
     };
     modelValue: {
-        type: (StringConstructor | BooleanConstructor | ObjectConstructor | NumberConstructor)[];
+        type: (StringConstructor | NumberConstructor | BooleanConstructor | ObjectConstructor)[];
         default: boolean;
     };
     label: {
@@ -12,7 +12,7 @@ declare const _default: {
         default: null;
     };
     value: {
-        type: (StringConstructor | ObjectConstructor | NumberConstructor)[];
+        type: (StringConstructor | NumberConstructor | ObjectConstructor)[];
         default: string;
     };
     round: {

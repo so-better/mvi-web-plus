@@ -55,10 +55,10 @@ declare const _default: import("vue").DefineComponent<{
         default: () => () => void;
     };
 }>>, {
-    color: string;
-    background: string;
     zIndex: number;
+    color: string;
     timeout: number;
+    background: string;
     animation: string;
     __remove: Function;
     message: null;

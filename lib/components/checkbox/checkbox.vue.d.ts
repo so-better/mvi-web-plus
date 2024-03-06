@@ -12,7 +12,7 @@ declare const _default: import("vue").DefineComponent<{
         default: null;
     };
     value: {
-        type: (StringConstructor | ObjectConstructor | ArrayConstructor | NumberConstructor)[];
+        type: (StringConstructor | NumberConstructor | ObjectConstructor | ArrayConstructor)[];
         default: string;
     };
     round: {
@@ -53,7 +53,7 @@ declare const _default: import("vue").DefineComponent<{
         default: null;
     };
     value: {
-        type: (StringConstructor | ObjectConstructor | ArrayConstructor | NumberConstructor)[];
+        type: (StringConstructor | NumberConstructor | ObjectConstructor | ArrayConstructor)[];
         default: string;
     };
     round: {
@@ -78,17 +78,17 @@ declare const _default: import("vue").DefineComponent<{
         default: null;
     };
 }>> & {
-    onChange?: ((...args: any[]) => any) | undefined;
     "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
+    onChange?: ((...args: any[]) => any) | undefined;
 }, {
-    size: string;
     color: string;
-    label: string;
-    placement: string;
     modelValue: boolean | unknown[];
-    name: string;
+    label: string;
     disabled: boolean;
-    value: string | number | Record<string, any> | unknown[];
+    name: string;
+    size: string;
+    placement: string;
     round: boolean;
+    value: string | number | Record<string, any> | unknown[];
 }, {}>;
 export default _default;

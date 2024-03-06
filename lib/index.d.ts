@@ -41,6 +41,8 @@ export * from './components/tooltip';
 export * from './components/transition-slide';
 export * from './components/switch';
 export * from './components/navbar';
+export * from './components/notify';
+export * from './components/actionsheet';
 /***** 全局导出 *****/
 declare const install: (app: App) => void;
 /***** 版本号 *****/

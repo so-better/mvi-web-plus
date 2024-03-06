@@ -26,8 +26,8 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     };
 }>>, {
     title: string;
-    border: boolean;
     active: boolean;
+    border: boolean;
 }, {}>, {
     default?(_: {}): any;
 }>;

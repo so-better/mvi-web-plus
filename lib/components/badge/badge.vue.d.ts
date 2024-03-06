@@ -68,10 +68,10 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     };
 }>>, {
     color: string;
-    background: string;
-    placement: string;
     show: boolean;
+    placement: string;
     offset: unknown[];
+    background: string;
     content: string | number;
     dot: boolean;
     block: boolean;

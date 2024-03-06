@@ -61,11 +61,11 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: boolean;
     };
 }>>, {
-    type: string;
-    size: string;
     reverse: boolean;
-    mark: boolean;
     closable: boolean;
+    type: string;
+    mark: boolean;
+    size: string;
     round: boolean;
     plain: boolean;
 }, {}>, {

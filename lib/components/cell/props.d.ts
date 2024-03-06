@@ -28,7 +28,7 @@ declare const _default: {
         default: null;
     };
     ellipsis: {
-        type: (BooleanConstructor | NumberConstructor)[];
+        type: (NumberConstructor | BooleanConstructor)[];
         default: null;
     };
     noWrap: {

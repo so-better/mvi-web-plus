@@ -98,9 +98,9 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         validator(value: any): boolean;
     };
 }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+    "update:modelValue": (...args: any[]) => void;
     input: (...args: any[]) => void;
     clear: (...args: any[]) => void;
-    "update:modelValue": (...args: any[]) => void;
     focus: (...args: any[]) => void;
     blur: (...args: any[]) => void;
     "left-click": (...args: any[]) => void;
@@ -207,26 +207,26 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         validator(value: any): boolean;
     };
 }>> & {
+    "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
     onFocus?: ((...args: any[]) => any) | undefined;
     onBlur?: ((...args: any[]) => any) | undefined;
     onInput?: ((...args: any[]) => any) | undefined;
     onKeydown?: ((...args: any[]) => any) | undefined;
     onKeyup?: ((...args: any[]) => any) | undefined;
-    "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
     onClear?: ((...args: any[]) => any) | undefined;
     "onLeft-click"?: ((...args: any[]) => any) | undefined;
     "onRight-click"?: ((...args: any[]) => any) | undefined;
 }, {
+    modelValue: string | number;
     type: string;
-    size: string;
     label: string;
+    disabled: boolean;
+    name: string;
+    size: string;
     left: string | Record<string, any>;
     right: string | Record<string, any>;
-    modelValue: string | number;
     border: boolean;
-    name: string;
     align: string;
-    disabled: boolean;
     placeholder: string;
     required: boolean;
     clearable: boolean;

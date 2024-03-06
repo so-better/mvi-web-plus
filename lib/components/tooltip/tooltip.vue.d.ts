@@ -118,17 +118,17 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: boolean;
     };
 }>>, {
-    color: string;
-    title: string;
-    borderColor: string;
-    placement: string;
-    offset: string;
     zIndex: number;
-    width: string;
+    color: string;
     timeout: number;
+    title: string;
+    disabled: boolean;
+    placement: string;
+    width: string;
+    offset: string;
+    borderColor: string;
     showTriangle: boolean;
     animation: string;
-    disabled: boolean;
     block: boolean;
     textColor: string;
     trigger: string;

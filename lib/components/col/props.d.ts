@@ -12,23 +12,23 @@ declare const _default: {
         default: string;
     };
     xs: {
-        type: (ObjectConstructor | NumberConstructor)[];
+        type: (NumberConstructor | ObjectConstructor)[];
         default: null;
     };
     sm: {
-        type: (ObjectConstructor | NumberConstructor)[];
+        type: (NumberConstructor | ObjectConstructor)[];
         default: null;
     };
     md: {
-        type: (ObjectConstructor | NumberConstructor)[];
+        type: (NumberConstructor | ObjectConstructor)[];
         default: null;
     };
     lg: {
-        type: (ObjectConstructor | NumberConstructor)[];
+        type: (NumberConstructor | ObjectConstructor)[];
         default: null;
     };
     xl: {
-        type: (ObjectConstructor | NumberConstructor)[];
+        type: (NumberConstructor | ObjectConstructor)[];
         default: null;
     };
 };

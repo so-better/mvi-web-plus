@@ -36,8 +36,8 @@ declare const _default: import("vue").DefineComponent<{
     };
 }>>, {
     size: string;
+    placement: string;
     background: string;
     borderColor: string;
-    placement: string;
 }, {}>;
 export default _default;

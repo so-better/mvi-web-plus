@@ -4,7 +4,7 @@ declare const _default: import("vue").DefineComponent<{
         default: boolean;
     };
     modelValue: {
-        type: (StringConstructor | BooleanConstructor | ObjectConstructor | NumberConstructor)[];
+        type: (StringConstructor | NumberConstructor | BooleanConstructor | ObjectConstructor)[];
         default: boolean;
     };
     label: {
@@ -12,7 +12,7 @@ declare const _default: import("vue").DefineComponent<{
         default: null;
     };
     value: {
-        type: (StringConstructor | ObjectConstructor | NumberConstructor)[];
+        type: (StringConstructor | NumberConstructor | ObjectConstructor)[];
         default: string;
     };
     round: {
@@ -45,7 +45,7 @@ declare const _default: import("vue").DefineComponent<{
         default: boolean;
     };
     modelValue: {
-        type: (StringConstructor | BooleanConstructor | ObjectConstructor | NumberConstructor)[];
+        type: (StringConstructor | NumberConstructor | BooleanConstructor | ObjectConstructor)[];
         default: boolean;
     };
     label: {
@@ -53,7 +53,7 @@ declare const _default: import("vue").DefineComponent<{
         default: null;
     };
     value: {
-        type: (StringConstructor | ObjectConstructor | NumberConstructor)[];
+        type: (StringConstructor | NumberConstructor | ObjectConstructor)[];
         default: string;
     };
     round: {
@@ -78,17 +78,17 @@ declare const _default: import("vue").DefineComponent<{
         default: null;
     };
 }>> & {
-    onChange?: ((...args: any[]) => any) | undefined;
     "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
+    onChange?: ((...args: any[]) => any) | undefined;
 }, {
-    size: string;
     color: string;
-    label: string;
-    placement: string;
     modelValue: string | number | boolean | Record<string, any>;
-    name: string;
+    label: string;
     disabled: boolean;
-    value: string | number | Record<string, any>;
+    name: string;
+    size: string;
+    placement: string;
     round: boolean;
+    value: string | number | Record<string, any>;
 }, {}>;
 export default _default;

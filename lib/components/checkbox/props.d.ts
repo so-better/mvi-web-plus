@@ -12,7 +12,7 @@ declare const _default: {
         default: null;
     };
     value: {
-        type: (StringConstructor | ObjectConstructor | ArrayConstructor | NumberConstructor)[];
+        type: (StringConstructor | NumberConstructor | ObjectConstructor | ArrayConstructor)[];
         default: string;
     };
     round: {

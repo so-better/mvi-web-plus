@@ -85,13 +85,13 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     onHidding?: ((...args: any[]) => any) | undefined;
     onHidden?: ((...args: any[]) => any) | undefined;
 }, {
+    mountEl: string;
+    zIndex: number;
     color: string;
     modelValue: boolean;
-    zIndex: number;
+    fade: boolean;
     timeout: number;
     closable: boolean;
-    mountEl: string;
-    fade: boolean;
     usePadding: boolean;
 }, {}>, {
     default?(_: {}): any;

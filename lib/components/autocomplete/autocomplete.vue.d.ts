@@ -73,10 +73,10 @@ declare const _default: DefineComponent<{
         validator(value: any): boolean;
     };
 }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+    "update:modelValue": (...args: any[]) => void;
     input: (...args: any[]) => void;
     select: (...args: any[]) => void;
     clear: (...args: any[]) => void;
-    "update:modelValue": (...args: any[]) => void;
     focus: (...args: any[]) => void;
     blur: (...args: any[]) => void;
     "left-click": (...args: any[]) => void;
@@ -157,23 +157,24 @@ declare const _default: DefineComponent<{
         validator(value: any): boolean;
     };
 }>> & {
+    "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
     onFocus?: ((...args: any[]) => any) | undefined;
     onBlur?: ((...args: any[]) => any) | undefined;
     onInput?: ((...args: any[]) => any) | undefined;
     onKeydown?: ((...args: any[]) => any) | undefined;
     onKeyup?: ((...args: any[]) => any) | undefined;
     onSelect?: ((...args: any[]) => any) | undefined;
-    "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
     onClear?: ((...args: any[]) => any) | undefined;
     "onLeft-click"?: ((...args: any[]) => any) | undefined;
     "onRight-click"?: ((...args: any[]) => any) | undefined;
 }, {
-    size: string;
     modelValue: string;
-    name: string;
-    align: string;
     disabled: boolean;
+    name: string;
+    size: string;
+    round: boolean;
     height: string;
+    align: string;
     list: unknown[];
     placeholder: string;
     activeType: string;
@@ -183,7 +184,6 @@ declare const _default: DefineComponent<{
     layerProps: Record<string, any>;
     leftIcon: string | Record<string, any>;
     rightIcon: string | Record<string, any>;
-    round: boolean;
     square: boolean;
 }, {}>;
 export default _default;
