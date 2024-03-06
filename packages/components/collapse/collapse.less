@@ -1,0 +1,17 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-collapse {
+	display: block;
+	width: 100%;
+	background-color: #fff;
+
+	:deep(.mvi-collapse-item:last-child) {
+		&.border::after {
+			border-bottom: none;
+		}
+
+		.mvi-collapse-cell.border:not(.expand)::after {
+			border-bottom: none;
+		}
+	}
+}

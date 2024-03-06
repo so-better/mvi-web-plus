@@ -48,6 +48,10 @@ import { Switch } from './components/switch'
 import { Navbar } from './components/navbar'
 import { Notify } from './components/notify'
 import { Actionsheet } from './components/actionsheet'
+import { Calendar } from './components/calendar'
+import { CircleProgress } from './components/circle-progress'
+import { Collapse } from './components/collapse'
+import { CollapseItem } from './components/collapse-item'
 
 /***** 按需导出 *****/
 export * from './directives/anchor'
@@ -89,6 +93,10 @@ export * from './components/switch'
 export * from './components/navbar'
 export * from './components/notify'
 export * from './components/actionsheet'
+export * from './components/calendar'
+export * from './components/circle-progress'
+export * from './components/collapse'
+export * from './components/collapse-item'
 
 /***** 全局导出 *****/
 const install = (app: App) => {
@@ -131,7 +139,11 @@ const install = (app: App) => {
 		Switch,
 		Navbar,
 		Notify,
-		Actionsheet
+		Actionsheet,
+		Calendar,
+		CircleProgress,
+		Collapse,
+		CollapseItem
 	}
 	//注册组件和指令
 	Object.values(components).map(component => {

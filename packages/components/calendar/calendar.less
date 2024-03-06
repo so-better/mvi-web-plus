@@ -1,0 +1,305 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-calendar {
+	display: block;
+	width: 100%;
+	padding: @mp-xs;
+	background-color: #fff;
+	border-radius: @radius-default;
+	color: @font-color-default;
+
+	.mvi-calendar-years {
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+		align-items: center;
+
+		.mvi-calendar-year {
+			width: 25%;
+			display: block;
+			text-align: center;
+			padding: @mp-xs;
+			user-select: none;
+
+			.mvi-calendar-year-item {
+				display: inline-block;
+				position: relative;
+				padding: @mp-xs @mp-sm;
+				font-size: @font-size-default;
+				border-radius: @radius-default / 2;
+				cursor: pointer;
+
+				&[disabled] {
+					opacity: 0.6;
+				}
+
+				&.active:active::before {
+					.mvi-active();
+				}
+
+				&.now {
+					&.info {
+						color: @info-normal;
+					}
+
+					&.success {
+						color: @success-normal;
+					}
+
+					&.primary {
+						color: @primary-normal;
+					}
+
+					&.warn {
+						color: @warn-normal;
+					}
+
+					&.error {
+						color: @error-normal;
+					}
+				}
+
+				&.current {
+					font-weight: bold;
+
+					&.info {
+						background-color: @light-info;
+						color: @info-normal;
+					}
+
+					&.success {
+						background-color: @light-success;
+						color: @success-normal;
+					}
+
+					&.primary {
+						background-color: @light-primary;
+						color: #fff;
+					}
+
+					&.warn {
+						background-color: @light-warn;
+						color: @warn-normal;
+					}
+
+					&.error {
+						background-color: @light-error;
+						color: @error-normal;
+					}
+				}
+			}
+		}
+	}
+
+	.mvi-calendar-months {
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+		align-items: center;
+
+		.mvi-calendar-month {
+			width: 25%;
+			display: block;
+			text-align: center;
+			padding: @mp-xs;
+			user-select: none;
+
+			.mvi-calendar-month-item {
+				display: inline-block;
+				position: relative;
+				padding: @mp-xs @mp-sm;
+				font-size: @font-size-default;
+				border-radius: @radius-default / 2;
+				cursor: pointer;
+
+				&[disabled] {
+					opacity: 0.6;
+				}
+
+				&.active:active::before {
+					.mvi-active();
+				}
+
+				&.now {
+					&.info {
+						color: @info-normal;
+					}
+
+					&.success {
+						color: @success-normal;
+					}
+
+					&.primary {
+						color: @primary-normal;
+					}
+
+					&.warn {
+						color: @warn-normal;
+					}
+
+					&.error {
+						color: @error-normal;
+					}
+				}
+
+				&.current {
+					font-weight: bold;
+
+					&.info {
+						background-color: @light-info;
+						color: @info-normal;
+					}
+
+					&.success {
+						background-color: @light-success;
+						color: @success-normal;
+					}
+
+					&.primary {
+						background-color: @light-primary;
+						color: #fff;
+					}
+
+					&.warn {
+						background-color: @light-warn;
+						color: @warn-normal;
+					}
+
+					&.error {
+						background-color: @light-error;
+						color: @error-normal;
+					}
+				}
+			}
+		}
+	}
+
+	.mvi-calendar-date {
+		display: table;
+		border-collapse: collapse;
+		width: 100%;
+		vertical-align: middle;
+
+		.mvi-calendar-date-header {
+			margin: 0;
+			padding: 0;
+			width: 100%;
+			display: table-header-group;
+			font-weight: bold;
+			vertical-align: middle;
+
+			.mvi-calendar-date-header-item {
+				display: table-cell;
+				padding: @mp-xs;
+				text-align: center;
+				line-height: 1.5;
+				font-size: @font-size-default;
+			}
+		}
+
+		.mvi-calendar-date-body {
+			display: table-row-group;
+			width: 100%;
+			vertical-align: middle;
+			padding: @mp-sm 0;
+
+			.mvi-calendar-date-row {
+				display: table-row;
+				margin: 0;
+				padding: 0;
+				width: 100%;
+				position: relative;
+				vertical-align: middle;
+
+				.mvi-calendar-date-column {
+					display: table-cell;
+					position: relative;
+					text-align: center;
+					line-height: 1.5;
+					vertical-align: middle;
+					user-select: none;
+
+					.mvi-calendar-date-item {
+						position: relative;
+						display: inline-flex;
+						justify-content: center;
+						align-items: center;
+						width: @medium-height;
+						height: @medium-height;
+						border-radius: @radius-circle;
+						font-size: @font-size-default;
+						cursor: pointer;
+
+						&[disabled] {
+							opacity: 0.6;
+						}
+
+						&.none-current {
+							opacity: 0.6;
+							cursor: auto;
+
+							&.allowed {
+								cursor: pointer;
+							}
+						}
+
+						&.active:active::before {
+							.mvi-active();
+						}
+
+						&.now {
+							&.info {
+								color: @info-normal;
+							}
+
+							&.success {
+								color: @success-normal;
+							}
+
+							&.primary {
+								color: @primary-normal;
+							}
+
+							&.warn {
+								color: @warn-normal;
+							}
+
+							&.error {
+								color: @error-normal;
+							}
+						}
+
+						&.current {
+							font-weight: bold;
+
+							&.info {
+								background-color: @light-info;
+								color: @info-normal;
+							}
+
+							&.success {
+								background-color: @light-success;
+								color: @success-normal;
+							}
+
+							&.primary {
+								background-color: @light-primary;
+								color: #fff;
+							}
+
+							&.warn {
+								background-color: @light-warn;
+								color: @warn-normal;
+							}
+
+							&.error {
+								background-color: @light-error;
+								color: @error-normal;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

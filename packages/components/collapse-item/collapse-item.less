@@ -1,0 +1,48 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-collapse-item {
+	display: block;
+	width: 100%;
+	overflow: hidden;
+	background-color: inherit;
+	position: relative;
+
+	&[disabled] {
+		opacity: 0.6;
+	}
+
+	&.border::after {
+		display: block;
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		content: '';
+		height: 0;
+		border-bottom: 1px solid @border-color;
+		width: 100%;
+		box-sizing: content-box;
+	}
+
+	.mvi-collapse-cell {
+		background-color: inherit;
+		color: inherit;
+		cursor: pointer;
+
+		:deep(.mvi-cell-arrow) {
+			transition: transform 200ms linear;
+		}
+
+		&.expand :deep(.mvi-cell-arrow) {
+			transform: rotate(90deg);
+		}
+	}
+
+	.mvi-collapse-content {
+		display: block;
+		width: 100%;
+		padding: @mp-sm;
+		font-size: @font-size-default;
+		color: inherit;
+		line-height: 1.5;
+	}
+}
