@@ -1,0 +1,126 @@
+@import '../../css/mvi-basic.less';
+
+//菜单
+.mvi-actionsheet {
+	display: block;
+	width: 100%;
+	position: relative;
+
+	.mvi-actionsheet-title {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: center;
+		align-items: center;
+		height: @medium-height;
+		border-bottom: 1px solid @border-color;
+		color: @font-color-sub;
+		padding: 0 @mp-md;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+
+		&.medium {
+			font-size: @font-size-small;
+		}
+
+		&.large {
+			font-size: @font-size-default;
+		}
+	}
+
+	.mvi-actionsheet-list {
+		display: block;
+		width: 100%;
+
+		.mvi-actionsheet-item {
+			display: flex;
+			display: -webkit-flex;
+			position: relative;
+			justify-content: center;
+			align-items: center;
+			border-bottom: 1px solid @border-color;
+			color: @font-color-default;
+			padding: 0 @mp-md;
+			cursor: pointer;
+
+			&.medium {
+				height: @medium-height;
+				font-size: @font-size-default;
+			}
+
+			&.large {
+				height: @large-height;
+				font-size: @font-size-h6;
+			}
+
+			&.active:active::before {
+				.mvi-active();
+			}
+
+			&[disabled] {
+				color: @font-color-mute;
+			}
+
+			&:last-child {
+				border-bottom: none;
+			}
+
+			.mvi-actionsheet-content {
+				display: flex;
+				display: -webkit-flex;
+				justify-content: center;
+				align-items: center;
+				width: 100%;
+
+				.mvi-icon {
+					font-size: inherit;
+					margin-right: @mp-xs;
+					margin-left: 0;
+				}
+
+				.mvi-icon[data-placement='right'] {
+					margin-left: @mp-xs;
+					margin-right: 0;
+				}
+			}
+
+			.mvi-actionsheet-item-label {
+				display: inline-block;
+				max-width: 80%;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+		}
+	}
+
+	.mvi-actionsheet-divider {
+		display: block;
+		width: 100%;
+		height: 0.3rem;
+		background-color: @bg-color-default;
+	}
+
+	.mvi-actionsheet-button {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: center;
+		align-items: center;
+		position: relative;
+		color: @font-color-default;
+
+		&.medium {
+			font-size: @font-size-h6;
+			height: @medium-height;
+		}
+
+		&.large {
+			font-size: @font-size-h5;
+			height: @large-height;
+		}
+
+		&.active:active::before {
+			.mvi-active();
+		}
+	}
+}

@@ -46,6 +46,8 @@ import { Tooltip } from './components/tooltip'
 import { TransitionSlide } from './components/transition-slide'
 import { Switch } from './components/switch'
 import { Navbar } from './components/navbar'
+import { Notify } from './components/notify'
+import { Actionsheet } from './components/actionsheet'
 
 /***** 按需导出 *****/
 export * from './directives/anchor'
@@ -85,6 +87,8 @@ export * from './components/tooltip'
 export * from './components/transition-slide'
 export * from './components/switch'
 export * from './components/navbar'
+export * from './components/notify'
+export * from './components/actionsheet'
 
 /***** 全局导出 *****/
 const install = (app: App) => {
@@ -125,7 +129,9 @@ const install = (app: App) => {
 		Tooltip,
 		TransitionSlide,
 		Switch,
-		Navbar
+		Navbar,
+		Notify,
+		Actionsheet
 	}
 	//注册组件和指令
 	Object.values(components).map(component => {

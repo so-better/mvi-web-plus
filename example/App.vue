@@ -1,9 +1,7 @@
 <template>
     <div class="mvi-p-10">
         <m-button @click="onClick">Button</m-button>
-        <m-navbar border left-icon="angle-left" title="MVI移动端组件库">
-            <template #right>333</template>
-        </m-navbar>
+        <m-actionsheet v-model="show" :options="options"></m-actionsheet>
     </div>
 </template>
 
@@ -11,24 +9,14 @@
 export default {
     data() {
         return {
-            show: true,
+            show: false,
             value: '',
             options: [
                 {
-                    label: '选项A',
-                    value: 0
+                    label: '分享到朋友圈'
                 },
                 {
-                    label: '选项B',
-                    value: 1
-                },
-                {
-                    label: '选项C',
-                    value: 2
-                },
-                {
-                    label: '选项D',
-                    value: 3
+                    label: '分享到QQ空间'
                 }
             ]
         }
