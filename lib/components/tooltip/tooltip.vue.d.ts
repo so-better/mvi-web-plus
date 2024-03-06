@@ -4,7 +4,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: string;
     };
     placement: {
-        type: StringConstructor;
+        type: import("vue").PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined>;
         default: string;
     };
     disabled: {
@@ -28,7 +28,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: string;
     };
     trigger: {
-        type: StringConstructor;
+        type: import("vue").PropType<"click" | "hover" | "custom">;
         default: string;
         validator(value: any): boolean;
     };
@@ -65,7 +65,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: string;
     };
     placement: {
-        type: StringConstructor;
+        type: import("vue").PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined>;
         default: string;
     };
     disabled: {
@@ -89,7 +89,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: string;
     };
     trigger: {
-        type: StringConstructor;
+        type: import("vue").PropType<"click" | "hover" | "custom">;
         default: string;
         validator(value: any): boolean;
     };
@@ -123,7 +123,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     timeout: number;
     title: string;
     disabled: boolean;
-    placement: string;
+    placement: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined;
     width: string;
     offset: string;
     borderColor: string;
@@ -131,7 +131,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     animation: string;
     block: boolean;
     textColor: string;
-    trigger: string;
+    trigger: "click" | "hover" | "custom";
 }, {}>, {
     default?(_: {}): any;
     title?(_: {}): any;

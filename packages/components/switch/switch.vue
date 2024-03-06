@@ -1,7 +1,7 @@
 <script setup name="m-switch" lang="ts">
 import { computed } from 'vue';
 import { Icon } from '../icon'
-import SwitchProps from "./props"
+import { SwitchProps } from "./props"
 
 //属性
 const props = defineProps(SwitchProps)

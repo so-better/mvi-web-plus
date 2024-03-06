@@ -1,4 +1,6 @@
+import { DropdownOptionsItemType } from "./props";
 import { DefineComponent } from 'vue';
+import { IconPropsType } from '../icon/props';
 declare const _default: DefineComponent<{
     modelValue: {
         type: (StringConstructor | NumberConstructor | ObjectConstructor | ArrayConstructor)[];
@@ -9,7 +11,7 @@ declare const _default: DefineComponent<{
         default: null;
     };
     options: {
-        type: import("vue").PropType<import("./OptionsItem").OptionsItem[]>;
+        type: import("vue").PropType<DropdownOptionsItemType[]>;
         default: () => never[];
     };
     selectedClose: {
@@ -17,7 +19,7 @@ declare const _default: DefineComponent<{
         default: boolean;
     };
     selectedIcon: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<string | IconPropsType>;
         default: string;
     };
     show: {
@@ -41,7 +43,7 @@ declare const _default: DefineComponent<{
         default: boolean;
     };
     placement: {
-        type: StringConstructor;
+        type: import("vue").PropType<"left" | "top" | "bottom" | "right" | undefined>;
         default: string;
     };
     closable: {
@@ -61,7 +63,7 @@ declare const _default: DefineComponent<{
         default: boolean;
     };
 }, {
-    $$el: import("vue").ComputedRef<any>;
+    $$el: import("vue").ComputedRef<HTMLElement>;
 }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     select: (...args: any[]) => void;
@@ -76,7 +78,7 @@ declare const _default: DefineComponent<{
         default: null;
     };
     options: {
-        type: import("vue").PropType<import("./OptionsItem").OptionsItem[]>;
+        type: import("vue").PropType<DropdownOptionsItemType[]>;
         default: () => never[];
     };
     selectedClose: {
@@ -84,7 +86,7 @@ declare const _default: DefineComponent<{
         default: boolean;
     };
     selectedIcon: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<string | IconPropsType>;
         default: string;
     };
     show: {
@@ -108,7 +110,7 @@ declare const _default: DefineComponent<{
         default: boolean;
     };
     placement: {
-        type: StringConstructor;
+        type: import("vue").PropType<"left" | "top" | "bottom" | "right" | undefined>;
         default: string;
     };
     closable: {
@@ -140,12 +142,12 @@ declare const _default: DefineComponent<{
     usePadding: boolean;
     show: boolean;
     overlayColor: string;
-    placement: string;
+    placement: "left" | "top" | "bottom" | "right" | undefined;
     round: boolean;
-    options: import("./OptionsItem").OptionsItem[];
+    options: DropdownOptionsItemType[];
     active: boolean;
     activeColor: string;
     selectedClose: boolean;
-    selectedIcon: string | Record<string, any>;
+    selectedIcon: string | IconPropsType;
 }, {}>;
 export default _default;

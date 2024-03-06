@@ -1,8 +1,9 @@
 <script setup name="m-navbar" lang="ts">
 import Dap from 'dap-util'
 import { Icon } from '../icon'
-import NavbarProps from './props';
+import { NavbarProps } from './props';
 import { computed, useSlots } from 'vue';
+import { IconPropsType } from '../icon/props';
 
 //属性
 const props = defineProps(NavbarProps)
@@ -10,30 +11,30 @@ const props = defineProps(NavbarProps)
 //事件
 const emits = defineEmits(['left-click', 'right-click', 'title-click'])
 
-const parseIcon = computed<(params: any) => any>(() => {
-    return (params: any) => {
-        let icon: any = {
+const parseIcon = computed<(params: string | IconPropsType) => IconPropsType>(() => {
+    return (params: string | IconPropsType) => {
+        let icon: IconPropsType = {
             spin: false,
-            type: null,
-            url: null,
-            color: null,
-            size: null
+            type: '',
+            url: '',
+            color: '',
+            size: '',
         }
         if (Dap.common.isObject(params)) {
-            if (typeof params.spin == 'boolean') {
-                icon.spin = params.spin
+            if (typeof (<IconPropsType>params).spin == 'boolean') {
+                icon.spin = (<IconPropsType>params).spin
             }
-            if (typeof params.type == 'string') {
-                icon.type = params.type
+            if (typeof (<IconPropsType>params).type == 'string') {
+                icon.type = (<IconPropsType>params).type
             }
-            if (typeof params.url == 'string') {
-                icon.url = params.url
+            if (typeof (<IconPropsType>params).url == 'string') {
+                icon.url = (<IconPropsType>params).url
             }
-            if (typeof params.color == 'string') {
-                icon.color = params.color
+            if (typeof (<IconPropsType>params).color == 'string') {
+                icon.color = (<IconPropsType>params).color
             }
-            if (typeof params.size == 'string') {
-                icon.size = params.size
+            if (typeof (<IconPropsType>params).size == 'string') {
+                icon.size = (<IconPropsType>params).size
             }
         } else if (typeof params == 'string') {
             icon.type = params
@@ -42,10 +43,10 @@ const parseIcon = computed<(params: any) => any>(() => {
     }
 })
 const showLeft = computed<boolean>(() => {
-    return parseIcon.value(props.leftIcon).type || parseIcon.value(props.leftIcon).url || useSlots().left || props.leftText
+    return !!(parseIcon.value(props.leftIcon).type || parseIcon.value(props.leftIcon).url || useSlots().left || props.leftText)
 })
 const showRight = computed<boolean>(() => {
-    return parseIcon.value(props.rightIcon).type || parseIcon.value(props.rightIcon).url || useSlots().right || props.rightText
+    return !!(parseIcon.value(props.rightIcon).type || parseIcon.value(props.rightIcon).url || useSlots().right || props.rightText)
 })
 const leftStyle = computed<any>(() => {
     let style: any = {}

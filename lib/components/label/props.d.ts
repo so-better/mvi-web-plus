@@ -1,11 +1,12 @@
-declare const _default: {
+import { ExtractPublicPropTypes, PropType } from 'vue';
+export declare const LabelProps: {
     type: {
-        type: StringConstructor;
+        type: PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
     size: {
-        type: StringConstructor;
+        type: PropType<"medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
@@ -30,4 +31,4 @@ declare const _default: {
         default: boolean;
     };
 };
-export default _default;
+export type LabelPropsType = ExtractPublicPropTypes<typeof LabelProps>;

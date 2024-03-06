@@ -1,7 +1,15 @@
-import { PropType } from 'vue'
-import { OptionsItem } from './OptionsItem'
+import { ExtractPublicPropTypes, PropType } from 'vue'
+import { IconPropsType } from '../icon/props'
+import { PopupPropsType } from '../popup/props'
 
-export default {
+export type DropdownOptionsItemType = {
+	label?: string
+	value?: string
+	disabled?: boolean
+	icon?: string | IconPropsType
+}
+
+export const DropdownProps = {
 	//默认选中的选项
 	modelValue: {
 		type: [Object, Number, String, Array],
@@ -14,7 +22,7 @@ export default {
 	},
 	//列表参数,含label,value,disabled,icon
 	options: {
-		type: Array as PropType<OptionsItem[]>,
+		type: Array as PropType<DropdownOptionsItemType[]>,
 		default: function () {
 			return []
 		}
@@ -26,7 +34,7 @@ export default {
 	},
 	//自定义右侧选中的图标
 	selectedIcon: {
-		type: [String, Object],
+		type: [String, Object] as PropType<string | IconPropsType>,
 		default: 'success'
 	},
 	//是否显示
@@ -56,7 +64,7 @@ export default {
 	},
 	//位置
 	placement: {
-		type: String,
+		type: String as PropType<PopupPropsType['placement']>,
 		default: 'top'
 	},
 	//点击遮罩是否可关闭
@@ -80,3 +88,5 @@ export default {
 		default: false
 	}
 }
+
+export type DropdownPropsType = ExtractPublicPropTypes<typeof DropdownProps>

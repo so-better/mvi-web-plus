@@ -1,7 +1,7 @@
 <script setup name="m-tooltip" lang="ts">
 import { getCurrentInstance, ref } from 'vue'
 import { Layer } from '../layer'
-import TooltipProps from "./props"
+import { TooltipProps } from "./props"
 
 //获取实例
 const instance = getCurrentInstance()!

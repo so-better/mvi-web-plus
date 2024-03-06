@@ -1,6 +1,9 @@
-export default {
+import { ExtractPublicPropTypes, PropType } from 'vue'
+
+export const MsgboxProps = {
 	//提示文本
 	message: {
+		type: String,
 		default: null
 	},
 	//动画效果
@@ -30,9 +33,11 @@ export default {
 	},
 	//移除方法
 	__remove: {
-		type: Function,
+		type: Function as PropType<() => void>,
 		default: function () {
 			return function () {}
 		}
 	}
 }
+
+export type MsgboxPropsType = ExtractPublicPropTypes<typeof MsgboxProps>

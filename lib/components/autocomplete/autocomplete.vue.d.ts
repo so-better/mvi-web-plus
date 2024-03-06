@@ -1,4 +1,6 @@
 import { DefineComponent } from 'vue';
+import { IconPropsType } from '../icon/props';
+import { LayerPropsType } from '../layer/props';
 declare const _default: DefineComponent<{
     modelValue: {
         type: StringConstructor;
@@ -9,16 +11,16 @@ declare const _default: DefineComponent<{
         default: string;
     };
     size: {
-        type: StringConstructor;
+        type: import("vue").PropType<"small" | "medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
     list: {
-        type: ArrayConstructor;
+        type: import("vue").PropType<string[]>;
         default: () => never[];
     };
     activeType: {
-        type: StringConstructor;
+        type: import("vue").PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
@@ -28,7 +30,7 @@ declare const _default: DefineComponent<{
         validator(value: any): any;
     };
     filterMethod: {
-        type: (BooleanConstructor | FunctionConstructor)[];
+        type: import("vue").PropType<boolean | ((value: string, list: string[]) => string[])>;
         default: boolean;
     };
     clearable: {
@@ -40,7 +42,7 @@ declare const _default: DefineComponent<{
         default: boolean;
     };
     layerProps: {
-        type: ObjectConstructor;
+        type: import("vue").PropType<LayerPropsType>;
         default: () => {};
     };
     height: {
@@ -52,11 +54,11 @@ declare const _default: DefineComponent<{
         default: null;
     };
     leftIcon: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<string | IconPropsType>;
         default: null;
     };
     rightIcon: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<string | IconPropsType>;
         default: null;
     };
     round: {
@@ -68,7 +70,7 @@ declare const _default: DefineComponent<{
         default: boolean;
     };
     align: {
-        type: StringConstructor;
+        type: import("vue").PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
@@ -93,16 +95,16 @@ declare const _default: DefineComponent<{
         default: string;
     };
     size: {
-        type: StringConstructor;
+        type: import("vue").PropType<"small" | "medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
     list: {
-        type: ArrayConstructor;
+        type: import("vue").PropType<string[]>;
         default: () => never[];
     };
     activeType: {
-        type: StringConstructor;
+        type: import("vue").PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
@@ -112,7 +114,7 @@ declare const _default: DefineComponent<{
         validator(value: any): any;
     };
     filterMethod: {
-        type: (BooleanConstructor | FunctionConstructor)[];
+        type: import("vue").PropType<boolean | ((value: string, list: string[]) => string[])>;
         default: boolean;
     };
     clearable: {
@@ -124,7 +126,7 @@ declare const _default: DefineComponent<{
         default: boolean;
     };
     layerProps: {
-        type: ObjectConstructor;
+        type: import("vue").PropType<LayerPropsType>;
         default: () => {};
     };
     height: {
@@ -136,11 +138,11 @@ declare const _default: DefineComponent<{
         default: null;
     };
     leftIcon: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<string | IconPropsType>;
         default: null;
     };
     rightIcon: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<string | IconPropsType>;
         default: null;
     };
     round: {
@@ -152,7 +154,7 @@ declare const _default: DefineComponent<{
         default: boolean;
     };
     align: {
-        type: StringConstructor;
+        type: import("vue").PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
@@ -171,19 +173,34 @@ declare const _default: DefineComponent<{
     modelValue: string;
     disabled: boolean;
     name: string;
-    size: string;
+    size: "small" | "medium" | "large";
     round: boolean;
     height: string;
-    align: string;
-    list: unknown[];
+    align: "left" | "right" | "center";
+    list: string[];
     placeholder: string;
-    activeType: string;
+    activeType: "info" | "success" | "warn" | "error" | "primary";
     activeColor: string;
-    filterMethod: boolean | Function;
+    filterMethod: boolean | ((value: string, list: string[]) => string[]);
     clearable: boolean;
-    layerProps: Record<string, any>;
-    leftIcon: string | Record<string, any>;
-    rightIcon: string | Record<string, any>;
+    layerProps: {
+        zIndex?: number | undefined;
+        modelValue?: boolean | undefined;
+        timeout?: number | undefined;
+        closable?: boolean | undefined;
+        placement?: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined;
+        width?: string | undefined;
+        offset?: string | undefined;
+        background?: string | undefined;
+        borderColor?: string | undefined;
+        relate?: string | undefined;
+        showTriangle?: boolean | undefined;
+        animation?: string | undefined;
+        shadow?: boolean | undefined;
+        border?: boolean | undefined;
+    };
+    leftIcon: string | IconPropsType;
+    rightIcon: string | IconPropsType;
     square: boolean;
 }, {}>;
 export default _default;

@@ -1,4 +1,7 @@
-export default {
+import { ExtractPublicPropTypes, PropType } from 'vue'
+import { LayerPropsType } from '../layer/props'
+
+export const TooltipProps = {
 	//提示内容
 	title: {
 		type: String,
@@ -6,7 +9,7 @@ export default {
 	},
 	//显示位置
 	placement: {
-		type: String,
+		type: String as PropType<LayerPropsType['placement']>,
 		default: 'bottom'
 	},
 	//是否禁用
@@ -36,7 +39,7 @@ export default {
 	},
 	//触发方式
 	trigger: {
-		type: String,
+		type: String as PropType<'hover' | 'click' | 'custom'>,
 		default: 'click',
 		validator(value: any) {
 			return ['hover', 'click', 'custom'].includes(value)
@@ -73,3 +76,5 @@ export default {
 		default: false
 	}
 }
+
+export type TooltipPropsType = ExtractPublicPropTypes<typeof TooltipProps>

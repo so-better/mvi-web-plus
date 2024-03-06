@@ -1,8 +1,8 @@
 <script setup name="m-radio" lang="ts">
 import Dap from 'dap-util'
 import { Icon } from '../icon'
-import RadioProps from "./props"
-import { computed } from 'vue';
+import { RadioProps } from "./props"
+import { computed } from 'vue'
 //属性
 const props = defineProps(RadioProps)
 //事件

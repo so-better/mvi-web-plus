@@ -1,4 +1,7 @@
-export default {
+import { ComponentInternalInstance, ExtractPublicPropTypes, PropType } from 'vue'
+import { IconPropsType } from '../icon/props'
+
+export const NotifyProps = {
 	//提示类型
 	type: {
 		type: String,
@@ -31,21 +34,23 @@ export default {
 	},
 	//图标
 	icon: {
-		type: [String, Object],
+		type: [String, Object] as PropType<string | IconPropsType>,
 		default: null
 	},
 	//移除方法
 	__remove: {
-		type: Function,
+		type: Function as PropType<() => void>,
 		default: function () {
 			return function () {}
 		}
 	},
 	//初始化方法
 	__init: {
-		type: Function,
+		type: Function as PropType<(vm: ComponentInternalInstance) => void>,
 		default: function () {
 			return function () {}
 		}
 	}
 }
+
+export type NotifyPropsType = ExtractPublicPropTypes<typeof NotifyProps>

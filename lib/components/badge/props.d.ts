@@ -1,10 +1,11 @@
-declare const _default: {
+import { ExtractPublicPropTypes, PropType } from 'vue';
+export declare const BadgeProps: {
     content: {
         type: (StringConstructor | NumberConstructor)[];
         default: null;
     };
     placement: {
-        type: StringConstructor;
+        type: PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
         default: string;
         validator(value: any): boolean;
     };
@@ -17,7 +18,7 @@ declare const _default: {
         default: boolean;
     };
     offset: {
-        type: ArrayConstructor;
+        type: PropType<string[]>;
         default: () => null;
     };
     background: {
@@ -33,4 +34,4 @@ declare const _default: {
         default: boolean;
     };
 };
-export default _default;
+export type BadgePropsType = ExtractPublicPropTypes<typeof BadgeProps>;

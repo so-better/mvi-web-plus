@@ -1,4 +1,5 @@
-declare const _default: {
+import { ExtractPublicPropTypes, PropType } from 'vue';
+export declare const PopupProps: {
     modelValue: {
         type: BooleanConstructor;
         default: boolean;
@@ -20,7 +21,7 @@ declare const _default: {
         default: number;
     };
     placement: {
-        type: StringConstructor;
+        type: PropType<"left" | "top" | "bottom" | "right">;
         default: string;
         validator(value: any): boolean;
     };
@@ -37,7 +38,7 @@ declare const _default: {
         default: boolean;
     };
     timesPlacement: {
-        type: StringConstructor;
+        type: PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
         default: string;
         validator(value: any): boolean;
     };
@@ -54,4 +55,4 @@ declare const _default: {
         default: boolean;
     };
 };
-export default _default;
+export type PopupPropsType = ExtractPublicPropTypes<typeof PopupProps>;

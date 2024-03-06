@@ -1,4 +1,5 @@
-declare const _default: {
+import { ExtractPublicPropTypes, PropType } from 'vue';
+export declare const RadioProps: {
     disabled: {
         type: BooleanConstructor;
         default: boolean;
@@ -24,7 +25,7 @@ declare const _default: {
         default: null;
     };
     placement: {
-        type: StringConstructor;
+        type: PropType<"left" | "right">;
         default: string;
         validator(value: any): boolean;
     };
@@ -37,4 +38,4 @@ declare const _default: {
         default: null;
     };
 };
-export default _default;
+export type RadioPropsType = ExtractPublicPropTypes<typeof RadioProps>;

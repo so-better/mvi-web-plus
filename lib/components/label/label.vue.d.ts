@@ -1,11 +1,11 @@
 declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     type: {
-        type: StringConstructor;
+        type: import("vue").PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
     size: {
-        type: StringConstructor;
+        type: import("vue").PropType<"medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
@@ -31,12 +31,12 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     };
 }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     type: {
-        type: StringConstructor;
+        type: import("vue").PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
     size: {
-        type: StringConstructor;
+        type: import("vue").PropType<"medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
@@ -61,11 +61,11 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: boolean;
     };
 }>>, {
-    reverse: boolean;
     closable: boolean;
-    type: string;
+    reverse: boolean;
+    type: "default" | "info" | "success" | "warn" | "error" | "primary";
     mark: boolean;
-    size: string;
+    size: "medium" | "large";
     round: boolean;
     plain: boolean;
 }, {}>, {

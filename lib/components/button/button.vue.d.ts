@@ -1,11 +1,12 @@
+import { IconPropsType } from '../icon/props';
 declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     type: {
-        type: StringConstructor;
+        type: import("vue").PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
     size: {
-        type: StringConstructor;
+        type: import("vue").PropType<"small" | "medium" | "large" | "mini">;
         default: string;
         validator(value: any): boolean;
     };
@@ -14,7 +15,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: boolean;
     };
     nativeType: {
-        type: StringConstructor;
+        type: import("vue").PropType<"button" | "submit" | "reset">;
         default: string;
     };
     block: {
@@ -50,7 +51,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: string;
     };
     loadIcon: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<string | IconPropsType>;
         default: () => {
             type: string;
             spin: boolean;
@@ -58,12 +59,12 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     };
 }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     type: {
-        type: StringConstructor;
+        type: import("vue").PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
     size: {
-        type: StringConstructor;
+        type: import("vue").PropType<"small" | "medium" | "large" | "mini">;
         default: string;
         validator(value: any): boolean;
     };
@@ -72,7 +73,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: boolean;
     };
     nativeType: {
-        type: StringConstructor;
+        type: import("vue").PropType<"button" | "submit" | "reset">;
         default: string;
     };
     block: {
@@ -108,26 +109,26 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: string;
     };
     loadIcon: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<string | IconPropsType>;
         default: () => {
             type: string;
             spin: boolean;
         };
     };
 }>>, {
-    type: string;
+    type: "default" | "info" | "success" | "warn" | "error" | "primary";
     disabled: boolean;
-    size: string;
+    size: "small" | "medium" | "large" | "mini";
     round: boolean;
     loading: boolean;
     active: boolean;
     square: boolean;
     block: boolean;
-    nativeType: string;
+    nativeType: "button" | "submit" | "reset";
     tag: string;
     plain: boolean;
     loadText: string;
-    loadIcon: string | Record<string, any>;
+    loadIcon: string | IconPropsType;
 }, {}>, {
     loading?(_: {}): any;
     default?(_: {}): any;

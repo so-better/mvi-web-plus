@@ -1,7 +1,9 @@
 <template>
     <div class="mvi-p-10">
         <m-button @click="onClick">Button</m-button>
-        <m-actionsheet v-model="show" :options="options"></m-actionsheet>
+        <m-switch v-model="show">
+
+        </m-switch>
     </div>
 </template>
 
@@ -13,10 +15,20 @@ export default {
             value: '',
             options: [
                 {
-                    label: '分享到朋友圈'
+                    label: '选项A',
+                    value: 0
                 },
                 {
-                    label: '分享到QQ空间'
+                    label: '选项B',
+                    value: 1
+                },
+                {
+                    label: '选项C',
+                    value: 2
+                },
+                {
+                    label: '选项D',
+                    value: 3
                 }
             ]
         }
@@ -24,7 +36,14 @@ export default {
     mounted() { },
     methods: {
         onClick() {
-            this.show = !this.show
+            // this.show = !this.show
+            this.$showNotify({
+                timeout: 3000,
+                message: 'wocao'
+            })
+            setTimeout(() => {
+                this.$hideNotify()
+            }, 500);
         }
     }
 }

@@ -1,3 +1,4 @@
+import { ColResponsiveType } from './props';
 declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     span: {
         type: NumberConstructor;
@@ -12,23 +13,23 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: string;
     };
     xs: {
-        type: (NumberConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<number | ColResponsiveType>;
         default: null;
     };
     sm: {
-        type: (NumberConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<number | ColResponsiveType>;
         default: null;
     };
     md: {
-        type: (NumberConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<number | ColResponsiveType>;
         default: null;
     };
     lg: {
-        type: (NumberConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<number | ColResponsiveType>;
         default: null;
     };
     xl: {
-        type: (NumberConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<number | ColResponsiveType>;
         default: null;
     };
 }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
@@ -45,34 +46,34 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: string;
     };
     xs: {
-        type: (NumberConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<number | ColResponsiveType>;
         default: null;
     };
     sm: {
-        type: (NumberConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<number | ColResponsiveType>;
         default: null;
     };
     md: {
-        type: (NumberConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<number | ColResponsiveType>;
         default: null;
     };
     lg: {
-        type: (NumberConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<number | ColResponsiveType>;
         default: null;
     };
     xl: {
-        type: (NumberConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<number | ColResponsiveType>;
         default: null;
     };
 }>>, {
     span: number;
     offset: number;
     tag: string;
-    xs: number | Record<string, any>;
-    sm: number | Record<string, any>;
-    md: number | Record<string, any>;
-    lg: number | Record<string, any>;
-    xl: number | Record<string, any>;
+    xs: number | ColResponsiveType;
+    sm: number | ColResponsiveType;
+    md: number | ColResponsiveType;
+    lg: number | ColResponsiveType;
+    xl: number | ColResponsiveType;
 }, {}>, {
     default?(_: {}): any;
 }>;

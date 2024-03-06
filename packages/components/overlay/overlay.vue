@@ -1,6 +1,6 @@
 <script setup name="m-overlay" lang="ts">
 import Dap from 'dap-util'
-import OverlayProps from "./props"
+import { OverlayProps } from "./props"
 import { ref, watch, computed, onMounted, getCurrentInstance } from 'vue';
 
 //属性不继承
@@ -52,8 +52,8 @@ const overlayStyle = computed<any>(() => {
     return style
 })
 //遮罩层根元素
-const $$el = computed<HTMLElement | null>(() => {
-    return overlayRef.value
+const $$el = computed<HTMLElement>(() => {
+    return overlayRef.value!
 })
 
 //transition钩子函数：组件显示之前

@@ -1,4 +1,4 @@
-import { ExtractPropTypes } from 'vue'
+import { ExtractPublicPropTypes } from 'vue'
 
 export const IconProps = {
 	//图标类型
@@ -28,4 +28,4 @@ export const IconProps = {
 	}
 }
 
-export type IconPropsType = ExtractPropTypes<typeof IconProps>
+export type IconPropsType = ExtractPublicPropTypes<typeof IconProps>

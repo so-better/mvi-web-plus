@@ -1,4 +1,6 @@
-export default {
+import { ExtractPublicPropTypes } from 'vue'
+
+export const DividerProps = {
 	//是否使用虚线
 	dashed: {
 		type: Boolean,
@@ -10,3 +12,5 @@ export default {
 		default: null
 	}
 }
+
+export type DividerPropsType = ExtractPublicPropTypes<typeof DividerProps>

@@ -1,4 +1,7 @@
-export default {
+import { ExtractPublicPropTypes, PropType } from 'vue'
+import { IconPropsType } from '../icon/props'
+
+export const NavbarProps = {
 	//标题
 	title: {
 		type: String,
@@ -16,12 +19,12 @@ export default {
 	},
 	//左侧图标
 	leftIcon: {
-		type: [String, Object],
+		type: [String, Object] as PropType<string | IconPropsType>,
 		default: null
 	},
 	//右侧图标
 	rightIcon: {
-		type: [String, Object],
+		type: [String, Object] as PropType<string | IconPropsType>,
 		default: null
 	},
 	//是否固定顶部
@@ -40,3 +43,5 @@ export default {
 		default: 400
 	}
 }
+
+export type NavbarPropsType = ExtractPublicPropTypes<typeof NavbarProps>

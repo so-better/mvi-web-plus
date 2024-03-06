@@ -1,7 +1,10 @@
-export default {
+import { ExtractPublicPropTypes, PropType } from 'vue'
+import { IconPropsType } from '../icon/props'
+
+export const ButtonProps = {
 	//主题类型
 	type: {
-		type: String,
+		type: String as PropType<'default' | 'info' | 'success' | 'error' | 'warn' | 'primary'>,
 		default: 'default',
 		validator(value: any) {
 			return ['default', 'info', 'success', 'error', 'warn', 'primary'].includes(value)
@@ -9,7 +12,7 @@ export default {
 	},
 	//尺寸
 	size: {
-		type: String,
+		type: String as PropType<'mini' | 'small' | 'medium' | 'large'>,
 		default: 'medium',
 		validator(value: any) {
 			return ['mini', 'small', 'medium', 'large'].includes(value)
@@ -22,7 +25,7 @@ export default {
 	},
 	//原生按钮type
 	nativeType: {
-		type: String,
+		type: String as PropType<HTMLButtonElement['type']>,
 		default: 'button'
 	},
 	//是否独占一行
@@ -67,7 +70,7 @@ export default {
 	},
 	//加载图标
 	loadIcon: {
-		type: [String, Object],
+		type: [String, Object] as PropType<string | IconPropsType>,
 		default: function () {
 			return {
 				type: 'load-e',
@@ -76,3 +79,5 @@ export default {
 		}
 	}
 }
+
+export type ButtonPropsType = ExtractPublicPropTypes<typeof ButtonProps>

@@ -1,4 +1,6 @@
-declare const _default: {
+import { ComponentInternalInstance, ExtractPublicPropTypes, PropType } from 'vue';
+import { IconPropsType } from '../icon/props';
+export declare const NotifyProps: {
     type: {
         type: StringConstructor;
         default: null;
@@ -24,16 +26,16 @@ declare const _default: {
         default: null;
     };
     icon: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: PropType<string | IconPropsType>;
         default: null;
     };
     __remove: {
-        type: FunctionConstructor;
+        type: PropType<() => void>;
         default: () => () => void;
     };
     __init: {
-        type: FunctionConstructor;
+        type: PropType<(vm: ComponentInternalInstance) => void>;
         default: () => () => void;
     };
 };
-export default _default;
+export type NotifyPropsType = ExtractPublicPropTypes<typeof NotifyProps>;

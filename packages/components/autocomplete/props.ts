@@ -1,6 +1,9 @@
 import Dap from 'dap-util'
+import { ExtractPublicPropTypes, PropType } from 'vue'
+import { LayerPropsType } from '../layer/props'
+import { IconPropsType } from '../icon/props'
 
-export default {
+export const AutocompleteProps = {
 	//输入框的值
 	modelValue: {
 		type: String,
@@ -13,7 +16,7 @@ export default {
 	},
 	//组件大小
 	size: {
-		type: String,
+		type: String as PropType<'small' | 'medium' | 'large'>,
 		default: 'medium',
 		validator(value: any) {
 			return ['small', 'medium', 'large'].includes(value)
@@ -21,14 +24,14 @@ export default {
 	},
 	//可选值数组
 	list: {
-		type: Array,
+		type: Array as PropType<string[]>,
 		default: function () {
 			return []
 		}
 	},
 	//激活样式
 	activeType: {
-		type: String,
+		type: String as PropType<'info' | 'success' | 'warn' | 'error' | 'primary'>,
 		default: 'info',
 		validator(value: any) {
 			return ['info', 'success', 'warn', 'error', 'primary'].includes(value)
@@ -44,7 +47,7 @@ export default {
 	},
 	//过滤方法
 	filterMethod: {
-		type: [Function, Boolean],
+		type: [Function, Boolean] as PropType<((value: string, list: string[]) => string[]) | boolean>,
 		default: false
 	},
 	//是否启用清除图标
@@ -59,7 +62,7 @@ export default {
 	},
 	//layer组件参数
 	layerProps: {
-		type: Object,
+		type: Object as PropType<LayerPropsType>,
 		default: function () {
 			return {}
 		}
@@ -76,12 +79,12 @@ export default {
 	},
 	//左侧图标
 	leftIcon: {
-		type: [String, Object],
+		type: [String, Object] as PropType<string | IconPropsType>,
 		default: null
 	},
 	//右侧图标
 	rightIcon: {
-		type: [String, Object],
+		type: [String, Object] as PropType<string | IconPropsType>,
 		default: null
 	},
 	//是否圆角
@@ -96,10 +99,12 @@ export default {
 	},
 	//对齐方式
 	align: {
-		type: String,
+		type: String as PropType<'left' | 'right' | 'center'>,
 		default: 'left',
 		validator(value: any) {
 			return ['left', 'right', 'center'].includes(value)
 		}
 	}
 }
+
+export type AutocompletePropsType = ExtractPublicPropTypes<typeof AutocompleteProps>

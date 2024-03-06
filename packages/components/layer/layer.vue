@@ -2,7 +2,7 @@
 import { DefineComponent, computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch, nextTick } from 'vue'
 import Dap from 'dap-util'
 import { Triangle } from '../triangle'
-import LayerProps from './props'
+import { LayerProps } from './props'
 //属性不继承
 defineOptions({
     inheritAttrs: false
@@ -16,17 +16,19 @@ const instance = getCurrentInstance()!
 //uid
 const uid = instance.uid
 //浮层是否显示
-const layerShow = ref(false)
+const layerShow = ref<boolean>(false)
 //浮层是否第一次显示
-const firstShow = ref(false)
+const firstShow = ref<boolean>(false)
 //浮层真实位置
-const realPlacement = ref('bottom')
+const realPlacement = ref<string>('bottom')
 //浮层元素
 const layerRef = ref<HTMLElement | null>(null)
 //三角元素
 const triangleRef = ref<DefineComponent | null>(null)
 //浮层元素导出对象
-const $$el = computed(() => layerRef.value)
+const $$el = computed<HTMLElement>(() => {
+    return layerRef.value!
+})
 //三角形位置
 const trianglePlacement = computed<'bottom' | 'top' | 'left' | 'right' | undefined>(() => {
     if (realPlacement.value == 'bottom-start' || realPlacement.value == 'bottom' || realPlacement.value == 'bottom-end') {

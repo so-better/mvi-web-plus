@@ -1,4 +1,5 @@
-declare const _default: {
+import { ExtractPublicPropTypes, PropType } from 'vue';
+export declare const TriangleProps: {
     background: {
         type: StringConstructor;
         default: null;
@@ -12,9 +13,9 @@ declare const _default: {
         default: string;
     };
     placement: {
-        type: StringConstructor;
+        type: PropType<"left" | "top" | "bottom" | "right">;
         default: string;
         validator(value: any): boolean;
     };
 };
-export default _default;
+export type TrianglePropsType = ExtractPublicPropTypes<typeof TriangleProps>;

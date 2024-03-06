@@ -1,4 +1,5 @@
-declare const _default: {
+import { ExtractPublicPropTypes } from 'vue';
+export declare const SignProps: {
     color: {
         type: StringConstructor;
         default: string;
@@ -12,4 +13,4 @@ declare const _default: {
         default: number;
     };
 };
-export default _default;
+export type SignPropsType = ExtractPublicPropTypes<typeof SignProps>;

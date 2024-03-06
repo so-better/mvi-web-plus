@@ -1,4 +1,6 @@
-export default {
+import { ExtractPublicPropTypes } from 'vue'
+
+export const SignProps = {
 	//签名颜色
 	color: {
 		type: String,
@@ -15,3 +17,5 @@ export default {
 		default: 0.05
 	}
 }
+
+export type SignPropsType = ExtractPublicPropTypes<typeof SignProps>

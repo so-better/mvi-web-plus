@@ -1,6 +1,8 @@
-declare const _default: {
+import { ExtractPublicPropTypes, PropType } from 'vue';
+import { IconPropsType } from '../icon/props';
+export declare const CellProps: {
     icon: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: PropType<string | IconPropsType>;
         default: null;
     };
     title: {
@@ -20,7 +22,7 @@ declare const _default: {
         default: null;
     };
     arrow: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: PropType<string | IconPropsType>;
         default: null;
     };
     active: {
@@ -36,4 +38,4 @@ declare const _default: {
         default: boolean;
     };
 };
-export default _default;
+export type CellPropsType = ExtractPublicPropTypes<typeof CellProps>;

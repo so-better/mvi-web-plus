@@ -1,4 +1,6 @@
-declare const _default: {
+import { ExtractPublicPropTypes, PropType } from 'vue';
+import { IconPropsType } from '../icon/props';
+export declare const NavbarProps: {
     title: {
         type: StringConstructor;
         default: null;
@@ -12,11 +14,11 @@ declare const _default: {
         default: null;
     };
     leftIcon: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: PropType<string | IconPropsType>;
         default: null;
     };
     rightIcon: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: PropType<string | IconPropsType>;
         default: null;
     };
     fixed: {
@@ -32,4 +34,4 @@ declare const _default: {
         default: number;
     };
 };
-export default _default;
+export type NavbarPropsType = ExtractPublicPropTypes<typeof NavbarProps>;

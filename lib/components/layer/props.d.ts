@@ -1,4 +1,5 @@
-declare const _default: {
+import { ExtractPublicPropTypes, PropType } from 'vue';
+export declare const LayerProps: {
     modelValue: {
         type: BooleanConstructor;
         default: boolean;
@@ -8,7 +9,7 @@ declare const _default: {
         default: null;
     };
     placement: {
-        type: StringConstructor;
+        type: PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
         default: string;
         validator(value: any): boolean;
     };
@@ -57,4 +58,4 @@ declare const _default: {
         default: string;
     };
 };
-export default _default;
+export type LayerPropsType = ExtractPublicPropTypes<typeof LayerProps>;

@@ -1,8 +1,9 @@
 <script setup name="m-notify" lang="ts">
 import Dap from 'dap-util'
 import { Icon } from '../icon'
-import NotifyProps from './props'
+import { NotifyProps } from './props'
 import { computed, getCurrentInstance, onMounted, ref } from 'vue';
+import { IconPropsType } from '../icon/props';
 
 //实例
 const instance = getCurrentInstance()!
@@ -17,7 +18,7 @@ const show = ref<boolean>(false)
 
 //类型
 const cmpType = computed<string>(() => {
-    let arr = ['success', 'info', 'primary', 'error', 'warn']
+    let arr: string[] = ['success', 'info', 'primary', 'error', 'warn']
     if (arr.includes(props.type)) {
         return props.type
     }
@@ -62,30 +63,30 @@ const cmpTimeout = computed<number>(() => {
     return 1500
 })
 //转换图标
-const parseIcon = computed<any>(() => {
-    return (params: any) => {
-        let icon: any = {
+const parseIcon = computed(() => {
+    return (params: string | IconPropsType) => {
+        let icon: IconPropsType = {
             spin: false,
-            type: null,
-            url: null,
-            color: null,
-            size: null
+            type: '',
+            url: '',
+            color: '',
+            size: ''
         }
         if (Dap.common.isObject(params)) {
-            if (typeof params.spin == 'boolean') {
-                icon.spin = params.spin
+            if (typeof (<IconPropsType>params).spin == 'boolean') {
+                icon.spin = (<IconPropsType>params).spin
             }
-            if (typeof params.type == 'string') {
-                icon.type = params.type
+            if (typeof (<IconPropsType>params).type == 'string') {
+                icon.type = (<IconPropsType>params).type
             }
-            if (typeof params.url == 'string') {
-                icon.url = params.url
+            if (typeof (<IconPropsType>params).url == 'string') {
+                icon.url = (<IconPropsType>params).url
             }
-            if (typeof params.color == 'string') {
-                icon.color = params.color
+            if (typeof (<IconPropsType>params).color == 'string') {
+                icon.color = (<IconPropsType>params).color
             }
-            if (typeof params.size == 'string') {
-                icon.size = params.size
+            if (typeof (<IconPropsType>params).size == 'string') {
+                icon.size = (<IconPropsType>params).size
             }
         } else if (typeof params == 'string') {
             icon.type = params

@@ -1,7 +1,9 @@
-export default {
+import { ExtractPublicPropTypes, PropType } from 'vue'
+
+export const LabelProps = {
 	//标签样式
 	type: {
-		type: String,
+		type: String as PropType<'default' | 'error' | 'info' | 'primary' | 'success' | 'warn'>,
 		default: 'default',
 		validator(value: any) {
 			return ['default', 'error', 'info', 'primary', 'success', 'warn'].includes(value)
@@ -9,7 +11,7 @@ export default {
 	},
 	//标签大小
 	size: {
-		type: String,
+		type: String as PropType<'medium' | 'large'>,
 		default: 'medium',
 		validator(value: any) {
 			return ['medium', 'large'].includes(value)
@@ -41,3 +43,5 @@ export default {
 		default: false
 	}
 }
+
+export type LabelPropsType = ExtractPublicPropTypes<typeof LabelProps>

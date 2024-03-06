@@ -4,7 +4,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: null;
     };
     placement: {
-        type: StringConstructor;
+        type: import("vue").PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
         default: string;
         validator(value: any): boolean;
     };
@@ -17,7 +17,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: boolean;
     };
     offset: {
-        type: ArrayConstructor;
+        type: import("vue").PropType<string[]>;
         default: () => null;
     };
     background: {
@@ -38,7 +38,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: null;
     };
     placement: {
-        type: StringConstructor;
+        type: import("vue").PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
         default: string;
         validator(value: any): boolean;
     };
@@ -51,7 +51,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: boolean;
     };
     offset: {
-        type: ArrayConstructor;
+        type: import("vue").PropType<string[]>;
         default: () => null;
     };
     background: {
@@ -69,8 +69,8 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
 }>>, {
     color: string;
     show: boolean;
-    placement: string;
-    offset: unknown[];
+    placement: "top-right" | "top-left" | "bottom-right" | "bottom-left";
+    offset: string[];
     background: string;
     content: string | number;
     dot: boolean;

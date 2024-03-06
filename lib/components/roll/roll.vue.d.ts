@@ -4,7 +4,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: number;
     };
     direction: {
-        type: StringConstructor;
+        type: import("vue").PropType<"left" | "right" | "up" | "down">;
         default: string;
         validator(value: any): boolean;
     };
@@ -17,7 +17,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: boolean;
     };
     animation: {
-        type: StringConstructor;
+        type: import("vue").PropType<"linear" | "ease" | "ease-in" | "ease-out" | "ease-in-out">;
         default: string;
         validator(value: any): boolean;
     };
@@ -49,7 +49,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: number;
     };
     direction: {
-        type: StringConstructor;
+        type: import("vue").PropType<"left" | "right" | "up" | "down">;
         default: string;
         validator(value: any): boolean;
     };
@@ -62,7 +62,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: boolean;
     };
     animation: {
-        type: StringConstructor;
+        type: import("vue").PropType<"linear" | "ease" | "ease-in" | "ease-out" | "ease-in-out">;
         default: string;
         validator(value: any): boolean;
     };
@@ -83,10 +83,10 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     onPlay?: ((...args: any[]) => any) | undefined;
     onStop?: ((...args: any[]) => any) | undefined;
 }, {
-    animation: string;
+    animation: "linear" | "ease" | "ease-in" | "ease-out" | "ease-in-out";
     center: boolean;
     interval: number;
-    direction: string;
+    direction: "left" | "right" | "up" | "down";
     autoplay: boolean;
     loop: boolean;
     clickStop: boolean;

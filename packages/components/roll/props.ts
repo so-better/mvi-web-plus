@@ -1,4 +1,6 @@
-export default {
+import { ExtractPublicPropTypes, PropType } from 'vue'
+
+export const RollProps = {
 	//滚动一个周期需要的时间
 	interval: {
 		type: Number,
@@ -6,7 +8,7 @@ export default {
 	},
 	//滚动方向
 	direction: {
-		type: String,
+		type: String as PropType<'left' | 'right' | 'up' | 'down'>,
 		default: 'left',
 		validator(value: any) {
 			return ['left', 'right', 'up', 'down'].includes(value)
@@ -24,7 +26,7 @@ export default {
 	},
 	//动画效果
 	animation: {
-		type: String,
+		type: String as PropType<'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out'>,
 		default: 'linear',
 		validator(value: any) {
 			return ['linear', 'ease', 'ease-in', 'ease-out', 'ease-in-out'].includes(value)
@@ -46,3 +48,5 @@ export default {
 		default: false
 	}
 }
+
+export type RollPropsType = ExtractPublicPropTypes<typeof RollProps>

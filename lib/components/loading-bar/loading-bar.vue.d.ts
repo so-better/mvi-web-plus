@@ -8,11 +8,11 @@ declare const _default: import("vue").DefineComponent<{
         default: null;
     };
     __remove: {
-        type: FunctionConstructor;
+        type: import("vue").PropType<() => void>;
         default: () => () => void;
     };
     __init: {
-        type: FunctionConstructor;
+        type: import("vue").PropType<(vm: import("vue").ComponentInternalInstance) => void>;
         default: () => () => void;
     };
 }, {
@@ -27,17 +27,17 @@ declare const _default: import("vue").DefineComponent<{
         default: null;
     };
     __remove: {
-        type: FunctionConstructor;
+        type: import("vue").PropType<() => void>;
         default: () => () => void;
     };
     __init: {
-        type: FunctionConstructor;
+        type: import("vue").PropType<(vm: import("vue").ComponentInternalInstance) => void>;
         default: () => () => void;
     };
 }>>, {
     zIndex: number;
     color: string;
-    __remove: Function;
-    __init: Function;
+    __remove: () => void;
+    __init: (vm: import("vue").ComponentInternalInstance) => void;
 }, {}>;
 export default _default;

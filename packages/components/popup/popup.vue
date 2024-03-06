@@ -2,7 +2,7 @@
 import Dap from 'dap-util'
 import { Overlay } from '../overlay'
 import { Icon } from '../icon'
-import PopupProps from "./props"
+import { PopupProps } from "./props"
 import { DefineComponent, computed, getCurrentInstance, ref } from 'vue';
 
 //定义属性不继承
@@ -26,21 +26,21 @@ const firstShow = ref<boolean>(false)
 //遮罩层组件
 const overlayRef = ref<DefineComponent | null>(null)
 //遮罩层元素
-const $$el = computed(() => {
+const $$el = computed<HTMLElement>(() => {
     return overlayRef.value!.$$el
 })
 //是否显示
 const show = computed<boolean>({
-    get: () => {
+    get() {
         return props.modelValue
     },
-    set: (value: any) => {
+    set(value: any) {
         emits('update:modelValue', value)
     }
 })
 //弹出层类
 const popupClass = computed<string[]>(() => {
-    let cls = [props.placement]
+    let cls: string[] = [props.placement]
     if (props.round) {
         cls.push('round')
     }

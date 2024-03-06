@@ -1,6 +1,7 @@
 import { App, ComponentInternalInstance, createApp } from 'vue'
 import Dap from 'dap-util'
 import NotifyComponent from './notify.vue'
+import { NotifyPropsType } from './props'
 
 interface NotifyType {
 	//挂载的dom
@@ -9,32 +10,32 @@ interface NotifyType {
 	$instance?: App<Element>
 	//组件实例
 	$vm?: ComponentInternalInstance
-	initParams: (options: any) => any
-	showNotify: (options: any) => void
+	initParams: (options: string | NotifyPropsType) => NotifyPropsType
+	showNotify: (options: NotifyPropsType) => void
 	hideNotify: () => void
 	install: (app: App) => void
 }
 
 const Notify: NotifyType = {
 	//初始化参数
-	initParams: (options: any) => {
-		let opts: any = {}
+	initParams: (options: string | NotifyPropsType) => {
+		let opts: NotifyPropsType = {}
 		if (Dap.common.isObject(options)) {
-			opts.type = options.type
-			opts.message = options.message
-			opts.timeout = options.timeout
-			opts.background = options.background
-			opts.color = options.color
-			opts.zIndex = options.zIndex
-			opts.icon = options.icon
+			opts.type = (<NotifyPropsType>options).type
+			opts.message = (<NotifyPropsType>options).message
+			opts.timeout = (<NotifyPropsType>options).timeout
+			opts.background = (<NotifyPropsType>options).background
+			opts.color = (<NotifyPropsType>options).color
+			opts.zIndex = (<NotifyPropsType>options).zIndex
+			opts.icon = (<NotifyPropsType>options).icon
 		} else {
-			opts.message = options
+			opts.message = <string>options
 		}
 		return opts
 	},
 
 	//显示弹窗
-	showNotify: (options: any) => {
+	showNotify: (options: string | NotifyPropsType) => {
 		return new Promise<void>(resolve => {
 			//如果已经存在弹窗，则关闭后再进行
 			if (Notify.$el && Notify.$instance) {
@@ -66,7 +67,7 @@ const Notify: NotifyType = {
 	//关闭弹窗
 	hideNotify: () => {
 		if (Notify.$vm) {
-			Notify.$vm.exposed!.show = false
+			Notify.$vm.exposed!.show.value = false
 		}
 	},
 

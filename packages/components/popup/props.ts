@@ -1,4 +1,6 @@
-export default {
+import { ExtractPublicPropTypes, PropType } from 'vue'
+
+export const PopupProps = {
 	//显示与否
 	modelValue: {
 		type: Boolean,
@@ -26,7 +28,7 @@ export default {
 	},
 	//弹窗的位置
 	placement: {
-		type: String,
+		type: String as PropType<'left' | 'top' | 'bottom' | 'right'>,
 		default: 'bottom',
 		validator(value: any) {
 			return ['left', 'top', 'bottom', 'right'].includes(value)
@@ -49,7 +51,7 @@ export default {
 	},
 	//关闭图标位置
 	timesPlacement: {
-		type: String,
+		type: String as PropType<'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'>,
 		default: 'top-right',
 		validator(value: any) {
 			return ['top-right', 'top-left', 'bottom-right', 'bottom-left'].includes(value)
@@ -71,3 +73,5 @@ export default {
 		default: true
 	}
 }
+
+export type PopupPropsType = ExtractPublicPropTypes<typeof PopupProps>

@@ -1,11 +1,11 @@
 declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     justify: {
-        type: StringConstructor;
+        type: import("vue").PropType<"flex-start" | "flex-end" | "space-around" | "space-between">;
         default: string;
         validator(value: any): boolean;
     };
     align: {
-        type: StringConstructor;
+        type: import("vue").PropType<"center" | "flex-start" | "flex-end">;
         default: string;
         validator(value: any): boolean;
     };
@@ -15,12 +15,12 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     };
 }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     justify: {
-        type: StringConstructor;
+        type: import("vue").PropType<"flex-start" | "flex-end" | "space-around" | "space-between">;
         default: string;
         validator(value: any): boolean;
     };
     align: {
-        type: StringConstructor;
+        type: import("vue").PropType<"center" | "flex-start" | "flex-end">;
         default: string;
         validator(value: any): boolean;
     };
@@ -29,9 +29,9 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: string;
     };
 }>>, {
-    align: string;
+    align: "center" | "flex-start" | "flex-end";
     tag: string;
-    justify: string;
+    justify: "flex-start" | "flex-end" | "space-around" | "space-between";
 }, {}>, {
     default?(_: {}): any;
 }>;

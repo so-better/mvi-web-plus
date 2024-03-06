@@ -1,6 +1,12 @@
-import { PropType } from 'vue';
-import { OptionsItem } from './OptionsItem';
-declare const _default: {
+import { ExtractPublicPropTypes, PropType } from 'vue';
+import { IconPropsType } from '../icon/props';
+export type DropdownOptionsItemType = {
+    label?: string;
+    value?: string;
+    disabled?: boolean;
+    icon?: string | IconPropsType;
+};
+export declare const DropdownProps: {
     modelValue: {
         type: (StringConstructor | NumberConstructor | ObjectConstructor | ArrayConstructor)[];
         default: null;
@@ -10,7 +16,7 @@ declare const _default: {
         default: null;
     };
     options: {
-        type: PropType<OptionsItem[]>;
+        type: PropType<DropdownOptionsItemType[]>;
         default: () => never[];
     };
     selectedClose: {
@@ -18,7 +24,7 @@ declare const _default: {
         default: boolean;
     };
     selectedIcon: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: PropType<string | IconPropsType>;
         default: string;
     };
     show: {
@@ -42,7 +48,7 @@ declare const _default: {
         default: boolean;
     };
     placement: {
-        type: StringConstructor;
+        type: PropType<"left" | "top" | "bottom" | "right" | undefined>;
         default: string;
     };
     closable: {
@@ -62,4 +68,4 @@ declare const _default: {
         default: boolean;
     };
 };
-export default _default;
+export type DropdownPropsType = ExtractPublicPropTypes<typeof DropdownProps>;

@@ -1,4 +1,4 @@
-import { ExtractPropTypes, PropType } from 'vue';
+import { ExtractPublicPropTypes, PropType } from 'vue';
 import { IconPropsType } from '../icon/props';
 export type ActionsheetOptionsItemType = {
     label?: string;
@@ -70,4 +70,4 @@ export declare const ActionsheetProps: {
         validator(value: any): boolean;
     };
 };
-export type ActionsheetPropsType = ExtractPropTypes<typeof ActionsheetProps>;
+export type ActionsheetPropsType = ExtractPublicPropTypes<typeof ActionsheetProps>;

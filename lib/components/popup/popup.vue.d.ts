@@ -21,7 +21,7 @@ declare const _default: __VLS_WithTemplateSlots<DefineComponent<{
         default: number;
     };
     placement: {
-        type: StringConstructor;
+        type: import("vue").PropType<"left" | "top" | "bottom" | "right">;
         default: string;
         validator(value: any): boolean;
     };
@@ -38,7 +38,7 @@ declare const _default: __VLS_WithTemplateSlots<DefineComponent<{
         default: boolean;
     };
     timesPlacement: {
-        type: StringConstructor;
+        type: import("vue").PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
         default: string;
         validator(value: any): boolean;
     };
@@ -55,7 +55,7 @@ declare const _default: __VLS_WithTemplateSlots<DefineComponent<{
         default: boolean;
     };
 }, {
-    $$el: import("vue").ComputedRef<any>;
+    $$el: import("vue").ComputedRef<HTMLElement>;
 }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     show: (...args: any[]) => void;
@@ -86,7 +86,7 @@ declare const _default: __VLS_WithTemplateSlots<DefineComponent<{
         default: number;
     };
     placement: {
-        type: StringConstructor;
+        type: import("vue").PropType<"left" | "top" | "bottom" | "right">;
         default: string;
         validator(value: any): boolean;
     };
@@ -103,7 +103,7 @@ declare const _default: __VLS_WithTemplateSlots<DefineComponent<{
         default: boolean;
     };
     timesPlacement: {
-        type: StringConstructor;
+        type: import("vue").PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
         default: string;
         validator(value: any): boolean;
     };
@@ -135,11 +135,11 @@ declare const _default: __VLS_WithTemplateSlots<DefineComponent<{
     closable: boolean;
     usePadding: boolean;
     overlayColor: string;
-    placement: string;
+    placement: "left" | "top" | "bottom" | "right";
     round: boolean;
     width: string;
     showTimes: boolean;
-    timesPlacement: string;
+    timesPlacement: "top-right" | "top-left" | "bottom-right" | "bottom-left";
     __contentPadding: boolean;
 }, {}>, {
     default?(_: {}): any;

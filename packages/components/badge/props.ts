@@ -1,4 +1,6 @@
-export default {
+import { ExtractPublicPropTypes, PropType } from 'vue'
+
+export const BadgeProps = {
 	//徽标内容
 	content: {
 		type: [String, Number],
@@ -6,7 +8,7 @@ export default {
 	},
 	//徽标位置
 	placement: {
-		type: String,
+		type: String as PropType<'top-right' | 'top-left' | 'bottom-left' | 'bottom-right'>,
 		default: 'top-right',
 		validator(value: any) {
 			return ['top-right', 'top-left', 'bottom-left', 'bottom-right'].includes(value)
@@ -24,7 +26,7 @@ export default {
 	},
 	//徽标偏移值
 	offset: {
-		type: Array,
+		type: Array as PropType<string[]>,
 		default: function () {
 			return null
 		}
@@ -45,3 +47,5 @@ export default {
 		default: false
 	}
 }
+
+export type BadgePropsType = ExtractPublicPropTypes<typeof BadgeProps>

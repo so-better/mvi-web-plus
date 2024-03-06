@@ -1,4 +1,6 @@
-export default {
+import { ExtractPublicPropTypes, PropType } from 'vue'
+
+export const RadioProps = {
 	//是否禁用
 	disabled: {
 		type: Boolean,
@@ -31,7 +33,7 @@ export default {
 	},
 	//文字位置
 	placement: {
-		type: String,
+		type: String as PropType<'left' | 'right'>,
 		default: 'right',
 		validator(value: any) {
 			return ['left', 'right'].includes(value)
@@ -48,3 +50,5 @@ export default {
 		default: null
 	}
 }
+
+export type RadioPropsType = ExtractPublicPropTypes<typeof RadioProps>

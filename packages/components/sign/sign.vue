@@ -1,7 +1,7 @@
 <script setup name="m-sign" lang="ts">
 import Dap from 'dap-util'
 import { getCurrentInstance, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import SignProps from "./props"
+import { SignProps } from "./props"
 
 //获取实例
 const instance = getCurrentInstance()!

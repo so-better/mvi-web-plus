@@ -1,6 +1,7 @@
-declare const _default: {
+import { ExtractPublicPropTypes, PropType } from 'vue';
+export declare const LoadingProps: {
     type: {
-        type: StringConstructor;
+        type: PropType<"default" | "circle" | "spin" | "dots" | "transfer">;
         default: string;
         validator(value: any): boolean;
     };
@@ -13,4 +14,4 @@ declare const _default: {
         default: string;
     };
 };
-export default _default;
+export type LoadingPropsType = ExtractPublicPropTypes<typeof LoadingProps>;

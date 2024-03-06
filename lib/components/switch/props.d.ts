@@ -1,4 +1,5 @@
-declare const _default: {
+import { ExtractPublicPropTypes } from 'vue';
+export declare const SwitchProps: {
     modelValue: {
         type: BooleanConstructor;
         default: boolean;
@@ -24,4 +25,4 @@ declare const _default: {
         default: null;
     };
 };
-export default _default;
+export type SwitchPropsType = ExtractPublicPropTypes<typeof SwitchProps>;

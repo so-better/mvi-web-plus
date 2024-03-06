@@ -9,7 +9,7 @@ declare const _default: __VLS_WithTemplateSlots<DefineComponent<{
         default: null;
     };
     placement: {
-        type: StringConstructor;
+        type: import("vue").PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
         default: string;
         validator(value: any): boolean;
     };
@@ -58,7 +58,7 @@ declare const _default: __VLS_WithTemplateSlots<DefineComponent<{
         default: string;
     };
 }, {
-    $$el: import("vue").ComputedRef<HTMLElement | null>;
+    $$el: import("vue").ComputedRef<HTMLElement>;
     update: () => void;
 }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
@@ -78,7 +78,7 @@ declare const _default: __VLS_WithTemplateSlots<DefineComponent<{
         default: null;
     };
     placement: {
-        type: StringConstructor;
+        type: import("vue").PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
         default: string;
         validator(value: any): boolean;
     };
@@ -139,7 +139,7 @@ declare const _default: __VLS_WithTemplateSlots<DefineComponent<{
     modelValue: boolean;
     timeout: number;
     closable: boolean;
-    placement: string;
+    placement: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end";
     width: string;
     offset: string;
     background: string;

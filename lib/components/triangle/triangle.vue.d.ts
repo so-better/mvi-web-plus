@@ -12,7 +12,7 @@ declare const _default: import("vue").DefineComponent<{
         default: string;
     };
     placement: {
-        type: StringConstructor;
+        type: import("vue").PropType<"left" | "top" | "bottom" | "right">;
         default: string;
         validator(value: any): boolean;
     };
@@ -30,13 +30,13 @@ declare const _default: import("vue").DefineComponent<{
         default: string;
     };
     placement: {
-        type: StringConstructor;
+        type: import("vue").PropType<"left" | "top" | "bottom" | "right">;
         default: string;
         validator(value: any): boolean;
     };
 }>>, {
     size: string;
-    placement: string;
+    placement: "left" | "top" | "bottom" | "right";
     background: string;
     borderColor: string;
 }, {}>;

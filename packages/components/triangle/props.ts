@@ -1,4 +1,6 @@
-export default {
+import { ExtractPublicPropTypes, PropType } from 'vue'
+
+export const TriangleProps = {
 	//背景色
 	background: {
 		type: String,
@@ -16,10 +18,12 @@ export default {
 	},
 	//位置
 	placement: {
-		type: String,
+		type: String as PropType<'top' | 'left' | 'right' | 'bottom'>,
 		default: 'top',
 		validator(value: any) {
 			return ['top', 'left', 'right', 'bottom'].includes(value)
 		}
 	}
 }
+
+export type TrianglePropsType = ExtractPublicPropTypes<typeof TriangleProps>

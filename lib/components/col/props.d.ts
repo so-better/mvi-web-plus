@@ -1,4 +1,9 @@
-declare const _default: {
+import { ExtractPublicPropTypes, PropType } from 'vue';
+export type ColResponsiveType = {
+    span?: number;
+    offset?: number;
+};
+export declare const ColProps: {
     span: {
         type: NumberConstructor;
         default: number;
@@ -12,24 +17,24 @@ declare const _default: {
         default: string;
     };
     xs: {
-        type: (NumberConstructor | ObjectConstructor)[];
+        type: PropType<number | ColResponsiveType>;
         default: null;
     };
     sm: {
-        type: (NumberConstructor | ObjectConstructor)[];
+        type: PropType<number | ColResponsiveType>;
         default: null;
     };
     md: {
-        type: (NumberConstructor | ObjectConstructor)[];
+        type: PropType<number | ColResponsiveType>;
         default: null;
     };
     lg: {
-        type: (NumberConstructor | ObjectConstructor)[];
+        type: PropType<number | ColResponsiveType>;
         default: null;
     };
     xl: {
-        type: (NumberConstructor | ObjectConstructor)[];
+        type: PropType<number | ColResponsiveType>;
         default: null;
     };
 };
-export default _default;
+export type ColPropsType = ExtractPublicPropTypes<typeof ColProps>;

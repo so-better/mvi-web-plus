@@ -1,6 +1,6 @@
 <script setup name="m-roll" lang="ts">
 import Dap from 'dap-util'
-import RollProps from "./props"
+import { RollProps } from "./props"
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
 //属性

@@ -1,4 +1,6 @@
-export default {
+import { ExtractPublicPropTypes } from 'vue'
+
+export const OverlayProps = {
 	//挂载元素
 	mountEl: {
 		type: String,
@@ -43,3 +45,5 @@ export default {
 		default: false
 	}
 }
+
+export type OverlayPropsType = ExtractPublicPropTypes<typeof OverlayProps>

@@ -1,10 +1,11 @@
-declare const _default: {
+import { ExtractPublicPropTypes, PropType } from 'vue';
+export declare const RollProps: {
     interval: {
         type: NumberConstructor;
         default: number;
     };
     direction: {
-        type: StringConstructor;
+        type: PropType<"left" | "right" | "up" | "down">;
         default: string;
         validator(value: any): boolean;
     };
@@ -17,7 +18,7 @@ declare const _default: {
         default: boolean;
     };
     animation: {
-        type: StringConstructor;
+        type: PropType<"linear" | "ease" | "ease-in" | "ease-out" | "ease-in-out">;
         default: string;
         validator(value: any): boolean;
     };
@@ -34,4 +35,4 @@ declare const _default: {
         default: boolean;
     };
 };
-export default _default;
+export type RollPropsType = ExtractPublicPropTypes<typeof RollProps>;

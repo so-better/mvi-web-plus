@@ -1,4 +1,6 @@
-export default {
+import { ExtractPublicPropTypes, PropType } from 'vue'
+
+export const LayerProps = {
 	//是否显示悬浮层
 	modelValue: {
 		type: Boolean,
@@ -11,7 +13,7 @@ export default {
 	},
 	//悬浮层相对于触发元素的位置
 	placement: {
-		type: String,
+		type: String as PropType<'top' | 'left' | 'right' | 'bottom' | 'top-start' | 'top-end' | 'left-start' | 'left-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end'>,
 		default: 'bottom',
 		validator(value: any) {
 			return ['top', 'left', 'right', 'bottom', 'top-start', 'top-end', 'left-start', 'left-end', 'right-start', 'right-end', 'bottom-start', 'bottom-end'].includes(value)
@@ -73,3 +75,5 @@ export default {
 		default: '#fff'
 	}
 }
+
+export type LayerPropsType = ExtractPublicPropTypes<typeof LayerProps>

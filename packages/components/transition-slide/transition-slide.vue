@@ -1,6 +1,6 @@
 <script setup name="m-transition-slide" lang="ts">
 import Dap from 'dap-util'
-import TransitionSlideProps from './props'
+import { TransitionSlideProps } from './props'
 import { onMounted, ref, watch } from 'vue';
 
 //属性

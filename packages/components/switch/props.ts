@@ -1,4 +1,6 @@
-export default {
+import { ExtractPublicPropTypes } from 'vue'
+
+export const SwitchProps = {
 	//是否勾选
 	modelValue: {
 		type: Boolean,
@@ -30,3 +32,5 @@ export default {
 		default: null
 	}
 }
+
+export type SwitchPropsType = ExtractPublicPropTypes<typeof SwitchProps>

@@ -1,4 +1,7 @@
-declare const _default: {
+import { ExtractPublicPropTypes, PropType } from 'vue';
+import { LayerPropsType } from '../layer/props';
+import { IconPropsType } from '../icon/props';
+export declare const AutocompleteProps: {
     modelValue: {
         type: StringConstructor;
         default: string;
@@ -8,16 +11,16 @@ declare const _default: {
         default: string;
     };
     size: {
-        type: StringConstructor;
+        type: PropType<"small" | "medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
     list: {
-        type: ArrayConstructor;
+        type: PropType<string[]>;
         default: () => never[];
     };
     activeType: {
-        type: StringConstructor;
+        type: PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
@@ -27,7 +30,7 @@ declare const _default: {
         validator(value: any): any;
     };
     filterMethod: {
-        type: (BooleanConstructor | FunctionConstructor)[];
+        type: PropType<boolean | ((value: string, list: string[]) => string[])>;
         default: boolean;
     };
     clearable: {
@@ -39,7 +42,7 @@ declare const _default: {
         default: boolean;
     };
     layerProps: {
-        type: ObjectConstructor;
+        type: PropType<LayerPropsType>;
         default: () => {};
     };
     height: {
@@ -51,11 +54,11 @@ declare const _default: {
         default: null;
     };
     leftIcon: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: PropType<string | IconPropsType>;
         default: null;
     };
     rightIcon: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: PropType<string | IconPropsType>;
         default: null;
     };
     round: {
@@ -67,9 +70,9 @@ declare const _default: {
         default: boolean;
     };
     align: {
-        type: StringConstructor;
+        type: PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
 };
-export default _default;
+export type AutocompletePropsType = ExtractPublicPropTypes<typeof AutocompleteProps>;

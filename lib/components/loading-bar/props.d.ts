@@ -1,4 +1,5 @@
-declare const _default: {
+import { ComponentInternalInstance, ExtractPublicPropTypes, PropType } from 'vue';
+export declare const LoadingBarProps: {
     color: {
         type: StringConstructor;
         default: null;
@@ -8,12 +9,12 @@ declare const _default: {
         default: null;
     };
     __remove: {
-        type: FunctionConstructor;
+        type: PropType<() => void>;
         default: () => () => void;
     };
     __init: {
-        type: FunctionConstructor;
+        type: PropType<(vm: ComponentInternalInstance) => void>;
         default: () => () => void;
     };
 };
-export default _default;
+export type LoadingBarPropsType = ExtractPublicPropTypes<typeof LoadingBarProps>;

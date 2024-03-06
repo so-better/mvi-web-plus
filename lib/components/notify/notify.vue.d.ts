@@ -1,3 +1,4 @@
+import { IconPropsType } from '../icon/props';
 declare const _default: import("vue").DefineComponent<{
     type: {
         type: StringConstructor;
@@ -24,15 +25,15 @@ declare const _default: import("vue").DefineComponent<{
         default: null;
     };
     icon: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<string | IconPropsType>;
         default: null;
     };
     __remove: {
-        type: FunctionConstructor;
+        type: import("vue").PropType<() => void>;
         default: () => () => void;
     };
     __init: {
-        type: FunctionConstructor;
+        type: import("vue").PropType<(vm: import("vue").ComponentInternalInstance) => void>;
         default: () => () => void;
     };
 }, {
@@ -63,15 +64,15 @@ declare const _default: import("vue").DefineComponent<{
         default: null;
     };
     icon: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<string | IconPropsType>;
         default: null;
     };
     __remove: {
-        type: FunctionConstructor;
+        type: import("vue").PropType<() => void>;
         default: () => () => void;
     };
     __init: {
-        type: FunctionConstructor;
+        type: import("vue").PropType<(vm: import("vue").ComponentInternalInstance) => void>;
         default: () => () => void;
     };
 }>>, {
@@ -79,10 +80,10 @@ declare const _default: import("vue").DefineComponent<{
     color: string;
     timeout: number;
     type: string;
-    icon: string | Record<string, any>;
+    icon: string | IconPropsType;
     background: string;
-    __remove: Function;
-    __init: Function;
+    __remove: () => void;
+    __init: (vm: import("vue").ComponentInternalInstance) => void;
     message: string;
 }, {}>;
 export default _default;

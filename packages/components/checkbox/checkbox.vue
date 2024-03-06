@@ -1,7 +1,7 @@
 <script setup name="m-checkbox" lang="ts">
 import Dap from 'dap-util'
 import { Icon } from '../icon'
-import CheckboxProps from "./props"
+import { CheckboxProps } from "./props"
 import { computed } from 'vue';
 
 //属性
@@ -10,7 +10,7 @@ const props = defineProps(CheckboxProps)
 const emits = defineEmits(['update:modelValue', 'change'])
 
 //是否勾选
-const check = computed(() => {
+const check = computed<boolean>(() => {
     if (typeof props.modelValue == 'boolean') {
         return props.modelValue
     }
@@ -23,7 +23,7 @@ const check = computed(() => {
     return false
 })
 //样式
-const itemStyle = computed(() => {
+const itemStyle = computed<any>(() => {
     let style: any = {}
     if (props.color && check.value && !props.disabled) {
         style.backgroundColor = props.color
@@ -34,7 +34,6 @@ const itemStyle = computed(() => {
     }
     return style
 })
-
 
 const change = (event: Event) => {
     if (Array.isArray(props.modelValue)) {

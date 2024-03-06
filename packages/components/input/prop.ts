@@ -1,6 +1,13 @@
 import Dap from 'dap-util'
+import { ExtractPublicPropTypes, PropType } from 'vue'
+import { IconPropsType } from '../icon/props'
 
-export default {
+export type InputAutosizeType = {
+	maxRows?: number
+	minRows?: number
+}
+
+export const InputProps = {
 	//输入框的值
 	modelValue: {
 		type: [String, Number],
@@ -23,7 +30,7 @@ export default {
 	},
 	//左侧文本对齐方式
 	labelAlign: {
-		type: String,
+		type: String as PropType<'left' | 'center' | 'right'>,
 		default: 'left',
 		validator(value: any) {
 			return ['left', 'center', 'right'].includes(value)
@@ -36,7 +43,7 @@ export default {
 	},
 	//输入框类型
 	type: {
-		type: String,
+		type: String as PropType<'text' | 'password' | 'number' | 'tel' | 'textarea'>,
 		default: 'text',
 		validator(value: any) {
 			return ['text', 'password', 'number', 'tel', 'textarea'].includes(value)
@@ -54,7 +61,7 @@ export default {
 	},
 	//输入框尺寸
 	size: {
-		type: String,
+		type: String as PropType<'medium' | 'large'>,
 		default: 'medium',
 		validator(value: any) {
 			return ['medium', 'large'].includes(value)
@@ -97,12 +104,12 @@ export default {
 	},
 	//文本左侧图标
 	left: {
-		type: [String, Object],
+		type: [String, Object] as PropType<string | IconPropsType>,
 		default: null
 	},
 	//右侧图标
 	right: {
-		type: [String, Object],
+		type: [String, Object] as PropType<string | IconPropsType>,
 		default: null
 	},
 	//type=textarea时的行数
@@ -112,7 +119,7 @@ export default {
 	},
 	//自动调整高度
 	autosize: {
-		type: [Boolean, Object],
+		type: [Boolean, Object] as PropType<boolean | InputAutosizeType>,
 		default: false,
 		validator(value: any) {
 			if (Dap.common.isObject(value)) {
@@ -127,7 +134,7 @@ export default {
 	},
 	//文本对齐方式
 	align: {
-		type: String,
+		type: String as PropType<'left' | 'center' | 'right'>,
 		default: 'left',
 		validator(value: any) {
 			return ['left', 'center', 'right'].includes(value)
@@ -135,10 +142,12 @@ export default {
 	},
 	//输入框调起移动端键盘类型
 	inputMode: {
-		type: [String, Boolean],
-		default: false,
+		type: String as PropType<'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url'>,
+		default: 'text',
 		validator(value: any) {
-			return [false, 'none', 'text', 'decimal', 'numeric', 'tel', 'search', 'email', 'url'].includes(value)
+			return ['none', 'text', 'decimal', 'numeric', 'tel', 'search', 'email', 'url'].includes(value)
 		}
 	}
 }
+
+export type InputPropsType = ExtractPublicPropTypes<typeof InputProps>

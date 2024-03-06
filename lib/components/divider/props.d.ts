@@ -1,4 +1,5 @@
-declare const _default: {
+import { ExtractPublicPropTypes } from 'vue';
+export declare const DividerProps: {
     dashed: {
         type: BooleanConstructor;
         default: boolean;
@@ -8,4 +9,4 @@ declare const _default: {
         default: null;
     };
 };
-export default _default;
+export type DividerPropsType = ExtractPublicPropTypes<typeof DividerProps>;

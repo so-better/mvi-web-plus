@@ -1,11 +1,13 @@
-declare const _default: {
+import { ExtractPublicPropTypes, PropType } from 'vue';
+import { IconPropsType } from '../icon/props';
+export declare const ButtonProps: {
     type: {
-        type: StringConstructor;
+        type: PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
     size: {
-        type: StringConstructor;
+        type: PropType<"small" | "medium" | "large" | "mini">;
         default: string;
         validator(value: any): boolean;
     };
@@ -14,7 +16,7 @@ declare const _default: {
         default: boolean;
     };
     nativeType: {
-        type: StringConstructor;
+        type: PropType<"button" | "submit" | "reset">;
         default: string;
     };
     block: {
@@ -50,11 +52,11 @@ declare const _default: {
         default: string;
     };
     loadIcon: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: PropType<string | IconPropsType>;
         default: () => {
             type: string;
             spin: boolean;
         };
     };
 };
-export default _default;
+export type ButtonPropsType = ExtractPublicPropTypes<typeof ButtonProps>;

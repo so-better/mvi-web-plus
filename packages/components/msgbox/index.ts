@@ -1,32 +1,33 @@
 import { App, createApp } from 'vue'
 import Dap from 'dap-util'
 import MsgboxComponent from './msgbox.vue'
+import { MsgboxPropsType } from './props'
 
 interface MsgboxType {
-	initParams: (options: any) => any
-	msgbox: (options: any) => void
+	initParams: (options: string | MsgboxPropsType) => MsgboxPropsType
+	msgbox: (options: string | MsgboxPropsType) => void
 	install: (app: App) => void
 }
 
 const Msgbox: MsgboxType = {
 	//初始化参数
-	initParams: (options: any) => {
-		let opts: any = {}
+	initParams: (options: string | MsgboxPropsType) => {
+		let opts: MsgboxPropsType = {}
 		if (Dap.common.isObject(options)) {
-			opts.message = options.message
-			opts.timeout = options.timeout
-			opts.animation = options.animation
-			opts.zIndex = options.zIndex
-			opts.color = options.color
-			opts.background = options.background
+			opts.message = (<MsgboxPropsType>options).message
+			opts.timeout = (<MsgboxPropsType>options).timeout
+			opts.animation = (<MsgboxPropsType>options).animation
+			opts.zIndex = (<MsgboxPropsType>options).zIndex
+			opts.color = (<MsgboxPropsType>options).color
+			opts.background = (<MsgboxPropsType>options).background
 		} else {
-			opts.message = options
+			opts.message = <string>options
 		}
 		return opts
 	},
 
 	//弹窗调用
-	msgbox: (options: any) => {
+	msgbox: (options: string | MsgboxPropsType) => {
 		return new Promise<void>(resolve => {
 			let opts = Msgbox.initParams(options)
 			let mountNode = Dap.element.string2dom('<div></div>')

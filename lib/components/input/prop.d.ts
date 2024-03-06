@@ -1,4 +1,10 @@
-declare const _default: {
+import { ExtractPublicPropTypes, PropType } from 'vue';
+import { IconPropsType } from '../icon/props';
+export type InputAutosizeType = {
+    maxRows?: number;
+    minRows?: number;
+};
+export declare const InputProps: {
     modelValue: {
         type: (StringConstructor | NumberConstructor)[];
         default: string;
@@ -16,7 +22,7 @@ declare const _default: {
         default: null;
     };
     labelAlign: {
-        type: StringConstructor;
+        type: PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
@@ -25,7 +31,7 @@ declare const _default: {
         default: null;
     };
     type: {
-        type: StringConstructor;
+        type: PropType<"number" | "textarea" | "text" | "tel" | "password">;
         default: string;
         validator(value: any): boolean;
     };
@@ -38,7 +44,7 @@ declare const _default: {
         default: number;
     };
     size: {
-        type: StringConstructor;
+        type: PropType<"medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
@@ -71,11 +77,11 @@ declare const _default: {
         default: boolean;
     };
     left: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: PropType<string | IconPropsType>;
         default: null;
     };
     right: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: PropType<string | IconPropsType>;
         default: null;
     };
     rows: {
@@ -83,19 +89,19 @@ declare const _default: {
         default: number;
     };
     autosize: {
-        type: (BooleanConstructor | ObjectConstructor)[];
+        type: PropType<boolean | InputAutosizeType>;
         default: boolean;
         validator(value: any): boolean;
     };
     align: {
-        type: StringConstructor;
+        type: PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
     inputMode: {
-        type: (StringConstructor | BooleanConstructor)[];
-        default: boolean;
+        type: PropType<"text" | "url" | "none" | "search" | "email" | "tel" | "decimal" | "numeric">;
+        default: string;
         validator(value: any): boolean;
     };
 };
-export default _default;
+export type InputPropsType = ExtractPublicPropTypes<typeof InputProps>;

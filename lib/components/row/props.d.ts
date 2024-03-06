@@ -1,11 +1,12 @@
-declare const _default: {
+import { ExtractPublicPropTypes, PropType } from 'vue';
+export declare const RowProps: {
     justify: {
-        type: StringConstructor;
+        type: PropType<"flex-start" | "flex-end" | "space-around" | "space-between">;
         default: string;
         validator(value: any): boolean;
     };
     align: {
-        type: StringConstructor;
+        type: PropType<"center" | "flex-start" | "flex-end">;
         default: string;
         validator(value: any): boolean;
     };
@@ -14,4 +15,4 @@ declare const _default: {
         default: string;
     };
 };
-export default _default;
+export type RowPropsType = ExtractPublicPropTypes<typeof RowProps>;

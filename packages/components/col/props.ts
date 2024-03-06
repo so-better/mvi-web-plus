@@ -1,4 +1,10 @@
-export default {
+import { ExtractPublicPropTypes, PropType } from 'vue'
+
+export type ColResponsiveType = {
+	span?: number
+	offset?: number
+}
+export const ColProps = {
 	//栅格占据的列数
 	span: {
 		type: Number,
@@ -16,27 +22,29 @@ export default {
 	},
 	// >=0px 响应式栅格数或者栅格属性对象
 	xs: {
-		type: [Number, Object],
+		type: [Number, Object] as PropType<number | ColResponsiveType>,
 		default: null
 	},
 	// >=640px 响应式栅格数或者栅格属性对象
 	sm: {
-		type: [Number, Object],
+		type: [Number, Object] as PropType<number | ColResponsiveType>,
 		default: null
 	},
 	// >=992px 响应式栅格数或者栅格属性对象
 	md: {
-		type: [Number, Object],
+		type: [Number, Object] as PropType<number | ColResponsiveType>,
 		default: null
 	},
 	// >=1440px 响应式栅格数或者栅格属性对象
 	lg: {
-		type: [Number, Object],
+		type: [Number, Object] as PropType<number | ColResponsiveType>,
 		default: null
 	},
 	// >=1920px 响应式栅格数或者栅格属性对象
 	xl: {
-		type: [Number, Object],
+		type: [Number, Object] as PropType<number | ColResponsiveType>,
 		default: null
 	}
 }
+
+export type ColPropsType = ExtractPublicPropTypes<typeof ColProps>

@@ -1,4 +1,5 @@
-declare const _default: {
+import { ExtractPublicPropTypes } from 'vue';
+export declare const CellGroupProps: {
     title: {
         type: StringConstructor;
         default: null;
@@ -12,4 +13,4 @@ declare const _default: {
         default: boolean;
     };
 };
-export default _default;
+export type CellGroupPropsType = ExtractPublicPropTypes<typeof CellGroupProps>;

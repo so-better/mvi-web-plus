@@ -1,8 +1,9 @@
 <script setup name="m-input" lang="ts">
 import Dap from 'dap-util'
 import { Icon } from '../icon'
-import InputProps from './prop'
+import { InputAutosizeType, InputProps } from './prop'
 import { computed, nextTick, onMounted, ref, useSlots, watch } from 'vue'
+import { IconPropsType } from '../icon/props';
 
 //属性
 const props = defineProps(InputProps)
@@ -10,7 +11,7 @@ const props = defineProps(InputProps)
 const emits = defineEmits(['update:modelValue', 'left-click', 'right-click', 'focus', 'blur', 'input', 'clear', 'keydown', 'keyup'])
 
 //输入框或者文本域是否获取焦点
-const focus = ref(false)
+const focus = ref<boolean>(false)
 //文本域的元素
 const textareaRef = ref<HTMLElement | null>(null)
 //输入框元素
@@ -18,7 +19,7 @@ const inputRef = ref<HTMLElement | null>(null)
 
 //输入框样式类
 const inputClass = computed<string[]>(() => {
-    let cls = [props.size]
+    let cls: string[] = [props.size]
     if (props.border) {
         cls.push('border')
     }
@@ -32,12 +33,12 @@ const inputClass = computed<string[]>(() => {
 })
 //输入框的值
 const realValue = computed<string>({
-    set: value => {
+    set(value: any) {
         if (props.modelValue !== value) {
             emits('update:modelValue', value)
         }
     },
-    get: () => {
+    get() {
         let value = props.modelValue === null ? '' : props.modelValue.toString()
         //数字类型会过滤非数字字符
         if (props.type == 'number') {
@@ -64,30 +65,30 @@ const showClear = computed<boolean>(() => {
     return false
 })
 //图标转换
-const parseIcon = computed<(params: any) => any>(() => {
-    return (params: any) => {
-        let icon: any = {
+const parseIcon = computed<(params: string | IconPropsType) => IconPropsType>(() => {
+    return (params: string | IconPropsType) => {
+        let icon: IconPropsType = {
             spin: false,
-            type: null,
-            url: null,
-            color: null,
-            size: null
+            type: '',
+            url: '',
+            color: '',
+            size: '',
         }
         if (Dap.common.isObject(params)) {
-            if (typeof params.spin == 'boolean') {
-                icon.spin = params.spin
+            if (typeof (<IconPropsType>params).spin == 'boolean') {
+                icon.spin = (<IconPropsType>params).spin
             }
-            if (typeof params.type == 'string') {
-                icon.type = params.type
+            if (typeof (<IconPropsType>params).type == 'string') {
+                icon.type = (<IconPropsType>params).type
             }
-            if (typeof params.url == 'string') {
-                icon.url = params.url
+            if (typeof (<IconPropsType>params).url == 'string') {
+                icon.url = (<IconPropsType>params).url
             }
-            if (typeof params.color == 'string') {
-                icon.color = params.color
+            if (typeof (<IconPropsType>params).color == 'string') {
+                icon.color = (<IconPropsType>params).color
             }
-            if (typeof params.size == 'string') {
-                icon.size = params.size
+            if (typeof (<IconPropsType>params).size == 'string') {
+                icon.size = (<IconPropsType>params).size
             }
         } else if (typeof params == 'string') {
             icon.type = params
@@ -106,14 +107,14 @@ const cmpType = computed<string>(() => {
 const rowsFilter = computed<number>(() => {
     let rows = props.rows
     if (Dap.common.isObject(props.autosize)) {
-        if (Dap.number.isNumber((<any>props.autosize).minRows)) {
-            if (props.rows < (<any>props.autosize).minRows) {
-                rows = (<any>props.autosize).minRows
+        if (Dap.number.isNumber((<InputAutosizeType>props.autosize).minRows)) {
+            if (props.rows < (<InputAutosizeType>props.autosize).minRows!) {
+                rows = (<InputAutosizeType>props.autosize).minRows!
             }
         }
-        if (Dap.number.isNumber((<any>props.autosize).maxRows)) {
-            if (props.rows > (<any>props.autosize).maxRows) {
-                rows = (<any>props.autosize).maxRows
+        if (Dap.number.isNumber((<InputAutosizeType>props.autosize).maxRows)) {
+            if (props.rows > (<InputAutosizeType>props.autosize).maxRows!) {
+                rows = (<InputAutosizeType>props.autosize).maxRows!
             }
         }
     }
@@ -147,11 +148,11 @@ const inputStyle = computed<any>(() => {
 })
 //显示左侧图标
 const showLeft = computed<boolean>(() => {
-    return useSlots().left || parseIcon.value(props.left).type || parseIcon.value(props.left).url
+    return !!(useSlots().left || parseIcon.value(props.left).type || parseIcon.value(props.left).url)
 })
 //显示右侧图标
 const showRight = computed<boolean>(() => {
-    return useSlots().right || parseIcon.value(props.right).type || parseIcon.value(props.right).url
+    return !!(useSlots().right || parseIcon.value(props.right).type || parseIcon.value(props.right).url)
 })
 
 //高度自适应方法
@@ -168,12 +169,12 @@ const rows2Height = (rows: number) => {
 //设置最大高度和最小高度
 const setMaxMinHeight = () => {
     if (Dap.common.isObject(props.autosize)) {
-        if (Dap.number.isNumber((<any>props.autosize).maxRows)) {
-            let maxHeight = rows2Height((<any>props.autosize).maxRows)
+        if (Dap.number.isNumber((<InputAutosizeType>props.autosize).maxRows)) {
+            let maxHeight = rows2Height((<InputAutosizeType>props.autosize).maxRows!)
             textareaRef.value!.style.maxHeight = maxHeight + 'px'
         }
-        if (Dap.number.isNumber((<any>props.autosize).minRows)) {
-            let minHeight = rows2Height((<any>props.autosize).minRows)
+        if (Dap.number.isNumber((<InputAutosizeType>props.autosize).minRows)) {
+            let minHeight = rows2Height((<InputAutosizeType>props.autosize).minRows!)
             textareaRef.value!.style.minHeight = minHeight + 'px'
         }
     } else {
@@ -303,12 +304,10 @@ watch(
             ref="textareaRef" :rows="rowsFilter" :name="name" :style="inputStyle" @focus="inputFocus" @blur="inputBlur"
             autocomplete="off" @keydown="keydown" @keyup="keyup"></textarea>
         <!-- 输入框 -->
-        <input v-else :type="cmpType"
-            :inputmode="<'text' | 'tel' | 'none' | 'decimal' | 'numeric' | 'search' | 'email' | 'url' | undefined>inputMode"
-            :placeholder="placeholder" :maxlength="maxlength" :disabled="disabled" :readonly="readonly"
-            :autofocus="autofocus" class="mvi-input" v-model="realValue" @input="input" ref="inputRef" :name="name"
-            :style="inputStyle" @focus="inputFocus" @blur="inputBlur" autocomplete="off" @keydown="keydown"
-            @keyup="keyup" />
+        <input v-else :type="cmpType" :inputmode="inputMode" :placeholder="placeholder" :maxlength="maxlength"
+            :disabled="disabled" :readonly="readonly" :autofocus="autofocus" class="mvi-input" v-model="realValue"
+            @input="input" ref="inputRef" :name="name" :style="inputStyle" @focus="inputFocus" @blur="inputBlur"
+            autocomplete="off" @keydown="keydown" @keyup="keyup" />
         <!-- 清除图标 -->
         <div @click="doClear" class="mvi-input-clear" v-if="clearable" v-show="showClear">
             <Icon type="times-o" />

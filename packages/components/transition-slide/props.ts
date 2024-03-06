@@ -1,4 +1,6 @@
-export default {
+import { ExtractPublicPropTypes } from 'vue'
+
+export const TransitionSlideProps = {
 	//是否展开
 	expand: {
 		type: Boolean,
@@ -10,3 +12,5 @@ export default {
 		default: 200
 	}
 }
+
+export type TransitionSlidePropsType = ExtractPublicPropTypes<typeof TransitionSlideProps>

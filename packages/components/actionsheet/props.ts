@@ -1,4 +1,4 @@
-import { ExtractPropTypes, PropType } from 'vue'
+import { ExtractPublicPropTypes, PropType } from 'vue'
 import { IconPropsType } from '../icon/props'
 
 export type ActionsheetOptionsItemType = {
@@ -92,4 +92,4 @@ export const ActionsheetProps = {
 	}
 }
 
-export type ActionsheetPropsType = ExtractPropTypes<typeof ActionsheetProps>
+export type ActionsheetPropsType = ExtractPublicPropTypes<typeof ActionsheetProps>

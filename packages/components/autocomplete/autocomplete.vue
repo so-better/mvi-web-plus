@@ -3,7 +3,9 @@ import { DefineComponent, computed, getCurrentInstance, ref } from 'vue'
 import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { Layer } from '../layer'
-import AutocompleteProps from './props'
+import { AutocompleteProps } from './props'
+import { IconPropsType } from '../icon/props'
+import { LayerPropsType } from '../layer/props'
 
 //获取实例
 const instance = getCurrentInstance()!
@@ -38,7 +40,7 @@ const realValue = computed<string>({
         return props.modelValue
     }
 })
-const cmpFilter = computed<Array<string>>(() => {
+const cmpFilter = computed<string[]>(() => {
     if (typeof props.filterMethod == 'function') {
         return props.filterMethod(realValue.value, props.list)
     }
@@ -50,30 +52,30 @@ const cmpFilter = computed<Array<string>>(() => {
 const show = computed<boolean>(() => {
     return focus.value && cmpFilter.value.length != 0
 })
-const parseIcon = computed<(params: any) => any>(() => {
-    return (params: any) => {
-        let icon: any = {
+const parseIcon = computed<(params: IconPropsType | string) => IconPropsType>(() => {
+    return (params: IconPropsType | string) => {
+        let icon: IconPropsType = {
             spin: false,
-            type: null,
-            url: null,
-            color: null,
-            size: null
+            type: '',
+            url: '',
+            color: '',
+            size: '',
         }
         if (Dap.common.isObject(params)) {
-            if (typeof params.spin == 'boolean') {
-                icon.spin = params.spin
+            if (typeof (<IconPropsType>params).spin == 'boolean') {
+                icon.spin = (<IconPropsType>params).spin
             }
-            if (typeof params.type == 'string') {
-                icon.type = params.type
+            if (typeof (<IconPropsType>params).type == 'string') {
+                icon.type = (<IconPropsType>params).type
             }
-            if (typeof params.url == 'string') {
-                icon.url = params.url
+            if (typeof (<IconPropsType>params).url == 'string') {
+                icon.url = (<IconPropsType>params).url
             }
-            if (typeof params.color == 'string') {
-                icon.color = params.color
+            if (typeof (<IconPropsType>params).color == 'string') {
+                icon.color = (<IconPropsType>params).color
             }
-            if (typeof params.size == 'string') {
-                icon.size = params.size
+            if (typeof (<IconPropsType>params).size == 'string') {
+                icon.size = (<IconPropsType>params).size
             }
         } else if (typeof params == 'string') {
             icon.type = params
@@ -126,7 +128,7 @@ const relateClass = computed<string[]>(() => {
     }
     return cls
 })
-const layerRealProps = computed<any>(() => {
+const layerRealProps = computed<LayerPropsType>(() => {
     return {
         placement: props.layerProps.placement ? props.layerProps.placement : 'bottom-start',
         width: props.layerProps.width,
@@ -210,7 +212,7 @@ const doClear = () => {
         inputRef.value!.focus()
     }, 210)
 }
-const doSelect = (item: any) => {
+const doSelect = (item: string) => {
     if (props.disabled) {
         return
     }
@@ -219,8 +221,8 @@ const doSelect = (item: any) => {
     focus.value = false
 }
 //默认过滤方法
-const defaultFilter = () => {
-    return props.list.filter(item => {
+const defaultFilter = (): string[] => {
+    return props.list.filter((item: string) => {
         return String(item).toLocaleLowerCase().includes(realValue.value.toLocaleLowerCase())
     })
 }

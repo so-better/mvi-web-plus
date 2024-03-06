@@ -1,7 +1,7 @@
 <script setup name="m-row" lang="ts">
 import { defineComponent, h, useSlots } from 'vue'
 
-import RowProps from "./props"
+import { RowProps } from "./props"
 
 //属性
 const props = defineProps(RowProps)

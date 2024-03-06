@@ -1,10 +1,11 @@
-declare const _default: {
+import { ExtractPublicPropTypes, PropType } from 'vue';
+export declare const TooltipProps: {
     title: {
         type: StringConstructor;
         default: string;
     };
     placement: {
-        type: StringConstructor;
+        type: PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined>;
         default: string;
     };
     disabled: {
@@ -28,7 +29,7 @@ declare const _default: {
         default: string;
     };
     trigger: {
-        type: StringConstructor;
+        type: PropType<"click" | "hover" | "custom">;
         default: string;
         validator(value: any): boolean;
     };
@@ -57,4 +58,4 @@ declare const _default: {
         default: boolean;
     };
 };
-export default _default;
+export type TooltipPropsType = ExtractPublicPropTypes<typeof TooltipProps>;

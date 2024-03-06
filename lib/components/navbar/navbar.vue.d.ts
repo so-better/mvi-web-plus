@@ -1,3 +1,4 @@
+import { IconPropsType } from '../icon/props';
 declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     title: {
         type: StringConstructor;
@@ -12,11 +13,11 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: null;
     };
     leftIcon: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<string | IconPropsType>;
         default: null;
     };
     rightIcon: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<string | IconPropsType>;
         default: null;
     };
     fixed: {
@@ -49,11 +50,11 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: null;
     };
     leftIcon: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<string | IconPropsType>;
         default: null;
     };
     rightIcon: {
-        type: (StringConstructor | ObjectConstructor)[];
+        type: import("vue").PropType<string | IconPropsType>;
         default: null;
     };
     fixed: {
@@ -76,8 +77,8 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     zIndex: number;
     title: string;
     border: boolean;
-    leftIcon: string | Record<string, any>;
-    rightIcon: string | Record<string, any>;
+    leftIcon: string | IconPropsType;
+    rightIcon: string | IconPropsType;
     leftText: string;
     rightText: string;
     fixed: boolean;

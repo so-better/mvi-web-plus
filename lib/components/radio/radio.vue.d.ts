@@ -24,7 +24,7 @@ declare const _default: import("vue").DefineComponent<{
         default: null;
     };
     placement: {
-        type: StringConstructor;
+        type: import("vue").PropType<"left" | "right">;
         default: string;
         validator(value: any): boolean;
     };
@@ -65,7 +65,7 @@ declare const _default: import("vue").DefineComponent<{
         default: null;
     };
     placement: {
-        type: StringConstructor;
+        type: import("vue").PropType<"left" | "right">;
         default: string;
         validator(value: any): boolean;
     };
@@ -87,7 +87,7 @@ declare const _default: import("vue").DefineComponent<{
     disabled: boolean;
     name: string;
     size: string;
-    placement: string;
+    placement: "left" | "right";
     round: boolean;
     value: string | number | Record<string, any>;
 }, {}>;

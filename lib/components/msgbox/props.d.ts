@@ -1,5 +1,7 @@
-declare const _default: {
+import { ExtractPublicPropTypes, PropType } from 'vue';
+export declare const MsgboxProps: {
     message: {
+        type: StringConstructor;
         default: null;
     };
     animation: {
@@ -23,8 +25,8 @@ declare const _default: {
         default: null;
     };
     __remove: {
-        type: FunctionConstructor;
+        type: PropType<() => void>;
         default: () => () => void;
     };
 };
-export default _default;
+export type MsgboxPropsType = ExtractPublicPropTypes<typeof MsgboxProps>;

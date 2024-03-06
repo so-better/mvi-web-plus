@@ -1,8 +1,9 @@
 <script setup name="m-cell" lang="ts">
 import Dap from 'dap-util'
 import { Icon } from '../icon'
-import CellProps from './props'
+import { CellProps } from './props'
 import { computed, getCurrentInstance } from 'vue'
+import { IconPropsType } from '../icon/props';
 
 //获取实例
 const instance = getCurrentInstance()!
@@ -10,30 +11,30 @@ const instance = getCurrentInstance()!
 //属性
 const props = defineProps(CellProps)
 
-const parseIcon = computed<(params: any) => any>(() => {
-    return (params: any) => {
-        let icon: any = {
+const parseIcon = computed<(params: string | IconPropsType) => IconPropsType>(() => {
+    return (params: string | IconPropsType) => {
+        let icon: IconPropsType = {
             spin: false,
-            type: null,
-            url: null,
-            color: null,
-            size: null
+            type: '',
+            url: '',
+            color: '',
+            size: ''
         }
         if (Dap.common.isObject(params)) {
-            if (typeof params.spin == 'boolean') {
-                icon.spin = params.spin
+            if (typeof (<IconPropsType>params).spin == 'boolean') {
+                icon.spin = (<IconPropsType>params).spin
             }
-            if (typeof params.type == 'string') {
-                icon.type = params.type
+            if (typeof (<IconPropsType>params).type == 'string') {
+                icon.type = (<IconPropsType>params).type
             }
-            if (typeof params.url == 'string') {
-                icon.url = params.url
+            if (typeof (<IconPropsType>params).url == 'string') {
+                icon.url = (<IconPropsType>params).url
             }
-            if (typeof params.color == 'string') {
-                icon.color = params.color
+            if (typeof (<IconPropsType>params).color == 'string') {
+                icon.color = (<IconPropsType>params).color
             }
-            if (typeof params.size == 'string') {
-                icon.size = params.size
+            if (typeof (<IconPropsType>params).size == 'string') {
+                icon.size = (<IconPropsType>params).size
             }
         } else if (typeof params == 'string') {
             icon.type = params
@@ -59,7 +60,7 @@ const cmpBorder = computed<boolean>(() => {
     }
     return false
 })
-const labelTextStyle = computed(() => {
+const labelTextStyle = computed<any>(() => {
     let style: any = {}
     //如果ellipsis不是false
     if (props.ellipsis) {

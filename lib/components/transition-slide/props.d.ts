@@ -1,4 +1,5 @@
-declare const _default: {
+import { ExtractPublicPropTypes } from 'vue';
+export declare const TransitionSlideProps: {
     expand: {
         type: BooleanConstructor;
         default: boolean;
@@ -8,4 +9,4 @@ declare const _default: {
         default: number;
     };
 };
-export default _default;
+export type TransitionSlidePropsType = ExtractPublicPropTypes<typeof TransitionSlideProps>;

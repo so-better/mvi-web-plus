@@ -1,7 +1,10 @@
-export default {
+import { ExtractPublicPropTypes, PropType } from 'vue'
+import { IconPropsType } from '../icon/props'
+
+export const CellProps = {
 	//左侧图标
 	icon: {
-		type: [String, Object],
+		type: [String, Object] as PropType<string | IconPropsType>,
 		default: null
 	},
 	//标题
@@ -26,7 +29,7 @@ export default {
 	},
 	//右侧图标
 	arrow: {
-		type: [String, Object],
+		type: [String, Object] as PropType<string | IconPropsType>,
 		default: null
 	},
 	//是否显示点击态
@@ -45,3 +48,5 @@ export default {
 		default: false
 	}
 }
+
+export type CellPropsType = ExtractPublicPropTypes<typeof CellProps>

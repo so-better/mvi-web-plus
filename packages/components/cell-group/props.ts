@@ -1,4 +1,6 @@
-export default {
+import { ExtractPublicPropTypes } from 'vue'
+
+export const CellGroupProps = {
 	//单元格组标题
 	title: {
 		type: String,
@@ -15,3 +17,5 @@ export default {
 		default: true
 	}
 }
+
+export type CellGroupPropsType = ExtractPublicPropTypes<typeof CellGroupProps>

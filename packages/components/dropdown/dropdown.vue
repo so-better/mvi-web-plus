@@ -3,8 +3,9 @@ import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { Popup } from '../popup'
 
-import DropdownProps from "./props"
+import { DropdownOptionsItemType, DropdownProps } from "./props"
 import { DefineComponent, computed, ref } from 'vue';
+import { IconPropsType } from '../icon/props';
 
 //属性
 const props = defineProps(DropdownProps)
@@ -16,7 +17,7 @@ const emits = defineEmits(['update:modelValue', 'update:show', 'select'])
 const popupRef = ref<DefineComponent | null>(null)
 
 //导出的dom元素
-const $$el = computed(() => {
+const $$el = computed<HTMLElement>(() => {
     return popupRef.value!.$$el
 })
 const cmpShow = computed<boolean>({
@@ -28,30 +29,30 @@ const cmpShow = computed<boolean>({
     }
 })
 //转换图标字段
-const parseIcon = computed<(params: any) => any>(() => {
-    return (params: any) => {
-        let icon: any = {
+const parseIcon = computed<(params: string | IconPropsType) => IconPropsType>(() => {
+    return (params: string | IconPropsType) => {
+        let icon: IconPropsType = {
             spin: false,
-            type: null,
-            url: null,
-            color: null,
-            size: null
+            type: '',
+            url: '',
+            color: '',
+            size: ''
         }
         if (Dap.common.isObject(params)) {
-            if (typeof params.spin == 'boolean') {
-                icon.spin = params.spin
+            if (typeof (<IconPropsType>params).spin == 'boolean') {
+                icon.spin = (<IconPropsType>params).spin
             }
-            if (typeof params.type == 'string') {
-                icon.type = params.type
+            if (typeof (<IconPropsType>params).type == 'string') {
+                icon.type = (<IconPropsType>params).type
             }
-            if (typeof params.url == 'string') {
-                icon.url = params.url
+            if (typeof (<IconPropsType>params).url == 'string') {
+                icon.url = (<IconPropsType>params).url
             }
-            if (typeof params.color == 'string') {
-                icon.color = params.color
+            if (typeof (<IconPropsType>params).color == 'string') {
+                icon.color = (<IconPropsType>params).color
             }
-            if (typeof params.size == 'string') {
-                icon.size = params.size
+            if (typeof (<IconPropsType>params).size == 'string') {
+                icon.size = (<IconPropsType>params).size
             }
         } else if (typeof params == 'string') {
             icon.type = params
@@ -60,8 +61,8 @@ const parseIcon = computed<(params: any) => any>(() => {
     }
 })
 //判断是否选中项
-const equalValue = computed<(item: any, index: number) => boolean>(() => {
-    return (item: any, index: number): boolean => {
+const equalValue = computed<(item: DropdownOptionsItemType, index: number) => boolean>(() => {
+    return (item: DropdownOptionsItemType, index: number): boolean => {
         if (item.value === undefined || item.value === null) {
             return props.modelValue === index
         }
@@ -69,8 +70,8 @@ const equalValue = computed<(item: any, index: number) => boolean>(() => {
     }
 })
 //选项是否禁用
-const itemDisabled = computed<(item: any) => boolean>(() => {
-    return (item: any): boolean => {
+const itemDisabled = computed<(item: DropdownOptionsItemType) => boolean>(() => {
+    return (item: DropdownOptionsItemType): boolean => {
         if (typeof item.disabled == 'boolean') {
             return item.disabled
         }
@@ -78,8 +79,8 @@ const itemDisabled = computed<(item: any) => boolean>(() => {
     }
 })
 //选项样式
-const dropdownItemStyle = computed<(item: any, index: number) => any>(() => {
-    return (item: any, index: number): any => {
+const dropdownItemStyle = computed<(item: DropdownOptionsItemType, index: number) => any>(() => {
+    return (item: DropdownOptionsItemType, index: number): any => {
         let style: any = {}
         if (!itemDisabled.value(item) && equalValue.value(item, index) && props.activeColor) {
             style.color = props.activeColor
@@ -88,8 +89,8 @@ const dropdownItemStyle = computed<(item: any, index: number) => any>(() => {
     }
 })
 //选项class
-const dropdownItemClass = computed<(item: any, index: number) => string[]>(() => {
-    return (item: any, index: number) => {
+const dropdownItemClass = computed<(item: DropdownOptionsItemType, index: number) => string[]>(() => {
+    return (item: DropdownOptionsItemType, index: number) => {
         let cls = []
         if (equalValue.value(item, index) && !item.disabled) {
             cls.push('checked')
@@ -102,7 +103,7 @@ const dropdownItemClass = computed<(item: any, index: number) => string[]>(() =>
 })
 
 //选择
-const doSelect = (item: any, index: number) => {
+const doSelect = (item: DropdownOptionsItemType, index: number) => {
     if (item.disabled) {
         return
     }

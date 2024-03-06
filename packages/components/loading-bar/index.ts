@@ -1,6 +1,7 @@
 import { App, ComponentInternalInstance, createApp } from 'vue'
 import Dap from 'dap-util'
 import LoadingBarComponent from './loading-bar.vue'
+import { LoadingBarPropsType } from './props'
 
 interface LoadingBarType {
 	//挂载的dom
@@ -9,19 +10,19 @@ interface LoadingBarType {
 	$instance?: App<Element>
 	//组件实例
 	$vm?: ComponentInternalInstance
-	initParams: (options: any) => any
-	showLoadingBar: (options: any) => void
+	initParams: (options: string | LoadingBarPropsType) => LoadingBarPropsType
+	showLoadingBar: (options: string | LoadingBarPropsType) => void
 	hideLoadingBar: () => void
 	install: (app: App) => void
 }
 
 const LoadingBar: LoadingBarType = {
 	//初始化参数
-	initParams: (options: any) => {
-		let opts: any = {}
+	initParams: (options: string | LoadingBarPropsType) => {
+		let opts: LoadingBarPropsType = {}
 		if (Dap.common.isObject(options)) {
-			opts.color = options.color
-			opts.zIndex = options.zIndex
+			opts.color = (<LoadingBarPropsType>options).color
+			opts.zIndex = (<LoadingBarPropsType>options).zIndex
 		} else if (typeof options == 'string') {
 			opts.color = options
 		}
@@ -29,7 +30,7 @@ const LoadingBar: LoadingBarType = {
 	},
 
 	//显示加载进度条
-	showLoadingBar: (options: any) => {
+	showLoadingBar: (options: string | LoadingBarPropsType) => {
 		return new Promise<void>(resolve => {
 			//如果已经存在进度条，则关闭后再进行
 			if (LoadingBar.$el && LoadingBar.$instance) {
