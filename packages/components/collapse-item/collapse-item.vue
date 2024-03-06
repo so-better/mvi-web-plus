@@ -129,14 +129,15 @@ const changeCollapse = () => {
 //加入到collapse的children去
 instance.parent!.exposed!.children.push(instance)
 
+
 </script>
 
 <template>
-    <div class="mvi-collapse-item" :class="{ border: instance.exposed?.props?.outBorder }"
+    <div class="mvi-collapse-item" :class="{ border: instance.parent?.exposed?.props?.outBorder }"
         :disabled="cmpDisabled || null">
         <Cell class="mvi-collapse-cell" :class="{ expand: expand }" :icon="icon" :content="label" :title="title"
-            :border="instance.exposed?.props?.inBorder" arrow="angle-right" @click="changeCollapse" :active="cmpActive"
-            :no-wrap="instance.exposed?.props?.noWrap"></Cell>
+            :border="instance.parent?.exposed?.props?.inBorder" arrow="angle-right" @click="changeCollapse"
+            :active="cmpActive" :no-wrap="instance.parent?.exposed?.props?.noWrap"></Cell>
         <TransitionSlide :expand="expand" :timeout="200" @before-slide-up="beforeSlideUp" @slide-up="slideUp"
             @before-slide-down="beforeSlideDown" @slide-down="slideDown">
             <div class="mvi-collapse-content">

@@ -1,7 +1,7 @@
 <template>
     <div class="mvi-p-10">
         <m-button @click="onClick">Button</m-button>
-        <m-collapse v-model="value" accordion>
+        <m-collapse v-model="value" accordion outBorder inBorder>
             <m-collapse-item title="标题1" label="这是一个简单的标题">
                 风萧萧兮易水寒
             </m-collapse-item>
