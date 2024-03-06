@@ -61,15 +61,14 @@ defineExpose({
 <template>
     <div class="mvi-tooltip" :class="{ block: block }">
         <div @click="clickShowTooltip" @mouseenter="hoverShowTooltip" @mouseleave="hoverHideToolTip"
-            class="mvi-tooltip-toggle" ref="toggle" :data-id="'mvi-tooltip-relate-' + uid">
+            class="mvi-tooltip-toggle" :data-id="'mvi-tooltip-relate-' + uid">
             <slot></slot>
         </div>
         <Layer v-model="show" :offset="offset" :background="color" border :border-color="borderColor" closable
             :show-triangle="showTriangle" :z-index="zIndex" :relate="`[data-id='mvi-tooltip-relate-${uid}']`"
             :placement="placement" :width="width" :timeout="timeout" :animation="animation || 'mvi-tooltip'"
             :shadow="false">
-            <div class="mvi-tooltip-content" ref="content"
-                :style="{ color: textColor, whiteSpace: width ? 'normal' : '' }">
+            <div class="mvi-tooltip-content" :style="{ color: textColor, whiteSpace: width ? 'normal' : '' }">
                 <slot v-if="$slots.title" name="title"></slot>
                 <span v-else v-text="title"></span>
             </div>
