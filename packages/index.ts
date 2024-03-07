@@ -61,6 +61,20 @@ import { DatePicker } from './components/date-picker'
 import { Field } from './components/field'
 import { Form } from './components/form'
 import { FormEl } from './components/form-el'
+import { Image } from './components/image'
+import { ColorPicker } from './components/color-picker'
+import { List } from './components/list'
+import { Modal } from './components/modal'
+import { Page } from './components/page'
+import { Search } from './components/search'
+import { Select } from './components/select'
+import { Skeleton } from './components/skeleton'
+import { Steps } from './components/steps'
+import { Step } from './components/step'
+import { Stepper } from './components/stepper'
+import { NumberKeyboard } from './components/number-keyboard'
+import { Toast } from './components/toast'
+import { PullRefresh } from './components/pull-refresh'
 
 /***** 按需导出 *****/
 export * from './directives/anchor'
@@ -115,6 +129,20 @@ export * from './components/date-picker'
 export * from './components/field'
 export * from './components/form'
 export * from './components/form-el'
+export * from './components/image'
+export * from './components/color-picker'
+export * from './components/list'
+export * from './components/modal'
+export * from './components/page'
+export * from './components/search'
+export * from './components/select'
+export * from './components/skeleton'
+export * from './components/steps'
+export * from './components/step'
+export * from './components/stepper'
+export * from './components/number-keyboard'
+export * from './components/toast'
+export * from './components/pull-refresh'
 
 /***** 全局导出 *****/
 const install = (app: App) => {
@@ -170,7 +198,21 @@ const install = (app: App) => {
 		DatePicker,
 		Field,
 		Form,
-		FormEl
+		FormEl,
+		Image,
+		ColorPicker,
+		List,
+		Modal,
+		Page,
+		Search,
+		Select,
+		Skeleton,
+		Steps,
+		Step,
+		Stepper,
+		NumberKeyboard,
+		Toast,
+		PullRefresh
 	}
 	//注册组件和指令
 	Object.values(components).map(component => {

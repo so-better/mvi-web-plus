@@ -3,7 +3,7 @@ import Dap from 'dap-util'
 import MsgboxComponent from './msgbox.vue'
 import { MsgboxPropsType } from './props'
 
-interface MsgboxType {
+type MsgboxType = {
 	initParams: (options: string | MsgboxPropsType) => MsgboxPropsType
 	msgbox: (options: string | MsgboxPropsType) => void
 	install: (app: App) => void

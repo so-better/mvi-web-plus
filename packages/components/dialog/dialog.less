@@ -1,0 +1,123 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-dialog-title {
+	display: block;
+	width: 100%;
+	text-align: center;
+	font-size: @font-size-h6;
+	color: @font-color-default;
+	font-weight: bold;
+	line-height: 1.5;
+}
+
+.mvi-dialog-content {
+	text-align: center;
+	color: @font-color-default;
+	line-height: 1.5;
+	font-size: @font-size-default;
+}
+
+.mvi-dialog-footer {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	height: @medium-height;
+}
+
+.mvi-dialog-ios-content {
+	display: block;
+	width: 100%;
+	font-size: @font-size-small;
+	font-weight: normal;
+	text-align: center;
+	color: @font-color-default;
+	line-height: 1.5;
+	margin-top: @mp-sm;
+}
+
+.mvi-dialog-input {
+	display: block;
+	width: 100%;
+	position: relative;
+
+	&.mvi-dialog-input-mt {
+		margin-top: @mp-md;
+	}
+}
+
+.mvi-dialog-input > input {
+	display: block;
+	appearance: none;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	width: 90%;
+	height: @small-height;
+	line-height: 1.5;
+	border-radius: @radius-default;
+	border: 1px solid @border-color;
+	color: @font-color-default;
+	font-size: @font-size-default;
+	padding: 0 @mp-sm 0 @mp-sm;
+	background-color: #fff;
+	margin-left: 5%;
+
+	&::placeholder,
+	&::-webkit-input-placeholder {
+		opacity: 0.5;
+		font-family: inherit;
+		font-size: inherit;
+		color: inherit;
+		vertical-align: middle;
+	}
+
+	&.mvi-dialog-input-padding {
+		padding-right: @mp-sm * 3;
+	}
+}
+
+.mvi-dialog-times {
+	position: absolute;
+	top: 50%;
+	right: ~'calc(5% + @{mp-sm})';
+	transform: translateY(-50%);
+	-webkit-transform: translateY(-50%);
+	-moz-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	color: @font-color-mute;
+	cursor: pointer;
+}
+
+.mvi-dialog-ok {
+	position: relative;
+	display: flex;
+	display: -webkit-flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	font-size: @font-size-h6;
+	color: @primary-normal;
+	flex: 1;
+	cursor: pointer;
+	font-weight: bold;
+	user-select: none;
+}
+
+.mvi-dialog-cancel {
+	position: relative;
+	display: flex;
+	display: -webkit-flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	font-size: @font-size-h6;
+	width: 50%;
+	border-right: 1px solid @border-color;
+	color: @primary-normal;
+	cursor: pointer;
+	user-select: none;
+}
+
+.mvi-dialog-ok:active::before,
+.mvi-dialog-cancel:active::before {
+	.mvi-active();
+}

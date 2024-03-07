@@ -1,0 +1,78 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-color-picker {
+	display: block;
+	width: 100%;
+	height: auto;
+	background-color: #fff;
+	padding: @mp-md;
+
+	.mvi-color-picker-panel {
+		display: block;
+		width: 100%;
+		position: relative;
+
+		// 饱和度 一条从左往右，由纯白到透明的径向渐变
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(to right, white, transparent);
+		}
+
+		// 明度 一条从下往上，由纯黑到透明的径向渐变
+		&::after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(to top, black, transparent);
+		}
+
+		.mvi-color-picker-panel-slider {
+			display: block;
+			position: absolute;
+			width: 0.4rem;
+			height: 0.4rem;
+			background-color: transparent;
+			border: 1px solid @border-color;
+			top: -0.2rem;
+			left: calc(~'100% - 0.2rem');
+			border-radius: 100%;
+			z-index: 20;
+			background-color: #fff;
+			opacity: 0.5;
+			cursor: pointer;
+		}
+	}
+
+	.mvi-color-picker-slider {
+		width: 0.4rem;
+		height: 0.4rem;
+		background-color: #fff;
+		border: 1px solid @border-color;
+		left: -0.2rem;
+		top: 0;
+		opacity: 0.5;
+		cursor: pointer;
+	}
+
+	.mvi-color-picker-alpha {
+		display: block;
+		position: relative;
+		width: 100%;
+		background-color: #fff;
+		background-image: linear-gradient(45deg, #c5c5c5 25%, transparent 0, transparent 75%, #c5c5c5 0, #c5c5c5), linear-gradient(45deg, #c5c5c5 25%, transparent 0, transparent 75%, #c5c5c5 0, #c5c5c5);
+		background-size: 0.2rem 0.2rem;
+		background-position: 0 0, 0.1rem 0.1rem;
+	}
+
+	:deep(.mvi-slider) {
+		margin-top: @mp-sm;
+	}
+}

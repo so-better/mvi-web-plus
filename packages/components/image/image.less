@@ -1,0 +1,54 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-image {
+	display: inline-block;
+	overflow: hidden;
+	position: relative;
+
+	img {
+		display: block;
+		margin: 0;
+		padding: 0;
+		border-radius: inherit;
+		width: 100%;
+		height: 100%;
+		position: relative;
+		z-index: 1;
+
+		&.mvi-image-contain {
+			object-fit: contain;
+		}
+
+		&.mvi-image-cover {
+			object-fit: cover;
+		}
+
+		&.mvi-image-fill {
+			object-fit: fill;
+		}
+
+		&.mvi-image-none {
+			object-fit: none;
+		}
+
+		&.mvi-image-response {
+			object-fit: scale-down;
+		}
+	}
+
+	.mvi-image-error,
+	.mvi-image-loading {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		left: 0;
+		top: 0;
+		background-color: @bg-color-dark;
+		color: @font-color-sub;
+		z-index: 2;
+	}
+}

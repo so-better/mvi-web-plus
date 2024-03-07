@@ -1,0 +1,18 @@
+@import '../../css/mvi-basic.less';
+.mvi-list {
+	display: block;
+	width: 100%;
+
+	.mvi-list-loading,
+	.mvi-list-finished,
+	.mvi-list-error,
+	.mvi-list-content {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		padding: @mp-md;
+		font-size: @font-size-default;
+		color: @font-color-mute;
+	}
+}

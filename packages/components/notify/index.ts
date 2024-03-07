@@ -3,7 +3,7 @@ import Dap from 'dap-util'
 import NotifyComponent from './notify.vue'
 import { NotifyPropsType } from './props'
 
-interface NotifyType {
+type NotifyType = {
 	//挂载的dom
 	$el?: HTMLElement
 	//创建的应用实例

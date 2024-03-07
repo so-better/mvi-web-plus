@@ -1,0 +1,50 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-toast {
+	display: flex;
+	display: -webkit-flex;
+	justify-content: flex-start;
+	flex-direction: column;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	min-width: 3rem;
+	max-width: 5rem;
+	margin: 0;
+	padding: @mp-md;
+	border-radius: @radius-default;
+	background-color: rgba(0, 0, 0, 0.85);
+	color: #fff;
+
+	&.iconless {
+		justify-content: center;
+		align-items: center;
+		padding: 0;
+		width: 2.4rem;
+		height: 1.8rem;
+	}
+
+	&.shadow {
+		box-shadow: @boxshadow;
+	}
+
+	.mvi-toast-icon {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+	}
+
+	.mvi-toast-message {
+		display: block;
+		width: 100%;
+		text-align: center;
+		font-size: @font-size-default;
+		margin-top: @mp-sm;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
+}

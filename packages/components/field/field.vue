@@ -160,7 +160,7 @@ const fieldClass = computed<string[]>(() => {
 	return cls
 })
 //输入框的类型
-const cmpType = computed<string>(() => {
+const cmpType = computed<'text' | 'password' | 'tel' | 'textarea'>(() => {
 	if (props.type == 'number') {
 		return 'text'
 	}

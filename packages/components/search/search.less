@@ -1,0 +1,130 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-search {
+	display: flex;
+	display: -webkit-flex;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+	position: relative;
+	padding: @mp-sm;
+	background-color: #fff;
+	color: @font-color-default;
+	font-size: @font-size-default;
+
+	&[disabled] {
+		opacity: 0.6;
+
+		.mvi-search-cancel {
+			&:hover {
+				opacity: 0.8;
+			}
+		}
+	}
+
+	.mvi-search-label {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: center;
+		align-items: center;
+		padding: 0;
+		padding-right: @mp-sm;
+		height: 0.68rem;
+		white-space: nowrap;
+	}
+
+	.mvi-search-input-container {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: space-between;
+		position: relative;
+		width: 100%;
+		flex: 1;
+		height: 0.68rem;
+		border-radius: @radius-default;
+		background-color: @bg-color-default;
+		color: @font-color-default;
+
+		&.round {
+			border-radius: @radius-round;
+		}
+
+		.mvi-search-left-icon,
+		.mvi-search-right-icon {
+			display: flex;
+			display: -webkit-flex;
+			justify-content: center;
+			align-items: center;
+			height: 0.68rem;
+			width: 0.68rem;
+		}
+
+		.mvi-search-clear {
+			display: flex;
+			display: -webkit-flex;
+			justify-content: center;
+			align-items: center;
+			height: 0.68rem;
+			width: 0.68rem;
+			opacity: 0.5;
+
+			&:hover {
+				cursor: pointer;
+			}
+		}
+
+		.mvi-search-input {
+			display: block;
+			width: 100%;
+			flex: 1;
+			height: 100%;
+			border: none;
+			border-radius: inherit;
+			padding: 0 @mp-md;
+			line-height: 1.5;
+			color: inherit;
+			background-color: inherit;
+			font-family: @font-family;
+			background-image: none;
+			margin: 0;
+			font-size: @font-size-default;
+
+			&::-webkit-input-placeholder,
+			&::placeholder {
+				color: inherit;
+				opacity: 0.5;
+				vertical-align: middle;
+				font-family: inherit;
+				font-size: inherit;
+			}
+
+			&.left-none-radius {
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
+			}
+
+			&.right-none-radius {
+				border-top-right-radius: 0;
+				border-bottom-right-radius: 0;
+			}
+		}
+	}
+
+	.mvi-search-cancel {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: center;
+		align-items: center;
+		padding: 0;
+		padding-left: @mp-sm;
+		height: 0.68rem;
+		white-space: nowrap;
+		cursor: pointer;
+		user-select: none;
+		opacity: 0.8;
+
+		&:hover {
+			opacity: 1;
+		}
+	}
+}

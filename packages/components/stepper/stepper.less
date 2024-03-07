@@ -1,0 +1,124 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-stepper {
+	display: inline-flex;
+	display: -webkit-inline-flex;
+	justify-content: flex-start;
+	align-items: center;
+	position: relative;
+
+	.mvi-stepper-minus,
+	.mvi-stepper-plus {
+		display: inline-flex;
+		display: -webkit-inline-flex;
+		justify-content: center;
+		align-items: center;
+		background-color: @bg-color-dark;
+		border-radius: @radius-default;
+		color: @font-color-sub;
+		position: relative;
+		cursor: pointer;
+		user-select: none;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+
+		&.active:active::before {
+			.mvi-active();
+		}
+
+		&.border {
+			border: 1px solid @border-color;
+		}
+
+		&[disabled] {
+			opacity: 0.6;
+		}
+	}
+
+	.mvi-stepper-minus {
+		margin-right: @mp-xs;
+	}
+
+	.mvi-stepper-input {
+		min-width: 0;
+		background-color: @bg-color-dark;
+		margin-right: @mp-xs;
+		border-radius: @radius-default;
+		width: 1.5rem;
+		color: @font-color-sub;
+		padding: 0 @mp-sm;
+
+		&.border {
+			border: 1px solid @border-color;
+		}
+
+		input {
+			position: relative;
+			display: block;
+			background-color: transparent;
+			height: 100%;
+			width: 100%;
+			min-width: 0;
+			color: inherit;
+			font-size: inherit;
+			border: none;
+			border-radius: @radius-default;
+			font-family: @font-family;
+			background-image: none;
+			margin: 0;
+			padding: 0;
+			font-size: inherit;
+
+			&[disabled] {
+				background-color: inherit;
+				color: inherit;
+			}
+		}
+
+		&[disabled] {
+			opacity: 0.6;
+		}
+	}
+
+	&.small {
+		.mvi-stepper-minus,
+		.mvi-stepper-plus {
+			width: @small-height;
+			height: @small-height;
+			font-size: @font-size-small;
+		}
+
+		.mvi-stepper-input {
+			height: @small-height;
+			font-size: @font-size-small;
+		}
+	}
+
+	&.medium {
+		.mvi-stepper-minus,
+		.mvi-stepper-plus {
+			width: @medium-height;
+			height: @medium-height;
+			font-size: @font-size-default;
+		}
+
+		.mvi-stepper-input {
+			height: @medium-height;
+			font-size: @font-size-default;
+		}
+	}
+
+	&.large {
+		.mvi-stepper-minus,
+		.mvi-stepper-plus {
+			width: @large-height;
+			height: @large-height;
+			font-size: @font-size-h6;
+		}
+
+		.mvi-stepper-input {
+			height: @large-height;
+			font-size: @font-size-h6;
+		}
+	}
+}

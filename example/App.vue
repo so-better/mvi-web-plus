@@ -1,36 +1,39 @@
 <template>
 	<div class="mvi-p-10">
 		<m-button @click="onClick">Button</m-button>
-		<m-form>
-			<m-form-el label="用户名">
-				<m-field placeholder="请输入用户名"></m-field>
-			</m-form-el>
-			<m-form-el label="手机号">
-				<m-field placeholder="请输入手机号"></m-field>
-			</m-form-el>
-			<m-form-el label="密码">
-				<m-field placeholder="请输入密码"></m-field>
-			</m-form-el>
-		</m-form>
+		<m-pull-refresh style="height: 400px" v-model="show" @refresh="refresh">
+			<!-- 这里面放页面内容 -->
+		</m-pull-refresh>
 	</div>
 </template>
 
 <script>
+import { refresh } from 'less'
+
 export default {
 	data() {
 		return {
+			page: 1,
 			show: false,
-			value: 0,
-			date: new Date(),
-			options: {
-				values: ['mvi', 'elementUI', 'iView', 'vant'], //设置选项
-				defaultIndex: 0 //设置默认选项序列
-			}
+			value: ''
 		}
 	},
-	mounted() {},
 	methods: {
-		onClick() {}
+		onClick() {
+			this.$showToast({
+				type: 'aa',
+				message: '{ a: 1 }'
+			})
+			setTimeout(() => {
+				this.$hideToast()
+			}, 1000)
+		},
+		refresh() {
+			setTimeout(() => {
+				this.show = false //取消刷新状态
+				this.$msgbox('数据加载成功')
+			}, 2000)
+		}
 	}
 }
 </script>

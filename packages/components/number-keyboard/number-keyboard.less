@@ -1,0 +1,185 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-number-keyboard {
+	display: block;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	overflow: hidden;
+	background-color: #fff;
+	user-select: none;
+	-webkit-user-select: none;
+	font-size: @font-size-h6;
+	box-shadow: @boxshadow;
+
+	.mvi-number-keyboard-title {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: @mp-sm @mp-sm 0 @mp-sm;
+		font-size: @font-size-default;
+		color: @font-color-sub;
+	}
+
+	.mvi-number-keyboard-wrapper {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: space-between;
+		width: 100%;
+		height: 4.8rem;
+
+		&.border {
+			padding: @mp-sm;
+		}
+
+		.mvi-number-keyboard-left {
+			display: flex;
+			display: -webkit-flex;
+			justify-content: space-between;
+			align-items: center;
+			flex-wrap: wrap;
+			-ms-flex-wrap: wrap;
+			-webkit-flex-wrap: wrap;
+			flex: 1;
+			height: 100%;
+
+			.mvi-number-keyboard-left-number {
+				display: block;
+				width: calc(~'1/3 * 100%');
+				height: calc(~'1/4 * 100%');
+				margin: 0;
+				padding: @mp-xs;
+
+				& > .mvi-number-keyboard-left-number-el {
+					position: relative;
+					display: flex;
+					display: -webkit-flex;
+					justify-content: center;
+					align-items: center;
+					width: 100%;
+					height: 100%;
+					background-color: @bg-color-default;
+					border-radius: @radius-default;
+					cursor: pointer;
+					font-weight: bold;
+
+					&.active:active::before {
+						.mvi-active();
+					}
+				}
+
+				&.border {
+					border-top: 1px solid @border-color;
+					border-right: 1px solid @border-color;
+					padding: 0;
+
+					& > .mvi-number-keyboard-left-number-el {
+						background-color: transparent;
+						border-radius: 0;
+					}
+				}
+
+				&.half {
+					width: calc(~'2/3 * 100%');
+				}
+				&.full {
+					width: 100%;
+				}
+			}
+		}
+
+		.mvi-number-keyboard-right {
+			display: flex;
+			display: -webkit-flex;
+			justify-content: flex-start;
+			flex-direction: column;
+			height: 100%;
+			width: 2.1rem;
+
+			.mvi-number-keyboard-delete {
+				display: block;
+				width: 100%;
+				flex: 1;
+				padding: @mp-xs;
+
+				.mvi-number-keyboard-delete-el {
+					position: relative;
+					display: flex;
+					display: -webkit-flex;
+					justify-content: center;
+					align-items: center;
+					background-color: @bg-color-dark;
+					font-weight: bold;
+					cursor: pointer;
+					height: 100%;
+					width: 100%;
+					border-radius: @radius-default;
+
+					&.active:active::before {
+						.mvi-active();
+					}
+
+					&[disabled] {
+						opacity: 0.6;
+					}
+				}
+
+				&.border {
+					border-top: 1px solid @border-color;
+					padding: 0;
+
+					& > .mvi-number-keyboard-delete-el {
+						border-radius: 0;
+					}
+				}
+			}
+
+			.mvi-number-keyboard-complete {
+				display: block;
+				width: 100%;
+				flex: 1;
+				padding: @mp-xs;
+
+				.mvi-number-keyboard-complete-el {
+					position: relative;
+					display: flex;
+					display: -webkit-flex;
+					justify-content: center;
+					align-items: center;
+					background-color: @bg-color-dark;
+					font-weight: bold;
+					cursor: pointer;
+					height: 100%;
+					width: 100%;
+					background-color: @primary-normal;
+					color: #fff;
+					font-weight: bold;
+					cursor: pointer;
+					border-radius: @radius-default;
+
+					&.active:active::before {
+						.mvi-active();
+					}
+					&[disabled] {
+						opacity: 0.6;
+					}
+				}
+
+				&.border {
+					border-top: 1px solid @border-color;
+					padding: 0;
+
+					& > .mvi-number-keyboard-complete-el {
+						border-radius: 0;
+					}
+				}
+			}
+		}
+	}
+}
+
+.mvi-keyboard-enter-from,
+.mvi-keyboard-leave-to {
+	transform: translateY(100%);
+}

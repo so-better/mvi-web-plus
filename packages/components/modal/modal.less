@@ -1,0 +1,121 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-modal {
+	display: block;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin: 0;
+	padding: 0;
+	width: 6rem;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+	background: transparent;
+
+	.mvi-modal-wrapper {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-start;
+		flex-direction: column;
+		-ms-flex-direction: column;
+		-webkit-flex-direction: column;
+		width: 100%;
+		background: #fff;
+		border-radius: @radius-default;
+		box-shadow: @boxshadow;
+		position: relative;
+	}
+
+	.mvi-modal-title {
+		display: block;
+		width: 100%;
+		font-weight: bold;
+		font-size: @font-size-h6;
+		color: @font-color-default;
+		padding: @mp-md;
+
+		&.ellipsis {
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+
+		&.center {
+			text-align: center;
+		}
+	}
+
+	.mvi-modal-times {
+		position: absolute;
+		right: @mp-sm;
+		top: @mp-sm;
+		display: flex;
+		display: -webkit-flex;
+		justify-content: center;
+		align-items: center;
+		color: @font-color-mute;
+		font-size: @font-size-small;
+		opacity: 0.8;
+
+		&:hover {
+			cursor: pointer;
+			opacity: 1;
+		}
+	}
+
+	.mvi-modal-content {
+		display: block;
+		padding: @mp-md;
+		flex: 1;
+		overflow-x: hidden;
+		overflow-y: auto;
+		border-radius: inherit;
+		font-size: @font-size-default;
+		color: @font-color-default;
+	}
+
+	.mvi-modal-footer {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-end;
+		align-items: center;
+		border-top: 1px solid @border-color;
+		padding: @mp-sm @mp-md;
+		text-align: right;
+		font-size: @font-size-default;
+		color: @font-color-sub;
+	}
+}
+
+.mvi-modal-narrow-enter-from {
+	transform: translate3d(0, 0, 0) scale(1.4);
+	opacity: 0;
+}
+
+.mvi-modal-scale-enter-from,
+.mvi-modal-scale-leave-to,
+.mvi-modal-narrow-leave-to {
+	transform: translate3d(0, 0, 0) scale(0.6);
+	opacity: 0;
+}
+
+.mvi-modal-translate-bottom-enter-from,
+.mvi-modal-translate-bottom-leave-to {
+	transform: translateY(1rem);
+	opacity: 0;
+}
+
+.mvi-modal-translate-top-enter-from,
+.mvi-modal-translate-top-leave-to {
+	transform: translateY(-1rem);
+}
+
+.mvi-modal-translate-left-enter-from,
+.mvi-modal-translate-left-leave-to {
+	transform: translateX(-1rem);
+}
+
+.mvi-modal-translate-right-enter-from,
+.mvi-modal-translate-right-leave-to {
+	transform: translateX(1rem);
+}
