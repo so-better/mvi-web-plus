@@ -30,16 +30,6 @@ declare const _default: __VLS_WithTemplateSlots<DefineComponent<{
     };
 }, {
     children: import("vue").Ref<DefineComponent[]>;
-    props: {
-        readonly modelValue: number | unknown[];
-        readonly disabled: boolean;
-        readonly active: boolean;
-        readonly noWrap: boolean;
-        readonly accordion: boolean;
-        readonly inBorder: boolean;
-        readonly outBorder: boolean;
-    };
-    emits: (event: "update:modelValue" | "before-slide-down" | "slide-down" | "before-slide-up" | "slide-up", ...args: any[]) => void;
 }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     "before-slide-down": (...args: any[]) => void;

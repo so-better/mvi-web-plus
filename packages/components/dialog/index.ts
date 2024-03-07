@@ -1,36 +1,48 @@
-import { createApp } from 'vue'
+import { App, createApp } from 'vue'
 import Dap from 'dap-util'
 import dialogComponent from './dialog.vue'
 import dialogPcComponent from './dialog-pc.vue'
+import { DialogPcPropsType, DialogPropsType } from './props'
 
-const Dialog = {
+export type DialogType = {
+	initParams: (type: DialogPropsType['type'] | DialogPcPropsType['type'], options: string | DialogPropsType | DialogPcPropsType) => DialogPropsType | DialogPcPropsType
+	alert: (options: string | DialogPropsType) => void
+	confirm: (options: string | DialogPropsType) => void
+	prompt: (options: string | DialogPropsType) => void
+	Alert: (options: string | DialogPcPropsType) => void
+	Confirm: (options: string | DialogPcPropsType) => void
+	Prompt: (options: string | DialogPcPropsType) => void
+	install: (app: App) => void
+}
+
+const Dialog: DialogType = {
 	//初始化参数
 	initParams: (type, options) => {
-		let opts = {}
+		let opts: DialogPropsType | DialogPcPropsType = {}
 		if (Dap.common.isObject(options)) {
-			opts.title = options.title
-			opts.message = options.message
-			opts.width = options.width
-			opts.zIndex = options.zIndex
-			opts.animation = options.animation
-			opts.radius = options.radius
-			opts.overlayColor = options.overlayColor
-			opts.closable = options.closable
-			opts.input = options.input
-			opts.usePadding = options.usePadding
-			opts.mountEl = options.mountEl
-			opts.timeout = options.timeout
+			opts.title = (<DialogPropsType | DialogPcPropsType>options).title
+			opts.message = (<DialogPropsType | DialogPcPropsType>options).message
+			opts.width = (<DialogPropsType | DialogPcPropsType>options).width
+			opts.zIndex = (<DialogPropsType | DialogPcPropsType>options).zIndex
+			opts.animation = (<DialogPropsType | DialogPcPropsType>options).animation
+			opts.radius = (<DialogPropsType | DialogPcPropsType>options).radius
+			opts.overlayColor = (<DialogPropsType | DialogPcPropsType>options).overlayColor
+			opts.closable = (<DialogPropsType | DialogPcPropsType>options).closable
+			opts.input = (<DialogPropsType | DialogPcPropsType>options).input
+			opts.usePadding = (<DialogPropsType | DialogPcPropsType>options).usePadding
+			opts.mountEl = (<DialogPropsType | DialogPcPropsType>options).mountEl
+			opts.timeout = (<DialogPropsType | DialogPcPropsType>options).timeout
 			if (type == 'alert' || type == 'confirm' || type == 'prompt') {
-				opts.btnText = options.btnText
-				opts.btnColor = options.btnColor
-				opts.ios = options.ios
+				;(<DialogPropsType>opts).btnText = (<DialogPropsType>options).btnText
+				;(<DialogPropsType>opts).btnColor = (<DialogPropsType>options).btnColor
+				;(<DialogPropsType>opts).ios = (<DialogPropsType>options).ios
 			} else if (type == 'Alert' || type == 'Confirm' || type == 'Prompt') {
-				opts.center = options.center
-				opts.btns = options.btns
-				opts.showTimes = options.showTimes
+				;(<DialogPcPropsType>opts).center = (<DialogPcPropsType>options).center
+				;(<DialogPcPropsType>opts).btns = (<DialogPcPropsType>options).btns
+				;(<DialogPcPropsType>opts).showTimes = (<DialogPcPropsType>options).showTimes
 			}
 		} else {
-			opts.message = options
+			opts.message = <string>options
 		}
 		opts.type = type
 		return opts
@@ -38,7 +50,7 @@ const Dialog = {
 
 	//提示框
 	alert: function (options) {
-		return new Promise(resolve => {
+		return new Promise<void>(resolve => {
 			let opts = Dialog.initParams('alert', options)
 			let mountNode = Dap.element.string2dom('<div></div>')
 			document.body.appendChild(mountNode)
@@ -50,9 +62,12 @@ const Dialog = {
 					resolve()
 				}
 			})
+
+			const _app = <App>(<unknown>this)
+
 			//将页面应用实例的监听事件传递给当前弹窗组件的应用实例
-			if (this && this.config && this.config.globalProperties && typeof this.config.globalProperties.dialogComponentWatch == 'function') {
-				instance.config.globalProperties.dialogComponentWatch = this.config.globalProperties.dialogComponentWatch
+			if (_app && _app.config && _app.config.globalProperties && typeof _app.config.globalProperties.dialogComponentWatch == 'function') {
+				instance.config.globalProperties.dialogComponentWatch = _app.config.globalProperties.dialogComponentWatch
 			}
 			instance.mount(mountNode)
 		})
@@ -66,15 +81,17 @@ const Dialog = {
 			document.body.appendChild(mountNode)
 			const instance = createApp(dialogComponent, {
 				...opts,
-				__remove: ok => {
+				__remove: (ok: boolean) => {
 					instance.unmount()
 					mountNode.remove()
 					resolve(ok)
 				}
 			})
+
+			const _app = <App>(<unknown>this)
 			//将页面应用实例的监听事件传递给当前弹窗组件的应用实例
-			if (this && this.config && this.config.globalProperties && typeof this.config.globalProperties.dialogComponentWatch == 'function') {
-				instance.config.globalProperties.dialogComponentWatch = this.config.globalProperties.dialogComponentWatch
+			if (_app && _app.config && _app.config.globalProperties && typeof _app.config.globalProperties.dialogComponentWatch == 'function') {
+				instance.config.globalProperties.dialogComponentWatch = _app.config.globalProperties.dialogComponentWatch
 			}
 			instance.mount(mountNode)
 		})
@@ -88,7 +105,7 @@ const Dialog = {
 			document.body.appendChild(mountNode)
 			const instance = createApp(dialogComponent, {
 				...opts,
-				__remove: (ok, value) => {
+				__remove: (ok: boolean, value: string) => {
 					instance.unmount()
 					mountNode.remove()
 					resolve({
@@ -97,9 +114,11 @@ const Dialog = {
 					})
 				}
 			})
+
+			const _app = <App>(<unknown>this)
 			//将页面应用实例的监听事件传递给当前弹窗组件的应用实例
-			if (this && this.config && this.config.globalProperties && typeof this.config.globalProperties.dialogComponentWatch == 'function') {
-				instance.config.globalProperties.dialogComponentWatch = this.config.globalProperties.dialogComponentWatch
+			if (_app && _app.config && _app.config.globalProperties && typeof _app.config.globalProperties.dialogComponentWatch == 'function') {
+				instance.config.globalProperties.dialogComponentWatch = _app.config.globalProperties.dialogComponentWatch
 			}
 			instance.mount(mountNode)
 		})
@@ -107,7 +126,7 @@ const Dialog = {
 
 	//pc端提示框
 	Alert: function (options) {
-		return new Promise(resolve => {
+		return new Promise<void>(resolve => {
 			let opts = Dialog.initParams('Alert', options)
 			let mountNode = Dap.element.string2dom('<div></div>')
 			document.body.appendChild(mountNode)
@@ -119,9 +138,11 @@ const Dialog = {
 					resolve()
 				}
 			})
+
+			const _app = <App>(<unknown>this)
 			//将页面应用实例的监听事件传递给当前弹窗组件的应用实例
-			if (this && this.config && this.config.globalProperties && typeof this.config.globalProperties.dialogComponentWatch == 'function') {
-				instance.config.globalProperties.dialogComponentWatch = this.config.globalProperties.dialogComponentWatch
+			if (_app && _app.config && _app.config.globalProperties && typeof _app.config.globalProperties.dialogComponentWatch == 'function') {
+				instance.config.globalProperties.dialogComponentWatch = _app.config.globalProperties.dialogComponentWatch
 			}
 			instance.mount(mountNode)
 		})
@@ -135,15 +156,17 @@ const Dialog = {
 			document.body.appendChild(mountNode)
 			const instance = createApp(dialogPcComponent, {
 				...opts,
-				__remove: ok => {
+				__remove: (ok: boolean) => {
 					instance.unmount()
 					mountNode.remove()
 					resolve(ok)
 				}
 			})
+
+			const _app = <App>(<unknown>this)
 			//将页面应用实例的监听事件传递给当前弹窗组件的应用实例
-			if (this && this.config && this.config.globalProperties && typeof this.config.globalProperties.dialogComponentWatch == 'function') {
-				instance.config.globalProperties.dialogComponentWatch = this.config.globalProperties.dialogComponentWatch
+			if (_app && _app.config && _app.config.globalProperties && typeof _app.config.globalProperties.dialogComponentWatch == 'function') {
+				instance.config.globalProperties.dialogComponentWatch = _app.config.globalProperties.dialogComponentWatch
 			}
 			instance.mount(mountNode)
 		})
@@ -157,7 +180,7 @@ const Dialog = {
 			document.body.appendChild(mountNode)
 			const instance = createApp(dialogPcComponent, {
 				...opts,
-				__remove: (ok, value) => {
+				__remove: (ok: boolean, value: string) => {
 					instance.unmount()
 					mountNode.remove()
 					resolve({
@@ -166,9 +189,11 @@ const Dialog = {
 					})
 				}
 			})
+
+			const _app = <App>(<unknown>this)
 			//将页面应用实例的监听事件传递给当前弹窗组件的应用实例
-			if (this && this.config && this.config.globalProperties && typeof this.config.globalProperties.dialogComponentWatch == 'function') {
-				instance.config.globalProperties.dialogComponentWatch = this.config.globalProperties.dialogComponentWatch
+			if (_app && _app.config && _app.config.globalProperties && typeof _app.config.globalProperties.dialogComponentWatch == 'function') {
+				instance.config.globalProperties.dialogComponentWatch = _app.config.globalProperties.dialogComponentWatch
 			}
 			instance.mount(mountNode)
 		})

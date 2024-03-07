@@ -59,4 +59,68 @@ export declare const ButtonProps: {
         };
     };
 };
-export type ButtonPropsType = ExtractPublicPropTypes<typeof ButtonProps>;
+declare const publicButtonProps: {
+    text: {
+        type: StringConstructor;
+        default: string;
+    };
+    type: {
+        type: PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
+        default: string;
+        validator(value: any): boolean;
+    };
+    size: {
+        type: PropType<"small" | "medium" | "large" | "mini">;
+        default: string;
+        validator(value: any): boolean;
+    };
+    disabled: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
+    nativeType: {
+        type: PropType<"button" | "submit" | "reset">;
+        default: string;
+    };
+    block: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
+    tag: {
+        type: StringConstructor;
+        default: string;
+    };
+    plain: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
+    round: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
+    square: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
+    active: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
+    loading: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
+    loadText: {
+        type: StringConstructor;
+        default: string;
+    };
+    loadIcon: {
+        type: PropType<string | IconPropsType>;
+        default: () => {
+            type: string;
+            spin: boolean;
+        };
+    };
+};
+export type ButtonPropsType = ExtractPublicPropTypes<typeof publicButtonProps>;
+export {};

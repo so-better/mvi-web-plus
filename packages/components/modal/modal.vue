@@ -151,6 +151,10 @@ watch(
 		modalSize()
 	}
 )
+
+defineExpose({
+	$$el
+})
 </script>
 
 <template>

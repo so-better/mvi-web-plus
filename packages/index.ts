@@ -75,6 +75,7 @@ import { Stepper } from './components/stepper'
 import { NumberKeyboard } from './components/number-keyboard'
 import { Toast } from './components/toast'
 import { PullRefresh } from './components/pull-refresh'
+import { Dialog } from './components/dialog'
 
 /***** 按需导出 *****/
 export * from './directives/anchor'
@@ -143,6 +144,7 @@ export * from './components/stepper'
 export * from './components/number-keyboard'
 export * from './components/toast'
 export * from './components/pull-refresh'
+export * from './components/dialog'
 
 /***** 全局导出 *****/
 const install = (app: App) => {
@@ -212,7 +214,8 @@ const install = (app: App) => {
 		Stepper,
 		NumberKeyboard,
 		Toast,
-		PullRefresh
+		PullRefresh,
+		Dialog
 	}
 	//注册组件和指令
 	Object.values(components).map(component => {

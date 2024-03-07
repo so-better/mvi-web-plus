@@ -82,8 +82,8 @@ declare const _default: import("vue").DefineComponent<{
     type: string;
     icon: string | IconPropsType;
     background: string;
+    message: string;
     __remove: () => void;
     __init: (vm: import("vue").ComponentInternalInstance) => void;
-    message: string;
 }, {}>;
 export default _default;

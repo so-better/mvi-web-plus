@@ -18,7 +18,7 @@ type LoadingBarType = {
 
 const LoadingBar: LoadingBarType = {
 	//初始化参数
-	initParams: (options: string | LoadingBarPropsType) => {
+	initParams: options => {
 		let opts: LoadingBarPropsType = {}
 		if (Dap.common.isObject(options)) {
 			opts.color = (<LoadingBarPropsType>options).color
@@ -30,7 +30,7 @@ const LoadingBar: LoadingBarType = {
 	},
 
 	//显示加载进度条
-	showLoadingBar: (options: string | LoadingBarPropsType) => {
+	showLoadingBar: options => {
 		return new Promise<void>(resolve => {
 			//如果已经存在进度条，则关闭后再进行
 			if (LoadingBar.$el && LoadingBar.$instance) {
@@ -69,7 +69,7 @@ const LoadingBar: LoadingBarType = {
 	},
 
 	//注册函数
-	install: (app: App) => {
+	install: app => {
 		//挂载
 		app.config.globalProperties.$showLoadingBar = LoadingBar.showLoadingBar
 		app.provide('$showLoadingBar', LoadingBar.showLoadingBar)

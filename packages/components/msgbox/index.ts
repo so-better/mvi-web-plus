@@ -11,7 +11,7 @@ type MsgboxType = {
 
 const Msgbox: MsgboxType = {
 	//初始化参数
-	initParams: (options: string | MsgboxPropsType) => {
+	initParams: options => {
 		let opts: MsgboxPropsType = {}
 		if (Dap.common.isObject(options)) {
 			opts.message = (<MsgboxPropsType>options).message
@@ -27,7 +27,7 @@ const Msgbox: MsgboxType = {
 	},
 
 	//弹窗调用
-	msgbox: (options: string | MsgboxPropsType) => {
+	msgbox: options => {
 		return new Promise<void>(resolve => {
 			let opts = Msgbox.initParams(options)
 			let mountNode = Dap.element.string2dom('<div></div>')
@@ -45,7 +45,7 @@ const Msgbox: MsgboxType = {
 	},
 
 	//注册函数
-	install: (app: App) => {
+	install: app => {
 		app.config.globalProperties.$msgbox = Msgbox.msgbox
 		app.provide('$msgbox', Msgbox.msgbox)
 	}

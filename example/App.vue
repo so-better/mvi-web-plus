@@ -1,15 +1,11 @@
 <template>
 	<div class="mvi-p-10">
 		<m-button @click="onClick">Button</m-button>
-		<m-pull-refresh style="height: 400px" v-model="show" @refresh="refresh">
-			<!-- 这里面放页面内容 -->
-		</m-pull-refresh>
 	</div>
 </template>
 
 <script>
-import { refresh } from 'less'
-
+import { Dialog } from '../packages'
 export default {
 	data() {
 		return {
@@ -20,19 +16,7 @@ export default {
 	},
 	methods: {
 		onClick() {
-			this.$showToast({
-				type: 'aa',
-				message: '{ a: 1 }'
-			})
-			setTimeout(() => {
-				this.$hideToast()
-			}, 1000)
-		},
-		refresh() {
-			setTimeout(() => {
-				this.show = false //取消刷新状态
-				this.$msgbox('数据加载成功')
-			}, 2000)
+			Dialog.alert('hello')
 		}
 	}
 }

@@ -18,7 +18,7 @@ type ToastType = {
 
 const Toast: ToastType = {
 	//初始化参数
-	initParams: (options: string | ToastPropsType) => {
+	initParams: options => {
 		let opts: ToastPropsType = {}
 		if (Dap.common.isObject(options)) {
 			opts.type = (<ToastPropsType>options).type
@@ -40,7 +40,7 @@ const Toast: ToastType = {
 	},
 
 	//显示toast
-	showToast: (options: string | ToastPropsType) => {
+	showToast: options => {
 		return new Promise<void>(resolve => {
 			//如果已经存在弹窗，则关闭后再进行
 			if (Toast.$el && Toast.$instance) {
@@ -77,7 +77,7 @@ const Toast: ToastType = {
 	},
 
 	//注册函数
-	install: (app: App) => {
+	install: app => {
 		app.config.globalProperties.$showToast = Toast.showToast
 		app.provide('$showToast', Toast.showToast)
 

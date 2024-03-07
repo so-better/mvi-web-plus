@@ -1,6 +1,6 @@
 import { App, ComponentInternalInstance } from 'vue';
 import { NotifyPropsType } from './props';
-interface NotifyType {
+type NotifyType = {
     $el?: HTMLElement;
     $instance?: App<Element>;
     $vm?: ComponentInternalInstance;
@@ -8,6 +8,6 @@ interface NotifyType {
     showNotify: (options: NotifyPropsType) => void;
     hideNotify: () => void;
     install: (app: App) => void;
-}
+};
 declare const Notify: NotifyType;
 export { Notify, Notify as default };

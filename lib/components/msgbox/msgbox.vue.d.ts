@@ -62,7 +62,7 @@ declare const _default: import("vue").DefineComponent<{
     timeout: number;
     background: string;
     animation: string;
-    __remove: () => void;
     message: string;
+    __remove: () => void;
 }, {}>;
 export default _default;

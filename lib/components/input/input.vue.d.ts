@@ -232,16 +232,16 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     placeholder: string;
     required: boolean;
     clearable: boolean;
-    labelWidth: string;
-    labelAlign: "left" | "right" | "center";
-    labelOffset: string;
+    inputMode: "text" | "url" | "none" | "search" | "email" | "tel" | "decimal" | "numeric";
     maxlength: number;
     readonly: boolean;
     autofocus: boolean;
-    showWordLimit: boolean;
     rows: number;
     autosize: boolean | InputAutosizeType;
-    inputMode: "text" | "url" | "none" | "search" | "email" | "tel" | "decimal" | "numeric";
+    labelWidth: string;
+    labelOffset: string;
+    labelAlign: "left" | "right" | "center";
+    showWordLimit: boolean;
 }, {}>, {
     left?(_: {}): any;
     right?(_: {}): any;

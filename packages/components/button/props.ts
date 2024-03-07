@@ -80,4 +80,12 @@ export const ButtonProps = {
 	}
 }
 
-export type ButtonPropsType = ExtractPublicPropTypes<typeof ButtonProps>
+//对外的按钮属性增加一个text用作按钮文本内容
+const publicButtonProps = {
+	...ButtonProps,
+	text: {
+		type: String,
+		default: ''
+	}
+}
+export type ButtonPropsType = ExtractPublicPropTypes<typeof publicButtonProps>

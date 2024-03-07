@@ -18,7 +18,7 @@ type NotifyType = {
 
 const Notify: NotifyType = {
 	//初始化参数
-	initParams: (options: string | NotifyPropsType) => {
+	initParams: options => {
 		let opts: NotifyPropsType = {}
 		if (Dap.common.isObject(options)) {
 			opts.type = (<NotifyPropsType>options).type
@@ -35,7 +35,7 @@ const Notify: NotifyType = {
 	},
 
 	//显示弹窗
-	showNotify: (options: string | NotifyPropsType) => {
+	showNotify: options => {
 		return new Promise<void>(resolve => {
 			//如果已经存在弹窗，则关闭后再进行
 			if (Notify.$el && Notify.$instance) {
@@ -72,7 +72,7 @@ const Notify: NotifyType = {
 	},
 
 	//注册函数
-	install: (app: App) => {
+	install: app => {
 		app.config.globalProperties.$showNotify = Notify.showNotify
 		app.provide('$showNotify', Notify.showNotify)
 

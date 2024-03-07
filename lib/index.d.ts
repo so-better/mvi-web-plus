@@ -52,6 +52,25 @@ export * from './components/date-native-picker';
 export * from './components/picker';
 export * from './components/progress';
 export * from './components/slider';
+export * from './components/date-picker';
+export * from './components/field';
+export * from './components/form';
+export * from './components/form-el';
+export * from './components/image';
+export * from './components/color-picker';
+export * from './components/list';
+export * from './components/modal';
+export * from './components/page';
+export * from './components/search';
+export * from './components/select';
+export * from './components/skeleton';
+export * from './components/steps';
+export * from './components/step';
+export * from './components/stepper';
+export * from './components/number-keyboard';
+export * from './components/toast';
+export * from './components/pull-refresh';
+export * from './components/dialog';
 /***** 全局导出 *****/
 declare const install: (app: App) => void;
 /***** 版本号 *****/

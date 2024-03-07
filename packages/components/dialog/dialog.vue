@@ -22,7 +22,6 @@ const value = ref<string>('')
 
 const modalRef = ref<DefineComponent | null>(null)
 const inputRef = ref<HTMLInputElement | null>(null)
-const iconRef = ref<DefineComponent | null>(null)
 
 const $$el = computed<HTMLElement>(() => {
 	return modalRef.value!.$$el
@@ -224,7 +223,7 @@ const contentShow = computed<boolean>(() => {
 	}
 	return true
 })
-//是否显示输入框内的清除框
+//是否显示输入框内的清除图标
 const showClear = computed<boolean>(() => {
 	return !!(focus.value && value.value)
 })
@@ -370,7 +369,11 @@ if (props.type == 'prompt') {
 }
 
 onMounted(() => {
-	Dap.event.on($$el, 'click.dialog', overlayClick)
+	Dap.event.on($$el.value, 'click.dialog', overlayClick)
+})
+
+defineExpose({
+	$$el
 })
 </script>
 
@@ -384,7 +387,7 @@ onMounted(() => {
 			<div v-if="!cmpIos && cmpMessage" v-html="cmpMessage" class="mvi-dialog-content"></div>
 			<div v-if="type == 'prompt'" class="mvi-dialog-input" :class="{ 'mvi-dialog-input-mt': !cmpIos && cmpMessage }">
 				<input ref="inputRef" :type="cmpInput.type == 'number' ? 'text' : cmpInput.type" :placeholder="cmpInput.placeholder" :maxlength="cmpInput.maxlength" :class="inputClass" :style="inputStyle" v-model.trim="value" @input="inputFun" @focus="inputFocus" @blur="inputBlur" :inputmode="inputMode" />
-				<Icon v-if="cmpInput.clearable" ref="iconRef" v-show="showClear" type="times-o" class="mvi-dialog-times" @click="doClear" />
+				<Icon v-if="cmpInput.clearable" v-show="showClear" type="times-o" class="mvi-dialog-times" @click="doClear" />
 			</div>
 		</template>
 		<template #footer>
