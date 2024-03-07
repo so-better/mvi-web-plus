@@ -62,6 +62,8 @@ const LoadingBar: LoadingBarType = {
 	//关闭加载进度条
 	hideLoadingBar: () => {
 		if (LoadingBar.$vm) {
+			console.log(LoadingBar.$vm)
+
 			LoadingBar.$vm.exposed!.leave()
 		}
 	},

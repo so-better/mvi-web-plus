@@ -57,6 +57,10 @@ import { DateNativePicker } from './components/date-native-picker'
 import { Picker } from './components/picker'
 import { Progress } from './components/progress'
 import { Slider } from './components/slider'
+import { DatePicker } from './components/date-picker'
+import { Field } from './components/field'
+import { Form } from './components/form'
+import { FormEl } from './components/form-el'
 
 /***** 按需导出 *****/
 export * from './directives/anchor'
@@ -107,6 +111,10 @@ export * from './components/date-native-picker'
 export * from './components/picker'
 export * from './components/progress'
 export * from './components/slider'
+export * from './components/date-picker'
+export * from './components/field'
+export * from './components/form'
+export * from './components/form-el'
 
 /***** 全局导出 *****/
 const install = (app: App) => {
@@ -158,7 +166,11 @@ const install = (app: App) => {
 		DateNativePicker,
 		Picker,
 		Progress,
-		Slider
+		Slider,
+		DatePicker,
+		Field,
+		Form,
+		FormEl
 	}
 	//注册组件和指令
 	Object.values(components).map(component => {

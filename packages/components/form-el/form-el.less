@@ -1,0 +1,37 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-form-el {
+	display: flex;
+	display: -webkit-flex;
+	justify-content: flex-start;
+	align-items: center;
+	flex-wrap: wrap;
+	-webkit-flex-wrap: wrap;
+	width: 6.4rem;
+	padding: @mp-sm;
+
+	&.block {
+		width: 100%;
+	}
+}
+
+.mvi-form-label {
+	display: block;
+	width: 1.2rem;
+	text-align: right;
+	margin: 0 @mp-lg 0 0;
+	color: @font-color-default;
+	font-weight: bold;
+
+	&.block {
+		width: 100%;
+		text-align: left;
+		margin: 0 0 @mp-sm 0;
+	}
+}
+
+.mvi-form-container {
+	display: block;
+	width: 100%;
+	flex: 1;
+}

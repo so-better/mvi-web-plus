@@ -3,18 +3,16 @@ import { DefineComponent, ref } from 'vue'
 import { CollapseProps } from './props'
 
 //属性
-const props = defineProps(CollapseProps)
+defineProps(CollapseProps)
 
 //事件
-const emits = defineEmits(['update:modelValue', 'before-slide-down', 'slide-down', 'before-slide-up', 'slide-up'])
+defineEmits(['update:modelValue', 'before-slide-down', 'slide-down', 'before-slide-up', 'slide-up'])
 
 //存放collapse-item组件的数组
 const children = ref<DefineComponent[]>([])
 
 defineExpose({
-	children,
-	props,
-	emits
+	children
 })
 </script>
 
