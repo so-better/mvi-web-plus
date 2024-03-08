@@ -81,6 +81,8 @@ import { Tabbar } from './components/tabbar'
 import { Table } from './components/table'
 import { Tabs } from './components/tabs'
 import { Tab } from './components/tab'
+import { Swiper } from './components/swiper'
+import { SwiperSlide } from './components/swiper-slide'
 
 /***** 按需导出 *****/
 export * from './directives/anchor'
@@ -155,6 +157,8 @@ export * from './components/tabbar'
 export * from './components/table'
 export * from './components/tabs'
 export * from './components/tab'
+export * from './components/swiper'
+export * from './components/swiper-slide'
 
 /***** 全局导出 *****/
 const install = (app: App) => {
@@ -230,7 +234,9 @@ const install = (app: App) => {
 		Tabbar,
 		Table,
 		Tabs,
-		Tab
+		Tab,
+		Swiper,
+		SwiperSlide
 	}
 	//注册组件和指令
 	Object.values(components).map(component => {
