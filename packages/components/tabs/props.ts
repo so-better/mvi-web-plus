@@ -26,7 +26,7 @@ export const TabsProps = {
 	//当animation为slide或者fade时的动画时长
 	timeout: {
 		type: Number,
-		default: 200
+		default: 500
 	},
 	//当标题过长时是否省略，标题栏最大长度只有1/n，n表示标题栏个数
 	ellipsis: {
