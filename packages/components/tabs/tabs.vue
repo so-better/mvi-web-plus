@@ -121,7 +121,7 @@ const setSlider = () => {
 	slideLeft.value = Dap.element.getElementPoint(headersRef.value.querySelector('.mvi-tab-header.active'), headersRef.value).left
 }
 //点击头部的标题
-const clickHeader = (item: any, index: number) => {
+const clickHeader = (item: ComponentInternalInstance, index: number) => {
 	if (item.props.disabled) {
 		return
 	}
@@ -185,7 +185,7 @@ defineExpose({
 			<!-- 选项卡滑动条 -->
 			<div v-if="type == 'default'" class="mvi-tabs-slider" :style="sliderStyle"></div>
 			<!-- 选项卡头部卡片 -->
-			<div class="mvi-tab-header" :class="{ active: modelValue == index, ellipsis: ellipsis }" v-for="(item, index) in children" @click="clickHeader(item, index)" :style="headerStyle(index)" :disabled="item.props.disabled || null">
+			<div class="mvi-tab-header" :class="{ active: modelValue == index, ellipsis: ellipsis }" v-for="(item, index) in children" @click="clickHeader(<ComponentInternalInstance>item, index)" :style="headerStyle(index)" :disabled="item.props.disabled || null">
 				<Icon v-if="item.props.placement == 'left' && (parseIcon(<string | IconPropsType>item.props.icon).type || parseIcon(<string | IconPropsType>item.props.icon).url)" class="mvi-tab-icon" :class="{ left: !!item.props.title }" :type="parseIcon(<string | IconPropsType>item.props.icon).type" :url="parseIcon(<string | IconPropsType>item.props.icon).url" :spin="parseIcon(<string | IconPropsType>item.props.icon).spin" :size="parseIcon(<string | IconPropsType>item.props.icon).size" :color="parseIcon(<string | IconPropsType>item.props.icon).color" />
 				<span class="mvi-tab-header-text" v-html="item.props.title" v-if="item.props.title"></span>
 				<Icon v-if="item.props.placement == 'right' && (parseIcon(<string | IconPropsType>item.props.icon).type || parseIcon(<string | IconPropsType>item.props.icon).url)" class="mvi-tab-icon" :class="{ right: !!item.props.title }" :type="parseIcon(<string | IconPropsType>item.props.icon).type" :url="parseIcon(<string | IconPropsType>item.props.icon).url" :spin="parseIcon(<string | IconPropsType>item.props.icon).spin" :size="parseIcon(<string | IconPropsType>item.props.icon).size" :color="parseIcon(<string | IconPropsType>item.props.icon).color" />

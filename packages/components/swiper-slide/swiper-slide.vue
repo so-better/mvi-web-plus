@@ -1,5 +1,5 @@
 <script setup name="m-swiper-slide" lang="ts">
-import { ComponentInternalInstance, computed, getCurrentInstance, inject } from 'vue'
+import { ComponentInternalInstance, computed, getCurrentInstance, inject, onMounted } from 'vue'
 import Dap from 'dap-util'
 
 //获取实例
@@ -11,9 +11,6 @@ const swiper = inject<ComponentInternalInstance | null>('swiper', null)
 if (!swiper || swiper.type.name != 'm-swiper') {
 	throw new Error(`The component 'SwiperSlide' must be used as a subcomponent of the component 'Swiper'`)
 }
-
-//将SwiperSlide加入到Swiper的children数组中
-swiper.exposed!.children.value.push(instance)
 
 const slideStyle = computed<any>(() => {
 	let style: any = {}
@@ -48,6 +45,11 @@ const removeTransition = (el: Element) => {
 		swiper.exposeProxy!.useOpacity = true
 	}
 }
+
+onMounted(() => {
+	//将SwiperSlide加入到Swiper的children数组中
+	swiper.exposed!.children.value.push(instance.proxy!.$el)
+})
 </script>
 
 <template>

@@ -1,11 +1,11 @@
 <template>
 	<div class="mvi-p-10">
 		<m-button @click="onClick">Button</m-button>
-		<m-swiper ref="swiper">
-			<m-swiper-slide>1</m-swiper-slide>
-			<m-swiper-slide>2</m-swiper-slide>
-			<m-swiper-slide>3</m-swiper-slide>
-			<m-swiper-slide>4</m-swiper-slide>
+		<m-swiper ref="swiper" loop width="300px" height="300px">
+			<m-swiper-slide class="mvi-bg-success">1</m-swiper-slide>
+			<m-swiper-slide class="mvi-bg-info">2</m-swiper-slide>
+			<m-swiper-slide class="mvi-bg-error">3</m-swiper-slide>
+			<m-swiper-slide class="mvi-bg-primary">4</m-swiper-slide>
 		</m-swiper>
 	</div>
 </template>

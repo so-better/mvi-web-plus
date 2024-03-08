@@ -1,5 +1,5 @@
 <script setup name="m-swiper" lang="ts">
-import { ComponentInternalInstance, computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
+import { computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
 import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { SwiperProps } from './props'
@@ -22,7 +22,7 @@ const wrapperRef = ref<HTMLElement | null>(null)
 //强制更新slideSize的参数
 const sizeCounts = ref<number>(0)
 //slide子元素数组
-const children = ref<ComponentInternalInstance[]>([])
+const children = ref<HTMLElement[]>([])
 //每次更新的触摸点坐标
 const start = ref<number>(0)
 //初始的触摸点坐标
@@ -751,16 +751,12 @@ onMounted(() => {
 	} else {
 		//处理循环
 		if (props.loop && children.value.length > 0) {
-			let copy_first = children.value[0].proxy!.$el.cloneNode(true)
-			let copy_last = children.value[children.value.length - 1].proxy!.$el.cloneNode(true)
+			let copy_first = <HTMLElement>children.value[0].cloneNode(true)
+			let copy_last = <HTMLElement>children.value[children.value.length - 1].cloneNode(true)
 			wrapperRef.value!.append(copy_first)
 			wrapperRef.value!.prepend(copy_last)
-			// children.value.unshift({
-			// 	$el: copy_last
-			// })
-			// children.value.push({
-			// 	$el: copy_first
-			// })
+			children.value.unshift(copy_last)
+			children.value.push(copy_first)
 		}
 		setDefaultSlide()
 		Dap.event.on(document.documentElement, `mousemove.swiper_${instance.uid}`, swiperMouseMove)
