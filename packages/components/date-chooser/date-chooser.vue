@@ -1,4 +1,63 @@
-<script setup name="m-date-chooser" lang="ts">
+<template>
+	<div class="mvi-date-chooser" ref="elRef" :class="{ block: block }">
+		<div class="mvi-date-chooser-relate" :data-id="`mvi-date-chooser-relate-${instance.uid}`" ref="relateRef" @click="clickCalendar">
+			<slot></slot>
+		</div>
+		<Layer :relate="`[data-id='mvi-date-chooser-relate-${instance.uid}']`" v-model="show" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :animation="layerRealProps.animation" :border-color="layerRealProps.borderColor" :timeout="layerRealProps.timeout" :closable="closable" :show-triangle="layerRealProps.showTriangle" :width="layerRealProps.width" @showing="layerShow">
+			<div class="mvi-date-chooser-layer" ref="panelRef">
+				<!-- 年视图头部 -->
+				<div v-if="view == 'year'" class="mvi-date-chooser-year-header">
+					<div class="mvi-date-chooser-year-left" :class="[type]" @click="updateYear(-1)">
+						<Icon type="angle-double-left" />
+					</div>
+					<div class="mvi-date-chooser-year-center">
+						<span>{{ formatShow('year', years[0]) }}</span>
+						<span>-</span>
+						<span>{{ formatShow('year', years[years.length - 1]) }}</span>
+					</div>
+					<div class="mvi-date-chooser-year-right" :class="[type]" @click="updateYear(1)">
+						<Icon type="angle-double-right" />
+					</div>
+				</div>
+				<!-- 月视图头部 -->
+				<div v-else-if="view == 'month'" class="mvi-date-chooser-month-header">
+					<div class="mvi-date-chooser-month-left" :class="[type]" @click="updateYear(-1)">
+						<Icon type="angle-double-left" />
+					</div>
+					<div class="mvi-date-chooser-month-center" :class="[type]" @click="goYear">{{ formatShow('year', selectedDate) }}</div>
+					<div class="mvi-date-chooser-month-right" :class="[type]" @click="updateYear(1)">
+						<Icon type="angle-double-right" />
+					</div>
+				</div>
+				<!-- 日期头部 -->
+				<div v-else-if="view == 'date'" class="mvi-date-chooser-date-header">
+					<div class="mvi-date-chooser-date-left">
+						<div :class="type" @click="updateYear(-1)">
+							<Icon type="angle-double-left" />
+						</div>
+						<div :class="type" @click="updateMonth(-1)">
+							<Icon type="angle-left" />
+						</div>
+					</div>
+					<div class="mvi-date-chooser-date-center">
+						<div :class="type" @click="goYear">{{ formatShow('year', selectedDate) }}</div>
+						<div :class="type" @click="goMonth">{{ formatShow('month', selectedDate) }}</div>
+					</div>
+					<div class="mvi-date-chooser-date-right">
+						<div :class="type" @click="updateMonth(1)">
+							<Icon type="angle-right" />
+						</div>
+						<div :class="type" @click="updateYear(1)">
+							<Icon type="angle-double-right" />
+						</div>
+					</div>
+				</div>
+				<Calendar :view="view" v-model="selectedDate" :month-text="monthText" :week-text="weekText" :start-date="startDate" :end-date="endDate" :non-current-click="false" :active="active" :type="type" @date-click="dateClick" @month-click="monthClick" @year-click="yearClick" ref="calendarRef"> </Calendar>
+			</div>
+		</Layer>
+	</div>
+</template>
+<script setup lang="ts">
 import { DefineComponent, computed, getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue'
 import Dap from 'dap-util'
 import { Layer } from '../layer'
@@ -8,6 +67,10 @@ import dayjs from 'dayjs'
 import { DateChooserProps } from './props'
 import { LayerPropsType } from '../layer/props'
 import { CalendarViewType } from '../calendar/props'
+
+defineOptions({
+	name: 'm-date-chooser'
+})
 
 //获取实例
 const instance = getCurrentInstance()!
@@ -175,65 +238,4 @@ onBeforeUnmount(() => {
 	}
 })
 </script>
-
-<template>
-	<div class="mvi-date-chooser" ref="elRef" :class="{ block: block }">
-		<div class="mvi-date-chooser-relate" :data-id="`mvi-date-chooser-relate-${instance.uid}`" ref="relateRef" @click="clickCalendar">
-			<slot></slot>
-		</div>
-		<Layer :relate="`[data-id='mvi-date-chooser-relate-${instance.uid}']`" v-model="show" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :animation="layerRealProps.animation" :border-color="layerRealProps.borderColor" :timeout="layerRealProps.timeout" :closable="closable" :show-triangle="layerRealProps.showTriangle" :width="layerRealProps.width" @showing="layerShow">
-			<div class="mvi-date-chooser-layer" ref="panelRef">
-				<!-- 年视图头部 -->
-				<div v-if="view == 'year'" class="mvi-date-chooser-year-header">
-					<div class="mvi-date-chooser-year-left" :class="[type]" @click="updateYear(-1)">
-						<Icon type="angle-double-left" />
-					</div>
-					<div class="mvi-date-chooser-year-center">
-						<span>{{ formatShow('year', years[0]) }}</span>
-						<span>-</span>
-						<span>{{ formatShow('year', years[years.length - 1]) }}</span>
-					</div>
-					<div class="mvi-date-chooser-year-right" :class="[type]" @click="updateYear(1)">
-						<Icon type="angle-double-right" />
-					</div>
-				</div>
-				<!-- 月视图头部 -->
-				<div v-else-if="view == 'month'" class="mvi-date-chooser-month-header">
-					<div class="mvi-date-chooser-month-left" :class="[type]" @click="updateYear(-1)">
-						<Icon type="angle-double-left" />
-					</div>
-					<div class="mvi-date-chooser-month-center" :class="[type]" @click="goYear">{{ formatShow('year', selectedDate) }}</div>
-					<div class="mvi-date-chooser-month-right" :class="[type]" @click="updateYear(1)">
-						<Icon type="angle-double-right" />
-					</div>
-				</div>
-				<!-- 日期头部 -->
-				<div v-else-if="view == 'date'" class="mvi-date-chooser-date-header">
-					<div class="mvi-date-chooser-date-left">
-						<div :class="type" @click="updateYear(-1)">
-							<Icon type="angle-double-left" />
-						</div>
-						<div :class="type" @click="updateMonth(-1)">
-							<Icon type="angle-left" />
-						</div>
-					</div>
-					<div class="mvi-date-chooser-date-center">
-						<div :class="type" @click="goYear">{{ formatShow('year', selectedDate) }}</div>
-						<div :class="type" @click="goMonth">{{ formatShow('month', selectedDate) }}</div>
-					</div>
-					<div class="mvi-date-chooser-date-right">
-						<div :class="type" @click="updateMonth(1)">
-							<Icon type="angle-right" />
-						</div>
-						<div :class="type" @click="updateYear(1)">
-							<Icon type="angle-double-right" />
-						</div>
-					</div>
-				</div>
-				<Calendar :view="view" v-model="selectedDate" :month-text="monthText" :week-text="weekText" :start-date="startDate" :end-date="endDate" :non-current-click="false" :active="active" :type="type" @date-click="dateClick" @month-click="monthClick" @year-click="yearClick" ref="calendarRef"> </Calendar>
-			</div>
-		</Layer>
-	</div>
-</template>
-
 <style scoped src="./date-chooser.less"></style>

@@ -1,11 +1,24 @@
-<script setup name="m-layer" lang="ts">
+<template>
+	<teleport to="body">
+		<transition :name="animation || 'mvi-layer'" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @leave="leave" @before-leave="beforeLeave" @after-leave="afterLeave">
+			<div v-if="firstShow" v-show="layerShow" ref="layerRef" class="mvi-layer" :style="layerStyle" v-bind="$attrs">
+				<div class="mvi-layer-wrapper" :class="{ shadow: shadow, border: border }" :style="wrapperStyle">
+					<Triangle v-if="showTriangle" ref="triangleRef" class="mvi-layer-triangle" :placement="trianglePlacement" :background="background" :border-color="border && borderColor ? borderColor : background" size="0.14rem"></Triangle>
+					<slot></slot>
+				</div>
+			</div>
+		</transition>
+	</teleport>
+</template>
+<script setup lang="ts">
 import { DefineComponent, computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch, nextTick } from 'vue'
 import Dap from 'dap-util'
 import { Triangle } from '../triangle'
 import { LayerProps } from './props'
-//属性不继承
+
 defineOptions({
-	inheritAttrs: false
+	inheritAttrs: false,
+	name: 'm-layer'
 })
 //定义事件
 const emits = defineEmits(['update:modelValue', 'show', 'showing', 'shown', 'hide', 'hidding', 'hidden'])
@@ -928,18 +941,4 @@ defineExpose({
 	update
 })
 </script>
-
-<template>
-	<teleport to="body">
-		<transition :name="animation || 'mvi-layer'" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @leave="leave" @before-leave="beforeLeave" @after-leave="afterLeave">
-			<div v-if="firstShow" v-show="layerShow" ref="layerRef" class="mvi-layer" :style="layerStyle" v-bind="$attrs">
-				<div class="mvi-layer-wrapper" :class="{ shadow: shadow, border: border }" :style="wrapperStyle">
-					<Triangle v-if="showTriangle" ref="triangleRef" class="mvi-layer-triangle" :placement="trianglePlacement" :background="background" :border-color="border && borderColor ? borderColor : background" size="0.14rem"></Triangle>
-					<slot></slot>
-				</div>
-			</div>
-		</transition>
-	</teleport>
-</template>
-
 <style scoped src="./layer.less"></style>

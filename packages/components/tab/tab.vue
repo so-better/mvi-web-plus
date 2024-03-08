@@ -1,7 +1,18 @@
-<script setup name="m-tab" lang="ts">
+<template>
+	<transition :name="'mvi-tab-' + tabs.props.animation + (back ? '-back' : '')">
+		<div v-show="show" v-if="firstShow" class="mvi-tab" :style="tabStyle">
+			<slot></slot>
+		</div>
+	</transition>
+</template>
+<script setup lang="ts">
 import { computed, getCurrentInstance, ref, ComponentInternalInstance, onBeforeUnmount, inject, reactive } from 'vue'
 import Dap from 'dap-util'
 import { TabProps } from './props'
+
+defineOptions({
+	name: 'm-tab'
+})
 
 //实例
 const instance = getCurrentInstance()!
@@ -59,13 +70,4 @@ defineExpose(
 	})
 )
 </script>
-
-<template>
-	<transition :name="'mvi-tab-' + tabs.props.animation + (back ? '-back' : '')">
-		<div v-show="show" v-if="firstShow" class="mvi-tab" :style="tabStyle">
-			<slot></slot>
-		</div>
-	</transition>
-</template>
-
 <style scoped src="./tab.less"></style>

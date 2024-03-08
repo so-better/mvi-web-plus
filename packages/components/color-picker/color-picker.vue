@@ -1,10 +1,36 @@
-<script setup name="m-color-picker" lang="ts">
+<template>
+	<div class="mvi-color-picker">
+		<!-- 饱和度和明度 -->
+		<div class="mvi-color-picker-panel" ref="panelRef" :style="panelStyle" @click="clickPanelSetColor">
+			<div class="mvi-color-picker-panel-slider" ref="sliderRef"></div>
+		</div>
+		<!-- 色相 -->
+		<Slider v-model="hsv[0]" :min="0" :max="360" stroke-width="0.3rem" square track-color="linear-gradient(to right, #f00 0%, #ff0 16.66%, #0f0 33.33%, #0ff 50%, #00f 66.66%, #f0f 83.33%, #f00 100%)" color="transparent" @change="setValue">
+			<template #button>
+				<div class="mvi-color-picker-slider"></div>
+			</template>
+		</Slider>
+		<!-- 透明度 -->
+		<div v-if="showAlpha" class="mvi-color-picker-alpha">
+			<Slider v-model="opacity" :min="0" :max="1" stroke-width="0.3rem" square :track-color="alphaTrackColor" color="transparent" @change="setValue">
+				<template #button>
+					<div class="mvi-color-picker-slider"></div>
+				</template>
+			</Slider>
+		</div>
+	</div>
+</template>
+<script setup lang="ts">
 import Dap from 'dap-util'
 import { Drag } from '../../directives/drag'
 import { Prop } from '../../directives/prop'
 import { Slider } from '../slider'
 import { ColorPickerProps } from './props'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+
+defineOptions({
+	name: 'm-color-picker'
+})
 
 //属性
 const props = defineProps(ColorPickerProps)
@@ -169,28 +195,4 @@ onBeforeUnmount(() => {
 	}
 })
 </script>
-
-<template>
-	<div class="mvi-color-picker">
-		<!-- 饱和度和明度 -->
-		<div class="mvi-color-picker-panel" ref="panelRef" :style="panelStyle" @click="clickPanelSetColor">
-			<div class="mvi-color-picker-panel-slider" ref="sliderRef"></div>
-		</div>
-		<!-- 色相 -->
-		<Slider v-model="hsv[0]" :min="0" :max="360" stroke-width="0.3rem" square track-color="linear-gradient(to right, #f00 0%, #ff0 16.66%, #0f0 33.33%, #0ff 50%, #00f 66.66%, #f0f 83.33%, #f00 100%)" color="transparent" @change="setValue">
-			<template #button>
-				<div class="mvi-color-picker-slider"></div>
-			</template>
-		</Slider>
-		<!-- 透明度 -->
-		<div v-if="showAlpha" class="mvi-color-picker-alpha">
-			<Slider v-model="opacity" :min="0" :max="1" stroke-width="0.3rem" square :track-color="alphaTrackColor" color="transparent" @change="setValue">
-				<template #button>
-					<div class="mvi-color-picker-slider"></div>
-				</template>
-			</Slider>
-		</div>
-	</div>
-</template>
-
 <style scoped src="./color-picker.less"></style>

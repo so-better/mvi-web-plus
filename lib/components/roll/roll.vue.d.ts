@@ -85,10 +85,10 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
 }, {
     animation: "linear" | "ease" | "ease-in" | "ease-out" | "ease-in-out";
     center: boolean;
-    interval: number;
-    direction: "left" | "right" | "up" | "down";
     autoplay: boolean;
     loop: boolean;
+    interval: number;
+    direction: "left" | "right" | "up" | "down";
     clickStop: boolean;
     hoverStop: boolean;
 }, {}>, {

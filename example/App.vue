@@ -1,12 +1,13 @@
 <template>
 	<div class="mvi-p-10">
 		<m-button @click="onClick">Button</m-button>
-		<m-swiper ref="swiper" loop width="300px" height="300px">
-			<m-swiper-slide class="mvi-bg-success">1</m-swiper-slide>
-			<m-swiper-slide class="mvi-bg-info">2</m-swiper-slide>
-			<m-swiper-slide class="mvi-bg-error">3</m-swiper-slide>
-			<m-swiper-slide class="mvi-bg-primary">4</m-swiper-slide>
-		</m-swiper>
+		<m-steps :active="2">
+			<m-step>买家下单</m-step>
+			<m-step>商家接单</m-step>
+			<m-step>买家提货</m-step>
+			<m-step v-if="show">交易完成</m-step>
+		</m-steps>
+		<m-carousel style="width: 400px; height: 200px" v-model="active" :optons="carouselOpt"></m-carousel>
 	</div>
 </template>
 
@@ -15,26 +16,9 @@ export default {
 	data() {
 		return {
 			active: 1,
-			show: false,
+			show: true,
 			value: '',
-			tabs: [
-				{
-					value: 0,
-					name: '首页'
-				},
-				{
-					value: 1,
-					name: '附近'
-				},
-				{
-					value: 2,
-					name: '关注'
-				},
-				{
-					value: 3,
-					name: '我的'
-				}
-			]
+			carouselOpt: [{}]
 		}
 	},
 	methods: {

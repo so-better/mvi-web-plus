@@ -1,11 +1,10 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import dts from 'vite-plugin-dts'
-import vueSetupExtend from 'vite-plugin-vue-setup-extend'
 import path from 'path'
 
 export default defineConfig({
-	plugins: [vue(), vueSetupExtend(), dts()],
+	plugins: [vue(), dts()],
 	build: {
 		outDir: 'lib',
 		minify: 'terser',

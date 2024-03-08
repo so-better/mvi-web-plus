@@ -1,9 +1,23 @@
-<script setup name="m-button" lang="ts">
+<template>
+	<Button :disabled="disabled || null" class="mvi-button" :class="btnClass">
+		<slot name="loading" v-if="loading && $slots.loading"></slot>
+		<template v-else-if="loading">
+			<Icon :type="parseIcon(loadIcon).type" :color="parseIcon(loadIcon).color" :url="parseIcon(loadIcon).url" :spin="parseIcon(loadIcon).spin" :size="parseIcon(loadIcon).size" />
+			<span class="mvi-button-load-text" v-if="loadText">{{ loadText }}</span>
+		</template>
+		<slot v-else></slot>
+	</Button>
+</template>
+<script setup lang="ts">
 import { h, computed, defineComponent, useSlots } from 'vue'
 import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { ButtonProps } from './props'
 import { IconPropsType } from '../icon/props'
+
+defineOptions({
+	name: 'm-button'
+})
 
 const props = defineProps(ButtonProps)
 
@@ -79,16 +93,4 @@ const Button = defineComponent(() => {
 	}
 })
 </script>
-
-<template>
-	<Button :disabled="disabled || null" class="mvi-button" :class="btnClass">
-		<slot name="loading" v-if="loading && $slots.loading"></slot>
-		<template v-else-if="loading">
-			<Icon :type="parseIcon(loadIcon).type" :color="parseIcon(loadIcon).color" :url="parseIcon(loadIcon).url" :spin="parseIcon(loadIcon).spin" :size="parseIcon(loadIcon).size" />
-			<span class="mvi-button-load-text" v-if="loadText">{{ loadText }}</span>
-		</template>
-		<slot v-else></slot>
-	</Button>
-</template>
-
 <style scoped src="./button.less"></style>

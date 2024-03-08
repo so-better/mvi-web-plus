@@ -76,6 +76,7 @@ export * from './components/tabbar';
 export * from './components/table';
 export * from './components/tabs';
 export * from './components/tab';
+export * from './components/carousel';
 /***** 全局导出 *****/
 declare const install: (app: App) => void;
 /***** 版本号 *****/

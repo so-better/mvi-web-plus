@@ -1,9 +1,48 @@
-<script setup name="m-field" lang="ts">
+<template>
+	<div class="mvi-field" :class="fieldClass" :disabled="disabled || null" :data-type="type">
+		<!-- 前置区域 -->
+		<div class="mvi-field-prepend" v-if="showPrepend" @click="prependClick">
+			<slot v-if="$slots.prepend" name="prepend"></slot>
+			<Icon v-else :type="parseIcon(prepend).type" :url="parseIcon(prepend).url" :spin="parseIcon(prepend).spin" :size="parseIcon(prepend).size" :color="parseIcon(prepend).color" />
+		</div>
+		<!-- 输入主体 -->
+		<div class="mvi-field-body" :class="fieldBodyClass" :style="fieldBodyStyle">
+			<!-- 前缀区域 -->
+			<div class="mvi-field-prefix" v-if="showPrefix" @click="prefixClick">
+				<slot v-if="$slots.prefix" name="prefix"></slot>
+				<Icon v-else :type="parseIcon(prefix).type" :url="parseIcon(prefix).url" :spin="parseIcon(prefix).spin" :size="parseIcon(prefix).size" :color="parseIcon(prefix).color" />
+			</div>
+			<!-- textarea -->
+			<textarea ref="textareaRef" v-if="type == 'textarea'" :disabled="disabled" :readonly="readonly" class="mvi-field-input" :style="inputStyle" :placeholder="placeholder" v-model="realValue" autocomplete="off" @focus="inputFocus" @blur="inputBlur" :maxlength="maxlength" :name="name" :autofocus="autofocus" :rows="rowsFilter" @input="input" @keydown="keydown" @keyup="keyup"></textarea>
+			<!-- input -->
+			<input v-else ref="inputRef" :disabled="disabled" :readonly="readonly" :class="['mvi-field-input', showPrefix ? 'left-none-radius' : '', showSuffix || (clearable && showClear) ? 'right-none-radius' : '']" :style="inputStyle" :type="cmpType" :placeholder="placeholder" v-model="realValue" autocomplete="off" :inputmode="inputMode" @focus="inputFocus" @blur="inputBlur" :maxlength="maxlength" :name="name" :autofocus="autofocus" @input="input" @keydown="keydown" @keyup="keyup" />
+			<!-- 清除图标 -->
+			<div class="mvi-field-clear" v-if="clearable && type != 'textarea'" v-show="showClear" :style="clearStyle" @click="doClear">
+				<Icon type="times-o" />
+			</div>
+			<!-- 后缀区域 -->
+			<div class="mvi-field-suffix" v-if="showSuffix" @click="suffixClick">
+				<slot v-if="$slots.suffix" name="suffix"></slot>
+				<Icon v-else :type="parseIcon(props.suffix).type" :url="parseIcon(props.suffix).url" :spin="parseIcon(props.suffix).spin" :size="parseIcon(props.suffix).size" :color="parseIcon(props.suffix).color" />
+			</div>
+		</div>
+		<!-- 后置区域 -->
+		<div class="mvi-field-append" v-if="showAppend" @click="appendClick">
+			<slot v-if="$slots.append" name="append"></slot>
+			<Icon v-else :type="parseIcon(append).type" :url="parseIcon(append).url" :spin="parseIcon(append).spin" :size="parseIcon(append).size" :color="parseIcon(append).color" />
+		</div>
+	</div>
+</template>
+<script setup lang="ts">
 import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { FieldAutosizeType, FieldProps } from './props'
 import { computed, nextTick, onMounted, ref, useSlots, watch } from 'vue'
 import { IconPropsType } from '../icon/props'
+
+defineOptions({
+	name: 'm-field'
+})
 
 //属性
 const props = defineProps(FieldProps)
@@ -326,41 +365,4 @@ onMounted(() => {
 	}
 })
 </script>
-
-<template>
-	<div class="mvi-field" :class="fieldClass" :disabled="disabled || null" :data-type="type">
-		<!-- 前置区域 -->
-		<div class="mvi-field-prepend" v-if="showPrepend" @click="prependClick">
-			<slot v-if="$slots.prepend" name="prepend"></slot>
-			<Icon v-else :type="parseIcon(prepend).type" :url="parseIcon(prepend).url" :spin="parseIcon(prepend).spin" :size="parseIcon(prepend).size" :color="parseIcon(prepend).color" />
-		</div>
-		<!-- 输入主体 -->
-		<div class="mvi-field-body" :class="fieldBodyClass" :style="fieldBodyStyle">
-			<!-- 前缀区域 -->
-			<div class="mvi-field-prefix" v-if="showPrefix" @click="prefixClick">
-				<slot v-if="$slots.prefix" name="prefix"></slot>
-				<Icon v-else :type="parseIcon(prefix).type" :url="parseIcon(prefix).url" :spin="parseIcon(prefix).spin" :size="parseIcon(prefix).size" :color="parseIcon(prefix).color" />
-			</div>
-			<!-- textarea -->
-			<textarea ref="textareaRef" v-if="type == 'textarea'" :disabled="disabled" :readonly="readonly" class="mvi-field-input" :style="inputStyle" :placeholder="placeholder" v-model="realValue" autocomplete="off" @focus="inputFocus" @blur="inputBlur" :maxlength="maxlength" :name="name" :autofocus="autofocus" :rows="rowsFilter" @input="input" @keydown="keydown" @keyup="keyup"></textarea>
-			<!-- input -->
-			<input v-else ref="inputRef" :disabled="disabled" :readonly="readonly" :class="['mvi-field-input', showPrefix ? 'left-none-radius' : '', showSuffix || (clearable && showClear) ? 'right-none-radius' : '']" :style="inputStyle" :type="cmpType" :placeholder="placeholder" v-model="realValue" autocomplete="off" :inputmode="inputMode" @focus="inputFocus" @blur="inputBlur" :maxlength="maxlength" :name="name" :autofocus="autofocus" @input="input" @keydown="keydown" @keyup="keyup" />
-			<!-- 清除图标 -->
-			<div class="mvi-field-clear" v-if="clearable && type != 'textarea'" v-show="showClear" :style="clearStyle" @click="doClear">
-				<Icon type="times-o" />
-			</div>
-			<!-- 后缀区域 -->
-			<div class="mvi-field-suffix" v-if="showSuffix" @click="suffixClick">
-				<slot v-if="$slots.suffix" name="suffix"></slot>
-				<Icon v-else :type="parseIcon(props.suffix).type" :url="parseIcon(props.suffix).url" :spin="parseIcon(props.suffix).spin" :size="parseIcon(props.suffix).size" :color="parseIcon(props.suffix).color" />
-			</div>
-		</div>
-		<!-- 后置区域 -->
-		<div class="mvi-field-append" v-if="showAppend" @click="appendClick">
-			<slot v-if="$slots.append" name="append"></slot>
-			<Icon v-else :type="parseIcon(append).type" :url="parseIcon(append).url" :spin="parseIcon(append).spin" :size="parseIcon(append).size" :color="parseIcon(append).color" />
-		</div>
-	</div>
-</template>
-
 <style scoped src="./field.less"></style>

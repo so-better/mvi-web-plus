@@ -1,4 +1,4 @@
-import { DropdownOptionsItemType } from "./props";
+import { DropdownOptionsItemType } from './props';
 import { DefineComponent } from 'vue';
 import { IconPropsType } from '../icon/props';
 declare const _default: DefineComponent<{

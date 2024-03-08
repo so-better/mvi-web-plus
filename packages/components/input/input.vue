@@ -1,9 +1,39 @@
-<script setup name="m-input" lang="ts">
+<template>
+	<div :disabled="disabled || null" class="mvi-input-container" :class="inputClass" :data-type="type">
+		<!-- 左侧图标 -->
+		<div @click="leftClick" class="mvi-input-left" v-if="showLeft">
+			<slot name="left" v-if="$slots.left"></slot>
+			<Icon v-else :type="parseIcon(left).type" :url="parseIcon(left).url" :spin="parseIcon(left).spin" :size="parseIcon(left).size" :color="parseIcon(left).color" />
+		</div>
+		<!-- 左侧文本 -->
+		<div class="mvi-input-label" v-if="label" :style="labelStyle"><span v-text="label"></span></div>
+		<!-- 文本域 -->
+		<textarea v-if="type == 'textarea'" :placeholder="placeholder" :maxlength="maxlength" :disabled="disabled" :readonly="readonly" :autofocus="autofocus" class="mvi-textarea" v-model="realValue" @input="input" ref="textareaRef" :rows="rowsFilter" :name="name" :style="inputStyle" @focus="inputFocus" @blur="inputBlur" autocomplete="off" @keydown="keydown" @keyup="keyup"></textarea>
+		<!-- 输入框 -->
+		<input v-else :type="cmpType" :inputmode="inputMode" :placeholder="placeholder" :maxlength="maxlength" :disabled="disabled" :readonly="readonly" :autofocus="autofocus" class="mvi-input" v-model="realValue" @input="input" ref="inputRef" :name="name" :style="inputStyle" @focus="inputFocus" @blur="inputBlur" autocomplete="off" @keydown="keydown" @keyup="keyup" />
+		<!-- 清除图标 -->
+		<div @click="doClear" class="mvi-input-clear" v-if="clearable" v-show="showClear">
+			<Icon type="times-o" />
+		</div>
+		<!-- 右侧图标 -->
+		<div @click="rightClick" class="mvi-input-right" v-if="showRight">
+			<slot name="right" v-if="$slots.right"></slot>
+			<Icon v-else :type="parseIcon(right).type" :url="parseIcon(right).url" :spin="parseIcon(right).spin" :size="parseIcon(right).size" :color="parseIcon(right).color" />
+		</div>
+		<!-- 显示文字长度限制 -->
+		<div v-if="showWordLimit && maxlength > 0" class="mvi-input-words">{{ realValue.length }}/{{ maxlength }}</div>
+	</div>
+</template>
+<script setup lang="ts">
 import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { InputAutosizeType, InputProps } from './prop'
 import { computed, nextTick, onMounted, ref, useSlots, watch } from 'vue'
 import { IconPropsType } from '../icon/props'
+
+defineOptions({
+	name: 'm-input'
+})
 
 //属性
 const props = defineProps(InputProps)
@@ -287,32 +317,4 @@ watch(
 	}
 )
 </script>
-
-<template>
-	<div :disabled="disabled || null" class="mvi-input-container" :class="inputClass" :data-type="type">
-		<!-- 左侧图标 -->
-		<div @click="leftClick" class="mvi-input-left" v-if="showLeft">
-			<slot name="left" v-if="$slots.left"></slot>
-			<Icon v-else :type="parseIcon(left).type" :url="parseIcon(left).url" :spin="parseIcon(left).spin" :size="parseIcon(left).size" :color="parseIcon(left).color" />
-		</div>
-		<!-- 左侧文本 -->
-		<div class="mvi-input-label" v-if="label" :style="labelStyle"><span v-text="label"></span></div>
-		<!-- 文本域 -->
-		<textarea v-if="type == 'textarea'" :placeholder="placeholder" :maxlength="maxlength" :disabled="disabled" :readonly="readonly" :autofocus="autofocus" class="mvi-textarea" v-model="realValue" @input="input" ref="textareaRef" :rows="rowsFilter" :name="name" :style="inputStyle" @focus="inputFocus" @blur="inputBlur" autocomplete="off" @keydown="keydown" @keyup="keyup"></textarea>
-		<!-- 输入框 -->
-		<input v-else :type="cmpType" :inputmode="inputMode" :placeholder="placeholder" :maxlength="maxlength" :disabled="disabled" :readonly="readonly" :autofocus="autofocus" class="mvi-input" v-model="realValue" @input="input" ref="inputRef" :name="name" :style="inputStyle" @focus="inputFocus" @blur="inputBlur" autocomplete="off" @keydown="keydown" @keyup="keyup" />
-		<!-- 清除图标 -->
-		<div @click="doClear" class="mvi-input-clear" v-if="clearable" v-show="showClear">
-			<Icon type="times-o" />
-		</div>
-		<!-- 右侧图标 -->
-		<div @click="rightClick" class="mvi-input-right" v-if="showRight">
-			<slot name="right" v-if="$slots.right"></slot>
-			<Icon v-else :type="parseIcon(right).type" :url="parseIcon(right).url" :spin="parseIcon(right).spin" :size="parseIcon(right).size" :color="parseIcon(right).color" />
-		</div>
-		<!-- 显示文字长度限制 -->
-		<div v-if="showWordLimit && maxlength > 0" class="mvi-input-words">{{ realValue.length }}/{{ maxlength }}</div>
-	</div>
-</template>
-
 <style scoped src="./input.less"></style>

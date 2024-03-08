@@ -1,7 +1,26 @@
-<script setup name="m-swipe-cell" lang="ts">
+<template>
+	<div class="mvi-swipe-cell">
+		<div class="mvi-swipe-cell-wrap" ref="wrapRef" @touchstart="cellTouchStart" @touchmove="cellTouchMove" @touchend="cellTouchEnd" :style="cellStyle" :disabled="disabled || null" @mousedown="cellMouseDown">
+			<div v-show="leftShow" ref="leftRef" class="mvi-swipe-cell-left">
+				<slot name="left"></slot>
+			</div>
+			<div class="mvi-swipe-cell-center" @click="clickCenter">
+				<slot></slot>
+			</div>
+			<div v-show="rightShow" ref="rightRef" class="mvi-swipe-cell-right">
+				<slot name="right"></slot>
+			</div>
+		</div>
+	</div>
+</template>
+<script setup lang="ts">
 import { computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import Dap from 'dap-util'
 import { SwipeCellProps } from './props'
+
+defineOptions({
+	name: 'm-swipe-cell'
+})
 
 //获取实例
 const instance = getCurrentInstance()!
@@ -305,21 +324,4 @@ defineExpose({
 	close
 })
 </script>
-
-<template>
-	<div class="mvi-swipe-cell">
-		<div class="mvi-swipe-cell-wrap" ref="wrapRef" @touchstart="cellTouchStart" @touchmove="cellTouchMove" @touchend="cellTouchEnd" :style="cellStyle" :disabled="disabled || null" @mousedown="cellMouseDown">
-			<div v-show="leftShow" ref="leftRef" class="mvi-swipe-cell-left">
-				<slot name="left"></slot>
-			</div>
-			<div class="mvi-swipe-cell-center" @click="clickCenter">
-				<slot></slot>
-			</div>
-			<div v-show="rightShow" ref="rightRef" class="mvi-swipe-cell-right">
-				<slot name="right"></slot>
-			</div>
-		</div>
-	</div>
-</template>
-
 <style scoped src="./swipe-cell.less"></style>

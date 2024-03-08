@@ -1,10 +1,32 @@
-<script setup name="m-dialog-pc" lang="ts">
+<template>
+	<Modal ref="modalRef" v-model="show" :show-times="cmpShowTimes" @hide="modalHide" @hidding="modalHidding" @hidden="modalHidden" :width="cmpWidth" :z-index="cmpZIndex" :radius="cmpRadius" :use-padding="cmpUsePadding" :animation="cmpAnimation" @show="modalShow" @showing="modalShowing" @shown="modalShown" :timeout="cmpTimeout" :overlay-color="cmpOverlayColor" :mount-el="cmpMountEl" :center="cmpCenter">
+		<template v-if="cmpTitle" #title>
+			<div v-html="cmpTitle" class="mvi-dialog-title"></div>
+		</template>
+		<template #default v-if="contentShow">
+			<div v-if="cmpMessage" v-html="cmpMessage" class="mvi-dialog-content" :class="{ center: center }"></div>
+			<div v-if="type == 'Prompt'" class="mvi-dialog-input">
+				<input ref="inputRef" :type="cmpInput.type == 'number' ? 'text' : cmpInput.type" :placeholder="cmpInput.placeholder" :maxlength="cmpInput.maxlength" :class="inputClass" :style="inputStyle" v-model.trim="value" @input="inputFun" @focus="inputFocus" @blur="inputBlur" @keyup.enter="okFun" :inputMode="inputMode" />
+				<Icon v-if="cmpInput.clearable" v-show="showClear" type="times-o" class="mvi-dialog-times" @click="doClear" />
+			</div>
+			<div class="mvi-dialog-footer" :class="{ center: center }">
+				<Button v-if="type != 'Alert'" :type="cmpBtns.cancel.type" :plain="cmpBtns.cancel.plain" class="mvi-dialog-cancel" @click="cancelFun" :size="cmpBtns.cancel.size" :round="cmpBtns.cancel.round" :square="cmpBtns.cancel.square" :loading="cmpBtns.cancel.loading" :load-text="cmpBtns.cancel.loadText" :load-icon="cmpBtns.cancel.loadIcon" :disabled="cmpBtns.cancel.disabled">{{ cmpBtns.cancel.text }}</Button>
+				<Button :type="cmpBtns.ok.type" :plain="cmpBtns.ok.plain" @click="okFun" :size="cmpBtns.ok.size" :round="cmpBtns.ok.round" :square="cmpBtns.ok.square" :loading="cmpBtns.ok.loading" :load-text="cmpBtns.ok.loadText" :load-icon="cmpBtns.ok.loadIcon" :disabled="cmpBtns.ok.disabled">{{ cmpBtns.ok.text }}</Button>
+			</div>
+		</template>
+	</Modal>
+</template>
+<script setup lang="ts">
 import Dap from 'dap-util'
 import { Modal } from '../modal'
 import { Icon } from '../icon'
 import { Button } from '../button'
 import { DialogInputType, DialogPcBtnsType, DialogPcProps } from './props'
 import { DefineComponent, computed, getCurrentInstance, onMounted, ref } from 'vue'
+
+defineOptions({
+	name: 'm-dialog-pc'
+})
 
 //获取实例
 const instance = getCurrentInstance()!
@@ -426,24 +448,5 @@ defineExpose({
 	$$el
 })
 </script>
-
-<template>
-	<Modal ref="modalRef" v-model="show" :show-times="cmpShowTimes" @hide="modalHide" @hidding="modalHidding" @hidden="modalHidden" :width="cmpWidth" :z-index="cmpZIndex" :radius="cmpRadius" :use-padding="cmpUsePadding" :animation="cmpAnimation" @show="modalShow" @showing="modalShowing" @shown="modalShown" :timeout="cmpTimeout" :overlay-color="cmpOverlayColor" :mount-el="cmpMountEl" :center="cmpCenter">
-		<template v-if="cmpTitle" #title>
-			<div v-html="cmpTitle" class="mvi-dialog-title"></div>
-		</template>
-		<template #default v-if="contentShow">
-			<div v-if="cmpMessage" v-html="cmpMessage" class="mvi-dialog-content" :class="{ center: center }"></div>
-			<div v-if="type == 'Prompt'" class="mvi-dialog-input">
-				<input ref="inputRef" :type="cmpInput.type == 'number' ? 'text' : cmpInput.type" :placeholder="cmpInput.placeholder" :maxlength="cmpInput.maxlength" :class="inputClass" :style="inputStyle" v-model.trim="value" @input="inputFun" @focus="inputFocus" @blur="inputBlur" @keyup.enter="okFun" :inputMode="inputMode" />
-				<Icon v-if="cmpInput.clearable" v-show="showClear" type="times-o" class="mvi-dialog-times" @click="doClear" />
-			</div>
-			<div class="mvi-dialog-footer" :class="{ center: center }">
-				<Button v-if="type != 'Alert'" :type="cmpBtns.cancel.type" :plain="cmpBtns.cancel.plain" class="mvi-dialog-cancel" @click="cancelFun" :size="cmpBtns.cancel.size" :round="cmpBtns.cancel.round" :square="cmpBtns.cancel.square" :loading="cmpBtns.cancel.loading" :load-text="cmpBtns.cancel.loadText" :load-icon="cmpBtns.cancel.loadIcon" :disabled="cmpBtns.cancel.disabled">{{ cmpBtns.cancel.text }}</Button>
-				<Button :type="cmpBtns.ok.type" :plain="cmpBtns.ok.plain" @click="okFun" :size="cmpBtns.ok.size" :round="cmpBtns.ok.round" :square="cmpBtns.ok.square" :loading="cmpBtns.ok.loading" :load-text="cmpBtns.ok.loadText" :load-icon="cmpBtns.ok.loadIcon" :disabled="cmpBtns.ok.disabled">{{ cmpBtns.ok.text }}</Button>
-			</div>
-		</template>
-	</Modal>
-</template>
 
 <style scoped src="./dialog-pc.less"></style>

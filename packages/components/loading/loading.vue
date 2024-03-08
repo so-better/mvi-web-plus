@@ -1,24 +1,3 @@
-<script setup name="m-loading" lang="ts">
-import { computed, getCurrentInstance } from 'vue'
-import { LoadingProps } from './props'
-
-//属性
-const props = defineProps(LoadingProps)
-//实例
-const instance = getCurrentInstance()!
-
-//default类型的加载样式
-const loadingStyle = computed<any>(() => {
-	let style: any = {}
-	style.background = props.color
-	style.width = 'calc(' + props.size + '/20)'
-	style.height = 'calc(' + props.size + '/4)'
-	style.transformOrigin = 'calc(' + props.size + '/40) calc(' + props.size + '/2)'
-	style.webkitTransformOrigin = 'calc(' + props.size + '/40) calc(' + props.size + '/2)'
-	return style
-})
-</script>
-
 <template>
 	<div class="mvi-loading">
 		<div v-if="type == 'default'" class="mvi-loading-default" :style="{ width: size, height: size }">
@@ -86,5 +65,29 @@ const loadingStyle = computed<any>(() => {
 		</svg>
 	</div>
 </template>
+<script setup lang="ts">
+import { computed, getCurrentInstance } from 'vue'
+import { LoadingProps } from './props'
+
+defineOptions({
+	name: 'm-loading'
+})
+
+//属性
+const props = defineProps(LoadingProps)
+//实例
+const instance = getCurrentInstance()!
+
+//default类型的加载样式
+const loadingStyle = computed<any>(() => {
+	let style: any = {}
+	style.background = props.color
+	style.width = 'calc(' + props.size + '/20)'
+	style.height = 'calc(' + props.size + '/4)'
+	style.transformOrigin = 'calc(' + props.size + '/40) calc(' + props.size + '/2)'
+	style.webkitTransformOrigin = 'calc(' + props.size + '/40) calc(' + props.size + '/2)'
+	return style
+})
+</script>
 
 <style scoped src="./loading.less"></style>

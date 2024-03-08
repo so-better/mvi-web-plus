@@ -1,9 +1,31 @@
-<script setup name="m-tabs" lang="ts">
+<template>
+	<div class="mvi-tabs">
+		<!-- 选项卡头部 -->
+		<div ref="headersRef" class="mvi-tabs-header" :class="{ card: type == 'card', border: type == 'default' && border }" :style="headersStyle">
+			<!-- 选项卡滑动条 -->
+			<div v-if="type == 'default'" class="mvi-tabs-slider" :style="sliderStyle"></div>
+			<!-- 选项卡头部卡片 -->
+			<div class="mvi-tab-header" :class="{ active: modelValue == index, ellipsis: ellipsis }" v-for="(item, index) in children" @click="clickHeader(<ComponentInternalInstance>item, index)" :style="headerStyle(index)" :disabled="item.props.disabled || null">
+				<Icon v-if="item.props.placement == 'left' && (parseIcon(<string | IconPropsType>item.props.icon).type || parseIcon(<string | IconPropsType>item.props.icon).url)" class="mvi-tab-icon" :class="{ left: !!item.props.title }" :type="parseIcon(<string | IconPropsType>item.props.icon).type" :url="parseIcon(<string | IconPropsType>item.props.icon).url" :spin="parseIcon(<string | IconPropsType>item.props.icon).spin" :size="parseIcon(<string | IconPropsType>item.props.icon).size" :color="parseIcon(<string | IconPropsType>item.props.icon).color" />
+				<span class="mvi-tab-header-text" v-html="item.props.title" v-if="item.props.title"></span>
+				<Icon v-if="item.props.placement == 'right' && (parseIcon(<string | IconPropsType>item.props.icon).type || parseIcon(<string | IconPropsType>item.props.icon).url)" class="mvi-tab-icon" :class="{ right: !!item.props.title }" :type="parseIcon(<string | IconPropsType>item.props.icon).type" :url="parseIcon(<string | IconPropsType>item.props.icon).url" :spin="parseIcon(<string | IconPropsType>item.props.icon).spin" :size="parseIcon(<string | IconPropsType>item.props.icon).size" :color="parseIcon(<string | IconPropsType>item.props.icon).color" />
+			</div>
+		</div>
+		<div class="mvi-tabs-content" ref="contentRef">
+			<slot></slot>
+		</div>
+	</div>
+</template>
+<script setup lang="ts">
 import { ComponentInternalInstance, computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, watch, provide } from 'vue'
 import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { TabsProps } from './props'
 import { IconPropsType } from '../icon/props'
+
+defineOptions({
+	name: 'm-tabs'
+})
 
 //实例
 const instance = getCurrentInstance()!
@@ -71,7 +93,7 @@ const headerStyle = computed<(index: number) => any>(() => {
 		return style
 	}
 })
-const parseIcon = computed(() => {
+const parseIcon = computed<(params: string | IconPropsType) => IconPropsType>(() => {
 	return (params: string | IconPropsType) => {
 		let icon: IconPropsType = {
 			spin: false,
@@ -177,24 +199,4 @@ defineExpose({
 	setSlider
 })
 </script>
-
-<template>
-	<div class="mvi-tabs">
-		<!-- 选项卡头部 -->
-		<div ref="headersRef" class="mvi-tabs-header" :class="{ card: type == 'card', border: type == 'default' && border }" :style="headersStyle">
-			<!-- 选项卡滑动条 -->
-			<div v-if="type == 'default'" class="mvi-tabs-slider" :style="sliderStyle"></div>
-			<!-- 选项卡头部卡片 -->
-			<div class="mvi-tab-header" :class="{ active: modelValue == index, ellipsis: ellipsis }" v-for="(item, index) in children" @click="clickHeader(<ComponentInternalInstance>item, index)" :style="headerStyle(index)" :disabled="item.props.disabled || null">
-				<Icon v-if="item.props.placement == 'left' && (parseIcon(<string | IconPropsType>item.props.icon).type || parseIcon(<string | IconPropsType>item.props.icon).url)" class="mvi-tab-icon" :class="{ left: !!item.props.title }" :type="parseIcon(<string | IconPropsType>item.props.icon).type" :url="parseIcon(<string | IconPropsType>item.props.icon).url" :spin="parseIcon(<string | IconPropsType>item.props.icon).spin" :size="parseIcon(<string | IconPropsType>item.props.icon).size" :color="parseIcon(<string | IconPropsType>item.props.icon).color" />
-				<span class="mvi-tab-header-text" v-html="item.props.title" v-if="item.props.title"></span>
-				<Icon v-if="item.props.placement == 'right' && (parseIcon(<string | IconPropsType>item.props.icon).type || parseIcon(<string | IconPropsType>item.props.icon).url)" class="mvi-tab-icon" :class="{ right: !!item.props.title }" :type="parseIcon(<string | IconPropsType>item.props.icon).type" :url="parseIcon(<string | IconPropsType>item.props.icon).url" :spin="parseIcon(<string | IconPropsType>item.props.icon).spin" :size="parseIcon(<string | IconPropsType>item.props.icon).size" :color="parseIcon(<string | IconPropsType>item.props.icon).color" />
-			</div>
-		</div>
-		<div class="mvi-tabs-content" ref="contentRef">
-			<slot></slot>
-		</div>
-	</div>
-</template>
-
 <style scoped src="./tabs.less"></style>

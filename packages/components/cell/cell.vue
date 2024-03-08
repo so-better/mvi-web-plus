@@ -1,9 +1,33 @@
-<script setup name="m-cell" lang="ts">
+<template>
+	<div class="mvi-cell" :class="{ border: cmpBorder, active: cmpActive }">
+		<div class="mvi-cell-item">
+			<Icon class="mvi-cell-icon" v-if="parseIcon(icon).type || parseIcon(icon).url" :type="parseIcon(icon).type" :url="parseIcon(icon).url" :spin="parseIcon(icon).spin" :size="parseIcon(icon).size" :color="parseIcon(icon).color" />
+			<div class="mvi-cell-title" :class="{ nowrap: noWrap }">
+				<slot name="title" v-if="$slots.title"></slot>
+				<span v-else v-text="title"></span>
+			</div>
+			<div class="mvi-cell-content" :class="{ nowrap: noWrap }" v-if="$slots.content || content">
+				<slot name="content" v-if="$slots.content"></slot>
+				<span v-else-if="content" v-text="content"></span>
+			</div>
+			<Icon class="mvi-cell-arrow" v-if="parseIcon(arrow).type || parseIcon(arrow).url" :type="parseIcon(arrow).type" :url="parseIcon(arrow).url" :spin="parseIcon(arrow).spin" :size="parseIcon(arrow).size" :color="parseIcon(arrow).color" />
+		</div>
+		<div class="mvi-cell-label" v-if="label || $slots.label" :style="labelTextStyle">
+			<slot name="label" v-if="$slots.label"></slot>
+			<span v-text="label" v-else-if="label"></span>
+		</div>
+	</div>
+</template>
+<script setup lang="ts">
 import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { CellProps } from './props'
 import { ComponentInternalInstance, computed, inject } from 'vue'
 import { IconPropsType } from '../icon/props'
+
+defineOptions({
+	name: 'm-cell'
+})
 
 //CellGroup组件
 const cellGroup = inject<ComponentInternalInstance | null>('cellGroup', null)
@@ -77,26 +101,4 @@ const labelTextStyle = computed<any>(() => {
 	return style
 })
 </script>
-
-<template>
-	<div class="mvi-cell" :class="{ border: cmpBorder, active: cmpActive }">
-		<div class="mvi-cell-item">
-			<Icon class="mvi-cell-icon" v-if="parseIcon(icon).type || parseIcon(icon).url" :type="parseIcon(icon).type" :url="parseIcon(icon).url" :spin="parseIcon(icon).spin" :size="parseIcon(icon).size" :color="parseIcon(icon).color" />
-			<div class="mvi-cell-title" :class="{ nowrap: noWrap }">
-				<slot name="title" v-if="$slots.title"></slot>
-				<span v-else v-text="title"></span>
-			</div>
-			<div class="mvi-cell-content" :class="{ nowrap: noWrap }" v-if="$slots.content || content">
-				<slot name="content" v-if="$slots.content"></slot>
-				<span v-else-if="content" v-text="content"></span>
-			</div>
-			<Icon class="mvi-cell-arrow" v-if="parseIcon(arrow).type || parseIcon(arrow).url" :type="parseIcon(arrow).type" :url="parseIcon(arrow).url" :spin="parseIcon(arrow).spin" :size="parseIcon(arrow).size" :color="parseIcon(arrow).color" />
-		</div>
-		<div class="mvi-cell-label" v-if="label || $slots.label" :style="labelTextStyle">
-			<slot name="label" v-if="$slots.label"></slot>
-			<span v-text="label" v-else-if="label"></span>
-		</div>
-	</div>
-</template>
-
 <style scoped src="./cell.less"></style>

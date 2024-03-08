@@ -1,6 +1,15 @@
-<script setup name="m-collapse" lang="ts">
+<template>
+	<div class="mvi-collapse">
+		<slot></slot>
+	</div>
+</template>
+<script setup lang="ts">
 import { ComponentInternalInstance, getCurrentInstance, provide, ref } from 'vue'
 import { CollapseProps } from './props'
+
+defineOptions({
+	name: 'm-collapse'
+})
 
 //实例
 const instance = getCurrentInstance()!
@@ -21,11 +30,5 @@ defineExpose({
 	children
 })
 </script>
-
-<template>
-	<div class="mvi-collapse">
-		<slot></slot>
-	</div>
-</template>
 
 <style scoped src="./collapse.less"></style>

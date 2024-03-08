@@ -1,11 +1,21 @@
-<script setup name="m-overlay" lang="ts">
+<template>
+	<teleport :disabled="!mountEl" :to="mountEl">
+		<transition name="mvi-overlay-fade" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @before-leave="beforeLeave" @leave="leave" @after-leave="afterLeave">
+			<div @click.self="closeOverlay" ref="overlayRef" class="mvi-overlay" v-show="overlayShow" :style="overlayStyle" v-bind="$attrs">
+				<slot></slot>
+			</div>
+		</transition>
+	</teleport>
+</template>
+<script setup lang="ts">
 import Dap from 'dap-util'
 import { OverlayProps } from './props'
 import { ref, watch, computed, onMounted, getCurrentInstance } from 'vue'
 
 //属性不继承
 defineOptions({
-	inheritAttrs: false
+	inheritAttrs: false,
+	name: 'm-overlay'
 })
 
 //获取实例
@@ -198,15 +208,4 @@ defineExpose({
 	$$el
 })
 </script>
-
-<template>
-	<teleport :disabled="!mountEl" :to="mountEl">
-		<transition name="mvi-overlay-fade" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @before-leave="beforeLeave" @leave="leave" @after-leave="afterLeave">
-			<div @click.self="closeOverlay" ref="overlayRef" class="mvi-overlay" v-show="overlayShow" :style="overlayStyle" v-bind="$attrs">
-				<slot></slot>
-			</div>
-		</transition>
-	</teleport>
-</template>
-
 <style scoped src="./overlay.less"></style>

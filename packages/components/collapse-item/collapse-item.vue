@@ -1,9 +1,13 @@
-<script setup name="m-collapse-item" lang="ts">
+<script setup lang="ts">
 import { ComponentInternalInstance, computed, getCurrentInstance, inject, onBeforeUnmount } from 'vue'
 import Dap from 'dap-util'
 import { Cell } from '../cell'
 import { TransitionSlide } from '../transition-slide'
 import { CollapseItemProps } from './props'
+
+defineOptions({
+	name: 'm-collapse-item'
+})
 
 //实例
 const instance = getCurrentInstance()!

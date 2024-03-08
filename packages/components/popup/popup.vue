@@ -1,13 +1,30 @@
-<script setup name="m-popup" lang="ts">
+<template>
+	<Overlay ref="overlayRef" v-model="show" @show="overlayShow" @hide="overlayHide" :use-padding="usePadding" :z-index="zIndex" :color="overlayColor" :timeout="timeout" :mount-el="mountEl" :closable="closable">
+		<transition :name="'mvi-slide-' + placement" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @before-leave="beforeLeave" @leave="leave" @after-leave="afterLeave">
+			<!-- 弹出层 -->
+			<div v-if="firstShow" v-show="popupShow" class="mvi-popup" :class="popupClass" :style="popupStyle" v-bind="$attrs">
+				<!-- 关闭图标 -->
+				<div v-if="showTimes" :class="['mvi-popup-times', timesPlacement]">
+					<Icon @click="show = false" type="times" />
+				</div>
+				<!-- 正文内容 -->
+				<div class="mvi-popup-content" :style="{ padding: __contentPadding ? '' : 0 }">
+					<slot></slot>
+				</div>
+			</div>
+		</transition>
+	</Overlay>
+</template>
+<script setup lang="ts">
 import Dap from 'dap-util'
 import { Overlay } from '../overlay'
 import { Icon } from '../icon'
 import { PopupProps } from './props'
 import { DefineComponent, computed, getCurrentInstance, ref } from 'vue'
 
-//定义属性不继承
 defineOptions({
-	inheritAttrs: false
+	inheritAttrs: false,
+	name: 'm-popup'
 })
 
 //获取实例
@@ -145,23 +162,4 @@ defineExpose({
 	$$el
 })
 </script>
-
-<template>
-	<Overlay ref="overlayRef" v-model="show" @show="overlayShow" @hide="overlayHide" :use-padding="usePadding" :z-index="zIndex" :color="overlayColor" :timeout="timeout" :mount-el="mountEl" :closable="closable">
-		<transition :name="'mvi-slide-' + placement" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @before-leave="beforeLeave" @leave="leave" @after-leave="afterLeave">
-			<!-- 弹出层 -->
-			<div v-if="firstShow" v-show="popupShow" class="mvi-popup" :class="popupClass" :style="popupStyle" v-bind="$attrs">
-				<!-- 关闭图标 -->
-				<div v-if="showTimes" :class="['mvi-popup-times', timesPlacement]">
-					<Icon @click="show = false" type="times" />
-				</div>
-				<!-- 正文内容 -->
-				<div class="mvi-popup-content" :style="{ padding: __contentPadding ? '' : 0 }">
-					<slot></slot>
-				</div>
-			</div>
-		</transition>
-	</Overlay>
-</template>
-
 <style scoped src="./popup.less"></style>

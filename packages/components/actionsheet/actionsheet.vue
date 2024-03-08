@@ -1,4 +1,23 @@
-<script setup name="m-actionsheet" lang="ts">
+<template>
+	<Popup ref="popupRef" v-model="show" :overlay-color="overlayColor" :z-index="zIndex" :timeout="timeout" placement="bottom" :round="round" :use-padding="usePadding" :mount-el="mountEl" :closable="closable">
+		<div class="mvi-actionsheet">
+			<div class="mvi-actionsheet-title" :class="[size]" v-if="title" v-text="title"></div>
+			<div class="mvi-actionsheet-list">
+				<div class="mvi-actionsheet-item" :class="itemClass(item)" v-for="(item, index) in options" :disabled="itemDisabled(item) || null" @click="doSelect(item, index)">
+					<Loading :size="size == 'large' ? '0.5rem' : '0.4rem'" color="#bbb" v-if="item.loading || false"> </Loading>
+					<div class="mvi-actionsheet-content" v-else-if="item.label || parseIcon(item.icon).type || parseIcon(item.icon).url">
+						<Icon data-placement="left" v-if="(parseIcon(item.icon).type || parseIcon(item.icon).url) && item.placement != 'right'" :type="parseIcon(item.icon).type" :url="parseIcon(item.icon).url" :spin="parseIcon(item.icon).spin" :size="parseIcon(item.icon).size" :color="parseIcon(item.icon).color" />
+						<span v-if="item.label" class="mvi-actionsheet-item-label" v-text="item.label"></span>
+						<Icon data-placement="right" v-if="(parseIcon(item.icon).type || parseIcon(item.icon).url) && item.placement == 'right'" :type="parseIcon(item.icon).type" :url="parseIcon(item.icon).url" :spin="parseIcon(item.icon).spin" :size="parseIcon(item.icon).size" :color="parseIcon(item.icon).color" />
+					</div>
+				</div>
+			</div>
+			<div class="mvi-actionsheet-divider"></div>
+			<div class="mvi-actionsheet-button" :class="[size, { active: active }]" v-if="showCancel" v-text="cancelText" @click="show = false"></div>
+		</div>
+	</Popup>
+</template>
+<script setup lang="ts">
 import Dap from 'dap-util'
 import { Popup } from '../popup'
 import { Loading } from '../loading'
@@ -6,6 +25,10 @@ import { Icon } from '../icon'
 import { ActionsheetProps, ActionsheetOptionsItemType } from './props'
 import { DefineComponent, computed, ref } from 'vue'
 import { IconPropsType } from '../icon/props'
+
+defineOptions({
+	name: 'm-actionsheet'
+})
 
 //属性
 const props = defineProps(ActionsheetProps)
@@ -91,25 +114,4 @@ defineExpose({
 	$$el
 })
 </script>
-
-<template>
-	<Popup ref="popupRef" v-model="show" :overlay-color="overlayColor" :z-index="zIndex" :timeout="timeout" placement="bottom" :round="round" :use-padding="usePadding" :mount-el="mountEl" :closable="closable">
-		<div class="mvi-actionsheet">
-			<div class="mvi-actionsheet-title" :class="[size]" v-if="title" v-text="title"></div>
-			<div class="mvi-actionsheet-list">
-				<div class="mvi-actionsheet-item" :class="itemClass(item)" v-for="(item, index) in options" :disabled="itemDisabled(item) || null" @click="doSelect(item, index)">
-					<Loading :size="size == 'large' ? '0.5rem' : '0.4rem'" color="#bbb" v-if="item.loading || false"> </Loading>
-					<div class="mvi-actionsheet-content" v-else-if="item.label || parseIcon(item.icon).type || parseIcon(item.icon).url">
-						<Icon data-placement="left" v-if="(parseIcon(item.icon).type || parseIcon(item.icon).url) && item.placement != 'right'" :type="parseIcon(item.icon).type" :url="parseIcon(item.icon).url" :spin="parseIcon(item.icon).spin" :size="parseIcon(item.icon).size" :color="parseIcon(item.icon).color" />
-						<span v-if="item.label" class="mvi-actionsheet-item-label" v-text="item.label"></span>
-						<Icon data-placement="right" v-if="(parseIcon(item.icon).type || parseIcon(item.icon).url) && item.placement == 'right'" :type="parseIcon(item.icon).type" :url="parseIcon(item.icon).url" :spin="parseIcon(item.icon).spin" :size="parseIcon(item.icon).size" :color="parseIcon(item.icon).color" />
-					</div>
-				</div>
-			</div>
-			<div class="mvi-actionsheet-divider"></div>
-			<div class="mvi-actionsheet-button" :class="[size, { active: active }]" v-if="showCancel" v-text="cancelText" @click="show = false"></div>
-		</div>
-	</Popup>
-</template>
-
 <style scoped src="./actionsheet.less"></style>

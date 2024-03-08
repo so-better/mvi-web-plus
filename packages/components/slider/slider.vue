@@ -1,8 +1,21 @@
-<script setup name="m-slider" lang="ts">
+<template>
+	<div :disabled="disabled || null" class="mvi-slider" :class="{ round: round, square: !round && square, vertical: vertical }" :style="sliderStyle" @click="dragTo" ref="elRef">
+		<div ref="barRef" class="mvi-slider-bar" :style="sliderBarStyle"></div>
+		<div class="mvi-slider-button" ref="btnRef">
+			<slot name="button" v-if="$slots.button"></slot>
+			<div v-else class="mvi-slider-button-el" :style="buttonElStyle"></div>
+		</div>
+	</div>
+</template>
+<script setup lang="ts">
 import Dap from 'dap-util'
 import { Drag } from '../../directives/drag'
 import { SliderProps } from './props'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+
+defineOptions({
+	name: 'm-slider'
+})
 
 //属性
 const props = defineProps(SliderProps)
@@ -164,15 +177,5 @@ onBeforeUnmount(() => {
 	}
 })
 </script>
-
-<template>
-	<div :disabled="disabled || null" class="mvi-slider" :class="{ round: round, square: !round && square, vertical: vertical }" :style="sliderStyle" @click="dragTo" ref="elRef">
-		<div ref="barRef" class="mvi-slider-bar" :style="sliderBarStyle"></div>
-		<div class="mvi-slider-button" ref="btnRef">
-			<slot name="button" v-if="$slots.button"></slot>
-			<div v-else class="mvi-slider-button-el" :style="buttonElStyle"></div>
-		</div>
-	</div>
-</template>
 
 <style scoped src="./slider.less"></style>

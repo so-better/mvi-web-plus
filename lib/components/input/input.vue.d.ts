@@ -220,10 +220,10 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     "onRight-click"?: ((...args: any[]) => any) | undefined;
 }, {
     modelValue: string | number;
+    name: string;
     type: "number" | "textarea" | "text" | "tel" | "password";
     label: string;
     disabled: boolean;
-    name: string;
     size: "medium" | "large";
     left: string | IconPropsType;
     right: string | IconPropsType;

@@ -1,9 +1,18 @@
-<script setup name="m-date-picker" lang="ts">
+<template>
+	<div class="mvi-date-picker">
+		<Picker :options="pickerOptions" :show-toolbar="showToolbar" :title="title" :confirm-text="confirmText" :cancel-text="cancelText" :loading="loading" :visible-counts="visibleCounts" :select-height="selectHeight" @change="dateChange" @confirm="doConfirm" @cancel="doCancel"></Picker>
+	</div>
+</template>
+<script setup lang="ts">
 import dayjs from 'dayjs'
 import { Picker } from '../picker'
 import { DatePickerProps } from './props'
 import { computed, getCurrentInstance } from 'vue'
 import { PickerActiveType, PickerOptionsItemType } from '../picker/props'
+
+defineOptions({
+	name: 'm-date-picker'
+})
 
 //实例
 const instance = getCurrentInstance()!
@@ -283,11 +292,5 @@ const doCancel = () => {
 	emits('cancel', selectedDate.value)
 }
 </script>
-
-<template>
-	<div class="mvi-date-picker">
-		<Picker :options="pickerOptions" :show-toolbar="showToolbar" :title="title" :confirm-text="confirmText" :cancel-text="cancelText" :loading="loading" :visible-counts="visibleCounts" :select-height="selectHeight" @change="dateChange" @confirm="doConfirm" @cancel="doCancel"></Picker>
-	</div>
-</template>
 
 <style scoped src="./date-picker.less"></style>

@@ -1,2 +1,2 @@
-import form from './form.vue';
-export { form as Form, form as default };
+import Form from './form.vue';
+export { Form, Form as default };

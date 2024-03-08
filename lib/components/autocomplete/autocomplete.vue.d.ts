@@ -171,8 +171,8 @@ declare const _default: DefineComponent<{
     "onRight-click"?: ((...args: any[]) => any) | undefined;
 }, {
     modelValue: string;
-    disabled: boolean;
     name: string;
+    disabled: boolean;
     size: "small" | "medium" | "large";
     round: boolean;
     height: string;

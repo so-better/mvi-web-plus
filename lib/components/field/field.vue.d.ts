@@ -218,9 +218,9 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     "onSuffix-click"?: ((...args: any[]) => any) | undefined;
 }, {
     modelValue: string | number;
+    name: string;
     type: "number" | "textarea" | "text" | "tel" | "password";
     disabled: boolean;
-    name: string;
     size: "small" | "medium" | "large";
     round: boolean;
     align: "left" | "right" | "center";

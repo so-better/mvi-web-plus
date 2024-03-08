@@ -1,9 +1,34 @@
-<script setup name="m-dialog" lang="ts">
+<template>
+	<Modal ref="modalRef" v-model="show" @hide="modalHide" @hidding="modalHidding" @hidden="modalHidden" :width="cmpWidth" :z-index="cmpZIndex" :radius="cmpRadius" :use-padding="cmpUsePadding" :animation="cmpAnimation" @show="modalShow" @showing="modalShowing" @shown="modalShown" :timeout="cmpTimeout" :overlay-color="cmpOverlayColor" :mount-el="cmpMountEl" __ignorePadding>
+		<template v-if="cmpTitle || (cmpIos && cmpMessage)" #title>
+			<div v-html="cmpTitle" v-if="cmpTitle" class="mvi-dialog-title"></div>
+			<div v-if="cmpMessage && cmpIos" v-html="cmpMessage" class="mvi-dialog-ios-content"></div>
+		</template>
+		<template #default v-if="contentShow">
+			<div v-if="!cmpIos && cmpMessage" v-html="cmpMessage" class="mvi-dialog-content"></div>
+			<div v-if="type == 'prompt'" class="mvi-dialog-input" :class="{ 'mvi-dialog-input-mt': !cmpIos && cmpMessage }">
+				<input ref="inputRef" :type="cmpInput.type == 'number' ? 'text' : cmpInput.type" :placeholder="cmpInput.placeholder" :maxlength="cmpInput.maxlength" :class="inputClass" :style="inputStyle" v-model.trim="value" @input="inputFun" @focus="inputFocus" @blur="inputBlur" :inputmode="inputMode" />
+				<Icon v-if="cmpInput.clearable" v-show="showClear" type="times-o" class="mvi-dialog-times" @click="doClear" />
+			</div>
+		</template>
+		<template #footer>
+			<div class="mvi-dialog-footer">
+				<div v-if="type != 'alert'" class="mvi-dialog-cancel" v-text="cmpBtnText[1]" @click="cancelFun" :style="{ color: cmpBtnColor[1] || '' }"></div>
+				<div class="mvi-dialog-ok" v-text="type == 'alert' ? cmpBtnText : cmpBtnText[0]" @click="okFun" :style="{ color: type == 'alert' ? <string>cmpBtnColor || '' : cmpBtnColor[0] || '' }"></div>
+			</div>
+		</template>
+	</Modal>
+</template>
+<script setup lang="ts">
 import Dap from 'dap-util'
 import { Modal } from '../modal'
 import { Icon } from '../icon'
 import { DialogInputType, DialogProps } from './props'
 import { DefineComponent, computed, getCurrentInstance, onMounted, ref } from 'vue'
+
+defineOptions({
+	name: 'm-dialog'
+})
 
 //获取实例
 const instance = getCurrentInstance()!
@@ -376,27 +401,4 @@ defineExpose({
 	$$el
 })
 </script>
-
-<template>
-	<Modal ref="modalRef" v-model="show" @hide="modalHide" @hidding="modalHidding" @hidden="modalHidden" :width="cmpWidth" :z-index="cmpZIndex" :radius="cmpRadius" :use-padding="cmpUsePadding" :animation="cmpAnimation" @show="modalShow" @showing="modalShowing" @shown="modalShown" :timeout="cmpTimeout" :overlay-color="cmpOverlayColor" :mount-el="cmpMountEl" __ignorePadding>
-		<template v-if="cmpTitle || (cmpIos && cmpMessage)" #title>
-			<div v-html="cmpTitle" v-if="cmpTitle" class="mvi-dialog-title"></div>
-			<div v-if="cmpMessage && cmpIos" v-html="cmpMessage" class="mvi-dialog-ios-content"></div>
-		</template>
-		<template #default v-if="contentShow">
-			<div v-if="!cmpIos && cmpMessage" v-html="cmpMessage" class="mvi-dialog-content"></div>
-			<div v-if="type == 'prompt'" class="mvi-dialog-input" :class="{ 'mvi-dialog-input-mt': !cmpIos && cmpMessage }">
-				<input ref="inputRef" :type="cmpInput.type == 'number' ? 'text' : cmpInput.type" :placeholder="cmpInput.placeholder" :maxlength="cmpInput.maxlength" :class="inputClass" :style="inputStyle" v-model.trim="value" @input="inputFun" @focus="inputFocus" @blur="inputBlur" :inputmode="inputMode" />
-				<Icon v-if="cmpInput.clearable" v-show="showClear" type="times-o" class="mvi-dialog-times" @click="doClear" />
-			</div>
-		</template>
-		<template #footer>
-			<div class="mvi-dialog-footer">
-				<div v-if="type != 'alert'" class="mvi-dialog-cancel" v-text="cmpBtnText[1]" @click="cancelFun" :style="{ color: cmpBtnColor[1] || '' }"></div>
-				<div class="mvi-dialog-ok" v-text="type == 'alert' ? cmpBtnText : cmpBtnText[0]" @click="okFun" :style="{ color: type == 'alert' ? <string>cmpBtnColor || '' : cmpBtnColor[0] || '' }"></div>
-			</div>
-		</template>
-	</Modal>
-</template>
-
 <style scoped src="./dialog.less"></style>

@@ -1,4 +1,68 @@
-<script setup name="m-table" lang="ts">
+<template>
+	<div class="mvi-table" ref="elRef" :class="{ border: border }">
+		<div class="mvi-table-wrap" :style="{ width: wrapWidth }">
+			<div class="mvi-table-header">
+				<!-- 表头 -->
+				<table cellpadding="0" cellspacing="0">
+					<tr>
+						<th v-for="(column, index) in columnData" :ref="el => (headerColumnRefs[index] = <HTMLElement>el)" :class="{ border: columnBorder }" :style="headerColumnStyle(column)">
+							<div class="mvi-table-column" :class="{ center: center }">
+								<!-- 复选框 -->
+								<Checkbox v-model="selectAll" v-if="column.type == 'selection'" size="0.24rem" @change="allSelect(column)" :color="activeColor"></Checkbox>
+								<!-- 其他 -->
+								<template v-else>
+									<!-- 列标题 -->
+									<span>{{ column.label }}</span>
+									<!-- 排序 -->
+									<span class="mvi-table-sortable" v-if="column.sortable">
+										<Icon type="caret-up" :class="{ active: sortBy == column.prop && sortOrder == 'asc' }" @click="sortAsc(column)" :style="sortIconStyle('asc', column)" />
+										<Icon type="caret-down" :class="{ active: sortBy == column.prop && sortOrder == 'desc' }" @click="sortDesc(column)" :style="sortIconStyle('desc', column)" />
+									</span>
+								</template>
+							</div>
+						</th>
+						<th class="placeholder" v-if="scrollWidth" :style="{ width: scrollWidth + 'px' }"></th>
+					</tr>
+				</table>
+			</div>
+			<div ref="bodyRef" class="mvi-table-body" :class="{ overflow: !!height }" :style="{ maxHeight: height }">
+				<!-- 加载状态 -->
+				<div class="mvi-table-loading" v-if="loading">
+					<Loading color="#bbb" size="0.32rem" />
+					<span>{{ loadText }}</span>
+				</div>
+				<template v-else>
+					<!-- 表体 -->
+					<table v-if="rowData.length" cellpadding="0" cellspacing="0">
+						<tr v-for="(row, rowIndex) in rowData" :class="{ stripe: stripe }">
+							<td v-for="(column, columnIndex) in columnData" :class="bodyColumnClass(row, rowIndex, column, columnIndex)" :style="bodyColumnStyle(column, columnIndex)">
+								<div class="mvi-table-column">
+									<!-- 复选框 -->
+									<div v-if="column.type == 'selection'" class="mvi-table-column-item" :class="{ center: center }">
+										<Checkbox v-model="checkedRows" :value="rowIndex" size="0.24rem" @change="doCheck(rowIndex, column)" :color="activeColor" :disabled="!cmpSelectable(row, rowIndex, column)"></Checkbox>
+									</div>
+									<!-- 自定义单元格 -->
+									<div v-else-if="column.type == 'custom' && $slots.custom" class="mvi-table-column-item" :class="{ center: center }">
+										<slot name="custom" :row="row" :row-index="rowIndex" :column="column" :column-index="columnIndex"></slot>
+									</div>
+									<!-- 其他 -->
+									<Tooltip v-else class="mvi-table-column-tooltip" :disabled="!column.ellipsis || !tooltipTitle(row, column)" block :title="tooltipTitle(row, column)" trigger="hover" :placement="center ? 'bottom' : 'bottom-start'">
+										<div class="mvi-table-column-item" :class="{ center: center }">
+											<div v-html="dataFormat(row, column)" :class="{ ellipsis: column.ellipsis }"></div>
+										</div>
+									</Tooltip>
+								</div>
+							</td>
+						</tr>
+					</table>
+					<!-- 无数据提示 -->
+					<div v-else class="mvi-table-nodata">{{ noDataMsg }}</div>
+				</template>
+			</div>
+		</div>
+	</div>
+</template>
+<script setup lang="ts">
 import Dap from 'dap-util'
 import { Loading } from '../loading'
 import { Icon } from '../icon'
@@ -6,6 +70,10 @@ import { Checkbox } from '../checkbox'
 import { Tooltip } from '../tooltip'
 import { computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { TableColumnType, TableProps, TableSortOrderType } from './props'
+
+defineOptions({
+	name: 'm-table'
+})
 
 //实例
 const instance = getCurrentInstance()!
@@ -121,7 +189,7 @@ const cmpSelectable = computed<(row: any, rowIndex: number, column: TableColumnT
 	}
 })
 //工具提示内容
-const tooltipTitle = computed(() => {
+const tooltipTitle = computed<(row: any, column: TableColumnType) => string>(() => {
 	return (row: any, column: TableColumnType) => {
 		const dom = Dap.element.string2dom(`<div>${dataFormat.value(row, column)}</div>`)
 		return dom.innerText
@@ -318,70 +386,4 @@ onBeforeUnmount(() => {
 	Dap.event.off(window, `resize.table_${instance.uid}`)
 })
 </script>
-
-<template>
-	<div class="mvi-table" ref="elRef" :class="{ border: border }">
-		<div class="mvi-table-wrap" :style="{ width: wrapWidth }">
-			<div class="mvi-table-header">
-				<!-- 表头 -->
-				<table cellpadding="0" cellspacing="0">
-					<tr>
-						<th v-for="(column, index) in columnData" :ref="el => (headerColumnRefs[index] = <HTMLElement>el)" :class="{ border: columnBorder }" :style="headerColumnStyle(column)">
-							<div class="mvi-table-column" :class="{ center: center }">
-								<!-- 复选框 -->
-								<Checkbox v-model="selectAll" v-if="column.type == 'selection'" size="0.24rem" @change="allSelect(column)" :color="activeColor"></Checkbox>
-								<!-- 其他 -->
-								<template v-else>
-									<!-- 列标题 -->
-									<span>{{ column.label }}</span>
-									<!-- 排序 -->
-									<span class="mvi-table-sortable" v-if="column.sortable">
-										<Icon type="caret-up" :class="{ active: sortBy == column.prop && sortOrder == 'asc' }" @click="sortAsc(column)" :style="sortIconStyle('asc', column)" />
-										<Icon type="caret-down" :class="{ active: sortBy == column.prop && sortOrder == 'desc' }" @click="sortDesc(column)" :style="sortIconStyle('desc', column)" />
-									</span>
-								</template>
-							</div>
-						</th>
-						<th class="placeholder" v-if="scrollWidth" :style="{ width: scrollWidth + 'px' }"></th>
-					</tr>
-				</table>
-			</div>
-			<div ref="bodyRef" class="mvi-table-body" :class="{ overflow: !!height }" :style="{ maxHeight: height }">
-				<!-- 加载状态 -->
-				<div class="mvi-table-loading" v-if="loading">
-					<Loading color="#bbb" size="0.32rem" />
-					<span>{{ loadText }}</span>
-				</div>
-				<template v-else>
-					<!-- 表体 -->
-					<table v-if="rowData.length" cellpadding="0" cellspacing="0">
-						<tr v-for="(row, rowIndex) in rowData" :class="{ stripe: stripe }">
-							<td v-for="(column, columnIndex) in columnData" :class="bodyColumnClass(row, rowIndex, column, columnIndex)" :style="bodyColumnStyle(column, columnIndex)">
-								<div class="mvi-table-column">
-									<!-- 复选框 -->
-									<div v-if="column.type == 'selection'" class="mvi-table-column-item" :class="{ center: center }">
-										<Checkbox v-model="checkedRows" :value="rowIndex" size="0.24rem" @change="doCheck(rowIndex, column)" :color="activeColor" :disabled="!cmpSelectable(row, rowIndex, column)"></Checkbox>
-									</div>
-									<!-- 自定义单元格 -->
-									<div v-else-if="column.type == 'custom' && $slots.custom" class="mvi-table-column-item" :class="{ center: center }">
-										<slot name="custom" :row="row" :row-index="rowIndex" :column="column" :column-index="columnIndex"></slot>
-									</div>
-									<!-- 其他 -->
-									<Tooltip v-else class="mvi-table-column-tooltip" :disabled="!column.ellipsis || !tooltipTitle(row, column)" block :title="tooltipTitle(row, column)" trigger="hover" :placement="center ? 'bottom' : 'bottom-start'">
-										<div class="mvi-table-column-item" :class="{ center: center }">
-											<div v-html="dataFormat(row, column)" :class="{ ellipsis: column.ellipsis }"></div>
-										</div>
-									</Tooltip>
-								</div>
-							</td>
-						</tr>
-					</table>
-					<!-- 无数据提示 -->
-					<div v-else class="mvi-table-nodata">{{ noDataMsg }}</div>
-				</template>
-			</div>
-		</div>
-	</div>
-</template>
-
 <style scoped src="./table.less"></style>

@@ -1,4 +1,15 @@
-<script setup name="m-toast" lang="ts">
+<template>
+	<Overlay ref="overlayRef" :color="cmpOverlayColor" @hidden="toastHidden" v-model="show" :use-padding="cmpUsePadding" :zIndex="cmpZIndex" fade :mount-el="cmpMountEl" @shown="toastShown">
+		<div class="mvi-toast" :class="{ iconless: cmpMessage, shadow: cmpShadow }" :style="toastStyle" v-bind="$attrs">
+			<div class="mvi-toast-icon">
+				<Loading :color="cmpColor" v-if="cmpType == 'loading' && !cmpIcon.type && !cmpIcon.url" :size="cmpIcon.size" />
+				<Icon v-else :type="cmpIcon.type" :url="cmpIcon.url" :spin="cmpIcon.spin" :size="cmpIcon.size" :color="cmpIcon.color" />
+			</div>
+			<div v-if="cmpMessage" class="mvi-toast-message" v-html="cmpMessage"></div>
+		</div>
+	</Overlay>
+</template>
+<script setup lang="ts">
 import Dap from 'dap-util'
 import { Overlay } from '../overlay'
 import { Loading } from '../loading'
@@ -9,7 +20,8 @@ import { IconPropsType } from '../icon/props'
 
 //不继承属性
 defineOptions({
-	inheritAttrs: false
+	inheritAttrs: false,
+	name: 'm-toast'
 })
 
 //实例
@@ -176,17 +188,4 @@ defineExpose({
 	show
 })
 </script>
-
-<template>
-	<Overlay ref="overlayRef" :color="cmpOverlayColor" @hidden="toastHidden" v-model="show" :use-padding="cmpUsePadding" :zIndex="cmpZIndex" fade :mount-el="cmpMountEl" @shown="toastShown">
-		<div class="mvi-toast" :class="{ iconless: cmpMessage, shadow: cmpShadow }" :style="toastStyle" v-bind="$attrs">
-			<div class="mvi-toast-icon">
-				<Loading :color="cmpColor" v-if="cmpType == 'loading' && !cmpIcon.type && !cmpIcon.url" :size="cmpIcon.size" />
-				<Icon v-else :type="cmpIcon.type" :url="cmpIcon.url" :spin="cmpIcon.spin" :size="cmpIcon.size" :color="cmpIcon.color" />
-			</div>
-			<div v-if="cmpMessage" class="mvi-toast-message" v-html="cmpMessage"></div>
-		</div>
-	</Overlay>
-</template>
-
 <style scoped src="./toast.less"></style>

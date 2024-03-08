@@ -51,8 +51,8 @@ declare const _default: import("vue").DefineComponent<{
         default: null;
     };
 }>>, {
-    disabled: boolean;
     name: string;
+    disabled: boolean;
     icon: string | IconPropsType;
     value: string | number | Record<string, any> | unknown[];
     badge: {

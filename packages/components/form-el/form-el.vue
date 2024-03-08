@@ -1,6 +1,18 @@
-<script setup name="m-form-el" lang="ts">
+<template>
+	<div class="mvi-form-el" :class="{ block: form.props.block }" :style="formElStyle">
+		<div v-if="label" class="mvi-form-label" :class="{ block: form.props.labelBlock && form.props.block }" v-text="label" :style="labelStyle"></div>
+		<div v-if="$slots.default" class="mvi-form-container">
+			<slot></slot>
+		</div>
+	</div>
+</template>
+<script setup lang="ts">
 import { ComponentInternalInstance, computed, inject } from 'vue'
 import { FormElProps } from './props'
+
+defineOptions({
+	name: 'm-form-el'
+})
 
 //Form组件实例
 const form = inject<ComponentInternalInstance | null>('form', null)
@@ -48,14 +60,4 @@ const formElStyle = computed<any>(() => {
 	return style
 })
 </script>
-
-<template>
-	<div class="mvi-form-el" :class="{ block: form.props.block }" :style="formElStyle">
-		<div v-if="label" class="mvi-form-label" :class="{ block: form.props.labelBlock && form.props.block }" v-text="label" :style="labelStyle"></div>
-		<div v-if="$slots.default" class="mvi-form-container">
-			<slot></slot>
-		</div>
-	</div>
-</template>
-
 <style scoped src="./form-el.less"></style>

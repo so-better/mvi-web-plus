@@ -1,8 +1,25 @@
-<script setup name="m-stepper" lang="ts">
+<template>
+	<div class="mvi-stepper" :class="[size]">
+		<div :disabled="disabledMinus || arrivalMin || disabled || null" class="mvi-stepper-minus" :class="minusClass" v-if="showMinus" @click="doMinus">
+			<Icon type="minus" />
+		</div>
+		<div :disabled="disabled || disabledInput || null" class="mvi-stepper-input" :class="{ border: border }" :style="{ width: inputWidth || '' }" v-if="showInput">
+			<input ref="inputRef" v-model="realValue" :disabled="disabled || disabledInput" type="text" @blur="changeValue" @keyup.enter="changeValue" :style="{ textAlign: inputAlign }" inputmode="numeric" />
+		</div>
+		<div :disabled="disabledPlus || arrivalMax || disabled || null" class="mvi-stepper-plus" :class="plusClass" v-if="showPlus" @click="doPlus">
+			<Icon type="plus" />
+		</div>
+	</div>
+</template>
+<script setup lang="ts">
 import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { StepperProps } from './props'
 import { computed, ref } from 'vue'
+
+defineOptions({
+	name: 'm-stepper'
+})
 
 //事件
 const props = defineProps(StepperProps)
@@ -109,19 +126,4 @@ const changeValue = () => {
 	inputRef.value!.value = '' + realValue.value
 }
 </script>
-
-<template>
-	<div class="mvi-stepper" :class="[size]">
-		<div :disabled="disabledMinus || arrivalMin || disabled || null" class="mvi-stepper-minus" :class="minusClass" v-if="showMinus" @click="doMinus">
-			<Icon type="minus" />
-		</div>
-		<div :disabled="disabled || disabledInput || null" class="mvi-stepper-input" :class="{ border: border }" :style="{ width: inputWidth || '' }" v-if="showInput">
-			<input ref="inputRef" v-model="realValue" :disabled="disabled || disabledInput" type="text" @blur="changeValue" @keyup.enter="changeValue" :style="{ textAlign: inputAlign }" inputmode="numeric" />
-		</div>
-		<div :disabled="disabledPlus || arrivalMax || disabled || null" class="mvi-stepper-plus" :class="plusClass" v-if="showPlus" @click="doPlus">
-			<Icon type="plus" />
-		</div>
-	</div>
-</template>
-
 <style scoped src="./stepper.less"></style>

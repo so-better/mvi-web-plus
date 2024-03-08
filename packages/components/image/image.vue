@@ -1,10 +1,30 @@
-<script setup name="m-image" lang="ts">
+<template>
+	<div class="mvi-image" :style="imageStyle" ref="elRef">
+		<!-- 加载中 -->
+		<div v-if="(loading || lazying) && showLoading" class="mvi-image-loading">
+			<slot name="loading" v-if="$slots.loading"></slot>
+			<Icon v-else :type="parseIcon(loadIcon).type" :url="parseIcon(loadIcon).url" :spin="parseIcon(loadIcon).spin" :size="parseIcon(loadIcon).size" :color="parseIcon(loadIcon).color" />
+		</div>
+		<!-- 加载失败 -->
+		<div v-else-if="error && showError" class="mvi-image-error" ref="error">
+			<slot name="error" v-if="$slots.error"></slot>
+			<Icon v-else :type="parseIcon(errorIcon).type" :url="parseIcon(errorIcon).url" :spin="parseIcon(errorIcon).spin" :size="parseIcon(errorIcon).size" :color="parseIcon(errorIcon).color" />
+		</div>
+		<!-- 加载成功 -->
+		<img @load="loadSuccess" @error="loadError" :src="cmpSrc" :alt="showError ? '' : alt" :class="imgClass" />
+	</div>
+</template>
+<script setup lang="ts">
 import Dap from 'dap-util'
 import { Spy } from '../../directives/spy'
 import { Icon } from '../icon'
 import { ImageProps } from './props'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { IconPropsType } from '../icon/props'
+
+defineOptions({
+	name: 'm-image'
+})
 
 //属性
 const props = defineProps(ImageProps)
@@ -88,7 +108,7 @@ const imgClass = computed<string>(() => {
 	return 'mvi-image-fill'
 })
 //图片链接
-const cmpSrc = computed(() => {
+const cmpSrc = computed<string>(() => {
 	if (props.lazyLoad) {
 		return lazySrc.value
 	} else {
@@ -142,22 +162,4 @@ onBeforeUnmount(() => {
 	}
 })
 </script>
-
-<template>
-	<div class="mvi-image" :style="imageStyle" ref="elRef">
-		<!-- 加载中 -->
-		<div v-if="(loading || lazying) && showLoading" class="mvi-image-loading">
-			<slot name="loading" v-if="$slots.loading"></slot>
-			<Icon v-else :type="parseIcon(loadIcon).type" :url="parseIcon(loadIcon).url" :spin="parseIcon(loadIcon).spin" :size="parseIcon(loadIcon).size" :color="parseIcon(loadIcon).color" />
-		</div>
-		<!-- 加载失败 -->
-		<div v-else-if="error && showError" class="mvi-image-error" ref="error">
-			<slot name="error" v-if="$slots.error"></slot>
-			<Icon v-else :type="parseIcon(errorIcon).type" :url="parseIcon(errorIcon).url" :spin="parseIcon(errorIcon).spin" :size="parseIcon(errorIcon).size" :color="parseIcon(errorIcon).color" />
-		</div>
-		<!-- 加载成功 -->
-		<img @load="loadSuccess" @error="loadError" :src="cmpSrc" :alt="showError ? '' : alt" :class="imgClass" />
-	</div>
-</template>
-
 <style scoped src="./image.less"></style>

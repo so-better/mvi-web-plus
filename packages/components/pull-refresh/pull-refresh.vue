@@ -1,9 +1,29 @@
-<script setup name="m-pull-refresh" lang="ts">
+<template>
+	<div class="mvi-pull-refresh" ref="elRef">
+		<div ref="containerRef" class="mvi-pull-refresh-container" :style="containerStyle">
+			<div ref="refreshRef" class="mvi-pull-refresh-el">
+				<slot name="el" v-if="$slots.el" :status="status"></slot>
+				<template v-else>
+					<Icon :type="icon.type" :spin="icon.spin" :url="icon.url" :size="icon.size" :color="icon.color" />
+					<span class="mvi-pull-refresh-text" v-text="message"></span>
+				</template>
+			</div>
+			<div ref="wrapperRef" class="mvi-pull-refresh-wrapper" @touchstart="startPull" @touchmove="onPull" @touchend="pulled" @mousedown="startPull2" :style="wrapperStyle">
+				<slot></slot>
+			</div>
+		</div>
+	</div>
+</template>
+<script setup lang="ts">
 import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch, nextTick } from 'vue'
 import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { PullRefreshProps, PullRefreshStatusType } from './props'
 import { IconPropsType } from '../icon/props'
+
+defineOptions({
+	name: 'm-pull-refresh'
+})
 
 //实例
 const instance = getCurrentInstance()!
@@ -336,22 +356,4 @@ onBeforeUnmount(() => {
 	Dap.event.off(document.documentElement, `mousemove.pullRefresh_${instance.uid} mouseup.pullRefresh_${instance.uid}`)
 })
 </script>
-
-<template>
-	<div class="mvi-pull-refresh" ref="elRef">
-		<div ref="containerRef" class="mvi-pull-refresh-container" :style="containerStyle">
-			<div ref="refreshRef" class="mvi-pull-refresh-el">
-				<slot name="el" v-if="$slots.el" :status="status"></slot>
-				<template v-else>
-					<Icon :type="icon.type" :spin="icon.spin" :url="icon.url" :size="icon.size" :color="icon.color" />
-					<span class="mvi-pull-refresh-text" v-text="message"></span>
-				</template>
-			</div>
-			<div ref="wrapperRef" class="mvi-pull-refresh-wrapper" @touchstart="startPull" @touchmove="onPull" @touchend="pulled" @mousedown="startPull2" :style="wrapperStyle">
-				<slot></slot>
-			</div>
-		</div>
-	</div>
-</template>
-
 <style scoped src="./pull-refresh.less"></style>

@@ -1,6 +1,22 @@
-<script setup name="m-progress" lang="ts">
+<template>
+	<!-- 进度条 -->
+	<div class="mvi-progress" :class="{ round: round, square: !round && square }" :style="progressStyle">
+		<!-- 进度条进度 -->
+		<div class="mvi-progress-bar" :style="progressBarStyle">
+			<div v-if="showTip" class="mvi-progress-tooltip" :style="{ color: tipColor || '' }">
+				<slot name="tip" v-if="$slots.tip" :value="value"></slot>
+				<span v-else v-text="cmpText"></span>
+			</div>
+		</div>
+	</div>
+</template>
+<script setup lang="ts">
 import { computed } from 'vue'
 import { ProgressProps } from './props'
+
+defineOptions({
+	name: 'm-progress'
+})
 
 //属性
 const props = defineProps(ProgressProps)
@@ -37,18 +53,4 @@ const cmpText = computed<string>(() => {
 	return Math.round(((props.value - props.min < 0 ? 0 : props.value - props.min) / (props.max - props.min)) * 100) + '%'
 })
 </script>
-
-<template>
-	<!-- 进度条 -->
-	<div class="mvi-progress" :class="{ round: round, square: !round && square }" :style="progressStyle">
-		<!-- 进度条进度 -->
-		<div class="mvi-progress-bar" :style="progressBarStyle">
-			<div v-if="showTip" class="mvi-progress-tooltip" :style="{ color: tipColor || '' }">
-				<slot name="tip" v-if="$slots.tip" :value="value"></slot>
-				<span v-else v-text="cmpText"></span>
-			</div>
-		</div>
-	</div>
-</template>
-
 <style scoped src="./progress.less"></style>

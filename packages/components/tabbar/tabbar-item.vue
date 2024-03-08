@@ -1,10 +1,26 @@
-<script setup name="m-tabbar-item" lang="ts">
+<template>
+	<div :disabled="disabled || null" class="mvi-tabbar-item" :class="cmpClass" :style="cmpStyle" @click="setActive">
+		<Badge :show="badge?.show" class="mvi-tabbar-badge" :content="badge?.content" :background="badge?.background" :color="badge?.color" :dot="badge?.dot" :placement="badge?.placement" :offset="badge?.offset">
+			<div class="mvi-tabbar-item-child">
+				<span class="mvi-tabbar-icon" v-if="parseIcon(icon).type || parseIcon(icon).url" :style="{ marginBottom: name ? '' : '0px' }">
+					<Icon :type="parseIcon(icon).type" :url="parseIcon(icon).url" :spin="parseIcon(icon).spin" :size="parseIcon(icon).size" :color="parseIcon(icon).color" />
+				</span>
+				<span class="mvi-tabbar-name" :class="{ small: parseIcon(icon).type || parseIcon(icon).url }" v-text="name"></span>
+			</div>
+		</Badge>
+	</div>
+</template>
+<script setup lang="ts">
 import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { Badge } from '../badge'
 import { TabbarItemProps, TabbarRouteType } from './props'
 import { ComponentInternalInstance, computed, getCurrentInstance, inject } from 'vue'
 import { IconPropsType } from '../icon/props'
+
+defineOptions({
+	name: 'm-tabbar-item'
+})
 
 //获取实例
 const instance = getCurrentInstance()!
@@ -165,18 +181,4 @@ const setActive = () => {
 	tabbar.emit('change', JSON.parse(JSON.stringify(props)))
 }
 </script>
-
-<template>
-	<div :disabled="disabled || null" class="mvi-tabbar-item" :class="cmpClass" :style="cmpStyle" @click="setActive">
-		<Badge :show="badge?.show" class="mvi-tabbar-badge" :content="badge?.content" :background="badge?.background" :color="badge?.color" :dot="badge?.dot" :placement="badge?.placement" :offset="badge?.offset">
-			<div class="mvi-tabbar-item-child">
-				<span class="mvi-tabbar-icon" v-if="parseIcon(icon).type || parseIcon(icon).url" :style="{ marginBottom: name ? '' : '0px' }">
-					<Icon :type="parseIcon(icon).type" :url="parseIcon(icon).url" :spin="parseIcon(icon).spin" :size="parseIcon(icon).size" :color="parseIcon(icon).color" />
-				</span>
-				<span class="mvi-tabbar-name" :class="{ small: parseIcon(icon).type || parseIcon(icon).url }" v-text="name"></span>
-			</div>
-		</Badge>
-	</div>
-</template>
-
 <style scoped src="./tabbar-item.less"></style>

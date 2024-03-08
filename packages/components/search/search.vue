@@ -1,9 +1,31 @@
-<script setup name="m-search" lang="ts">
+<template>
+	<div class="mvi-search" :disabled="disabled || null">
+		<div v-if="label" class="mvi-search-label" v-text="label"></div>
+		<div class="mvi-search-input-container" :class="{ round: round }">
+			<div v-if="parseIcon(leftIcon).type || parseIcon(leftIcon).url" class="mvi-search-left-icon" @click="leftClick">
+				<Icon :type="parseIcon(leftIcon).type" :url="parseIcon(leftIcon).url" :spin="parseIcon(leftIcon).spin" :size="parseIcon(leftIcon).size" :color="parseIcon(leftIcon).color" />
+			</div>
+			<input ref="inputRef" class="mvi-search-input" :class="{ 'left-none-radius': parseIcon(leftIcon).type || parseIcon(leftIcon).url, 'right-none-radius': parseIcon(rightIcon).type || parseIcon(rightIcon).url || (clearable && showClear) }" :type="cmpType" @keypress.enter="doSearch" autocomplete="off" :placeholder="placeholder" :maxlength="maxlength" :autofocus="autofocus" :disabled="disabled" :readonly="readonly" :inputmode="inputMode" v-model="realValue" @input="searchInput" @focus="inputFocus" @blur="inputBlur" @keydown="keydown" @keyup="keyup" :style="inputStyle" />
+			<div v-if="clearable" class="mvi-search-clear" @click="clearInput" v-show="showClear">
+				<Icon type="times-o" />
+			</div>
+			<div v-if="parseIcon(rightIcon).type || parseIcon(rightIcon).url" class="mvi-search-right-icon" @click="rightClick">
+				<Icon :type="parseIcon(rightIcon).type" :url="parseIcon(rightIcon).url" :spin="parseIcon(rightIcon).spin" :size="parseIcon(rightIcon).size" :color="parseIcon(rightIcon).color" />
+			</div>
+		</div>
+		<div v-if="showCancel" v-text="cancelText" class="mvi-search-cancel" @click="doCancel"></div>
+	</div>
+</template>
+<script setup lang="ts">
 import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { SearchProps } from './props'
 import { computed, ref } from 'vue'
 import { IconPropsType } from '../icon/props'
+
+defineOptions({
+	name: 'm-search'
+})
 
 //属性
 const props = defineProps(SearchProps)
@@ -181,24 +203,4 @@ const clearInput = () => {
 	}, 210)
 }
 </script>
-
-<template>
-	<div class="mvi-search" :disabled="disabled || null">
-		<div v-if="label" class="mvi-search-label" v-text="label"></div>
-		<div class="mvi-search-input-container" :class="{ round: round }">
-			<div v-if="parseIcon(leftIcon).type || parseIcon(leftIcon).url" class="mvi-search-left-icon" @click="leftClick">
-				<Icon :type="parseIcon(leftIcon).type" :url="parseIcon(leftIcon).url" :spin="parseIcon(leftIcon).spin" :size="parseIcon(leftIcon).size" :color="parseIcon(leftIcon).color" />
-			</div>
-			<input ref="inputRef" class="mvi-search-input" :class="{ 'left-none-radius': parseIcon(leftIcon).type || parseIcon(leftIcon).url, 'right-none-radius': parseIcon(rightIcon).type || parseIcon(rightIcon).url || (clearable && showClear) }" :type="cmpType" @keypress.enter="doSearch" autocomplete="off" :placeholder="placeholder" :maxlength="maxlength" :autofocus="autofocus" :disabled="disabled" :readonly="readonly" :inputmode="inputMode" v-model="realValue" @input="searchInput" @focus="inputFocus" @blur="inputBlur" @keydown="keydown" @keyup="keyup" :style="inputStyle" />
-			<div v-if="clearable" class="mvi-search-clear" @click="clearInput" v-show="showClear">
-				<Icon type="times-o" />
-			</div>
-			<div v-if="parseIcon(rightIcon).type || parseIcon(rightIcon).url" class="mvi-search-right-icon" @click="rightClick">
-				<Icon :type="parseIcon(rightIcon).type" :url="parseIcon(rightIcon).url" :spin="parseIcon(rightIcon).spin" :size="parseIcon(rightIcon).size" :color="parseIcon(rightIcon).color" />
-			</div>
-		</div>
-		<div v-if="showCancel" v-text="cancelText" class="mvi-search-cancel" @click="doCancel"></div>
-	</div>
-</template>
-
 <style scoped src="./search.less"></style>

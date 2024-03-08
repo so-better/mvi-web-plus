@@ -1,4 +1,39 @@
-<script setup name="m-number-keyboard" lang="ts">
+<template>
+	<Overlay ref="overlayRef" v-model="cmpShow" @show="overlayShow" @hide="overlayHide" :z-index="zIndex" :color="overlayColor" :closable="closable" :timeout="timeout" :mount-el="mountEl" :use-padding="usePadding">
+		<transition name="mvi-keyboard" @before-enter="beforeEnter" @after-enter="afterEnter" @before-leave="beforeLeave" @after-leave="afterLeave" @leave="leave" @enter="enter">
+			<div ref="keyboardRef" class="mvi-number-keyboard" v-if="firstShow" v-show="keyboardShow" :style="boardStyle" v-bind="$attrs">
+				<div v-if="!border && (title || $slots.title)" class="mvi-number-keyboard-title">
+					<slot v-if="$slots.title"></slot>
+					<span v-else>{{ title }}</span>
+				</div>
+				<div :class="['mvi-number-keyboard-wrapper', border ? '' : 'border']">
+					<div class="mvi-number-keyboard-left">
+						<template v-for="(item, index) in cpmNumbers">
+							<div class="mvi-number-keyboard-left-number" :class="leftNumberClass(item, index)">
+								<div @click="numberClick(item)" class="mvi-number-keyboard-left-number-el" :class="{ active: active }">{{ item }}</div>
+							</div>
+						</template>
+					</div>
+					<div class="mvi-number-keyboard-right" v-if="showComplete || showDelete">
+						<div class="mvi-number-keyboard-delete" :class="{ border: border }" v-if="showDelete">
+							<div :disabled="deleteDisabeld || null" class="mvi-number-keyboard-delete-el" :class="{ active: active && !deleteDisabeld }" @click="deleteClick">
+								<slot name="delete" v-if="$slots.delete"></slot>
+								<span v-text="deleteText" v-else></span>
+							</div>
+						</div>
+						<div class="mvi-number-keyboard-complete" :class="{ border: border }" v-if="showComplete">
+							<div :disabled="promiseEmpty ? null : completeDisabled || null" class="mvi-number-keyboard-complete-el" :class="{ active: active && !(promiseEmpty ? false : completeDisabled) }" @click="completeClick">
+								<slot name="complete" v-if="$slots.complete"></slot>
+								<span v-text="completeText"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</transition>
+	</Overlay>
+</template>
+<script setup lang="ts">
 import Dap from 'dap-util'
 import { Overlay } from '../overlay'
 import { NumberKeyboardProps } from './props'
@@ -6,7 +41,8 @@ import { DefineComponent, computed, getCurrentInstance, ref } from 'vue'
 
 //不继承属性
 defineOptions({
-	inheritAttrs: false
+	inheritAttrs: false,
+	name: 'm-number-keyboard'
 })
 
 //获取实例
@@ -105,7 +141,7 @@ const leftNumberClass = computed<(item: string, index: number) => string[]>(() =
 		return cls
 	}
 })
-const showKeyBoard = computed(() => {
+const showKeyBoard = computed<(item: string) => boolean>(() => {
 	return (item: string) => {
 		if (item == 'X') {
 			return props.showX
@@ -228,40 +264,4 @@ defineExpose({
 	$$el
 })
 </script>
-<template>
-	<Overlay ref="overlayRef" v-model="cmpShow" @show="overlayShow" @hide="overlayHide" :z-index="zIndex" :color="overlayColor" :closable="closable" :timeout="timeout" :mount-el="mountEl" :use-padding="usePadding">
-		<transition name="mvi-keyboard" @before-enter="beforeEnter" @after-enter="afterEnter" @before-leave="beforeLeave" @after-leave="afterLeave" @leave="leave" @enter="enter">
-			<div ref="keyboardRef" class="mvi-number-keyboard" v-if="firstShow" v-show="keyboardShow" :style="boardStyle" v-bind="$attrs">
-				<div v-if="!border && (title || $slots.title)" class="mvi-number-keyboard-title">
-					<slot v-if="$slots.title"></slot>
-					<span v-else>{{ title }}</span>
-				</div>
-				<div :class="['mvi-number-keyboard-wrapper', border ? '' : 'border']">
-					<div class="mvi-number-keyboard-left">
-						<template v-for="(item, index) in cpmNumbers">
-							<div class="mvi-number-keyboard-left-number" :class="leftNumberClass(item, index)">
-								<div @click="numberClick(item)" class="mvi-number-keyboard-left-number-el" :class="{ active: active }">{{ item }}</div>
-							</div>
-						</template>
-					</div>
-					<div class="mvi-number-keyboard-right" v-if="showComplete || showDelete">
-						<div class="mvi-number-keyboard-delete" :class="{ border: border }" v-if="showDelete">
-							<div :disabled="deleteDisabeld || null" class="mvi-number-keyboard-delete-el" :class="{ active: active && !deleteDisabeld }" @click="deleteClick">
-								<slot name="delete" v-if="$slots.delete"></slot>
-								<span v-text="deleteText" v-else></span>
-							</div>
-						</div>
-						<div class="mvi-number-keyboard-complete" :class="{ border: border }" v-if="showComplete">
-							<div :disabled="promiseEmpty ? null : completeDisabled || null" class="mvi-number-keyboard-complete-el" :class="{ active: active && !(promiseEmpty ? false : completeDisabled) }" @click="completeClick">
-								<slot name="complete" v-if="$slots.complete"></slot>
-								<span v-text="completeText"></span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</transition>
-	</Overlay>
-</template>
-
 <style scoped src="./number-keyboard.less"></style>

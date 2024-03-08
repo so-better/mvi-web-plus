@@ -1,17 +1,44 @@
-<script setup name="m-modal" lang="ts">
+<template>
+	<Overlay ref="overlayRef" v-model="show" @show="overlayShow" @hide="overlayHide" :use-padding="usePadding" :z-index="zIndex" :closable="closable" :color="overlayColor" :timeout="timeout" :mount-el="mountEl">
+		<div ref="modalRef" class="mvi-modal" :style="{ zIndex: zIndex + 10 }">
+			<transition :name="'mvi-modal-' + animation" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @before-leave="beforeLeave" @leave="leave" @after-leave="afterLeave">
+				<!-- 弹出层 -->
+				<div v-if="firstShow" v-show="modalShow" class="mvi-modal-wrapper" ref="wrapperRef" :style="wrapperStyle" v-bind="$attrs">
+					<div class="mvi-modal-times" @click="show = false" v-if="showTimes">
+						<Icon type="times" />
+					</div>
+					<div ref="headerRef" class="mvi-modal-title" :class="{ ellipsis: ellipsis, center: center }" v-if="$slots.title || title" :style="headerStyle">
+						<slot name="title" v-if="$slots.title"></slot>
+						<span v-html="title" v-else-if="title"></span>
+					</div>
+					<div ref="contentRef" class="mvi-modal-content" v-if="$slots.default || content">
+						<slot v-if="$slots.default"></slot>
+						<span v-html="content" v-else-if="content"></span>
+					</div>
+					<div ref="footerRef" class="mvi-modal-footer" :style="{ padding: __ignorePadding ? 0 : '' }" v-if="$slots.footer || footer">
+						<slot name="footer" v-if="$slots.footer"></slot>
+						<span v-text="footer" v-else-if="footer"></span>
+					</div>
+				</div>
+			</transition>
+		</div>
+	</Overlay>
+</template>
+<script setup lang="ts">
 import Dap from 'dap-util'
 import { Overlay } from '../overlay'
 import { Icon } from '../icon'
 import { ModalProps } from './props'
 import { DefineComponent, computed, getCurrentInstance, ref, useSlots, watch } from 'vue'
 
-//获取实例
-const instance = getCurrentInstance()!
-
 //属性不继承
 defineOptions({
-	inheritAttrs: false
+	inheritAttrs: false,
+	name: 'm-modal'
 })
+
+//获取实例
+const instance = getCurrentInstance()!
 
 //属性
 const props = defineProps(ModalProps)
@@ -156,32 +183,4 @@ defineExpose({
 	$$el
 })
 </script>
-
-<template>
-	<Overlay ref="overlayRef" v-model="show" @show="overlayShow" @hide="overlayHide" :use-padding="usePadding" :z-index="zIndex" :closable="closable" :color="overlayColor" :timeout="timeout" :mount-el="mountEl">
-		<div ref="modalRef" class="mvi-modal" :style="{ zIndex: zIndex + 10 }">
-			<transition :name="'mvi-modal-' + animation" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @before-leave="beforeLeave" @leave="leave" @after-leave="afterLeave">
-				<!-- 弹出层 -->
-				<div v-if="firstShow" v-show="modalShow" class="mvi-modal-wrapper" ref="wrapperRef" :style="wrapperStyle" v-bind="$attrs">
-					<div class="mvi-modal-times" @click="show = false" v-if="showTimes">
-						<Icon type="times" />
-					</div>
-					<div ref="headerRef" class="mvi-modal-title" :class="{ ellipsis: ellipsis, center: center }" v-if="$slots.title || title" :style="headerStyle">
-						<slot name="title" v-if="$slots.title"></slot>
-						<span v-html="title" v-else-if="title"></span>
-					</div>
-					<div ref="contentRef" class="mvi-modal-content" v-if="$slots.default || content">
-						<slot v-if="$slots.default"></slot>
-						<span v-html="content" v-else-if="content"></span>
-					</div>
-					<div ref="footerRef" class="mvi-modal-footer" :style="{ padding: __ignorePadding ? 0 : '' }" v-if="$slots.footer || footer">
-						<slot name="footer" v-if="$slots.footer"></slot>
-						<span v-text="footer" v-else-if="footer"></span>
-					</div>
-				</div>
-			</transition>
-		</div>
-	</Overlay>
-</template>
-
 <style scoped src="./modal.less"></style>

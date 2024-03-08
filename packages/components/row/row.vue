@@ -1,30 +1,30 @@
-<script setup name="m-row" lang="ts">
+<template>
+	<Row class="mvi-row" :style="{ justifyContent: justify, alignItems: align }">
+		<slot></slot>
+	</Row>
+</template>
+<script setup lang="ts">
 import { defineComponent, h, useSlots } from 'vue'
+import { RowProps } from './props'
 
-import { RowProps } from "./props"
+defineOptions({
+	name: 'm-row'
+})
 
 //属性
 const props = defineProps(RowProps)
 
 //行组件
 const Row = defineComponent(() => {
-    return () => {
-        return h(
-            props.tag,
-            {},
-            {
-                default: useSlots().default
-            }
-        )
-    }
+	return () => {
+		return h(
+			props.tag,
+			{},
+			{
+				default: useSlots().default
+			}
+		)
+	}
 })
-
 </script>
-
-<template>
-    <Row class="mvi-row" :style="{ justifyContent: justify, alignItems: align }">
-        <slot></slot>
-    </Row>
-</template>
-
 <style scoped src="./row.less"></style>

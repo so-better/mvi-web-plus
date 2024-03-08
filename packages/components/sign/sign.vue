@@ -1,7 +1,14 @@
-<script setup name="m-sign" lang="ts">
+<template>
+	<canvas class="mvi-sign" ref="canvasRef" @mousedown="canvasMouseDown" @touchstart="canvasTouchStart" @touchmove="canvasTouchMove" @touchend="canvasTouchEnd" @mouseleave="canvasMouseLeave" @mouseenter="canvasMouseEnter" />
+</template>
+<script setup lang="ts">
 import Dap from 'dap-util'
 import { getCurrentInstance, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { SignProps } from './props'
+
+defineOptions({
+	name: 'm-sign'
+})
 
 //获取实例
 const instance = getCurrentInstance()!
@@ -132,9 +139,5 @@ defineExpose({
 	clear
 })
 </script>
-
-<template>
-	<canvas class="mvi-sign" ref="canvasRef" @mousedown="canvasMouseDown" @touchstart="canvasTouchStart" @touchmove="canvasTouchMove" @touchend="canvasTouchEnd" @mouseleave="canvasMouseLeave" @mouseenter="canvasMouseEnter" />
-</template>
 
 <style scoped src="./sign.less"></style>

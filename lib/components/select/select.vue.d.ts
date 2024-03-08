@@ -185,9 +185,9 @@ declare const _default: DefineComponent<{
     onClear?: ((...args: any[]) => any) | undefined;
 }, {
     modelValue: any;
+    name: string;
     props: import("./props").SelectOptionsItemPropsType;
     disabled: boolean;
-    name: string;
     size: "small" | "medium" | "large";
     icon: string;
     round: boolean;

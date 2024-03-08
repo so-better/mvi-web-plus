@@ -1,8 +1,33 @@
-<script setup name="m-picker" lang="ts">
+<template>
+	<div class="mvi-picker">
+		<div class="mvi-picker-loading" v-if="loading" :style="loadingStyle">
+			<Loading size="0.5rem" color="#ddd"></Loading>
+		</div>
+		<div v-if="showToolbar && !loading" class="mvi-picker-toolbar">
+			<div class="mvi-picker-toolbar-cancel" v-text="cancelText" @click="doCancel"></div>
+			<div class="mvi-picker-toolbar-title" v-if="title" v-text="title"></div>
+			<div class="mvi-picker-toolbar-confirm" v-text="confirmText" @click="doConfirm"></div>
+		</div>
+		<div v-if="!loading" class="mvi-picker-content" :style="contentStyle" ref="content" @touchmove="contentTouchMove">
+			<div v-for="(column, index) in cmpOptions" class="mvi-picker-items" :ref="el => (itemRefs[index] = <HTMLElement>el)" :style="columnStyle(index)" @touchstart="touchstart($event, index)" @touchmove="touchmove" @touchend="touchend" @mousedown="mousedown($event, index)">
+				<div class="mvi-picker-item" v-for="item in column.values" :style="{ height: selectHeight || '' }">
+					<div v-text="item"></div>
+				</div>
+			</div>
+			<div class="mvi-picker-active" :style="{ height: selectHeight || '' }"></div>
+			<div class="mvi-picker-mask" :style="maskStyle"></div>
+		</div>
+	</div>
+</template>
+<script setup lang="ts">
 import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import Dap from 'dap-util'
 import { Loading } from '../loading'
 import { PickerProps, PickerActiveType, PickerOptionsItemType, PickerCrisisType } from './props'
+
+defineOptions({
+	name: 'm-picker'
+})
 
 //实例
 const instance = getCurrentInstance()!
@@ -333,27 +358,4 @@ onBeforeUnmount(() => {
 	Dap.event.off(document.documentElement, `mousemove.picker_${instance.uid} mouseup.picker_${instance.uid}`)
 })
 </script>
-
-<template>
-	<div class="mvi-picker">
-		<div class="mvi-picker-loading" v-if="loading" :style="loadingStyle">
-			<Loading size="0.5rem" color="#ddd"></Loading>
-		</div>
-		<div v-if="showToolbar && !loading" class="mvi-picker-toolbar">
-			<div class="mvi-picker-toolbar-cancel" v-text="cancelText" @click="doCancel"></div>
-			<div class="mvi-picker-toolbar-title" v-if="title" v-text="title"></div>
-			<div class="mvi-picker-toolbar-confirm" v-text="confirmText" @click="doConfirm"></div>
-		</div>
-		<div v-if="!loading" class="mvi-picker-content" :style="contentStyle" ref="content" @touchmove="contentTouchMove">
-			<div v-for="(column, index) in cmpOptions" class="mvi-picker-items" :ref="el => (itemRefs[index] = <HTMLElement>el)" :style="columnStyle(index)" @touchstart="touchstart($event, index)" @touchmove="touchmove" @touchend="touchend" @mousedown="mousedown($event, index)">
-				<div class="mvi-picker-item" v-for="item in column.values" :style="{ height: selectHeight || '' }">
-					<div v-text="item"></div>
-				</div>
-			</div>
-			<div class="mvi-picker-active" :style="{ height: selectHeight || '' }"></div>
-			<div class="mvi-picker-mask" :style="maskStyle"></div>
-		</div>
-	</div>
-</template>
-
 <style scoped src="./picker.less"></style>
