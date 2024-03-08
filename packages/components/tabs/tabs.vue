@@ -93,7 +93,7 @@ const headerStyle = computed<(index: number) => any>(() => {
 		return style
 	}
 })
-const parseIcon = computed<(params: string | IconPropsType) => IconPropsType>(() => {
+const parseIcon = computed(() => {
 	return (params: string | IconPropsType) => {
 		let icon: IconPropsType = {
 			spin: false,
