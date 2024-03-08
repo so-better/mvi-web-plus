@@ -5,9 +5,10 @@ import { CellGroupProps } from './props'
 //实例
 const instance = getCurrentInstance()!
 
-defineProps(CellGroupProps)
-
+//提供给cell组件
 provide('cellGroup', instance)
+
+defineProps(CellGroupProps)
 </script>
 
 <template>

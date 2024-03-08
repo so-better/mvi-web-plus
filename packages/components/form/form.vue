@@ -5,9 +5,9 @@ import { FormProps } from './props'
 //实例
 const instance = getCurrentInstance()!
 
-defineProps(FormProps)
-
 provide('form', instance)
+
+defineProps(FormProps)
 </script>
 
 <template>

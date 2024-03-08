@@ -7,6 +7,8 @@ import { computed, getCurrentInstance, provide } from 'vue'
 //获取实例
 const instance = getCurrentInstance()!
 
+provide('tabbar', instance)
+
 //属性
 const props = defineProps(TabbarProps)
 
@@ -32,8 +34,6 @@ const tabbarStyle = computed<any>(() => {
 	}
 	return style
 })
-
-provide('tabbar', instance)
 </script>
 
 <template>

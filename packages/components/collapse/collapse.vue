@@ -5,6 +5,9 @@ import { CollapseProps } from './props'
 //实例
 const instance = getCurrentInstance()!
 
+//提供给CollapseItem组件使用
+provide('collapse', instance)
+
 //属性
 defineProps(CollapseProps)
 
@@ -13,9 +16,6 @@ defineEmits(['update:modelValue', 'change', 'before-slide-down', 'slide-down', '
 
 //存放CollapseItem组件的数组
 const children = ref<ComponentInternalInstance[]>([])
-
-//提供给CollapseItem组件使用
-provide('collapse', instance)
 
 defineExpose({
 	children
