@@ -2,11 +2,11 @@
 import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { CellProps } from './props'
-import { computed, getCurrentInstance } from 'vue'
+import { ComponentInternalInstance, computed, inject } from 'vue'
 import { IconPropsType } from '../icon/props'
 
-//获取实例
-const instance = getCurrentInstance()!
+//CellGroup组件
+const cellGroup = inject<ComponentInternalInstance | null>('cellGroup', null)
 
 //属性
 const props = defineProps(CellProps)
@@ -46,8 +46,8 @@ const cmpActive = computed<boolean>(() => {
 	if (typeof props.active == 'boolean') {
 		return props.active
 	}
-	if (instance.parent!.type.name == 'm-cell-group' && typeof instance.parent!.props.active == 'boolean') {
-		return instance.parent!.props.active
+	if (cellGroup && cellGroup.type.name == 'm-cell-group' && typeof cellGroup.props.active == 'boolean') {
+		return cellGroup.props.active
 	}
 	return true
 })
@@ -55,8 +55,8 @@ const cmpBorder = computed<boolean>(() => {
 	if (typeof props.border == 'boolean') {
 		return props.border
 	}
-	if (instance.parent!.type.name == 'm-cell-group' && typeof instance.parent!.props.border == 'boolean') {
-		return instance.parent!.props.border
+	if (cellGroup && cellGroup.type.name == 'm-cell-group' && typeof cellGroup.props.border == 'boolean') {
+		return cellGroup.props.border
 	}
 	return false
 })

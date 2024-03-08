@@ -7,9 +7,6 @@ import { PickerProps, PickerActiveType, PickerOptionsItemType, PickerCrisisType 
 //实例
 const instance = getCurrentInstance()!
 
-//uid
-const uid = instance.uid
-
 //属性
 const props = defineProps(PickerProps)
 
@@ -328,12 +325,12 @@ watch(
 
 onMounted(() => {
 	init()
-	Dap.event.on(document.documentElement, `mousemove.picker_${uid}`, mousemove)
-	Dap.event.on(document.documentElement, `mouseup.picker_${uid}`, mouseup)
+	Dap.event.on(document.documentElement, `mousemove.picker_${instance.uid}`, mousemove)
+	Dap.event.on(document.documentElement, `mouseup.picker_${instance.uid}`, mouseup)
 })
 
 onBeforeUnmount(() => {
-	Dap.event.off(document.documentElement, `mousemove.picker_${uid} mouseup.picker_${uid}`)
+	Dap.event.off(document.documentElement, `mousemove.picker_${instance.uid} mouseup.picker_${instance.uid}`)
 })
 </script>
 

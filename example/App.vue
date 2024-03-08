@@ -1,7 +1,8 @@
 <template>
 	<div class="mvi-p-10">
 		<m-button @click="onClick">Button</m-button>
-		<m-tabs v-model="active" animation="slide">
+		<m-tabbar v-model="active" :tabs="tabs"></m-tabbar>
+		<!-- <m-tabs :timeout="1000" v-model="active" animation="slide">
 			<m-tab title="标签一">
 				<p>愿你三冬暖，愿你春不寒；愿你天黑有灯，下雨有伞。愿你路上有良人相伴。</p>
 			</m-tab>
@@ -14,55 +15,40 @@
 			<m-tab title="标签四">
 				<p>纵然，从此一别两宽，各自欢喜，你也曾写进了他的生命里，虽非经久不衰，却最浓墨重彩。</p>
 			</m-tab>
-		</m-tabs>
+		</m-tabs> -->
 	</div>
 </template>
 
 <script>
-import { Dialog } from '../packages'
-import page from '../packages/components/page/page.vue'
 export default {
 	data() {
 		return {
 			active: 1,
 			show: false,
 			value: '',
-			data: [
+			tabs: [
 				{
-					name: '张三',
-					age: 14,
-					score: 80
+					value: 0,
+					name: '首页'
 				},
 				{
-					name: '李四',
-					age: 16,
-					score: 55
+					value: 1,
+					name: '附近'
 				},
 				{
-					name: '小王',
-					age: 15,
-					score: 77
-				}
-			],
-			columns: [
-				{
-					prop: 'name',
-					label: '姓名'
+					value: 2,
+					name: '关注'
 				},
 				{
-					prop: 'age',
-					label: '年龄'
-				},
-				{
-					prop: 'score',
-					label: '分数'
+					value: 3,
+					name: '我的'
 				}
 			]
 		}
 	},
 	methods: {
 		onClick() {
-			Dialog.alert('hello')
+			this.show = !this.show
 		}
 	}
 }

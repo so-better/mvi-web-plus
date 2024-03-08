@@ -8,9 +8,6 @@ import { IconPropsType } from '../icon/props'
 //实例
 const instance = getCurrentInstance()!
 
-//uid
-const uid = instance.uid
-
 //属性
 const props = defineProps(PullRefreshProps)
 
@@ -330,13 +327,13 @@ onMounted(() => {
 		//初始高度和偏移值设置
 		initHeight()
 		//事件设置
-		Dap.event.on(document.documentElement, `mousemove.pullRefresh_${uid}`, onPull2)
-		Dap.event.on(document.documentElement, `mouseup.pullRefresh_${uid}`, pulled2)
+		Dap.event.on(document.documentElement, `mousemove.pullRefresh_${instance.uid}`, onPull2)
+		Dap.event.on(document.documentElement, `mouseup.pullRefresh_${instance.uid}`, pulled2)
 	})
 })
 
 onBeforeUnmount(() => {
-	Dap.event.off(document.documentElement, `mousemove.pullRefresh_${uid} mouseup.pullRefresh_${uid}`)
+	Dap.event.off(document.documentElement, `mousemove.pullRefresh_${instance.uid} mouseup.pullRefresh_${instance.uid}`)
 })
 </script>
 

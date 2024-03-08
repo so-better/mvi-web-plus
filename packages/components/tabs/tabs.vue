@@ -1,5 +1,5 @@
 <script setup name="m-tabs" lang="ts">
-import { ComponentInternalInstance, computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { ComponentInternalInstance, computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, watch, provide } from 'vue'
 import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { TabsProps } from './props'
@@ -7,6 +7,8 @@ import { IconPropsType } from '../icon/props'
 
 //实例
 const instance = getCurrentInstance()!
+//提供实例给tab组件
+provide('tabs', instance)
 
 //属性
 const props = defineProps(TabsProps)
@@ -20,8 +22,8 @@ const children = ref<ComponentInternalInstance[]>([])
 const slideLeft = ref<number>(0)
 //滑动条宽度
 const slideWidth = ref<number>(0)
-//与active值一样，但区别在于active变化后节点更新后才会变化此值
-const current = ref<number>(0)
+//当前指向的tab序列
+const current = ref<number>(props.modelValue)
 
 const headersRef = ref<HTMLElement | null>(null)
 const contentRef = ref<HTMLElement | null>(null)
@@ -156,8 +158,6 @@ watch(
 		to(newValue, oldValue)
 	}
 )
-
-current.value = props.modelValue
 
 onMounted(() => {
 	nextTick(() => {

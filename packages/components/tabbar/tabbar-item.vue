@@ -3,11 +3,14 @@ import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { Badge } from '../badge'
 import { TabbarItemProps, TabbarRouteType } from './props'
-import { computed, getCurrentInstance } from 'vue'
+import { ComponentInternalInstance, computed, getCurrentInstance, inject } from 'vue'
 import { IconPropsType } from '../icon/props'
 
 //获取实例
 const instance = getCurrentInstance()!
+
+//tabbar组件实例
+const tabbar = inject<ComponentInternalInstance>('tabbar')!
 
 //属性
 const props = defineProps(TabbarItemProps)
@@ -45,10 +48,10 @@ const parseIcon = computed<(params: string | IconPropsType) => IconPropsType>(()
 })
 const cmpClass = computed<string[]>(() => {
 	let cls: string[] = []
-	if (Dap.common.equal(props.value, instance.parent!.props.modelValue)) {
+	if (Dap.common.equal(props.value, tabbar.props.modelValue)) {
 		cls.push('item-active')
 	}
-	if (instance.parent!.props.active && !props.disabled && !Dap.common.equal(props.value, instance.parent!.props.modelValue)) {
+	if (tabbar.props.active && !props.disabled && !Dap.common.equal(props.value, tabbar.props.modelValue)) {
 		cls.push('active')
 	}
 	return cls
@@ -56,13 +59,13 @@ const cmpClass = computed<string[]>(() => {
 const cmpStyle = computed<any>(() => {
 	let style: any = {}
 	//激活
-	if (Dap.common.equal(props.value, instance.parent!.props.modelValue)) {
-		if (instance.parent!.props.activeColor) {
-			style.color = instance.parent!.props.activeColor
+	if (Dap.common.equal(props.value, tabbar.props.modelValue)) {
+		if (tabbar.props.activeColor) {
+			style.color = tabbar.props.activeColor
 		}
 	} else {
-		if (instance.parent!.props.inactiveColor) {
-			style.color = instance.parent!.props.inactiveColor
+		if (tabbar.props.inactiveColor) {
+			style.color = tabbar.props.inactiveColor
 		}
 	}
 	return style
@@ -115,12 +118,12 @@ const cmpRoute = computed<TabbarRouteType | null>(() => {
 
 const setActive = () => {
 	//触发item-click事件
-	instance.parent!.emit('item-click', JSON.parse(JSON.stringify(props)))
+	tabbar.emit('item-click', JSON.parse(JSON.stringify(props)))
 
 	if (props.disabled) {
 		return
 	}
-	if (Dap.common.equal(instance.parent!.props.modelValue, props.value)) {
+	if (Dap.common.equal(tabbar.props.modelValue, props.value)) {
 		return
 	}
 	//如果路由存在
@@ -158,8 +161,8 @@ const setActive = () => {
 			}
 		}
 	}
-	instance.parent!.emit('update:modelValue', props.value)
-	instance.parent!.emit('change', JSON.parse(JSON.stringify(props)))
+	tabbar.emit('update:modelValue', props.value)
+	tabbar.emit('change', JSON.parse(JSON.stringify(props)))
 }
 </script>
 

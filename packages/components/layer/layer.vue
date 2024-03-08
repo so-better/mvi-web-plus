@@ -13,8 +13,7 @@ const emits = defineEmits(['update:modelValue', 'show', 'showing', 'shown', 'hid
 const props = defineProps(LayerProps)
 //获取实例
 const instance = getCurrentInstance()!
-//uid
-const uid = instance.uid
+
 //浮层是否显示
 const layerShow = ref<boolean>(false)
 //浮层是否第一次显示
@@ -783,7 +782,7 @@ const update = () => {
 //监听滚动隐藏浮层
 const handleScroll = () => {
 	const handleScroll = (el: HTMLElement) => {
-		Dap.event.on(el, `scroll.layer_${uid}`, () => {
+		Dap.event.on(el, `scroll.layer_${instance.uid}`, () => {
 			emits('update:modelValue', false)
 		})
 		if (el.parentNode) {
@@ -798,7 +797,7 @@ const handleScroll = () => {
 //移除上述滚动事件的监听
 const removeScroll = () => {
 	const removeScroll = (el: HTMLElement) => {
-		Dap.event.off(el, `scroll.layer_${uid}`)
+		Dap.event.off(el, `scroll.layer_${instance.uid}`)
 		if (el.parentNode) {
 			removeScroll(<HTMLElement>el.parentNode)
 		}
@@ -904,9 +903,9 @@ onMounted(() => {
 	//监听滚动
 	handleScroll()
 	//监听窗口变化
-	Dap.event.on(window, `resize.layer_${uid}`, update)
+	Dap.event.on(window, `resize.layer_${instance.uid}`, update)
 	//监听窗口点击
-	Dap.event.on(window, `click.layer_${uid}`, (event: Event) => {
+	Dap.event.on(window, `click.layer_${instance.uid}`, (event: Event) => {
 		if (layerShow.value && firstShow.value && props.closable) {
 			if (Dap.element.isContains(layerRef.value, event.target) || Dap.element.isContains(getRelateEl(), event.target)) {
 				return
@@ -920,7 +919,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
 	//卸载滚动监听事件
 	removeScroll()
-	Dap.event.off(window, `resize.layer_${uid} click.layer_${uid}`)
+	Dap.event.off(window, `resize.layer_${instance.uid} click.layer_${instance.uid}`)
 })
 
 //对外提供的属性和方法

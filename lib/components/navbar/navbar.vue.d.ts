@@ -75,13 +75,13 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     "onTitle-click"?: ((...args: any[]) => any) | undefined;
 }, {
     zIndex: number;
+    fixed: boolean;
     title: string;
     border: boolean;
     leftIcon: string | IconPropsType;
     rightIcon: string | IconPropsType;
     leftText: string;
     rightText: string;
-    fixed: boolean;
 }, {}>, {
     left?(_: {}): any;
     title?(_: {}): any;

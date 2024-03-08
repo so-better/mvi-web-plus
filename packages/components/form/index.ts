@@ -1,8 +1,8 @@
 import { App } from 'vue'
-import form from './form.vue'
+import Form from './form.vue'
 
-form.install = (app: App) => {
-	app.component(form.name, form)
+Form.install = (app: App) => {
+	app.component(Form.name, Form)
 }
 
-export { form as Form, form as default }
+export { Form, Form as default }

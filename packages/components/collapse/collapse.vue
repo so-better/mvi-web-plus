@@ -1,15 +1,21 @@
 <script setup name="m-collapse" lang="ts">
-import { DefineComponent, ref } from 'vue'
+import { ComponentInternalInstance, getCurrentInstance, provide, ref } from 'vue'
 import { CollapseProps } from './props'
+
+//实例
+const instance = getCurrentInstance()!
 
 //属性
 defineProps(CollapseProps)
 
 //事件
-defineEmits(['update:modelValue', 'before-slide-down', 'slide-down', 'before-slide-up', 'slide-up'])
+defineEmits(['update:modelValue', 'change', 'before-slide-down', 'slide-down', 'before-slide-up', 'slide-up'])
 
-//存放collapse-item组件的数组
-const children = ref<DefineComponent[]>([])
+//存放CollapseItem组件的数组
+const children = ref<ComponentInternalInstance[]>([])
+
+//提供给CollapseItem组件使用
+provide('collapse', instance)
 
 defineExpose({
 	children

@@ -10,9 +10,6 @@ import { LayerPropsType } from '../layer/props'
 //获取实例
 const instance = getCurrentInstance()!
 
-//uid
-const uid = instance.uid
-
 //属性
 const props = defineProps(AutocompleteProps)
 
@@ -230,7 +227,7 @@ const defaultFilter = (): string[] => {
 
 <template>
 	<div class="mvi-autocomplete" :class="[size, { round: round, square: !round && square }]" :disabled="disabled || null">
-		<div class="mvi-autocomplete-relate" :class="relateClass" :style="relateStyle" :data-id="'mvi-autocomplete-relate-' + uid" ref="relateRef">
+		<div class="mvi-autocomplete-relate" :class="relateClass" :style="relateStyle" :data-id="'mvi-autocomplete-relate-' + instance.uid" ref="relateRef">
 			<div @click="leftClick" v-if="parseIcon(leftIcon).type || parseIcon(leftIcon).url" class="mvi-autocomplete-left-icon">
 				<Icon :type="parseIcon(leftIcon).type" :url="parseIcon(leftIcon).url" :spin="parseIcon(leftIcon).spin" :size="parseIcon(leftIcon).size" :color="parseIcon(leftIcon).color" />
 			</div>
@@ -242,7 +239,7 @@ const defaultFilter = (): string[] => {
 				<Icon :type="parseIcon(rightIcon).type" :url="parseIcon(rightIcon).url" :spin="parseIcon(rightIcon).spin" :size="parseIcon(rightIcon).size" :color="parseIcon(rightIcon).color" />
 			</div>
 		</div>
-		<Layer :model-value="show" :relate="`[data-id='mvi-autocomplete-relate-${uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" ref="layerRef" :animation="layerRealProps.animation" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :timeout="layerRealProps.timeout" :closable="false" :show-triangle="layerRealProps.showTriangle" :border-color="layerRealProps.borderColor" :width="layerRealProps.width" @showing="layerShow">
+		<Layer :model-value="show" :relate="`[data-id='mvi-autocomplete-relate-${instance.uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" ref="layerRef" :animation="layerRealProps.animation" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :timeout="layerRealProps.timeout" :closable="false" :show-triangle="layerRealProps.showTriangle" :border-color="layerRealProps.borderColor" :width="layerRealProps.width" @showing="layerShow">
 			<div class="mvi-autocomplete-menu" :class="[size]" :style="{ maxHeight: height }" ref="menuRef">
 				<div class="mvi-autocomplete-list" v-for="item in cmpFilter" v-text="item" @click="doSelect(item)"></div>
 			</div>

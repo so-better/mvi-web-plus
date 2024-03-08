@@ -112,11 +112,11 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     alt: string;
     src: string;
     loadIcon: string | IconPropsType;
+    root: string;
     fit: import("./props").ImageFillType;
     showError: boolean;
     showLoading: boolean;
     lazyLoad: boolean;
-    root: string;
     errorIcon: string | IconPropsType;
 }, {}>, {
     loading?(_: {}): any;

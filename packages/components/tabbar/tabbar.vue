@@ -2,7 +2,10 @@
 import Dap from 'dap-util'
 import TabbarItem from './tabbar-item.vue'
 import { TabbarProps } from './props'
-import { computed } from 'vue'
+import { computed, getCurrentInstance, provide } from 'vue'
+
+//获取实例
+const instance = getCurrentInstance()!
 
 //属性
 const props = defineProps(TabbarProps)
@@ -29,6 +32,8 @@ const tabbarStyle = computed<any>(() => {
 	}
 	return style
 })
+
+provide('tabbar', instance)
 </script>
 
 <template>

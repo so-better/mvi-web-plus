@@ -10,9 +10,6 @@ import { LayerPropsType } from '../layer/props'
 //实例
 const instance = getCurrentInstance()!
 
-//uid
-const uid = instance.uid
-
 //属性
 const props = defineProps(SelectProps)
 
@@ -235,14 +232,14 @@ const optionClick = (item: SelectOptionsItemType) => {
 </script>
 <template>
 	<div class="mvi-select" :class="[size, { round: round, square: !round && square }]" :disabled="disabled || null">
-		<div @mouseenter="hover = true" @mouseleave="hover = false" :data-id="'mvi-select-relate-' + uid" class="mvi-select-relate" :class="relateClass" :style="relateStyle" ref="relateRef" @click="trigger">
+		<div @mouseenter="hover = true" @mouseleave="hover = false" :data-id="'mvi-select-relate-' + instance.uid" class="mvi-select-relate" :class="relateClass" :style="relateStyle" ref="relateRef" @click="trigger">
 			<span class="mvi-select-label" :class="{ placeholder: !selectLabel }" :data-placeholder="placeholder" v-html="selectLabel"></span>
 			<!-- 清除图标 -->
 			<Icon @click="doClear" class="mvi-clear-icon" type="times-o" v-if="clearable" v-show="showClearIcon" />
 			<!-- 下拉图标 -->
 			<Icon v-show="!clearable || !showClearIcon" class="mvi-select-icon" :class="{ active: focus }" :type="icon" />
 		</div>
-		<Layer v-model="focus" :relate="`[data-id='mvi-select-relate-${uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" closable :show-triangle="layerRealProps.showTriangle" :animation="layerRealProps.animation" :timeout="layerRealProps.timeout" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :border-color="layerRealProps.borderColor" :width="layerRealProps.width" @showing="layerShow" ref="layerRef">
+		<Layer v-model="focus" :relate="`[data-id='mvi-select-relate-${instance.uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" closable :show-triangle="layerRealProps.showTriangle" :animation="layerRealProps.animation" :timeout="layerRealProps.timeout" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :border-color="layerRealProps.borderColor" :width="layerRealProps.width" @showing="layerShow" ref="layerRef">
 			<div class="mvi-select-menu" :class="[size]" ref="menuRef" :style="{ maxHeight: height }">
 				<template v-if="cmpOptions.length">
 					<div class="mvi-select-option" @click="optionClick(item)" v-for="item in cmpOptions" :disabled="item.disabled || null">

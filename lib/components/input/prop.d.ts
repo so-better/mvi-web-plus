@@ -99,7 +99,7 @@ export declare const InputProps: {
         validator(value: any): boolean;
     };
     inputMode: {
-        type: PropType<"text" | "url" | "none" | "search" | "email" | "tel" | "decimal" | "numeric">;
+        type: PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
         default: string;
         validator(value: any): boolean;
     };

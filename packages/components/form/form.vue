@@ -1,6 +1,13 @@
 <script setup name="m-form" lang="ts">
+import { getCurrentInstance, provide } from 'vue'
 import { FormProps } from './props'
+
+//实例
+const instance = getCurrentInstance()!
+
 defineProps(FormProps)
+
+provide('form', instance)
 </script>
 
 <template>

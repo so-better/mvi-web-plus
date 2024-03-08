@@ -91,11 +91,11 @@ declare const _default: import("vue").DefineComponent<{
 }, {
     zIndex: number;
     modelValue: string | number | Record<string, any> | unknown[];
+    fixed: boolean;
     offset: string;
     active: boolean;
     border: boolean;
     activeColor: string;
-    fixed: boolean;
     inactiveColor: string;
     tabs: import("./props").TabbarItemPropsType[];
     flex: string;

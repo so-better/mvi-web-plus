@@ -63,15 +63,15 @@ declare const _default: import("vue").DefineComponent<{
         default: boolean;
     };
     inputMode: {
-        type: import("vue").PropType<"text" | "url" | "none" | "search" | "email" | "tel" | "decimal" | "numeric">;
+        type: import("vue").PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
         default: string;
         validator(value: any): boolean;
     };
 }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
+    search: (...args: any[]) => void;
     input: (...args: any[]) => void;
     clear: (...args: any[]) => void;
-    search: (...args: any[]) => void;
     focus: (...args: any[]) => void;
     blur: (...args: any[]) => void;
     "left-click": (...args: any[]) => void;
@@ -143,7 +143,7 @@ declare const _default: import("vue").DefineComponent<{
         default: boolean;
     };
     inputMode: {
-        type: import("vue").PropType<"text" | "url" | "none" | "search" | "email" | "tel" | "decimal" | "numeric">;
+        type: import("vue").PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
         default: string;
         validator(value: any): boolean;
     };
@@ -172,7 +172,7 @@ declare const _default: import("vue").DefineComponent<{
     clearable: boolean;
     leftIcon: string | IconPropsType;
     rightIcon: string | IconPropsType;
-    inputMode: "text" | "url" | "none" | "search" | "email" | "tel" | "decimal" | "numeric";
+    inputMode: "search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric";
     maxlength: number;
     readonly: boolean;
     autofocus: boolean;

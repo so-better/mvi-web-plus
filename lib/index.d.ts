@@ -73,6 +73,9 @@ export * from './components/pull-refresh';
 export * from './components/dialog';
 export * from './components/swipe-cell';
 export * from './components/tabbar';
+export * from './components/table';
+export * from './components/tabs';
+export * from './components/tab';
 /***** 全局导出 *****/
 declare const install: (app: App) => void;
 /***** 版本号 *****/

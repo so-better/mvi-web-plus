@@ -95,7 +95,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         validator(value: any): boolean;
     };
     inputMode: {
-        type: import("vue").PropType<"text" | "url" | "none" | "search" | "email" | "tel" | "decimal" | "numeric">;
+        type: import("vue").PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
         default: string;
         validator(value: any): boolean;
     };
@@ -204,7 +204,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         validator(value: any): boolean;
     };
     inputMode: {
-        type: import("vue").PropType<"text" | "url" | "none" | "search" | "email" | "tel" | "decimal" | "numeric">;
+        type: import("vue").PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
         default: string;
         validator(value: any): boolean;
     };
@@ -232,7 +232,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     placeholder: string;
     required: boolean;
     clearable: boolean;
-    inputMode: "text" | "url" | "none" | "search" | "email" | "tel" | "decimal" | "numeric";
+    inputMode: "search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric";
     maxlength: number;
     readonly: boolean;
     autofocus: boolean;
