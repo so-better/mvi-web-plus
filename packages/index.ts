@@ -76,6 +76,11 @@ import { NumberKeyboard } from './components/number-keyboard'
 import { Toast } from './components/toast'
 import { PullRefresh } from './components/pull-refresh'
 import { Dialog } from './components/dialog'
+import { SwipeCell } from './components/swipe-cell'
+import { Tabbar } from './components/tabbar'
+import { Table } from './components/table'
+import { Tabs } from './components/tabs'
+import { Tab } from './components/tab'
 
 /***** 按需导出 *****/
 export * from './directives/anchor'
@@ -145,6 +150,11 @@ export * from './components/number-keyboard'
 export * from './components/toast'
 export * from './components/pull-refresh'
 export * from './components/dialog'
+export * from './components/swipe-cell'
+export * from './components/tabbar'
+export * from './components/table'
+export * from './components/tabs'
+export * from './components/tab'
 
 /***** 全局导出 *****/
 const install = (app: App) => {
@@ -215,7 +225,12 @@ const install = (app: App) => {
 		NumberKeyboard,
 		Toast,
 		PullRefresh,
-		Dialog
+		Dialog,
+		SwipeCell,
+		Tabbar,
+		Table,
+		Tabs,
+		Tab
 	}
 	//注册组件和指令
 	Object.values(components).map(component => {

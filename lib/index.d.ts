@@ -71,6 +71,8 @@ export * from './components/number-keyboard';
 export * from './components/toast';
 export * from './components/pull-refresh';
 export * from './components/dialog';
+export * from './components/swipe-cell';
+export * from './components/tabbar';
 /***** 全局导出 *****/
 declare const install: (app: App) => void;
 /***** 版本号 *****/

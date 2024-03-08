@@ -1,0 +1,45 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-swipe-cell {
+	display: block;
+	width: 100%;
+	position: relative;
+	overflow: hidden;
+
+	.mvi-swipe-cell-wrap {
+		position: relative;
+		display: flex;
+		display: -webkit-flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: auto;
+
+		.mvi-swipe-cell-left,
+		.mvi-swipe-cell-right {
+			display: flex;
+			display: -webkit-flex;
+			justify-content: flex-start;
+			align-items: center;
+			position: absolute;
+			height: 100%;
+			top: 0;
+		}
+
+		.mvi-swipe-cell-left {
+			right: 100%;
+		}
+
+		.mvi-swipe-cell-right {
+			left: 100%;
+		}
+
+		.mvi-swipe-cell-center {
+			display: flex;
+			display: -webkit-flex;
+			justify-content: flex-start;
+			align-items: center;
+			width: 100%;
+		}
+	}
+}

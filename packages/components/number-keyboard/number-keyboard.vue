@@ -176,7 +176,7 @@ const beforeEnter = (el: Element) => {
 	Dap.data.set(el, 'mvi-keyboard-beforeEnter-trigger', true)
 	emits('show', el)
 	if (typeof instance.appContext.config.globalProperties.keyboardComponentWatch == 'function') {
-		instance.appContext.config.globalProperties.keyboardComponentWatch.apply(this, ['show', el])
+		instance.appContext.config.globalProperties.keyboardComponentWatch.apply(instance.proxy, ['show', el])
 	}
 }
 //弹出层显示时
@@ -188,14 +188,14 @@ const enter = (el: Element) => {
 	Dap.data.set(el, 'mvi-keyboard-enter-trigger', true)
 	emits('showing', el)
 	if (typeof instance.appContext.config.globalProperties.keyboardComponentWatch == 'function') {
-		instance.appContext.config.globalProperties.keyboardComponentWatch.apply(this, ['showing', el])
+		instance.appContext.config.globalProperties.keyboardComponentWatch.apply(instance.proxy, ['showing', el])
 	}
 }
 //弹出层显示后
 const afterEnter = (el: Element) => {
 	emits('shown', el)
 	if (typeof instance.appContext.config.globalProperties.keyboardComponentWatch == 'function') {
-		instance.appContext.config.globalProperties.keyboardComponentWatch.apply(this, ['shown', el])
+		instance.appContext.config.globalProperties.keyboardComponentWatch.apply(instance.proxy, ['shown', el])
 	}
 }
 //弹出层隐藏前
@@ -206,21 +206,21 @@ const beforeLeave = (el: Element) => {
 
 	emits('hide', el)
 	if (typeof instance.appContext.config.globalProperties.keyboardComponentWatch == 'function') {
-		instance.appContext.config.globalProperties.keyboardComponentWatch.apply(this, ['hide', el])
+		instance.appContext.config.globalProperties.keyboardComponentWatch.apply(instance.proxy, ['hide', el])
 	}
 }
 //弹出层隐藏时
 const leave = (el: Element) => {
 	emits('hidding', el)
 	if (typeof instance.appContext.config.globalProperties.keyboardComponentWatch == 'function') {
-		instance.appContext.config.globalProperties.keyboardComponentWatch.apply(this, ['hidding', el])
+		instance.appContext.config.globalProperties.keyboardComponentWatch.apply(instance.proxy, ['hidding', el])
 	}
 }
 //弹出层隐藏后
 const afterLeave = (el: Element) => {
 	emits('hidden', el)
 	if (typeof instance.appContext.config.globalProperties.keyboardComponentWatch == 'function') {
-		instance.appContext.config.globalProperties.keyboardComponentWatch.apply(this, ['hidden', el])
+		instance.appContext.config.globalProperties.keyboardComponentWatch.apply(instance.proxy, ['hidden', el])
 	}
 }
 

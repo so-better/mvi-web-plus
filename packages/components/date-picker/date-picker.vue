@@ -2,8 +2,11 @@
 import dayjs from 'dayjs'
 import { Picker } from '../picker'
 import { DatePickerProps } from './props'
-import { computed } from 'vue'
+import { computed, getCurrentInstance } from 'vue'
 import { PickerActiveType, PickerOptionsItemType } from '../picker/props'
+
+//实例
+const instance = getCurrentInstance()!
 
 //属性
 const props = defineProps(DatePickerProps)
@@ -120,7 +123,7 @@ const pickerOptions = computed<PickerOptionsItemType | PickerOptionsItemType[]>(
 		}),
 		values: years.value.map(item => {
 			if (typeof props.formatter == 'function') {
-				return props.formatter.apply(this, ['year', item])
+				return props.formatter.apply(instance.proxy, ['year', item])
 			}
 			return `${item}年`
 		})
@@ -131,7 +134,7 @@ const pickerOptions = computed<PickerOptionsItemType | PickerOptionsItemType[]>(
 		}),
 		values: months.value.map(item => {
 			if (typeof props.formatter == 'function') {
-				return props.formatter.apply(this, ['month', item])
+				return props.formatter.apply(instance.proxy, ['month', item])
 			}
 			return `${item}月`
 		})
@@ -142,7 +145,7 @@ const pickerOptions = computed<PickerOptionsItemType | PickerOptionsItemType[]>(
 		}),
 		values: days.value.map(item => {
 			if (typeof props.formatter == 'function') {
-				return props.formatter.apply(this, ['date', item])
+				return props.formatter.apply(instance.proxy, ['date', item])
 			}
 			return `${item}日`
 		})
@@ -153,7 +156,7 @@ const pickerOptions = computed<PickerOptionsItemType | PickerOptionsItemType[]>(
 		}),
 		values: hours.value.map(item => {
 			if (typeof props.formatter == 'function') {
-				return props.formatter.apply(this, ['hour', item])
+				return props.formatter.apply(instance.proxy, ['hour', item])
 			}
 			return `${item}时`
 		})
@@ -164,7 +167,7 @@ const pickerOptions = computed<PickerOptionsItemType | PickerOptionsItemType[]>(
 		}),
 		values: minutes.value.map(item => {
 			if (typeof props.formatter == 'function') {
-				return props.formatter.apply(this, ['minute', item])
+				return props.formatter.apply(instance.proxy, ['minute', item])
 			}
 			return `${item}分`
 		})

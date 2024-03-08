@@ -318,19 +318,19 @@ const cancelFun = () => {
 //模态框隐藏前
 const modalHide = (el: Element) => {
 	if (typeof instance.appContext.config.globalProperties.dialogComponentWatch == 'function') {
-		instance.appContext.config.globalProperties.dialogComponentWatch.apply(this, ['hide', props.type, el])
+		instance.appContext.config.globalProperties.dialogComponentWatch.apply(instance.proxy, ['hide', props.type, el])
 	}
 }
 //模态框隐藏时
 const modalHidding = (el: Element) => {
 	if (typeof instance.appContext.config.globalProperties.dialogComponentWatch == 'function') {
-		instance.appContext.config.globalProperties.dialogComponentWatch.apply(this, ['hidding', props.type, el])
+		instance.appContext.config.globalProperties.dialogComponentWatch.apply(instance.proxy, ['hidding', props.type, el])
 	}
 }
 //模态框隐藏后
 const modalHidden = (el: Element) => {
 	if (typeof instance.appContext.config.globalProperties.dialogComponentWatch == 'function') {
-		instance.appContext.config.globalProperties.dialogComponentWatch.apply(this, ['hidden', props.type, el])
+		instance.appContext.config.globalProperties.dialogComponentWatch.apply(instance.proxy, ['hidden', props.type, el])
 	}
 	if (props.type == 'alert') {
 		props.__remove()
@@ -343,13 +343,13 @@ const modalHidden = (el: Element) => {
 //模态框显示前
 const modalShow = (el: Element) => {
 	if (typeof instance.appContext.config.globalProperties.dialogComponentWatch == 'function') {
-		instance.appContext.config.globalProperties.dialogComponentWatch.apply(this, ['show', props.type, el])
+		instance.appContext.config.globalProperties.dialogComponentWatch.apply(instance.proxy, ['show', props.type, el])
 	}
 }
 //模态框显示时
 const modalShowing = (el: Element) => {
 	if (typeof instance.appContext.config.globalProperties.dialogComponentWatch == 'function') {
-		instance.appContext.config.globalProperties.dialogComponentWatch.apply(this, ['showing', props.type, el])
+		instance.appContext.config.globalProperties.dialogComponentWatch.apply(instance.proxy, ['showing', props.type, el])
 	}
 }
 //模态框显示后
@@ -359,7 +359,7 @@ const modalShown = (el: Element) => {
 		inputRef.value.focus()
 	}
 	if (typeof instance.appContext.config.globalProperties.dialogComponentWatch == 'function') {
-		instance.appContext.config.globalProperties.dialogComponentWatch.apply(this, ['shown', props.type, el])
+		instance.appContext.config.globalProperties.dialogComponentWatch.apply(instance.proxy, ['shown', props.type, el])
 	}
 }
 

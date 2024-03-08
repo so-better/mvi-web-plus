@@ -1,0 +1,59 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-tabbar-item {
+	position: relative;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	align-items: center;
+	vertical-align: middle;
+	height: 100%;
+	padding: 0 @mp-lg;
+	cursor: pointer;
+	user-select: none;
+
+	.mvi-tabbar-badge {
+		width: 100%;
+	}
+	.mvi-tabbar-item-child {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-start;
+		align-items: center;
+		flex-direction: column;
+		vertical-align: middle;
+
+		.mvi-tabbar-icon {
+			display: block;
+			width: 100%;
+			text-align: center;
+			margin: 0;
+			padding: 0;
+			font-size: @font-size-h4;
+		}
+
+		.mvi-tabbar-name {
+			display: block;
+			width: 100%;
+			text-align: center;
+			font-size: @font-size-h6;
+			white-space: nowrap;
+
+			&.small {
+				font-size: @font-size-small;
+			}
+		}
+	}
+
+	&.item-active {
+		color: @info-normal;
+	}
+
+	&.active:active::before {
+		.mvi-active();
+	}
+
+	&[disabled] {
+		opacity: 0.6;
+	}
+}

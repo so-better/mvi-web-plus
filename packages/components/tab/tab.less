@@ -1,0 +1,37 @@
+@import '../../css/mvi-basic.less';
+
+.mvi-tab {
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	background-color: #fff;
+}
+
+.mvi-tab-fade-enter-from,
+.mvi-tab-fade-leave-to,
+.mvi-tab-fade-back-enter-from,
+.mvi-tab-fade-back-leave-to {
+	opacity: 0;
+}
+
+.mvi-tab-slide-enter-from {
+	left: 100%;
+	opacity: 0;
+}
+
+.mvi-tab-slide-leave-to {
+	left: -100%;
+	opacity: 0;
+}
+
+.mvi-tab-slide-back-enter-from {
+	left: -100%;
+	opacity: 0;
+}
+
+.mvi-tab-slide-back-leave-to {
+	left: 100%;
+	opacity: 0;
+}
