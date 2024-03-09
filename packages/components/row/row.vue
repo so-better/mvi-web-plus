@@ -4,12 +4,20 @@
 	</Row>
 </template>
 <script setup lang="ts">
-import { defineComponent, h, useSlots } from 'vue'
+import { defineComponent, getCurrentInstance, h, provide, useSlots } from 'vue'
 import { RowProps } from './props'
+import { componentIsMatch } from '../../utils'
 
 defineOptions({
 	name: 'm-row'
 })
+
+const instance = getCurrentInstance()!
+
+//插槽内容是否匹配判定
+componentIsMatch(instance, 'm-col', ['Row', 'Col'])
+
+provide('row', instance)
 
 //属性
 const props = defineProps(RowProps)

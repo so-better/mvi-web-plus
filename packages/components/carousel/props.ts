@@ -9,22 +9,11 @@ export type CarouselIndicatorsType = {
 	inactive?: string
 }
 
-export type CarouselOptionsItemType = {
-	//
-}
-
 export const CarouselProps = {
 	//当前轮播序列
 	modelValue: {
 		type: Number,
 		default: 0
-	},
-	//轮播配置
-	optons: {
-		type: Array,
-		default: function () {
-			return []
-		}
 	},
 	//是否自动轮播
 	autoplay: {

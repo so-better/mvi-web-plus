@@ -4,13 +4,18 @@
 	</Col>
 </template>
 <script setup lang="ts">
-import { computed, defineComponent, h, useSlots } from 'vue'
+import { ComponentInternalInstance, computed, defineComponent, h, inject, ref, useSlots } from 'vue'
 import Dap from 'dap-util'
 import { ColProps, ColResponsiveType } from './props'
+import { parentIsMatch } from '../../utils'
 
 defineOptions({
 	name: 'm-col'
 })
+
+const row = inject<ComponentInternalInstance | null>('row', null)
+
+parentIsMatch(ref([]), row, 'm-row', ['Row', 'Col'])
 
 const props = defineProps(ColProps)
 

@@ -1,7 +1,11 @@
 <template>
 	<div class="mvi-p-10">
 		<m-button id="btn" @click="onClick">Button</m-button>
-		<m-carousel style="width: 400px; height: 200px" v-model="active" :optons="carouselOpt">333</m-carousel>
+		<m-carousel style="width: 400px; height: 200px" v-model="active">
+			<m-carousel-item> </m-carousel-item>
+			<m-carousel-item></m-carousel-item>
+			<m-carousel-item></m-carousel-item>
+		</m-carousel>
 	</div>
 </template>
 

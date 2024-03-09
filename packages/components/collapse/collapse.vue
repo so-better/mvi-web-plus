@@ -6,6 +6,7 @@
 <script setup lang="ts">
 import { ComponentInternalInstance, getCurrentInstance, provide, ref } from 'vue'
 import { CollapseProps } from './props'
+import { componentIsMatch } from '../../utils'
 
 defineOptions({
 	name: 'm-collapse'
@@ -13,6 +14,9 @@ defineOptions({
 
 //实例
 const instance = getCurrentInstance()!
+
+//插槽内容是否匹配判定
+componentIsMatch(instance, 'm-collapse-item', ['Collapse', 'CollapseItem'])
 
 //属性
 defineProps(CollapseProps)

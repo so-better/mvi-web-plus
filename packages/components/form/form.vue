@@ -6,6 +6,7 @@
 <script setup lang="ts">
 import { getCurrentInstance, provide } from 'vue'
 import { FormProps } from './props'
+import { componentIsMatch } from '../../utils'
 
 defineOptions({
 	name: 'm-form'
@@ -13,6 +14,8 @@ defineOptions({
 
 //实例
 const instance = getCurrentInstance()!
+//插槽内容是否匹配判定
+componentIsMatch(instance, 'm-form-el', ['Form', 'FormEl'])
 
 provide('form', instance)
 
