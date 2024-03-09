@@ -14,16 +14,13 @@ defineOptions({
 //实例
 const instance = getCurrentInstance()!
 
-provide('steps', instance)
-
 //属性
 defineProps(StepsProps)
 
 //存放step组件的数组
 const children = ref<ComponentInternalInstance[]>([])
 
-defineExpose({
-	children
-})
+provide('steps', instance)
+provide('stepChildren', children)
 </script>
 <style scoped src="./steps.less"></style>

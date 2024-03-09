@@ -1,6 +1,5 @@
-import { DefineComponent } from 'vue';
 import { IconPropsType } from '../icon/props';
-declare const _default: DefineComponent<{
+declare const _default: import("vue").DefineComponent<{
     type: {
         type: import("vue").PropType<"loading" | "info" | "success" | "error">;
         default: null;

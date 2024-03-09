@@ -29,8 +29,6 @@ defineOptions({
 
 //实例
 const instance = getCurrentInstance()!
-//提供实例给tab组件
-provide('tabs', instance)
 
 //属性
 const props = defineProps(TabsProps)
@@ -193,8 +191,12 @@ onBeforeUnmount(() => {
 	Dap.event.off(window, `resize.tabs_${instance.uid}`)
 })
 
+//提供实例给tab组件
+provide('tabs', instance)
+//提供children给tab组件
+provide('tabChildren', children)
+
 defineExpose({
-	children,
 	setHeight,
 	setSlider
 })

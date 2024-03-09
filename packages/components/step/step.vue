@@ -10,28 +10,28 @@
 				<Icon :class="['mvi-step-icon-inactive-el', stepIndex <= <number>steps.props.active ? 'finish' : '']" v-else-if="parseIcon(<string | IconPropsType>steps.props.inactiveIcon).type || parseIcon(<string | IconPropsType>steps.props.inactiveIcon).url" :type="parseIcon(<string | IconPropsType>steps.props.inactiveIcon).type" :url="parseIcon(<string | IconPropsType>steps.props.inactiveIcon).url" :spin="parseIcon(<string | IconPropsType>steps.props.inactiveIcon).spin" :size="parseIcon(<string | IconPropsType>steps.props.inactiveIcon).size" :color="parseIcon(<string | IconPropsType>steps.props.inactiveIcon).color" :style="inactiveIconStyle" />
 				<div class="mvi-step-circle" :class="{ finish: stepIndex <= <number>steps.props.active }" v-else :style="circleStyle"></div>
 			</div>
-			<div class="mvi-step-vertical-line" :class="{ last: stepIndex == steps.exposed?.children.value.length - 1, finish: stepIndex < <number>steps.props.active }" :style="lineStyle"></div>
+			<div class="mvi-step-vertical-line" :class="{ last: stepIndex == stepChildren.length - 1, finish: stepIndex < <number>steps.props.active }" :style="lineStyle"></div>
 		</div>
 	</div>
-	<div v-else class="mvi-step" ref="elRef" :class="{ last: stepIndex == steps.exposed?.children.value.length - 1 }">
-		<div class="mvi-step-label" :class="{ last: stepIndex == steps.exposed?.children.value.length - 1, first: stepIndex == 0, finish: stepIndex == steps.props.active }" :style="labelStyle">
+	<div v-else class="mvi-step" ref="elRef" :class="{ last: stepIndex == stepChildren.length - 1 }">
+		<div class="mvi-step-label" :class="{ last: stepIndex == stepChildren.length - 1, first: stepIndex == 0, finish: stepIndex == steps.props.active }" :style="labelStyle">
 			<div>
 				<slot></slot>
 			</div>
 		</div>
 		<div class="mvi-step-container">
-			<div class="mvi-step-icon" :class="{ last: stepIndex == steps.exposed?.children.value.length - 1 }" :style="stepIconStyle">
+			<div class="mvi-step-icon" :class="{ last: stepIndex == stepChildren.length - 1 }" :style="stepIconStyle">
 				<Icon class="mvi-step-icon-active-el" v-if="steps.props.active == stepIndex && (parseIcon(<string | IconPropsType>steps.props.activeIcon).type || parseIcon(<string | IconPropsType>steps.props.activeIcon).url)" :type="parseIcon(<string | IconPropsType>steps.props.activeIcon).type" :url="parseIcon(<string | IconPropsType>steps.props.activeIcon).url" :spin="parseIcon(<string | IconPropsType>steps.props.activeIcon).spin" :size="parseIcon(<string | IconPropsType>steps.props.activeIcon).size" :color="parseIcon(<string | IconPropsType>steps.props.activeIcon).color" :style="activeIconStyle" />
 				<div class="mvi-step-circle-active" v-else-if="steps.props.active == stepIndex" :style="activeCircleStyle"></div>
 				<Icon class="mvi-step-icon-inactive-el" :class="{ finish: stepIndex <= <number>steps.props.active }" v-else-if="parseIcon(<string | IconPropsType>steps.props.inactiveIcon).type || parseIcon(<string | IconPropsType>steps.props.inactiveIcon).url" :type="parseIcon(<string | IconPropsType>steps.props.inactiveIcon).type" :url="parseIcon(<string | IconPropsType>steps.props.inactiveIcon).url" :spin="parseIcon(<string | IconPropsType>steps.props.inactiveIcon).spin" :size="parseIcon(<string | IconPropsType>steps.props.inactiveIcon).size" :color="parseIcon(<string | IconPropsType>steps.props.inactiveIcon).color" :style="inactiveIconStyle" />
 				<div class="mvi-step-circle" :class="{ finish: stepIndex <= <number>steps.props.active }" v-else :style="circleStyle"></div>
 			</div>
-			<div class="mvi-step-line" :class="{ last: stepIndex == steps.exposed?.children.value.length - 1, finish: stepIndex < <number>steps.props.active }" :style="lineStyle"></div>
+			<div class="mvi-step-line" :class="{ last: stepIndex == stepChildren.length - 1, finish: stepIndex < <number>steps.props.active }" :style="lineStyle"></div>
 		</div>
 	</div>
 </template>
 <script setup lang="ts">
-import { ComponentInternalInstance, computed, getCurrentInstance, inject, onBeforeUnmount, ref } from 'vue'
+import { ComponentInternalInstance, Ref, computed, getCurrentInstance, inject, onBeforeUnmount, ref } from 'vue'
 import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { IconPropsType } from '../icon/props'
@@ -45,13 +45,14 @@ const instance = getCurrentInstance()!
 
 //获取Steps组件
 const steps = inject<ComponentInternalInstance | null>('steps', null)
+const stepChildren = inject<Ref<ComponentInternalInstance[]> | null>('stepChildren', null)
 
-if (!steps || steps.type.name != 'm-steps') {
+if (!stepChildren || !steps || steps.type.name != 'm-steps') {
 	throw new Error(`The component 'Step' must be used as a subcomponent of the component 'Steps'`)
 }
 
 //加入到steps的children去
-steps!.exposed!.children.value.push(instance)
+stepChildren.value.push(instance)
 
 const elRef = ref<HTMLElement | null>(null)
 
@@ -89,7 +90,7 @@ const parseIcon = computed<(params: string | IconPropsType) => IconPropsType>(()
 })
 //step在steps中的序列值
 const stepIndex = computed<number>(() => {
-	return steps.exposed!.children.value.findIndex((vm: ComponentInternalInstance) => {
+	return stepChildren.value.findIndex((vm: ComponentInternalInstance) => {
 		return Dap.common.equal(vm.uid, instance.uid)
 	})
 })
@@ -184,7 +185,7 @@ const stepIconStyle = computed<any>(() => {
 })
 
 onBeforeUnmount(() => {
-	steps.exposed!.children.value.splice(stepIndex.value, 1)
+	stepChildren.value.splice(stepIndex.value, 1)
 })
 </script>
 <style scoped src="./step.less"></style>

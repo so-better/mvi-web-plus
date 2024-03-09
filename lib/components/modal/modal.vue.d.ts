@@ -1,5 +1,4 @@
-import { DefineComponent } from 'vue';
-declare const _default: __VLS_WithTemplateSlots<DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     modelValue: {
         type: BooleanConstructor;
         default: boolean;

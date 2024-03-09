@@ -1,6 +1,5 @@
 import { DialogInputType, DialogPcBtnsType } from './props';
-import { DefineComponent } from 'vue';
-declare const _default: DefineComponent<{
+declare const _default: import("vue").DefineComponent<{
     type: {
         type: import("vue").PropType<"Confirm" | "Alert" | "Prompt">;
         default: null;

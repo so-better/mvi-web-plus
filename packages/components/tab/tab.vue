@@ -6,7 +6,7 @@
 	</transition>
 </template>
 <script setup lang="ts">
-import { computed, getCurrentInstance, ref, ComponentInternalInstance, onBeforeUnmount, inject, reactive } from 'vue'
+import { computed, getCurrentInstance, ref, ComponentInternalInstance, onBeforeUnmount, inject, reactive, Ref } from 'vue'
 import Dap from 'dap-util'
 import { TabProps } from './props'
 
@@ -19,14 +19,16 @@ const instance = getCurrentInstance()!
 
 //获取tabs组件实例
 const tabs = inject<ComponentInternalInstance | null>('tabs', null)
+//获取tabs内部定义的children
+const tabChildren = inject<Ref<ComponentInternalInstance[]> | null>('tabChildren', null)
 
 //判断是否在Tabs组件内
-if (!tabs || tabs.type.name != 'm-tabs') {
+if (!tabChildren || !tabs || tabs.type.name != 'm-tabs') {
 	throw new Error(`The component 'Tab' must be used as a subcomponent of the component 'Tabs'`)
 }
 
 //加入到tabs的children去
-tabs.exposed!.children.value.push(instance)
+tabChildren.value.push(instance)
 
 //属性
 defineProps(TabProps)
@@ -44,7 +46,7 @@ const tabStyle = computed<any>(() => {
 })
 //tab在tabs中的序列值
 const tabIndex = computed<number>(() => {
-	return tabs.exposed!.children.value.findIndex((vm: ComponentInternalInstance) => {
+	return tabChildren.value.findIndex((vm: ComponentInternalInstance) => {
 		return Dap.common.equal(vm.uid, instance.uid)
 	})
 })
@@ -53,7 +55,7 @@ const show = ref<boolean>(tabs.props!.modelValue == tabIndex.value)
 const firstShow = ref<boolean>(tabs.props!.modelValue == tabIndex.value)
 
 onBeforeUnmount(() => {
-	tabs.exposed!.children.value.splice(tabIndex.value, 1)
+	tabChildren.value.splice(tabIndex.value, 1)
 	if (<number>tabs.props.modelValue > 0) {
 		tabs.emit('update:modelValue', <number>tabs.props.modelValue - 1)
 		tabs.emit('change', <number>tabs.props.modelValue - 1)

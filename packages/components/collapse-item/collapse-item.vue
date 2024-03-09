@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ComponentInternalInstance, computed, getCurrentInstance, inject, onBeforeUnmount } from 'vue'
+import { ComponentInternalInstance, Ref, computed, getCurrentInstance, inject, onBeforeUnmount } from 'vue'
 import Dap from 'dap-util'
 import { Cell } from '../cell'
 import { TransitionSlide } from '../transition-slide'
@@ -14,21 +14,22 @@ const instance = getCurrentInstance()!
 
 //获取Collapse组件实例
 const collapse = inject<ComponentInternalInstance | null>('collapse', null)
+const collapseItemChildren = inject<Ref<ComponentInternalInstance[]> | null>('collapseItemChildren', null)
 
 //判断是否在Collapse组件内
-if (!collapse || collapse.type.name != 'm-collapse') {
+if (!collapseItemChildren || !collapse || collapse.type.name != 'm-collapse') {
 	throw new Error(`The component 'CollapseItem' must be used as a subcomponent of the component 'Collapse'`)
 }
 
 //加入到Collapse的children去
-collapse.exposed!.children.value.push(instance)
+collapseItemChildren.value.push(instance)
 
 //属性
 const props = defineProps(CollapseItemProps)
 
 //面板的序列
 const index = computed<number>(() => {
-	return collapse.exposed!.children.value.findIndex((vm: ComponentInternalInstance) => {
+	return collapseItemChildren.value.findIndex((vm: ComponentInternalInstance) => {
 		return Dap.common.equal(vm.uid, instance.uid)
 	})
 })
@@ -145,7 +146,7 @@ const changeCollapse = () => {
 }
 
 onBeforeUnmount(() => {
-	collapse.exposed!.children.value.splice(index.value, 1)
+	collapseItemChildren.value.splice(index.value, 1)
 	if (<number>collapse.props.modelValue > 0) {
 		collapse.emit('update:modelValue', <number>collapse.props.modelValue - 1)
 		collapse.emit('change', <number>collapse.props.modelValue - 1)

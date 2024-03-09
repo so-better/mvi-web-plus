@@ -14,9 +14,6 @@ defineOptions({
 //实例
 const instance = getCurrentInstance()!
 
-//提供给CollapseItem组件使用
-provide('collapse', instance)
-
 //属性
 defineProps(CollapseProps)
 
@@ -26,9 +23,10 @@ defineEmits(['update:modelValue', 'change', 'before-slide-down', 'slide-down', '
 //存放CollapseItem组件的数组
 const children = ref<ComponentInternalInstance[]>([])
 
-defineExpose({
-	children
-})
+//提供给CollapseItem组件使用
+provide('collapse', instance)
+//提供children属性给CollapseItem组件
+provide('collapseItemChildren', children)
 </script>
 
 <style scoped src="./collapse.less"></style>

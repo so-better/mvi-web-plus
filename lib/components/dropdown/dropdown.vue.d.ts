@@ -1,7 +1,6 @@
 import { DropdownOptionsItemType } from './props';
-import { DefineComponent } from 'vue';
 import { IconPropsType } from '../icon/props';
-declare const _default: DefineComponent<{
+declare const _default: import("vue").DefineComponent<{
     modelValue: {
         type: (StringConstructor | NumberConstructor | ObjectConstructor | ArrayConstructor)[];
         default: null;

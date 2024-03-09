@@ -1,7 +1,6 @@
-import { DefineComponent } from 'vue';
 import { IconPropsType } from '../icon/props';
 import { LayerPropsType } from '../layer/props';
-declare const _default: DefineComponent<{
+declare const _default: import("vue").DefineComponent<{
     modelValue: {
         type: StringConstructor;
         default: string;

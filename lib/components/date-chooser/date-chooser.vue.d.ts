@@ -1,7 +1,6 @@
-import { DefineComponent } from 'vue';
 import { LayerPropsType } from '../layer/props';
 import { CalendarViewType } from '../calendar/props';
-declare const _default: __VLS_WithTemplateSlots<DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     modelValue: {
         type: DateConstructor;
         default: () => Date;
