@@ -23,7 +23,7 @@ import { Popup } from '../popup'
 import { Loading } from '../loading'
 import { Icon } from '../icon'
 import { ActionsheetProps, ActionsheetOptionsItemType } from './props'
-import { DefineComponent, computed, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { IconPropsType } from '../icon/props'
 
 defineOptions({
@@ -37,7 +37,7 @@ const props = defineProps(ActionsheetProps)
 const emits = defineEmits(['update:modelValue', 'select'])
 
 //popup组件
-const popupRef = ref<DefineComponent | null>(null)
+const popupRef = ref<InstanceType<typeof Popup> | null>(null)
 
 const $$el = computed<HTMLElement>(() => {
 	return popupRef.value!.$$el

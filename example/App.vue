@@ -1,6 +1,7 @@
 <template>
 	<div class="mvi-p-10">
-		<m-button @click="onClick">Button</m-button>
+		<m-button id="btn" @click="onClick">Button</m-button>
+		<m-layer v-model="show" show-triangle relate="#btn">333</m-layer>
 		<m-tabs v-model="active" animation="slide">
 			<m-tab title="标签一">
 				<p>愿你三冬暖，愿你春不寒；愿你天黑有灯，下雨有伞。愿你路上有良人相伴。</p>
@@ -24,6 +25,7 @@ export default {
 	data() {
 		return {
 			active: 1,
+			date: new Date(),
 			show: true,
 			value: '',
 			carouselOpt: [{}]

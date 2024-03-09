@@ -37,7 +37,7 @@
 import Dap from 'dap-util'
 import { Overlay } from '../overlay'
 import { NumberKeyboardProps } from './props'
-import { DefineComponent, computed, getCurrentInstance, ref } from 'vue'
+import { computed, getCurrentInstance, ref } from 'vue'
 
 //不继承属性
 defineOptions({
@@ -63,7 +63,7 @@ const numbers = ref<string[]>(['1', '2', '3', '4', '5', '6', '7', '8', '9', 'X',
 //每次打开时的键盘布局缓存
 const oldNumbers = ref<string[]>([])
 
-const overlayRef = ref<DefineComponent | null>(null)
+const overlayRef = ref<InstanceType<typeof Overlay> | null>(null)
 const keyboardRef = ref<HTMLElement | null>(null)
 
 const $$el = computed<HTMLElement>(() => {

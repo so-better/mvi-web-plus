@@ -20,7 +20,7 @@ import Dap from 'dap-util'
 import { Overlay } from '../overlay'
 import { Icon } from '../icon'
 import { PopupProps } from './props'
-import { DefineComponent, computed, getCurrentInstance, ref } from 'vue'
+import { computed, getCurrentInstance, ref } from 'vue'
 
 defineOptions({
 	inheritAttrs: false,
@@ -41,7 +41,7 @@ const popupShow = ref<boolean>(false)
 //popup弹窗是否渲染
 const firstShow = ref<boolean>(false)
 //遮罩层组件
-const overlayRef = ref<DefineComponent | null>(null)
+const overlayRef = ref<InstanceType<typeof Overlay> | null>(null)
 //遮罩层元素
 const $$el = computed<HTMLElement>(() => {
 	return overlayRef.value!.$$el

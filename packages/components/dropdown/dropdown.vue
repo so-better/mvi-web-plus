@@ -19,7 +19,7 @@ import { Icon } from '../icon'
 import { Popup } from '../popup'
 
 import { DropdownOptionsItemType, DropdownProps } from './props'
-import { DefineComponent, computed, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { IconPropsType } from '../icon/props'
 
 defineOptions({
@@ -33,7 +33,7 @@ const props = defineProps(DropdownProps)
 const emits = defineEmits(['update:modelValue', 'update:show', 'select'])
 
 //popup组件实例
-const popupRef = ref<DefineComponent | null>(null)
+const popupRef = ref<InstanceType<typeof Popup> | null>(null)
 
 //导出的dom元素
 const $$el = computed<HTMLElement>(() => {

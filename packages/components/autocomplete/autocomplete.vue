@@ -20,7 +20,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { DefineComponent, computed, getCurrentInstance, ref } from 'vue'
+import { computed, getCurrentInstance, ref } from 'vue'
 import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { Layer } from '../layer'
@@ -48,7 +48,7 @@ const menuRef = ref<HTMLElement | null>(null)
 //relate
 const relateRef = ref<HTMLElement | null>(null)
 //layer
-const layerRef = ref<DefineComponent | null>(null)
+const layerRef = ref<InstanceType<typeof Layer> | null>(null)
 //input
 const inputRef = ref<HTMLElement | null>(null)
 

@@ -15,7 +15,7 @@ import { Overlay } from '../overlay'
 import { Loading } from '../loading'
 import { Icon } from '../icon'
 import { ToastProps } from './props'
-import { DefineComponent, computed, getCurrentInstance, onMounted, ref } from 'vue'
+import { computed, getCurrentInstance, onMounted, ref } from 'vue'
 import { IconPropsType } from '../icon/props'
 
 //不继承属性
@@ -32,7 +32,7 @@ const props = defineProps(ToastProps)
 
 const show = ref<boolean>(true)
 const timer = ref<any>(null)
-const overlayRef = ref<DefineComponent | null>(null)
+const overlayRef = ref<InstanceType<typeof Overlay> | null>(null)
 
 const $$el = computed<HTMLElement>(() => {
 	return overlayRef.value!.$$el

@@ -7,7 +7,7 @@
 			<!-- 下拉图标 -->
 			<Icon v-show="!clearable || !showClearIcon" class="mvi-select-icon" :class="{ active: focus }" :type="icon" />
 		</div>
-		<Layer v-model="focus" :relate="`[data-id='mvi-select-relate-${instance.uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" closable :show-triangle="layerRealProps.showTriangle" :animation="layerRealProps.animation" :timeout="layerRealProps.timeout" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :border-color="layerRealProps.borderColor" :width="layerRealProps.width" @showing="layerShow" ref="layerRef">
+		<Layer v-model="focus" :relate="`[data-id='mvi-select-relate-${instance.uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" closable :show-triangle="layerRealProps.showTriangle" :animation="layerRealProps.animation" :timeout="layerRealProps.timeout" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :border-color="layerRealProps.borderColor" :width="layerRealProps.width" @showing="layerShow">
 			<div class="mvi-select-menu" :class="[size]" ref="menuRef" :style="{ maxHeight: height }">
 				<template v-if="cmpOptions.length">
 					<div class="mvi-select-option" @click="optionClick(item)" v-for="item in cmpOptions" :disabled="item.disabled || null">
@@ -22,7 +22,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { DefineComponent, computed, getCurrentInstance, ref } from 'vue'
+import { computed, getCurrentInstance, ref } from 'vue'
 import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { Layer } from '../layer'
@@ -47,7 +47,6 @@ const hover = ref<boolean>(false)
 const focus = ref<boolean>(false)
 const relateRef = ref<HTMLElement | null>(null)
 const menuRef = ref<HTMLElement | null>(null)
-const layerRef = ref<DefineComponent | null>(null)
 
 const formData = computed<any>(() => {
 	if (props.multiple && Array.isArray(props.modelValue)) {

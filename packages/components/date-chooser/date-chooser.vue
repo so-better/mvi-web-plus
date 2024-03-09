@@ -52,13 +52,13 @@
 						</div>
 					</div>
 				</div>
-				<Calendar :view="view" v-model="selectedDate" :month-text="monthText" :week-text="weekText" :start-date="startDate" :end-date="endDate" :non-current-click="false" :active="active" :type="type" @date-click="dateClick" @month-click="monthClick" @year-click="yearClick" ref="calendarRef"> </Calendar>
+				<Calendar :view="view" v-model="selectedDate" :month-text="monthText" :week-text="weekText" :start-date="startDate" :end-date="endDate" :non-current-click="false" :active="active" :type="type" @date-click="dateClick" @month-click="monthClick" @year-click="yearClick"> </Calendar>
 			</div>
 		</Layer>
 	</div>
 </template>
 <script setup lang="ts">
-import { DefineComponent, computed, getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue'
 import Dap from 'dap-util'
 import { Layer } from '../layer'
 import { Icon } from '../icon'
@@ -87,7 +87,6 @@ const selectedDate = ref<Date>(props.modelValue)
 const elRef = ref<HTMLElement | null>(null)
 const relateRef = ref<HTMLElement | null>(null)
 const panelRef = ref<HTMLElement | null>(null)
-const calendarRef = ref<DefineComponent | null>(null)
 
 const layerRealProps = computed<LayerPropsType>(() => {
 	return {

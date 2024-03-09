@@ -22,7 +22,7 @@ import { Modal } from '../modal'
 import { Icon } from '../icon'
 import { Button } from '../button'
 import { DialogInputType, DialogPcBtnsType, DialogPcProps } from './props'
-import { DefineComponent, computed, getCurrentInstance, onMounted, ref } from 'vue'
+import { computed, getCurrentInstance, onMounted, ref } from 'vue'
 
 defineOptions({
 	name: 'm-dialog-pc'
@@ -43,7 +43,7 @@ const focus = ref<boolean>(false)
 //输入框的值
 const value = ref<string>('')
 
-const modalRef = ref<DefineComponent | null>(null)
+const modalRef = ref<InstanceType<typeof Modal> | null>(null)
 const inputRef = ref<HTMLInputElement | null>(null)
 
 const $$el = computed<HTMLElement>(() => {

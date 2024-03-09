@@ -11,7 +11,7 @@
 	</teleport>
 </template>
 <script setup lang="ts">
-import { DefineComponent, computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch, nextTick } from 'vue'
+import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch, nextTick } from 'vue'
 import Dap from 'dap-util'
 import { Triangle } from '../triangle'
 import { LayerProps } from './props'
@@ -36,7 +36,7 @@ const realPlacement = ref<string>('bottom')
 //浮层元素
 const layerRef = ref<HTMLElement | null>(null)
 //三角元素
-const triangleRef = ref<DefineComponent | null>(null)
+const triangleRef = ref<InstanceType<typeof Triangle> | null>(null)
 //浮层元素导出对象
 const $$el = computed<HTMLElement>(() => {
 	return layerRef.value!

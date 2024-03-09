@@ -29,7 +29,7 @@ import Dap from 'dap-util'
 import { Overlay } from '../overlay'
 import { Icon } from '../icon'
 import { ModalProps } from './props'
-import { DefineComponent, computed, getCurrentInstance, ref, useSlots, watch } from 'vue'
+import { computed, getCurrentInstance, ref, useSlots, watch } from 'vue'
 
 //属性不继承
 defineOptions({
@@ -51,7 +51,7 @@ const modalShow = ref<boolean>(false)
 //模态框是否渲染
 const firstShow = ref<boolean>(false)
 
-const overlayRef = ref<DefineComponent | null>(null)
+const overlayRef = ref<InstanceType<typeof Overlay> | null>(null)
 const modalRef = ref<HTMLElement | null>(null)
 const wrapperRef = ref<HTMLElement | null>(null)
 const headerRef = ref<HTMLElement | null>(null)
