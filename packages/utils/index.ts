@@ -7,6 +7,10 @@ export const componentIsMatch = (instance: ComponentInternalInstance, childName:
 	const vnodes = instance.slots.default ? instance.slots.default() : []
 	//插槽内容是否都是规定的组件
 	const isMatch = vnodes.every(vnode => {
+		//注释节点不包含在内
+		if (vnode.type == Symbol.for('v-cmt')) {
+			return true
+		}
 		return Dap.common.isObject(vnode.type) && (<any>vnode.type).name == childName
 	})
 	//如果不全是规定的组件，进行报错

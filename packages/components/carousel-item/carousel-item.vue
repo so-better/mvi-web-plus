@@ -1,10 +1,15 @@
 <template>
-	<div class="mvi-carousel-item">
+	<transition v-if="carousel!.props.fade" name="carousel-fade">
+		<div v-show="carousel!.props.modelValue == itemIndex" class="mvi-carousel-item fade" :style="carouselItemStyle">
+			<slot></slot>
+		</div>
+	</transition>
+	<div v-else class="mvi-carousel-item">
 		<slot></slot>
 	</div>
 </template>
 <script setup lang="ts">
-import { ComponentInternalInstance, getCurrentInstance, inject, ref } from 'vue'
+import { ComponentInternalInstance, Ref, computed, getCurrentInstance, inject, onBeforeUnmount } from 'vue'
 import { parentIsMatch } from '../../utils'
 
 defineOptions({
@@ -16,10 +21,33 @@ defineOptions({
 const instance = getCurrentInstance()!
 
 const carousel = inject<ComponentInternalInstance | null>('carousel', null)
+const carouselItemChildren = inject<Ref<ComponentInternalInstance[]> | null>('carouselItemChildren', null)
 
-parentIsMatch(ref([]), carousel, 'm-carousel', ['Carousel', 'CarouselItem'])
+parentIsMatch(carouselItemChildren, carousel, 'm-carousel', ['Carousel', 'CarouselItem'])
 
-//属性
-const props = defineProps()
+//加入到Carousel的children去
+carouselItemChildren!.value.push(instance)
+
+const carouselItemStyle = computed<any>(() => {
+	const style: any = {}
+	if (carousel!.props.fade) {
+		style.transition = `opacity ${carousel!.props.speed}ms linear`
+	}
+	return style
+})
+
+const itemIndex = computed<number>(() => {
+	return carouselItemChildren!.value.findIndex(vm => {
+		return vm.uid == instance.uid
+	})
+})
+
+onBeforeUnmount(() => {
+	carouselItemChildren!.value.splice(itemIndex.value, 1)
+	if (<number>carousel!.props.modelValue > 0) {
+		carousel!.emit('update:modelValue', <number>carousel!.props.modelValue - 1)
+		carousel!.emit('change', <number>carousel!.props.modelValue - 1)
+	}
+})
 </script>
 <style scoped src="./carousel-item.less"></style>

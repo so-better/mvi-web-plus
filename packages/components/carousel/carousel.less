@@ -1,5 +1,88 @@
+@import '../../css//mvi-basic.less';
+
 .mvi-carousel {
 	display: block;
 	position: relative;
 	width: 100%;
+	overflow: hidden;
+}
+
+.mvi-carousel-slides {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	position: relative;
+	height: 100%;
+}
+
+.mvi-carousel-fades {
+	display: block;
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.mvi-carousel-indicators {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	flex-wrap: nowrap;
+	position: absolute;
+	left: 50%;
+	bottom: 0.2rem;
+	transform: translateX(-50%);
+	z-index: 10;
+
+	.mvi-carousel-indicator {
+		position: relative;
+		display: block;
+		width: @small-height / 3;
+		height: @small-height / 3;
+		background: @border-color;
+		border-radius: 50%;
+		margin-right: @mp-sm;
+
+		&:last-child {
+			margin-right: 0;
+		}
+
+		&.current {
+			background: @info-normal;
+		}
+
+		&:hover {
+			cursor: pointer;
+		}
+	}
+}
+
+.mvi-carousel-controls {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 10;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: @small-height;
+	height: @small-height;
+	background: #000;
+	color: #fff;
+	border-radius: 50%;
+	font-size: @font-size-h6;
+	opacity: 0.5;
+	transition: opacity 500ms;
+
+	&.controls-forward {
+		right: @mp-sm;
+	}
+
+	&.controls-back {
+		left: @mp-sm;
+	}
+
+	&:hover {
+		opacity: 0.8;
+		cursor: pointer;
+	}
 }

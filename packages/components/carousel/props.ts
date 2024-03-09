@@ -2,7 +2,7 @@ import { ExtractPublicPropTypes, PropType } from 'vue'
 
 export type CarouselIndicatorsType = {
 	//是否显示
-	show?: false
+	show?: boolean
 	//激活颜色
 	active?: string
 	//未激活颜色

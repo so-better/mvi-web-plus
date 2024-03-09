@@ -1,10 +1,16 @@
 <template>
 	<div class="mvi-p-10">
 		<m-button id="btn" @click="onClick">Button</m-button>
-		<m-carousel style="width: 400px; height: 200px" v-model="active">
-			<m-carousel-item> </m-carousel-item>
-			<m-carousel-item></m-carousel-item>
-			<m-carousel-item></m-carousel-item>
+		<m-carousel autoplay :interval="1000" indicators loop style="width: 400px; height: 200px" v-model="active">
+			<m-carousel-item>
+				<div class="mvi-bg-success mvi-flex-center mvi-font-h1" style="width: 100%; height: 100%">1</div>
+			</m-carousel-item>
+			<m-carousel-item>
+				<div class="mvi-bg-error mvi-flex-center mvi-font-h1" style="width: 100%; height: 100%">2</div>
+			</m-carousel-item>
+			<m-carousel-item>
+				<div class="mvi-bg-info mvi-flex-center mvi-font-h1" style="width: 100%; height: 100%">3</div>
+			</m-carousel-item>
 		</m-carousel>
 	</div>
 </template>
@@ -13,11 +19,10 @@
 export default {
 	data() {
 		return {
-			active: 1,
+			active: 0,
 			date: new Date(),
-			show: true,
-			value: '',
-			carouselOpt: [{}]
+			show: false,
+			value: ''
 		}
 	},
 	methods: {
