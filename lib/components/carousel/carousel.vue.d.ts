@@ -1,11 +1,8 @@
-declare const _default: import("vue").DefineComponent<{
+import { CarouselIndicatorsType } from './props';
+declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     modelValue: {
         type: NumberConstructor;
         default: number;
-    };
-    optons: {
-        type: ArrayConstructor;
-        default: () => never[];
     };
     autoplay: {
         type: BooleanConstructor;
@@ -23,12 +20,17 @@ declare const _default: import("vue").DefineComponent<{
         type: NumberConstructor;
         default: number;
     };
-    fade: {
-        type: BooleanConstructor;
-        default: boolean;
+    mode: {
+        type: import("vue").PropType<"fade" | "slide">;
+        default: string;
+        validator(value: any): boolean;
     };
     indicators: {
-        type: import("vue").PropType<boolean | import("./props").CarouselIndicatorsType>;
+        type: import("vue").PropType<boolean | CarouselIndicatorsType>;
+        default: boolean;
+    };
+    controls: {
+        type: BooleanConstructor;
         default: boolean;
     };
     vertical: {
@@ -36,23 +38,16 @@ declare const _default: import("vue").DefineComponent<{
         default: boolean;
     };
     touchable: {
-        type: BooleanConstructor;
-        default: boolean;
-    };
-    controls: {
         type: BooleanConstructor;
         default: boolean;
     };
 }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
+    change: (...args: any[]) => void;
 }, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     modelValue: {
         type: NumberConstructor;
         default: number;
-    };
-    optons: {
-        type: ArrayConstructor;
-        default: () => never[];
     };
     autoplay: {
         type: BooleanConstructor;
@@ -70,12 +65,17 @@ declare const _default: import("vue").DefineComponent<{
         type: NumberConstructor;
         default: number;
     };
-    fade: {
-        type: BooleanConstructor;
-        default: boolean;
+    mode: {
+        type: import("vue").PropType<"fade" | "slide">;
+        default: string;
+        validator(value: any): boolean;
     };
     indicators: {
-        type: import("vue").PropType<boolean | import("./props").CarouselIndicatorsType>;
+        type: import("vue").PropType<boolean | CarouselIndicatorsType>;
+        default: boolean;
+    };
+    controls: {
+        type: BooleanConstructor;
         default: boolean;
     };
     vertical: {
@@ -86,23 +86,32 @@ declare const _default: import("vue").DefineComponent<{
         type: BooleanConstructor;
         default: boolean;
     };
-    controls: {
-        type: BooleanConstructor;
-        default: boolean;
-    };
 }>> & {
     "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
+    onChange?: ((...args: any[]) => any) | undefined;
 }, {
     modelValue: number;
-    fade: boolean;
-    optons: unknown[];
+    mode: "fade" | "slide";
     autoplay: boolean;
     loop: boolean;
     speed: number;
     interval: number;
-    indicators: boolean | import("./props").CarouselIndicatorsType;
+    indicators: boolean | CarouselIndicatorsType;
+    controls: boolean;
     vertical: boolean;
     touchable: boolean;
-    controls: boolean;
-}, {}>;
+}, {}>, {
+    default?(_: {}): any;
+    indicators?(_: {
+        total: number;
+    }): any;
+    controls?(_: {
+        total: number;
+    }): any;
+}>;
 export default _default;
+type __VLS_WithTemplateSlots<T, S> = T & {
+    new (): {
+        $slots: S;
+    };
+};

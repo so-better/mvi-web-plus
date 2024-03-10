@@ -33,6 +33,7 @@ import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { CarouselIndicatorsType, CarouselProps } from './props'
 import { componentIsMatch } from '../../utils'
+import { Animator, Clip } from 'animator-clip'
 
 defineOptions({
 	name: 'm-carousel'
@@ -56,10 +57,14 @@ const children = ref<ComponentInternalInstance[]>([])
 provide('carousel', instance)
 provide('carouselItemChildren', children)
 
+//自动播放计时器
 const autoplayTimer = ref<any>(null)
+//滑动元素
 const slidesRef = ref<HTMLElement | null>(null)
-//滑动偏移值
-const slideValue = ref<number>(0)
+//滑动动画实例
+const slideAnimation = ref<Animator | null>(null)
+//当前的偏移值
+const currentSlideValue = ref<number>(0)
 //第一次滑动的触摸点位置
 const initTouchPoint = ref<number>(0)
 //每一次滑动的触摸点位置
@@ -96,10 +101,8 @@ const slidesStyle = computed<any>(() => {
 	let style: any = {}
 	if (props.vertical) {
 		style.height = `calc(100% * ${children.value.length})`
-		style.transform = `translateY(${slideValue.value}px)`
 	} else {
 		style.width = `calc(100% * ${children.value.length})`
-		style.transform = `translateX(${slideValue.value}px)`
 	}
 	return style
 })
@@ -207,79 +210,46 @@ const setNext = () => {
 		setIndex(props.modelValue + 1, true)
 	}
 }
-//添加滑动动画
-const addSlideAnimation = () => {
-	slidesRef.value!.style.transition = `transform ${props.speed}ms linear`
-	//重绘
-	slidesRef.value!.offsetWidth
-}
-//移除滑动动画
-const removeSlideAnimation = () => {
-	slidesRef.value!.style.transition = ''
-	//重绘
-	slidesRef.value!.offsetWidth
-}
 //设定偏移值，如果参数value不设置则表示根据modelValue设定偏移值
 const setSlideValue = (animation: boolean = false, value: number | undefined = undefined): Promise<void> => {
 	return new Promise<void>(resolve => {
 		if (!slidesRef.value) {
 			return resolve()
 		}
-		if (animation) {
-			addSlideAnimation()
-		} else {
-			removeSlideAnimation()
+		if (!slideAnimation.value) {
+			return resolve()
 		}
+		let slideValue = 0
 		//设置偏移值
 		if (value === undefined) {
-			slideValue.value = -(props.loop ? props.modelValue + 1 : props.modelValue) * carouselItemSize.value
+			slideValue = -(props.loop ? props.modelValue + 1 : props.modelValue) * carouselItemSize.value
 		} else {
-			slideValue.value = value
+			slideValue = value
 		}
+		const clip = new Clip({
+			style: 'left',
+			value: slideValue + 'px',
+			speed: animation ? (currentSlideValue.value > slideValue ? -10 : 10) : slideValue - currentSlideValue.value
+		})
 
-		nextTick(() => {
-			setTimeout(() => {
-				if (animation) {
-					setTimeout(() => {
-						removeSlideAnimation()
-						resolve()
-					}, props.speed)
-				} else {
-					resolve()
-				}
-			}, 0)
+		clip.on('update', (_el: HTMLElement, _style: string, value: number) => {
+			currentSlideValue.value = value
 		})
-	})
-}
-//设定偏移值到第一个CarouselItem的克隆体
-const slideToFirstCarouselItem = (): Promise<void> => {
-	return new Promise<void>(resolve => {
-		if (!props.loop || !slidesRef.value) {
-			return resolve()
-		}
-		//设置偏移值
-		setSlideValue(false, -(children.value.length - 1) * carouselItemSize.value).then(() => {
+
+		clip.on('complete', () => {
 			resolve()
 		})
-	})
-}
-//设定偏移值到最后一个CarouselItem的克隆体
-const slideToLastCarouselItem = (): Promise<void> => {
-	return new Promise<void>(resolve => {
-		if (!props.loop || !slidesRef.value) {
-			return resolve()
-		}
-		//设置偏移值
-		setSlideValue(false, 0).then(() => {
+		clip.on('stop', () => {
 			resolve()
 		})
+		slideAnimation.value.stop()
+		slideAnimation.value.addClip(clip).start()
 	})
 }
 //手势触摸按下
 const handleTouchstart = (e: TouchEvent) => {
 	if (props.touchable) {
 		e.preventDefault()
-		removeSlideAnimation()
 		//记录按下时的点位置
 		initTouchPoint.value = props.vertical ? e.targetTouches[0].pageY : e.targetTouches[0].pageX
 		everyTouchPoint.value = initTouchPoint.value
@@ -299,9 +269,12 @@ const handleTouchmove = (e: TouchEvent) => {
 		if (Math.abs(moveTotal) >= carouselItemSize.value) {
 			return
 		}
+		//记录总滑动距离
 		touchTotal.value = moveTotal
-		//设定偏移值
-		slideValue.value = slideValue.value + (point - everyTouchPoint.value)
+		//记录当前偏移值
+		currentSlideValue.value += point - everyTouchPoint.value
+		//更新样式
+		slidesRef.value!.style.left = currentSlideValue.value + 'px'
 		//更新每次的触摸点
 		everyTouchPoint.value = point
 	}
@@ -372,11 +345,11 @@ const slideDone = () => {
 	//非循环模式下
 	else {
 		//拉到最左侧恢复到第一个
-		if (slideValue.value > 0) {
+		if (currentSlideValue.value > 0) {
 			setSlideValue(true, 0)
 		}
 		//拉倒最右侧恢复到最后一个
-		else if (slideValue.value < -((children.value.length - 1) * carouselItemSize.value)) {
+		else if (currentSlideValue.value < -((children.value.length - 1) * carouselItemSize.value)) {
 			setSlideValue(true, -((children.value.length - 1) * carouselItemSize.value))
 		}
 		//正常情况
@@ -408,14 +381,14 @@ watch(
 			//循环模式下，如果是从最后一个CarouselItem跳到第一个
 			if (props.loop && oldVal == publicChildren.value.length - 1 && newVal == 0) {
 				//偏移值设定到其克隆体上
-				slideToLastCarouselItem().then(() => {
+				setSlideValue(false, 0).then(() => {
 					setSlideValue(true)
 				})
 			}
 			//循环模式下，如果是从第一个CarouseItem跳到最后一个
 			else if (props.loop && oldVal == 0 && newVal == publicChildren.value.length - 1) {
 				//偏移值设定到其克隆体上
-				slideToFirstCarouselItem().then(() => {
+				setSlideValue(false, -(children.value.length - 1) * carouselItemSize.value).then(() => {
 					setSlideValue(true)
 				})
 			}
@@ -427,23 +400,29 @@ watch(
 	}
 )
 
-onMounted(() => {
-	nextTick(() => {
-		//如果是滑动效果则需要设置初始的偏移值
-		if (props.mode == 'slide') {
-			setSlideValue().then(() => {
-				//如果是循环
-				if (props.autoplay) {
-					setAutoplay()
+//监听slidesRef创建动画实例和设置初始偏移值
+watch(
+	() => slidesRef.value,
+	newVal => {
+		if (newVal) {
+			nextTick(() => {
+				currentSlideValue.value = -(props.loop ? props.modelValue + 1 : props.modelValue) * carouselItemSize.value
+				slidesRef.value!.style.left = currentSlideValue.value + 'px'
+				if (slideAnimation.value) {
+					slideAnimation.value.removeAllClips()
+				} else {
+					slideAnimation.value = new Animator(newVal, {})
 				}
 			})
 		}
-		//非滑动模式
-		else {
-			//如果是循环
-			if (props.autoplay) {
-				setAutoplay()
-			}
+	}
+)
+
+onMounted(() => {
+	nextTick(() => {
+		//如果是循环
+		if (props.autoplay) {
+			setAutoplay()
 		}
 	})
 })

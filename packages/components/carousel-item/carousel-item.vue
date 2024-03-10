@@ -4,7 +4,7 @@
 			<slot></slot>
 		</div>
 	</transition>
-	<div v-else class="mvi-carousel-item">
+	<div v-else-if="carousel!.props.mode == 'slide'" class="mvi-carousel-item">
 		<slot></slot>
 	</div>
 </template>

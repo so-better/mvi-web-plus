@@ -1,18 +1,13 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
 export type CarouselIndicatorsType = {
-    show?: false;
+    show?: boolean;
     active?: string;
     inactive?: string;
 };
-export type CarouselOptionsItemType = {};
 export declare const CarouselProps: {
     modelValue: {
         type: NumberConstructor;
         default: number;
-    };
-    optons: {
-        type: ArrayConstructor;
-        default: () => never[];
     };
     autoplay: {
         type: BooleanConstructor;
@@ -30,12 +25,17 @@ export declare const CarouselProps: {
         type: NumberConstructor;
         default: number;
     };
-    fade: {
-        type: BooleanConstructor;
-        default: boolean;
+    mode: {
+        type: PropType<"fade" | "slide">;
+        default: string;
+        validator(value: any): boolean;
     };
     indicators: {
         type: PropType<boolean | CarouselIndicatorsType>;
+        default: boolean;
+    };
+    controls: {
+        type: BooleanConstructor;
         default: boolean;
     };
     vertical: {
@@ -43,10 +43,6 @@ export declare const CarouselProps: {
         default: boolean;
     };
     touchable: {
-        type: BooleanConstructor;
-        default: boolean;
-    };
-    controls: {
         type: BooleanConstructor;
         default: boolean;
     };

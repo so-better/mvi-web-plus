@@ -95,8 +95,8 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     hidden: (...args: any[]) => void;
     input: (...args: any[]) => void;
     delete: (...args: any[]) => void;
-    "update:show": (...args: any[]) => void;
     complete: (...args: any[]) => void;
+    "update:show": (...args: any[]) => void;
 }, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     showDecimal: {
         type: BooleanConstructor;
