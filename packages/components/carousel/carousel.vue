@@ -11,7 +11,7 @@
 		<template v-if="cmpIndicators.show">
 			<slot name="indicators" v-if="$slots.indicators" :total="publicChildren.length"></slot>
 			<div v-else class="mvi-carousel-indicators">
-				<div v-for="(_item, index) in publicChildren.length" class="mvi-carousel-indicator" :class="{ current: props.modelValue == index }" :style="{ color: props.modelValue == index ? cmpIndicators.active : cmpIndicators.inactive }" @click="setIndex(index, true)"></div>
+				<div v-for="(_item, index) in publicChildren.length" class="mvi-carousel-indicator" :class="{ current: props.modelValue == index }" :style="{ background: props.modelValue == index ? cmpIndicators.active : cmpIndicators.inactive }" @click="setIndex(index, true)"></div>
 			</div>
 		</template>
 		<template v-if="controls">
@@ -66,6 +66,8 @@ const initTouchPoint = ref<number>(0)
 const everyTouchPoint = ref<number>(0)
 //触摸滑动的总滑动距离
 const touchTotal = ref<number>(0)
+//滑动模式下更改modelValue是否标记为懒更新
+const lazyUpdate = ref<boolean>(false)
 
 //分页器配置
 const cmpIndicators = computed<CarouselIndicatorsType>(() => {
@@ -173,7 +175,7 @@ const setAutoplay = () => {
 			}
 			setIndex(props.modelValue + 1)
 		}
-	}, props.interval)
+	}, props.interval + props.speed)
 }
 //跳到上一个CarouselItem
 const setPrev = () => {
@@ -272,19 +274,15 @@ const slideToFirstCarouselItem = (): Promise<void> => {
 			return resolve()
 		}
 		if (props.vertical) {
-			//单张高度
-			const height = slidesRef.value.offsetHeight / children.value.length
 			//设置偏移值
-			setSlideValue(false, -(children.value.length - 1) * height).then(() => {
+			setSlideValue(false, -(children.value.length - 1) * carouselItemSize.value).then(() => {
 				resolve()
 			})
 		}
 		//横向轮播
 		else {
-			//单张宽度
-			const width = slidesRef.value.offsetWidth / children.value.length
 			//设置偏移值
-			setSlideValue(false, -(children.value.length - 1) * width).then(() => {
+			setSlideValue(false, -(children.value.length - 1) * carouselItemSize.value).then(() => {
 				resolve()
 			})
 		}
@@ -304,9 +302,8 @@ const slideToLastCarouselItem = (): Promise<void> => {
 }
 //手势触摸按下
 const handleTouchstart = (e: TouchEvent) => {
-	//event.targetTouches[0].pageY
-	//event.changedTouches[0].pageY
 	if (props.touchable) {
+		e.preventDefault()
 		removeSlideAnimation()
 		//记录按下时的点位置
 		initTouchPoint.value = props.vertical ? e.targetTouches[0].pageY : e.targetTouches[0].pageX
@@ -335,98 +332,104 @@ const handleTouchmove = (e: TouchEvent) => {
 	}
 }
 //手势触摸松开
-const handleTouchEnd = () => {
+const handleTouchEnd = (e: TouchEvent) => {
 	if (props.touchable) {
+		e.preventDefault()
 		//滑动后处理
 		slideDone()
 	}
 }
 //滑动后处理
 const slideDone = () => {
-	return new Promise<void>(resolve => {
-		if (!slidesRef.value || props.mode != 'slide') {
-			return resolve()
+	if (!slidesRef.value || props.mode != 'slide') {
+		return
+	}
+	//循环模式下
+	if (props.loop) {
+		let num = 0
+		//滑动距离除以单张宽度的余数大于单张宽度的三分之一
+		if (Math.abs(touchTotal.value) > carouselItemSize.value / 3) {
+			//如果touchTotal小于0表示从右往左滑动，反之表示从左往右滑动
+			num = touchTotal.value < 0 ? num + 1 : num - 1
 		}
-		//纵向轮播
-		if (props.vertical) {
+		//表示展示的CarouselItem没有变
+		if (num == 0) {
+			setSlideValue(true, -(props.modelValue + 1) * carouselItemSize.value)
 		}
-		//横向轮播
+		//展示的CarouselItem变了后先进行动画，然后更新modelValue
 		else {
-			//循环模式下
-			if (props.loop) {
-				let num = 0
-				//滑动距离除以单张宽度的余数大于单张宽度的三分之一
-				if (Math.abs(touchTotal.value) > carouselItemSize.value / 3) {
-					//如果touchTotal小于0表示从右往左滑动，反之表示从左往右滑动
-					num = touchTotal.value < 0 ? num + 1 : num - 1
-				}
-				//表示展示的CarouselItem没有变
-				if (num == 0) {
-					setSlideValue(true, -(props.modelValue + 1) * carouselItemSize.value)
-				}
-				//展示的CarouselItem变了后先进行动画，然后更新modelValue
-				else {
-					// //滑动到了最后一个CarouselItem的克隆体上
-					// if (props.modelValue + num == -1) {
-					// 	setSlideValue(false, ).then(() => {
-					// 		setSlideValue(false)
-					// 		resolve()
-					// 	})
-					// 	setIndex(publicChildren.value.length - 1, true)
-					// }
-					// //滑动到了第一个CarouselItem的克隆体上
-					// else if (props.modelValue + num == publicChildren.value.length) {
-					// 	// setSlideValue(true, -(children.value.length - 1) * carouselItemSize.value).then(() => {
-					// 	// 	resolve()
-					// 	// })
-					// 	setIndex(props.modelValue + num, true)
-					// } else {
-					// 	setIndex(props.modelValue + num, true)
-					// }
-				}
+			//滑动到了最后一个CarouselItem的克隆体上
+			if (props.modelValue + num == -1) {
+				//先完成动画
+				setSlideValue(true, 0).then(() => {
+					//设置懒更新
+					lazyUpdate.value = true
+					//设置modeValue为最后一个CarouselItem的序列
+					setIndex(publicChildren.value.length - 1, true)
+					//不使用动画设置偏移值到最后一个CarouselItem
+					setSlideValue(false, -(children.value.length - 2) * carouselItemSize.value).then(() => {
+						//重置懒更新标识
+						lazyUpdate.value = false
+					})
+				})
 			}
-			//非循环模式下
+			//滑动到了第一个CarouselItem的克隆体上
+			else if (props.modelValue + num == publicChildren.value.length) {
+				//先完成动画
+				setSlideValue(true, -(children.value.length - 1) * carouselItemSize.value).then(() => {
+					//设置懒更新
+					lazyUpdate.value = true
+					//设置modeValue为第一个CarouselItem的序列
+					setIndex(0, true)
+					//不使用动画设置偏移值到第一个CarouselItem
+					setSlideValue(false, -carouselItemSize.value).then(() => {
+						//重置懒更新标识
+						lazyUpdate.value = false
+					})
+				})
+			}
+			//正常滑动
 			else {
-				//拉到最左侧恢复到第一个
-				if (slideValue.value > 0) {
-					setSlideValue(true, 0).then(() => {
-						resolve()
-					})
-				}
-				//拉倒最右侧恢复到最后一个
-				else if (slideValue.value < -((children.value.length - 1) * carouselItemSize.value)) {
-					setSlideValue(true, -((children.value.length - 1) * carouselItemSize.value)).then(() => {
-						resolve()
-					})
-				}
-				//正常情况
-				else {
-					let num = 0
-					//滑动距离除以单张宽度的余数大于单张宽度的三分之一
-					if (Math.abs(touchTotal.value) > carouselItemSize.value / 3) {
-						//如果touchTotal小于0表示从右往左滑动，反之表示从左往右滑动
-						num = touchTotal.value < 0 ? num + 1 : num - 1
-					}
-					//表示展示的CarouselItem没有变
-					if (num == 0) {
-						setSlideValue(true, -props.modelValue * carouselItemSize.value)
-					}
-					//更新modelValue
-					else {
-						setIndex(props.modelValue + num, true)
-					}
-				}
+				setIndex(props.modelValue + num, true)
 			}
 		}
-	})
+	}
+	//非循环模式下
+	else {
+		//拉到最左侧恢复到第一个
+		if (slideValue.value > 0) {
+			setSlideValue(true, 0)
+		}
+		//拉倒最右侧恢复到最后一个
+		else if (slideValue.value < -((children.value.length - 1) * carouselItemSize.value)) {
+			setSlideValue(true, -((children.value.length - 1) * carouselItemSize.value))
+		}
+		//正常情况
+		else {
+			let num = 0
+			//滑动距离除以单张宽度的余数大于单张宽度的三分之一
+			if (Math.abs(touchTotal.value) > carouselItemSize.value / 3) {
+				//如果touchTotal小于0表示从右往左滑动，反之表示从左往右滑动
+				num = touchTotal.value < 0 ? num + 1 : num - 1
+			}
+			//表示展示的CarouselItem没有变
+			if (num == 0) {
+				setSlideValue(true, -props.modelValue * carouselItemSize.value)
+			}
+			//更新modelValue
+			else {
+				setIndex(props.modelValue + num, true)
+			}
+		}
+	}
 }
 
 //监听modelValue变化更新轮播视图
 watch(
 	() => props.modelValue,
 	(newVal, oldVal) => {
-		//滑动模式下
-		if (props.mode == 'slide') {
+		//滑动模式下且不是懒更新状态
+		if (props.mode == 'slide' && !lazyUpdate.value) {
 			//循环模式下，如果是从最后一个CarouselItem跳到第一个
 			if (props.loop && oldVal == publicChildren.value.length - 1 && newVal == 0) {
 				//偏移值设定到其克隆体上
@@ -453,11 +456,19 @@ onMounted(() => {
 	nextTick(() => {
 		//如果是滑动效果则需要设置初始的偏移值
 		if (props.mode == 'slide') {
-			setSlideValue()
+			setSlideValue().then(() => {
+				//如果是循环
+				if (props.autoplay) {
+					setAutoplay()
+				}
+			})
 		}
-		//如果是循环
-		if (props.autoplay) {
-			setAutoplay()
+		//非滑动模式
+		else {
+			//如果是循环
+			if (props.autoplay) {
+				setAutoplay()
+			}
 		}
 	})
 })
