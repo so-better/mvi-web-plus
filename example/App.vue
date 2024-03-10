@@ -1,17 +1,7 @@
 <template>
 	<div class="mvi-p-10">
 		<m-button id="btn" @click="onClick">Button</m-button>
-		<m-carousel mode="slide" loop autoplay :speed="1000" :interval="1000" indicators controls style="width: 100%; height: 200px" v-model="active">
-			<m-carousel-item>
-				<div class="mvi-bg-success mvi-flex-center mvi-font-h1" style="width: 100%; height: 100%">1</div>
-			</m-carousel-item>
-			<m-carousel-item>
-				<div class="mvi-bg-error mvi-flex-center mvi-font-h1" style="width: 100%; height: 100%">2</div>
-			</m-carousel-item>
-			<m-carousel-item>
-				<div class="mvi-bg-info mvi-flex-center mvi-font-h1" style="width: 100%; height: 100%">3</div>
-			</m-carousel-item>
-		</m-carousel>
+		<m-rich-image style="width: 100%; height: 300px; background: #000" src="https://www.ling0523.cn/images/image_0_1701164609409.jpg"></m-rich-image>
 	</div>
 </template>
 

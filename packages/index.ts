@@ -83,6 +83,7 @@ import { Tabs } from './components/tabs'
 import { Tab } from './components/tab'
 import { Carousel } from './components/carousel'
 import { CarouselItem } from './components/carousel-item'
+import { RichImage } from './components/rich-image'
 
 /***** 按需导出 *****/
 export * from './directives/anchor'
@@ -159,6 +160,7 @@ export * from './components/tabs'
 export * from './components/tab'
 export * from './components/carousel'
 export * from './components/carousel-item'
+export * from './components/rich-image'
 
 /***** 全局导出 *****/
 const install = (app: App) => {
@@ -236,7 +238,8 @@ const install = (app: App) => {
 		Tabs,
 		Tab,
 		Carousel,
-		CarouselItem
+		CarouselItem,
+		RichImage
 	}
 	//注册组件和指令
 	Object.values(components).map(component => {
