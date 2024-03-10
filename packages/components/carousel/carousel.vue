@@ -472,5 +472,10 @@ onMounted(() => {
 		}
 	})
 })
+
+defineExpose({
+	setPrev,
+	setNext
+})
 </script>
 <style scoped src="./carousel.less"></style>
