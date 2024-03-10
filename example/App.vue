@@ -1,7 +1,7 @@
 <template>
 	<div class="mvi-p-10">
 		<m-button id="btn" @click="onClick">Button</m-button>
-		<m-carousel autoplay :interval="1000" indicators loop style="width: 400px; height: 200px" v-model="active">
+		<m-carousel indicators loop style="width: 400px; height: 200px" v-model="active">
 			<m-carousel-item>
 				<div class="mvi-bg-success mvi-flex-center mvi-font-h1" style="width: 100%; height: 100%">1</div>
 			</m-carousel-item>

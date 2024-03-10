@@ -35,30 +35,33 @@ export const CarouselProps = {
 		type: Number,
 		default: 3000
 	},
-	//是否渐变
-	fade: {
-		type: Boolean,
-		default: false
+	//模式
+	mode: {
+		type: String as PropType<'slide' | 'fade'>,
+		default: 'slide',
+		validator(value: any) {
+			return ['slide', 'fade'].includes(value)
+		}
 	},
 	//分页指示器配置
 	indicators: {
 		type: [Boolean, Object] as PropType<boolean | CarouselIndicatorsType>,
 		default: false
 	},
-	//是否纵向轮播
-	vertical: {
-		type: Boolean,
-		default: false
-	},
-	//是否可以通过手势触摸滑动
-	touchable: {
-		type: Boolean,
-		default: true
-	},
 	//前后控制器是否显示
 	controls: {
 		type: Boolean,
 		default: false
+	},
+	//滑动模式下是否纵向轮播
+	vertical: {
+		type: Boolean,
+		default: false
+	},
+	//滑动模式下是否可以通过手势触摸滑动
+	touchable: {
+		type: Boolean,
+		default: true
 	}
 }
 

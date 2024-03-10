@@ -1,5 +1,5 @@
 <template>
-	<transition v-if="carousel!.props.fade" name="carousel-fade">
+	<transition v-if="carousel!.props.mode=='fade'" name="carousel-fade">
 		<div v-show="carousel!.props.modelValue == itemIndex" class="mvi-carousel-item fade" :style="carouselItemStyle">
 			<slot></slot>
 		</div>
@@ -30,7 +30,7 @@ carouselItemChildren!.value.push(instance)
 
 const carouselItemStyle = computed<any>(() => {
 	const style: any = {}
-	if (carousel!.props.fade) {
+	if (carousel!.props.mode == 'fade') {
 		style.transition = `opacity ${carousel!.props.speed}ms linear`
 	}
 	return style
