@@ -230,27 +230,11 @@ const setSlideValue = (animation: boolean = false, value: number | undefined = u
 		} else {
 			removeSlideAnimation()
 		}
-		//纵向轮播
-		if (props.vertical) {
-			//单张高度
-			const height = slidesRef.value.offsetHeight / children.value.length
-			//设置偏移值
-			if (value === undefined) {
-				slideValue.value = -(props.loop ? props.modelValue + 1 : props.modelValue) * height
-			} else {
-				slideValue.value = value
-			}
-		}
-		//横向轮播
-		else {
-			//单张宽度
-			const width = slidesRef.value.offsetWidth / children.value.length
-			//设置偏移值
-			if (value === undefined) {
-				slideValue.value = -(props.loop ? props.modelValue + 1 : props.modelValue) * width
-			} else {
-				slideValue.value = value
-			}
+		//设置偏移值
+		if (value === undefined) {
+			slideValue.value = -(props.loop ? props.modelValue + 1 : props.modelValue) * carouselItemSize.value
+		} else {
+			slideValue.value = value
 		}
 
 		nextTick(() => {
@@ -273,19 +257,10 @@ const slideToFirstCarouselItem = (): Promise<void> => {
 		if (!props.loop || !slidesRef.value) {
 			return resolve()
 		}
-		if (props.vertical) {
-			//设置偏移值
-			setSlideValue(false, -(children.value.length - 1) * carouselItemSize.value).then(() => {
-				resolve()
-			})
-		}
-		//横向轮播
-		else {
-			//设置偏移值
-			setSlideValue(false, -(children.value.length - 1) * carouselItemSize.value).then(() => {
-				resolve()
-			})
-		}
+		//设置偏移值
+		setSlideValue(false, -(children.value.length - 1) * carouselItemSize.value).then(() => {
+			resolve()
+		})
 	})
 }
 //设定偏移值到最后一个CarouselItem的克隆体
