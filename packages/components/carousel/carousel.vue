@@ -406,7 +406,9 @@ watch(
 	newVal => {
 		if (newVal) {
 			nextTick(() => {
+				//记录初始的偏移值
 				currentSlideValue.value = -(props.loop ? props.modelValue + 1 : props.modelValue) * carouselItemSize.value
+				//设置初始的元素偏移样式
 				slidesRef.value!.style.left = currentSlideValue.value + 'px'
 				if (slideAnimation.value) {
 					slideAnimation.value.removeAllClips()
