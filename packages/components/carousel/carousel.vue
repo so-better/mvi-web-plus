@@ -73,6 +73,8 @@ const everyTouchPoint = ref<number>(0)
 const touchTotal = ref<number>(0)
 //滑动模式下更改modelValue是否标记为懒更新
 const lazyUpdate = ref<boolean>(false)
+//每帧间隔时间
+const clipInterval = ref<number>(60)
 
 //分页器配置
 const cmpIndicators = computed<CarouselIndicatorsType>(() => {
@@ -226,10 +228,14 @@ const setSlideValue = (animation: boolean = false, value: number | undefined = u
 		} else {
 			slideValue = value
 		}
+
+		//根据帧率计算出速度
+		const speed = Math.abs(currentSlideValue.value - slideValue) / (props.speed / clipInterval.value)
+
 		const clip = new Clip({
 			style: 'left',
 			value: slideValue + 'px',
-			speed: animation ? (currentSlideValue.value > slideValue ? -10 : 10) : slideValue - currentSlideValue.value
+			speed: animation ? (currentSlideValue.value > slideValue ? -speed : speed) : slideValue - currentSlideValue.value
 		})
 
 		clip.on('update', (_el: HTMLElement, _style: string, value: number) => {
@@ -242,8 +248,10 @@ const setSlideValue = (animation: boolean = false, value: number | undefined = u
 		clip.on('stop', () => {
 			resolve()
 		})
+
 		slideAnimation.value.stop()
-		slideAnimation.value.addClip(clip).start()
+		slideAnimation.value.addClip(clip)
+		clip.start()
 	})
 }
 //手势触摸按下
@@ -371,6 +379,24 @@ const slideDone = () => {
 		}
 	}
 }
+//获取每帧执行的时间间隔
+const updateClipInterval = () => {
+	//支持requestAnimationFrame获取真实帧数
+	if (!!window.requestAnimationFrame) {
+		let now = window.performance.now()
+		const render = () => {
+			const nextFrame = window.performance.now()
+			clipInterval.value = nextFrame - now
+			now = nextFrame
+			window.requestAnimationFrame(render)
+		}
+		render()
+	}
+	//不支持则按照60帧来算
+	else {
+		clipInterval.value = 1000 / 60
+	}
+}
 
 //监听modelValue变化更新轮播视图
 watch(
@@ -419,6 +445,24 @@ watch(
 		}
 	}
 )
+
+//监听自动播放
+watch(
+	() => props.autoplay,
+	newVal => {
+		if (newVal) {
+			setAutoplay()
+		} else {
+			if (autoplayTimer.value) {
+				clearInterval(autoplayTimer.value)
+				autoplayTimer.value = null
+			}
+		}
+	}
+)
+
+//更新每一帧的间隔时间数
+updateClipInterval()
 
 onMounted(() => {
 	nextTick(() => {
