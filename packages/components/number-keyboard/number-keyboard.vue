@@ -66,8 +66,8 @@ const oldNumbers = ref<string[]>([])
 const overlayRef = ref<InstanceType<typeof Overlay> | null>(null)
 const keyboardRef = ref<HTMLElement | null>(null)
 
-const $$el = computed<HTMLElement>(() => {
-	return overlayRef.value!.$$el
+const $$el = computed<HTMLElement | null>(() => {
+	return overlayRef.value ? overlayRef.value.$$el : null
 })
 const cmpShow = computed<boolean>({
 	set(value) {

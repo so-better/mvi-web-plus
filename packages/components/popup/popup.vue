@@ -43,8 +43,8 @@ const firstShow = ref<boolean>(false)
 //遮罩层组件
 const overlayRef = ref<InstanceType<typeof Overlay> | null>(null)
 //遮罩层元素
-const $$el = computed<HTMLElement>(() => {
-	return overlayRef.value!.$$el
+const $$el = computed<HTMLElement | null>(() => {
+	return overlayRef.value ? overlayRef.value.$$el : null
 })
 //是否显示
 const show = computed<boolean>({

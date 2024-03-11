@@ -1,6 +1,6 @@
 <template>
 	<div class="mvi-rich-image" ref="elRef" @mousewheel="scaleByWheel" @touchstart="scaleByTouch" @touchmove="scaleByTouch" @touchend="scaleByTouch" @mousedown="handleMouseOpt" @mouseup="handleMouseOpt" @click="handleClick">
-		<Image ref="imgRef" fit="fill" @mousedown="handleImageMouse" :style="imgStyle" width="100%" height="100%" :src="src" :load-icon="loadIcon" :error-icon="errorIcon"></Image>
+		<Image ref="imgRef" fit="response" @mousedown="handleImageMouse" :style="imgStyle" width="100%" height="100%" :src="src" :load-icon="loadIcon" :error-icon="errorIcon"></Image>
 	</div>
 </template>
 
@@ -8,7 +8,7 @@
 import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue'
 import Dap from 'dap-util'
 import { Image } from '../image'
-import { RichImageDoubleTouchType, RichImagePointType, RichImageProps } from './props'
+import { RichImageCoverType, RichImageDoubleTouchType, RichImagePointType, RichImageProps } from './props'
 
 defineOptions({
 	name: 'm-rich-image'
@@ -36,8 +36,6 @@ const translateX = ref<number>(0)
 const translateY = ref<number>(0)
 //图片旋转值
 const rotate = ref<number>(0)
-//鼠标或者手指在图片上按下时的坐标数据
-const imageDownPoint = ref<RichImagePointType | null>(null)
 //鼠标或者手指在图片上每次移动时的坐标数据
 const imageMovePoint = ref<RichImagePointType | null>(null)
 //图片是否可以移动
@@ -46,6 +44,15 @@ const imageCanMove = ref<boolean>(false)
 const downPoint = ref<RichImagePointType | null>(null)
 //鼠标在组件上松开时的坐标点数据
 const upPoint = ref<RichImagePointType | null>(null)
+//图片scale变更时的位置隐藏在容器中的数值
+const imageCoverRect = ref<RichImageCoverType>({
+	left: 0,
+	top: 0,
+	right: 0,
+	bottom: 0
+})
+//触摸松开时是否触发了双指操作
+const isTriggerDouble = ref<boolean>(false)
 
 const elRef = ref<HTMLElement | null>(null)
 const imgRef = ref<InstanceType<typeof Image> | null>(null)
@@ -62,6 +69,7 @@ const leftRotate = () => {
 	translateX.value = 0
 	translateY.value = 0
 	scale.value = 1
+	imageCoverRect.value = getImageCoverData()
 	rotate.value -= 90
 }
 //api：右旋转图片
@@ -69,6 +77,7 @@ const rightRotate = () => {
 	translateX.value = 0
 	translateY.value = 0
 	scale.value = 1
+	imageCoverRect.value = getImageCoverData()
 	rotate.value += 90
 }
 //api：放大图片
@@ -77,6 +86,7 @@ const scaleUp = () => {
 		translateX.value = 0
 		translateY.value = 0
 		scale.value = Dap.number.add(scale.value, 0.1)
+		imageCoverRect.value = getImageCoverData()
 	}
 }
 //api：缩小图片
@@ -85,15 +95,50 @@ const scaleDown = () => {
 		translateX.value = 0
 		translateY.value = 0
 		scale.value = Dap.number.subtract(scale.value, 0.1)
+		imageCoverRect.value = getImageCoverData()
 	}
 }
 //api：重置
 const reset = () => {
 	scale.value = 1
+	imageCoverRect.value = getImageCoverData()
 	translateX.value = 0
 	translateY.value = 0
 	rotate.value = 0
 	emits('reset')
+}
+//获取两点间距离
+const getPointSpacing = (pointA: TouchInit, pointB: TouchInit) => {
+	let x = pointB.pageX! - pointA.pageX!
+	let y = pointB.pageY! - pointA.pageY!
+	return Math.sqrt(x * x + y * y)
+}
+//给图片元素增加动画效果，并且在300ms后移除动画效果
+const setImageAnimation = (callback: () => void) => {
+	return new Promise<void>(resolve => {
+		imgRef.value!.$el.style.transition = 'transform 300ms'
+		//重绘
+		imgRef.value!.$el.offsetWidth
+		callback()
+		setTimeout(() => {
+			imgRef.value!.$el.style.transition = ''
+			imgRef.value!.$el.style.webkitTransition = ''
+			//重绘
+			imgRef.value!.$el.offsetWidth
+			resolve()
+		}, 300)
+	})
+}
+//获取图片元素被组件遮挡部分的数据，会在每次scal值更新时调用更新
+const getImageCoverData = (): RichImageCoverType => {
+	const imgRect = Dap.element.getElementBounding(imgRef.value!.$el)
+	const elRect = Dap.element.getElementBounding(elRef.value)
+	return {
+		left: elRect.left - imgRect.left,
+		top: elRect.top - imgRect.top,
+		right: elRect.right - imgRect.right,
+		bottom: elRect.bottom - imgRect.bottom
+	}
 }
 //滚轮缩放图片
 const scaleByWheel = (event: WheelEvent) => {
@@ -111,85 +156,67 @@ const scaleByWheel = (event: WheelEvent) => {
 		scaleDown()
 	}
 }
-//获取两点间距离
-const getPointSpacing = (pointA: TouchInit, pointB: TouchInit) => {
-	let x = pointB.pageX! - pointA.pageX!
-	let y = pointB.pageY! - pointA.pageY!
-	return Math.sqrt(x * x + y * y)
-}
-//图片的动画效果设置
-const setImageAnimation = (callback: () => void) => {
-	return new Promise<void>(resolve => {
-		imgRef.value!.$el.style.transition = 'transform 300ms'
-		//重绘
-		imgRef.value!.$el.offsetWidth
-		callback()
-		setTimeout(() => {
-			imgRef.value!.$el.style.transition = ''
-			imgRef.value!.$el.style.webkitTransition = ''
-			//重绘
-			imgRef.value!.$el.offsetWidth
-			resolve()
-		}, 300)
-	})
-}
-//图片移动设置
+//触摸移动或者鼠标按下移动的图片位置偏移处理
 const setImageTranslate = (endX: number, endY: number) => {
-	const totalX = endX - imageDownPoint.value!.x
-	const totalY = endY - imageDownPoint.value!.y
+	//这里乘以0.5的系数是为了防止移动过快
+	const moveX = (endX - imageMovePoint.value!.x) * 0.5
+	const moveY = (endY - imageMovePoint.value!.y) * 0.5
+
 	const imgRect = imgRef.value!.$el.getBoundingClientRect()
 	const elRect = elRef.value!.getBoundingClientRect()
+	//向下移动
+	if (moveY > 0 && imgRect.top >= elRect.bottom - elRect.height / 10) {
+		return
+	}
+	//向上移动
+	if (moveY < 0 && imgRect.bottom <= elRect.top + elRect.height / 10) {
+		return
+	}
+	//向右移动
+	if (moveX > 0 && imgRect.left >= elRect.right - elRect.height / 10) {
+		return
+	}
+	//向左移动
+	if (moveX < 0 && imgRect.right <= elRect.left + elRect.height / 10) {
+		return
+	}
 
-	if (totalY > 0 && imgRect.top >= elRect.bottom - elRect.height / 10) {
-		return
-	}
-	if (totalY < 0 && imgRect.bottom <= elRect.top + elRect.height / 10) {
-		return
-	}
-	if (totalX > 0 && imgRect.left >= elRect.right - elRect.height / 10) {
-		return
-	}
-	if (totalX < 0 && imgRect.right <= elRect.left + elRect.height / 10) {
-		return
-	}
-
-	translateX.value += endX - imageMovePoint.value!.x
-	translateY.value += endY - imageMovePoint.value!.y
+	translateX.value += moveX
+	translateY.value += moveY
 	imageMovePoint.value = {
 		x: endX,
 		y: endY
 	}
 }
-//图片移动后处理
+//触摸松开或者鼠标松开后的图片位置确认处理
 const handleTranslateEnd = (event: MouseEvent | TouchEvent) => {
-	const totalX = imageMovePoint.value!.x - imageDownPoint.value!.x
-	const totalY = imageMovePoint.value!.y - imageDownPoint.value!.y
-	const imgRect = imgRef.value!.$el.getBoundingClientRect()
-	const elRect = elRef.value!.getBoundingClientRect()
 	setImageAnimation(() => {
-		// if (totalY > 0 && imgRect.top >= elRect.bottom - elRect.height / 10) {
-		// 	translateY.value = elRect.height - elRect.height / 10
-		// }
-		// if (totalY < 0 && imgRect.bottom <= elRect.top + elRect.height / 10) {
-		// 	translateY.value = -elRect.height + elRect.height / 10
-		// }
-		// if (totalX > 0 && imgRect.left >= elRect.right - elRect.height / 10) {
-		// 	translateX.value = elRect.width - elRect.height / 10
-		// }
-		// if (totalX < 0 && imgRect.right <= elRect.left + elRect.height / 10) {
-		// 	translateX.value = -elRect.width + elRect.height / 10
-		// }
+		const elRect = elRef.value!.getBoundingClientRect()
+		//图片达到底部边缘值
+		if (translateY.value * scale.value >= elRect.height - elRect.height / 10 + imageCoverRect.value.top) {
+			translateY.value = (elRect.height - elRect.height / 10 + imageCoverRect.value.top) / scale.value
+		}
+		//图片达到顶部边缘值
+		if (translateY.value * scale.value <= -(elRect.height - elRect.height / 10 + imageCoverRect.value.bottom)) {
+			translateY.value = -(elRect.height - elRect.height / 10 + imageCoverRect.value.bottom) / scale.value
+		}
+		//图片到达右侧边缘值
+		if (translateX.value * scale.value >= elRect.width - elRect.width / 10 + imageCoverRect.value.left) {
+			translateX.value = (elRect.width - elRect.width / 10 + imageCoverRect.value.left) / scale.value
+		}
+		//图片达到左侧边缘值
+		if (translateX.value * scale.value <= -(elRect.width - elRect.width / 10 + imageCoverRect.value.right)) {
+			translateX.value = -(elRect.width - elRect.width / 10 + imageCoverRect.value.right) / scale.value
+		}
 	})
 	imageCanMove.value = false
 	event.type == 'mouseup' ? emits('translate-mouseup') : emits('translate-touchend')
 }
-//双指缩放图片和平移
+//监听触摸操作，进行平移和缩放
 const scaleByTouch = (event: TouchEvent) => {
-	if (event.cancelable) {
-		event.preventDefault()
-	}
 	//手指按下
 	if (event.type == 'touchstart') {
+		isTriggerDouble.value = false
 		//双指触摸
 		if (event.touches.length == 2) {
 			//标识为双指触摸
@@ -206,12 +233,11 @@ const scaleByTouch = (event: TouchEvent) => {
 			doubleTouch.value.is = false
 			//大于1可以平移
 			if (scale.value > 1) {
-				//记录按下的坐标
-				imageDownPoint.value = {
+				//记录坐标
+				imageMovePoint.value = {
 					x: event.targetTouches[0].pageX,
 					y: event.targetTouches[0].pageY
 				}
-				imageMovePoint.value = imageDownPoint.value
 				//此时可以移动图片
 				imageCanMove.value = true
 
@@ -223,6 +249,9 @@ const scaleByTouch = (event: TouchEvent) => {
 	else if (event.type == 'touchmove') {
 		//双指触摸移动
 		if (event.touches.length == 2 && doubleTouch.value.is) {
+			if (event.cancelable) {
+				event.preventDefault()
+			}
 			let spacing = getPointSpacing(event.touches[0], event.touches[1])
 			//缩小
 			if (spacing < doubleTouch.value.spacing!) {
@@ -232,6 +261,7 @@ const scaleByTouch = (event: TouchEvent) => {
 					translateY.value = 0
 					//缩小
 					scale.value = Dap.number.add(scale.value, Dap.number.divide(Dap.number.subtract(spacing, doubleTouch.value.spacing), elRef.value!.offsetWidth))
+					imageCoverRect.value = getImageCoverData()
 				}
 			}
 			//放大
@@ -242,12 +272,16 @@ const scaleByTouch = (event: TouchEvent) => {
 					translateY.value = 0
 					//放大
 					scale.value = Dap.number.add(scale.value, Dap.number.divide(Dap.number.subtract(spacing, doubleTouch.value.spacing), elRef.value!.offsetWidth))
+					imageCoverRect.value = getImageCoverData()
 				}
 			}
 			doubleTouch.value.spacing = spacing
 		}
 		//单指触摸移动
 		else {
+			if (event.cancelable) {
+				event.preventDefault()
+			}
 			if (imageCanMove.value) {
 				//设置图片移动
 				setImageTranslate(event.targetTouches[0].pageX, event.targetTouches[0].pageY)
@@ -262,14 +296,16 @@ const scaleByTouch = (event: TouchEvent) => {
 			if (scale.value < 1) {
 				setImageAnimation(() => {
 					scale.value = 1
+					imageCoverRect.value = getImageCoverData()
 				})
 			}
+			isTriggerDouble.value = true
 			doubleTouch.value.is = false
 			emits('double-touchend', event)
 		}
 		//单指松开
 		else {
-			if (imageCanMove.value) {
+			if (imageCanMove.value && !isTriggerDouble.value) {
 				handleTranslateEnd(event)
 			}
 		}
@@ -296,22 +332,18 @@ const handleClick = () => {
 		emits('only-click')
 	}
 }
-//图片上鼠标按下和移动以及松开处理
+//鼠标按下平移图片处理
 const handleImageMouse = (event: MouseEvent) => {
-	if (event.cancelable) {
-		event.preventDefault()
-	}
 	//鼠标按下
 	if (event.type == 'mousedown') {
 		if (scale.value <= 1) {
 			return
 		}
-		//记录按下的坐标
-		imageDownPoint.value = {
+		//记录坐标
+		imageMovePoint.value = {
 			x: event.pageX,
 			y: event.pageY
 		}
-		imageMovePoint.value = imageDownPoint.value
 		//此时可以移动图片
 		imageCanMove.value = true
 
@@ -319,10 +351,11 @@ const handleImageMouse = (event: MouseEvent) => {
 	}
 	//鼠标移动
 	else if (event.type == 'mousemove') {
+		if (event.cancelable) {
+			event.preventDefault()
+		}
 		if (imageCanMove.value) {
-			let endX = event.pageX
-			let endY = event.pageY
-			setImageTranslate(endX, endY)
+			setImageTranslate(event.pageX, event.pageY)
 		}
 	}
 	//鼠标松开

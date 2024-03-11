@@ -1,7 +1,7 @@
 <template>
 	<div class="mvi-p-10">
 		<m-button id="btn" @click="onClick">Button</m-button>
-		<m-rich-image style="width: 100%; height: 300px; background: #000" src="https://www.ling0523.cn/images/image_0_1701164609409.jpg"></m-rich-image>
+		<m-image-preview loop v-model="show" :images="images"></m-image-preview>
 	</div>
 </template>
 
@@ -12,7 +12,9 @@ export default {
 			active: 1,
 			date: new Date(),
 			show: false,
-			value: ''
+			value: '',
+			images: ['https://www.ling0523.cn/images/image_2_1701871044734.jpg', 'https://www.ling0523.cn/images/image_1_1701871044699.jpg', 'https://www.ling0523.cn/images/image_0_1701871044625.jpg', 'https://www.ling0523.cn/images/image_0_1701164609409.jpg'],
+			desc: ['图片1', '图片2', '图片3图片3图片3图片3图片3图片3图片3图片3图片3图片3图片3', '图片4']
 		}
 	},
 	methods: {

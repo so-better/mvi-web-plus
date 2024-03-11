@@ -17,6 +17,14 @@ export type RichImagePointType = {
 	y: number
 }
 
+//图片被容器遮挡的部分数据类型
+export type RichImageCoverType = {
+	left: number
+	right: number
+	top: number
+	bottom: number
+}
+
 export const RichImageProps = {
 	//图片地址
 	src: {

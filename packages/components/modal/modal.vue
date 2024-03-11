@@ -58,8 +58,8 @@ const headerRef = ref<HTMLElement | null>(null)
 const contentRef = ref<HTMLElement | null>(null)
 const footerRef = ref<HTMLElement | null>(null)
 
-const $$el = computed<HTMLElement>(() => {
-	return overlayRef.value!.$$el
+const $$el = computed<HTMLElement | null>(() => {
+	return overlayRef.value ? overlayRef.value.$$el : null
 })
 const show = computed<boolean>({
 	get() {
@@ -90,8 +90,8 @@ const headerStyle = computed<any>(() => {
 const modalSize = () => {
 	//如果是全屏显示
 	if (props.fullScreen) {
-		modalRef.value!.style.width = (<HTMLElement>$$el.value.offsetParent).offsetWidth + 'px'
-		wrapperRef.value!.style.height = (<HTMLElement>$$el.value.offsetParent).offsetHeight + 'px'
+		modalRef.value!.style.width = (<HTMLElement>$$el.value!.offsetParent).offsetWidth + 'px'
+		wrapperRef.value!.style.height = (<HTMLElement>$$el.value!.offsetParent).offsetHeight + 'px'
 		wrapperRef.value!.style.maxHeight = ''
 	} else {
 		if (props.width) {
@@ -99,7 +99,7 @@ const modalSize = () => {
 		} else {
 			modalRef.value!.style.width = ''
 		}
-		wrapperRef.value!.style.maxHeight = (<HTMLElement>$$el.value.offsetParent).offsetHeight * 0.96 + 'px'
+		wrapperRef.value!.style.maxHeight = (<HTMLElement>$$el.value!.offsetParent).offsetHeight * 0.96 + 'px'
 		wrapperRef.value!.style.height = ''
 	}
 }

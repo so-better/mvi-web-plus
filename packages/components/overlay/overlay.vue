@@ -62,8 +62,8 @@ const overlayStyle = computed<any>(() => {
 	return style
 })
 //遮罩层根元素
-const $$el = computed<HTMLElement>(() => {
-	return overlayRef.value!
+const $$el = computed<HTMLElement | null>(() => {
+	return overlayRef.value
 })
 
 //transition钩子函数：组件显示之前

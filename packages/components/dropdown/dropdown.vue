@@ -36,8 +36,8 @@ const emits = defineEmits(['update:modelValue', 'update:show', 'select'])
 const popupRef = ref<InstanceType<typeof Popup> | null>(null)
 
 //导出的dom元素
-const $$el = computed<HTMLElement>(() => {
-	return popupRef.value!.$$el
+const $$el = computed<HTMLElement | null>(() => {
+	return popupRef.value ? popupRef.value.$$el : null
 })
 const cmpShow = computed<boolean>({
 	set(value) {

@@ -38,8 +38,8 @@ const layerRef = ref<HTMLElement | null>(null)
 //三角元素
 const triangleRef = ref<InstanceType<typeof Triangle> | null>(null)
 //浮层元素导出对象
-const $$el = computed<HTMLElement>(() => {
-	return layerRef.value!
+const $$el = computed<HTMLElement | null>(() => {
+	return layerRef.value
 })
 //三角形位置
 const trianglePlacement = computed<'bottom' | 'top' | 'left' | 'right' | undefined>(() => {

@@ -39,8 +39,8 @@ const emits = defineEmits(['update:modelValue', 'select'])
 //popup组件
 const popupRef = ref<InstanceType<typeof Popup> | null>(null)
 
-const $$el = computed<HTMLElement>(() => {
-	return popupRef.value!.$$el
+const $$el = computed<HTMLElement | null>(() => {
+	return popupRef.value ? popupRef.value.$$el : null
 })
 const show = computed<boolean>({
 	get() {

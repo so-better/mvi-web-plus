@@ -48,8 +48,8 @@ const value = ref<string>('')
 const modalRef = ref<InstanceType<typeof Modal> | null>(null)
 const inputRef = ref<HTMLInputElement | null>(null)
 
-const $$el = computed<HTMLElement>(() => {
-	return modalRef.value!.$$el
+const $$el = computed<HTMLElement | null>(() => {
+	return modalRef.value ? modalRef.value.$$el : null
 })
 //显示的标题
 const cmpTitle = computed<string>(() => {

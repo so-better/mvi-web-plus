@@ -1,6 +1,7 @@
+import { App } from 'vue'
 import ImagePreview from './image-preview.vue'
 
-ImagePreview.install = app => {
+ImagePreview.install = (app: App) => {
 	app.component(ImagePreview.name, ImagePreview)
 }
 

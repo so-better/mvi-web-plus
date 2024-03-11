@@ -34,8 +34,8 @@ const show = ref<boolean>(true)
 const timer = ref<any>(null)
 const overlayRef = ref<InstanceType<typeof Overlay> | null>(null)
 
-const $$el = computed<HTMLElement>(() => {
-	return overlayRef.value!.$$el
+const $$el = computed<HTMLElement | null>(() => {
+	return overlayRef.value ? overlayRef.value.$$el : null
 })
 const cmpUsePadding = computed<boolean>(() => {
 	if (typeof props.usePadding == 'boolean') {
