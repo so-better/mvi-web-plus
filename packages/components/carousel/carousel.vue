@@ -74,7 +74,7 @@ const touchTotal = ref<number>(0)
 //滑动模式下更改modelValue是否标记为懒更新
 const lazyUpdate = ref<boolean>(false)
 //每帧间隔时间
-const clipInterval = ref<number>(60)
+const clipInterval = ref<number>(1000 / 60)
 
 //分页器配置
 const cmpIndicators = computed<CarouselIndicatorsType>(() => {
