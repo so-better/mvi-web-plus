@@ -1,39 +1,35 @@
 <template>
 	<Overlay ref="overlayRef" v-model="show" color="#000" :fade="false" @showing="overlayShowing" :z-index="zIndex" :use-padding="usePadding" :mountEl="mountEl">
-		<Carousel v-if="showCarousel" ref="carouselRef" class="mvi-image-preview-carousel" v-model="carouselIndex" controls indicators :mode="mode" :loop="loop" :touchable="enableTouch" @change="carouselChange">
+		<Carousel v-if="showCarousel" ref="carouselRef" class="mvi-image-preview-carousel" v-model="carouselIndex" :controls="controls" :indicators="!!(showPage || useTools || $slots.descriptions || descriptions.length)" :mode="mode" :loop="loop" :touchable="enableTouch" @change="carouselChange">
 			<CarouselItem v-for="(item, index) in images">
 				<RichImage :ref="el => setImageRef(<RichImageType>el, index)" @on-click="closeOverlay" @double-touchstart="enableTouch = false" @double-touchend="enableTouch = true" @translate-touchstart="enableTouch = false" @translate-touchend="enableTouch = true" @translate-mousedown="enableTouch = false" @translate-mouseup="enableTouch = true" :src="item" :error-icon="errorIcon" :load-icon="loadIcon" :max-scale="maxScale" :min-scale="minScale"></RichImage>
 			</CarouselItem>
-		</Carousel>
-	</Overlay>
-	<!-- 
-		<Swiper   >
 			<template #indicators="data">
 				<div class="mvi-image-preview-page" v-if="showPage">
-					<slot name="page" :total="data.total" :current="data.active" v-if="$slots.page"></slot>
+					<slot name="page" :total="data.total" :current="carouselIndex" v-if="$slots.page"></slot>
 					<div v-else>
-						<span v-text="data.active + 1"></span>
+						<span v-text="carouselIndex + 1"></span>
 						<span>/</span>
 						<span v-text="data.total"></span>
 					</div>
 				</div>
-				<div v-if="useTools || $slots.descriptions || descriptions.length > 0" class="mvi-image-preview-footer">
+				<div v-if="!!(useTools || $slots.descriptions || descriptions.length)" class="mvi-image-preview-footer">
 					<div v-if="useTools" class="mvi-image-preview-tools">
-						<Icon @click="plusImage(data.active)" class="mvi-image-preview-tools-icon" type="search-plus-o" />
-						<Icon @click="minusImage(data.active)" class="mvi-image-preview-tools-icon" type="search-minus-o" />
-						<Icon @click="resetImage(data.active)" class="mvi-image-preview-tools-icon" type="double-circle" />
-						<Icon @click="leftRotateImage(data.active)" class="mvi-image-preview-tools-icon" type="left-rotate" />
-						<Icon @click="rightRotateImage(data.active)" class="mvi-image-preview-tools-icon" type="right-rotate" />
+						<Icon @click="plusImage" class="mvi-image-preview-tools-icon" type="search-plus-o" />
+						<Icon @click="minusImage" class="mvi-image-preview-tools-icon" type="search-minus-o" />
+						<Icon @click="resetImage" class="mvi-image-preview-tools-icon" type="double-circle" />
+						<Icon @click="leftRotateImage" class="mvi-image-preview-tools-icon" type="left-rotate" />
+						<Icon @click="rightRotateImage" class="mvi-image-preview-tools-icon" type="right-rotate" />
 						<slot name="tools" v-if="$slots.tools"></slot>
 					</div>
-					<div v-if="$slots.descriptions || descriptions.length > 0" class="mvi-image-preview-description" :class="{ 'mvi-image-preview-description-margin': useTools }">
-						<slot name="descriptions" :total="data.total" :current="data.active" v-if="$slots.descriptions"> </slot>
-						<div v-else-if="descriptions.length > 0" class="mvi-image-preview-description-el" v-text="descriptions[data.active]"></div>
+					<div v-if="!!($slots.descriptions || descriptions.length)" class="mvi-image-preview-descriptions" :class="{ 'has-tools': useTools }">
+						<slot name="descriptions" :total="data.total" :current="carouselIndex" v-if="$slots.descriptions"> </slot>
+						<div v-else-if="!!descriptions.length" class="mvi-image-preview-description" v-text="descriptions[carouselIndex]"></div>
 					</div>
 				</div>
 			</template>
-		</Swiper>
-	</Overlay> -->
+		</Carousel>
+	</Overlay>
 </template>
 
 <script setup lang="ts">
@@ -135,6 +131,10 @@ watch(
 		immediate: true
 	}
 )
+
+defineExpose({
+	$$el
+})
 </script>
 
 <style scoped src="./image-preview.less"></style>

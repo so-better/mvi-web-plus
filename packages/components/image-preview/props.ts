@@ -37,11 +37,6 @@ export const ImagePreviewProps = {
 		type: Number,
 		default: 5000
 	},
-	//是否显示页码
-	showPage: {
-		type: Boolean,
-		default: true
-	},
 	//轮播模式
 	mode: {
 		type: String as PropType<CarouselPropsType['mode']>,
@@ -56,6 +51,11 @@ export const ImagePreviewProps = {
 	loop: {
 		type: Boolean,
 		default: false
+	},
+	//是否显示页码
+	showPage: {
+		type: Boolean,
+		default: true
 	},
 	//局部显示是否考虑滚动条影响
 	usePadding: {

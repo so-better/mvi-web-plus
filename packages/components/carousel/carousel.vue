@@ -128,9 +128,8 @@ const carouselItemSize = computed<number>(() => {
 //滑动循环模式下克隆第一个CarouselItem
 const FirstCarouselItem = defineComponent(() => {
 	return () => {
-		if (props.loop) {
-			const vnodes = instance.slots.default!()
-			return cloneVNode(vnodes[0])
+		if (props.loop && publicChildren.value.length) {
+			return cloneVNode(publicChildren.value[0].vnode)
 		}
 		return null
 	}
@@ -138,9 +137,8 @@ const FirstCarouselItem = defineComponent(() => {
 //滑动循环模式下克隆最后一个CarouselItem
 const LastCarouselItem = defineComponent(() => {
 	return () => {
-		if (props.loop) {
-			const vnodes = instance.slots.default!()
-			return cloneVNode(vnodes[vnodes.length - 1])
+		if (props.loop && publicChildren.value.length) {
+			return cloneVNode(publicChildren.value[publicChildren.value.length - 1].vnode)
 		}
 		return null
 	}
