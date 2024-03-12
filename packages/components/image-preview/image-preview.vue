@@ -84,8 +84,6 @@ const setImageRef = (el: RichImageType, index: number) => {
 }
 //关闭遮罩
 const closeOverlay = () => {
-	console.log('触发了only-click在preview里')
-
 	imageRefs.value.forEach(imageRef => {
 		imageRef.reset()
 	})

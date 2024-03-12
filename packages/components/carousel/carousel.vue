@@ -255,7 +255,6 @@ const setSlideValue = (animation: boolean = false, value: number | undefined = u
 //手势触摸按下
 const handleTouchstart = (e: TouchEvent) => {
 	if (props.touchable) {
-		e.preventDefault()
 		//记录按下时的点位置
 		initTouchPoint.value = props.vertical ? e.targetTouches[0].pageY : e.targetTouches[0].pageX
 		everyTouchPoint.value = initTouchPoint.value
@@ -266,7 +265,9 @@ const handleTouchstart = (e: TouchEvent) => {
 //手势触摸滑动
 const handleTouchmove = (e: TouchEvent) => {
 	if (props.touchable) {
-		e.preventDefault()
+		if (e.cancelable) {
+			e.preventDefault()
+		}
 		//移动到的点
 		const point = props.vertical ? e.targetTouches[0].pageY : e.targetTouches[0].pageX
 		//设置总滑动距离
@@ -286,9 +287,8 @@ const handleTouchmove = (e: TouchEvent) => {
 	}
 }
 //手势触摸松开
-const handleTouchEnd = (e: TouchEvent) => {
+const handleTouchEnd = () => {
 	if (props.touchable) {
-		e.preventDefault()
 		//滑动后处理
 		slideDone()
 	}
