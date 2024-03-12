@@ -2,7 +2,7 @@
 	<Overlay ref="overlayRef" v-model="show" color="#000" :fade="false" @showing="overlayShowing" :z-index="zIndex" :use-padding="usePadding" :mountEl="mountEl">
 		<Carousel v-if="showCarousel" ref="carouselRef" class="mvi-image-preview-carousel" v-model="carouselIndex" :controls="controls" :indicators="!!(showPage || useTools || $slots.descriptions || descriptions.length)" :mode="mode" :loop="loop" :touchable="enableTouch" @change="carouselChange">
 			<CarouselItem v-for="(item, index) in images">
-				<RichImage :ref="el => setImageRef(<RichImageType>el, index)" @on-click="closeOverlay" @double-touchstart="enableTouch = false" @double-touchend="enableTouch = true" @translate-touchstart="enableTouch = false" @translate-touchend="enableTouch = true" @translate-mousedown="enableTouch = false" @translate-mouseup="enableTouch = true" :src="item" :error-icon="errorIcon" :load-icon="loadIcon" :max-scale="maxScale" :min-scale="minScale"></RichImage>
+				<RichImage :ref="el => setImageRef(<RichImageType>el, index)" @double-touchstart="disabledCarouselTouch" @translate-touchstart="disabledCarouselTouch" @translate-mousedown="disabledCarouselTouch" @double-touchend="enableCarouselTouch" @translate-touchend="enableCarouselTouch" @translate-mouseup="enableCarouselTouch" @reset="enableCarouselTouch" :src="item" @on-click="closeOverlay" :error-icon="errorIcon" :load-icon="loadIcon" :max-scale="maxScale" :min-scale="minScale"></RichImage>
 			</CarouselItem>
 			<template #indicators="data">
 				<div class="mvi-image-preview-page" v-if="showPage">
@@ -63,6 +63,8 @@ type RichImageType = InstanceType<typeof RichImage>
 const imageRefs = ref<RichImageType[]>([])
 //遮罩层组件
 const overlayRef = ref<InstanceType<typeof Overlay> | null>(null)
+//启用触摸滑动的延时器
+const touchTimer = ref<any>(null)
 
 const $$el = computed<HTMLElement | null>(() => {
 	return overlayRef.value ? overlayRef.value.$$el : null
@@ -119,6 +121,19 @@ const carouselChange = () => {
 		imageRef.reset()
 	})
 	emits('change', carouselIndex.value)
+}
+//禁用触摸滑动
+const disabledCarouselTouch = () => {
+	if (touchTimer.value) {
+		clearTimeout(touchTimer.value)
+	}
+	enableTouch.value = false
+}
+//启用触摸滑动
+const enableCarouselTouch = () => {
+	touchTimer.value = setTimeout(() => {
+		enableTouch.value = true
+	}, 100)
 }
 
 //监听active属性更新carouselIndex

@@ -219,20 +219,20 @@ const scaleByTouch = (event: TouchEvent) => {
 		isTriggerDouble.value = false
 		//双指触摸
 		if (event.touches.length == 2) {
+			emits('double-touchstart', event)
 			//标识为双指触摸
 			doubleTouch.value.is = true
 			//此时不可移动图片
 			imageCanMove.value = false
 			//获取双指距离
 			doubleTouch.value.spacing = getPointSpacing(event.touches[0], event.touches[1])
-
-			emits('double-touchstart', event)
 		}
 		//单指触摸
 		else {
 			doubleTouch.value.is = false
 			//大于1可以平移
 			if (scale.value > 1) {
+				emits('translate-touchstart', event)
 				//记录坐标
 				imageMovePoint.value = {
 					x: event.targetTouches[0].pageX,
@@ -240,8 +240,6 @@ const scaleByTouch = (event: TouchEvent) => {
 				}
 				//此时可以移动图片
 				imageCanMove.value = true
-
-				emits('translate-touchstart', event)
 			}
 		}
 	}
@@ -339,6 +337,7 @@ const handleImageMouse = (event: MouseEvent) => {
 		if (scale.value <= 1) {
 			return
 		}
+		emits('translate-mousedown', event)
 		//记录坐标
 		imageMovePoint.value = {
 			x: event.pageX,
@@ -346,8 +345,6 @@ const handleImageMouse = (event: MouseEvent) => {
 		}
 		//此时可以移动图片
 		imageCanMove.value = true
-
-		emits('translate-mousedown', event)
 	}
 	//鼠标移动
 	else if (event.type == 'mousemove') {

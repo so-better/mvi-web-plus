@@ -2,7 +2,7 @@
 	<div class="mvi-p-10">
 		<div style="position: relative; width: 200px; height: 200px"></div>
 		<m-button id="btn" @click="onClick">Button</m-button>
-		<m-image-preview loop useTools controls v-model="show" :images="images">
+		<m-image-preview loop useTools :descriptions="desc" controls v-model="show" :images="images">
 			<!-- <template #page="data">
 				{{ data }}
 			</template> -->
