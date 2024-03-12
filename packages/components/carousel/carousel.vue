@@ -392,10 +392,6 @@ const updateClipInterval = () => {
 		}
 		render()
 	}
-	//不支持则按照60帧来算
-	else {
-		clipInterval.value = 1000 / 60
-	}
 }
 
 //监听modelValue变化更新轮播视图
