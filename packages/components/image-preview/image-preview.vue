@@ -2,7 +2,7 @@
 	<Overlay ref="overlayRef" v-model="show" color="#000" :fade="false" @showing="overlayShowing" :z-index="zIndex" :use-padding="usePadding" :mountEl="mountEl">
 		<Carousel v-if="showCarousel" ref="carouselRef" class="mvi-image-preview-carousel" v-model="carouselIndex" :controls="controls" :indicators="!!(showPage || useTools || $slots.descriptions || descriptions.length)" :mode="mode" :loop="loop" :touchable="enableTouch" @change="carouselChange">
 			<CarouselItem v-for="(item, index) in images">
-				<RichImage :ref="el => setImageRef(<RichImageType>el, index)" @double-touchstart="disabledCarouselTouch" @translate-touchstart="disabledCarouselTouch" @translate-mousedown="disabledCarouselTouch" @double-touchend="enableCarouselTouch" @translate-touchend="enableCarouselTouch" @translate-mouseup="enableCarouselTouch" @reset="enableCarouselTouch" :src="item" @on-click="closeOverlay" :error-icon="errorIcon" :load-icon="loadIcon" :max-scale="maxScale" :min-scale="minScale"></RichImage>
+				<RichImage :ref="el => setImageRef(<RichImageType>el, index)" @double-touchstart="disabledCarouselTouch" @translate-touchstart="disabledCarouselTouch" @translate-mousedown="disabledCarouselTouch" @double-touchend="enableCarouselTouch" @translate-touchend="enableCarouselTouch" @translate-mouseup="enableCarouselTouch" @reset="enableCarouselTouch" @only-click="closeOverlay" :src="item" :error-icon="errorIcon" :load-icon="loadIcon" :max-scale="maxScale" :min-scale="minScale"></RichImage>
 			</CarouselItem>
 			<template #indicators="data">
 				<div class="mvi-image-preview-page" v-if="showPage">
@@ -84,6 +84,8 @@ const setImageRef = (el: RichImageType, index: number) => {
 }
 //关闭遮罩
 const closeOverlay = () => {
+	console.log('触发了only-click在preview里')
+
 	imageRefs.value.forEach(imageRef => {
 		imageRef.reset()
 	})

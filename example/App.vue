@@ -2,11 +2,7 @@
 	<div class="mvi-p-10">
 		<div style="position: relative; width: 200px; height: 200px"></div>
 		<m-button id="btn" @click="onClick">Button</m-button>
-		<m-image-preview loop useTools :descriptions="desc" controls v-model="show" :images="images">
-			<!-- <template #page="data">
-				{{ data }}
-			</template> -->
-		</m-image-preview>
+		<m-image-preview v-model="show" useTools :images="images"> </m-image-preview>
 	</div>
 </template>
 
@@ -25,6 +21,9 @@ export default {
 	methods: {
 		onClick() {
 			this.show = !this.show
+		},
+		onlyClick() {
+			console.log('触发了onlyClick')
 		}
 	}
 }

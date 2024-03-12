@@ -1,6 +1,6 @@
 <template>
 	<div class="mvi-rich-image" ref="elRef" @mousewheel="scaleByWheel" @touchstart="scaleByTouch" @touchmove="scaleByTouch" @touchend="scaleByTouch" @mousedown="handleMouseOpt" @mouseup="handleMouseOpt" @click="handleClick">
-		<Image ref="imgRef" fit="response" @mousedown="handleImageMouse" :style="imgStyle" width="100%" height="100%" :src="src" :load-icon="loadIcon" :error-icon="errorIcon"></Image>
+		<Image ref="imgRef" fit="response" :style="imgStyle" width="100%" height="100%" :src="src" :load-icon="loadIcon" :error-icon="errorIcon"></Image>
 	</div>
 </template>
 
@@ -140,22 +140,6 @@ const getImageCoverData = (): RichImageCoverType => {
 		bottom: elRect.bottom - imgRect.bottom
 	}
 }
-//滚轮缩放图片
-const scaleByWheel = (event: WheelEvent) => {
-	if (event.cancelable) {
-		event.preventDefault()
-	}
-	//正值放大，负值缩小
-	let deltaY = (<any>event).wheelDeltaY || -(<WheelEvent>event).deltaY
-	//放大图片
-	if (deltaY > 0) {
-		scaleUp()
-	}
-	//缩小图片
-	else {
-		scaleDown()
-	}
-}
 //触摸移动或者鼠标按下移动的图片位置偏移处理
 const setImageTranslate = (endX: number, endY: number) => {
 	//这里乘以0.5的系数是为了防止移动过快
@@ -212,126 +196,24 @@ const handleTranslateEnd = (event: MouseEvent | TouchEvent) => {
 	imageCanMove.value = false
 	event.type == 'mouseup' ? emits('translate-mouseup') : emits('translate-touchend')
 }
-//监听触摸操作，进行平移和缩放
-const scaleByTouch = (event: TouchEvent) => {
-	//手指按下
-	if (event.type == 'touchstart') {
-		isTriggerDouble.value = false
-		//双指触摸
-		if (event.touches.length == 2) {
-			emits('double-touchstart', event)
-			//标识为双指触摸
-			doubleTouch.value.is = true
-			//此时不可移动图片
-			imageCanMove.value = false
-			//获取双指距离
-			doubleTouch.value.spacing = getPointSpacing(event.touches[0], event.touches[1])
-		}
-		//单指触摸
-		else {
-			doubleTouch.value.is = false
-			//大于1可以平移
-			if (scale.value > 1) {
-				emits('translate-touchstart', event)
-				//记录坐标
-				imageMovePoint.value = {
-					x: event.targetTouches[0].pageX,
-					y: event.targetTouches[0].pageY
-				}
-				//此时可以移动图片
-				imageCanMove.value = true
-			}
-		}
+//滚轮缩放图片
+const scaleByWheel = (event: WheelEvent) => {
+	if (event.cancelable) {
+		event.preventDefault()
 	}
-	//手指触摸移动
-	else if (event.type == 'touchmove') {
-		//双指触摸移动
-		if (event.touches.length == 2 && doubleTouch.value.is) {
-			if (event.cancelable) {
-				event.preventDefault()
-			}
-			let spacing = getPointSpacing(event.touches[0], event.touches[1])
-			//缩小
-			if (spacing < doubleTouch.value.spacing!) {
-				if (scale.value > props.minScale) {
-					//平移重置
-					translateX.value = 0
-					translateY.value = 0
-					//缩小
-					scale.value = Dap.number.add(scale.value, Dap.number.divide(Dap.number.subtract(spacing, doubleTouch.value.spacing), elRef.value!.offsetWidth))
-					imageCoverRect.value = getImageCoverData()
-				}
-			}
-			//放大
-			else {
-				if (scale.value < props.maxScale) {
-					//平移重置
-					translateX.value = 0
-					translateY.value = 0
-					//放大
-					scale.value = Dap.number.add(scale.value, Dap.number.divide(Dap.number.subtract(spacing, doubleTouch.value.spacing), elRef.value!.offsetWidth))
-					imageCoverRect.value = getImageCoverData()
-				}
-			}
-			doubleTouch.value.spacing = spacing
-		}
-		//单指触摸移动
-		else {
-			if (event.cancelable) {
-				event.preventDefault()
-			}
-			if (imageCanMove.value) {
-				//设置图片移动
-				setImageTranslate(event.targetTouches[0].pageX, event.targetTouches[0].pageY)
-			}
-		}
+	//正值放大，负值缩小
+	let deltaY = (<any>event).wheelDeltaY || -(<WheelEvent>event).deltaY
+	//放大图片
+	if (deltaY > 0) {
+		scaleUp()
 	}
-	//手指触摸松开
-	else if (event.type == 'touchend') {
-		//双指松开
-		if (doubleTouch.value.is) {
-			//如果是缩小了，那么恢复正常大小
-			if (scale.value < 1) {
-				setImageAnimation(() => {
-					scale.value = 1
-					imageCoverRect.value = getImageCoverData()
-				})
-			}
-			isTriggerDouble.value = true
-			doubleTouch.value.is = false
-			emits('double-touchend', event)
-		}
-		//单指松开
-		else {
-			if (imageCanMove.value && !isTriggerDouble.value) {
-				handleTranslateEnd(event)
-			}
-		}
+	//缩小图片
+	else {
+		scaleDown()
 	}
 }
-//鼠标按下和松开记录坐标点
-const handleMouseOpt = (event: MouseEvent) => {
-	if (event.type == 'mousedown') {
-		downPoint.value = {
-			x: event.pageX,
-			y: event.pageY
-		}
-	} else if (event.type == 'mouseup') {
-		upPoint.value = {
-			x: event.pageX,
-			y: event.pageY
-		}
-	}
-}
-//点击事件，判断是否纯粹点击
-const handleClick = () => {
-	//关闭
-	if (downPoint.value && upPoint.value && downPoint.value.x == upPoint.value.x && downPoint.value.y == upPoint.value.y) {
-		emits('only-click')
-	}
-}
-//鼠标按下平移图片处理
-const handleImageMouse = (event: MouseEvent) => {
+//鼠标对图片平移的操作处理
+const handleImageTranslate = (event: MouseEvent) => {
 	//鼠标按下
 	if (event.type == 'mousedown') {
 		if (scale.value <= 1) {
@@ -362,10 +244,139 @@ const handleImageMouse = (event: MouseEvent) => {
 		}
 	}
 }
+//监听触摸操作，进行平移和缩放
+const scaleByTouch = (event: TouchEvent) => {
+	//手指按下
+	if (event.type == 'touchstart') {
+		isTriggerDouble.value = false
+		//双指触摸
+		if (event.touches.length == 2) {
+			emits('double-touchstart', event)
+			//标识为双指触摸
+			doubleTouch.value.is = true
+			//此时不可移动图片
+			imageCanMove.value = false
+			//获取双指距离
+			doubleTouch.value.spacing = getPointSpacing(event.touches[0], event.touches[1])
+		}
+		//单指触摸
+		else {
+			doubleTouch.value.is = false
+			//大于1可以平移
+			if (scale.value > 1) {
+				emits('translate-touchstart', event)
+				//记录坐标
+				imageMovePoint.value = {
+					x: event.targetTouches[0].pageX,
+					y: event.targetTouches[0].pageY
+				}
+				//此时可以移动图片
+				imageCanMove.value = true
+			}
+			//记录按下的坐标点
+			downPoint.value = {
+				x: event.targetTouches[0].pageX,
+				y: event.targetTouches[0].pageY
+			}
+		}
+	}
+	//手指触摸移动
+	else if (event.type == 'touchmove') {
+		if (event.cancelable) {
+			event.preventDefault()
+		}
+		//双指触摸移动
+		if (event.touches.length == 2 && doubleTouch.value.is) {
+			let spacing = getPointSpacing(event.touches[0], event.touches[1])
+			//缩小
+			if (spacing < doubleTouch.value.spacing!) {
+				if (scale.value > props.minScale) {
+					//平移重置
+					translateX.value = 0
+					translateY.value = 0
+					//缩小
+					scale.value = Dap.number.add(scale.value, Dap.number.divide(Dap.number.subtract(spacing, doubleTouch.value.spacing), elRef.value!.offsetWidth))
+					imageCoverRect.value = getImageCoverData()
+				}
+			}
+			//放大
+			else {
+				if (scale.value < props.maxScale) {
+					//平移重置
+					translateX.value = 0
+					translateY.value = 0
+					//放大
+					scale.value = Dap.number.add(scale.value, Dap.number.divide(Dap.number.subtract(spacing, doubleTouch.value.spacing), elRef.value!.offsetWidth))
+					imageCoverRect.value = getImageCoverData()
+				}
+			}
+			doubleTouch.value.spacing = spacing
+		}
+		//单指触摸移动
+		else {
+			if (imageCanMove.value) {
+				//设置图片移动
+				setImageTranslate(event.targetTouches[0].pageX, event.targetTouches[0].pageY)
+			}
+		}
+	}
+	//手指触摸松开
+	else if (event.type == 'touchend') {
+		//双指松开
+		if (doubleTouch.value.is) {
+			//如果是缩小了，那么恢复正常大小
+			if (scale.value < 1) {
+				setImageAnimation(() => {
+					scale.value = 1
+					imageCoverRect.value = getImageCoverData()
+				})
+			}
+			isTriggerDouble.value = true
+			doubleTouch.value.is = false
+			emits('double-touchend', event)
+		}
+		//单指松开
+		else {
+			//记录松开的坐标点
+			upPoint.value = {
+				x: event.changedTouches[0].pageX,
+				y: event.changedTouches[0].pageY
+			}
+			if (imageCanMove.value && !isTriggerDouble.value) {
+				handleTranslateEnd(event)
+			}
+		}
+	}
+}
+//鼠标按下移动和松开操作
+const handleMouseOpt = (event: MouseEvent) => {
+	if (event.type == 'mousedown') {
+		//记录按下的坐标点
+		downPoint.value = {
+			x: event.pageX,
+			y: event.pageY
+		}
+		//图片平移的鼠标按下处理
+		handleImageTranslate(event)
+	} else if (event.type == 'mouseup') {
+		//记录松开的坐标点
+		upPoint.value = {
+			x: event.pageX,
+			y: event.pageY
+		}
+	}
+}
+//点击事件，判断是否纯粹点击
+const handleClick = () => {
+	//关闭
+	if (downPoint.value && upPoint.value && downPoint.value.x == upPoint.value.x && downPoint.value.y == upPoint.value.y) {
+		emits('only-click')
+	}
+}
 
 onMounted(() => {
-	Dap.event.on(document.documentElement, `mousemove.richImage_${instance.uid}`, handleImageMouse)
-	Dap.event.on(document.documentElement, `mouseup.richImage_${instance.uid}`, handleImageMouse)
+	Dap.event.on(document.documentElement, `mousemove.richImage_${instance.uid}`, handleImageTranslate)
+	Dap.event.on(document.documentElement, `mouseup.richImage_${instance.uid}`, handleImageTranslate)
 })
 
 onBeforeUnmount(() => {
