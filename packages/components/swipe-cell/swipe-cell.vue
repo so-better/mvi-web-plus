@@ -483,6 +483,10 @@ onMounted(() => {
 	Dap.event.on(document.documentElement, `mousemove.swipeCell_${instance.uid} mouseup.swipeCell_${instance.uid}`, handleMouseOpt)
 })
 onBeforeUnmount(() => {
+	if (animationTimer.value) {
+		clearTimeout(animationTimer.value)
+		animationTimer.value = null
+	}
 	Dap.event.off(document.documentElement, `mousemove.swipeCell_${instance.uid} mouseup.swipeCell_${instance.uid}`)
 })
 
