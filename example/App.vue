@@ -1,8 +1,7 @@
 <template>
 	<div class="mvi-p-10">
-		<div style="position: relative; width: 200px; height: 200px"></div>
 		<m-button id="btn" @click="onClick">Button</m-button>
-		<m-image-preview v-model="show" :images="images"> </m-image-preview>
+		<m-dropdown @show="$alert('show')" v-model="value" v-model:show="show" :options="options"></m-dropdown>
 	</div>
 </template>
 
@@ -13,7 +12,25 @@ export default {
 			active: 1,
 			date: new Date(),
 			show: false,
-			value: '',
+			value: 0,
+			options: [
+				{
+					label: '选项A',
+					value: 0
+				},
+				{
+					label: '选项B',
+					value: 1
+				},
+				{
+					label: '选项C',
+					value: 2
+				},
+				{
+					label: '选项D',
+					value: 3
+				}
+			],
 			images: ['https://www.ling0523.cn/images/image_2_1701871044734.jpg', 'https://www.ling0523.cn/images/image_1_1701871044699.jpg', 'https://www.ling0523.cn/images/image_0_1701871044625.jpg', 'https://www.ling0523.cn/images/image_0_1701164609409.jpg'],
 			desc: ['图片1', '图片2', '图片3图片3图片3图片3图片3图片3图片3图片3图片3图片3图片3', '图片4']
 		}

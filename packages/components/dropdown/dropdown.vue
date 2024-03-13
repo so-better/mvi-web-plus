@@ -30,7 +30,7 @@ defineOptions({
 const props = defineProps(DropdownProps)
 
 //事件
-const emits = defineEmits(['update:modelValue', 'update:show', 'select'])
+const emits = defineEmits(['update:modelValue', 'update:show', 'select', 'show', 'showing', 'shown', 'hide', 'hidding', 'hidden'])
 
 //popup组件实例
 const popupRef = ref<InstanceType<typeof Popup> | null>(null)

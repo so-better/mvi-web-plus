@@ -236,5 +236,10 @@ onBeforeUnmount(() => {
 		Dap.event.off(elRef.value, 'mouseenter.dateChooser mouseleave.dateChooser')
 	}
 })
+
+defineExpose({
+	openCalendar,
+	closeCalendar
+})
 </script>
 <style scoped src="./date-chooser.less"></style>
