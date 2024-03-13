@@ -1,20 +1,20 @@
 <template>
 	<div class="mvi-swipe-cell">
-		<div class="mvi-swipe-cell-wrap" ref="wrapRef" @touchstart="cellTouchStart" @touchmove="cellTouchMove" @touchend="cellTouchEnd" :style="cellStyle" :disabled="disabled || null" @mousedown="cellMouseDown">
-			<div v-show="leftShow" ref="leftRef" class="mvi-swipe-cell-left">
+		<div class="mvi-swipe-cell-wrapper" ref="wrapperRef" :style="wrapperStyle">
+			<div v-if="$slots.left" ref="leftRef" class="mvi-swipe-cell-left">
 				<slot name="left"></slot>
 			</div>
-			<div class="mvi-swipe-cell-center" @click="clickCenter">
+			<div class="mvi-swipe-cell-center" @mousedown="handleMouseOpt" @touchstart="handleTouchOpt" @touchmove="handleTouchOpt" @touchend="handleTouchOpt">
 				<slot></slot>
 			</div>
-			<div v-show="rightShow" ref="rightRef" class="mvi-swipe-cell-right">
+			<div v-if="$slots.right" ref="rightRef" class="mvi-swipe-cell-right">
 				<slot name="right"></slot>
 			</div>
 		</div>
 	</div>
 </template>
 <script setup lang="ts">
-import { computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import Dap from 'dap-util'
 import { SwipeCellProps } from './props'
 
@@ -31,289 +31,456 @@ const props = defineProps(SwipeCellProps)
 //事件
 const emits = defineEmits(['open', 'close'])
 
-const startX = ref<number>(0)
-const startX2 = ref<number>(0)
-//transform偏移值
-const transformX = ref<number>(0)
-//左侧是否显示
-const leftShow = ref<boolean>(false)
-//右侧是否显示
-const rightShow = ref<boolean>(false)
-const amounts = ref<number>(0)
-//是否按下鼠标
-const mouseDown = ref<boolean>(false)
-//是否拖动
-const isDrag = ref<boolean>(false)
-
+//左侧元素
 const leftRef = ref<HTMLElement | null>(null)
+//右侧元素
 const rightRef = ref<HTMLElement | null>(null)
-const wrapRef = ref<HTMLElement | null>(null)
+//wrapper元素
+const wrapperRef = ref<HTMLElement | null>(null)
+//水平移动值
+const translateX = ref<number>(0)
+//鼠标是否按下
+const isDown = ref<boolean>(false)
+//初始时横坐标
+const startX = ref<number>(0)
+//每一次移动的横坐标
+const movingX = ref<number>(0)
+//是否打开
+const openStatus = ref<'left' | 'right' | ''>('') //'left'表示左侧打开，'right'表示右侧打开，''表示未打开
+//动画延时器
+const animationTimer = ref<any>(null)
 
-const cellStyle = computed<any>(() => {
+//平移样式
+const wrapperStyle = computed<any>(() => {
 	return {
-		transform: `translateX(${transformX.value}px)`
+		transform: `translate3d(${translateX.value}px, 0px, 0px)`
 	}
 })
 
-//设置tranform的方法
-const setTransform = (val: number) => {
+//设置动画
+const setAnimation = (callback: () => void, timeout = 600) => {
 	return new Promise<void>(resolve => {
-		wrapRef.value!.style.transition = 'transform 300ms'
-		setTimeout(() => {
-			transformX.value = val
-			setTimeout(() => {
-				wrapRef.value!.style.transition = ''
+		if (wrapperRef.value) {
+			wrapperRef.value.style.transition = `transform ${timeout}ms cubic-bezier(.18,.89,.32,1)`
+			//重绘
+			wrapperRef.value.offsetWidth
+			if (typeof callback == 'function') {
+				callback()
+			}
+			if (animationTimer.value) {
+				clearTimeout(animationTimer.value)
+			}
+			animationTimer.value = setTimeout(() => {
+				if (wrapperRef.value) {
+					wrapperRef.value.style.transition = ''
+					//重绘
+					wrapperRef.value.offsetWidth
+				}
 				resolve()
-			}, 300)
-		}, 0)
+			}, timeout)
+		}
 	})
 }
-//api：打开方法
-const open = (placement: 'left' | 'right') => {
+//api：打开
+const open = (placement: 'left' | 'right' = 'left') => {
+	//已禁用
 	if (props.disabled) {
 		return
 	}
+	//打开左侧
 	if (placement == 'left') {
-		if (!leftShow.value) {
-			leftShow.value = true
+		//左侧元素不存在
+		if (!leftRef.value) {
+			return
 		}
-		nextTick(() => {
-			setTransform(leftRef.value!.offsetWidth).then(() => {
-				emits('open', placement)
-			})
+		//左侧已打开(这里不用openStatuc来作判断是因为有时候关闭到一半的情况下可能需要重新打开，必须通过偏移值来判断，此时openStatus还是打开状态)
+		if (translateX.value == leftRef.value.offsetWidth) {
+			return
+		}
+		//执行打开动画
+		setAnimation(() => {
+			if (leftRef.value) {
+				translateX.value = leftRef.value.offsetWidth
+			}
+		}).then(() => {
+			if (openStatus.value == placement) {
+				return
+			}
+			openStatus.value = placement
+			emits('open', placement)
 		})
-	} else if (placement == 'right') {
-		if (!rightShow.value) {
-			rightShow.value = true
+	}
+	//打开右侧
+	else {
+		//右侧元素不存在
+		if (!rightRef.value) {
+			return
 		}
-		nextTick(() => {
-			setTransform(-rightRef.value!.offsetWidth).then(() => {
-				emits('open', placement)
-			})
+		//右侧已打开
+		if (translateX.value == -rightRef.value.offsetWidth) {
+			return
+		}
+		//执行右侧打开动画
+		setAnimation(() => {
+			if (rightRef.value) {
+				translateX.value = -rightRef.value.offsetWidth
+			}
+		}).then(() => {
+			if (openStatus.value == placement) {
+				return
+			}
+			openStatus.value = placement
+			emits('open', placement)
 		})
 	}
 }
-//api：关闭方法（flag为true的时候不管是否disabled都会执行）
-const close = (flag: boolean = false) => {
-	if (!flag && props.disabled) {
+//api：关闭
+const close = () => {
+	//已禁用
+	if (props.disabled) {
 		return
 	}
-	let placement = 'left'
-	if (transformX.value == 0) {
+	//当前已经是关闭状态
+	if (translateX.value == 0) {
 		return
 	}
-	if (transformX.value >= 0) {
-		placement = 'left'
-	} else {
-		placement = 'right'
-	}
-	setTransform(0).then(() => {
-		leftShow.value = false
-		rightShow.value = false
-		emits('close', placement)
+	//执行关闭动画
+	setAnimation(() => {
+		translateX.value = 0
+	}).then(() => {
+		if (openStatus.value) {
+			emits('close', openStatus.value)
+			openStatus.value = ''
+		}
 	})
 }
-//触摸开始
-const cellTouchStart = (event: TouchEvent) => {
+//鼠标事件处理
+const handleMouseOpt = (event: MouseEvent) => {
+	//已禁用
 	if (props.disabled) {
 		return
 	}
-	startX.value = event.touches[0].pageX
-	startX2.value = startX.value
-	amounts.value = 0
+	//鼠标按下
+	if (event.type == 'mousedown') {
+		//修改标识
+		isDown.value = true
+		//记录初始位置
+		startX.value = event.pageX
+		movingX.value = event.pageX
+	}
+	//鼠标移动
+	else if (event.type == 'mousemove') {
+		//在鼠标按下的前提下
+		if (isDown.value) {
+			if (event.cancelable) {
+				event.preventDefault()
+			}
+			//此次移动的距离
+			const moveX = event.pageX - movingX.value
+
+			//往右滑如果偏移值超出最大值则阻止
+			if (moveX > 0) {
+				const width = leftRef.value ? leftRef.value.offsetWidth : Dap.element.rem2px(0.1)
+				if (translateX.value >= width) {
+					return
+				}
+			}
+			//往左滑如果偏移值超出最大值则阻止
+			if (moveX < 0) {
+				const width = rightRef.value ? rightRef.value.offsetWidth : Dap.element.rem2px(0.1)
+				if (translateX.value <= -width) {
+					return
+				}
+			}
+			//更新偏移值
+			translateX.value += moveX
+			//记录移动时的坐标点
+			movingX.value = event.pageX
+		}
+	}
+	//鼠标松开
+	else if (event.type == 'mouseup') {
+		//在鼠标按下的前提下
+		if (isDown.value) {
+			//更新标识
+			isDown.value = false
+			//松开位置和初始位置一致表示单击事件
+			if (event.pageX == startX.value) {
+				//如果centerClose为true，则关闭
+				if (props.centerClose) {
+					close()
+				}
+				return
+			}
+
+			//往右滑
+			if (translateX.value > 0) {
+				//左侧内容存在
+				if (leftRef.value) {
+					//左侧内容宽度
+					const width = leftRef.value.offsetWidth
+					//超出左侧内容宽度的一半
+					if (translateX.value > width / 2) {
+						//执行打开动画
+						setAnimation(() => {
+							translateX.value = width
+						}).then(() => {
+							if (openStatus.value == 'left') {
+								return
+							}
+							//更新状态
+							openStatus.value = 'left'
+							emits('open', openStatus.value)
+						})
+					}
+					//没有超出左侧内容的一半
+					else {
+						//执行关闭动画
+						setAnimation(() => {
+							translateX.value = 0
+						}).then(() => {
+							//更新状态
+							if (openStatus.value) {
+								emits('close', openStatus.value)
+								openStatus.value = ''
+							}
+						})
+					}
+				}
+				//左侧内容不存在
+				else {
+					//执行关闭动画
+					setAnimation(() => {
+						translateX.value = 0
+					}).then(() => {
+						//更新状态
+						if (openStatus.value) {
+							emits('close', openStatus.value)
+							openStatus.value = ''
+						}
+					})
+				}
+			}
+			//往左滑
+			if (translateX.value < 0) {
+				//右侧内容存在
+				if (rightRef.value) {
+					//右侧内容宽度
+					const width = rightRef.value.offsetWidth
+					//超出右侧内容宽度的一半
+					if (translateX.value < -width / 2) {
+						//执行打开动画
+						setAnimation(() => {
+							translateX.value = -width
+						}).then(() => {
+							if (openStatus.value == 'right') {
+								return
+							}
+							//更新状态
+							openStatus.value = 'right'
+							emits('open', openStatus.value)
+						})
+					}
+					//没有右侧左侧内容的一半
+					else {
+						//执行关闭动画
+						setAnimation(() => {
+							translateX.value = 0
+						}).then(() => {
+							//更新状态
+							if (openStatus.value) {
+								emits('close', openStatus.value)
+								openStatus.value = ''
+							}
+						})
+					}
+				}
+				//右侧内容不存在
+				else {
+					//执行关闭动画
+					setAnimation(() => {
+						translateX.value = 0
+					}).then(() => {
+						//更新状态
+						if (openStatus.value) {
+							emits('close', openStatus.value)
+							openStatus.value = ''
+						}
+					})
+				}
+			}
+		}
+	}
 }
-//触摸移动
-const cellTouchMove = (event: TouchEvent) => {
+//触摸事件处理
+const handleTouchOpt = (event: TouchEvent) => {
+	//已禁用
 	if (props.disabled) {
 		return
 	}
-	let endX = event.touches[0].pageX
-	//每次移动的偏移值
-	let moveX = endX - startX.value
-	//总偏移值
-	let moveX2 = endX - startX2.value
-	startX.value = endX
-	if (Math.abs(moveX2) <= Dap.element.rem2px(1)) {
-		return
+	//开始触摸
+	if (event.type == 'touchstart') {
+		//记录初始位置
+		startX.value = event.targetTouches[0].pageX
+		movingX.value = event.targetTouches[0].pageX
 	}
-	if (event.cancelable) {
-		event.preventDefault()
+	//触摸移动
+	else if (event.type == 'touchmove') {
+		if (event.cancelable) {
+			event.preventDefault()
+		}
+		//此次移动的距离
+		const moveX = event.targetTouches[0].pageX - movingX.value
+
+		//往右滑如果偏移值超出最大值则阻止
+		if (moveX > 0) {
+			const width = leftRef.value ? leftRef.value.offsetWidth : Dap.element.rem2px(0.1)
+			if (translateX.value >= width) {
+				return
+			}
+		}
+		//往左滑如果偏移值超出最大值则阻止
+		if (moveX < 0) {
+			const width = rightRef.value ? rightRef.value.offsetWidth : Dap.element.rem2px(0.1)
+			if (translateX.value <= -width) {
+				return
+			}
+		}
+
+		//更新偏移值
+		translateX.value += moveX
+		//记录移动时的坐标点
+		movingX.value = event.targetTouches[0].pageX
 	}
-	//右滑，展示左侧内容
-	if (moveX2 > 0) {
-		if (leftShow.value && transformX.value == leftRef.value!.offsetWidth) {
+	//触摸松开
+	else if (event.type == 'touchend') {
+		//松开位置和初始位置一致表示单击事件
+		if (event.changedTouches[0].pageX == startX.value) {
+			//如果centerClose为true，则关闭
+			if (props.centerClose) {
+				close()
+			}
 			return
 		}
-		leftShow.value = true
-		nextTick(() => {
-			if (transformX.value >= leftRef.value!.offsetWidth) {
-				amounts.value += 8
-				transformX.value += moveX / amounts.value
-			} else {
-				transformX.value += moveX
+
+		//往右滑
+		if (translateX.value > 0) {
+			//左侧内容存在
+			if (leftRef.value) {
+				//左侧内容宽度
+				const width = leftRef.value.offsetWidth
+				//超出左侧内容宽度的一半
+				if (translateX.value > width / 2) {
+					//执行打开动画
+					setAnimation(() => {
+						translateX.value = width
+					}).then(() => {
+						if (openStatus.value == 'left') {
+							return
+						}
+						//更新状态
+						openStatus.value = 'left'
+						emits('open', openStatus.value)
+					})
+				}
+				//没有超出左侧内容的一半
+				else {
+					//执行关闭动画
+					setAnimation(() => {
+						translateX.value = 0
+					}).then(() => {
+						//更新状态
+						if (openStatus.value) {
+							emits('close', openStatus.value)
+							openStatus.value = ''
+						}
+					})
+				}
 			}
-		})
-	}
-	//左滑，展示右侧内容
-	else if (moveX2 < 0) {
-		if (rightShow.value && transformX.value == -rightRef.value!.offsetWidth) {
-			return
-		}
-		rightShow.value = true
-		nextTick(() => {
-			if (transformX.value <= -rightRef.value!.offsetWidth) {
-				amounts.value += 8
-				transformX.value += moveX / amounts.value
-			} else {
-				transformX.value += moveX
+			//左侧内容不存在
+			else {
+				//执行关闭动画
+				setAnimation(() => {
+					translateX.value = 0
+				}).then(() => {
+					//更新状态
+					if (openStatus.value) {
+						emits('close', openStatus.value)
+						openStatus.value = ''
+					}
+				})
 			}
-		})
-	}
-}
-//触摸结束
-const cellTouchEnd = (event: TouchEvent) => {
-	if (props.disabled) {
-		return
-	}
-	let moveX = event.changedTouches[0].pageX - startX2.value
-	if (moveX == 0) {
-		return
-	}
-	//右滑，展示左侧内容
-	if (moveX > 0) {
-		if (transformX.value > 0) {
-			open('left')
-		} else {
-			close()
 		}
-	}
-	//左滑，展示右侧内容
-	else {
-		if (transformX.value < 0) {
-			open('right')
-		} else {
-			close()
-		}
-	}
-}
-//鼠标按下
-const cellMouseDown = (event: MouseEvent) => {
-	if (props.disabled) {
-		return
-	}
-	startX.value = event.pageX
-	startX2.value = startX.value
-	amounts.value = 0
-	mouseDown.value = true
-}
-//鼠标移动
-const cellMouseMove = (event: MouseEvent) => {
-	if (props.disabled) {
-		return
-	}
-	if (!mouseDown.value) {
-		return
-	}
-	isDrag.value = true
-	let endX = event.pageX
-	//每次移动的偏移值
-	let moveX = endX - startX.value
-	//总偏移值
-	let moveX2 = endX - startX2.value
-	startX.value = endX
-	if (Math.abs(moveX2) <= Dap.element.rem2px(1)) {
-		return
-	}
-	if (event.cancelable) {
-		event.preventDefault()
-	}
-	//右滑，展示左侧内容
-	if (moveX2 > 0) {
-		if (leftShow.value && transformX.value == leftRef.value!.offsetWidth) {
-			return
-		}
-		leftShow.value = true
-		nextTick(() => {
-			if (transformX.value >= leftRef.value!.offsetWidth) {
-				amounts.value += 3
-				transformX.value += moveX / amounts.value
-			} else {
-				transformX.value += moveX
+		//往左滑
+		if (translateX.value < 0) {
+			//右侧内容存在
+			if (rightRef.value) {
+				//右侧内容宽度
+				const width = rightRef.value.offsetWidth
+				//超出右侧内容宽度的一半
+				if (translateX.value < -width / 2) {
+					//执行打开动画
+					setAnimation(() => {
+						translateX.value = -width
+					}).then(() => {
+						if (openStatus.value == 'right') {
+							return
+						}
+						//更新状态
+						openStatus.value = 'right'
+						emits('open', openStatus.value)
+					})
+				}
+				//没有右侧左侧内容的一半
+				else {
+					//执行关闭动画
+					setAnimation(() => {
+						translateX.value = 0
+					}).then(() => {
+						//更新状态
+						if (openStatus.value) {
+							emits('close', openStatus.value)
+							openStatus.value = ''
+						}
+					})
+				}
 			}
-		})
-	}
-	//左滑，展示右侧内容
-	else if (moveX2 < 0) {
-		if (rightShow.value && transformX.value == -rightRef.value!.offsetWidth) {
-			return
-		}
-		rightShow.value = true
-		nextTick(() => {
-			if (transformX.value <= -rightRef.value!.offsetWidth) {
-				amounts.value += 3
-				transformX.value += moveX / amounts.value
-			} else {
-				transformX.value += moveX
+			//右侧内容不存在
+			else {
+				//执行关闭动画
+				setAnimation(() => {
+					translateX.value = 0
+				}).then(() => {
+					//更新状态
+					if (openStatus.value) {
+						emits('close', openStatus.value)
+						openStatus.value = ''
+					}
+				})
 			}
-		})
-	}
-}
-//鼠标松开
-const cellMouseUp = (event: MouseEvent) => {
-	if (props.disabled) {
-		return
-	}
-	if (!mouseDown.value) {
-		return
-	}
-	mouseDown.value = false
-	let moveX = event.pageX - startX2.value
-	if (moveX == 0) {
-		return
-	}
-	//右滑，展示左侧内容
-	if (moveX > 0) {
-		if (transformX.value > 0) {
-			open('left')
-		} else {
-			close()
 		}
-	}
-	//左滑，展示右侧内容
-	else {
-		if (transformX.value < 0) {
-			open('right')
-		} else {
-			close()
-		}
-	}
-	setTimeout(() => {
-		isDrag.value = false
-	}, 10)
-}
-//点击center部分
-const clickCenter = () => {
-	if (props.disabled) {
-		return
-	}
-	if (isDrag.value) {
-		return
-	}
-	if (props.centerClose) {
-		close()
 	}
 }
 
 watch(
 	() => props.disabled,
-	() => {
-		close(true)
+	newVal => {
+		//已禁用并且是打开的情况下
+		if (newVal && translateX.value) {
+			setAnimation(() => {
+				translateX.value = 0
+			}).then(() => {
+				if (openStatus.value) {
+					emits('close', openStatus.value)
+					openStatus.value = ''
+				}
+			})
+		}
 	}
 )
 
 onMounted(() => {
-	Dap.event.on(document.documentElement, `mousemove.swipeCell_${instance.uid}`, cellMouseMove)
-	Dap.event.on(document.documentElement, `mouseup.swipeCell_${instance.uid}`, cellMouseUp)
+	Dap.event.on(document.documentElement, `mousemove.swipeCell_${instance.uid} mouseup.swipeCell_${instance.uid}`, handleMouseOpt)
 })
 onBeforeUnmount(() => {
 	Dap.event.off(document.documentElement, `mousemove.swipeCell_${instance.uid} mouseup.swipeCell_${instance.uid}`)

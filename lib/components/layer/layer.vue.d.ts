@@ -57,7 +57,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: string;
     };
 }, {
-    $$el: import("vue").ComputedRef<HTMLElement>;
+    $$el: import("vue").ComputedRef<HTMLElement | null>;
     update: () => void;
 }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;

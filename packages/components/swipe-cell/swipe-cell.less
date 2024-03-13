@@ -6,40 +6,36 @@
 	position: relative;
 	overflow: hidden;
 
-	.mvi-swipe-cell-wrap {
-		position: relative;
-		display: flex;
-		display: -webkit-flex;
-		justify-content: center;
-		align-items: center;
+	.mvi-swipe-cell-wrapper {
+		display: block;
 		width: 100%;
-		height: auto;
-
-		.mvi-swipe-cell-left,
-		.mvi-swipe-cell-right {
-			display: flex;
-			display: -webkit-flex;
-			justify-content: flex-start;
-			align-items: center;
-			position: absolute;
-			height: 100%;
-			top: 0;
-		}
+		position: relative;
 
 		.mvi-swipe-cell-left {
+			display: block;
+			position: absolute;
 			right: 100%;
+			top: 0;
+			height: 100%;
+			z-index: 1;
+			overflow: hidden;
 		}
 
 		.mvi-swipe-cell-right {
+			display: block;
+			position: absolute;
 			left: 100%;
+			top: 0;
+			height: 100%;
+			z-index: 1;
+			overflow: hidden;
 		}
 
 		.mvi-swipe-cell-center {
-			display: flex;
-			display: -webkit-flex;
-			justify-content: flex-start;
-			align-items: center;
+			display: block;
 			width: 100%;
+			position: relative;
+			overflow: hidden;
 		}
 	}
 }

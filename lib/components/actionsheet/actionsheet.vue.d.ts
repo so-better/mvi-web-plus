@@ -62,7 +62,7 @@ declare const _default: import("vue").DefineComponent<{
         validator(value: any): boolean;
     };
 }, {
-    $$el: import("vue").ComputedRef<HTMLElement>;
+    $$el: import("vue").ComputedRef<HTMLElement | null>;
 }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     select: (...args: any[]) => void;

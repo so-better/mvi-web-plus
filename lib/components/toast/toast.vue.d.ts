@@ -53,7 +53,7 @@ declare const _default: import("vue").DefineComponent<{
         default: () => () => void;
     };
 }, {
-    $$el: import("vue").ComputedRef<HTMLElement>;
+    $$el: import("vue").ComputedRef<HTMLElement | null>;
     show: import("vue").Ref<boolean>;
 }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     type: {

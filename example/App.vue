@@ -1,7 +1,20 @@
 <template>
-	<div class="mvi-p-10">
-		<m-button id="btn" @click="onClick">Button</m-button>
-		<m-dropdown @show="$alert('show')" v-model="value" v-model:show="show" :options="options"></m-dropdown>
+	<div class="mvi-py-10">
+		<div class="mvi-mb-10">
+			<m-button id="btn" @click="onClick">Button</m-button>
+		</div>
+		<m-image-preview v-model="show" :images="images"> </m-image-preview>
+		<!-- <m-swipe-cell ref="swipeCell" @open="e => $msgbox('open:' + e)" @close="e => $msgbox('close:' + e)">
+			<m-cell :active="false" title="这是一个可以滑动的单元格" arror="user"></m-cell>
+			<m-cell :active="false" title="这是一个可以滑动的单元格" arror="user"></m-cell>
+			<m-cell :active="false" title="这是一个可以滑动的单元格" arror="user"></m-cell>
+			<template #left>
+				<div style="height: 100%; width: 100px; background-color: #f30; color: #fff" class="mvi-flex-center">删除</div>
+			</template>
+			<template #right>
+				<div style="height: 100%; width: 100px; background-color: #f30; color: #fff" class="mvi-flex-center">删除</div>
+			</template>
+		</m-swipe-cell> -->
 	</div>
 </template>
 
@@ -37,7 +50,7 @@ export default {
 	},
 	methods: {
 		onClick() {
-			this.show = !this.show
+			this.$refs.swipeCell.open('right')
 		},
 		onlyClick() {
 			console.log('触发了onlyClick')

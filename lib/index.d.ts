@@ -78,6 +78,8 @@ export * from './components/tabs';
 export * from './components/tab';
 export * from './components/carousel';
 export * from './components/carousel-item';
+export * from './components/rich-image';
+export * from './components/image-preview';
 /***** 全局导出 *****/
 declare const install: (app: App) => void;
 /***** 版本号 *****/

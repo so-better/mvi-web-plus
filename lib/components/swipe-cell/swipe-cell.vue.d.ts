@@ -8,8 +8,8 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: boolean;
     };
 }, {
-    open: (placement: "left" | "right") => void;
-    close: (flag?: boolean) => void;
+    open: (placement?: "left" | "right") => void;
+    close: () => void;
 }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     close: (...args: any[]) => void;
     open: (...args: any[]) => void;

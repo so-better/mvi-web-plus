@@ -62,9 +62,15 @@ declare const _default: import("vue").DefineComponent<{
         default: boolean;
     };
 }, {
-    $$el: import("vue").ComputedRef<HTMLElement>;
+    $$el: import("vue").ComputedRef<HTMLElement | null>;
 }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
+    show: (...args: any[]) => void;
+    showing: (...args: any[]) => void;
+    shown: (...args: any[]) => void;
+    hide: (...args: any[]) => void;
+    hidding: (...args: any[]) => void;
+    hidden: (...args: any[]) => void;
     select: (...args: any[]) => void;
     "update:show": (...args: any[]) => void;
 }, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
@@ -130,6 +136,12 @@ declare const _default: import("vue").DefineComponent<{
     };
 }>> & {
     "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
+    onShow?: ((...args: any[]) => any) | undefined;
+    onShowing?: ((...args: any[]) => any) | undefined;
+    onShown?: ((...args: any[]) => any) | undefined;
+    onHide?: ((...args: any[]) => any) | undefined;
+    onHidding?: ((...args: any[]) => any) | undefined;
+    onHidden?: ((...args: any[]) => any) | undefined;
     onSelect?: ((...args: any[]) => any) | undefined;
     "onUpdate:show"?: ((...args: any[]) => any) | undefined;
 }, {
