@@ -4,21 +4,10 @@
 			<m-button id="btn" @click="onClick">Button</m-button>
 		</div>
 		<m-carousel loop v-model="active">
-			<m-carousel-item v-for="item in images">
-				<img :src="item" style="width: 100%; height: 100%" />
+			<m-carousel-item v-for="(item, index) in images">
+				<img :data-index="index" :src="item" style="width: 100%; height: 100%" />
 			</m-carousel-item>
 		</m-carousel>
-		<m-swipe-cell ref="swipeCell" @open="e => $msgbox('open:' + e)" @close="e => $msgbox('close:' + e)">
-			<m-cell :active="false" title="这是一个可以滑动的单元格" arror="user"></m-cell>
-			<m-cell :active="false" title="这是一个可以滑动的单元格" arror="user"></m-cell>
-			<m-cell :active="false" title="这是一个可以滑动的单元格" arror="user"></m-cell>
-			<template #left>
-				<div style="height: 100%; width: 100px; background-color: #f30; color: #fff" class="mvi-flex-center">删除</div>
-			</template>
-			<template #right>
-				<div style="height: 100%; width: 100px; background-color: #f30; color: #fff" class="mvi-flex-center">删除</div>
-			</template>
-		</m-swipe-cell>
 	</div>
 </template>
 

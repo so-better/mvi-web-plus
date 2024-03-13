@@ -28,7 +28,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { ComponentInternalInstance, cloneVNode, computed, defineComponent, getCurrentInstance, nextTick, onMounted, provide, ref, watch } from 'vue'
+import { ComponentInternalInstance, cloneVNode, computed, defineComponent, getCurrentInstance, h, nextTick, onMounted, provide, ref, watch } from 'vue'
 import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { CarouselIndicatorsType, CarouselProps } from './props'
@@ -111,8 +111,8 @@ const slidesStyle = computed<any>(() => {
 //滑动循环模式下实际展示的CarouselItem实例数组
 const publicChildren = computed(() => {
 	if (props.mode == 'slide' && props.loop) {
-		return children.value.filter((_child, index) => {
-			return index > 0 && index < children.value.length - 1
+		return children.value.filter(child => {
+			return !child.attrs['is-cloned']
 		})
 	}
 	return children.value
@@ -129,7 +129,11 @@ const carouselItemSize = computed<number>(() => {
 const FirstCarouselItem = defineComponent(() => {
 	return () => {
 		if (props.loop && publicChildren.value.length) {
-			return cloneVNode(publicChildren.value[0].vnode)
+			const vnode = cloneVNode(publicChildren.value[0].vnode)
+			return h(vnode, {
+				//表示该组件是克隆的
+				'is-cloned': true
+			})
 		}
 		return null
 	}
@@ -138,7 +142,11 @@ const FirstCarouselItem = defineComponent(() => {
 const LastCarouselItem = defineComponent(() => {
 	return () => {
 		if (props.loop && publicChildren.value.length) {
-			return cloneVNode(publicChildren.value[publicChildren.value.length - 1].vnode)
+			const vnode = publicChildren.value[publicChildren.value.length - 1].vnode
+			return h(vnode, {
+				//表示该组件是克隆的
+				'is-cloned': true
+			})
 		}
 		return null
 	}
