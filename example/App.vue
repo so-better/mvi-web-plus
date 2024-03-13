@@ -3,7 +3,11 @@
 		<div class="mvi-mb-10">
 			<m-button id="btn" @click="onClick">Button</m-button>
 		</div>
-		<!-- <m-image-preview v-model="show" :images="images"> </m-image-preview> -->
+		<m-carousel loop v-model="active">
+			<m-carousel-item v-for="item in images">
+				<img :src="item" style="width: 100%; height: 100%" />
+			</m-carousel-item>
+		</m-carousel>
 		<m-swipe-cell ref="swipeCell" @open="e => $msgbox('open:' + e)" @close="e => $msgbox('close:' + e)">
 			<m-cell :active="false" title="这是一个可以滑动的单元格" arror="user"></m-cell>
 			<m-cell :active="false" title="这是一个可以滑动的单元格" arror="user"></m-cell>
@@ -50,8 +54,9 @@ export default {
 	},
 	methods: {
 		onClick() {
-			this.$refs.swipeCell.open('right')
+			//this.$refs.swipeCell.open('right')
 			//this.show = !this.show
+			this.active = 0
 		},
 		onlyClick() {
 			console.log('触发了onlyClick')

@@ -260,6 +260,10 @@ const handleTouchstart = (e: TouchEvent) => {
 		everyTouchPoint.value = initTouchPoint.value
 		//重置滑动总距离
 		touchTotal.value = 0
+		//自动的动画停止
+		if (slideAnimation.value) {
+			slideAnimation.value.stop()
+		}
 	}
 }
 //手势触摸滑动
