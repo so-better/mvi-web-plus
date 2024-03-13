@@ -4,7 +4,7 @@
 			<slot></slot>
 		</div>
 	</transition>
-	<div v-else-if="carousel!.props.mode == 'slide'" class="mvi-carousel-item">
+	<div v-else-if="carousel!.props.mode == 'slide'" class="mvi-carousel-item" :style="carouselItemStyle">
 		<slot></slot>
 	</div>
 </template>
@@ -32,6 +32,9 @@ const carouselItemStyle = computed<any>(() => {
 	const style: any = {}
 	if (carousel!.props.mode == 'fade') {
 		style.transition = `opacity ${carousel!.props.speed}ms linear`
+	}
+	if (carousel!.props.mode == 'slide') {
+		style.width = `calc(100% / ${carouselItemChildren!.value.length})`
 	}
 	return style
 })
