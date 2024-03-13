@@ -239,7 +239,7 @@ const setSlideValue = (animation: boolean = false, value: number | undefined = u
 		const speed = Math.abs(currentSlideValue.value - slideValue) / (props.speed / clipInterval.value)
 
 		const clip = new Clip({
-			style: 'left',
+			style: props.vertical ? 'top' : 'left',
 			value: slideValue + 'px',
 			speed: animation ? (currentSlideValue.value > slideValue ? -speed : speed) : slideValue - currentSlideValue.value
 		})
@@ -293,7 +293,7 @@ const handleTouchmove = (e: TouchEvent) => {
 		//记录当前偏移值
 		currentSlideValue.value += point - everyTouchPoint.value
 		//更新样式
-		slidesRef.value!.style.left = currentSlideValue.value + 'px'
+		slidesRef.value!.style[props.vertical ? 'top' : 'left'] = currentSlideValue.value + 'px'
 		//更新每次的触摸点
 		everyTouchPoint.value = point
 	}
@@ -441,7 +441,7 @@ watch(
 				//记录初始的偏移值
 				currentSlideValue.value = -(props.loop ? props.modelValue + 1 : props.modelValue) * carouselItemSize.value
 				//设置初始的元素偏移样式
-				slidesRef.value!.style.left = currentSlideValue.value + 'px'
+				slidesRef.value!.style[props.vertical ? 'top' : 'left'] = currentSlideValue.value + 'px'
 				if (slideAnimation.value) {
 					slideAnimation.value.removeAllClips()
 				} else {

@@ -3,7 +3,7 @@
 		<div class="mvi-mb-10">
 			<m-button id="btn" @click="onClick">Button</m-button>
 		</div>
-		<m-carousel v-model="active" loop indicators>
+		<m-carousel controls style="width: 100%; height: 300px" vertical v-model="active" loop indicators>
 			<m-carousel-item v-for="(item, index) in images">
 				<img :data-index="index" :src="item" style="width: 100%; height: 100%; display: block" />
 			</m-carousel-item>

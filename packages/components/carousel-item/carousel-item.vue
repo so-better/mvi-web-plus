@@ -34,7 +34,11 @@ const carouselItemStyle = computed<any>(() => {
 		style.transition = `opacity ${carousel!.props.speed}ms linear`
 	}
 	if (carousel!.props.mode == 'slide') {
-		style.width = `calc(100% / ${carouselItemChildren!.value.length})`
+		if (carousel!.props.vertical) {
+			style.height = `calc(100% / ${carouselItemChildren!.value.length})`
+		} else {
+			style.width = `calc(100% / ${carouselItemChildren!.value.length})`
+		}
 	}
 	return style
 })
