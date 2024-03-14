@@ -33,6 +33,7 @@ for (let key in components) {
 
 router.afterEach(to => {
 	document.title = <string>to.meta.title
+	document.querySelector('.body')!.scrollTop = 0
 })
 
 export default router

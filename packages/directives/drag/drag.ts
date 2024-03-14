@@ -28,10 +28,10 @@ class Drag {
 	private mode?: string
 	//是否改变鼠标形状
 	private cursor?: boolean
-	//元素被拖动时触发
-	private drag?: (...args: any) => void
 	//元素开始拖动时触发
 	private beforeDrag?: (...args: any) => void
+	//元素被拖动时触发
+	private drag?: (...args: any) => void
 	//元素拖拽结束触发
 	private dragged?: (...args: any) => void
 	//初始化完毕的回调

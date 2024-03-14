@@ -17,6 +17,7 @@ html {
 }
 
 .body {
+	position: relative;
 	height: calc(100vh - 0.88rem);
 	overflow: auto;
 }
