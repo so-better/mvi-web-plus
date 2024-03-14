@@ -7,7 +7,7 @@ const router = createRouter({
 			path: '/',
 			name: 'index',
 			meta: {
-				title: 'mvi-web-plus'
+				title: '测试 - mvi-web-plus'
 			},
 			component: () => import('../test/Index.vue')
 		}
@@ -23,9 +23,16 @@ for (let key in components) {
 	const route: RouteRecordRaw = {
 		path: `/${key}`,
 		name: key,
-		component: () => import(/* @vite-ignore */ `../test/${isVueComponent(components[key]) ? 'components' : 'directives'}/${key}.vue`)
+		component: () => import(/* @vite-ignore */ `../test/${isVueComponent(components[key]) ? 'components' : 'directives'}/${key}.vue`),
+		meta: {
+			title: `测试 - ${key}`
+		}
 	}
 	router.addRoute(route)
 }
+
+router.afterEach(to => {
+	document.title = <string>to.meta.title
+})
 
 export default router
