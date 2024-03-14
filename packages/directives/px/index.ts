@@ -14,7 +14,7 @@ Px.install = (app: App) => {
 				Object.assign(options, binding.modifiers)
 			}
 			if (binding.arg) {
-				options.attrName = binding.arg
+				options.attr = binding.arg
 			}
 			let px = new Px(el, options)
 			px.init()

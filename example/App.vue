@@ -20,6 +20,7 @@ html {
 	position: relative;
 	height: calc(100vh - 0.88rem);
 	overflow: auto;
+	padding: 0.1rem 0;
 }
 
 .navbar {

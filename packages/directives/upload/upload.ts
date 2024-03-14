@@ -1,6 +1,6 @@
 import Dap from 'dap-util'
 
-enum ErrorType {
+enum UploadErrorType {
 	//文件后缀不符合
 	FILE_SUFFIX_ERROR = 'suffixError',
 	//超出最大文件尺寸限制
@@ -12,6 +12,7 @@ enum ErrorType {
 	//文件数量没有达到最小值
 	FILE_MINLENGTH_ERROR = 'minLengthError'
 }
+
 type UploadOptionsType = {
 	accept?: string
 	capture?: boolean
@@ -221,25 +222,25 @@ class Upload {
 			for (let i = 0; i < length; i++) {
 				//判断后缀
 				if (!this.judgeSuffix(files[i].name)) {
-					this.error!.apply(this, [ErrorType.FILE_SUFFIX_ERROR, files[i]])
+					this.error!.apply(this, [UploadErrorType.FILE_SUFFIX_ERROR, files[i]])
 					isAllAccord = false
 					break
 				}
 				//超出文件最大值
 				if (files[i].size / 1024 > this.maxSize! && this.maxSize! > 0) {
-					this.error!.apply(this, [ErrorType.FILE_MAXSIZE_ERROR, files[i]])
+					this.error!.apply(this, [UploadErrorType.FILE_MAXSIZE_ERROR, files[i]])
 					isAllAccord = false
 					break
 				}
 				//没有达到最小值
 				if (files[i].size / 1024 < this.minSize! && this.minSize! > 0) {
-					this.error!.apply(this, [ErrorType.FILE_MINSIZE_ERROR, files[i]])
+					this.error!.apply(this, [UploadErrorType.FILE_MINSIZE_ERROR, files[i]])
 					isAllAccord = false
 					break
 				}
 				//超出最大数量限制
 				if (this.files.length + length > this.maxLength! && this.maxLength! > 0) {
-					this.error!.apply(this, [ErrorType.FILE_MAXLENGTH_ERROR])
+					this.error!.apply(this, [UploadErrorType.FILE_MAXLENGTH_ERROR])
 					isAllAccord = false
 					break
 				}
@@ -250,7 +251,7 @@ class Upload {
 			}
 			//文件数量没有达到最小值
 			if (this.files.length + length < this.minLength! && this.minLength! > 0) {
-				this.error!.apply(this, [ErrorType.FILE_MINLENGTH_ERROR])
+				this.error!.apply(this, [UploadErrorType.FILE_MINLENGTH_ERROR])
 				return
 			}
 			this.files = [...this.files, ...files]

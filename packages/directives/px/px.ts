@@ -4,7 +4,7 @@ import Dap from 'dap-util'
  */
 
 type PxOptionsType = {
-	attrName?: string
+	attr?: string
 	after?: boolean
 	before?: boolean
 }
@@ -13,7 +13,7 @@ class Px {
 	//指定的元素
 	private $el: HTMLElement
 	//适配的样式名称
-	private attrName?: string
+	private attr?: string
 	//是否after伪类
 	private isAfter?: boolean
 	//是否before伪类
@@ -27,7 +27,7 @@ class Px {
 	constructor(element: HTMLElement, options: PxOptionsType) {
 		options = Dap.common.isObject(options) ? options : {}
 		this.$el = element
-		this.attrName = options.attrName
+		this.attr = options.attr
 		this.isAfter = options.after
 		this.isBefore = options.before
 	}
@@ -48,14 +48,14 @@ class Px {
 			//生成style标签
 			let style = document.createElement('style')
 			if (this.isBefore) {
-				style.innerHTML += ` .${className}::before {${this.attrName}:${value}px !important;}`
+				style.innerHTML += ` .${className}::before {${this.attr}:${value}px !important;}`
 			}
 			if (this.isAfter) {
-				style.innerHTML += ` .${className}::after {${this.attrName}:${value}px !important;}`
+				style.innerHTML += ` .${className}::after {${this.attr}:${value}px !important;}`
 			}
 			document.querySelector('head')!.appendChild(style)
 		} else {
-			this.$el.style.setProperty(this.attrName!, value + 'px', 'important')
+			this.$el.style.setProperty(this.attr!, value + 'px', 'important')
 		}
 	}
 
@@ -79,7 +79,7 @@ class Px {
 			throw new TypeError('The bound element is not a node element')
 		}
 
-		if (typeof this.attrName != 'string' || !this.attrName) {
+		if (typeof this.attr != 'string' || !this.attr) {
 			throw new Error('The attribute name is not set')
 		}
 

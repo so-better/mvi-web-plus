@@ -19,8 +19,8 @@ declare class Drag {
     draggableY?: boolean;
     private mode?;
     private cursor?;
-    private drag?;
     private beforeDrag?;
+    private drag?;
     private dragged?;
     private ready?;
     private draggable;

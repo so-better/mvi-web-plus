@@ -82,25 +82,25 @@ class Ripple {
 		//获取水波圆形的半径
 		const { x1, y1, r } = this.getRadius(pageX, pageY, rect)
 		//创建元素
-		const el = Dap.element.string2dom('<div></div>')
+		const el: HTMLElement = Dap.element.string2dom('<div></div>')
 		el.style.width = r * 2 + 'px'
 		el.style.height = r * 2 + 'px'
 		el.style.position = 'absolute'
-		el.style.background = this.color
+		el.style.background = this.color || ''
 		el.style.top = y1 - r + 'px'
 		el.style.left = x1 - r + 'px'
-		el.style.zIndex = 1
+		el.style.zIndex = '1'
 		el.style.borderRadius = '50%'
 		//设置初始状态样式
 		el.style.transform = 'scale(0)'
-		el.style.opacity = this.initialOpacity
+		el.style.opacity = this.initialOpacity + ''
 		el.style.transition = `transform ${this.duration}ms cubic-bezier(0, 0.5, 0.25, 1), opacity ${this.duration}ms cubic-bezier(0.0, 0, 0.2, 1)`
 		return el
 	}
 
 	//创建ripple父容器
 	private createRippleContainer() {
-		const el = Dap.element.string2dom('<div></div>')
+		const el: HTMLElement = Dap.element.string2dom('<div></div>')
 		el.style.position = 'absolute'
 		el.style.left = '0px'
 		el.style.top = '0px'
@@ -110,8 +110,6 @@ class Ripple {
 		el.style.borderRadius = Dap.element.getCssStyle(this.$el, 'border-radius')
 		el.style.overflow = 'hidden'
 		el.style.pointerEvents = 'none'
-		//解决移动端子元素存在transform动画时border-radius失效的问题
-		el.style.transform = 'rotate(0deg)'
 		return el
 	}
 
@@ -198,7 +196,7 @@ class Ripple {
 			setTimeout(() => {
 				//执行动画
 				rippleEl.style.transform = 'scale(1)'
-				rippleEl.style.opacity = this.finalOpacity
+				rippleEl.style.opacity = this.finalOpacity + ''
 				//动画结束
 				setTimeout(() => {
 					//设置动画完成标识
@@ -222,17 +220,19 @@ class Ripple {
 		Dap.event.on(this.$el, 'mousedown.ripple', (e: MouseEvent) => {
 			downFn(e.pageX, e.pageY)
 		})
-
-		//手指触摸
-		Dap.event.on(this.$el, 'touchstart.ripple', (e: TouchEvent) => {
-			downFn(e.targetTouches[0].pageX, e.targetTouches[0].pageY)
-		})
-
 		//鼠标松开或者移出页面
 		Dap.event.on(document.documentElement, `mouseup.ripple_${this.guid}`, upFn)
 
+		//手指触摸
+		Dap.event.on(this.$el, 'touchstart.ripple', (e: TouchEvent) => {
+			e.preventDefault()
+			downFn(e.targetTouches[0].pageX, e.targetTouches[0].pageY)
+		})
 		//手指松开
-		Dap.event.on(this.$el, `touchend.ripple`, upFn)
+		Dap.event.on(this.$el, `touchend.ripple`, (e: TouchEvent) => {
+			e.preventDefault()
+			upFn()
+		})
 	}
 
 	//api：移除documentElement上的拖动事件
