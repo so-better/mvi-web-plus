@@ -1,14 +1,10 @@
-import { defineConfig } from 'vitest/config'
+import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import dts from 'vite-plugin-dts'
 import path from 'path'
 
 export default defineConfig({
 	plugins: [vue(), dts()],
-	test: {
-		globals: true,
-		environment: 'jsdom'
-	},
 	build: {
 		outDir: 'lib',
 		minify: 'terser',
