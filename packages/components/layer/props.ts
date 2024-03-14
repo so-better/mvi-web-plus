@@ -6,12 +6,12 @@ export const LayerProps = {
 		type: Boolean,
 		default: false
 	},
-	//悬浮层触发元素
+	//悬浮层关联元素
 	relate: {
 		type: String,
 		default: null
 	},
-	//悬浮层相对于触发元素的位置
+	//悬浮层相对于关联元素的位置
 	placement: {
 		type: String as PropType<'top' | 'left' | 'right' | 'bottom' | 'top-start' | 'top-end' | 'left-start' | 'left-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end'>,
 		default: 'bottom',
@@ -19,7 +19,7 @@ export const LayerProps = {
 			return ['top', 'left', 'right', 'bottom', 'top-start', 'top-end', 'left-start', 'left-end', 'right-start', 'right-end', 'bottom-start', 'bottom-end'].includes(value)
 		}
 	},
-	//悬浮层主体距离触发元素的距离
+	//悬浮层主体距离关联元素的距离
 	offset: {
 		type: String,
 		default: '0.2rem'
@@ -39,7 +39,7 @@ export const LayerProps = {
 		type: Number,
 		default: 200
 	},
-	//点击触发元素和悬浮层以外的元素是否关闭悬浮层
+	//点击关联元素和悬浮层以外的元素是否关闭悬浮层
 	closable: {
 		type: Boolean,
 		default: false

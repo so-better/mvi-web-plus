@@ -16,7 +16,7 @@ const router = createRouter({
 
 //判断是否vue组件
 const isVueComponent = (item: any) => {
-	return typeof item.render == 'function' || typeof item.setup == 'function'
+	return typeof item.render == 'function' || typeof item.setup == 'function' || typeof item.initParams == 'function'
 }
 
 for (let key in components) {

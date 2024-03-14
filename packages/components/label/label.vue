@@ -1,3 +1,16 @@
+<template>
+	<transition v-if="closable" name="mvi-label">
+		<div v-if="show" class="mvi-label" :class="labelClass">
+			<slot></slot>
+			<span class="mvi-label-closable" @click="closeLabel">
+				<Icon type="times" />
+			</span>
+		</div>
+	</transition>
+	<div v-else class="mvi-label" :class="labelClass">
+		<slot></slot>
+	</div>
+</template>
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { Icon } from '../icon'
@@ -42,19 +55,4 @@ const closeLabel = () => {
 	show.value = false
 }
 </script>
-
-<template>
-	<transition v-if="closable" name="mvi-label">
-		<div v-if="show" class="mvi-label" :class="labelClass">
-			<slot></slot>
-			<span class="mvi-label-closable" @click="closeLabel">
-				<Icon type="times" />
-			</span>
-		</div>
-	</transition>
-	<div v-else class="mvi-label" :class="labelClass">
-		<slot></slot>
-	</div>
-</template>
-
 <style scoped src="./label.less"></style>

@@ -89,7 +89,7 @@ const showClear = computed<boolean>(() => {
 	if (props.disabled || props.readonly) {
 		return false
 	}
-	if (realValue && focus.value) {
+	if (realValue.value && focus.value) {
 		return true
 	}
 	return false

@@ -1,5 +1,5 @@
 <template>
-	<div :class="['mvi-divider', dashed ? 'dashed' : '']">
+	<div class="mvi-divider" :class="{ dashed: dashed }">
 		<div class="mvi-divider-left" :style="{ borderColor: color || '' }"></div>
 		<div v-if="$slots.default" class="mvi-divider-center">
 			<slot></slot>
