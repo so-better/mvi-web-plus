@@ -1,8 +1,8 @@
 <template>
 	<div class="mvi-p-2">
-		<m-calendar class="mvi-mb-4" v-model="date" view="year"></m-calendar>
-		<m-calendar :monthText="monthText" class="mvi-mb-4" v-model="date" view="month"></m-calendar>
-		<m-calendar :weekText="weekText" class="mvi-mb-4" v-model="date" view="date"></m-calendar>
+		<m-calendar type="error" class="mvi-mb-4" v-model="date" view="year"></m-calendar>
+		<m-calendar type="warn" class="mvi-mb-4" v-model="date" view="month"></m-calendar>
+		<m-calendar type="success" class="mvi-mb-4" v-model="date" view="date"></m-calendar>
 	</div>
 </template>
 <script setup lang="ts">

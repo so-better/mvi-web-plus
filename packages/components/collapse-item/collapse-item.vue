@@ -1,6 +1,6 @@
 <template>
 	<div class="mvi-collapse-item" :class="{ border: collapse!.props.outBorder }" :disabled="cmpDisabled || null">
-		<Cell class="mvi-collapse-cell" :class="{ expand: expand }" :icon="icon" :content="label" :title="title" :border="<boolean>collapse!.props.inBorder" arrow="angle-right" @click="changeCollapse" :active="cmpActive" :no-wrap="<boolean>collapse!.props.noWrap"></Cell>
+		<Cell class="mvi-collapse-cell" :class="{ expand: expand }" :icon="icon" :content="label" :title="title" :border="<boolean>collapse!.props.inBorder" :arrow="{ type: 'angle-right', size: '0.8em' }" @click="changeCollapse" :active="cmpActive" :no-wrap="<boolean>collapse!.props.noWrap"></Cell>
 		<TransitionSlide :expand="expand" :timeout="200" @before-slide-up="beforeSlideUp" @slide-up="slideUp" @before-slide-down="beforeSlideDown" @slide-down="slideDown">
 			<div class="mvi-collapse-content">
 				<slot v-if="$slots.default"></slot>

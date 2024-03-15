@@ -1,64 +1,62 @@
 <template>
-	<div class="mvi-date-chooser" ref="elRef" :class="{ block: block }">
-		<div class="mvi-date-chooser-relate" :data-id="`mvi-date-chooser-relate-${instance.uid}`" ref="relateRef" @click="clickCalendar">
-			<slot></slot>
-		</div>
-		<Layer :relate="`[data-id='mvi-date-chooser-relate-${instance.uid}']`" v-model="show" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :animation="layerRealProps.animation" :border-color="layerRealProps.borderColor" :timeout="layerRealProps.timeout" :closable="closable" :show-triangle="layerRealProps.showTriangle" :width="layerRealProps.width" @showing="layerShow">
-			<div class="mvi-date-chooser-layer" ref="panelRef">
-				<!-- 年视图头部 -->
-				<div v-if="view == 'year'" class="mvi-date-chooser-year-header">
-					<div class="mvi-date-chooser-year-left" :class="[type]" @click="updateYear(-1)">
-						<Icon type="angle-double-left" />
-					</div>
-					<div class="mvi-date-chooser-year-center">
-						<span>{{ formatShow('year', years[0]) }}</span>
-						<span>-</span>
-						<span>{{ formatShow('year', years[years.length - 1]) }}</span>
-					</div>
-					<div class="mvi-date-chooser-year-right" :class="[type]" @click="updateYear(1)">
-						<Icon type="angle-double-right" />
-					</div>
-				</div>
-				<!-- 月视图头部 -->
-				<div v-else-if="view == 'month'" class="mvi-date-chooser-month-header">
-					<div class="mvi-date-chooser-month-left" :class="[type]" @click="updateYear(-1)">
-						<Icon type="angle-double-left" />
-					</div>
-					<div class="mvi-date-chooser-month-center" :class="[type]" @click="goYear">{{ formatShow('year', selectedDate) }}</div>
-					<div class="mvi-date-chooser-month-right" :class="[type]" @click="updateYear(1)">
-						<Icon type="angle-double-right" />
-					</div>
-				</div>
-				<!-- 日期头部 -->
-				<div v-else-if="view == 'date'" class="mvi-date-chooser-date-header">
-					<div class="mvi-date-chooser-date-left">
-						<div :class="type" @click="updateYear(-1)">
-							<Icon type="angle-double-left" />
-						</div>
-						<div :class="type" @click="updateMonth(-1)">
-							<Icon type="angle-left" />
-						</div>
-					</div>
-					<div class="mvi-date-chooser-date-center">
-						<div :class="type" @click="goYear">{{ formatShow('year', selectedDate) }}</div>
-						<div :class="type" @click="goMonth">{{ formatShow('month', selectedDate) }}</div>
-					</div>
-					<div class="mvi-date-chooser-date-right">
-						<div :class="type" @click="updateMonth(1)">
-							<Icon type="angle-right" />
-						</div>
-						<div :class="type" @click="updateYear(1)">
-							<Icon type="angle-double-right" />
-						</div>
-					</div>
-				</div>
-				<Calendar :view="view" v-model="selectedDate" :month-text="monthText" :week-text="weekText" :start-date="startDate" :end-date="endDate" :non-current-click="false" :active="active" :type="type" @date-click="dateClick" @month-click="monthClick" @year-click="yearClick"> </Calendar>
-			</div>
-		</Layer>
+	<div class="mvi-date-chooser" :data-id="`mvi-date-chooser-${instance.uid}`" :class="{ block: block }" ref="relateRef" @click="clickCalendar" @mouseenter="mouseEnterRelate" @mouseleave="mouseLeaveRelate">
+		<slot></slot>
 	</div>
+	<Layer :relate="`[data-id='mvi-date-chooser-${instance.uid}']`" v-model="show" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :animation="layerRealProps.animation" :border-color="layerRealProps.borderColor" :timeout="layerRealProps.timeout" :closable="closable" :show-triangle="layerRealProps.showTriangle" :width="layerRealProps.width" @showing="layerShow" @mouseleave="mouseLeaveLayer" ref="layerRef">
+		<div class="mvi-date-chooser-layer" ref="panelRef">
+			<!-- 年视图头部 -->
+			<div v-if="view == 'year'" class="mvi-date-chooser-year-header">
+				<div class="mvi-date-chooser-year-left" :class="[type]" @click="updateYear(-1)">
+					<Icon type="angle-double-left" />
+				</div>
+				<div class="mvi-date-chooser-year-center">
+					<span>{{ formatShow('year', years[0]) }}</span>
+					<span>-</span>
+					<span>{{ formatShow('year', years[years.length - 1]) }}</span>
+				</div>
+				<div class="mvi-date-chooser-year-right" :class="[type]" @click="updateYear(1)">
+					<Icon type="angle-double-right" />
+				</div>
+			</div>
+			<!-- 月视图头部 -->
+			<div v-else-if="view == 'month'" class="mvi-date-chooser-month-header">
+				<div class="mvi-date-chooser-month-left" :class="[type]" @click="updateYear(-1)">
+					<Icon type="angle-double-left" />
+				</div>
+				<div class="mvi-date-chooser-month-center" :class="[type]" @click="goYear">{{ formatShow('year', selectedDate) }}</div>
+				<div class="mvi-date-chooser-month-right" :class="[type]" @click="updateYear(1)">
+					<Icon type="angle-double-right" />
+				</div>
+			</div>
+			<!-- 日期头部 -->
+			<div v-else-if="view == 'date'" class="mvi-date-chooser-date-header">
+				<div class="mvi-date-chooser-date-left">
+					<div :class="type" @click="updateYear(-1)">
+						<Icon type="angle-double-left" />
+					</div>
+					<div :class="type" @click="updateMonth(-1)">
+						<Icon type="angle-left" />
+					</div>
+				</div>
+				<div class="mvi-date-chooser-date-center">
+					<div :class="type" @click="goYear">{{ formatShow('year', selectedDate) }}</div>
+					<div :class="type" @click="goMonth">{{ formatShow('month', selectedDate) }}</div>
+				</div>
+				<div class="mvi-date-chooser-date-right">
+					<div :class="type" @click="updateMonth(1)">
+						<Icon type="angle-right" />
+					</div>
+					<div :class="type" @click="updateYear(1)">
+						<Icon type="angle-double-right" />
+					</div>
+				</div>
+			</div>
+			<Calendar :view="view" v-model="selectedDate" :month-text="monthText" :week-text="weekText" :start-date="startDate" :end-date="endDate" :non-current-click="false" :active="active" :type="type" @date-click="dateClick" @month-click="monthClick" @year-click="yearClick"> </Calendar>
+		</div>
+	</Layer>
 </template>
 <script setup lang="ts">
-import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, getCurrentInstance, ref } from 'vue'
 import Dap from 'dap-util'
 import { Layer } from '../layer'
 import { Icon } from '../icon'
@@ -84,9 +82,9 @@ const emits = defineEmits(['update:modelValue', 'change'])
 const show = ref<boolean>(false)
 const view = ref<CalendarViewType>(props.mode)
 const selectedDate = ref<Date>(props.modelValue)
-const elRef = ref<HTMLElement | null>(null)
 const relateRef = ref<HTMLElement | null>(null)
 const panelRef = ref<HTMLElement | null>(null)
+const layerRef = ref<InstanceType<typeof Layer> | null>(null)
 
 const layerRealProps = computed<LayerPropsType>(() => {
 	return {
@@ -223,19 +221,55 @@ const closeCalendar = () => {
 	}
 	show.value = false
 }
-
-onMounted(() => {
-	if (props.trigger == 'hover') {
-		Dap.event.on(elRef.value, 'mouseenter.dateChooser', openCalendar)
-		Dap.event.on(elRef.value, 'mouseleave.dateChooser', closeCalendar)
+//鼠标进入关联元素
+const mouseEnterRelate = () => {
+	if (props.disabled) {
+		return
 	}
-})
-
-onBeforeUnmount(() => {
-	if (props.trigger == 'hover') {
-		Dap.event.off(elRef.value, 'mouseenter.dateChooser mouseleave.dateChooser')
+	if (props.trigger != 'hover') {
+		return
 	}
-})
+	//打开日期面板
+	openCalendar()
+}
+//鼠标离开关联元素
+const mouseLeaveRelate = (event: MouseEvent) => {
+	if (props.disabled) {
+		return
+	}
+	if (props.trigger != 'hover') {
+		return
+	}
+	//如果浮层元素存在
+	if (layerRef.value && layerRef.value.$$el) {
+		const layerRect = layerRef.value.$$el.getBoundingClientRect()
+		//如果鼠标进入的是浮层元素
+		if (event.pageX >= layerRect.left && event.pageX <= layerRect.right && event.pageY >= layerRect.top && event.pageY <= layerRect.bottom) {
+			return
+		}
+	}
+	//关闭日期面板
+	closeCalendar()
+}
+//鼠标离开浮层元素
+const mouseLeaveLayer = (event: MouseEvent) => {
+	if (props.disabled) {
+		return
+	}
+	if (props.trigger != 'hover') {
+		return
+	}
+	//如果关联元素存在
+	if (relateRef.value) {
+		const relateRect = relateRef.value.getBoundingClientRect()
+		//如果鼠标进入的是关联元素
+		if (event.pageX >= relateRect.left && event.pageX <= relateRect.right && event.pageY >= relateRect.top && event.pageY <= relateRect.bottom) {
+			return
+		}
+	}
+	//关闭日期面板
+	closeCalendar()
+}
 
 defineExpose({
 	openCalendar,
