@@ -39,7 +39,7 @@ export const OverlayProps = {
 		type: Boolean,
 		default: false
 	},
-	//是否考虑PC滚动条
+	//是否考虑PC滚动条（设置padding距离占位）
 	usePadding: {
 		type: Boolean,
 		default: false

@@ -1,5 +1,5 @@
 <template>
-	<div class="mvi-navbar" :class="{ fixed: fixed, border: border }" :style="'z-index:' + (fixed ? zIndex : '')">
+	<div class="mvi-navbar" :class="{ fixed: fixed, border: border }" :style="{ 'z-index': fixed ? zIndex : '' }">
 		<div @click="emits('left-click')" class="mvi-navbar-left" :style="leftStyle" v-if="showLeft">
 			<slot name="left" v-if="$slots.left"></slot>
 			<Icon :class="{ 'mvi-navbar-left-icon': !!leftText }" v-if="(parseIcon(leftIcon).type || parseIcon(leftIcon).url) && !$slots.left" :type="parseIcon(leftIcon).type" :url="parseIcon(leftIcon).url" :spin="parseIcon(leftIcon).spin" :size="parseIcon(leftIcon).size" :color="parseIcon(leftIcon).color" />

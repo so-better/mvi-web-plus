@@ -62,7 +62,9 @@ const pause = () => {
 	if (status.value != 0) {
 		return
 	}
+	//更新状态
 	status.value = 1
+	//获取位置信息
 	let placement = Dap.element.getElementPoint(rollRef.value, containerRef.value)
 	//去除动画
 	rollRef.value!.style.transition = ''
@@ -71,6 +73,7 @@ const pause = () => {
 		clearTimeout(timer.value)
 		timer.value = null
 	}
+	//设置当前位置
 	if (props.direction == 'left') {
 		rollRef.value!.style.left = placement.left + 'px'
 		rollRef.value!.style.right = 'auto'
@@ -91,9 +94,11 @@ const stop = () => {
 	if (status.value == 2) {
 		return
 	}
+	//更新状态
 	status.value = 2
 	//去除动画
 	rollRef.value!.style.transition = ''
+	//恢复初始位置
 	if (props.direction == 'left') {
 		rollRef.value!.style.left = '100%'
 		rollRef.value!.style.right = 'auto'
@@ -107,6 +112,7 @@ const stop = () => {
 		rollRef.value!.style.bottom = '100%'
 		rollRef.value!.style.top = 'auto'
 	}
+	//清除计时器
 	if (timer.value) {
 		clearTimeout(timer.value)
 		timer.value = null
@@ -121,8 +127,11 @@ const play = () => {
 	if (status.value == 0) {
 		return
 	}
+	//更新状态
 	status.value = 0
+	//获取位置信息
 	let placement = Dap.element.getElementPoint(rollRef.value, containerRef.value)
+	//计算动画时间
 	let interval = 0
 	if (props.direction == 'left') {
 		interval = Math.round(((placement.left + rollRef.value.offsetWidth) / (containerRef.value!.offsetWidth + rollRef.value.offsetWidth)) * props.interval)
@@ -135,32 +144,30 @@ const play = () => {
 	}
 	//设置动画和速度
 	rollRef.value.style.transition = 'all ' + interval + 'ms ' + props.animation
+	//重绘
+	rollRef.value.offsetWidth
 	//执行
-	setTimeout(() => {
-		if (!rollRef.value) {
-			return
+	if (props.direction == 'left') {
+		rollRef.value.style.left = -rollRef.value.offsetWidth + 'px'
+		rollRef.value.style.right = 'auto'
+	} else if (props.direction == 'right') {
+		rollRef.value.style.right = -rollRef.value.offsetWidth + 'px'
+		rollRef.value.style.left = 'auto'
+	} else if (props.direction == 'up') {
+		rollRef.value.style.top = -rollRef.value.offsetHeight + 'px'
+		rollRef.value.style.bottom = 'auto'
+	} else if (props.direction == 'down') {
+		rollRef.value.style.bottom = -rollRef.value.offsetHeight + 'px'
+		rollRef.value.style.top = 'auto'
+	}
+	emits('play')
+	timer.value = setTimeout(() => {
+		stop()
+		//重新开始
+		if (props.loop) {
+			play()
 		}
-		if (props.direction == 'left') {
-			rollRef.value.style.left = -rollRef.value.offsetWidth + 'px'
-			rollRef.value.style.right = 'auto'
-		} else if (props.direction == 'right') {
-			rollRef.value.style.right = -rollRef.value.offsetWidth + 'px'
-			rollRef.value.style.left = 'auto'
-		} else if (props.direction == 'up') {
-			rollRef.value.style.top = -rollRef.value.offsetHeight + 'px'
-			rollRef.value.style.bottom = 'auto'
-		} else if (props.direction == 'down') {
-			rollRef.value.style.bottom = -rollRef.value.offsetHeight + 'px'
-			rollRef.value.style.top = 'auto'
-		}
-		emits('play')
-		timer.value = setTimeout(() => {
-			stop()
-			if (props.loop) {
-				play() //重新开始
-			}
-		}, interval)
-	}, 0)
+	}, interval)
 }
 //鼠标进入
 const hoverIn = () => {

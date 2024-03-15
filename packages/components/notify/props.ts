@@ -4,7 +4,7 @@ import { IconPropsType } from '../icon/props'
 export const NotifyProps = {
 	//提示类型
 	type: {
-		type: String,
+		type: String as PropType<'success' | 'info' | 'primary' | 'error' | 'warn'>,
 		default: null
 	},
 	//展示文字

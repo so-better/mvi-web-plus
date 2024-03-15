@@ -27,7 +27,7 @@ export const CalendarProps = {
 	},
 	//月份面板显示的月份数组文字
 	monthText: {
-		type: Array,
+		type: Array as PropType<string[]>,
 		default: function () {
 			return ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
 		},
@@ -42,7 +42,7 @@ export const CalendarProps = {
 	},
 	//头部显示的星期数组
 	weekText: {
-		type: Array,
+		type: Array as PropType<string[]>,
 		default: function () {
 			return ['日', '一', '二', '三', '四', '五', '六']
 		},
