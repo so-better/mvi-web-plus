@@ -9,11 +9,8 @@ export const SearchProps = {
 	},
 	//输入框类型
 	type: {
-		type: String as PropType<'text' | 'password' | 'number' | 'tel' | 'textarea'>,
-		default: 'text',
-		validator(value: any) {
-			return ['text', 'password', 'number', 'tel', 'textarea'].includes(value)
-		}
+		type: String,
+		default: 'text'
 	},
 	//输入框占位符
 	placeholder: {

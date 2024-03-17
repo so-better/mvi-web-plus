@@ -101,7 +101,7 @@ const showClear = computed<boolean>(() => {
 	}
 	return false
 })
-const cmpType = computed<'text' | 'password' | 'tel' | 'textarea'>(() => {
+const cmpType = computed<string>(() => {
 	if (props.type == 'number') {
 		return 'text'
 	}

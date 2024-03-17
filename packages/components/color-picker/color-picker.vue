@@ -82,10 +82,9 @@ const initHSV = () => {
 	//为rgb格式的
 	else {
 		try {
-			let first = props.modelValue.indexOf('(')
-			let last = props.modelValue.lastIndexOf(')')
-			let str = props.modelValue.substring(first + 1, last)
-			let arry = str.split(',')
+			const first = props.modelValue.indexOf('(')
+			const last = props.modelValue.lastIndexOf(')')
+			const arry = props.modelValue.substring(first + 1, last).split(',')
 			if (arry.length < 3) {
 				throw new Error('Color values are not RGB (RGBA) format and hexadecimal format')
 			}
