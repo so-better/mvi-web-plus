@@ -3,7 +3,7 @@
 		<div v-if="mode == 'fade'" class="mvi-carousel-fades">
 			<slot></slot>
 		</div>
-		<div v-else-if="mode == 'slide'" class="mvi-carousel-slides" ref="slidesRef" :style="slidesStyle" :class="{ vertical: vertical }" @touchstart="handleTouchstart" @touchmove="handleTouchmove" @touchend="handleTouchEnd">
+		<div v-else-if="mode == 'slide'" class="mvi-carousel-slides" ref="slidesRef" :style="slidesStyle" :class="{ vertical: vertical }" @touchstart="handleTouchstart" @touchmove="handleTouchMove" @touchend="handleTouchEnd" @mousedown="handleMouseDown">
 			<LastCarouselItem />
 			<slot></slot>
 			<FirstCarouselItem />
@@ -75,6 +75,8 @@ const touchTotal = ref<number>(0)
 const lazyUpdate = ref<boolean>(false)
 //每帧间隔时间
 const clipInterval = ref<number>(1000 / 60)
+//鼠标是否按下
+const isMouseDown = ref<boolean>(false)
 
 //分页器配置
 const cmpIndicators = computed<CarouselIndicatorsType>(() => {
@@ -275,7 +277,7 @@ const handleTouchstart = (e: TouchEvent) => {
 	}
 }
 //手势触摸滑动
-const handleTouchmove = (e: TouchEvent) => {
+const handleTouchMove = (e: TouchEvent) => {
 	if (props.touchable) {
 		if (e.cancelable) {
 			e.preventDefault()
@@ -305,6 +307,55 @@ const handleTouchEnd = () => {
 		slideDone()
 	}
 }
+//鼠标按下
+const handleMouseDown = (e: MouseEvent) => {
+	if (props.touchable) {
+		//记录按下时的点位置
+		initTouchPoint.value = props.vertical ? e.pageY : e.pageX
+		everyTouchPoint.value = initTouchPoint.value
+		//重置滑动总距离
+		touchTotal.value = 0
+		//自动的动画停止
+		if (slideAnimation.value) {
+			slideAnimation.value.stop()
+		}
+		//记录鼠标按下
+		isMouseDown.value = true
+	}
+}
+//鼠标滑动
+const handleMouseMove = (e: MouseEvent) => {
+	if (props.touchable && isMouseDown.value) {
+		if (e.cancelable) {
+			e.preventDefault()
+		}
+		//移动到的点
+		const point = props.vertical ? e.pageY : e.pageX
+		//设置总滑动距离
+		const moveTotal = point - initTouchPoint.value
+		//如果总滑动距离大于单张尺寸，则不可继续滑动
+		if (Math.abs(moveTotal) >= carouselItemSize.value) {
+			return
+		}
+		//记录总滑动距离
+		touchTotal.value = moveTotal
+		//记录当前偏移值
+		currentSlideValue.value += point - everyTouchPoint.value
+		//更新样式
+		slidesRef.value!.style[props.vertical ? 'top' : 'left'] = currentSlideValue.value + 'px'
+		//更新每次的触摸点
+		everyTouchPoint.value = point
+	}
+}
+//手势触摸松开
+const handleMouseUp = () => {
+	if (props.touchable && isMouseDown.value) {
+		isMouseDown.value = false
+		//滑动后处理
+		slideDone()
+	}
+}
+
 //滑动后处理
 const slideDone = () => {
 	if (!slidesRef.value || props.mode != 'slide') {
@@ -472,6 +523,8 @@ updateClipInterval()
 
 onMounted(() => {
 	nextTick(() => {
+		Dap.event.on(document.documentElement, `mousemove.carousel_${instance.uid}`, handleMouseMove)
+		Dap.event.on(document.documentElement, `mouseup.carousel_${instance.uid}`, handleMouseUp)
 		//如果是循环
 		if (props.autoplay) {
 			setAutoplay()
@@ -480,6 +533,8 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+	Dap.event.off(document.documentElement, `mousemove.carousel_${instance.uid} mouseup.carousel_${instance.uid}`)
+
 	if (slideAnimation.value) {
 		slideAnimation.value.stop()
 	}

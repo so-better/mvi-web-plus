@@ -9,22 +9,17 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { inject } from 'vue'
-
+import { getCurrentInstance, inject } from 'vue'
+const instance = getCurrentInstance()!
 const $alert = inject<(arg: any) => InstanceType<typeof Promise>>('$alert')!
 const $confirm = inject<(arg: any) => InstanceType<typeof Promise>>('$confirm')!
 const $prompt = inject<(arg: any) => InstanceType<typeof Promise>>('$prompt')!
 const $Alert = inject<(arg: any) => InstanceType<typeof Promise>>('$Alert')!
 const $Confirm = inject<(arg: any) => InstanceType<typeof Promise>>('$Confirm')!
 const $Prompt = inject<(arg: any) => InstanceType<typeof Promise>>('$Prompt')!
-
+import { Dialog } from '../../../packages/index'
 const alert = () => {
-	$alert({
-		title: '警报警报',
-		message: '敌军还有三十秒到达战场',
-		ios: true,
-		btnText: 'hello'
-	})
+	Dialog.alert.call(instance.appContext, { title: '警报警报', message: '敌军还有三十秒到达战场', ios: true, btnText: 'hello' })
 }
 const confirm = () => {
 	$confirm({

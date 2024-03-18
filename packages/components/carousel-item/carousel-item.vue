@@ -50,10 +50,8 @@ const itemIndex = computed<number>(() => {
 })
 
 onBeforeUnmount(() => {
-	carouselItemChildren!.value.splice(itemIndex.value, 1)
-	if (<number>carousel!.props.modelValue > 0) {
-		carousel!.emit('update:modelValue', <number>carousel!.props.modelValue - 1)
-		carousel!.emit('change', <number>carousel!.props.modelValue - 1)
+	if (carouselItemChildren && carouselItemChildren.value) {
+		carouselItemChildren.value.splice(itemIndex.value, 1)
 	}
 })
 </script>

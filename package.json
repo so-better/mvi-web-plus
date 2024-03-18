@@ -1,6 +1,6 @@
 {
 	"name": "mvi-web-plus",
-	"version": "1.9.4",
+	"version": "1.9.5",
 	"private": false,
 	"sideEffects": [
 		"*.css"
@@ -11,7 +11,7 @@
 	"module": "lib/mvi.es.js",
 	"types": "lib/index.d.ts",
 	"license": "MIT",
-	"description": "一个基于Vue3的前端开发组件库",
+	"description": "一个基于Vue3的移动端web前端组件库",
 	"scripts": {
 		"dev": "vite",
 		"lib": "vue-tsc && vite build"
