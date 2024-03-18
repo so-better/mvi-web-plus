@@ -103,10 +103,10 @@ const overlayHide = () => {
 //弹出层显示前
 const beforeEnter = (el: Element) => {
 	//解决v-if和v-show作用在同一元素上时触发两次钩子函数的bug
-	if (Dap.data.get(el, 'mvi-popup-beforeEnter-trigger')) {
+	if (Dap.data.get(<HTMLElement>el, 'mvi-popup-beforeEnter-trigger')) {
 		return
 	}
-	Dap.data.set(el, 'mvi-popup-beforeEnter-trigger', true)
+	Dap.data.set(<HTMLElement>el, 'mvi-popup-beforeEnter-trigger', true)
 
 	emits('show', el)
 	if (typeof instance.appContext.config.globalProperties.popupComponentWatch == 'function') {
@@ -116,10 +116,10 @@ const beforeEnter = (el: Element) => {
 //弹出层显示时
 const enter = (el: Element) => {
 	//解决v-if和v-show作用在同一元素上时触发两次钩子函数的bug
-	if (Dap.data.get(el, 'mvi-popup-enter-trigger')) {
+	if (Dap.data.get(<HTMLElement>el, 'mvi-popup-enter-trigger')) {
 		return
 	}
-	Dap.data.set(el, 'mvi-popup-enter-trigger', true)
+	Dap.data.set(<HTMLElement>el, 'mvi-popup-enter-trigger', true)
 
 	emits('showing', el)
 	if (typeof instance.appContext.config.globalProperties.popupComponentWatch == 'function') {
@@ -136,8 +136,8 @@ const afterEnter = (el: Element) => {
 //弹出层隐藏前
 const beforeLeave = (el: Element) => {
 	//清除标记
-	Dap.data.remove(el, 'mvi-popup-beforeEnter-trigger')
-	Dap.data.remove(el, 'mvi-popup-enter-trigger')
+	Dap.data.remove(<HTMLElement>el, 'mvi-popup-beforeEnter-trigger')
+	Dap.data.remove(<HTMLElement>el, 'mvi-popup-enter-trigger')
 	emits('hide', el)
 	if (typeof instance.appContext.config.globalProperties.popupComponentWatch == 'function') {
 		instance.appContext.config.globalProperties.popupComponentWatch.apply(instance.proxy, ['hide', el])

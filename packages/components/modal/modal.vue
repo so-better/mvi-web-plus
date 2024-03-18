@@ -117,10 +117,10 @@ const overlayHide = () => {
 //弹出层显示前
 const beforeEnter = (el: Element) => {
 	//解决v-if和v-show作用在同一元素上时触发两次钩子函数的bug
-	if (Dap.data.get(el, 'mvi-modal-beforeEnter-trigger')) {
+	if (Dap.data.get(<HTMLElement>el, 'mvi-modal-beforeEnter-trigger')) {
 		return
 	}
-	Dap.data.set(el, 'mvi-modal-beforeEnter-trigger', true)
+	Dap.data.set(<HTMLElement>el, 'mvi-modal-beforeEnter-trigger', true)
 	emits('show', el)
 	if (typeof instance.appContext.config.globalProperties.modalComponentWatch == 'function') {
 		instance.appContext.config.globalProperties.apply(instance.proxy, ['show', el])
@@ -129,10 +129,10 @@ const beforeEnter = (el: Element) => {
 //弹出层显示时
 const enter = (el: Element) => {
 	//解决v-if和v-show作用在同一元素上时触发两次钩子函数的bug
-	if (Dap.data.get(el, 'mvi-modal-enter-trigger')) {
+	if (Dap.data.get(<HTMLElement>el, 'mvi-modal-enter-trigger')) {
 		return
 	}
-	Dap.data.set(el, 'mvi-modal-enter-trigger', true)
+	Dap.data.set(<HTMLElement>el, 'mvi-modal-enter-trigger', true)
 	modalSize()
 	emits('showing', el)
 	if (typeof instance.appContext.config.globalProperties.modalComponentWatch == 'function') {
@@ -149,8 +149,8 @@ const afterEnter = (el: Element) => {
 //弹出层隐藏前
 const beforeLeave = (el: Element) => {
 	//清除标记
-	Dap.data.remove(el, 'mvi-modal-beforeEnter-trigger')
-	Dap.data.remove(el, 'mvi-modal-enter-trigger')
+	Dap.data.remove(<HTMLElement>el, 'mvi-modal-beforeEnter-trigger')
+	Dap.data.remove(<HTMLElement>el, 'mvi-modal-enter-trigger')
 
 	emits('hide', el)
 	if (typeof instance.appContext.config.globalProperties.modalComponentWatch == 'function') {

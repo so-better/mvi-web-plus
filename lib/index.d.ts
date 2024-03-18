@@ -2869,7 +2869,7 @@ export declare const components: {
         activeColor: {
             type: StringConstructor;
             default: null;
-            validator(value: any): any;
+            validator(value: any): boolean;
         };
         filterMethod: {
             type: import("vue").PropType<boolean | ((value: string, list: string[]) => string[])>;
@@ -2953,7 +2953,7 @@ export declare const components: {
         activeColor: {
             type: StringConstructor;
             default: null;
-            validator(value: any): any;
+            validator(value: any): boolean;
         };
         filterMethod: {
             type: import("vue").PropType<boolean | ((value: string, list: string[]) => string[])>;
@@ -6525,7 +6525,7 @@ export declare const components: {
             activeColor: {
                 type: StringConstructor;
                 default: null;
-                validator(value: any): any;
+                validator(value: any): boolean;
             };
             clearable: {
                 type: BooleanConstructor;
@@ -6645,7 +6645,7 @@ export declare const components: {
             activeColor: {
                 type: StringConstructor;
                 default: null;
-                validator(value: any): any;
+                validator(value: any): boolean;
             };
             clearable: {
                 type: BooleanConstructor;
@@ -6783,7 +6783,7 @@ export declare const components: {
             activeColor: {
                 type: StringConstructor;
                 default: null;
-                validator(value: any): any;
+                validator(value: any): boolean;
             };
             clearable: {
                 type: BooleanConstructor;
@@ -6918,7 +6918,7 @@ export declare const components: {
         activeColor: {
             type: StringConstructor;
             default: null;
-            validator(value: any): any;
+            validator(value: any): boolean;
         };
         clearable: {
             type: BooleanConstructor;
@@ -8559,7 +8559,7 @@ export declare const components: {
         activeColor: {
             type: StringConstructor;
             default: null;
-            validator(value: any): any;
+            validator(value: any): boolean;
         };
         disabled: {
             type: BooleanConstructor;
@@ -8650,7 +8650,7 @@ export declare const components: {
         activeColor: {
             type: StringConstructor;
             default: null;
-            validator(value: any): any;
+            validator(value: any): boolean;
         };
         disabled: {
             type: BooleanConstructor;
@@ -11603,7 +11603,7 @@ export declare const components: {
 /***** 全局导出 *****/
 declare const install: (app: App) => void;
 /***** 版本号 *****/
-declare const version = "1.9.5";
+declare const version = "1.9.6";
 declare const stdin_default: {
     install: (app: App) => void;
     version: string;

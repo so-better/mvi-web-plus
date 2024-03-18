@@ -155,7 +155,7 @@ const close = () => {
 	})
 }
 //鼠标事件处理
-const handleMouseOpt = (event: MouseEvent) => {
+const handleMouseOpt = (event: Event) => {
 	//已禁用
 	if (props.disabled) {
 		return
@@ -169,8 +169,8 @@ const handleMouseOpt = (event: MouseEvent) => {
 		//修改标识
 		isDown.value = true
 		//记录初始位置
-		startX.value = event.pageX
-		movingX.value = event.pageX
+		startX.value = (<MouseEvent>event).pageX
+		movingX.value = (<MouseEvent>event).pageX
 	}
 	//鼠标移动
 	else if (event.type == 'mousemove') {
@@ -180,7 +180,7 @@ const handleMouseOpt = (event: MouseEvent) => {
 				event.preventDefault()
 			}
 			//此次移动的距离
-			const moveX = event.pageX - movingX.value
+			const moveX = (<MouseEvent>event).pageX - movingX.value
 
 			//往右滑如果偏移值超出最大值则阻止
 			if (moveX > 0) {
@@ -199,7 +199,7 @@ const handleMouseOpt = (event: MouseEvent) => {
 			//更新偏移值
 			translateX.value += moveX
 			//记录移动时的坐标点
-			movingX.value = event.pageX
+			movingX.value = (<MouseEvent>event).pageX
 		}
 	}
 	//鼠标松开
@@ -209,7 +209,7 @@ const handleMouseOpt = (event: MouseEvent) => {
 			//更新标识
 			isDown.value = false
 			//松开位置和初始位置一致表示单击事件
-			if (event.pageX == startX.value) {
+			if ((<MouseEvent>event).pageX == startX.value) {
 				//如果centerClose为true，则关闭
 				if (props.centerClose) {
 					close()

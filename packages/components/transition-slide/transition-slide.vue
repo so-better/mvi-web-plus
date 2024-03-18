@@ -67,7 +67,7 @@ const afterEnter = (el: Element) => {
 const beforeLeave = (el: Element) => {
 	//只记录第一次的高度
 	if (!height.value) {
-		height.value = Dap.element.getCssStyle(el, 'height')
+		height.value = Dap.element.getCssStyle(<HTMLElement>el, 'height')
 	}
 	//设置元素高度
 	;(<HTMLElement>el).style.height = height.value

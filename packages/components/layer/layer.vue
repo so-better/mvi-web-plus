@@ -823,10 +823,10 @@ const removeScroll = () => {
 //悬浮层显示前
 const beforeEnter = (el: Element) => {
 	//解决v-if和v-show作用在同一元素上时触发两次钩子函数的bug
-	if (Dap.data.get(el, 'mvi-layer-beforeEnter-trigger')) {
+	if (Dap.data.get(<HTMLElement>el, 'mvi-layer-beforeEnter-trigger')) {
 		return
 	}
-	Dap.data.set(el, 'mvi-layer-beforeEnter-trigger', true)
+	Dap.data.set(<HTMLElement>el, 'mvi-layer-beforeEnter-trigger', true)
 
 	emits('show', el)
 
@@ -837,10 +837,10 @@ const beforeEnter = (el: Element) => {
 //悬浮层显示时
 const enter = (el: Element) => {
 	//解决v-if和v-show作用在同一元素上时触发两次钩子函数的bug
-	if (Dap.data.get(el, 'mvi-layer-enter-trigger')) {
+	if (Dap.data.get(<HTMLElement>el, 'mvi-layer-enter-trigger')) {
 		return
 	}
-	Dap.data.set(el, 'mvi-layer-enter-trigger', true)
+	Dap.data.set(<HTMLElement>el, 'mvi-layer-enter-trigger', true)
 
 	nextTick(() => {
 		update()
@@ -860,8 +860,8 @@ const afterEnter = (el: Element) => {
 //悬浮层隐藏前
 const beforeLeave = (el: Element) => {
 	//清除标记
-	Dap.data.remove(el, 'mvi-layer-beforeEnter-trigger')
-	Dap.data.remove(el, 'mvi-layer-enter-trigger')
+	Dap.data.remove(<HTMLElement>el, 'mvi-layer-beforeEnter-trigger')
+	Dap.data.remove(<HTMLElement>el, 'mvi-layer-enter-trigger')
 
 	emits('hide', el)
 	if (typeof instance.appContext.config.globalProperties.layerComponentWatch == 'function') {
@@ -920,7 +920,7 @@ onMounted(() => {
 	//监听窗口点击
 	Dap.event.on(window, `click.layer_${instance.uid}`, (event: Event) => {
 		if (layerShow.value && firstShow.value && props.closable) {
-			if (Dap.element.isContains(layerRef.value, event.target) || Dap.element.isContains(getRelateEl(), event.target)) {
+			if (Dap.element.isContains(layerRef.value!, <HTMLElement>event.target) || Dap.element.isContains(getRelateEl()!, <HTMLElement>event.target)) {
 				return
 			}
 			emits('update:modelValue', false)

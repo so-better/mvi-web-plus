@@ -26,7 +26,7 @@ declare const _default: import("vue").DefineComponent<{
     activeColor: {
         type: StringConstructor;
         default: null;
-        validator(value: any): any;
+        validator(value: any): boolean;
     };
     filterMethod: {
         type: import("vue").PropType<boolean | ((value: string, list: string[]) => string[])>;
@@ -110,7 +110,7 @@ declare const _default: import("vue").DefineComponent<{
     activeColor: {
         type: StringConstructor;
         default: null;
-        validator(value: any): any;
+        validator(value: any): boolean;
     };
     filterMethod: {
         type: import("vue").PropType<boolean | ((value: string, list: string[]) => string[])>;

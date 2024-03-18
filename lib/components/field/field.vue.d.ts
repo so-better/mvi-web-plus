@@ -63,7 +63,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     activeColor: {
         type: StringConstructor;
         default: null;
-        validator(value: any): any;
+        validator(value: any): boolean;
     };
     clearable: {
         type: BooleanConstructor;
@@ -171,7 +171,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     activeColor: {
         type: StringConstructor;
         default: null;
-        validator(value: any): any;
+        validator(value: any): boolean;
     };
     clearable: {
         type: BooleanConstructor;

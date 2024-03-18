@@ -232,18 +232,18 @@ const autosizeSet = () => {
 }
 //行数转为高度
 const rows2Height = (rows: number): number => {
-	let lineHeight = Math.floor(parseFloat(Dap.element.getCssStyle(textareaRef.value, 'line-height')))
+	let lineHeight = Math.floor(parseFloat(Dap.element.getCssStyle(textareaRef.value!, 'line-height')))
 	return rows * lineHeight
 }
 //设置最大高度和最小高度
 const setMaxMinHeight = () => {
 	if (Dap.common.isObject(props.autosize)) {
 		if (Dap.number.isNumber((<FieldAutosizeType>props.autosize).maxRows)) {
-			let maxHeight = rows2Height((<FieldAutosizeType>props.autosize).maxRows!) + parseFloat(Dap.element.getCssStyle(textareaRef.value, 'padding-top')) + parseFloat(Dap.element.getCssStyle(textareaRef.value, 'padding-bottom'))
+			let maxHeight = rows2Height((<FieldAutosizeType>props.autosize).maxRows!) + parseFloat(Dap.element.getCssStyle(textareaRef.value!, 'padding-top')) + parseFloat(Dap.element.getCssStyle(textareaRef.value!, 'padding-bottom'))
 			textareaRef.value!.style.maxHeight = maxHeight + 'px'
 		}
 		if (Dap.number.isNumber((<FieldAutosizeType>props.autosize).minRows)) {
-			let minHeight = rows2Height((<FieldAutosizeType>props.autosize).minRows!) + parseFloat(Dap.element.getCssStyle(textareaRef.value, 'padding-top')) + parseFloat(Dap.element.getCssStyle(textareaRef.value, 'padding-bottom'))
+			let minHeight = rows2Height((<FieldAutosizeType>props.autosize).minRows!) + parseFloat(Dap.element.getCssStyle(textareaRef.value!, 'padding-top')) + parseFloat(Dap.element.getCssStyle(textareaRef.value!, 'padding-bottom'))
 			textareaRef.value!.style.minHeight = minHeight + 'px'
 		}
 	} else {

@@ -48,7 +48,7 @@ const Toast: ToastType = {
 				Toast.$el.remove()
 			}
 			let opts = Toast.initParams(options)
-			let mountNode: HTMLElement = Dap.element.string2dom('<div></div>')
+			let mountNode = <HTMLElement>Dap.element.string2dom('<div></div>')
 			document.body.appendChild(mountNode)
 			const instance = createApp(ToastComponent, {
 				...opts,

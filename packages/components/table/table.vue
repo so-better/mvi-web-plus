@@ -120,7 +120,7 @@ const wrapWidth = computed<string>(() => {
 			width += scrollWidth.value
 		}
 		//获取表格组件总宽度
-		const tableWidth = Dap.element.width(elRef.value)
+		const tableWidth = Dap.element.width(elRef.value!)
 		//如果列宽总和还没有达到表格组件总宽度，则没有设置列宽的无需按照最小宽度算
 		return width > tableWidth ? width + 'px' : tableWidth + 'px'
 	}
@@ -191,7 +191,7 @@ const cmpSelectable = computed<(row: any, rowIndex: number, column: TableColumnT
 //工具提示内容
 const tooltipTitle = computed<(row: any, column: TableColumnType) => string>(() => {
 	return (row: any, column: TableColumnType) => {
-		const dom = Dap.element.string2dom(`<div>${dataFormat.value(row, column)}</div>`)
+		const dom = <HTMLElement>Dap.element.string2dom(`<div>${dataFormat.value(row, column)}</div>`)
 		return dom.innerText
 	}
 })

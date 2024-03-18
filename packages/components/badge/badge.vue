@@ -44,7 +44,7 @@ const badgeStyle = computed<any>(() => {
 })
 const badgeShow = computed<boolean>(() => {
 	const badgeExist = Dap.number.isNumber(props.content) || props.content
-	if (badgeExist && props.show) {
+	if (!!badgeExist && props.show) {
 		return true
 	}
 	return false

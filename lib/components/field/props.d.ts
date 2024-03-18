@@ -67,7 +67,7 @@ export declare const FieldProps: {
     activeColor: {
         type: StringConstructor;
         default: null;
-        validator(value: any): any;
+        validator(value: any): boolean;
     };
     clearable: {
         type: BooleanConstructor;

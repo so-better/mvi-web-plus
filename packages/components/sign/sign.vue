@@ -29,16 +29,16 @@ const canvasMouseDown = (e: MouseEvent) => {
 	drawing.value = true
 	inCanvas.value = true
 	const ctx = canvasRef.value!.getContext('2d')!
-	const rect = Dap.element.getElementBounding(canvasRef.value)
+	const rect = Dap.element.getElementBounding(canvasRef.value!)
 	ctx.beginPath()
 	ctx.moveTo(e.pageX - rect.left, e.pageY - rect.top)
 }
 //鼠标移动
-const canvasMouseMove = (e: MouseEvent) => {
+const canvasMouseMove = (e: Event) => {
 	if (drawing.value && inCanvas.value) {
 		const ctx = canvasRef.value!.getContext('2d')!
-		const rect = Dap.element.getElementBounding(canvasRef.value)
-		ctx.lineTo(e.pageX - rect.left, e.pageY - rect.top)
+		const rect = Dap.element.getElementBounding(canvasRef.value!)
+		ctx.lineTo((<MouseEvent>e).pageX - rect.left, (<MouseEvent>e).pageY - rect.top)
 		ctx.strokeStyle = props.color
 		ctx.lineWidth = Dap.element.rem2px(props.width)
 		ctx.stroke()
@@ -55,7 +55,7 @@ const canvasMouseEnter = (e: MouseEvent) => {
 	if (drawing.value) {
 		inCanvas.value = true
 		const ctx = canvasRef.value!.getContext('2d')!
-		const rect = Dap.element.getElementBounding(canvasRef.value)
+		const rect = Dap.element.getElementBounding(canvasRef.value!)
 		ctx.beginPath()
 		ctx.moveTo(e.pageX - rect.left, e.pageY - rect.top)
 	}
@@ -71,7 +71,7 @@ const canvasMouseLeave = () => {
 //触摸按下
 const canvasTouchStart = (e: TouchEvent) => {
 	const ctx = canvasRef.value!.getContext('2d')!
-	const rect = Dap.element.getElementBounding(canvasRef.value)
+	const rect = Dap.element.getElementBounding(canvasRef.value!)
 	ctx.beginPath()
 	ctx.moveTo(e.targetTouches[0].pageX - rect.left, e.targetTouches[0].pageY - rect.top)
 }
@@ -81,7 +81,7 @@ const canvasTouchMove = (e: TouchEvent) => {
 		e.preventDefault()
 	}
 	const ctx = canvasRef.value!.getContext('2d')!
-	const rect = Dap.element.getElementBounding(canvasRef.value)
+	const rect = Dap.element.getElementBounding(canvasRef.value!)
 	ctx.lineTo(e.targetTouches[0].pageX - rect.left, e.targetTouches[0].pageY - rect.top)
 	ctx.strokeStyle = props.color
 	ctx.lineWidth = Dap.element.rem2px(props.width)

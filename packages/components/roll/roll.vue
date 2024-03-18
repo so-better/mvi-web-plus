@@ -65,7 +65,7 @@ const pause = () => {
 	//更新状态
 	status.value = 1
 	//获取位置信息
-	let placement = Dap.element.getElementPoint(rollRef.value, containerRef.value)
+	let placement = Dap.element.getElementPoint(rollRef.value!, containerRef.value!)
 	//去除动画
 	rollRef.value!.style.transition = ''
 	//去除计时器
@@ -130,7 +130,7 @@ const play = () => {
 	//更新状态
 	status.value = 0
 	//获取位置信息
-	let placement = Dap.element.getElementPoint(rollRef.value, containerRef.value)
+	let placement = Dap.element.getElementPoint(rollRef.value, containerRef.value!)
 	//计算动画时间
 	let interval = 0
 	if (props.direction == 'left') {
@@ -202,7 +202,7 @@ const clickStopFun = () => {
 }
 
 onMounted(() => {
-	containerRef.value!.style.height = Dap.element.getCssStyle(rollRef.value, 'height')
+	containerRef.value!.style.height = Dap.element.getCssStyle(rollRef.value!, 'height')
 	if (props.autoplay) {
 		play()
 	}

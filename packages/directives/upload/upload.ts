@@ -159,7 +159,7 @@ class Upload {
 			this.extraData = {}
 		}
 		//生成input[type='file']元素
-		this.$selectInput = Dap.element.string2dom("<input type='file' />")
+		this.$selectInput = <HTMLInputElement>Dap.element.string2dom("<input type='file' />")
 		if (this.accept === 'rar') {
 			this.$selectInput!.setAttribute('accept', 'application/x-rar-compressed')
 		} else if (this.accept === 'zip') {

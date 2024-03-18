@@ -43,7 +43,7 @@ const Notify: NotifyType = {
 				Notify.$el.remove()
 			}
 			let opts = Notify.initParams(options)
-			let mountNode = Dap.element.string2dom('<div></div>')
+			let mountNode = <HTMLElement>Dap.element.string2dom('<div></div>')
 			document.body.appendChild(mountNode)
 			const instance = createApp(NotifyComponent, {
 				...opts,

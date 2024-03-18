@@ -1,6 +1,6 @@
 {
 	"name": "mvi-web-plus",
-	"version": "1.9.5",
+	"version": "1.9.6",
 	"private": false,
 	"sideEffects": [
 		"*.css"
@@ -18,7 +18,7 @@
 	},
 	"dependencies": {
 		"animator-clip": "^1.3.81",
-		"dap-util": "^1.4.22",
+		"dap-util": "^1.5.2",
 		"dayjs": "^1.11.9",
 		"vue": "^3.4.19",
 		"vue-router": "^4.3.0"

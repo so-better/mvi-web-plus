@@ -394,7 +394,7 @@ if (props.type == 'prompt') {
 }
 
 onMounted(() => {
-	Dap.event.on($$el.value, 'click.dialog', overlayClick)
+	Dap.event.on($$el.value!, 'click.dialog', overlayClick)
 })
 
 defineExpose({

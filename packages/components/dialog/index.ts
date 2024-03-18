@@ -52,7 +52,7 @@ const Dialog: DialogType = {
 	alert: function (options) {
 		return new Promise<void>(resolve => {
 			let opts = Dialog.initParams('alert', options)
-			let mountNode = Dap.element.string2dom('<div></div>')
+			let mountNode = <HTMLElement>Dap.element.string2dom('<div></div>')
 			document.body.appendChild(mountNode)
 			const instance = createApp(dialogComponent, {
 				...opts,
@@ -77,7 +77,7 @@ const Dialog: DialogType = {
 	confirm: function (options) {
 		return new Promise(resolve => {
 			let opts = Dialog.initParams('confirm', options)
-			let mountNode = Dap.element.string2dom('<div></div>')
+			let mountNode = <HTMLElement>Dap.element.string2dom('<div></div>')
 			document.body.appendChild(mountNode)
 			const instance = createApp(dialogComponent, {
 				...opts,
@@ -101,7 +101,7 @@ const Dialog: DialogType = {
 	prompt: function (options) {
 		return new Promise(resolve => {
 			let opts = Dialog.initParams('prompt', options)
-			let mountNode = Dap.element.string2dom('<div></div>')
+			let mountNode = <HTMLElement>Dap.element.string2dom('<div></div>')
 			document.body.appendChild(mountNode)
 			const instance = createApp(dialogComponent, {
 				...opts,
@@ -128,7 +128,7 @@ const Dialog: DialogType = {
 	Alert: function (options) {
 		return new Promise<void>(resolve => {
 			let opts = Dialog.initParams('Alert', options)
-			let mountNode = Dap.element.string2dom('<div></div>')
+			let mountNode = <HTMLElement>Dap.element.string2dom('<div></div>')
 			document.body.appendChild(mountNode)
 			const instance = createApp(dialogPcComponent, {
 				...opts,
@@ -152,7 +152,7 @@ const Dialog: DialogType = {
 	Confirm: function (options) {
 		return new Promise(resolve => {
 			let opts = Dialog.initParams('Confirm', options)
-			let mountNode = Dap.element.string2dom('<div></div>')
+			let mountNode = <HTMLElement>Dap.element.string2dom('<div></div>')
 			document.body.appendChild(mountNode)
 			const instance = createApp(dialogPcComponent, {
 				...opts,
@@ -176,7 +176,7 @@ const Dialog: DialogType = {
 	Prompt: function (options) {
 		return new Promise(resolve => {
 			let opts = Dialog.initParams('Prompt', options)
-			let mountNode = Dap.element.string2dom('<div></div>')
+			let mountNode = <HTMLElement>Dap.element.string2dom('<div></div>')
 			document.body.appendChild(mountNode)
 			const instance = createApp(dialogPcComponent, {
 				...opts,

@@ -73,29 +73,29 @@ class Anchor {
 
 		if (Dap.element.isElement(this.$root)) {
 			Dap.event.on(this.$el, 'click.anchor', () => {
-				let scrollTop = Dap.element.getElementPoint(this.$target, this.$root).top
+				let scrollTop = Dap.element.getElementPoint(<HTMLElement>this.$target, <HTMLElement>this.$root).top
 				Dap.element
 					.setScrollTop({
 						el: this.$root,
-						number: scrollTop - Dap.element.rem2px(this.distance),
+						number: scrollTop - Dap.element.rem2px(this.distance!),
 						time: this.time
 					})
 					.then(() => {
-						let top = scrollTop - Dap.element.rem2px(this.distance) <= 0 ? 0 : scrollTop - Dap.element.rem2px(this.distance)
+						let top = scrollTop - Dap.element.rem2px(this.distance!) <= 0 ? 0 : scrollTop - Dap.element.rem2px(this.distance!)
 						this.callback!(top)
 					})
 			})
 		} else {
 			Dap.event.on(this.$el, 'click.anchor', () => {
 				//获取目标元素到浏览器顶部的距离
-				let scrollTop = Dap.element.getElementPoint(this.$target).top
+				let scrollTop = Dap.element.getElementPoint(<HTMLElement>this.$target).top
 				Dap.element
 					.setScrollTop({
-						number: scrollTop - Dap.element.rem2px(this.distance),
+						number: scrollTop - Dap.element.rem2px(this.distance!),
 						time: this.time
 					})
 					.then(() => {
-						let top = scrollTop - Dap.element.rem2px(this.distance) <= 0 ? 0 : scrollTop - Dap.element.rem2px(this.distance)
+						let top = scrollTop - Dap.element.rem2px(this.distance!) <= 0 ? 0 : scrollTop - Dap.element.rem2px(this.distance!)
 						this.callback!(top)
 					})
 			})

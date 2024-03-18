@@ -252,7 +252,7 @@ const install = (app: App) => {
 }
 
 /***** 版本号 *****/
-const version = '1.9.5'
+const version = '1.9.6'
 
 const stdin_default = {
 	install,

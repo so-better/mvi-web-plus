@@ -848,33 +848,33 @@ class Resize {
 
 	//设置拖动事件
 	private setOn() {
-		Dap.event.on(this.$el, 'touchstart.resize', (e: TouchEvent) => {
-			this.startX = e.targetTouches[0].pageX
-			this.startY = e.targetTouches[0].pageY
+		Dap.event.on(this.$el, 'touchstart.resize', (e: Event) => {
+			this.startX = (<TouchEvent>e).targetTouches[0].pageX
+			this.startY = (<TouchEvent>e).targetTouches[0].pageY
 			this.down(e)
 		})
-		Dap.event.on(this.$el, 'touchmove.resize', (e: TouchEvent) => {
+		Dap.event.on(this.$el, 'touchmove.resize', (e: Event) => {
 			if (e.cancelable) {
 				e.preventDefault()
 			}
-			let endX = e.targetTouches[0].pageX
-			let endY = e.targetTouches[0].pageY
+			let endX = (<TouchEvent>e).targetTouches[0].pageX
+			let endY = (<TouchEvent>e).targetTouches[0].pageY
 			this.move(e, endX, endY)
 		})
-		Dap.event.on(this.$el, 'touchend.resize', (e: TouchEvent) => {
+		Dap.event.on(this.$el, 'touchend.resize', (e: Event) => {
 			this.leave(e)
 		})
-		Dap.event.on(this.$el, 'mousedown.resize', (e: MouseEvent) => {
-			this.startX = e.pageX
-			this.startY = e.pageY
+		Dap.event.on(this.$el, 'mousedown.resize', (e: Event) => {
+			this.startX = (<MouseEvent>e).pageX
+			this.startY = (<MouseEvent>e).pageY
 			this.down(e)
 		})
-		Dap.event.on(document.documentElement, `mousemove.resize_${this.guid}`, (e: MouseEvent) => {
-			let endX = e.pageX
-			let endY = e.pageY
+		Dap.event.on(document.documentElement, `mousemove.resize_${this.guid}`, (e: Event) => {
+			let endX = (<MouseEvent>e).pageX
+			let endY = (<MouseEvent>e).pageY
 			this.move(e, endX, endY)
 		})
-		Dap.event.on(document.documentElement, `mouseup.resize_${this.guid}`, (e: MouseEvent) => {
+		Dap.event.on(document.documentElement, `mouseup.resize_${this.guid}`, (e: Event) => {
 			this.leave(e)
 		})
 	}
@@ -961,54 +961,54 @@ class Resize {
 		let range = this.$el.getBoundingClientRect()
 		if (this.draggableX && this.draggableY) {
 			this.leftRange = {
-				x: [range.left, range.left + Dap.element.rem2px(this.range)],
-				y: [range.top + Dap.element.rem2px(this.range), range.bottom - Dap.element.rem2px(this.range)]
+				x: [range.left, range.left + Dap.element.rem2px(this.range!)],
+				y: [range.top + Dap.element.rem2px(this.range!), range.bottom - Dap.element.rem2px(this.range!)]
 			}
 			this.rightRange = {
-				x: [range.right - Dap.element.rem2px(this.range), range.right],
-				y: [range.top + Dap.element.rem2px(this.range), range.bottom - Dap.element.rem2px(this.range)]
+				x: [range.right - Dap.element.rem2px(this.range!), range.right],
+				y: [range.top + Dap.element.rem2px(this.range!), range.bottom - Dap.element.rem2px(this.range!)]
 			}
 			this.topRange = {
-				x: [range.left + Dap.element.rem2px(this.range), range.right - Dap.element.rem2px(this.range)],
-				y: [range.top, range.top + Dap.element.rem2px(this.range)]
+				x: [range.left + Dap.element.rem2px(this.range!), range.right - Dap.element.rem2px(this.range!)],
+				y: [range.top, range.top + Dap.element.rem2px(this.range!)]
 			}
 			this.bottomRange = {
-				x: [range.left + Dap.element.rem2px(this.range), range.right - Dap.element.rem2px(this.range)],
-				y: [range.bottom - Dap.element.rem2px(this.range), range.bottom]
+				x: [range.left + Dap.element.rem2px(this.range!), range.right - Dap.element.rem2px(this.range!)],
+				y: [range.bottom - Dap.element.rem2px(this.range!), range.bottom]
 			}
 			this.leftTopRange = {
-				x: [range.left, range.left + Dap.element.rem2px(this.range)],
-				y: [range.top, range.top + Dap.element.rem2px(this.range)]
+				x: [range.left, range.left + Dap.element.rem2px(this.range!)],
+				y: [range.top, range.top + Dap.element.rem2px(this.range!)]
 			}
 			this.leftBottomRange = {
-				x: [range.left, range.left + Dap.element.rem2px(this.range)],
-				y: [range.bottom - Dap.element.rem2px(this.range), range.bottom]
+				x: [range.left, range.left + Dap.element.rem2px(this.range!)],
+				y: [range.bottom - Dap.element.rem2px(this.range!), range.bottom]
 			}
 			this.rightTopRange = {
-				x: [range.right - Dap.element.rem2px(this.range), range.right],
-				y: [range.top, range.top + Dap.element.rem2px(this.range)]
+				x: [range.right - Dap.element.rem2px(this.range!), range.right],
+				y: [range.top, range.top + Dap.element.rem2px(this.range!)]
 			}
 			this.rightBottomRange = {
-				x: [range.right - Dap.element.rem2px(this.range), range.right],
-				y: [range.bottom - Dap.element.rem2px(this.range), range.bottom]
+				x: [range.right - Dap.element.rem2px(this.range!), range.right],
+				y: [range.bottom - Dap.element.rem2px(this.range!), range.bottom]
 			}
 		} else if (this.draggableX) {
 			this.leftRange = {
-				x: [range.left, range.left + Dap.element.rem2px(this.range)],
+				x: [range.left, range.left + Dap.element.rem2px(this.range!)],
 				y: [range.top, range.bottom]
 			}
 			this.rightRange = {
-				x: [range.right - Dap.element.rem2px(this.range), range.right],
+				x: [range.right - Dap.element.rem2px(this.range!), range.right],
 				y: [range.top, range.bottom]
 			}
 		} else if (this.draggableY) {
 			this.topRange = {
 				x: [range.left, range.right],
-				y: [range.top, range.top + Dap.element.rem2px(this.range)]
+				y: [range.top, range.top + Dap.element.rem2px(this.range!)]
 			}
 			this.bottomRange = {
 				x: [range.left, range.right],
-				y: [range.bottom - Dap.element.rem2px(this.range), range.bottom]
+				y: [range.bottom - Dap.element.rem2px(this.range!), range.bottom]
 			}
 		}
 	}

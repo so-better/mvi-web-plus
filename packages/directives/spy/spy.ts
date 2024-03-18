@@ -119,14 +119,14 @@ class Spy {
 		}
 		//给滚动容器添加监听事件
 		this.scrollHandle()
-		Dap.event.on(this.$root, `scroll.spy_${this.guid}`, () => {
+		Dap.event.on(<HTMLElement>this.$root, `scroll.spy_${this.guid}`, () => {
 			this.scrollHandle()
 		})
 	}
 
 	//api：移除滚动容器监听事件
 	destroy() {
-		Dap.event.off(this.$root, `scroll.spy_${this.guid}`)
+		Dap.event.off(<HTMLElement>this.$root, `scroll.spy_${this.guid}`)
 	}
 }
 

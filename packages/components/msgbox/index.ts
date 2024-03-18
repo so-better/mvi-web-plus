@@ -30,7 +30,7 @@ const Msgbox: MsgboxType = {
 	msgbox: options => {
 		return new Promise<void>(resolve => {
 			let opts = Msgbox.initParams(options)
-			let mountNode = Dap.element.string2dom('<div></div>')
+			let mountNode = <HTMLElement>Dap.element.string2dom('<div></div>')
 			document.body.appendChild(mountNode)
 			const instance = createApp(MsgboxComponent, {
 				...opts,

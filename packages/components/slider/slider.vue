@@ -135,7 +135,7 @@ const dragTo = (event: MouseEvent) => {
 	if (isdrag.value) {
 		return
 	}
-	if (Dap.element.isContains(btnRef.value, event.target)) {
+	if (Dap.element.isContains(btnRef.value!, <HTMLElement>event.target)) {
 		return
 	}
 	if (props.vertical) {

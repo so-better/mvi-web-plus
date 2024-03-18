@@ -141,8 +141,8 @@ const setSlider = () => {
 	if (!headersRef.value) {
 		return
 	}
-	slideWidth.value = parseFloat(Dap.element.getCssStyle(headersRef.value.querySelector('.mvi-tab-header.active'), 'width'))
-	slideLeft.value = Dap.element.getElementPoint(headersRef.value.querySelector('.mvi-tab-header.active'), headersRef.value).left
+	slideWidth.value = parseFloat(Dap.element.getCssStyle(headersRef.value.querySelector('.mvi-tab-header.active')!, 'width'))
+	slideLeft.value = Dap.element.getElementPoint(headersRef.value.querySelector('.mvi-tab-header.active')!, headersRef.value).left
 }
 //点击头部的标题
 const clickHeader = (item: ComponentInternalInstance, index: number) => {

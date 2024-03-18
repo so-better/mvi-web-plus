@@ -308,10 +308,10 @@ const handleTouchEnd = () => {
 	}
 }
 //鼠标按下
-const handleMouseDown = (e: MouseEvent) => {
+const handleMouseDown = (e: Event) => {
 	if (props.touchable) {
 		//记录按下时的点位置
-		initTouchPoint.value = props.vertical ? e.pageY : e.pageX
+		initTouchPoint.value = props.vertical ? (<MouseEvent>e).pageY : (<MouseEvent>e).pageX
 		everyTouchPoint.value = initTouchPoint.value
 		//重置滑动总距离
 		touchTotal.value = 0
@@ -324,13 +324,13 @@ const handleMouseDown = (e: MouseEvent) => {
 	}
 }
 //鼠标滑动
-const handleMouseMove = (e: MouseEvent) => {
+const handleMouseMove = (e: Event) => {
 	if (props.touchable && isMouseDown.value) {
 		if (e.cancelable) {
 			e.preventDefault()
 		}
 		//移动到的点
-		const point = props.vertical ? e.pageY : e.pageX
+		const point = props.vertical ? (<MouseEvent>e).pageY : (<MouseEvent>e).pageX
 		//设置总滑动距离
 		const moveTotal = point - initTouchPoint.value
 		//如果总滑动距离大于单张尺寸，则不可继续滑动

@@ -34,7 +34,7 @@ declare const _default: import("vue").DefineComponent<{
     activeColor: {
         type: StringConstructor;
         default: null;
-        validator(value: any): any;
+        validator(value: any): boolean;
     };
     disabled: {
         type: BooleanConstructor;
@@ -125,7 +125,7 @@ declare const _default: import("vue").DefineComponent<{
     activeColor: {
         type: StringConstructor;
         default: null;
-        validator(value: any): any;
+        validator(value: any): boolean;
     };
     disabled: {
         type: BooleanConstructor;

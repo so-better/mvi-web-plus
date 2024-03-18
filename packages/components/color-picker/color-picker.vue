@@ -120,7 +120,7 @@ const setPanelDrag = () => {
 			dragging.value = true
 		},
 		drag: () => {
-			const placement = Dap.element.getElementPoint(sliderRef.value, panelRef.value)
+			const placement = Dap.element.getElementPoint(sliderRef.value!, panelRef.value!)
 			hsv.value[1] = ((placement.left + sliderRef.value!.offsetWidth / 2) / panelRef.value!.offsetWidth) * 100
 			hsv.value[2] = (1 - (placement.top + sliderRef.value!.offsetHeight / 2) / panelRef.value!.offsetHeight) * 100
 			setValue()
@@ -162,7 +162,7 @@ const clickPanelSetColor = (e: MouseEvent) => {
 	updateByDrag.value = true
 	sliderRef.value!.style.left = e.offsetX - sliderRef.value!.offsetWidth / 2 + 'px'
 	sliderRef.value!.style.top = e.offsetY - sliderRef.value!.offsetHeight / 2 + 'px'
-	const placement = Dap.element.getElementPoint(sliderRef.value, panelRef.value)
+	const placement = Dap.element.getElementPoint(sliderRef.value!, panelRef.value!)
 	hsv.value[1] = ((placement.left + sliderRef.value!.offsetWidth / 2) / panelRef.value!.offsetWidth) * 100
 	hsv.value[2] = (1 - (placement.top + sliderRef.value!.offsetHeight / 2) / panelRef.value!.offsetHeight) * 100
 	setValue()

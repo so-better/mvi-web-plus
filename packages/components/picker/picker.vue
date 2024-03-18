@@ -59,9 +59,11 @@ const endTimeStamp = ref<number>(0)
 const cmpHeight = computed<number>(() => {
 	if (props.selectHeight.includes('px')) {
 		return parseFloat(props.selectHeight)
-	} else if (props.selectHeight.includes('rem')) {
+	}
+	if (props.selectHeight.includes('rem')) {
 		return Dap.element.rem2px(parseFloat(props.selectHeight))
 	}
+	return 0
 })
 //加载状态样式
 const loadingStyle = computed<any>(() => {
@@ -255,14 +257,14 @@ const touchmove = (event: TouchEvent) => {
 	startY.value = endY
 }
 //鼠标拖动
-const mousemove = (event: MouseEvent) => {
+const mousemove = (event: Event) => {
 	if (!mouseDown.value) {
 		return
 	}
 	if (event.cancelable) {
 		event.preventDefault()
 	}
-	let endY = event.pageY
+	let endY = (<MouseEvent>event).pageY
 	let moveY = endY - startY.value //每次偏移量
 	let moveY2 = endY - startY2.value //总偏移量
 	//已经在第一个选项且是下滑的
@@ -306,13 +308,13 @@ const touchend = (event: TouchEvent) => {
 	}
 }
 //鼠标松开
-const mouseup = (event: MouseEvent) => {
+const mouseup = (event: Event) => {
 	if (!mouseDown.value) {
 		return
 	}
 	mouseDown.value = false
 	endTimeStamp.value = Date.now()
-	let moveTotal = event.pageY - startY2.value
+	let moveTotal = (<MouseEvent>event).pageY - startY2.value
 	let totalTimeStamp = endTimeStamp.value - startTimeStamp.value //时间差
 	if (totalTimeStamp < 300 && Math.abs(moveTotal) > cmpHeight.value) {
 		//惯性滑动

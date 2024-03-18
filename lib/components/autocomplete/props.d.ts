@@ -27,7 +27,7 @@ export declare const AutocompleteProps: {
     activeColor: {
         type: StringConstructor;
         default: null;
-        validator(value: any): any;
+        validator(value: any): boolean;
     };
     filterMethod: {
         type: PropType<boolean | ((value: string, list: string[]) => string[])>;

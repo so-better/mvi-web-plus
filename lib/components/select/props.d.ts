@@ -44,7 +44,7 @@ export declare const SelectProps: {
     activeColor: {
         type: StringConstructor;
         default: null;
-        validator(value: any): any;
+        validator(value: any): boolean;
     };
     disabled: {
         type: BooleanConstructor;

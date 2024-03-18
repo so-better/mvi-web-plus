@@ -68,21 +68,21 @@ class Drag {
 	//设置拖拽事件
 	private setOn() {
 		//触摸开始
-		Dap.event.on(this.$el, 'touchstart.drag', (e: TouchEvent) => {
+		Dap.event.on(this.$el, 'touchstart.drag', (e: Event) => {
 			if (!this.draggableX && !this.draggableY) {
 				return
 			}
-			this.pageX = e.targetTouches[0].pageX - Dap.element.getElementPoint(this.$el, this.$container).left
-			this.pageY = e.targetTouches[0].pageY - Dap.element.getElementPoint(this.$el, this.$container).top
+			this.pageX = (<TouchEvent>e).targetTouches[0].pageX - Dap.element.getElementPoint(this.$el, <HTMLElement>this.$container).left
+			this.pageY = (<TouchEvent>e).targetTouches[0].pageY - Dap.element.getElementPoint(this.$el, <HTMLElement>this.$container).top
 			this.draggable = true
 			if (this.cursor) {
 				this.$el.style.cursor = 'move'
 			}
 			//监听事件，监听刚开始拖动触发
-			this.beforeDrag!.apply(this, [this.$el, this.$container, Dap.element.getElementPoint(this.$el, this.$container), e])
+			this.beforeDrag!.apply(this, [this.$el, this.$container, Dap.element.getElementPoint(this.$el, <HTMLElement>this.$container), e])
 		})
 		//触摸移动
-		Dap.event.on(this.$el, 'touchmove.drag', (e: TouchEvent) => {
+		Dap.event.on(this.$el, 'touchmove.drag', (e: Event) => {
 			if (this.draggable) {
 				if (!this.draggableX && !this.draggableY) {
 					return
@@ -90,8 +90,8 @@ class Drag {
 				if (e.cancelable) {
 					e.preventDefault()
 				}
-				let left = e.targetTouches[0].pageX - this.pageX
-				let top = e.targetTouches[0].pageY - this.pageY
+				let left = (<TouchEvent>e).targetTouches[0].pageX - this.pageX
+				let top = (<TouchEvent>e).targetTouches[0].pageY - this.pageY
 				if (this.draggableX) {
 					this.$el.style.left = left + 'px'
 					this.$el.style.right = 'auto'
@@ -103,12 +103,12 @@ class Drag {
 				this.resize()
 				if (this.draggableX || this.draggableY) {
 					//监听事件
-					this.drag!.apply(this, [this.$el, this.$container, Dap.element.getElementPoint(this.$el, this.$container), e])
+					this.drag!.apply(this, [this.$el, this.$container, Dap.element.getElementPoint(this.$el, <HTMLElement>this.$container), e])
 				}
 			}
 		})
 		//触摸松开后，拖拽状态更改为false，触发监听事件
-		Dap.event.on(this.$el, 'touchend.drag', (e: TouchEvent) => {
+		Dap.event.on(this.$el, 'touchend.drag', (e: Event) => {
 			if (this.draggable) {
 				if (!this.draggableX && !this.draggableY) {
 					return
@@ -118,31 +118,31 @@ class Drag {
 					this.$el.style.cursor = ''
 				}
 				//监听事件
-				this.dragged!.apply(this, [this.$el, this.$container, Dap.element.getElementPoint(this.$el, this.$container), e])
+				this.dragged!.apply(this, [this.$el, this.$container, Dap.element.getElementPoint(this.$el, <HTMLElement>this.$container), e])
 			}
 		})
 		//鼠标按下
-		Dap.event.on(this.$el, 'mousedown.drag', (e: MouseEvent) => {
+		Dap.event.on(this.$el, 'mousedown.drag', (e: Event) => {
 			if (!this.draggableX && !this.draggableY) {
 				return
 			}
-			this.pageX = e.pageX - Dap.element.getElementPoint(this.$el, this.$container).left
-			this.pageY = e.pageY - Dap.element.getElementPoint(this.$el, this.$container).top
+			this.pageX = (<MouseEvent>e).pageX - Dap.element.getElementPoint(this.$el, <HTMLElement>this.$container).left
+			this.pageY = (<MouseEvent>e).pageY - Dap.element.getElementPoint(this.$el, <HTMLElement>this.$container).top
 			this.draggable = true
 			if (this.cursor) {
 				this.$el.style.cursor = 'move'
 			}
 			//监听事件，监听刚开始拖动触发
-			this.beforeDrag!.apply(this, [this.$el, this.$container, Dap.element.getElementPoint(this.$el, this.$container), e])
+			this.beforeDrag!.apply(this, [this.$el, this.$container, Dap.element.getElementPoint(this.$el, <HTMLElement>this.$container), e])
 		})
 		//鼠标移动
-		Dap.event.on(document.documentElement, `mousemove.drag_${this.guid}`, (e: MouseEvent) => {
+		Dap.event.on(document.documentElement, `mousemove.drag_${this.guid}`, (e: Event) => {
 			if (this.draggable) {
 				if (!this.draggableX && !this.draggableY) {
 					return
 				}
-				let left = e.pageX - this.pageX
-				let top = e.pageY - this.pageY
+				let left = (<MouseEvent>e).pageX - this.pageX
+				let top = (<MouseEvent>e).pageY - this.pageY
 				if (this.draggableX) {
 					this.$el.style.left = left + 'px'
 					this.$el.style.right = 'auto'
@@ -154,12 +154,12 @@ class Drag {
 				this.resize()
 				if (this.draggableX || this.draggableY) {
 					//监听事件
-					this.drag!.apply(this, [this.$el, this.$container, Dap.element.getElementPoint(this.$el, this.$container), e])
+					this.drag!.apply(this, [this.$el, this.$container, Dap.element.getElementPoint(this.$el, <HTMLElement>this.$container), e])
 				}
 			}
 		})
 		//鼠标松开后，拖拽状态更改为false，触发监听事件
-		Dap.event.on(document.documentElement, `mouseup.drag_${this.guid}`, (e: MouseEvent) => {
+		Dap.event.on(document.documentElement, `mouseup.drag_${this.guid}`, (e: Event) => {
 			if (this.draggable) {
 				if (!this.draggableX && !this.draggableY) {
 					return
@@ -169,7 +169,7 @@ class Drag {
 					this.$el.style.cursor = ''
 				}
 				//监听事件
-				this.dragged!.apply(this, [this.$el, this.$container, Dap.element.getElementPoint(this.$el, this.$container), e])
+				this.dragged!.apply(this, [this.$el, this.$container, Dap.element.getElementPoint(this.$el, <HTMLElement>this.$container), e])
 			}
 		})
 	}
@@ -178,52 +178,52 @@ class Drag {
 	private resize() {
 		if (this.mode == 'in') {
 			if (this.draggableX) {
-				if (Dap.element.getElementPoint(this.$el, this.$container).left <= 0) {
+				if (Dap.element.getElementPoint(this.$el, <HTMLElement>this.$container).left <= 0) {
 					this.$el.style.left = '0'
 				}
-				if (Dap.element.getElementPoint(this.$el, this.$container).left >= (<HTMLElement>this.$container).offsetWidth - this.$el.offsetWidth) {
+				if (Dap.element.getElementPoint(this.$el, <HTMLElement>this.$container).left >= (<HTMLElement>this.$container).offsetWidth - this.$el.offsetWidth) {
 					this.$el.style.left = (<HTMLElement>this.$container).offsetWidth - this.$el.offsetWidth + 'px'
 				}
 			}
 			if (this.draggableY) {
-				if (Dap.element.getElementPoint(this.$el, this.$container).top <= 0) {
+				if (Dap.element.getElementPoint(this.$el, <HTMLElement>this.$container).top <= 0) {
 					this.$el.style.top = '0'
 				}
-				if (Dap.element.getElementPoint(this.$el, this.$container).top >= (<HTMLElement>this.$container).offsetHeight - this.$el.offsetHeight) {
+				if (Dap.element.getElementPoint(this.$el, <HTMLElement>this.$container).top >= (<HTMLElement>this.$container).offsetHeight - this.$el.offsetHeight) {
 					this.$el.style.top = (<HTMLElement>this.$container).offsetHeight - this.$el.offsetHeight + 'px'
 				}
 			}
 		} else if (this.mode == 'on') {
 			if (this.draggableX) {
-				if (Dap.element.getElementPoint(this.$el, this.$container).left <= -this.$el.offsetWidth / 2) {
+				if (Dap.element.getElementPoint(this.$el, <HTMLElement>this.$container).left <= -this.$el.offsetWidth / 2) {
 					this.$el.style.left = -this.$el.offsetWidth / 2 + 'px'
 				}
-				if (Dap.element.getElementPoint(this.$el, this.$container).left >= (<HTMLElement>this.$container).offsetWidth - this.$el.offsetWidth / 2) {
+				if (Dap.element.getElementPoint(this.$el, <HTMLElement>this.$container).left >= (<HTMLElement>this.$container).offsetWidth - this.$el.offsetWidth / 2) {
 					this.$el.style.left = (<HTMLElement>this.$container).offsetWidth - this.$el.offsetWidth / 2 + 'px'
 				}
 			}
 			if (this.draggableY) {
-				if (Dap.element.getElementPoint(this.$el, this.$container).top <= -this.$el.offsetHeight / 2) {
+				if (Dap.element.getElementPoint(this.$el, <HTMLElement>this.$container).top <= -this.$el.offsetHeight / 2) {
 					this.$el.style.top = -this.$el.offsetHeight / 2 + 'px'
 				}
-				if (Dap.element.getElementPoint(this.$el, this.$container).top >= (<HTMLElement>this.$container).offsetHeight - this.$el.offsetHeight / 2) {
+				if (Dap.element.getElementPoint(this.$el, <HTMLElement>this.$container).top >= (<HTMLElement>this.$container).offsetHeight - this.$el.offsetHeight / 2) {
 					this.$el.style.top = (<HTMLElement>this.$container).offsetHeight - this.$el.offsetHeight / 2 + 'px'
 				}
 			}
 		} else if (this.mode == 'out') {
 			if (this.draggableX) {
-				if (Dap.element.getElementPoint(this.$el, this.$container).left <= -this.$el.offsetWidth) {
+				if (Dap.element.getElementPoint(this.$el, <HTMLElement>this.$container).left <= -this.$el.offsetWidth) {
 					this.$el.style.left = -this.$el.offsetWidth + 'px'
 				}
-				if (Dap.element.getElementPoint(this.$el, this.$container).left >= (<HTMLElement>this.$container).offsetWidth) {
+				if (Dap.element.getElementPoint(this.$el, <HTMLElement>this.$container).left >= (<HTMLElement>this.$container).offsetWidth) {
 					this.$el.style.left = (<HTMLElement>this.$container).offsetWidth + 'px'
 				}
 			}
 			if (this.draggableY) {
-				if (Dap.element.getElementPoint(this.$el, this.$container).top <= -this.$el.offsetHeight) {
+				if (Dap.element.getElementPoint(this.$el, <HTMLElement>this.$container).top <= -this.$el.offsetHeight) {
 					this.$el.style.top = -this.$el.offsetHeight + 'px'
 				}
-				if (Dap.element.getElementPoint(this.$el, this.$container).top >= (<HTMLElement>this.$container).offsetHeight) {
+				if (Dap.element.getElementPoint(this.$el, <HTMLElement>this.$container).top >= (<HTMLElement>this.$container).offsetHeight) {
 					this.$el.style.top = (<HTMLElement>this.$container).offsetHeight + 'px'
 				}
 			}
@@ -255,10 +255,10 @@ class Drag {
 		if (!Dap.element.isElement(this.$container)) {
 			this.$container = document.body
 		}
-		if (!Dap.element.isContains(this.$container, this.$el)) {
+		if (!Dap.element.isContains(<HTMLElement>this.$container, this.$el)) {
 			throw new Error('Elements that need to be dragged are not descendants of container elements')
 		}
-		if (Dap.element.getCssStyle(this.$container, 'position') == 'static' && this.$container != document.body) {
+		if (Dap.element.getCssStyle(<HTMLElement>this.$container, 'position') == 'static' && this.$container != document.body) {
 			throw new Error('The container element cannot be static positioning')
 		}
 		if (Dap.element.getCssStyle(this.$el, 'position') == 'static' || Dap.element.getCssStyle(this.$el, 'position') == 'relative') {

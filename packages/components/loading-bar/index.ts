@@ -38,7 +38,7 @@ const LoadingBar: LoadingBarType = {
 				LoadingBar.$el.remove()
 			}
 			let opts = LoadingBar.initParams(options)
-			let mountNode = Dap.element.string2dom('<div></div>')
+			let mountNode = <HTMLElement>Dap.element.string2dom('<div></div>')
 			document.body.appendChild(mountNode)
 			const instance = createApp(LoadingBarComponent, {
 				...opts,

@@ -132,7 +132,7 @@ const setImageAnimation = (callback: () => void) => {
 //获取图片元素被组件遮挡部分的数据，会在每次scal值更新时调用更新
 const getImageCoverData = (): RichImageCoverType => {
 	const imgRect = Dap.element.getElementBounding(imgRef.value!.$el)
-	const elRect = Dap.element.getElementBounding(elRef.value)
+	const elRect = Dap.element.getElementBounding(elRef.value!)
 	return {
 		left: elRect.left - imgRect.left,
 		top: elRect.top - imgRect.top,
@@ -213,7 +213,7 @@ const scaleByWheel = (event: WheelEvent) => {
 	}
 }
 //鼠标对图片平移的操作处理
-const handleImageTranslate = (event: MouseEvent) => {
+const handleImageTranslate = (event: Event) => {
 	//鼠标按下
 	if (event.type == 'mousedown') {
 		if (scale.value <= 1) {
@@ -222,8 +222,8 @@ const handleImageTranslate = (event: MouseEvent) => {
 		emits('translate-mousedown', event)
 		//记录坐标
 		imageMovePoint.value = {
-			x: event.pageX,
-			y: event.pageY
+			x: (<MouseEvent>event).pageX,
+			y: (<MouseEvent>event).pageY
 		}
 		//此时可以移动图片
 		imageCanMove.value = true
@@ -234,13 +234,13 @@ const handleImageTranslate = (event: MouseEvent) => {
 			event.preventDefault()
 		}
 		if (imageCanMove.value) {
-			setImageTranslate(event.pageX, event.pageY)
+			setImageTranslate((<MouseEvent>event).pageX, (<MouseEvent>event).pageY)
 		}
 	}
 	//鼠标松开
 	else if (event.type == 'mouseup') {
 		if (imageCanMove.value) {
-			handleTranslateEnd(event)
+			handleTranslateEnd(<MouseEvent>event)
 		}
 	}
 }
@@ -295,7 +295,7 @@ const scaleByTouch = (event: TouchEvent) => {
 					translateX.value = 0
 					translateY.value = 0
 					//缩小
-					scale.value = Dap.number.add(scale.value, Dap.number.divide(Dap.number.subtract(spacing, doubleTouch.value.spacing), elRef.value!.offsetWidth))
+					scale.value = Dap.number.add(scale.value, Dap.number.divide(Dap.number.subtract(spacing, doubleTouch.value.spacing!), elRef.value!.offsetWidth))
 					imageCoverRect.value = getImageCoverData()
 				}
 			}
@@ -306,7 +306,7 @@ const scaleByTouch = (event: TouchEvent) => {
 					translateX.value = 0
 					translateY.value = 0
 					//放大
-					scale.value = Dap.number.add(scale.value, Dap.number.divide(Dap.number.subtract(spacing, doubleTouch.value.spacing), elRef.value!.offsetWidth))
+					scale.value = Dap.number.add(scale.value, Dap.number.divide(Dap.number.subtract(spacing, doubleTouch.value.spacing!), elRef.value!.offsetWidth))
 					imageCoverRect.value = getImageCoverData()
 				}
 			}

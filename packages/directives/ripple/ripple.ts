@@ -58,12 +58,12 @@ class Ripple {
 			const destroyDuration = 100
 			//水波纹元素
 			const rippleEls = Dap.element.children(rippleContainer)
-			const rippleEl = rippleEls[0]
+			const rippleEl = <HTMLElement>rippleEls[0]
 			//重新设置动画
 			rippleEl.style.transition = `opacity ${destroyDuration}ms ease-in-out`
 			//促使浏览器重绘
 			rippleEl.offsetWidth
-			rippleEl.style.opacity = 0
+			rippleEl.style.opacity = '0'
 			setTimeout(() => {
 				//重置容器数组
 				this.rippleContainers = this.rippleContainers.filter(el => {
@@ -82,7 +82,7 @@ class Ripple {
 		//获取水波圆形的半径
 		const { x1, y1, r } = this.getRadius(pageX, pageY, rect)
 		//创建元素
-		const el: HTMLElement = Dap.element.string2dom('<div></div>')
+		const el = <HTMLElement>Dap.element.string2dom('<div></div>')
 		el.style.width = r * 2 + 'px'
 		el.style.height = r * 2 + 'px'
 		el.style.position = 'absolute'
@@ -100,7 +100,7 @@ class Ripple {
 
 	//创建ripple父容器
 	private createRippleContainer() {
-		const el: HTMLElement = Dap.element.string2dom('<div></div>')
+		const el = <HTMLElement>Dap.element.string2dom('<div></div>')
 		el.style.position = 'absolute'
 		el.style.left = '0px'
 		el.style.top = '0px'
@@ -217,19 +217,19 @@ class Ripple {
 		}
 
 		//鼠标按下
-		Dap.event.on(this.$el, 'mousedown.ripple', (e: MouseEvent) => {
-			downFn(e.pageX, e.pageY)
+		Dap.event.on(this.$el, 'mousedown.ripple', (e: Event) => {
+			downFn((<MouseEvent>e).pageX, (<MouseEvent>e).pageY)
 		})
 		//鼠标松开或者移出页面
 		Dap.event.on(document.documentElement, `mouseup.ripple_${this.guid}`, upFn)
 
 		//手指触摸
-		Dap.event.on(this.$el, 'touchstart.ripple', (e: TouchEvent) => {
+		Dap.event.on(this.$el, 'touchstart.ripple', (e: Event) => {
 			e.preventDefault()
-			downFn(e.targetTouches[0].pageX, e.targetTouches[0].pageY)
+			downFn((<TouchEvent>e).targetTouches[0].pageX, (<TouchEvent>e).targetTouches[0].pageY)
 		})
 		//手指松开
-		Dap.event.on(this.$el, `touchend.ripple`, (e: TouchEvent) => {
+		Dap.event.on(this.$el, `touchend.ripple`, (e: Event) => {
 			e.preventDefault()
 			upFn()
 		})

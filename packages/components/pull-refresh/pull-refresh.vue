@@ -139,7 +139,7 @@ const initHeight = () => {
 }
 //获取触摸元素最近的滚动容器
 const getScrollEl = (el: HTMLElement): HTMLElement => {
-	if (el.isEqualNode(wrapperRef.value) || !Dap.element.isContains(wrapperRef.value, el)) {
+	if (el.isEqualNode(wrapperRef.value) || !Dap.element.isContains(wrapperRef.value!, el)) {
 		return wrapperRef.value!
 	}
 	if (Dap.element.getScrollHeight(el) > el.clientHeight) {
@@ -227,7 +227,7 @@ const onPull = (event: TouchEvent) => {
 		return
 	}
 	//滚动条不在顶部时不执行刷新
-	if (Dap.element.getScrollTop(wrapperRef.value) > 0) {
+	if (Dap.element.getScrollTop(wrapperRef.value!) > 0) {
 		firstStartY.value = startY.value
 		return
 	}
@@ -250,7 +250,7 @@ const onPull = (event: TouchEvent) => {
 	//元素偏移值
 	let y = translateY.value + move / amount.value
 	//如果移动距离大于distance指定的距离，则变为可释放状态
-	if (y > Dap.element.rem2px(props) - elHeight.value) {
+	if (y > Dap.element.rem2px(props.distance) - elHeight.value) {
 		status.value = 1
 	} else {
 		status.value = 0
@@ -259,7 +259,7 @@ const onPull = (event: TouchEvent) => {
 	translateY.value = y
 }
 //下拉过程(PC端)
-const onPull2 = (event: MouseEvent) => {
+const onPull2 = (event: Event) => {
 	if (!mouseDown.value || props.disabled) {
 		return
 	}
@@ -267,7 +267,7 @@ const onPull2 = (event: MouseEvent) => {
 	if (status.value == 2) {
 		return
 	}
-	let endY = event.pageY
+	let endY = (<MouseEvent>event).pageY
 	let move = endY - startY.value //每一次移动的偏移量
 	let totalMove = endY - firstStartY.value //距离第一次触摸时的偏移量
 	startY.value = endY
@@ -277,7 +277,7 @@ const onPull2 = (event: MouseEvent) => {
 		return
 	}
 	//滚动条不在顶部时不执行刷新
-	if (Dap.element.getScrollTop(wrapperRef.value) > 0) {
+	if (Dap.element.getScrollTop(wrapperRef.value!) > 0) {
 		firstStartY.value = startY.value
 		return
 	}
