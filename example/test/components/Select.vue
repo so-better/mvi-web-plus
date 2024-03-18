@@ -1,12 +1,12 @@
 <template>
 	<div class="mvi-p-2">
-		<m-select multiple v-model="val" size="medium" placeholder="请选择" :options="options"></m-select>
+		<m-select clearable v-model="val" size="medium" placeholder="请选择" :options="options"></m-select>
 	</div>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const val = ref([])
+const val = ref('')
 const options = ref([
 	{
 		label: 'ElementPlus',

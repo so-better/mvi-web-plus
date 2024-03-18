@@ -165,9 +165,11 @@ const to = (newValue: number, oldValue: number) => {
 			children.value[i].exposed!.back = false
 		}
 	}
-	children.value[newValue].exposed!.show = true
-	if (!children.value[newValue].exposed!.firstShow) {
-		children.value[newValue].exposed!.firstShow = true
+	if (children.value[newValue]) {
+		children.value[newValue].exposed!.show = true
+		if (!children.value[newValue].exposed!.firstShow) {
+			children.value[newValue].exposed!.firstShow = true
+		}
 	}
 	nextTick(() => {
 		current.value = newValue
@@ -202,7 +204,8 @@ provide('tabChildren', children)
 
 defineExpose({
 	setHeight,
-	setSlider
+	setSlider,
+	to
 })
 </script>
 <style scoped src="./tabs.less"></style>

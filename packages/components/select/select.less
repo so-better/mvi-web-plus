@@ -1,107 +1,96 @@
 @import '../../css/mvi-basic.less';
 
 .mvi-select {
-	display: block;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
 	width: 100%;
 	position: relative;
 	font-family: @font-family;
 	color: @font-color-default;
 	border-radius: @radius-default;
 	background-color: #fff;
-	.mvi-select-relate {
-		display: flex;
-		display: -webkit-flex;
-		justify-content: flex-start;
-		align-items: center;
+	border: 1px solid @border-color;
+	transition: border-color 600ms, box-shadow 600ms;
+	box-shadow: none;
+
+	&:hover {
+		cursor: pointer;
+	}
+
+	&.info {
+		border-color: @info-normal;
+		box-shadow: 0 0 0.16rem @info-shadow;
+	}
+
+	&.success {
+		border-color: @success-normal;
+		box-shadow: 0 0 0.16rem @success-shadow;
+	}
+
+	&.primary {
+		border-color: @primary-normal;
+		box-shadow: 0 0 0.16rem @primary-shadow;
+	}
+
+	&.warn {
+		border-color: @warn-normal;
+		box-shadow: 0 0 0.16rem @warn-shadow;
+	}
+
+	&.error {
+		border-color: @error-normal;
+		box-shadow: 0 0 0.16rem @error-shadow;
+	}
+
+	.mvi-select-label {
 		position: relative;
-		width: 100%;
-		background-color: inherit;
-		border: 1px solid @border-color;
-		border-radius: inherit;
-		transition: border-color 600ms, box-shadow 600ms;
-		-webkit-transition: border-color 600ms, box-shadow 600ms;
-		box-shadow: none;
-		color: inherit;
+		vertical-align: middle;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 
-		&:hover {
-			cursor: pointer;
-		}
-
-		&.info {
-			border-color: @info-normal;
-			box-shadow: 0 0 0.16rem @info-shadow;
-		}
-
-		&.success {
-			border-color: @success-normal;
-			box-shadow: 0 0 0.16rem @success-shadow;
-		}
-
-		&.primary {
-			border-color: @primary-normal;
-			box-shadow: 0 0 0.16rem @primary-shadow;
-		}
-
-		&.warn {
-			border-color: @warn-normal;
-			box-shadow: 0 0 0.16rem @warn-shadow;
-		}
-
-		&.error {
-			border-color: @error-normal;
-			box-shadow: 0 0 0.16rem @error-shadow;
-		}
-
-		.mvi-select-label {
+		&.placeholder::before {
 			position: relative;
-			vertical-align: middle;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space: nowrap;
-			&.placeholder::before {
-				position: relative;
-				content: attr(data-placeholder);
-				color: inherit;
-				font-family: inherit;
-				font-size: inherit;
-				opacity: 0.5;
-				vertical-align: middle;
-			}
-		}
-
-		.mvi-select-icon {
-			position: absolute;
-			top: auto;
+			content: attr(data-placeholder);
 			color: inherit;
-			opacity: 0.6;
-			transition: transform 200ms;
-			-ms-transition: transform 200ms;
-			-webkit-transition: transform 200ms;
-			-moz-transition: transform 200ms;
-
-			&.active {
-				transform: rotate(180deg);
-			}
-		}
-
-		.mvi-clear-icon {
-			position: absolute;
-			top: auto;
-			color: inherit;
+			font-family: inherit;
+			font-size: inherit;
 			opacity: 0.5;
-			transition: opacity 200ms;
-			-ms-transition: opacity 200ms;
-			-webkit-transition: opacity 200ms;
-			-moz-transition: opacity 200ms;
+			vertical-align: middle;
 		}
 	}
 
-	&.small {
-		.mvi-select-relate {
-			padding: 0 @mp-sm*3 0 @mp-sm;
-			height: @small-height;
-			font-size: @font-size-default;
+	.mvi-select-icon {
+		position: absolute;
+		top: auto;
+		color: inherit;
+		opacity: 0.6;
+		transition: transform 200ms;
+		-ms-transition: transform 200ms;
+		-webkit-transition: transform 200ms;
+		-moz-transition: transform 200ms;
+
+		&.active {
+			transform: rotate(180deg);
 		}
+	}
+
+	.mvi-clear-icon {
+		position: absolute;
+		top: auto;
+		color: inherit;
+		opacity: 0.5;
+		transition: opacity 200ms;
+		-ms-transition: opacity 200ms;
+		-webkit-transition: opacity 200ms;
+		-moz-transition: opacity 200ms;
+	}
+
+	&.small {
+		padding: 0 @mp-sm*3 0 @mp-sm;
+		height: @small-height;
+		font-size: @font-size-default;
 
 		.mvi-select-icon,
 		.mvi-clear-icon {
@@ -111,11 +100,9 @@
 	}
 
 	&.medium {
-		.mvi-select-relate {
-			padding: 0 @mp-md*3 0 @mp-md;
-			height: @medium-height;
-			font-size: @font-size-h6;
-		}
+		padding: 0 @mp-md*3 0 @mp-md;
+		height: @medium-height;
+		font-size: @font-size-h6;
 
 		.mvi-select-icon,
 		.mvi-clear-icon {
@@ -125,11 +112,9 @@
 	}
 
 	&.large {
-		.mvi-select-relate {
-			padding: 0 @mp-lg*3 0 @mp-lg;
-			height: @large-height;
-			font-size: @font-size-h5;
-		}
+		padding: 0 @mp-lg*3 0 @mp-lg;
+		height: @large-height;
+		font-size: @font-size-h5;
 
 		.mvi-select-icon,
 		.mvi-clear-icon {
@@ -148,10 +133,7 @@
 
 	&[disabled] {
 		opacity: 0.6;
-
-		.mvi-select-relate {
-			cursor: not-allowed;
-		}
+		cursor: not-allowed;
 	}
 }
 

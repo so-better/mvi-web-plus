@@ -1,25 +1,23 @@
 <template>
-	<div class="mvi-select" :class="[size, { round: round, square: !round && square }]" :disabled="disabled || null">
-		<div @mouseenter="hover = true" @mouseleave="hover = false" :data-id="'mvi-select-relate-' + instance.uid" class="mvi-select-relate" :class="relateClass" :style="relateStyle" ref="relateRef" @click="trigger">
-			<span class="mvi-select-label" :class="{ placeholder: !selectLabel }" :data-placeholder="placeholder" v-html="selectLabel"></span>
-			<!-- 清除图标 -->
-			<Icon @click="doClear" class="mvi-clear-icon" type="times-o" v-if="clearable" v-show="showClearIcon" />
-			<!-- 下拉图标 -->
-			<Icon v-show="!clearable || !showClearIcon" class="mvi-select-icon" :class="{ active: focus }" :type="icon" />
-		</div>
-		<Layer v-model="focus" :relate="`[data-id='mvi-select-relate-${instance.uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" closable :show-triangle="layerRealProps.showTriangle" :animation="layerRealProps.animation" :timeout="layerRealProps.timeout" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :border-color="layerRealProps.borderColor" :width="layerRealProps.width" @showing="layerShow">
-			<div class="mvi-select-menu" :class="[size]" ref="menuRef" :style="{ maxHeight: height }">
-				<template v-if="cmpOptions.length">
-					<div class="mvi-select-option" @click="optionClick(item)" v-for="item in cmpOptions" :disabled="item.disabled || null">
-						<div class="mvi-select-option-value" v-html="item.label"></div>
-						<Icon v-if="isSelect(item)" :type="parseIcon(selectedIcon).type" :spin="parseIcon(selectedIcon).spin" :size="parseIcon(selectedIcon).size" :url="parseIcon(selectedIcon).url" :color="parseIcon(selectedIcon).color" />
-					</div>
-				</template>
-				<div v-else class="mvi-select-empty">{{ emptyText }}</div>
-			</div>
-		</Layer>
+	<div class="mvi-select" :class="relateClass" :data-id="'mvi-select-' + instance.uid" :style="relateStyle" ref="relateRef" @mouseenter="hover = true" @mouseleave="hover = false" @click="trigger" :disabled="disabled || null" v-bind="$attrs">
+		<span class="mvi-select-label" :class="{ placeholder: !selectLabel }" :data-placeholder="placeholder" v-html="selectLabel"></span>
+		<!-- 清除图标 -->
+		<Icon @click="doClear" class="mvi-clear-icon" type="times-o" v-if="clearable" v-show="showClearIcon" />
+		<!-- 下拉图标 -->
+		<Icon v-show="!clearable || !showClearIcon" class="mvi-select-icon" :class="{ active: focus }" :type="icon" />
 		<input type="hidden" :value="formData" :name="name" />
 	</div>
+	<Layer v-model="focus" :relate="`[data-id='mvi-select-${instance.uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" closable :show-triangle="layerRealProps.showTriangle" :animation="layerRealProps.animation" :timeout="layerRealProps.timeout" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :border-color="layerRealProps.borderColor" :width="layerRealProps.width" @showing="layerShow">
+		<div class="mvi-select-menu" :class="[size]" ref="menuRef" :style="{ maxHeight: height }">
+			<template v-if="cmpOptions.length">
+				<div class="mvi-select-option" @click="optionClick(item)" v-for="item in cmpOptions" :disabled="item.disabled || null">
+					<div class="mvi-select-option-value" v-html="item.label"></div>
+					<Icon v-if="isSelect(item)" :type="parseIcon(selectedIcon).type" :spin="parseIcon(selectedIcon).spin" :size="parseIcon(selectedIcon).size" :url="parseIcon(selectedIcon).url" :color="parseIcon(selectedIcon).color" />
+				</div>
+			</template>
+			<div v-else class="mvi-select-empty">{{ emptyText }}</div>
+		</div>
+	</Layer>
 </template>
 <script setup lang="ts">
 import { computed, getCurrentInstance, ref } from 'vue'
@@ -31,7 +29,8 @@ import { IconPropsType } from '../icon/props'
 import { LayerPropsType } from '../layer/props'
 
 defineOptions({
-	name: 'm-select'
+	name: 'm-select',
+	inheritAttrs: false
 })
 
 //实例
@@ -55,7 +54,12 @@ const formData = computed<any>(() => {
 	return props.modelValue
 })
 const relateClass = computed<string[]>(() => {
-	let cls: string[] = []
+	let cls: string[] = [props.size]
+	if (props.round) {
+		cls.push('round')
+	} else if (props.square) {
+		cls.push('square')
+	}
 	if (props.activeType && !props.activeColor && focus.value) {
 		cls.push(props.activeType)
 	}
@@ -159,6 +163,9 @@ const parseIcon = computed<(params: string | IconPropsType) => IconPropsType>(()
 	}
 })
 const showClearIcon = computed<boolean>(() => {
+	if (props.disabled) {
+		return false
+	}
 	//多选
 	if (props.multiple) {
 		if (props.modelValue.length != 0 && hover.value) {

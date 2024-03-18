@@ -15,12 +15,12 @@ export declare const CalendarProps: {
         validator(value: any): boolean;
     };
     monthText: {
-        type: ArrayConstructor;
+        type: PropType<string[]>;
         default: () => string[];
         validator(value: any): any;
     };
     weekText: {
-        type: ArrayConstructor;
+        type: PropType<string[]>;
         default: () => string[];
         validator(value: any): any;
     };

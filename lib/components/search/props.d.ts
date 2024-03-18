@@ -6,9 +6,8 @@ export declare const SearchProps: {
         default: string;
     };
     type: {
-        type: PropType<"number" | "textarea" | "text" | "tel" | "password">;
+        type: StringConstructor;
         default: string;
-        validator(value: any): boolean;
     };
     placeholder: {
         type: StringConstructor;

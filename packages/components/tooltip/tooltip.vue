@@ -1,15 +1,13 @@
 <template>
-	<div class="mvi-tooltip" :class="{ block: block }">
-		<div @click="clickShowTooltip" @mouseenter="hoverShowTooltip" @mouseleave="hoverHideToolTip" class="mvi-tooltip-toggle" :data-id="'mvi-tooltip-relate-' + instance.uid">
-			<slot></slot>
-		</div>
-		<Layer v-model="show" :offset="offset" :background="color" border :border-color="borderColor" closable :show-triangle="showTriangle" :z-index="zIndex" :relate="`[data-id='mvi-tooltip-relate-${instance.uid}']`" :placement="placement" :width="width" :timeout="timeout" :animation="animation || 'mvi-tooltip'" :shadow="false">
-			<div class="mvi-tooltip-content" :style="{ color: textColor, whiteSpace: width ? 'normal' : '' }">
-				<slot v-if="$slots.title" name="title"></slot>
-				<span v-else v-text="title"></span>
-			</div>
-		</Layer>
+	<div @click="clickShowTooltip" @mouseenter="hoverShowTooltip" @mouseleave="hoverHideToolTip" class="mvi-tooltip" :class="{ block: block }" :data-id="'mvi-tooltip-' + instance.uid" v-bind="$attrs">
+		<slot></slot>
 	</div>
+	<Layer v-model="show" :offset="offset" :background="color" border :border-color="borderColor" closable :show-triangle="showTriangle" :z-index="zIndex" :relate="`[data-id='mvi-tooltip-${instance.uid}']`" :placement="placement" :width="width" :timeout="timeout" :animation="animation || 'mvi-tooltip'" :shadow="false">
+		<div class="mvi-tooltip-content" :style="{ color: textColor, whiteSpace: width ? 'normal' : '' }">
+			<slot v-if="$slots.title" name="title"></slot>
+			<span v-else v-text="title"></span>
+		</div>
+	</Layer>
 </template>
 <script setup lang="ts">
 import { getCurrentInstance, ref } from 'vue'
@@ -17,7 +15,8 @@ import { Layer } from '../layer'
 import { TooltipProps } from './props'
 
 defineOptions({
-	name: 'm-tooltip'
+	name: 'm-tooltip',
+	inheritAttrs: false
 })
 
 //获取实例

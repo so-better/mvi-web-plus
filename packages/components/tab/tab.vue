@@ -53,12 +53,16 @@ const show = ref<boolean>(tabs!.props!.modelValue == tabIndex.value)
 const firstShow = ref<boolean>(tabs!.props!.modelValue == tabIndex.value)
 
 onBeforeUnmount(() => {
-	tabChildren!.value.splice(tabIndex.value, 1)
-	if (<number>tabs!.props.modelValue > 0) {
-		tabs!.emit('update:modelValue', <number>tabs!.props.modelValue - 1)
-		tabs!.emit('change', <number>tabs!.props.modelValue - 1)
-	} else {
-		tabs!.exposed!.to(0, 0)
+	if (tabChildren && tabChildren.value) {
+		tabChildren!.value.splice(tabIndex.value, 1)
+	}
+	if (tabs) {
+		if (<number>tabs!.props.modelValue > 0) {
+			tabs!.emit('update:modelValue', <number>tabs!.props.modelValue - 1)
+			tabs!.emit('change', <number>tabs!.props.modelValue - 1)
+		} else {
+			tabs!.exposed!.to(0, 0)
+		}
 	}
 })
 

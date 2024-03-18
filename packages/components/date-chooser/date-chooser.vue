@@ -1,5 +1,5 @@
 <template>
-	<div class="mvi-date-chooser" :data-id="`mvi-date-chooser-${instance.uid}`" :class="{ block: block }" ref="relateRef" @click="clickCalendar" @mouseenter="mouseEnterRelate" @mouseleave="mouseLeaveRelate">
+	<div class="mvi-date-chooser" :data-id="`mvi-date-chooser-${instance.uid}`" :class="{ block: block }" ref="relateRef" @click="clickCalendar" @mouseenter="mouseEnterRelate" @mouseleave="mouseLeaveRelate" v-bind="$attrs">
 		<slot></slot>
 	</div>
 	<Layer :relate="`[data-id='mvi-date-chooser-${instance.uid}']`" v-model="show" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :animation="layerRealProps.animation" :border-color="layerRealProps.borderColor" :timeout="layerRealProps.timeout" :closable="closable" :show-triangle="layerRealProps.showTriangle" :width="layerRealProps.width" @showing="layerShow" @mouseleave="mouseLeaveLayer" ref="layerRef">
@@ -67,7 +67,8 @@ import { LayerPropsType } from '../layer/props'
 import { CalendarViewType } from '../calendar/props'
 
 defineOptions({
-	name: 'm-date-chooser'
+	name: 'm-date-chooser',
+	inheritAttrs: false
 })
 
 //获取实例

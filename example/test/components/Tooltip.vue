@@ -1,6 +1,6 @@
 <template>
 	<div class="mvi-p-2">
-		<m-tooltip block class="mvi-m-2" title="this is tooltip" trigger="hover" :showTriangle="false">
+		<m-tooltip block class="mvi-m-2" title="this is tooltip" trigger="hover">
 			<m-button>按钮</m-button>
 		</m-tooltip>
 		<m-tooltip class="mvi-m-2" title="this is tooltip" placement="top-end">

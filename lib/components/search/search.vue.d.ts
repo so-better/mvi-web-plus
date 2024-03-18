@@ -5,9 +5,8 @@ declare const _default: import("vue").DefineComponent<{
         default: string;
     };
     type: {
-        type: import("vue").PropType<"number" | "textarea" | "text" | "tel" | "password">;
+        type: StringConstructor;
         default: string;
-        validator(value: any): boolean;
     };
     placeholder: {
         type: StringConstructor;
@@ -85,9 +84,8 @@ declare const _default: import("vue").DefineComponent<{
         default: string;
     };
     type: {
-        type: import("vue").PropType<"number" | "textarea" | "text" | "tel" | "password">;
+        type: StringConstructor;
         default: string;
-        validator(value: any): boolean;
     };
     placeholder: {
         type: StringConstructor;
@@ -161,7 +159,7 @@ declare const _default: import("vue").DefineComponent<{
     onSearch?: ((...args: any[]) => any) | undefined;
 }, {
     modelValue: string | number;
-    type: "number" | "textarea" | "text" | "tel" | "password";
+    type: string;
     label: string;
     disabled: boolean;
     round: boolean;

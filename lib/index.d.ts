@@ -4610,12 +4610,12 @@ export declare const components: {
             validator(value: any): boolean;
         };
         monthText: {
-            type: ArrayConstructor;
+            type: import("vue").PropType<string[]>;
             default: () => string[];
             validator(value: any): any;
         };
         weekText: {
-            type: ArrayConstructor;
+            type: import("vue").PropType<string[]>;
             default: () => string[];
             validator(value: any): any;
         };
@@ -4656,12 +4656,12 @@ export declare const components: {
             validator(value: any): boolean;
         };
         monthText: {
-            type: ArrayConstructor;
+            type: import("vue").PropType<string[]>;
             default: () => string[];
             validator(value: any): any;
         };
         weekText: {
-            type: ArrayConstructor;
+            type: import("vue").PropType<string[]>;
             default: () => string[];
             validator(value: any): any;
         };
@@ -4696,8 +4696,8 @@ export declare const components: {
         type: "info" | "success" | "warn" | "error" | "primary";
         view: import("./components/calendar/props").CalendarViewType;
         active: boolean;
-        monthText: unknown[];
-        weekText: unknown[];
+        monthText: string[];
+        weekText: string[];
         startDate: Date;
         endDate: Date;
         nonCurrentClick: boolean;
@@ -8355,9 +8355,8 @@ export declare const components: {
             default: string;
         };
         type: {
-            type: import("vue").PropType<"number" | "textarea" | "text" | "tel" | "password">;
+            type: StringConstructor;
             default: string;
-            validator(value: any): boolean;
         };
         placeholder: {
             type: StringConstructor;
@@ -8435,9 +8434,8 @@ export declare const components: {
             default: string;
         };
         type: {
-            type: import("vue").PropType<"number" | "textarea" | "text" | "tel" | "password">;
+            type: StringConstructor;
             default: string;
-            validator(value: any): boolean;
         };
         placeholder: {
             type: StringConstructor;
@@ -8511,7 +8509,7 @@ export declare const components: {
         onSearch?: ((...args: any[]) => any) | undefined;
     }, {
         modelValue: string | number;
-        type: "number" | "textarea" | "text" | "tel" | "password";
+        type: string;
         label: string;
         disabled: boolean;
         round: boolean;
@@ -10570,6 +10568,7 @@ export declare const components: {
         }, {
             setHeight: () => void;
             setSlider: () => void;
+            to: (newValue: number, oldValue: number) => void;
         }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
             "update:modelValue": (...args: any[]) => void;
             change: (...args: any[]) => void;
@@ -10679,6 +10678,7 @@ export declare const components: {
         }, {
             setHeight: () => void;
             setSlider: () => void;
+            to: (newValue: number, oldValue: number) => void;
         }, {}, {}, {}, {
             modelValue: number;
             timeout: number;
@@ -10739,6 +10739,7 @@ export declare const components: {
     }, {
         setHeight: () => void;
         setSlider: () => void;
+        to: (newValue: number, oldValue: number) => void;
     }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
         "update:modelValue": (...args: any[]) => void;
         change: (...args: any[]) => void;

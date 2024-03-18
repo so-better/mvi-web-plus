@@ -160,6 +160,10 @@ const handleMouseOpt = (event: MouseEvent) => {
 	if (props.disabled) {
 		return
 	}
+	//左右插槽都不存在
+	if (!leftRef.value && !rightRef.value) {
+		return
+	}
 	//鼠标按下
 	if (event.type == 'mousedown') {
 		//修改标识
@@ -316,6 +320,10 @@ const handleMouseOpt = (event: MouseEvent) => {
 const handleTouchOpt = (event: TouchEvent) => {
 	//已禁用
 	if (props.disabled) {
+		return
+	}
+	//左右插槽都不存在
+	if (!leftRef.value && !rightRef.value) {
 		return
 	}
 	//开始触摸

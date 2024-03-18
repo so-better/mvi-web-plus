@@ -1,23 +1,21 @@
 <template>
-	<div class="mvi-autocomplete" :class="[size, { round: round, square: !round && square }]" :disabled="disabled || null">
-		<div class="mvi-autocomplete-relate" :class="relateClass" :style="relateStyle" :data-id="'mvi-autocomplete-relate-' + instance.uid" ref="relateRef">
-			<div @click="leftClick" v-if="parseIcon(leftIcon).type || parseIcon(leftIcon).url" class="mvi-autocomplete-left-icon">
-				<Icon :type="parseIcon(leftIcon).type" :url="parseIcon(leftIcon).url" :spin="parseIcon(leftIcon).spin" :size="parseIcon(leftIcon).size" :color="parseIcon(leftIcon).color" />
-			</div>
-			<input ref="inputRef" @input="input" v-model="realValue" type="text" :placeholder="placeholder" :style="inputStyle" :name="name" @focus="inputFocus" @blur="inputBlur" :disabled="disabled" autocomplete="off" @keydown="keydown" @keyup="keyup" :class="{ 'left-none-radius': parseIcon(leftIcon).type || parseIcon(leftIcon).url, 'right-none-radius': parseIcon(rightIcon).type || parseIcon(rightIcon).url || (clearable && showClearIcon) }" />
-			<div @click="doClear" v-if="clearable" v-show="showClearIcon" class="mvi-autocomplete-clear" :style="clearStyle">
-				<Icon type="times-o" />
-			</div>
-			<div class="mvi-autocomplete-right-icon" v-if="parseIcon(rightIcon).type || parseIcon(rightIcon).url" @click="rightClick">
-				<Icon :type="parseIcon(rightIcon).type" :url="parseIcon(rightIcon).url" :spin="parseIcon(rightIcon).spin" :size="parseIcon(rightIcon).size" :color="parseIcon(rightIcon).color" />
-			</div>
+	<div class="mvi-autocomplete" :class="relateClass" :style="relateStyle" :data-id="'mvi-autocomplete-' + instance.uid" ref="relateRef" :disabled="disabled || null" v-bind="$attrs">
+		<div @click="leftClick" v-if="parseIcon(leftIcon).type || parseIcon(leftIcon).url" class="mvi-autocomplete-left-icon">
+			<Icon :type="parseIcon(leftIcon).type" :url="parseIcon(leftIcon).url" :spin="parseIcon(leftIcon).spin" :size="parseIcon(leftIcon).size" :color="parseIcon(leftIcon).color" />
 		</div>
-		<Layer :model-value="show" :relate="`[data-id='mvi-autocomplete-relate-${instance.uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" ref="layerRef" :animation="layerRealProps.animation" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :timeout="layerRealProps.timeout" :closable="false" :show-triangle="layerRealProps.showTriangle" :border-color="layerRealProps.borderColor" :width="layerRealProps.width" @showing="layerShow">
-			<div class="mvi-autocomplete-menu" :class="[size]" :style="{ maxHeight: height }" ref="menuRef">
-				<div class="mvi-autocomplete-list" v-for="item in cmpFilter" v-text="item" @click="doSelect(item)"></div>
-			</div>
-		</Layer>
+		<input ref="inputRef" @input="input" v-model="realValue" type="text" :placeholder="placeholder" :style="inputStyle" :name="name" @focus="inputFocus" @blur="inputBlur" :disabled="disabled" autocomplete="off" @keydown="keydown" @keyup="keyup" :class="{ 'left-none-radius': parseIcon(leftIcon).type || parseIcon(leftIcon).url, 'right-none-radius': parseIcon(rightIcon).type || parseIcon(rightIcon).url || (clearable && showClearIcon) }" />
+		<div @click="doClear" v-if="clearable" v-show="showClearIcon" class="mvi-autocomplete-clear" :style="clearStyle">
+			<Icon type="times-o" />
+		</div>
+		<div class="mvi-autocomplete-right-icon" v-if="parseIcon(rightIcon).type || parseIcon(rightIcon).url" @click="rightClick">
+			<Icon :type="parseIcon(rightIcon).type" :url="parseIcon(rightIcon).url" :spin="parseIcon(rightIcon).spin" :size="parseIcon(rightIcon).size" :color="parseIcon(rightIcon).color" />
+		</div>
 	</div>
+	<Layer :model-value="show" :relate="`[data-id='mvi-autocomplete-${instance.uid}']`" :placement="layerRealProps.placement" :offset="layerRealProps.offset" :z-index="layerRealProps.zIndex" ref="layerRef" :animation="layerRealProps.animation" :shadow="layerRealProps.shadow" :border="layerRealProps.border" :timeout="layerRealProps.timeout" :closable="false" :show-triangle="layerRealProps.showTriangle" :border-color="layerRealProps.borderColor" :width="layerRealProps.width" @showing="layerShow">
+		<div class="mvi-autocomplete-menu" :class="[size]" :style="{ maxHeight: height }" ref="menuRef">
+			<div class="mvi-autocomplete-list" v-for="item in cmpFilter" v-text="item" @click="doSelect(item)"></div>
+		</div>
+	</Layer>
 </template>
 <script setup lang="ts">
 import { computed, getCurrentInstance, ref } from 'vue'
@@ -29,7 +27,8 @@ import { IconPropsType } from '../icon/props'
 import { LayerPropsType } from '../layer/props'
 
 defineOptions({
-	name: 'm-autocomplete'
+	name: 'm-autocomplete',
+	inheritAttrs: false
 })
 
 //获取实例
@@ -144,9 +143,14 @@ const relateStyle = computed<any>(() => {
 	return style
 })
 const relateClass = computed<string[]>(() => {
-	let cls = []
+	let cls: string[] = [props.size]
 	if (props.activeType && !props.activeColor && focus.value) {
 		cls.push(props.activeType)
+	}
+	if (props.round) {
+		cls.push('round')
+	} else if (props.square) {
+		cls.push('square')
 	}
 	return cls
 })

@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<m-date-chooser block v-model="date" trigger="hover">
+		<m-date-chooser class="mvi-m-2" block v-model="date" trigger="hover">
 			<m-button block>日期选择</m-button>
 		</m-date-chooser>
 	</div>

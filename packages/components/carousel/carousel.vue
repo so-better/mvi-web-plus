@@ -28,7 +28,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { ComponentInternalInstance, cloneVNode, computed, defineComponent, getCurrentInstance, h, nextTick, onMounted, provide, ref, watch } from 'vue'
+import { ComponentInternalInstance, cloneVNode, computed, defineComponent, getCurrentInstance, h, nextTick, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
 import Dap from 'dap-util'
 import { Icon } from '../icon'
 import { CarouselIndicatorsType, CarouselProps } from './props'
@@ -477,6 +477,16 @@ onMounted(() => {
 			setAutoplay()
 		}
 	})
+})
+
+onBeforeUnmount(() => {
+	if (slideAnimation.value) {
+		slideAnimation.value.stop()
+	}
+	if (autoplayTimer.value) {
+		clearInterval(autoplayTimer.value)
+		autoplayTimer.value = null
+	}
 })
 
 defineExpose({

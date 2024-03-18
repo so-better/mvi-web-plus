@@ -118,7 +118,9 @@ const overlayShowing = () => {
 //轮播变更
 const carouselChange = () => {
 	imageRefs.value.forEach(imageRef => {
-		imageRef.reset()
+		if (imageRef) {
+			imageRef.reset()
+		}
 	})
 	emits('change', carouselIndex.value)
 }

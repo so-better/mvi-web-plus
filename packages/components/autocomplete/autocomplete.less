@@ -1,82 +1,16 @@
 @import '../../css/mvi-basic.less';
 
 .mvi-autocomplete {
-	display: block;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
 	width: 100%;
 	border-radius: @radius-default;
 	color: @font-color-default;
 	position: relative;
 	background-color: #fff;
-
-	&.round {
-		border-radius: @radius-round;
-	}
-
-	&.square {
-		border-radius: 0;
-	}
-
-	&.small {
-		font-size: @font-size-default;
-		height: @small-height;
-
-		.mvi-autocomplete-left-icon,
-		.mvi-autocomplete-right-icon,
-		.mvi-autocomplete-clear {
-			padding: 0 @mp-sm;
-		}
-
-		input {
-			padding: 0 @mp-sm;
-		}
-	}
-
-	&.medium {
-		font-size: @font-size-h6;
-		height: @medium-height;
-
-		.mvi-autocomplete-left-icon,
-		.mvi-autocomplete-right-icon,
-		.mvi-autocomplete-clear {
-			padding: 0 @mp-md;
-		}
-
-		input {
-			padding: 0 @mp-md;
-		}
-	}
-
-	&.large {
-		font-size: @font-size-h5;
-		height: @large-height;
-
-		.mvi-autocomplete-left-icon,
-		.mvi-autocomplete-right-icon,
-		.mvi-autocomplete-clear {
-			padding: 0 @mp-lg;
-		}
-
-		input {
-			padding: 0 @mp-lg;
-		}
-	}
-
-	&[disabled] {
-		opacity: 0.6;
-	}
-}
-
-.mvi-autocomplete-relate {
-	display: flex;
-	display: -webkit-flex;
-	justify-content: flex-start;
-	align-items: center;
-	width: 100%;
-	height: 100%;
-	border-radius: inherit;
 	border: 1px solid @border-color;
 	transition: border-color 600ms, box-shadow 600ms;
-	-webkit-transition: border-color 600ms, box-shadow 600ms;
 	box-shadow: none;
 
 	input {
@@ -174,6 +108,63 @@
 	&.error {
 		border-color: @error-normal;
 		box-shadow: 0 0 0.16rem @error-shadow;
+	}
+
+	&.round {
+		border-radius: @radius-round;
+	}
+
+	&.square {
+		border-radius: 0;
+	}
+
+	&.small {
+		font-size: @font-size-default;
+		height: @small-height;
+
+		.mvi-autocomplete-left-icon,
+		.mvi-autocomplete-right-icon,
+		.mvi-autocomplete-clear {
+			padding: 0 @mp-sm;
+		}
+
+		input {
+			padding: 0 @mp-sm;
+		}
+	}
+
+	&.medium {
+		font-size: @font-size-h6;
+		height: @medium-height;
+
+		.mvi-autocomplete-left-icon,
+		.mvi-autocomplete-right-icon,
+		.mvi-autocomplete-clear {
+			padding: 0 @mp-md;
+		}
+
+		input {
+			padding: 0 @mp-md;
+		}
+	}
+
+	&.large {
+		font-size: @font-size-h5;
+		height: @large-height;
+
+		.mvi-autocomplete-left-icon,
+		.mvi-autocomplete-right-icon,
+		.mvi-autocomplete-clear {
+			padding: 0 @mp-lg;
+		}
+
+		input {
+			padding: 0 @mp-lg;
+		}
+	}
+
+	&[disabled] {
+		opacity: 0.6;
 	}
 }
 

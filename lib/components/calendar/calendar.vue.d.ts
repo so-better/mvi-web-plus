@@ -9,12 +9,12 @@ declare const _default: import("vue").DefineComponent<{
         validator(value: any): boolean;
     };
     monthText: {
-        type: ArrayConstructor;
+        type: import("vue").PropType<string[]>;
         default: () => string[];
         validator(value: any): any;
     };
     weekText: {
-        type: ArrayConstructor;
+        type: import("vue").PropType<string[]>;
         default: () => string[];
         validator(value: any): any;
     };
@@ -55,12 +55,12 @@ declare const _default: import("vue").DefineComponent<{
         validator(value: any): boolean;
     };
     monthText: {
-        type: ArrayConstructor;
+        type: import("vue").PropType<string[]>;
         default: () => string[];
         validator(value: any): any;
     };
     weekText: {
-        type: ArrayConstructor;
+        type: import("vue").PropType<string[]>;
         default: () => string[];
         validator(value: any): any;
     };
@@ -95,8 +95,8 @@ declare const _default: import("vue").DefineComponent<{
     type: "info" | "success" | "warn" | "error" | "primary";
     view: import("./props").CalendarViewType;
     active: boolean;
-    monthText: unknown[];
-    weekText: unknown[];
+    monthText: string[];
+    weekText: string[];
     startDate: Date;
     endDate: Date;
     nonCurrentClick: boolean;

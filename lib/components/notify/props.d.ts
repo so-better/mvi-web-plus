@@ -2,7 +2,7 @@ import { ComponentInternalInstance, ExtractPublicPropTypes, PropType } from 'vue
 import { IconPropsType } from '../icon/props';
 export declare const NotifyProps: {
     type: {
-        type: StringConstructor;
+        type: PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: null;
     };
     message: {
