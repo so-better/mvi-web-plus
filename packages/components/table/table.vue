@@ -385,5 +385,9 @@ onMounted(() => {
 onBeforeUnmount(() => {
 	Dap.event.off(window, `resize.table_${instance.uid}`)
 })
+
+defineExpose({
+	doLayout
+})
 </script>
 <style scoped src="./table.less"></style>

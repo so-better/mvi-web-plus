@@ -10277,7 +10277,9 @@ export declare const components: {
             "onSort-cancel"?: ((...args: any[]) => any) | undefined;
             "onSort-asc"?: ((...args: any[]) => any) | undefined;
             "onSort-desc"?: ((...args: any[]) => any) | undefined;
-        }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+        }, {
+            doLayout: () => void;
+        }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
             check: (...args: any[]) => void;
             "sort-cancel": (...args: any[]) => void;
             "sort-asc": (...args: any[]) => void;
@@ -10410,7 +10412,9 @@ export declare const components: {
             "onSort-cancel"?: ((...args: any[]) => any) | undefined;
             "onSort-asc"?: ((...args: any[]) => any) | undefined;
             "onSort-desc"?: ((...args: any[]) => any) | undefined;
-        }, {}, {}, {}, {}, {
+        }, {
+            doLayout: () => void;
+        }, {}, {}, {}, {
             data: any[];
             loading: boolean;
             height: string;
@@ -10481,7 +10485,9 @@ export declare const components: {
         "onSort-cancel"?: ((...args: any[]) => any) | undefined;
         "onSort-asc"?: ((...args: any[]) => any) | undefined;
         "onSort-desc"?: ((...args: any[]) => any) | undefined;
-    }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+    }, {
+        doLayout: () => void;
+    }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
         check: (...args: any[]) => void;
         "sort-cancel": (...args: any[]) => void;
         "sort-asc": (...args: any[]) => void;
@@ -11603,7 +11609,7 @@ export declare const components: {
 /***** 全局导出 *****/
 declare const install: (app: App) => void;
 /***** 版本号 *****/
-declare const version = "1.9.9";
+declare const version = "1.9.10";
 declare const stdin_default: {
     install: (app: App) => void;
     version: string;

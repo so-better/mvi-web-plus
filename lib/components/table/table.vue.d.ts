@@ -48,7 +48,9 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         type: StringConstructor;
         default: null;
     };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+}, {
+    doLayout: () => void;
+}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     check: (...args: any[]) => void;
     "sort-cancel": (...args: any[]) => void;
     "sort-asc": (...args: any[]) => void;
