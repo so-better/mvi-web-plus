@@ -802,8 +802,8 @@ const handleScroll = () => {
 			handleScroll(<HTMLElement>el.parentNode)
 		}
 	}
-	const relate = getRelateEl()!
-	if (relate.parentNode) {
+	const relate = getRelateEl()
+	if (relate && relate.parentNode) {
 		handleScroll(<HTMLElement>relate.parentNode)
 	}
 }
@@ -816,7 +816,7 @@ const removeScroll = () => {
 		}
 	}
 	const relate = getRelateEl()!
-	if (relate.parentNode) {
+	if (relate && relate.parentNode) {
 		removeScroll(<HTMLElement>relate.parentNode)
 	}
 }

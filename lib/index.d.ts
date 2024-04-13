@@ -11609,7 +11609,7 @@ export declare const components: {
 /***** 全局导出 *****/
 declare const install: (app: App) => void;
 /***** 版本号 *****/
-declare const version = "1.9.10";
+declare const version = "1.9.11";
 declare const stdin_default: {
     install: (app: App) => void;
     version: string;
