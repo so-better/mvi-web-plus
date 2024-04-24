@@ -18,6 +18,7 @@ declare class Ripple {
     private delay?;
     private disabled?;
     private hasInit;
+    private isSupportTouch;
     private guid;
     private rippleContainers;
     static install: (...args: any) => void;

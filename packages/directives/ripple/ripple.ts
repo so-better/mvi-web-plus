@@ -30,6 +30,8 @@ class Ripple {
 
 	//是否初始化了
 	private hasInit: boolean = false
+	//是否支持touch事件
+	private isSupportTouch: boolean = false
 	//生成唯一值
 	private guid: number = this.createGuid()
 	//水波纹容器数组
@@ -218,21 +220,26 @@ class Ripple {
 
 		//鼠标按下
 		Dap.event.on(this.$el, 'mousedown.ripple', (e: Event) => {
+			if (this.isSupportTouch) {
+				return
+			}
 			downFn((<MouseEvent>e).pageX, (<MouseEvent>e).pageY)
 		})
 		//鼠标松开或者移出页面
-		Dap.event.on(document.documentElement, `mouseup.ripple_${this.guid}`, upFn)
-
+		Dap.event.on(document.documentElement, `mouseup.ripple_${this.guid}`, () => {
+			if (this.isSupportTouch) {
+				this.isSupportTouch = false
+				return
+			}
+			upFn()
+		})
 		//手指触摸
 		Dap.event.on(this.$el, 'touchstart.ripple', (e: Event) => {
-			e.preventDefault()
+			this.isSupportTouch = true
 			downFn((<TouchEvent>e).targetTouches[0].pageX, (<TouchEvent>e).targetTouches[0].pageY)
 		})
 		//手指松开
-		Dap.event.on(this.$el, `touchend.ripple`, (e: Event) => {
-			e.preventDefault()
-			upFn()
-		})
+		Dap.event.on(this.$el, `touchend.ripple`, upFn)
 	}
 
 	//api：移除documentElement上的拖动事件
