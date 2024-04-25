@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../lib/style.css">
+    <script src="../node_modules/vue/dist/vue.global.prod.js"></script>
+    <script src="../lib/mvi.umd.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <m-button>按钮</m-button>
+    </div>
+</body>
+<script>
+    const { createApp } = Vue
+    const app = createApp({
+        methods: {
+            alert() {
+                this.$msgbox('欢迎使用MVI框架')
+            }
+        }
+    })
+    console.log(mvi) //查看版本号
+    app.use(mvi)
+    app.mount('#app')
+</script>
+
+</html>
