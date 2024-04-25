@@ -243,7 +243,7 @@ export const components = {
 	ImagePreview
 }
 
-/***** 全局导出 *****/
+//安装函数
 const install = (app: App) => {
 	//注册组件和指令
 	Object.values(components).map(component => {
@@ -251,12 +251,8 @@ const install = (app: App) => {
 	})
 }
 
-/***** 版本号 *****/
-const version = '1.9.12'
+//版本号
+const version = '1.9.13'
 
-const stdin_default = {
-	install,
-	version
-}
-
-export { stdin_default as default, install, version }
+//导出
+export { install as default, install, version }

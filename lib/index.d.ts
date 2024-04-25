@@ -11606,12 +11606,6 @@ export declare const components: {
         };
     });
 };
-/***** 全局导出 *****/
 declare const install: (app: App) => void;
-/***** 版本号 *****/
-declare const version = "1.9.12";
-declare const stdin_default: {
-    install: (app: App) => void;
-    version: string;
-};
-export { stdin_default as default, install, version };
+declare const version = "1.9.13";
+export { install as default, install, version };
