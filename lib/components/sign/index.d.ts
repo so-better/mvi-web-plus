@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Sign from './sign.vue';
-export { Sign, Sign as default };
+declare const install: FunctionPlugin;
+export { Sign, install as default };

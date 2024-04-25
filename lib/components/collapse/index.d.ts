@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Collapse from './collapse.vue';
-export { Collapse, Collapse as default };
+declare const install: FunctionPlugin;
+export { Collapse, install as default };

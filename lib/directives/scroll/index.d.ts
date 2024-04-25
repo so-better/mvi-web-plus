@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Scroll from './scroll';
-export { Scroll, Scroll as default };
+declare const install: FunctionPlugin;
+export { Scroll, install as default };

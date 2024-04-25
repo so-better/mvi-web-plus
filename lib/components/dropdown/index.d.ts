@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Dropdown from './dropdown.vue';
-export { Dropdown, Dropdown as default };
+declare const install: FunctionPlugin;
+export { Dropdown, install as default };

@@ -1,8 +1,8 @@
 import Dap from 'dap-util'
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import Px from './px'
 
-Px.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	//1px适配指令
 	app.directive('px', {
 		mounted(el, binding) {
@@ -22,4 +22,4 @@ Px.install = (app: App) => {
 	})
 }
 
-export { Px, Px as default }
+export { Px, install as default }

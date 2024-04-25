@@ -1,8 +1,8 @@
 import Dap from 'dap-util'
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import Anchor from './anchor'
 
-Anchor.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	//锚点定位指令
 	app.directive('anchor', {
 		mounted(el, binding) {
@@ -15,4 +15,4 @@ Anchor.install = (app: App) => {
 		}
 	})
 }
-export { Anchor, Anchor as default }
+export { Anchor, install as default }

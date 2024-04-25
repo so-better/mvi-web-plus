@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Table from './table.vue';
-export { Table, Table as default };
+declare const install: FunctionPlugin;
+export { Table, install as default };

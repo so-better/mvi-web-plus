@@ -1,4 +1,4 @@
-import { App, ComponentInternalInstance, createApp } from 'vue'
+import { App, ComponentInternalInstance, FunctionPlugin, createApp } from 'vue'
 import Dap from 'dap-util'
 import LoadingBarComponent from './loading-bar.vue'
 import { LoadingBarPropsType } from './props'
@@ -13,7 +13,6 @@ type LoadingBarType = {
 	initParams: (options: string | LoadingBarPropsType) => LoadingBarPropsType
 	showLoadingBar: (options: string | LoadingBarPropsType) => void
 	hideLoadingBar: () => void
-	install: (app: App) => void
 }
 
 const LoadingBar: LoadingBarType = {
@@ -64,17 +63,16 @@ const LoadingBar: LoadingBarType = {
 		if (LoadingBar.$vm) {
 			LoadingBar.$vm.exposed!.leave()
 		}
-	},
-
-	//注册函数
-	install: app => {
-		//挂载
-		app.config.globalProperties.$showLoadingBar = LoadingBar.showLoadingBar
-		app.provide('$showLoadingBar', LoadingBar.showLoadingBar)
-
-		app.config.globalProperties.$hideLoadingBar = LoadingBar.hideLoadingBar
-		app.provide('$hideLoadingBar', LoadingBar.hideLoadingBar)
 	}
 }
 
-export { LoadingBar, LoadingBar as default }
+const install: FunctionPlugin = (app: App) => {
+	//挂载
+	app.config.globalProperties.$showLoadingBar = LoadingBar.showLoadingBar
+	app.provide('$showLoadingBar', LoadingBar.showLoadingBar)
+
+	app.config.globalProperties.$hideLoadingBar = LoadingBar.hideLoadingBar
+	app.provide('$hideLoadingBar', LoadingBar.hideLoadingBar)
+}
+
+export { LoadingBar, install as default }

@@ -1,8 +1,8 @@
 import Dap from 'dap-util'
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import Scroll from './scroll'
 
-Scroll.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	//监听元素滚动条到达顶部或者底部
 	app.directive('scroll', {
 		mounted(el, binding) {
@@ -16,4 +16,4 @@ Scroll.install = (app: App) => {
 	})
 }
 
-export { Scroll, Scroll as default }
+export { Scroll, install as default }

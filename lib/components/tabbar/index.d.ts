@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Tabbar from './tabbar.vue';
-export { Tabbar, Tabbar as default };
+declare const install: FunctionPlugin;
+export { Tabbar, install as default };

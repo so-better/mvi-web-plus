@@ -1,8 +1,8 @@
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import Collapse from './collapse.vue'
 
-Collapse.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	app.component(Collapse.name!, Collapse)
 }
 
-export { Collapse, Collapse as default }
+export { Collapse, install as default }

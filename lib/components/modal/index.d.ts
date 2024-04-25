@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Modal from './modal.vue';
-export { Modal, Modal as default };
+declare const install: FunctionPlugin;
+export { Modal, install as default };

@@ -1,7 +1,8 @@
+import { App, FunctionPlugin } from 'vue'
 import Dap from 'dap-util'
 import Drag from './drag'
-import { App } from 'vue'
-Drag.install = (app: App) => {
+
+const install: FunctionPlugin = (app: App) => {
 	//拖拽
 	app.directive('drag', {
 		mounted(el, binding) {
@@ -26,4 +27,4 @@ Drag.install = (app: App) => {
 	})
 }
 
-export { Drag, Drag as default }
+export { Drag, install as default }

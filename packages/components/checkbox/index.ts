@@ -1,8 +1,8 @@
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import Checkbox from './checkbox.vue'
 
-Checkbox.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	app.component(Checkbox.name!, Checkbox)
 }
 
-export { Checkbox, Checkbox as default }
+export { Checkbox, install as default }

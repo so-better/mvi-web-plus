@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Tabs from './tabs.vue';
-export { Tabs, Tabs as default };
+declare const install: FunctionPlugin;
+export { Tabs, install as default };

@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import CellGroup from './cell-group.vue';
-export { CellGroup, CellGroup as default };
+declare const install: FunctionPlugin;
+export { CellGroup, install as default };

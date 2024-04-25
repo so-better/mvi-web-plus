@@ -1,8 +1,8 @@
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import Row from './row.vue'
 
-Row.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	app.component(Row.name!, Row)
 }
 
-export { Row, Row as default }
+export { Row, install as default }

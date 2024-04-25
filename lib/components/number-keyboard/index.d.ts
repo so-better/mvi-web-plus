@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import NumberKeyboard from './number-keyboard.vue';
-export { NumberKeyboard, NumberKeyboard as default };
+declare const install: FunctionPlugin;
+export { NumberKeyboard, install as default };

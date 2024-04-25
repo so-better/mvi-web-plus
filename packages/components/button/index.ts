@@ -1,8 +1,8 @@
+import { App, FunctionPlugin } from 'vue'
 import Button from './button.vue'
-import { App } from 'vue'
 
-Button.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	app.component(Button.name!, Button)
 }
 
-export { Button, Button as default }
+export { Button, install as default }

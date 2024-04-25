@@ -1,8 +1,8 @@
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import Table from './table.vue'
 
-Table.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	app.component(Table.name!, Table)
 }
 
-export { Table, Table as default }
+export { Table, install as default }

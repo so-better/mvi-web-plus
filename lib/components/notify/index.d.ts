@@ -1,4 +1,4 @@
-import { App, ComponentInternalInstance } from 'vue';
+import { App, ComponentInternalInstance, FunctionPlugin } from 'vue';
 import { NotifyPropsType } from './props';
 type NotifyType = {
     $el?: HTMLElement;
@@ -7,7 +7,7 @@ type NotifyType = {
     initParams: (options: string | NotifyPropsType) => NotifyPropsType;
     showNotify: (options: NotifyPropsType) => void;
     hideNotify: () => void;
-    install: (app: App) => void;
 };
 declare const Notify: NotifyType;
-export { Notify, Notify as default };
+declare const install: FunctionPlugin;
+export { Notify, install as default };

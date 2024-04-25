@@ -1,7 +1,7 @@
+import { App, FunctionPlugin } from 'vue'
 import Icon from './icon.vue'
-import { App } from 'vue'
 
-Icon.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	app.component(Icon.name!, Icon)
 }
-export { Icon, Icon as default }
+export { Icon, install as default }

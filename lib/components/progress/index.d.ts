@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Progress from './progress.vue';
-export { Progress, Progress as default };
+declare const install: FunctionPlugin;
+export { Progress, install as default };

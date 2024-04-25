@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Autocomplete from './autocomplete.vue';
-export { Autocomplete, Autocomplete as default };
+declare const install: FunctionPlugin;
+export { Autocomplete, install as default };

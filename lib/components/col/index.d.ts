@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Col from './col.vue';
-export { Col, Col as default };
+declare const install: FunctionPlugin;
+export { Col, install as default };

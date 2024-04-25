@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import ColorPicker from './color-picker.vue';
-export { ColorPicker, ColorPicker as default };
+declare const install: FunctionPlugin;
+export { ColorPicker, install as default };

@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Input from './input.vue';
-export { Input, Input as default };
+declare const install: FunctionPlugin;
+export { Input, install as default };

@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Anchor from './anchor';
-export { Anchor, Anchor as default };
+declare const install: FunctionPlugin;
+export { Anchor, install as default };

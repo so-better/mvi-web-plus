@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Resize from './resize';
-export { Resize, Resize as default };
+declare const install: FunctionPlugin;
+export { Resize, install as default };

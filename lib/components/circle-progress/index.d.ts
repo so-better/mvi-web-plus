@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import CircleProgress from './circle-progress.vue';
-export { CircleProgress, CircleProgress as default };
+declare const install: FunctionPlugin;
+export { CircleProgress, install as default };

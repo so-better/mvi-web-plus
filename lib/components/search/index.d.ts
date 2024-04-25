@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Search from './search.vue';
-export { Search, Search as default };
+declare const install: FunctionPlugin;
+export { Search, install as default };

@@ -1,8 +1,8 @@
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import Dap from 'dap-util'
 import Prop from './prop'
 
-Prop.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	//高度比例系数指令
 	app.directive('prop', {
 		mounted(el, binding) {
@@ -28,4 +28,4 @@ Prop.install = (app: App) => {
 	})
 }
 
-export { Prop, Prop as default }
+export { Prop, install as default }

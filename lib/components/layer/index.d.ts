@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Layer from './layer.vue';
-export { Layer, Layer as default };
+declare const install: FunctionPlugin;
+export { Layer, install as default };

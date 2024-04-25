@@ -1,8 +1,8 @@
+import { App, FunctionPlugin } from 'vue'
 import Label from './label.vue'
-import { App } from 'vue'
 
-Label.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	app.component(Label.name!, Label)
 }
 
-export { Label, Label as default }
+export { Label, install as default }

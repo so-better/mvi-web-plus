@@ -1,8 +1,8 @@
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import ImagePreview from './image-preview.vue'
 
-ImagePreview.install = (app: App) => {
-	app.component(<string>ImagePreview.name, ImagePreview)
+const install: FunctionPlugin = (app: App) => {
+	app.component(ImagePreview.name!, ImagePreview)
 }
 
-export { ImagePreview, ImagePreview as default }
+export { ImagePreview, install as default }

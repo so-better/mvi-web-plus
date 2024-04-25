@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Select from './select.vue';
-export { Select, Select as default };
+declare const install: FunctionPlugin;
+export { Select, install as default };

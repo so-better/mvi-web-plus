@@ -1,8 +1,8 @@
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import CircleProgress from './circle-progress.vue'
 
-CircleProgress.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	app.component(CircleProgress.name!, CircleProgress)
 }
 
-export { CircleProgress, CircleProgress as default }
+export { CircleProgress, install as default }

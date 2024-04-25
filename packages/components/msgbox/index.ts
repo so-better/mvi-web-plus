@@ -1,4 +1,4 @@
-import { App, createApp } from 'vue'
+import { App, FunctionPlugin, createApp } from 'vue'
 import Dap from 'dap-util'
 import MsgboxComponent from './msgbox.vue'
 import { MsgboxPropsType } from './props'
@@ -6,7 +6,6 @@ import { MsgboxPropsType } from './props'
 type MsgboxType = {
 	initParams: (options: string | MsgboxPropsType) => MsgboxPropsType
 	msgbox: (options: string | MsgboxPropsType) => void
-	install: (app: App) => void
 }
 
 const Msgbox: MsgboxType = {
@@ -42,13 +41,12 @@ const Msgbox: MsgboxType = {
 			})
 			instance.mount(mountNode)
 		})
-	},
-
-	//注册函数
-	install: app => {
-		app.config.globalProperties.$msgbox = Msgbox.msgbox
-		app.provide('$msgbox', Msgbox.msgbox)
 	}
 }
 
-export { Msgbox, Msgbox as default }
+const install: FunctionPlugin = (app: App) => {
+	app.config.globalProperties.$msgbox = Msgbox.msgbox
+	app.provide('$msgbox', Msgbox.msgbox)
+}
+
+export { Msgbox, install as default }

@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Stepper from './stepper.vue';
-export { Stepper, Stepper as default };
+declare const install: FunctionPlugin;
+export { Stepper, install as default };

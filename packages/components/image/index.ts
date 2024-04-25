@@ -1,8 +1,8 @@
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import Image from './image.vue'
 
-Image.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	app.component(Image.name!, Image)
 }
 
-export { Image, Image as default }
+export { Image, install as default }

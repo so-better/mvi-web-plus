@@ -1,8 +1,8 @@
 import Dap from 'dap-util'
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import Resize from './resize'
 
-Resize.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	//拖拽改变大小
 	app.directive('resize', {
 		mounted(el, binding) {
@@ -27,4 +27,4 @@ Resize.install = (app: App) => {
 	})
 }
 
-export { Resize, Resize as default }
+export { Resize, install as default }

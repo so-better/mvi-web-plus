@@ -1,8 +1,8 @@
 import Dap from 'dap-util'
+import { App, FunctionPlugin } from 'vue'
 import Spy from './spy'
-import { App } from 'vue'
 
-Spy.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	//滚动侦听
 	app.directive('spy', {
 		mounted(el, binding) {
@@ -26,4 +26,4 @@ Spy.install = (app: App) => {
 	})
 }
 
-export { Spy, Spy as default }
+export { Spy, install as default }

@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Tooltip from './tooltip.vue';
-export { Tooltip, Tooltip as default };
+declare const install: FunctionPlugin;
+export { Tooltip, install as default };

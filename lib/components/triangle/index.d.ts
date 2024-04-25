@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Triangle from './triangle.vue';
-export { Triangle, Triangle as default };
+declare const install: FunctionPlugin;
+export { Triangle, install as default };

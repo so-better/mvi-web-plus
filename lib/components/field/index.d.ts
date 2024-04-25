@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Field from './field.vue';
-export { Field, Field as default };
+declare const install: FunctionPlugin;
+export { Field, install as default };

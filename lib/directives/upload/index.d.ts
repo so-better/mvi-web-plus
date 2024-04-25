@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Upload from './upload';
-export { Upload, Upload as default };
+declare const install: FunctionPlugin;
+export { Upload, install as default };

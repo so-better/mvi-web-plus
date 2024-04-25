@@ -1,14 +1,14 @@
 <template>
 	<m-row class="wrap">
-		<m-col :xs="12" :sm="6" :md="4" :lg="3" :xl="2" v-for="(_item, key) in components">
+		<m-col :xs="12" :sm="6" :md="4" :lg="3" :xl="2" v-for="item in components">
 			<div class="mvi-p-2">
-				<div class="item" @click="$router.push(`/${key}`)">{{ key }}</div>
+				<div class="item" @click="$router.push(`/${item}`)">{{ item }}</div>
 			</div>
 		</m-col>
 	</m-row>
 </template>
 <script setup lang="ts">
-import { components } from '../../packages'
+import { components } from '../router'
 </script>
 <style lang="less" scoped>
 .wrap {

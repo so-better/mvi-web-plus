@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Actionsheet from './actionsheet.vue';
-export { Actionsheet, Actionsheet as default };
+declare const install: FunctionPlugin;
+export { Actionsheet, install as default };

@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Form from './form.vue';
-export { Form, Form as default };
+declare const install: FunctionPlugin;
+export { Form, install as default };

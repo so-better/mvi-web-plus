@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import DatePicker from './date-picker.vue';
-export { DatePicker, DatePicker as default };
+declare const install: FunctionPlugin;
+export { DatePicker, install as default };

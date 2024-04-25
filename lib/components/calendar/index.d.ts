@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Calendar from './calendar.vue';
-export { Calendar, Calendar as default };
+declare const install: FunctionPlugin;
+export { Calendar, install as default };

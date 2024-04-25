@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Cell from './cell.vue';
-export { Cell, Cell as default };
+declare const install: FunctionPlugin;
+export { Cell, install as default };

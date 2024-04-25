@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Checkbox from './checkbox.vue';
-export { Checkbox, Checkbox as default };
+declare const install: FunctionPlugin;
+export { Checkbox, install as default };

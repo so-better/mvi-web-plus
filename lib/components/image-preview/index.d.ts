@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import ImagePreview from './image-preview.vue';
-export { ImagePreview, ImagePreview as default };
+declare const install: FunctionPlugin;
+export { ImagePreview, install as default };

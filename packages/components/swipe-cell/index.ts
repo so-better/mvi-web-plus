@@ -1,8 +1,8 @@
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import SwipeCell from './swipe-cell.vue'
 
-SwipeCell.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	app.component(SwipeCell.name!, SwipeCell)
 }
 
-export { SwipeCell, SwipeCell as default }
+export { SwipeCell, install as default }

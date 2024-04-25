@@ -1,8 +1,8 @@
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import Progress from './progress.vue'
 
-Progress.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	app.component(Progress.name!, Progress)
 }
 
-export { Progress, Progress as default }
+export { Progress, install as default }

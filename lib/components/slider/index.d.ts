@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Slider from './slider.vue';
-export { Slider, Slider as default };
+declare const install: FunctionPlugin;
+export { Slider, install as default };

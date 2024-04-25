@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Prop from './prop';
-export { Prop, Prop as default };
+declare const install: FunctionPlugin;
+export { Prop, install as default };

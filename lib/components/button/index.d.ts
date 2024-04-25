@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Button from './button.vue';
-export { Button, Button as default };
+declare const install: FunctionPlugin;
+export { Button, install as default };

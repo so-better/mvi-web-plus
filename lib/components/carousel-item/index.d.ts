@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import CarouselItem from './carousel-item.vue';
-export { CarouselItem, CarouselItem as default };
+declare const install: FunctionPlugin;
+export { CarouselItem, install as default };

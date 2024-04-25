@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Label from './label.vue';
-export { Label, Label as default };
+declare const install: FunctionPlugin;
+export { Label, install as default };

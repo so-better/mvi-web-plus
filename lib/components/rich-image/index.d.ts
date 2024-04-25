@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import RichImage from './rich-image.vue';
-export { RichImage, RichImage as default };
+declare const install: FunctionPlugin;
+export { RichImage, install as default };

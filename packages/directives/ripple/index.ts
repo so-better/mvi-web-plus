@@ -1,8 +1,8 @@
 import Dap from 'dap-util'
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import Ripple from './ripple'
 
-Ripple.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	//锚点定位指令
 	app.directive('ripple', {
 		mounted(el, binding) {
@@ -25,4 +25,4 @@ Ripple.install = (app: App) => {
 		}
 	})
 }
-export { Ripple, Ripple as default }
+export { Ripple, install as default }

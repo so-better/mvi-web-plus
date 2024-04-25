@@ -1,8 +1,8 @@
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import List from './list.vue'
 
-List.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	app.component(List.name!, List)
 }
 
-export { List, List as default }
+export { List, install as default }

@@ -1,8 +1,8 @@
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import Radio from './radio.vue'
 
-Radio.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	app.component(Radio.name!, Radio)
 }
 
-export { Radio, Radio as default }
+export { Radio, install as default }

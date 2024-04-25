@@ -1,8 +1,8 @@
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import Autocomplete from './autocomplete.vue'
 
-Autocomplete.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	app.component(Autocomplete.name!, Autocomplete)
 }
 
-export { Autocomplete, Autocomplete as default }
+export { Autocomplete, install as default }

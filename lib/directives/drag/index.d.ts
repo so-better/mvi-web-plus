@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Drag from './drag';
-export { Drag, Drag as default };
+declare const install: FunctionPlugin;
+export { Drag, install as default };

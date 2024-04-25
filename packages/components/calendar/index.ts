@@ -1,8 +1,8 @@
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import Calendar from './calendar.vue'
 
-Calendar.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	app.component(Calendar.name!, Calendar)
 }
 
-export { Calendar, Calendar as default }
+export { Calendar, install as default }

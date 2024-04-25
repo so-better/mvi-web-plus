@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Icon from './icon.vue';
-export { Icon, Icon as default };
+declare const install: FunctionPlugin;
+export { Icon, install as default };

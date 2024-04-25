@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Page from './page.vue';
-export { Page, Page as default };
+declare const install: FunctionPlugin;
+export { Page, install as default };

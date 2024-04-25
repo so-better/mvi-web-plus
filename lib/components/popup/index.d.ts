@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Popup from './popup.vue';
-export { Popup, Popup as default };
+declare const install: FunctionPlugin;
+export { Popup, install as default };

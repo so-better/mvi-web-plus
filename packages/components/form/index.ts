@@ -1,8 +1,8 @@
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import Form from './form.vue'
 
-Form.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	app.component(Form.name!, Form)
 }
 
-export { Form, Form as default }
+export { Form, install as default }

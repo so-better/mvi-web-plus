@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import PullRefresh from './pull-refresh.vue';
-export { PullRefresh, PullRefresh as default };
+declare const install: FunctionPlugin;
+export { PullRefresh, install as default };

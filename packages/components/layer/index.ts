@@ -1,8 +1,8 @@
+import { App, FunctionPlugin } from 'vue'
 import Layer from './layer.vue'
-import { App } from 'vue'
 
-Layer.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	app.component(Layer.name!, Layer)
 }
 
-export { Layer, Layer as default }
+export { Layer, install as default }

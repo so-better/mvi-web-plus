@@ -1,8 +1,8 @@
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import Page from './page.vue'
 
-Page.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	app.component(Page.name!, Page)
 }
 
-export { Page, Page as default }
+export { Page, install as default }

@@ -1,8 +1,8 @@
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import Input from './input.vue'
 
-Input.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	app.component(Input.name!, Input)
 }
 
-export { Input, Input as default }
+export { Input, install as default }

@@ -1,9 +1,9 @@
-import { App } from 'vue';
+import { FunctionPlugin } from 'vue';
 import { MsgboxPropsType } from './props';
 type MsgboxType = {
     initParams: (options: string | MsgboxPropsType) => MsgboxPropsType;
     msgbox: (options: string | MsgboxPropsType) => void;
-    install: (app: App) => void;
 };
 declare const Msgbox: MsgboxType;
-export { Msgbox, Msgbox as default };
+declare const install: FunctionPlugin;
+export { Msgbox, install as default };

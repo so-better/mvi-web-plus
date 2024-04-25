@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import DateNativePicker from './date-native-picker.vue';
-export { DateNativePicker, DateNativePicker as default };
+declare const install: FunctionPlugin;
+export { DateNativePicker, install as default };

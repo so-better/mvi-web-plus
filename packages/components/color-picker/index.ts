@@ -1,8 +1,8 @@
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import ColorPicker from './color-picker.vue'
 
-ColorPicker.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	app.component(ColorPicker.name!, ColorPicker)
 }
 
-export { ColorPicker, ColorPicker as default }
+export { ColorPicker, install as default }

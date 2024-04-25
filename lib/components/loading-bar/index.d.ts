@@ -1,4 +1,4 @@
-import { App, ComponentInternalInstance } from 'vue';
+import { App, ComponentInternalInstance, FunctionPlugin } from 'vue';
 import { LoadingBarPropsType } from './props';
 type LoadingBarType = {
     $el?: HTMLElement;
@@ -7,7 +7,7 @@ type LoadingBarType = {
     initParams: (options: string | LoadingBarPropsType) => LoadingBarPropsType;
     showLoadingBar: (options: string | LoadingBarPropsType) => void;
     hideLoadingBar: () => void;
-    install: (app: App) => void;
 };
 declare const LoadingBar: LoadingBarType;
-export { LoadingBar, LoadingBar as default };
+declare const install: FunctionPlugin;
+export { LoadingBar, install as default };

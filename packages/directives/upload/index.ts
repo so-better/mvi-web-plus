@@ -1,8 +1,8 @@
 import Dap from 'dap-util'
+import { App, FunctionPlugin } from 'vue'
 import Upload from './upload'
-import { App } from 'vue'
 
-Upload.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	//文件上传
 	app.directive('upload', {
 		mounted(el, binding) {
@@ -19,4 +19,4 @@ Upload.install = (app: App) => {
 	})
 }
 
-export { Upload, Upload as default }
+export { Upload, install as default }

@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Navbar from './navbar.vue';
-export { Navbar, Navbar as default };
+declare const install: FunctionPlugin;
+export { Navbar, install as default };

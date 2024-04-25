@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Steps from './steps.vue';
-export { Steps, Steps as default };
+declare const install: FunctionPlugin;
+export { Steps, install as default };

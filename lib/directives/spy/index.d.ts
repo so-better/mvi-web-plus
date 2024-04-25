@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Spy from './spy';
-export { Spy, Spy as default };
+declare const install: FunctionPlugin;
+export { Spy, install as default };

@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Observe from './observe';
-export { Observe, Observe as default };
+declare const install: FunctionPlugin;
+export { Observe, install as default };

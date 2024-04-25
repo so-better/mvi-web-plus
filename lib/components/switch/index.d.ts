@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Switch from './switch.vue';
-export { Switch, Switch as default };
+declare const install: FunctionPlugin;
+export { Switch, install as default };

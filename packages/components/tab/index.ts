@@ -1,8 +1,8 @@
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import Tab from './tab.vue'
 
-Tab.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	app.component(Tab.name!, Tab)
 }
 
-export { Tab, Tab as default }
+export { Tab, install as default }

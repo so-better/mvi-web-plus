@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Divider from './divider.vue';
-export { Divider, Divider as default };
+declare const install: FunctionPlugin;
+export { Divider, install as default };

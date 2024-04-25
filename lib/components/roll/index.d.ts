@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Roll from './roll.vue';
-export { Roll, Roll as default };
+declare const install: FunctionPlugin;
+export { Roll, install as default };

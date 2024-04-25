@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Picker from './picker.vue';
-export { Picker, Picker as default };
+declare const install: FunctionPlugin;
+export { Picker, install as default };

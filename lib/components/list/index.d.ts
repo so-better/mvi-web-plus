@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import List from './list.vue';
-export { List, List as default };
+declare const install: FunctionPlugin;
+export { List, install as default };

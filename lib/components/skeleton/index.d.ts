@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Skeleton from './skeleton.vue';
-export { Skeleton, Skeleton as default };
+declare const install: FunctionPlugin;
+export { Skeleton, install as default };

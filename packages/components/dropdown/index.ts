@@ -1,8 +1,8 @@
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import Dropdown from './dropdown.vue'
 
-Dropdown.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	app.component(Dropdown.name!, Dropdown)
 }
 
-export { Dropdown, Dropdown as default }
+export { Dropdown, install as default }

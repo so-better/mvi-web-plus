@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Loading from './loading.vue';
-export { Loading, Loading as default };
+declare const install: FunctionPlugin;
+export { Loading, install as default };

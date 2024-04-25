@@ -1,8 +1,8 @@
 import Dap from 'dap-util'
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import Observe from './observe'
 
-Observe.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	//监听元素属性变化
 	app.directive('observe', {
 		mounted(el, binding) {
@@ -16,4 +16,4 @@ Observe.install = (app: App) => {
 	})
 }
 
-export { Observe, Observe as default }
+export { Observe, install as default }

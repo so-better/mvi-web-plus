@@ -1,4 +1,4 @@
-import { App } from 'vue';
+import { FunctionPlugin } from 'vue';
 import { DialogPcPropsType, DialogPropsType } from './props';
 export type DialogType = {
     initParams: (type: DialogPropsType['type'] | DialogPcPropsType['type'], options: string | DialogPropsType | DialogPcPropsType) => DialogPropsType | DialogPcPropsType;
@@ -8,7 +8,7 @@ export type DialogType = {
     Alert: (options: string | DialogPcPropsType) => void;
     Confirm: (options: string | DialogPcPropsType) => void;
     Prompt: (options: string | DialogPcPropsType) => void;
-    install: (app: App) => void;
 };
 declare const Dialog: DialogType;
-export { Dialog, Dialog as default };
+declare const install: FunctionPlugin;
+export { Dialog, install as default };

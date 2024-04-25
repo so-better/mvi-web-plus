@@ -1,8 +1,8 @@
-import { App } from 'vue'
+import { App, FunctionPlugin } from 'vue'
 import Popup from './popup.vue'
 
-Popup.install = (app: App) => {
+const install: FunctionPlugin = (app: App) => {
 	app.component(Popup.name!, Popup)
 }
 
-export { Popup, Popup as default }
+export { Popup, install as default }

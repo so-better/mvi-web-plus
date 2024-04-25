@@ -1,2 +1,4 @@
+import { FunctionPlugin } from 'vue';
 import Overlay from './overlay.vue';
-export { Overlay, Overlay as default };
+declare const install: FunctionPlugin;
+export { Overlay, install as default };
