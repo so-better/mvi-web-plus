@@ -10,7 +10,7 @@
 import { ref } from 'vue'
 const selectFiles = ref([])
 const uploadOpt = ref({
-	accept: '',
+	accept: 'image/png',
 	capture: false,
 	allowedFileType: ['jpg', 'png', 'jpeg'],
 	multiple: true,
