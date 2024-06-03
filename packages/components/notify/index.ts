@@ -11,7 +11,7 @@ type NotifyType = {
 	//组件实例
 	$vm?: ComponentInternalInstance
 	initParams: (options: string | NotifyPropsType) => NotifyPropsType
-	showNotify: (options: NotifyPropsType) => void
+	showNotify: (options: NotifyPropsType) => Promise<void>
 	hideNotify: () => void
 }
 

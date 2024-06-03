@@ -1,8 +1,5 @@
 import { FunctionPlugin } from 'vue';
-/***** 全局默认样式 *****/
-import './css/mvi-default.less';
-/***** 辅助样式 *****/
-import './css/mvi-support.less';
+
 /***** 按需导出 *****/
 export * from './directives/anchor';
 export * from './directives/drag';
@@ -81,5 +78,5 @@ export * from './components/carousel-item';
 export * from './components/rich-image';
 export * from './components/image-preview';
 declare const install: FunctionPlugin;
-declare const version = "1.9.14";
+declare const version = "1.9.15";
 export { install as default, install, version };

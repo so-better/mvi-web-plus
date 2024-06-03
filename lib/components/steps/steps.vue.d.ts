@@ -1,4 +1,4 @@
-declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     active: {
         type: NumberConstructor;
         default: number;
@@ -16,14 +16,14 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: null;
     };
     activeIcon: {
-        type: import("vue").PropType<string | import("../icon/props").IconPropsType>;
+        type: import('vue').PropType<string | import('../icon/props').IconPropsType>;
         default: string;
     };
     inactiveIcon: {
-        type: import("vue").PropType<string | import("../icon/props").IconPropsType>;
+        type: import('vue').PropType<string | import('../icon/props').IconPropsType>;
         default: null;
     };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     active: {
         type: NumberConstructor;
         default: number;
@@ -41,19 +41,19 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: null;
     };
     activeIcon: {
-        type: import("vue").PropType<string | import("../icon/props").IconPropsType>;
+        type: import('vue').PropType<string | import('../icon/props').IconPropsType>;
         default: string;
     };
     inactiveIcon: {
-        type: import("vue").PropType<string | import("../icon/props").IconPropsType>;
+        type: import('vue').PropType<string | import('../icon/props').IconPropsType>;
         default: null;
     };
 }>>, {
     active: number;
     activeColor: string;
     vertical: boolean;
-    activeIcon: string | import("../icon/props").IconPropsType;
-    inactiveIcon: string | import("../icon/props").IconPropsType;
+    activeIcon: string | import('../icon/props').IconPropsType;
+    inactiveIcon: string | import('../icon/props').IconPropsType;
     inactiveColor: string;
 }, {}>, {
     default?(_: {}): any;

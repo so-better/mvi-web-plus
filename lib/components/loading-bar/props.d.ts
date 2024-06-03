@@ -1,4 +1,5 @@
 import { ComponentInternalInstance, ExtractPublicPropTypes, PropType } from 'vue';
+
 export declare const LoadingBarProps: {
     color: {
         type: StringConstructor;

@@ -6,12 +6,12 @@ import { DialogPcPropsType, DialogPropsType } from './props'
 
 export type DialogType = {
 	initParams: (type: DialogPropsType['type'] | DialogPcPropsType['type'], options: string | DialogPropsType | DialogPcPropsType) => DialogPropsType | DialogPcPropsType
-	alert: (options: string | DialogPropsType) => void
-	confirm: (options: string | DialogPropsType) => void
-	prompt: (options: string | DialogPropsType) => void
-	Alert: (options: string | DialogPcPropsType) => void
-	Confirm: (options: string | DialogPcPropsType) => void
-	Prompt: (options: string | DialogPcPropsType) => void
+	alert: (options: string | DialogPropsType) => Promise<void>
+	confirm: (options: string | DialogPropsType) => Promise<boolean>
+	prompt: (options: string | DialogPropsType) => Promise<{ ok: boolean; value: string }>
+	Alert: (options: string | DialogPcPropsType) => Promise<void>
+	Confirm: (options: string | DialogPcPropsType) => Promise<boolean>
+	Prompt: (options: string | DialogPcPropsType) => Promise<{ ok: boolean; value: string }>
 }
 
 const Dialog: DialogType = {
@@ -74,7 +74,7 @@ const Dialog: DialogType = {
 
 	//确认框
 	confirm: function (options) {
-		return new Promise(resolve => {
+		return new Promise<boolean>(resolve => {
 			let opts = Dialog.initParams('confirm', options)
 			let mountNode = <HTMLElement>Dap.element.string2dom('<div></div>')
 			document.body.appendChild(mountNode)
@@ -98,7 +98,7 @@ const Dialog: DialogType = {
 
 	//信息输入框
 	prompt: function (options) {
-		return new Promise(resolve => {
+		return new Promise<{ ok: boolean; value: string }>(resolve => {
 			let opts = Dialog.initParams('prompt', options)
 			let mountNode = <HTMLElement>Dap.element.string2dom('<div></div>')
 			document.body.appendChild(mountNode)
@@ -149,7 +149,7 @@ const Dialog: DialogType = {
 
 	//pc端确认框
 	Confirm: function (options) {
-		return new Promise(resolve => {
+		return new Promise<boolean>(resolve => {
 			let opts = Dialog.initParams('Confirm', options)
 			let mountNode = <HTMLElement>Dap.element.string2dom('<div></div>')
 			document.body.appendChild(mountNode)
@@ -173,7 +173,7 @@ const Dialog: DialogType = {
 
 	//pc端信息输入框
 	Prompt: function (options) {
-		return new Promise(resolve => {
+		return new Promise<{ ok: boolean; value: string }>(resolve => {
 			let opts = Dialog.initParams('Prompt', options)
 			let mountNode = <HTMLElement>Dap.element.string2dom('<div></div>')
 			document.body.appendChild(mountNode)

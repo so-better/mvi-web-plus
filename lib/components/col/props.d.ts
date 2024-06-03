@@ -1,4 +1,5 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
+
 export type ColResponsiveType = {
     span?: number;
     offset?: number;

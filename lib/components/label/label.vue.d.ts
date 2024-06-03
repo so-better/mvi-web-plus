@@ -1,11 +1,11 @@
-declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     type: {
-        type: import("vue").PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
+        type: import('vue').PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
     size: {
-        type: import("vue").PropType<"medium" | "large">;
+        type: import('vue').PropType<"medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
@@ -29,14 +29,14 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         type: BooleanConstructor;
         default: boolean;
     };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     type: {
-        type: import("vue").PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
+        type: import('vue').PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
     size: {
-        type: import("vue").PropType<"medium" | "large">;
+        type: import('vue').PropType<"medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };

@@ -1,4 +1,5 @@
 import { FunctionPlugin } from 'vue';
-import Px from './px';
+import { default as Px } from './px';
+
 declare const install: FunctionPlugin;
 export { Px, install as default };

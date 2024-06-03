@@ -1,4 +1,5 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
+
 export type PickerOptionsItemType = {
     values: string[];
     defaultIndex: number;

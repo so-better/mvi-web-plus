@@ -1,4 +1,5 @@
 import { FunctionPlugin } from 'vue';
-import Ripple from './ripple';
+import { default as Ripple } from './ripple';
+
 declare const install: FunctionPlugin;
 export { Ripple, install as default };

@@ -11,7 +11,7 @@ type LoadingBarType = {
 	//组件实例
 	$vm?: ComponentInternalInstance
 	initParams: (options: string | LoadingBarPropsType) => LoadingBarPropsType
-	showLoadingBar: (options: string | LoadingBarPropsType) => void
+	showLoadingBar: (options: string | LoadingBarPropsType) => Promise<void>
 	hideLoadingBar: () => void
 }
 

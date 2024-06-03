@@ -1,5 +1,6 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
 import { IconPropsType } from '../icon/props';
+
 export type InputAutosizeType = {
     maxRows?: number;
     minRows?: number;

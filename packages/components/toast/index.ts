@@ -11,7 +11,7 @@ type ToastType = {
 	//组件实例
 	$vm?: ComponentInternalInstance
 	initParams: (options: string | ToastPropsType) => ToastPropsType
-	showToast: (options: string | ToastPropsType) => void
+	showToast: (options: string | ToastPropsType) => Promise<void>
 	hideToast: () => void
 }
 

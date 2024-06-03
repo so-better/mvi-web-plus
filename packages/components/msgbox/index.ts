@@ -5,7 +5,7 @@ import { MsgboxPropsType } from './props'
 
 type MsgboxType = {
 	initParams: (options: string | MsgboxPropsType) => MsgboxPropsType
-	msgbox: (options: string | MsgboxPropsType) => void
+	msgbox: (options: string | MsgboxPropsType) => Promise<void>
 }
 
 const Msgbox: MsgboxType = {
