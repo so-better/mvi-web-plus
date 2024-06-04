@@ -48,14 +48,14 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         default: boolean;
     };
     errorIcon: {
-        type: import('vue').PropType<string | import('../icon/props').IconPropsType>;
+        type: import('vue').PropType<string | import('../..').IconPropsType>;
         default: {
             size: string;
             type: string;
         };
     };
     loadIcon: {
-        type: import('vue').PropType<string | import('../icon/props').IconPropsType>;
+        type: import('vue').PropType<string | import('../..').IconPropsType>;
         default: () => {
             size: string;
             type: string;
@@ -124,14 +124,14 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         default: boolean;
     };
     errorIcon: {
-        type: import('vue').PropType<string | import('../icon/props').IconPropsType>;
+        type: import('vue').PropType<string | import('../..').IconPropsType>;
         default: {
             size: string;
             type: string;
         };
     };
     loadIcon: {
-        type: import('vue').PropType<string | import('../icon/props').IconPropsType>;
+        type: import('vue').PropType<string | import('../..').IconPropsType>;
         default: () => {
             size: string;
             type: string;
@@ -154,11 +154,11 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     modelValue: boolean;
     usePadding: boolean;
     active: number;
-    loadIcon: string | import('../icon/props').IconPropsType;
+    loadIcon: string | import('../..').IconPropsType;
     mode: "fade" | "slide" | undefined;
     loop: boolean;
     controls: boolean;
-    errorIcon: string | import('../icon/props').IconPropsType;
+    errorIcon: string | import('../..').IconPropsType;
     maxScale: number;
     minScale: number;
     images: string[];

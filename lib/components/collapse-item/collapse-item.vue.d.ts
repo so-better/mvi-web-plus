@@ -1,6 +1,6 @@
 declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     icon: {
-        type: import('vue').PropType<string | import('../icon/props').IconPropsType>;
+        type: import('vue').PropType<string | import('../..').IconPropsType>;
         default: null;
     };
     title: {
@@ -21,7 +21,7 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     };
 }, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     icon: {
-        type: import('vue').PropType<string | import('../icon/props').IconPropsType>;
+        type: import('vue').PropType<string | import('../..').IconPropsType>;
         default: null;
     };
     title: {
@@ -44,7 +44,7 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     label: string;
     title: string;
     disabled: boolean;
-    icon: string | import('../icon/props').IconPropsType;
+    icon: string | import('../..').IconPropsType;
     content: string;
 }, {}>, {
     default?(_: {}): any;

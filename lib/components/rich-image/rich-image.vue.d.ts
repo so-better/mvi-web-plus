@@ -4,11 +4,11 @@ declare const _default: import('vue').DefineComponent<{
         default: string;
     };
     loadIcon: {
-        type: import('vue').PropType<string | import('../icon/props').IconPropsType>;
+        type: import('vue').PropType<string | import('../..').IconPropsType>;
         default: null;
     };
     errorIcon: {
-        type: import('vue').PropType<string | import('../icon/props').IconPropsType>;
+        type: import('vue').PropType<string | import('../..').IconPropsType>;
         default: null;
     };
     maxScale: {
@@ -40,11 +40,11 @@ declare const _default: import('vue').DefineComponent<{
         default: string;
     };
     loadIcon: {
-        type: import('vue').PropType<string | import('../icon/props').IconPropsType>;
+        type: import('vue').PropType<string | import('../..').IconPropsType>;
         default: null;
     };
     errorIcon: {
-        type: import('vue').PropType<string | import('../icon/props').IconPropsType>;
+        type: import('vue').PropType<string | import('../..').IconPropsType>;
         default: null;
     };
     maxScale: {
@@ -66,8 +66,8 @@ declare const _default: import('vue').DefineComponent<{
     "onOnly-click"?: ((...args: any[]) => any) | undefined;
 }, {
     src: string;
-    loadIcon: string | import('../icon/props').IconPropsType;
-    errorIcon: string | import('../icon/props').IconPropsType;
+    loadIcon: string | import('../..').IconPropsType;
+    errorIcon: string | import('../..').IconPropsType;
     maxScale: number;
     minScale: number;
 }, {}>;

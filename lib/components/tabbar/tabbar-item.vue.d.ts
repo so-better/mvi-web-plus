@@ -23,7 +23,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     badge: {
-        type: import('vue').PropType<import('../badge/props').BadgePropsType>;
+        type: import('vue').PropType<import('../..').BadgePropsType>;
         default: null;
     };
 }, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
@@ -48,7 +48,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     badge: {
-        type: import('vue').PropType<import('../badge/props').BadgePropsType>;
+        type: import('vue').PropType<import('../..').BadgePropsType>;
         default: null;
     };
 }>>, {
