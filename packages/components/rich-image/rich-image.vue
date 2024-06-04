@@ -1,6 +1,6 @@
 <template>
 	<div class="mvi-rich-image" ref="elRef" @mousewheel="scaleByWheel" @touchstart="scaleByTouch" @touchmove="scaleByTouch" @touchend="scaleByTouch" @mousedown="handleMouseOpt" @mouseup="handleMouseOpt" @click="handleClick">
-		<Image ref="imgRef" fit="response" :style="imgStyle" width="100%" height="100%" :src="src" :load-icon="loadIcon" :error-icon="errorIcon"></Image>
+		<Image ref="imgRef" fit="response" :style="imgStyle" width="100%" height="100%" :src="src" :load-icon="loadIcon" :error-icon="errorIcon" @dragstart.prevent></Image>
 	</div>
 </template>
 
