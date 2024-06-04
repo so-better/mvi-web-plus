@@ -1,6 +1,6 @@
 import Dap from 'dap-util'
 
-enum UploadErrorType {
+export enum UploadErrorType {
 	//文件后缀不符合
 	FILE_SUFFIX_ERROR = 'suffixError',
 	//超出最大文件尺寸限制
@@ -13,7 +13,7 @@ enum UploadErrorType {
 	FILE_MINLENGTH_ERROR = 'minLengthError'
 }
 
-type UploadOptionsType = {
+export type UploadOptionsType = {
 	accept?: string
 	capture?: boolean
 	allowedFileType?: Array<string>

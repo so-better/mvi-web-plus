@@ -3,7 +3,7 @@ import Dap from 'dap-util'
  * 水波纹效果
  */
 
-type RippleOptionsType = {
+export type RippleOptionsType = {
 	color?: string
 	duration?: number
 	finalOpacity?: number

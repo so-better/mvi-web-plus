@@ -1,13 +1,13 @@
 import Dap from 'dap-util'
 
-type ResizeModeType = {
+export type ResizeModeType = {
 	left: boolean
 	top: boolean
 	right: boolean
 	bottom: boolean
 }
 
-type ResizeOptionsType = {
+export type ResizeOptionsType = {
 	draggableX?: boolean
 	draggableY?: boolean
 	mode?: ResizeModeType
@@ -19,13 +19,13 @@ type ResizeOptionsType = {
 	range?: number
 }
 
-type ResizeRangeType = {
+export type ResizeRangeType = {
 	x?: number[]
 	y?: number[]
 }
 
 //拖动的区域范围
-enum ResizeAreaValue {
+export enum ResizeAreaValue {
 	LEFT = 'left',
 	TOP = 'top',
 	RIGHT = 'right',

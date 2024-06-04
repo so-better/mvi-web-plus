@@ -1,4 +1,11 @@
-type UploadOptionsType = {
+export declare enum UploadErrorType {
+    FILE_SUFFIX_ERROR = "suffixError",
+    FILE_MAXSIZE_ERROR = "maxSizeError",
+    FILE_MINSIZE_ERROR = "minSizeError",
+    FILE_MAXLENGTH_ERROR = "maxLengthError",
+    FILE_MINLENGTH_ERROR = "minLengthError"
+}
+export type UploadOptionsType = {
     accept?: string;
     capture?: boolean;
     allowedFileType?: Array<string>;

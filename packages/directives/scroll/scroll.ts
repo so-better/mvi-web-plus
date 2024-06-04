@@ -3,7 +3,7 @@ import Dap from 'dap-util'
  * 监听元素滚动条到达顶部或者底部
  */
 
-type ScrollOptionsType = {
+export type ScrollOptionsType = {
 	top?: (...args: any) => void
 	bottom?: (...args: any) => void
 }

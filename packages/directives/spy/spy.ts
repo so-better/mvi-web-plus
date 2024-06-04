@@ -1,6 +1,6 @@
 import Dap from 'dap-util'
 
-type SpyOptionsType = {
+export type SpyOptionsType = {
 	el?: HTMLElement | string
 	beforeEnter?: (...args: any) => void
 	enter?: (...args: any) => void

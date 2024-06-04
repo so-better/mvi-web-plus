@@ -1,7 +1,7 @@
 /**
  * 1px适配实现
  */
-type PxOptionsType = {
+export type PxOptionsType = {
     attr?: string;
     after?: boolean;
     before?: boolean;

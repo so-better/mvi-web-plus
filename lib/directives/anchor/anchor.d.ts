@@ -1,4 +1,4 @@
-type AnchorOptionsType = {
+export type AnchorOptionsType = {
     target?: HTMLElement | string;
     root?: HTMLElement | string;
     time?: number;

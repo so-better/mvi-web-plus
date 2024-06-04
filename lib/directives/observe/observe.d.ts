@@ -1,7 +1,7 @@
 /**
  * 实现监听元素的属性变更
  */
-type ObserveOptionsType = {
+export type ObserveOptionsType = {
     attributes?: boolean;
     childList?: boolean;
     subtree?: boolean;

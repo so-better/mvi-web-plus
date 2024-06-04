@@ -1,6 +1,6 @@
 import Dap from 'dap-util'
 
-type DragOptionsType = {
+export type DragOptionsType = {
 	container?: HTMLElement | string
 	mode?: string
 	draggableX?: boolean

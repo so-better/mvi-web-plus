@@ -78,5 +78,5 @@ export * from './components/carousel-item';
 export * from './components/rich-image';
 export * from './components/image-preview';
 declare const install: FunctionPlugin;
-declare const version = "1.9.15";
+declare const version = "1.9.16";
 export { install as default, install, version };
