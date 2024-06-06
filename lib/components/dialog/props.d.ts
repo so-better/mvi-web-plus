@@ -12,8 +12,8 @@ export type DialogInputType = {
     mode?: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url';
 };
 export type DialogPcBtnsType = {
-    ok: ButtonPropsType;
-    cancel: ButtonPropsType;
+    ok?: ButtonPropsType;
+    cancel?: ButtonPropsType;
 };
 export declare const DialogProps: {
     type: {

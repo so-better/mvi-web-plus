@@ -10,8 +10,8 @@
 				<Icon v-if="cmpInput.clearable" v-show="showClear" type="times-o" class="mvi-dialog-times" @click="doClear" />
 			</div>
 			<div class="mvi-dialog-footer" :class="{ center: center }">
-				<Button v-if="type != 'Alert'" :type="cmpBtns.cancel.type" :plain="cmpBtns.cancel.plain" class="mvi-dialog-cancel" @click="cancelFun" :size="cmpBtns.cancel.size" :round="cmpBtns.cancel.round" :square="cmpBtns.cancel.square" :loading="cmpBtns.cancel.loading" :load-text="cmpBtns.cancel.loadText" :load-icon="cmpBtns.cancel.loadIcon" :disabled="cmpBtns.cancel.disabled">{{ cmpBtns.cancel.text }}</Button>
-				<Button :type="cmpBtns.ok.type" :plain="cmpBtns.ok.plain" @click="okFun" :size="cmpBtns.ok.size" :round="cmpBtns.ok.round" :square="cmpBtns.ok.square" :loading="cmpBtns.ok.loading" :load-text="cmpBtns.ok.loadText" :load-icon="cmpBtns.ok.loadIcon" :disabled="cmpBtns.ok.disabled">{{ cmpBtns.ok.text }}</Button>
+				<Button v-if="type != 'Alert'" :type="cmpBtns.cancel!.type" :plain="cmpBtns.cancel!.plain" class="mvi-dialog-cancel" @click="cancelFun" :size="cmpBtns.cancel!.size" :round="cmpBtns.cancel!.round" :square="cmpBtns.cancel!.square" :loading="cmpBtns.cancel!.loading" :load-text="cmpBtns.cancel!.loadText" :load-icon="cmpBtns.cancel!.loadIcon" :disabled="cmpBtns.cancel!.disabled">{{ cmpBtns.cancel!.text }}</Button>
+				<Button :type="cmpBtns.ok!.type" :plain="cmpBtns.ok!.plain" @click="okFun" :size="cmpBtns.ok!.size" :round="cmpBtns.ok!.round" :square="cmpBtns.ok!.square" :loading="cmpBtns.ok!.loading" :load-text="cmpBtns.ok!.loadText" :load-icon="cmpBtns.ok!.loadIcon" :disabled="cmpBtns.ok!.disabled">{{ cmpBtns.ok!.text }}</Button>
 			</div>
 		</template>
 	</Modal>
@@ -109,67 +109,67 @@ const cmpBtns = computed<DialogPcBtnsType>(() => {
 	}
 	if (Dap.common.isObject(props.btns)) {
 		if (Dap.common.isObject(props.btns.ok)) {
-			if (typeof props.btns.ok.type == 'string') {
-				btns.ok.type = props.btns.ok.type
+			if (typeof props.btns.ok!.type == 'string') {
+				btns.ok!.type = props.btns.ok!.type
 			}
-			if (typeof props.btns.ok.plain == 'boolean') {
-				btns.ok.plain = props.btns.ok.plain
+			if (typeof props.btns.ok!.plain == 'boolean') {
+				btns.ok!.plain = props.btns.ok!.plain
 			}
-			if (typeof props.btns.ok.text == 'string') {
-				btns.ok.text = props.btns.ok.text
+			if (typeof props.btns.ok!.text == 'string') {
+				btns.ok!.text = props.btns.ok!.text
 			}
-			if (typeof props.btns.ok.size == 'string') {
-				btns.ok.size = props.btns.ok.size
+			if (typeof props.btns.ok!.size == 'string') {
+				btns.ok!.size = props.btns.ok!.size
 			}
-			if (typeof props.btns.ok.round == 'boolean') {
-				btns.ok.round = props.btns.ok.round
+			if (typeof props.btns.ok!.round == 'boolean') {
+				btns.ok!.round = props.btns.ok!.round
 			}
-			if (typeof props.btns.ok.square == 'boolean') {
-				btns.ok.square = props.btns.ok.square
+			if (typeof props.btns.ok!.square == 'boolean') {
+				btns.ok!.square = props.btns.ok!.square
 			}
-			if (typeof props.btns.ok.disabled == 'boolean') {
-				btns.ok.disabled = props.btns.ok.disabled
+			if (typeof props.btns.ok!.disabled == 'boolean') {
+				btns.ok!.disabled = props.btns.ok!.disabled
 			}
-			if (typeof props.btns.ok.loading == 'boolean') {
-				btns.ok.loading = props.btns.ok.loading
+			if (typeof props.btns.ok!.loading == 'boolean') {
+				btns.ok!.loading = props.btns.ok!.loading
 			}
-			if (typeof props.btns.ok.loadText == 'string') {
-				btns.ok.loadText = props.btns.ok.loadText
+			if (typeof props.btns.ok!.loadText == 'string') {
+				btns.ok!.loadText = props.btns.ok!.loadText
 			}
-			if (typeof props.btns.ok.loadIcon == 'string' || Dap.common.isObject(props.btns.ok.loadIcon)) {
-				btns.ok.loadIcon = props.btns.ok.loadIcon
+			if (typeof props.btns.ok!.loadIcon == 'string' || Dap.common.isObject(props.btns.ok!.loadIcon)) {
+				btns.ok!.loadIcon = props.btns.ok!.loadIcon
 			}
 		}
 		if (Dap.common.isObject(props.btns.cancel)) {
-			if (typeof props.btns.cancel.type == 'string') {
-				btns.cancel.type = props.btns.cancel.type
+			if (typeof props.btns.cancel!.type == 'string') {
+				btns.cancel!.type = props.btns.cancel!.type
 			}
-			if (typeof props.btns.cancel.plain == 'boolean') {
-				btns.cancel.plain = props.btns.cancel.plain
+			if (typeof props.btns.cancel!.plain == 'boolean') {
+				btns.cancel!.plain = props.btns.cancel!.plain
 			}
-			if (typeof props.btns.cancel.text == 'string') {
-				btns.cancel.text = props.btns.cancel.text
+			if (typeof props.btns.cancel!.text == 'string') {
+				btns.cancel!.text = props.btns.cancel!.text
 			}
-			if (typeof props.btns.cancel.size == 'string') {
-				btns.cancel.size = props.btns.cancel.size
+			if (typeof props.btns.cancel!.size == 'string') {
+				btns.cancel!.size = props.btns.cancel!.size
 			}
-			if (typeof props.btns.cancel.round == 'boolean') {
-				btns.cancel.round = props.btns.cancel.round
+			if (typeof props.btns.cancel!.round == 'boolean') {
+				btns.cancel!.round = props.btns.cancel!.round
 			}
-			if (typeof props.btns.cancel.square == 'boolean') {
-				btns.cancel.square = props.btns.cancel.square
+			if (typeof props.btns.cancel!.square == 'boolean') {
+				btns.cancel!.square = props.btns.cancel!.square
 			}
-			if (typeof props.btns.cancel.disabled == 'boolean') {
-				btns.cancel.disabled = props.btns.cancel.disabled
+			if (typeof props.btns.cancel!.disabled == 'boolean') {
+				btns.cancel!.disabled = props.btns.cancel!.disabled
 			}
-			if (typeof props.btns.cancel.loading == 'boolean') {
-				btns.cancel.loading = props.btns.cancel.loading
+			if (typeof props.btns.cancel!.loading == 'boolean') {
+				btns.cancel!.loading = props.btns.cancel!.loading
 			}
-			if (typeof props.btns.cancel.loadText == 'string') {
-				btns.cancel.loadText = props.btns.cancel.loadText
+			if (typeof props.btns.cancel!.loadText == 'string') {
+				btns.cancel!.loadText = props.btns.cancel!.loadText
 			}
-			if (typeof props.btns.cancel.loadIcon == 'string' || Dap.common.isObject(props.btns.cancel.loadIcon)) {
-				btns.cancel.loadIcon = props.btns.cancel.loadIcon
+			if (typeof props.btns.cancel!.loadIcon == 'string' || Dap.common.isObject(props.btns.cancel!.loadIcon)) {
+				btns.cancel!.loadIcon = props.btns.cancel!.loadIcon
 			}
 		}
 	}

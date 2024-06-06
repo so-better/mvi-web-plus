@@ -13,8 +13,8 @@ export type DialogInputType = {
 }
 
 export type DialogPcBtnsType = {
-	ok: ButtonPropsType
-	cancel: ButtonPropsType
+	ok?: ButtonPropsType
+	cancel?: ButtonPropsType
 }
 
 export const DialogProps = {
