@@ -1,6 +1,5 @@
 import { App, ComponentInternalInstance, FunctionPlugin } from 'vue';
 import { NotifyPropsType } from './props';
-
 type NotifyType = {
     $el?: HTMLElement;
     $instance?: App<Element>;

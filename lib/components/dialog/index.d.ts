@@ -1,6 +1,5 @@
 import { FunctionPlugin } from 'vue';
 import { DialogPcPropsType, DialogPropsType } from './props';
-
 export type DialogType = {
     initParams: (type: DialogPropsType['type'] | DialogPcPropsType['type'], options: string | DialogPropsType | DialogPcPropsType) => DialogPropsType | DialogPcPropsType;
     alert: (options: string | DialogPropsType) => Promise<void>;

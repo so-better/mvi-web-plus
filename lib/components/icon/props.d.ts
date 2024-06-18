@@ -1,5 +1,4 @@
 import { ExtractPublicPropTypes } from 'vue';
-
 export declare const IconProps: {
     type: {
         type: StringConstructor;

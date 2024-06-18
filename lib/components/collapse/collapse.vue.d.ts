@@ -1,4 +1,4 @@
-declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     modelValue: {
         type: (NumberConstructor | ArrayConstructor)[];
         default: null;
@@ -27,14 +27,14 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         type: BooleanConstructor;
         default: boolean;
     };
-}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     change: (...args: any[]) => void;
     "before-slide-down": (...args: any[]) => void;
     "slide-down": (...args: any[]) => void;
     "before-slide-up": (...args: any[]) => void;
     "slide-up": (...args: any[]) => void;
-}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     modelValue: {
         type: (NumberConstructor | ArrayConstructor)[];
         default: null;

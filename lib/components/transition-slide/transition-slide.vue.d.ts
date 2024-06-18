@@ -1,4 +1,4 @@
-declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     expand: {
         type: BooleanConstructor;
         default: boolean;
@@ -7,12 +7,12 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         type: NumberConstructor;
         default: number;
     };
-}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "before-slide-down": (...args: any[]) => void;
     "slide-down": (...args: any[]) => void;
     "before-slide-up": (...args: any[]) => void;
     "slide-up": (...args: any[]) => void;
-}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     expand: {
         type: BooleanConstructor;
         default: boolean;

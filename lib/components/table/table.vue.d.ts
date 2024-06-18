@@ -1,12 +1,11 @@
 import { TableColumnType, TableSortOrderType } from './props';
-
-declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     data: {
-        type: import('vue').PropType<any[]>;
+        type: import("vue").PropType<any[]>;
         default: () => never[];
     };
     columns: {
-        type: import('vue').PropType<TableColumnType[]>;
+        type: import("vue").PropType<TableColumnType[]>;
         default: () => never[];
     };
     border: {
@@ -42,7 +41,7 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         default: boolean;
     };
     cellClass: {
-        type: import('vue').PropType<(row: any, rowIndex: number, column: TableColumnType, columnIndex: number) => string>;
+        type: import("vue").PropType<(row: any, rowIndex: number, column: TableColumnType, columnIndex: number) => string>;
         default: null;
     };
     activeColor: {
@@ -51,18 +50,18 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     };
 }, {
     doLayout: () => void;
-}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     check: (...args: any[]) => void;
     "sort-cancel": (...args: any[]) => void;
     "sort-asc": (...args: any[]) => void;
     "sort-desc": (...args: any[]) => void;
-}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     data: {
-        type: import('vue').PropType<any[]>;
+        type: import("vue").PropType<any[]>;
         default: () => never[];
     };
     columns: {
-        type: import('vue').PropType<TableColumnType[]>;
+        type: import("vue").PropType<TableColumnType[]>;
         default: () => never[];
     };
     border: {
@@ -98,7 +97,7 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         default: boolean;
     };
     cellClass: {
-        type: import('vue').PropType<(row: any, rowIndex: number, column: TableColumnType, columnIndex: number) => string>;
+        type: import("vue").PropType<(row: any, rowIndex: number, column: TableColumnType, columnIndex: number) => string>;
         default: null;
     };
     activeColor: {

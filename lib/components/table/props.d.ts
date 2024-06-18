@@ -1,5 +1,4 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
-
 export type TableSortOrderType = 'desc' | 'asc' | '';
 export type TableColumnType = {
     type?: 'selection' | 'custom' | 'default';

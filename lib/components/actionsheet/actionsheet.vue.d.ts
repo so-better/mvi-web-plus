@@ -1,6 +1,5 @@
 import { ActionsheetOptionsItemType } from './props';
-
-declare const _default: import('vue').DefineComponent<{
+declare const _default: import("vue").DefineComponent<{
     modelValue: {
         type: BooleanConstructor;
         default: boolean;
@@ -30,7 +29,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     options: {
-        type: import('vue').PropType<ActionsheetOptionsItemType[]>;
+        type: import("vue").PropType<ActionsheetOptionsItemType[]>;
         default: () => never[];
     };
     showCancel: {
@@ -58,16 +57,16 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     size: {
-        type: import('vue').PropType<"medium" | "large">;
+        type: import("vue").PropType<"medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
 }, {
-    $$el: import('vue').ComputedRef<HTMLElement | null>;
-}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+    $$el: import("vue").ComputedRef<HTMLElement | null>;
+}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     select: (...args: any[]) => void;
-}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     modelValue: {
         type: BooleanConstructor;
         default: boolean;
@@ -97,7 +96,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     options: {
-        type: import('vue').PropType<ActionsheetOptionsItemType[]>;
+        type: import("vue").PropType<ActionsheetOptionsItemType[]>;
         default: () => never[];
     };
     showCancel: {
@@ -125,7 +124,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     size: {
-        type: import('vue').PropType<"medium" | "large">;
+        type: import("vue").PropType<"medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };

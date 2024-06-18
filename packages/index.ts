@@ -3,10 +3,6 @@ import Dap from 'dap-util'
 //解决ios系统下css伪类无效的问题
 Dap.event.on(window, 'touchstart.ios', () => {})
 
-/***** 全局默认样式 *****/
-import './css/mvi-default.less'
-/***** 辅助样式 *****/
-import './css/mvi-support.less'
 /***** 指令 *****/
 import Anchor from './directives/anchor'
 import Drag from './directives/drag'
@@ -249,7 +245,7 @@ const install: FunctionPlugin = (app: App) => {
 }
 
 //版本号
-const version = '1.9.20'
+const version = '2.0.0'
 
 //导出
 export { install as default, install, version }

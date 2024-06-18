@@ -1,4 +1,4 @@
-declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     value: {
         type: NumberConstructor;
         default: number;
@@ -51,7 +51,7 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         type: NumberConstructor;
         default: number;
     };
-}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     value: {
         type: NumberConstructor;
         default: number;

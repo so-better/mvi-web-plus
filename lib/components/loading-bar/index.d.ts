@@ -1,6 +1,5 @@
 import { App, ComponentInternalInstance, FunctionPlugin } from 'vue';
 import { LoadingBarPropsType } from './props';
-
 type LoadingBarType = {
     $el?: HTMLElement;
     $instance?: App<Element>;

@@ -2,9 +2,23 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import dts from 'vite-plugin-dts'
 import path from 'path'
-
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
+import compileLessToCss from './vite-plugin-compile-less-to-css'
 export default defineConfig({
-	plugins: [vue(), dts()],
+	plugins: [
+		vue(),
+		dts(),
+		cssInjectedByJsPlugin({ topExecutionPriority: false }),
+		compileLessToCss({
+			outputDir: './lib',
+			include: ['./packages/css/mvi-default.less', './packages/css/mvi-support.less']
+		})
+	],
+	resolve: {
+		alias: {
+			'@': path.resolve(__dirname, './packages')
+		}
+	},
 	build: {
 		outDir: 'lib',
 		minify: 'terser',

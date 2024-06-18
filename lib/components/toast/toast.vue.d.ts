@@ -1,8 +1,7 @@
 import { IconPropsType } from '../icon/props';
-
-declare const _default: import('vue').DefineComponent<{
+declare const _default: import("vue").DefineComponent<{
     type: {
-        type: import('vue').PropType<"loading" | "info" | "success" | "error">;
+        type: import("vue").PropType<"loading" | "info" | "success" | "error">;
         default: null;
     };
     message: {
@@ -34,7 +33,7 @@ declare const _default: import('vue').DefineComponent<{
         default: null;
     };
     icon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: null;
     };
     mountEl: {
@@ -46,19 +45,19 @@ declare const _default: import('vue').DefineComponent<{
         default: null;
     };
     __remove: {
-        type: import('vue').PropType<() => void>;
+        type: import("vue").PropType<() => void>;
         default: () => () => void;
     };
     __init: {
-        type: import('vue').PropType<(vm: import('vue').ComponentInternalInstance) => void>;
+        type: import("vue").PropType<(vm: import("vue").ComponentInternalInstance) => void>;
         default: () => () => void;
     };
 }, {
-    $$el: import('vue').ComputedRef<HTMLElement | null>;
-    show: import('vue').Ref<boolean>;
-}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+    $$el: import("vue").ComputedRef<HTMLElement | null>;
+    show: import("vue").Ref<boolean>;
+}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     type: {
-        type: import('vue').PropType<"loading" | "info" | "success" | "error">;
+        type: import("vue").PropType<"loading" | "info" | "success" | "error">;
         default: null;
     };
     message: {
@@ -90,7 +89,7 @@ declare const _default: import('vue').DefineComponent<{
         default: null;
     };
     icon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: null;
     };
     mountEl: {
@@ -102,11 +101,11 @@ declare const _default: import('vue').DefineComponent<{
         default: null;
     };
     __remove: {
-        type: import('vue').PropType<() => void>;
+        type: import("vue").PropType<() => void>;
         default: () => () => void;
     };
     __init: {
-        type: import('vue').PropType<(vm: import('vue').ComponentInternalInstance) => void>;
+        type: import("vue").PropType<(vm: import("vue").ComponentInternalInstance) => void>;
         default: () => () => void;
     };
 }>>, {
@@ -122,6 +121,6 @@ declare const _default: import('vue').DefineComponent<{
     shadow: boolean;
     message: string;
     __remove: () => void;
-    __init: (vm: import('vue').ComponentInternalInstance) => void;
+    __init: (vm: import("vue").ComponentInternalInstance) => void;
 }, {}>;
 export default _default;

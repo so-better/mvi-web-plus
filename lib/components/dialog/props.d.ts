@@ -1,6 +1,5 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
 import { ButtonPropsType } from '../button/props';
-
 export type DialogInputType = {
     placeholder?: string;
     type?: string;

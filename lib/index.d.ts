@@ -1,5 +1,4 @@
 import { FunctionPlugin } from 'vue';
-
 /***** 按需导出 *****/
 export * from './directives/anchor';
 export * from './directives/drag';
@@ -151,5 +150,5 @@ export type * from './directives/scroll/scroll';
 export type * from './directives/spy/spy';
 export type * from './directives/upload/upload';
 declare const install: FunctionPlugin;
-declare const version = "1.9.20";
+declare const version = "2.0.0";
 export { install as default, install, version };

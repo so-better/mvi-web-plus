@@ -1,4 +1,4 @@
-declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     showDecimal: {
         type: BooleanConstructor;
         default: boolean;
@@ -84,8 +84,8 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         default: boolean;
     };
 }, {
-    $$el: import('vue').ComputedRef<HTMLElement | null>;
-}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+    $$el: import("vue").ComputedRef<HTMLElement | null>;
+}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     show: (...args: any[]) => void;
     showing: (...args: any[]) => void;
@@ -97,7 +97,7 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     delete: (...args: any[]) => void;
     complete: (...args: any[]) => void;
     "update:show": (...args: any[]) => void;
-}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     showDecimal: {
         type: BooleanConstructor;
         default: boolean;

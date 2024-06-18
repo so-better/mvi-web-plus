@@ -1,5 +1,4 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
-
 export declare const RadioProps: {
     disabled: {
         type: BooleanConstructor;

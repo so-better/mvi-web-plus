@@ -1,7 +1,6 @@
 import { DropdownOptionsItemType } from './props';
 import { IconPropsType } from '../icon/props';
-
-declare const _default: import('vue').DefineComponent<{
+declare const _default: import("vue").DefineComponent<{
     modelValue: {
         type: (StringConstructor | NumberConstructor | ObjectConstructor | ArrayConstructor)[];
         default: null;
@@ -11,7 +10,7 @@ declare const _default: import('vue').DefineComponent<{
         default: null;
     };
     options: {
-        type: import('vue').PropType<DropdownOptionsItemType[]>;
+        type: import("vue").PropType<DropdownOptionsItemType[]>;
         default: () => never[];
     };
     selectedClose: {
@@ -19,7 +18,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     selectedIcon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: string;
     };
     show: {
@@ -43,7 +42,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     placement: {
-        type: import('vue').PropType<"left" | "top" | "bottom" | "right" | undefined>;
+        type: import("vue").PropType<"left" | "top" | "bottom" | "right" | undefined>;
         default: string;
     };
     closable: {
@@ -63,8 +62,8 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
 }, {
-    $$el: import('vue').ComputedRef<HTMLElement | null>;
-}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+    $$el: import("vue").ComputedRef<HTMLElement | null>;
+}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     show: (...args: any[]) => void;
     showing: (...args: any[]) => void;
@@ -74,7 +73,7 @@ declare const _default: import('vue').DefineComponent<{
     hidden: (...args: any[]) => void;
     select: (...args: any[]) => void;
     "update:show": (...args: any[]) => void;
-}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     modelValue: {
         type: (StringConstructor | NumberConstructor | ObjectConstructor | ArrayConstructor)[];
         default: null;
@@ -84,7 +83,7 @@ declare const _default: import('vue').DefineComponent<{
         default: null;
     };
     options: {
-        type: import('vue').PropType<DropdownOptionsItemType[]>;
+        type: import("vue").PropType<DropdownOptionsItemType[]>;
         default: () => never[];
     };
     selectedClose: {
@@ -92,7 +91,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     selectedIcon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: string;
     };
     show: {
@@ -116,7 +115,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     placement: {
-        type: import('vue').PropType<"left" | "top" | "bottom" | "right" | undefined>;
+        type: import("vue").PropType<"left" | "top" | "bottom" | "right" | undefined>;
         default: string;
     };
     closable: {
