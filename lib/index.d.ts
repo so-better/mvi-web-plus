@@ -151,5 +151,5 @@ export type * from './directives/scroll/scroll';
 export type * from './directives/spy/spy';
 export type * from './directives/upload/upload';
 declare const install: FunctionPlugin;
-declare const version = "1.9.19";
+declare const version = "1.9.20";
 export { install as default, install, version };

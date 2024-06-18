@@ -249,7 +249,7 @@ const install: FunctionPlugin = (app: App) => {
 }
 
 //版本号
-const version = '1.9.19'
+const version = '1.9.20'
 
 //导出
 export { install as default, install, version }
