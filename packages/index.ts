@@ -1,4 +1,6 @@
 import Dap from 'dap-util'
+import { App } from 'vue'
+
 //解决ios系统下css伪类无效的问题
 Dap.event.on(window, 'touchstart.ios', () => {})
 
@@ -80,7 +82,6 @@ import Carousel from '@/components/carousel'
 import CarouselItem from '@/components/carousel-item'
 import RichImage from '@/components/rich-image'
 import ImagePreview from '@/components/image-preview'
-import { App } from 'vue'
 
 /***** 按需导出 *****/
 export * from '@/directives/anchor'

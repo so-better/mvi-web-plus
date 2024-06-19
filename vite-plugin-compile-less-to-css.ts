@@ -24,7 +24,7 @@ export default (options: PluginOptionType) => {
 			(err, output) => {
 				//处理失败
 				if (err || !output) {
-					console.error(`Failed to compile LESS for ${lessPath}`)
+					console.error(`Failed to compile LESS for ${lessPath}`, err)
 					return
 				}
 				//写入css文件
