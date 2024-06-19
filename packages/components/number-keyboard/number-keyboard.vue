@@ -35,9 +35,9 @@
 </template>
 <script setup lang="ts">
 import Dap from 'dap-util'
-import { Overlay } from '../overlay'
-import { NumberKeyboardProps } from './props'
 import { computed, getCurrentInstance, ref } from 'vue'
+import { Overlay } from '@/components/overlay'
+import { NumberKeyboardProps } from './props'
 
 //不继承属性
 defineOptions({

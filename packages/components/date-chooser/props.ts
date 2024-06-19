@@ -1,7 +1,7 @@
-import { ExtractPublicPropTypes, PropType } from 'vue'
-import { LayerPropsType } from '../layer/props'
 import dayjs from 'dayjs'
-import { CalendarViewType } from '../calendar/props'
+import { ExtractPublicPropTypes, PropType } from 'vue'
+import { LayerPropsType } from '@/components/layer'
+import { CalendarViewType } from '@/components/calendar'
 
 export const DateChooserProps = {
 	//当前日期

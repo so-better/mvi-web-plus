@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Stepper: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     modelValue: {
         type: NumberConstructor;
@@ -165,5 +166,4 @@ declare const Stepper: import('../../utils').SFCWithInstall<import('vue').Define
     inputWidth: string;
     inputAlign: "left" | "right" | "center";
 }, {}>>;
-export type * from './props';
 export { Stepper, Stepper as default };

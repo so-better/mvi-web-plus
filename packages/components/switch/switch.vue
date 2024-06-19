@@ -8,7 +8,7 @@
 </template>
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Icon } from '../icon'
+import { Icon } from '@/components/icon'
 import { SwitchProps } from './props'
 
 defineOptions({

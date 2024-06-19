@@ -1,7 +1,6 @@
 import { withInstall } from '@/utils'
 import page from './page.vue'
+export type * from './props'
 
 const Page = withInstall(page)
-
-export type * from '@/components/page/props'
 export { Page, Page as default }

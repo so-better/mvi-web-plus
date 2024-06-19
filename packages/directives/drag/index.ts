@@ -1,6 +1,7 @@
 import { withInstallDirective } from '@/utils'
 import Dap from 'dap-util'
 import Drag from './drag'
+export type * from './drag'
 
 const vDrag = withInstallDirective('drag', {
 	mounted(el, binding) {
@@ -24,5 +25,4 @@ const vDrag = withInstallDirective('drag', {
 	}
 })
 
-export type * from '@/directives/drag/drag'
 export { Drag, vDrag, vDrag as default }

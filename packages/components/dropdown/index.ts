@@ -1,7 +1,6 @@
 import { withInstall } from '@/utils'
+export type * from './props'
 import dropdown from './dropdown.vue'
 
 const Dropdown = withInstall(dropdown)
-
-export type * from '@/components/dropdown/props'
 export { Dropdown, Dropdown as default }

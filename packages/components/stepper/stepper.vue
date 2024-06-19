@@ -13,9 +13,9 @@
 </template>
 <script setup lang="ts">
 import Dap from 'dap-util'
-import { Icon } from '../icon'
-import { StepperProps } from './props'
 import { computed, ref } from 'vue'
+import { Icon } from '@/components/icon'
+import { StepperProps } from './props'
 
 defineOptions({
 	name: 'm-stepper'

@@ -26,10 +26,10 @@
 </template>
 <script setup lang="ts">
 import Dap from 'dap-util'
-import { Overlay } from '../overlay'
-import { Icon } from '../icon'
-import { ModalProps } from './props'
 import { computed, getCurrentInstance, ref, useSlots, watch } from 'vue'
+import { Overlay } from '@/components/overlay'
+import { Icon } from '@/components/icon'
+import { ModalProps } from './props'
 
 //属性不继承
 defineOptions({

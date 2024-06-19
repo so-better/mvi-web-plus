@@ -1,6 +1,7 @@
 import { App, ComponentInternalInstance } from 'vue';
 import { LoadingBarPropsType } from './props';
 
+export type * from './props';
 type LoadingBarType = {
     $el?: HTMLElement;
     $instance?: App<Element>;
@@ -11,5 +12,4 @@ type LoadingBarType = {
     hideLoadingBar: () => void;
 };
 declare const LoadingBar: LoadingBarType;
-export type * from './props';
 export { LoadingBar, LoadingBar as default };

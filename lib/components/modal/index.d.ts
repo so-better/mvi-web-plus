@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Modal: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         modelValue: {
@@ -420,5 +421,4 @@ declare const Modal: import('../../utils').SFCWithInstall<{
         footer?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { Modal, Modal as default };

@@ -1,6 +1,7 @@
 import Dap from 'dap-util'
 import { withInstallDirective } from '@/utils'
 import Observe from './observe'
+export type * from './observe'
 
 const vObserve = withInstallDirective('observe', {
 	mounted(el, binding) {
@@ -13,5 +14,4 @@ const vObserve = withInstallDirective('observe', {
 	}
 })
 
-export type * from '@/directives/observe/observe'
 export { Observe, vObserve, vObserve as default }

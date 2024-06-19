@@ -1,3 +1,4 @@
+export type * from './props';
 declare const NumberKeyboard: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         showDecimal: {
@@ -501,5 +502,4 @@ declare const NumberKeyboard: import('../../utils').SFCWithInstall<{
         complete?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { NumberKeyboard, NumberKeyboard as default };

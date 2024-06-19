@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Label: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         type: {
@@ -163,5 +164,4 @@ declare const Label: import('../../utils').SFCWithInstall<{
         default?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { Label, Label as default };

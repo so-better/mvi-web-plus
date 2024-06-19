@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Slider: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         modelValue: {
@@ -230,5 +231,4 @@ declare const Slider: import('../../utils').SFCWithInstall<{
         button?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { Slider, Slider as default };

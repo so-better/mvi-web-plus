@@ -17,10 +17,10 @@
 </template>
 <script setup lang="ts">
 import Dap from 'dap-util'
-import { Overlay } from '../overlay'
-import { Icon } from '../icon'
-import { PopupProps } from './props'
 import { computed, getCurrentInstance, ref } from 'vue'
+import { Overlay } from '@/components/overlay'
+import { Icon } from '@/components/icon'
+import { PopupProps } from './props'
 
 defineOptions({
 	inheritAttrs: false,

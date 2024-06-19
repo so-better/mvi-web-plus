@@ -1,7 +1,6 @@
 import { withInstall } from '@/utils'
 import swipeCell from './swipe-cell.vue'
+export type * from './props'
 
 const SwipeCell = withInstall(swipeCell)
-
-export type * from '@/components/swipe-cell/props'
 export { SwipeCell, SwipeCell as default }

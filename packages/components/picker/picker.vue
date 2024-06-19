@@ -20,9 +20,9 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import Dap from 'dap-util'
-import { Loading } from '../loading'
+import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { Loading } from '@/components/loading'
 import { PickerProps, PickerActiveType, PickerOptionsItemType, PickerCrisisType } from './props'
 
 defineOptions({

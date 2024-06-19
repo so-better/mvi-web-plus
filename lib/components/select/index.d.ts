@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Select: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     modelValue: {
         type: import('vue').PropType<any>;
@@ -217,5 +218,4 @@ declare const Select: import('../../utils').SFCWithInstall<import('vue').DefineC
     showSelected: boolean;
     emptyText: string;
 }, {}>>;
-export type * from './props';
 export { Select, Select as default };

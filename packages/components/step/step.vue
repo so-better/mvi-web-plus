@@ -31,11 +31,10 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { ComponentInternalInstance, Ref, computed, getCurrentInstance, inject, onBeforeUnmount, ref } from 'vue'
 import Dap from 'dap-util'
-import { Icon } from '../icon'
-import { IconPropsType } from '../icon/props'
-import { parentIsMatch } from '../../utils'
+import { ComponentInternalInstance, Ref, computed, getCurrentInstance, inject, onBeforeUnmount, ref } from 'vue'
+import { Icon, IconPropsType } from '@/components/icon'
+import { parentIsMatch } from '@/utils'
 
 defineOptions({
 	name: 'm-step'

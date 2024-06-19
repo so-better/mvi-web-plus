@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Col: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         span: {
@@ -174,5 +175,4 @@ declare const Col: import('../../utils').SFCWithInstall<{
         default?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { Col, Col as default };

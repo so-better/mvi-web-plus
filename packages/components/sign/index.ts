@@ -1,7 +1,6 @@
 import { withInstall } from '@/utils'
 import sign from './sign.vue'
+export type * from './props'
 
 const Sign = withInstall(sign)
-
-export type * from '@/components/sign/props'
 export { Sign, Sign as default }

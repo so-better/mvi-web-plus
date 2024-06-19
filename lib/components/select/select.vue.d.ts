@@ -1,5 +1,5 @@
-import { IconPropsType } from '../icon/props';
-import { LayerPropsType } from '../layer/props';
+import { IconPropsType } from '../icon';
+import { LayerPropsType } from '../layer';
 
 declare const _default: import('vue').DefineComponent<{
     modelValue: {

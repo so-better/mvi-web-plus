@@ -20,10 +20,9 @@
 </template>
 <script setup lang="ts">
 import Dap from 'dap-util'
-import { Icon } from '../icon'
-import { CellProps } from './props'
 import { ComponentInternalInstance, computed, inject } from 'vue'
-import { IconPropsType } from '../icon/props'
+import { Icon, IconPropsType } from '@/components/icon'
+import { CellProps } from './props'
 
 defineOptions({
 	name: 'm-cell'

@@ -1,5 +1,5 @@
+import { IconPropsType } from '../icon';
 import { FieldAutosizeType } from './props';
-import { IconPropsType } from '../icon/props';
 
 declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     modelValue: {

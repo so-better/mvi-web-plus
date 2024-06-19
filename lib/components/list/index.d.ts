@@ -1,3 +1,4 @@
+export type * from './props';
 declare const List: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         loading: {
@@ -221,5 +222,4 @@ declare const List: import('../../utils').SFCWithInstall<{
         content?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { List, List as default };

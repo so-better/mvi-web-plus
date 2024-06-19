@@ -16,11 +16,10 @@
 </template>
 <script setup lang="ts">
 import Dap from 'dap-util'
-import { Spy } from '../../directives/spy'
-import { Icon } from '../icon'
-import { ImageProps } from './props'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { IconPropsType } from '../icon/props'
+import { Spy } from '@/directives/spy'
+import { Icon, IconPropsType } from '@/components/icon'
+import { ImageProps } from './props'
 
 defineOptions({
 	name: 'm-image'

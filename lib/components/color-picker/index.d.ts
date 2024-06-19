@@ -1,3 +1,4 @@
+export type * from './props';
 declare const ColorPicker: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     modelValue: {
         type: StringConstructor;
@@ -26,5 +27,4 @@ declare const ColorPicker: import('../../utils').SFCWithInstall<import('vue').De
     modelValue: string;
     showAlpha: boolean;
 }, {}>>;
-export type * from './props';
 export { ColorPicker, ColorPicker as default };

@@ -33,13 +33,13 @@
 </template>
 
 <script setup lang="ts">
-import { Overlay } from '../overlay'
-import { Carousel } from '../carousel'
-import { CarouselItem } from '../carousel-item'
-import { Icon } from '../icon'
-import { RichImage } from '../rich-image'
-import { ImagePreviewProps } from './props'
 import { computed, ref, watch } from 'vue'
+import { Overlay } from '@/components/overlay'
+import { Carousel } from '@/components/carousel'
+import { CarouselItem } from '@/components/carousel-item'
+import { Icon } from '@/components/icon'
+import { RichImage } from '@/components/rich-image'
+import { ImagePreviewProps } from './props'
 
 defineOptions({
 	name: 'm-image-preview'

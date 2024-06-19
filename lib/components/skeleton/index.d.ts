@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Skeleton: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         loading: {
@@ -216,5 +217,4 @@ declare const Skeleton: import('../../utils').SFCWithInstall<{
         default?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { Skeleton, Skeleton as default };

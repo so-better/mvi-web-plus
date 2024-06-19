@@ -1,7 +1,6 @@
 import { withInstall } from '@/utils'
 import dateChooser from './date-chooser.vue'
+export type * from './props'
 
 const DateChooser = withInstall(dateChooser)
-
-export type * from '@/components/date-chooser/props'
 export { DateChooser, DateChooser as default }

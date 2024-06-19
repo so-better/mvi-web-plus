@@ -6,10 +6,10 @@
 	</transition>
 </template>
 <script setup lang="ts">
-import { computed, getCurrentInstance, ref, ComponentInternalInstance, onBeforeUnmount, inject, reactive, Ref } from 'vue'
 import Dap from 'dap-util'
+import { computed, getCurrentInstance, ref, ComponentInternalInstance, onBeforeUnmount, inject, reactive, Ref } from 'vue'
+import { parentIsMatch } from '@/utils'
 import { TabProps } from './props'
-import { parentIsMatch } from '../../utils'
 
 defineOptions({
 	name: 'm-tab'

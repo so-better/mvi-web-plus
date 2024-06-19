@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Collapse: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         modelValue: {
@@ -197,5 +198,4 @@ declare const Collapse: import('../../utils').SFCWithInstall<{
         default?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { Collapse, Collapse as default };

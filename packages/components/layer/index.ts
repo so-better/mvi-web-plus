@@ -1,7 +1,6 @@
 import { withInstall } from '@/utils'
 import layer from './layer.vue'
+export type * from './props'
 
 const Layer = withInstall(layer)
-
-export type * from '@/components/layer/props'
 export { Layer, Layer as default }

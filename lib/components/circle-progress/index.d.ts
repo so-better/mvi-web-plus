@@ -1,3 +1,4 @@
+export type * from './props';
 declare const CircleProgress: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         value: {
@@ -290,5 +291,4 @@ declare const CircleProgress: import('../../utils').SFCWithInstall<{
         }): any;
     };
 })>;
-export type * from './props';
 export { CircleProgress, CircleProgress as default };

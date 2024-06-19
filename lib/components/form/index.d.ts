@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Form: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         width: {
@@ -136,5 +137,4 @@ declare const Form: import('../../utils').SFCWithInstall<{
         default?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { Form, Form as default };

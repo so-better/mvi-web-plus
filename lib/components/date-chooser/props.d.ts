@@ -1,6 +1,6 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
-import { LayerPropsType } from '../layer/props';
-import { CalendarViewType } from '../calendar/props';
+import { LayerPropsType } from '../layer';
+import { CalendarViewType } from '../calendar';
 
 export declare const DateChooserProps: {
     modelValue: {

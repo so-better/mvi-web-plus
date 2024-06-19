@@ -1,6 +1,7 @@
 import Dap from 'dap-util'
 import { withInstallDirective } from '@/utils'
 import Upload from './upload'
+export type * from './upload'
 
 const vUpload = withInstallDirective('upload', {
 	mounted(el, binding) {
@@ -16,5 +17,4 @@ const vUpload = withInstallDirective('upload', {
 	}
 })
 
-export type * from '@/directives/upload/upload'
 export { Upload, vUpload, vUpload as default }

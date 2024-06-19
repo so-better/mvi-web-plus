@@ -30,10 +30,10 @@
 <script setup lang="ts">
 import { ComponentInternalInstance, cloneVNode, computed, defineComponent, getCurrentInstance, h, nextTick, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
 import Dap from 'dap-util'
-import { Icon } from '../icon'
-import { CarouselIndicatorsType, CarouselProps } from './props'
-import { componentIsMatch } from '../../utils'
+import { Icon } from '@/components/icon'
+import { componentIsMatch } from '@/utils'
 import { Animator, Clip } from 'animator-clip'
+import { CarouselIndicatorsType, CarouselProps } from './props'
 
 defineOptions({
 	name: 'm-carousel'

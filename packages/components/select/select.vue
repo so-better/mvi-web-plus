@@ -20,13 +20,11 @@
 	</Layer>
 </template>
 <script setup lang="ts">
-import { computed, getCurrentInstance, ref } from 'vue'
 import Dap from 'dap-util'
-import { Icon } from '../icon'
-import { Layer } from '../layer'
+import { computed, getCurrentInstance, ref } from 'vue'
+import { Icon, IconPropsType } from '@/components/icon'
+import { Layer, LayerPropsType } from '@/components/layer'
 import { SelectOptionsItemType, SelectProps } from './props'
-import { IconPropsType } from '../icon/props'
-import { LayerPropsType } from '../layer/props'
 
 defineOptions({
 	name: 'm-select',

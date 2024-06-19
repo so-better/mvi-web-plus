@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Steps: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         active: {
@@ -136,5 +137,4 @@ declare const Steps: import('../../utils').SFCWithInstall<{
         default?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { Steps, Steps as default };

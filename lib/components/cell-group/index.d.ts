@@ -1,3 +1,4 @@
+export type * from './props';
 declare const CellGroup: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         title: {
@@ -79,5 +80,4 @@ declare const CellGroup: import('../../utils').SFCWithInstall<{
         default?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { CellGroup, CellGroup as default };

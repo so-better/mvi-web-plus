@@ -1,6 +1,7 @@
 import Dap from 'dap-util'
 import { withInstallDirective } from '@/utils'
 import Ripple from './ripple'
+export type * from './ripple'
 
 const vRipple = withInstallDirective('ripple', {
 	mounted(el, binding) {
@@ -22,6 +23,4 @@ const vRipple = withInstallDirective('ripple', {
 		}
 	}
 })
-
-export type * from '@/directives/ripple/ripple'
 export { Ripple, vRipple, vRipple as default }

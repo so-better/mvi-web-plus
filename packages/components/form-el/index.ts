@@ -1,7 +1,6 @@
 import { withInstall } from '@/utils'
 import formEl from './form-el.vue'
+export type * from './props'
 
 const FormEl = withInstall(formEl)
-
-export type * from '@/components/form-el/props'
 export { FormEl, FormEl as default }

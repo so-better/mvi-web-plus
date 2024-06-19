@@ -1,6 +1,7 @@
 import Dap from 'dap-util'
 import { withInstallDirective } from '@/utils'
 import Resize from './resize'
+export type * from './resize'
 
 const vResize = withInstallDirective('resize', {
 	mounted(el, binding) {
@@ -24,5 +25,4 @@ const vResize = withInstallDirective('resize', {
 	}
 })
 
-export type * from '@/directives/resize/resize'
 export { Resize, vResize, vResize as default }

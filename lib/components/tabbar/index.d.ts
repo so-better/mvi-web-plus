@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Tabbar: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     modelValue: {
         type: (StringConstructor | NumberConstructor | ObjectConstructor | ArrayConstructor)[];
@@ -100,5 +101,4 @@ declare const Tabbar: import('../../utils').SFCWithInstall<import('vue').DefineC
     tabs: import('./props').TabbarItemPropsType[];
     flex: string;
 }, {}>>;
-export type * from './props';
 export { Tabbar, Tabbar as default };

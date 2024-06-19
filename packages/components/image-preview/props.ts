@@ -1,6 +1,6 @@
 import { ExtractPublicPropTypes, PropType } from 'vue'
-import { CarouselPropsType } from '../carousel/props'
-import { IconPropsType } from '../icon/props'
+import { CarouselPropsType } from '@/components/carousel'
+import { IconPropsType } from '@/components/icon'
 
 export const ImagePreviewProps = {
 	//是否显示

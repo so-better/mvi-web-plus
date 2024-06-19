@@ -4,10 +4,10 @@
 	</Col>
 </template>
 <script setup lang="ts">
-import { ComponentInternalInstance, computed, defineComponent, h, inject, ref, useSlots } from 'vue'
 import Dap from 'dap-util'
+import { ComponentInternalInstance, computed, defineComponent, h, inject, ref, useSlots } from 'vue'
+import { parentIsMatch } from '@/utils'
 import { ColProps, ColResponsiveType } from './props'
-import { parentIsMatch } from '../../utils'
 
 defineOptions({
 	name: 'm-col'

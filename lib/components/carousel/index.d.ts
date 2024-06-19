@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Carousel: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         modelValue: {
@@ -249,5 +250,4 @@ declare const Carousel: import('../../utils').SFCWithInstall<{
         }): any;
     };
 })>;
-export type * from './props';
 export { Carousel, Carousel as default };

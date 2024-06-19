@@ -11,9 +11,9 @@
 	</teleport>
 </template>
 <script setup lang="ts">
-import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch, nextTick } from 'vue'
 import Dap from 'dap-util'
-import { Triangle } from '../triangle'
+import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch, nextTick } from 'vue'
+import { Triangle } from '@/components/triangle'
 import { LayerProps } from './props'
 
 defineOptions({

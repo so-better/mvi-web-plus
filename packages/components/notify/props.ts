@@ -1,5 +1,5 @@
 import { ComponentInternalInstance, ExtractPublicPropTypes, PropType } from 'vue'
-import { IconPropsType } from '../icon/props'
+import { IconPropsType } from '@/components/icon'
 
 export const NotifyProps = {
 	//提示类型

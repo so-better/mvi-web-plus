@@ -1,7 +1,7 @@
 import Dap from 'dap-util'
 import { ExtractPublicPropTypes, PropType } from 'vue'
-import { LayerPropsType } from '../layer/props'
-import { IconPropsType } from '../icon/props'
+import { LayerPropsType } from '@/components/layer'
+import { IconPropsType } from '@/components/icon'
 
 export const AutocompleteProps = {
 	//输入框的值

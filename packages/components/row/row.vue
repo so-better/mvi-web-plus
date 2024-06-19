@@ -5,8 +5,8 @@
 </template>
 <script setup lang="ts">
 import { defineComponent, getCurrentInstance, h, provide, useSlots } from 'vue'
+import { componentIsMatch } from '@/utils'
 import { RowProps } from './props'
-import { componentIsMatch } from '../../utils'
 
 defineOptions({
 	name: 'm-row'

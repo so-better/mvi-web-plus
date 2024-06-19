@@ -4,9 +4,9 @@
 	</div>
 </template>
 <script setup lang="ts">
+import { componentIsMatch } from '@/utils'
 import { ComponentInternalInstance, getCurrentInstance, provide, ref } from 'vue'
 import { CollapseProps } from './props'
-import { componentIsMatch } from '../../utils'
 
 defineOptions({
 	name: 'm-collapse'

@@ -1,6 +1,7 @@
 import Dap from 'dap-util'
 import { withInstallDirective } from '@/utils'
 import Spy from './spy'
+export type * from './spy'
 
 const vSpy = withInstallDirective('spy', {
 	mounted(el, binding) {
@@ -23,5 +24,4 @@ const vSpy = withInstallDirective('spy', {
 	}
 })
 
-export type * from '@/directives/spy/spy'
 export { Spy, vSpy, vSpy as default }

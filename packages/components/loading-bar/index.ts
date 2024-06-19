@@ -1,7 +1,8 @@
-import { App, ComponentInternalInstance, createApp } from 'vue'
 import Dap from 'dap-util'
+import { App, ComponentInternalInstance, createApp } from 'vue'
 import LoadingBarComponent from './loading-bar.vue'
 import { LoadingBarPropsType } from './props'
+export type * from './props'
 
 type LoadingBarType = {
 	//挂载的dom
@@ -77,5 +78,4 @@ const LoadingBar: LoadingBarType = {
 	}
 }
 
-export type * from '@/components/loading-bar/props'
 export { LoadingBar, LoadingBar as default }

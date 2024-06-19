@@ -19,12 +19,11 @@
 </template>
 <script setup lang="ts">
 import Dap from 'dap-util'
-import { Popup } from '../popup'
-import { Loading } from '../loading'
-import { Icon } from '../icon'
+import { Popup } from '@/components/popup'
+import { Loading } from '@/components/loading'
+import { Icon, IconPropsType } from '@/components/icon'
 import { ActionsheetProps, ActionsheetOptionsItemType } from './props'
 import { computed, ref } from 'vue'
-import { IconPropsType } from '../icon/props'
 
 defineOptions({
 	name: 'm-actionsheet'

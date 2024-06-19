@@ -1,8 +1,8 @@
 import { default as Spy } from './spy';
 
-declare const SpyDirective: import('../../utils').SFCWithInstall<{
+export type * from './spy';
+declare const vSpy: import('../../utils').SFCWithInstall<{
     mounted(el: any, binding: import('vue').DirectiveBinding<any>): void;
     beforeUnmount(el: any): void;
 }>;
-export type * from './spy';
-export { Spy, SpyDirective, SpyDirective as default };
+export { Spy, vSpy, vSpy as default };

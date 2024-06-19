@@ -9,11 +9,10 @@
 	</Button>
 </template>
 <script setup lang="ts">
-import { h, computed, defineComponent, useSlots } from 'vue'
 import Dap from 'dap-util'
-import { Icon } from '../icon'
+import { h, computed, defineComponent, useSlots } from 'vue'
+import { Icon, IconPropsType } from '@/components/icon'
 import { ButtonProps } from './props'
-import { IconPropsType } from '../icon/props'
 
 defineOptions({
 	name: 'm-button'

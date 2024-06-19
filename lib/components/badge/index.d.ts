@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Badge: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         content: {
@@ -178,5 +179,4 @@ declare const Badge: import('../../utils').SFCWithInstall<{
         default?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { Badge, Badge as default };

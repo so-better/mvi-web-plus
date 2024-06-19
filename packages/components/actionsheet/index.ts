@@ -1,7 +1,6 @@
 import { withInstall } from '@/utils'
-import actionsheet from '@/components/actionsheet/actionsheet.vue'
+import actionsheet from './actionsheet.vue'
+export type * from './props'
 
 const Actionsheet = withInstall(actionsheet)
-
-export type * from '@/components/actionsheet/props'
 export { Actionsheet, Actionsheet as default }

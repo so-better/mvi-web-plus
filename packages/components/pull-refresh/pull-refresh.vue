@@ -15,11 +15,10 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch, nextTick } from 'vue'
 import Dap from 'dap-util'
-import { Icon } from '../icon'
+import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch, nextTick } from 'vue'
+import { Icon, IconPropsType } from '@/components/icon'
 import { PullRefreshProps, PullRefreshStatusType } from './props'
-import { IconPropsType } from '../icon/props'
 
 defineOptions({
 	name: 'm-pull-refresh'

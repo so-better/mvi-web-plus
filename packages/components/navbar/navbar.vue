@@ -20,10 +20,9 @@
 </template>
 <script setup lang="ts">
 import Dap from 'dap-util'
-import { Icon } from '../icon'
-import { NavbarProps } from './props'
 import { computed, useSlots } from 'vue'
-import { IconPropsType } from '../icon/props'
+import { Icon, IconPropsType } from '@/components/icon'
+import { NavbarProps } from './props'
 
 defineOptions({
 	name: 'm-navbar'

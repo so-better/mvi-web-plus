@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Tooltip: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         title: {
@@ -302,5 +303,4 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
         title?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { Tooltip, Tooltip as default };

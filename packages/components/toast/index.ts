@@ -2,6 +2,7 @@ import { App, ComponentInternalInstance, createApp } from 'vue'
 import Dap from 'dap-util'
 import ToastComponent from './toast.vue'
 import { ToastPropsType } from './props'
+export type * from './props'
 
 type ToastType = {
 	//挂载的dom
@@ -85,5 +86,4 @@ const Toast: ToastType = {
 	}
 }
 
-export type * from '@/components/toast/props'
 export { Toast, Toast as default }

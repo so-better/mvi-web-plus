@@ -1,7 +1,6 @@
 import { withInstall } from '@/utils'
 import skeleton from './skeleton.vue'
+export type * from './props'
 
 const Skeleton = withInstall(skeleton)
-
-export type * from '@/components/skeleton/props'
 export { Skeleton, Skeleton as default }

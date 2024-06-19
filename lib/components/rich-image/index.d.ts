@@ -1,3 +1,4 @@
+export type * from './props';
 declare const RichImage: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     src: {
         type: StringConstructor;
@@ -71,5 +72,4 @@ declare const RichImage: import('../../utils').SFCWithInstall<import('vue').Defi
     maxScale: number;
     minScale: number;
 }, {}>>;
-export type * from './props';
 export { RichImage, RichImage as default };

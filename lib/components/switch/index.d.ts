@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Switch: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     modelValue: {
         type: BooleanConstructor;
@@ -62,5 +63,4 @@ declare const Switch: import('../../utils').SFCWithInstall<import('vue').DefineC
     activeColor: string;
     inactiveColor: string;
 }, {}>>;
-export type * from './props';
 export { Switch, Switch as default };

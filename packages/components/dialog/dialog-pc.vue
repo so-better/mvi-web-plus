@@ -18,11 +18,11 @@
 </template>
 <script setup lang="ts">
 import Dap from 'dap-util'
-import { Modal } from '../modal'
-import { Icon } from '../icon'
-import { Button } from '../button'
-import { DialogInputType, DialogPcBtnsType, DialogPcProps } from './props'
 import { computed, getCurrentInstance, onMounted, ref } from 'vue'
+import { Modal } from '@/components/modal'
+import { Icon } from '@/components/icon'
+import { Button } from '@/components/button'
+import { DialogInputType, DialogPcBtnsType, DialogPcProps } from './props'
 
 defineOptions({
 	name: 'm-dialog-pc'

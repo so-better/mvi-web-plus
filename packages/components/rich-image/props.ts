@@ -1,5 +1,5 @@
 import { ExtractPublicPropTypes, PropType } from 'vue'
-import { IconPropsType } from '../icon/props'
+import { IconPropsType } from '@/components/icon'
 
 //双指触摸类型
 export type RichImageDoubleTouchType = {

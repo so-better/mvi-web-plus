@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Popup: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         modelValue: {
@@ -331,5 +332,4 @@ declare const Popup: import('../../utils').SFCWithInstall<{
         default?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { Popup, Popup as default };

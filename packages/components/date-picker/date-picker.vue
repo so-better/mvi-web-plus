@@ -5,10 +5,9 @@
 </template>
 <script setup lang="ts">
 import dayjs from 'dayjs'
-import { Picker } from '../picker'
-import { DatePickerProps } from './props'
 import { computed, getCurrentInstance } from 'vue'
-import { PickerActiveType, PickerOptionsItemType } from '../picker/props'
+import { Picker, PickerActiveType, PickerOptionsItemType } from '@/components/picker'
+import { DatePickerProps } from './props'
 
 defineOptions({
 	name: 'm-date-picker'

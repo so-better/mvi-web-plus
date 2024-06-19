@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Page: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     modelValue: {
         type: NumberConstructor;
@@ -136,5 +137,4 @@ declare const Page: import('../../utils').SFCWithInstall<import('vue').DefineCom
     firstIcon: string | import('../icon').IconPropsType;
     lastIcon: string | import('../icon').IconPropsType;
 }, {}>>;
-export type * from './props';
 export { Page, Page as default };

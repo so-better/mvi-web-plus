@@ -7,8 +7,8 @@
 </template>
 <script setup lang="ts">
 import Dap from 'dap-util'
-import { TransitionSlideProps } from './props'
 import { onMounted, ref, watch } from 'vue'
+import { TransitionSlideProps } from './props'
 
 defineOptions({
 	name: 'm-transition-slide'

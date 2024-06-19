@@ -7,8 +7,8 @@
 </template>
 <script setup lang="ts">
 import Dap from 'dap-util'
-import { RollProps } from './props'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { RollProps } from './props'
 
 defineOptions({
 	name: 'm-roll'

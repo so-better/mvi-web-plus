@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Checkbox: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     disabled: {
         type: BooleanConstructor;
@@ -91,5 +92,4 @@ declare const Checkbox: import('../../utils').SFCWithInstall<import('vue').Defin
     round: boolean;
     value: string | number | Record<string, any> | unknown[];
 }, {}>>;
-export type * from './props';
 export { Checkbox, Checkbox as default };

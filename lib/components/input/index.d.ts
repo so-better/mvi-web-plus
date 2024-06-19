@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Input: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         modelValue: {
@@ -544,5 +545,4 @@ declare const Input: import('../../utils').SFCWithInstall<{
         right?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { Input, Input as default };

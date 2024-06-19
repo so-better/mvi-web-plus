@@ -1,6 +1,7 @@
 import Dap from 'dap-util'
 import { withInstallDirective } from '@/utils'
 import Anchor from './anchor'
+export type * from './anchor'
 
 const vAnchor = withInstallDirective('anchor', {
 	mounted(el, binding) {
@@ -13,5 +14,4 @@ const vAnchor = withInstallDirective('anchor', {
 	}
 })
 
-export type * from '@/directives/anchor/anchor'
 export { Anchor, vAnchor, vAnchor as default }

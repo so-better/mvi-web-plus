@@ -1,7 +1,6 @@
 import { withInstall } from '@/utils'
 import pullRefresh from './pull-refresh.vue'
+export type * from './props'
 
 const PullRefresh = withInstall(pullRefresh)
-
-export type * from '@/components/pull-refresh/props'
 export { PullRefresh, PullRefresh as default }

@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Field: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         modelValue: {
@@ -543,5 +544,4 @@ declare const Field: import('../../utils').SFCWithInstall<{
         append?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { Field, Field as default };

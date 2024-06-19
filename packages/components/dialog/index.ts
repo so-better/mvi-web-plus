@@ -3,6 +3,7 @@ import Dap from 'dap-util'
 import dialogComponent from './dialog.vue'
 import dialogPcComponent from './dialog-pc.vue'
 import { DialogPcPropsType, DialogPropsType } from './props'
+export type * from './props'
 
 export type DialogType = {
 	initParams: (type: DialogPropsType['type'] | DialogPcPropsType['type'], options: string | DialogPropsType | DialogPcPropsType) => DialogPropsType | DialogPcPropsType
@@ -227,5 +228,4 @@ const Dialog: DialogType = {
 	}
 }
 
-export type * from '@/components/dialog/props'
 export { Dialog, Dialog as default }

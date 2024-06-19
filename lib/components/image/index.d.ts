@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Image: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         src: {
@@ -273,5 +274,4 @@ declare const Image: import('../../utils').SFCWithInstall<{
         error?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { Image, Image as default };

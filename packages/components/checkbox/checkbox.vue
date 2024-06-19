@@ -10,9 +10,9 @@
 </template>
 <script setup lang="ts">
 import Dap from 'dap-util'
-import { Icon } from '../icon'
-import { CheckboxProps } from './props'
 import { computed } from 'vue'
+import { Icon } from '@/components/icon'
+import { CheckboxProps } from './props'
 
 defineOptions({
 	name: 'm-checkbox'

@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Sign: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     color: {
         type: StringConstructor;
@@ -32,5 +33,4 @@ declare const Sign: import('../../utils').SFCWithInstall<import('vue').DefineCom
     color: string;
     background: string;
 }, {}>>;
-export type * from './props';
 export { Sign, Sign as default };

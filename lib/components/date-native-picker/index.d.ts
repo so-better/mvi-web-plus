@@ -1,3 +1,4 @@
+export type * from './props';
 declare const DateNativePicker: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     type: {
         type: import('vue').PropType<"time" | "date" | "month" | "datetime">;
@@ -50,5 +51,4 @@ declare const DateNativePicker: import('../../utils').SFCWithInstall<import('vue
     min: Date;
     max: Date;
 }, {}>>;
-export type * from './props';
 export { DateNativePicker, DateNativePicker as default };

@@ -1,5 +1,5 @@
 import { ExtractPublicPropTypes, PropType } from 'vue'
-import { LayerPropsType } from '../layer/props'
+import { LayerPropsType } from '@/components/layer'
 
 export const TooltipProps = {
 	//提示内容

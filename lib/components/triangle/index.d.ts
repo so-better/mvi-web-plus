@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Triangle: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     background: {
         type: StringConstructor;
@@ -40,5 +41,4 @@ declare const Triangle: import('../../utils').SFCWithInstall<import('vue').Defin
     background: string;
     borderColor: string;
 }, {}>>;
-export type * from './props';
 export { Triangle, Triangle as default };

@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Picker: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     options: {
         type: import('vue').PropType<import('./props').PickerOptionsItemType | import('./props').PickerOptionsItemType[]>;
@@ -88,5 +89,4 @@ declare const Picker: import('../../utils').SFCWithInstall<import('vue').DefineC
     visibleCounts: number;
     selectHeight: string;
 }, {}>>;
-export type * from './props';
 export { Picker, Picker as default };

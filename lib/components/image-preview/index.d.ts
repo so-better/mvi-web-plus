@@ -1,3 +1,4 @@
+export type * from './props';
 declare const ImagePreview: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         modelValue: {
@@ -382,5 +383,4 @@ declare const ImagePreview: import('../../utils').SFCWithInstall<{
         }): any;
     };
 })>;
-export type * from './props';
 export { ImagePreview, ImagePreview as default };

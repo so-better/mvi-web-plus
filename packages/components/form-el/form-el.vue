@@ -8,8 +8,8 @@
 </template>
 <script setup lang="ts">
 import { ComponentInternalInstance, computed, inject, ref } from 'vue'
+import { parentIsMatch } from '@/utils'
 import { FormElProps } from './props'
-import { parentIsMatch } from '../../utils'
 
 defineOptions({
 	name: 'm-form-el'

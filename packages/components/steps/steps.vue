@@ -5,8 +5,8 @@
 </template>
 <script setup lang="ts">
 import { ComponentInternalInstance, getCurrentInstance, provide, ref } from 'vue'
+import { componentIsMatch } from '@/utils'
 import { StepsProps } from './props'
-import { componentIsMatch } from '../../utils'
 
 defineOptions({
 	name: 'm-steps'

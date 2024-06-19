@@ -1,7 +1,6 @@
 import { withInstall } from '@/utils'
-import calendar from '@/components/calendar/calendar.vue'
+import calendar from './calendar.vue'
+export type * from './props'
 
 const Calendar = withInstall(calendar)
-
-export type * from '@/components/calendar/props'
 export { Calendar, Calendar as default }

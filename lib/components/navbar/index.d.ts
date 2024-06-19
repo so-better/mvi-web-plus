@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Navbar: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         title: {
@@ -200,5 +201,4 @@ declare const Navbar: import('../../utils').SFCWithInstall<{
         right?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { Navbar, Navbar as default };

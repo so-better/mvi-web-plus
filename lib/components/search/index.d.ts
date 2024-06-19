@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Search: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     modelValue: {
         type: (StringConstructor | NumberConstructor)[];
@@ -174,5 +175,4 @@ declare const Search: import('../../utils').SFCWithInstall<import('vue').DefineC
     readonly: boolean;
     autofocus: boolean;
 }, {}>>;
-export type * from './props';
 export { Search, Search as default };

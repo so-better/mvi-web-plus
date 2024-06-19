@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Autocomplete: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     modelValue: {
         type: StringConstructor;
@@ -200,5 +201,4 @@ declare const Autocomplete: import('../../utils').SFCWithInstall<import('vue').D
     rightIcon: string | import('../icon').IconPropsType;
     square: boolean;
 }, {}>>;
-export type * from './props';
 export { Autocomplete, Autocomplete as default };

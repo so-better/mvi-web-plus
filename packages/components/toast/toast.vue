@@ -11,12 +11,11 @@
 </template>
 <script setup lang="ts">
 import Dap from 'dap-util'
-import { Overlay } from '../overlay'
-import { Loading } from '../loading'
-import { Icon } from '../icon'
-import { ToastProps } from './props'
 import { computed, getCurrentInstance, onMounted, ref } from 'vue'
-import { IconPropsType } from '../icon/props'
+import { Overlay } from '@/components/overlay'
+import { Loading } from '@/components/loading'
+import { Icon, IconPropsType } from '@/components/icon'
+import { ToastProps } from './props'
 
 //不继承属性
 defineOptions({

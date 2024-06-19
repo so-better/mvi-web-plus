@@ -1,6 +1,6 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
-import { IconPropsType } from '../icon/props';
-import { BadgePropsType } from '../badge/props';
+import { IconPropsType } from '../icon';
+import { BadgePropsType } from '../badge';
 
 export type TabbarRouteType = {
     path?: string;

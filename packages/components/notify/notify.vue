@@ -12,10 +12,9 @@
 </template>
 <script setup lang="ts">
 import Dap from 'dap-util'
-import { Icon } from '../icon'
-import { NotifyProps } from './props'
 import { computed, getCurrentInstance, onMounted, ref } from 'vue'
-import { IconPropsType } from '../icon/props'
+import { Icon, IconPropsType } from '@/components/icon'
+import { NotifyProps } from './props'
 
 defineOptions({
 	name: 'm-notify'

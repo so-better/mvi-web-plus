@@ -1,6 +1,6 @@
-import { ExtractPublicPropTypes, PropType } from 'vue'
-import { IconPropsType } from '../icon/props'
 import Dap from 'dap-util'
+import { ExtractPublicPropTypes, PropType } from 'vue'
+import { IconPropsType } from '@/components/icon'
 
 export type FieldAutosizeType = {
 	maxRows?: number

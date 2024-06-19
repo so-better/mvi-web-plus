@@ -1,3 +1,4 @@
+export type * from './props';
 declare const CollapseItem: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         icon: {
@@ -117,5 +118,4 @@ declare const CollapseItem: import('../../utils').SFCWithInstall<{
         default?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { CollapseItem, CollapseItem as default };

@@ -1,5 +1,5 @@
 import { withInstall } from '@/utils'
-import carouselItem from '@/components/carousel-item/carousel-item.vue'
+import carouselItem from './carousel-item.vue'
 
 const CarouselItem = withInstall(carouselItem)
 

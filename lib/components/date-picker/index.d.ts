@@ -1,3 +1,4 @@
+export type * from './props';
 declare const DatePicker: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     modelValue: {
         type: DateConstructor;
@@ -122,5 +123,4 @@ declare const DatePicker: import('../../utils').SFCWithInstall<import('vue').Def
     selectHeight: string;
     formatter: (type: import('./props').DatePickerTimeType, val: number) => string;
 }, {}>>;
-export type * from './props';
 export { DatePicker, DatePicker as default };

@@ -7,8 +7,8 @@
 </template>
 <script setup lang="ts">
 import Dap from 'dap-util'
-import { MsgboxProps } from './props'
 import { computed, onMounted, ref } from 'vue'
+import { MsgboxProps } from './props'
 
 //属性不继承
 defineOptions({

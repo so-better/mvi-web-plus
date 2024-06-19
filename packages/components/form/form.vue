@@ -5,8 +5,8 @@
 </template>
 <script setup lang="ts">
 import { getCurrentInstance, provide } from 'vue'
+import { componentIsMatch } from '@/utils'
 import { FormProps } from './props'
-import { componentIsMatch } from '../../utils'
 
 defineOptions({
 	name: 'm-form'

@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Progress: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         value: {
@@ -271,5 +272,4 @@ declare const Progress: import('../../utils').SFCWithInstall<{
         }): any;
     };
 })>;
-export type * from './props';
 export { Progress, Progress as default };

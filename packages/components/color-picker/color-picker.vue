@@ -22,11 +22,11 @@
 </template>
 <script setup lang="ts">
 import Dap from 'dap-util'
-import { Drag } from '../../directives/drag'
-import { Prop } from '../../directives/prop'
-import { Slider } from '../slider'
-import { ColorPickerProps } from './props'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { Drag } from '@/directives/drag'
+import { Prop } from '@/directives/prop'
+import { Slider } from '@/components/slider'
+import { ColorPickerProps } from './props'
 
 defineOptions({
 	name: 'm-color-picker'

@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Radio: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     disabled: {
         type: BooleanConstructor;
@@ -91,5 +92,4 @@ declare const Radio: import('../../utils').SFCWithInstall<import('vue').DefineCo
     round: boolean;
     value: string | number | Record<string, any>;
 }, {}>>;
-export type * from './props';
 export { Radio, Radio as default };

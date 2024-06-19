@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Roll: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         interval: {
@@ -224,5 +225,4 @@ declare const Roll: import('../../utils').SFCWithInstall<{
         default?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { Roll, Roll as default };

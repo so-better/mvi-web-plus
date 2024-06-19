@@ -1,7 +1,6 @@
 import { withInstall } from '@/utils'
 import select from './select.vue'
+export type * from './props'
 
 const Select = withInstall(select)
-
-export type * from '@/components/select/props'
 export { Select, Select as default }

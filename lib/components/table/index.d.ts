@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Table: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         data: {
@@ -303,5 +304,4 @@ declare const Table: import('../../utils').SFCWithInstall<{
         }): any;
     };
 })>;
-export type * from './props';
 export { Table, Table as default };

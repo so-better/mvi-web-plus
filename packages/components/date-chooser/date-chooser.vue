@@ -56,15 +56,13 @@
 	</Layer>
 </template>
 <script setup lang="ts">
-import { computed, getCurrentInstance, ref } from 'vue'
-import Dap from 'dap-util'
-import { Layer } from '../layer'
-import { Icon } from '../icon'
-import { Calendar } from '../calendar'
 import dayjs from 'dayjs'
+import Dap from 'dap-util'
+import { computed, getCurrentInstance, ref } from 'vue'
+import { Layer, LayerPropsType } from '@/components/layer'
+import { Icon } from '@/components/icon'
+import { Calendar, CalendarViewType } from '@/components/calendar'
 import { DateChooserProps } from './props'
-import { LayerPropsType } from '../layer/props'
-import { CalendarViewType } from '../calendar/props'
 
 defineOptions({
 	name: 'm-date-chooser',

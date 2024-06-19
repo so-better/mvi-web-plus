@@ -5,9 +5,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue'
 import Dap from 'dap-util'
-import { Image } from '../image'
+import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue'
+import { Image } from '@/components/image'
 import { RichImageCoverType, RichImageDoubleTouchType, RichImagePointType, RichImageProps } from './props'
 
 defineOptions({

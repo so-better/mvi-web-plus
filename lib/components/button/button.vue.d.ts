@@ -1,4 +1,4 @@
-import { IconPropsType } from '../icon/props';
+import { IconPropsType } from '../icon';
 
 declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     type: {

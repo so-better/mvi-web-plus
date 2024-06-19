@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Tab: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         title: {
@@ -114,5 +115,4 @@ declare const Tab: import('../../utils').SFCWithInstall<{
         default?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { Tab, Tab as default };

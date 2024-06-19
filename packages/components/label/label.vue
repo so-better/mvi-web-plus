@@ -13,7 +13,7 @@
 </template>
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Icon } from '../icon'
+import { Icon } from '@/components/icon'
 import { LabelProps } from './props'
 
 defineOptions({

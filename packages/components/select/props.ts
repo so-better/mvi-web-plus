@@ -1,7 +1,7 @@
-import { ExtractPublicPropTypes, PropType } from 'vue'
 import Dap from 'dap-util'
-import { IconPropsType } from '../icon/props'
-import { LayerPropsType } from '../layer/props'
+import { ExtractPublicPropTypes, PropType } from 'vue'
+import { IconPropsType } from '@/components/icon'
+import { LayerPropsType } from '@/components/layer'
 
 export type SelectOptionsItemType = {
 	label?: string

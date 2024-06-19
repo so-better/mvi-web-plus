@@ -1,6 +1,6 @@
 import { ExtractPublicPropTypes, PropType } from 'vue'
-import { IconPropsType } from '../icon/props'
-import { PopupPropsType } from '../popup/props'
+import { IconPropsType } from '@/components/icon'
+import { PopupPropsType } from '@/components/popup'
 
 export type DropdownOptionsItemType = {
 	label?: string

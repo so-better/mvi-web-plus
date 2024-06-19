@@ -1,3 +1,4 @@
+export type * from './props';
 declare const TransitionSlide: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         expand: {
@@ -90,5 +91,4 @@ declare const TransitionSlide: import('../../utils').SFCWithInstall<{
         default?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { TransitionSlide, TransitionSlide as default };

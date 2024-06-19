@@ -11,7 +11,7 @@
 </template>
 <script setup lang="ts">
 import { getCurrentInstance, ref } from 'vue'
-import { Layer } from '../layer'
+import { Layer } from '@/components/layer'
 import { TooltipProps } from './props'
 
 defineOptions({

@@ -1,7 +1,7 @@
 import { default as Observe } from './observe';
 
-declare const ObserveDirective: import('../../utils').SFCWithInstall<{
+export type * from './observe';
+declare const vObserve: import('../../utils').SFCWithInstall<{
     mounted(el: any, binding: import('vue').DirectiveBinding<any>): void;
 }>;
-export type * from './observe';
-export { Observe, ObserveDirective, ObserveDirective as default };
+export { Observe, vObserve, vObserve as default };

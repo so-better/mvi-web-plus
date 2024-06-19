@@ -1,6 +1,7 @@
 import { withInstallDirective } from '@/utils'
 import Dap from 'dap-util'
 import Prop from './prop'
+export type * from './prop'
 
 const vProp = withInstallDirective('prop', {
 	mounted(el, binding) {
@@ -25,5 +26,4 @@ const vProp = withInstallDirective('prop', {
 	}
 })
 
-export type * from '@/directives/prop/prop'
 export { Prop, vProp, vProp as default }

@@ -21,7 +21,7 @@
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { Scroll } from '../../directives/scroll'
+import { Scroll } from '@/directives/scroll'
 import { ListProps } from './props'
 
 defineOptions({

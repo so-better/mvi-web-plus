@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Dropdown: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     modelValue: {
         type: (StringConstructor | NumberConstructor | ObjectConstructor | ArrayConstructor)[];
@@ -159,5 +160,4 @@ declare const Dropdown: import('../../utils').SFCWithInstall<import('vue').Defin
     selectedClose: boolean;
     selectedIcon: string | import('../icon').IconPropsType;
 }, {}>>;
-export type * from './props';
 export { Dropdown, Dropdown as default };

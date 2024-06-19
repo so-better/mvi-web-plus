@@ -19,10 +19,9 @@
 <script setup lang="ts">
 import { ComponentInternalInstance, computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, watch, provide } from 'vue'
 import Dap from 'dap-util'
-import { Icon } from '../icon'
+import { Icon, IconPropsType } from '@/components/icon'
+import { componentIsMatch } from '@/utils'
 import { TabsProps } from './props'
-import { IconPropsType } from '../icon/props'
-import { componentIsMatch } from '../../utils'
 
 defineOptions({
 	name: 'm-tabs'

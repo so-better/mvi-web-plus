@@ -12,11 +12,10 @@
 </template>
 <script setup lang="ts">
 import Dap from 'dap-util'
-import { Icon } from '../icon'
-import { Badge } from '../badge'
-import { TabbarItemProps, TabbarRouteType } from './props'
 import { ComponentInternalInstance, computed, getCurrentInstance, inject } from 'vue'
-import { IconPropsType } from '../icon/props'
+import { Icon, IconPropsType } from '@/components/icon'
+import { Badge } from '@/components/badge'
+import { TabbarItemProps, TabbarRouteType } from './props'
 
 defineOptions({
 	name: 'm-tabbar-item'

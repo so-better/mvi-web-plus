@@ -1,7 +1,8 @@
-import { App, createApp } from 'vue'
 import Dap from 'dap-util'
+import { App, createApp } from 'vue'
 import MsgboxComponent from './msgbox.vue'
 import { MsgboxPropsType } from './props'
+export type * from './props'
 
 type MsgboxType = {
 	initParams: (options: string | MsgboxPropsType) => MsgboxPropsType
@@ -51,5 +52,4 @@ const Msgbox: MsgboxType = {
 	}
 }
 
-export type * from '@/components/msgbox/props'
 export { Msgbox, Msgbox as default }

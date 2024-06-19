@@ -64,11 +64,11 @@
 </template>
 <script setup lang="ts">
 import Dap from 'dap-util'
-import { Loading } from '../loading'
-import { Icon } from '../icon'
-import { Checkbox } from '../checkbox'
-import { Tooltip } from '../tooltip'
 import { computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { Loading } from '@/components/loading'
+import { Icon } from '@/components/icon'
+import { Checkbox } from '@/components/checkbox'
+import { Tooltip } from '@/components/tooltip'
 import { TableColumnType, TableProps, TableSortOrderType } from './props'
 
 defineOptions({

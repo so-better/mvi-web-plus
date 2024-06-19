@@ -1,7 +1,6 @@
 import { withInstall } from '@/utils'
 import tabbar from './tabbar.vue'
+export type * from './props'
 
 const Tabbar = withInstall(tabbar)
-
-export type * from '@/components/tabbar/props'
 export { Tabbar, Tabbar as default }

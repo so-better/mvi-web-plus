@@ -1,5 +1,5 @@
+import { IconPropsType } from '../icon';
 import { DropdownOptionsItemType } from './props';
-import { IconPropsType } from '../icon/props';
 
 declare const _default: import('vue').DefineComponent<{
     modelValue: {

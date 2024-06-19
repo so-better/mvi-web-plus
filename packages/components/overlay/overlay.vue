@@ -9,8 +9,8 @@
 </template>
 <script setup lang="ts">
 import Dap from 'dap-util'
-import { OverlayProps } from './props'
 import { ref, watch, computed, onMounted, getCurrentInstance } from 'vue'
+import { OverlayProps } from './props'
 
 //属性不继承
 defineOptions({

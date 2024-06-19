@@ -26,10 +26,9 @@
 </template>
 <script setup lang="ts">
 import Dap from 'dap-util'
-import { Icon } from '../icon'
-import { InputAutosizeType, InputProps } from './props'
 import { computed, nextTick, onMounted, ref, useSlots, watch } from 'vue'
-import { IconPropsType } from '../icon/props'
+import { Icon, IconPropsType } from '@/components/icon'
+import { InputAutosizeType, InputProps } from './props'
 
 defineOptions({
 	name: 'm-input'

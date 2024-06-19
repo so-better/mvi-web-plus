@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Calendar: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     modelValue: {
         type: DateConstructor;
@@ -101,5 +102,4 @@ declare const Calendar: import('../../utils').SFCWithInstall<import('vue').Defin
     endDate: Date;
     nonCurrentClick: boolean;
 }, {}>>;
-export type * from './props';
 export { Calendar, Calendar as default };

@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Icon: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     type: {
         type: StringConstructor;
@@ -47,5 +48,4 @@ declare const Icon: import('../../utils').SFCWithInstall<import('vue').DefineCom
     spin: boolean;
     url: string;
 }, {}>>;
-export type * from './props';
 export { Icon, Icon as default };

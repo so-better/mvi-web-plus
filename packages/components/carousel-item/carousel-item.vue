@@ -10,7 +10,7 @@
 </template>
 <script setup lang="ts">
 import { ComponentInternalInstance, Ref, computed, getCurrentInstance, inject, onBeforeUnmount } from 'vue'
-import { parentIsMatch } from '../../utils'
+import { parentIsMatch } from '@/utils'
 
 defineOptions({
 	name: 'm-carousel-item',

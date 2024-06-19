@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Loading: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     type: {
         type: import('vue').PropType<"default" | "circle" | "spin" | "dots" | "transfer">;
@@ -31,5 +32,4 @@ declare const Loading: import('../../utils').SFCWithInstall<import('vue').Define
     type: "default" | "circle" | "spin" | "dots" | "transfer";
     color: string;
 }, {}>>;
-export type * from './props';
 export { Loading, Loading as default };

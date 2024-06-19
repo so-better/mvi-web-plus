@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Overlay: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         mountEl: {
@@ -232,5 +233,4 @@ declare const Overlay: import('../../utils').SFCWithInstall<{
         default?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { Overlay, Overlay as default };

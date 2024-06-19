@@ -14,8 +14,8 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import Dap from 'dap-util'
+import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { SwipeCellProps } from './props'
 
 defineOptions({

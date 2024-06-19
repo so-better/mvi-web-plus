@@ -6,8 +6,8 @@
 </template>
 <script setup lang="ts">
 import { getCurrentInstance, provide } from 'vue'
+import { componentIsMatch } from '@/utils'
 import { CellGroupProps } from './props'
-import { componentIsMatch } from '../../utils'
 
 defineOptions({
 	name: 'm-cell-group'

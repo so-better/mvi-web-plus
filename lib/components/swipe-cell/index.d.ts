@@ -1,3 +1,4 @@
+export type * from './props';
 declare const SwipeCell: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         disabled: {
@@ -89,5 +90,4 @@ declare const SwipeCell: import('../../utils').SFCWithInstall<{
         right?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { SwipeCell, SwipeCell as default };

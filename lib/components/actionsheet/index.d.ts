@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Actionsheet: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     modelValue: {
         type: BooleanConstructor;
@@ -147,5 +148,4 @@ declare const Actionsheet: import('../../utils').SFCWithInstall<import('vue').De
     active: boolean;
     selectClose: boolean;
 }, {}>>;
-export type * from './props';
 export { Actionsheet, Actionsheet as default };

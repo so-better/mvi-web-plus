@@ -5,9 +5,9 @@
 </template>
 <script setup lang="ts">
 import Dap from 'dap-util'
+import { computed, getCurrentInstance, provide } from 'vue'
 import TabbarItem from './tabbar-item.vue'
 import { TabbarProps } from './props'
-import { computed, getCurrentInstance, provide } from 'vue'
 
 defineOptions({
 	name: 'm-tabbar'

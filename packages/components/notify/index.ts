@@ -2,6 +2,7 @@ import { App, ComponentInternalInstance, createApp } from 'vue'
 import Dap from 'dap-util'
 import NotifyComponent from './notify.vue'
 import { NotifyPropsType } from './props'
+export type * from './props'
 
 type NotifyType = {
 	//挂载的dom
@@ -81,5 +82,4 @@ const Notify: NotifyType = {
 	}
 }
 
-export type * from '@/components/notify/props'
 export { Notify, Notify as default }

@@ -1,6 +1,7 @@
 import { App, ComponentInternalInstance } from 'vue';
 import { NotifyPropsType } from './props';
 
+export type * from './props';
 type NotifyType = {
     $el?: HTMLElement;
     $instance?: App<Element>;
@@ -11,5 +12,4 @@ type NotifyType = {
     hideNotify: () => void;
 };
 declare const Notify: NotifyType;
-export type * from './props';
 export { Notify, Notify as default };

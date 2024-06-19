@@ -35,10 +35,9 @@
 </template>
 <script setup lang="ts">
 import Dap from 'dap-util'
-import { Icon } from '../icon'
-import { PageProps } from './props'
 import { computed, ref } from 'vue'
-import { IconPropsType } from '../icon/props'
+import { Icon, IconPropsType } from '@/components/icon'
+import { PageProps } from './props'
 
 defineOptions({
 	name: 'm-page'

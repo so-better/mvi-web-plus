@@ -1,6 +1,7 @@
 import Dap from 'dap-util'
 import { withInstallDirective } from '@/utils'
 import Px from './px'
+export type * from './px'
 
 const vPx = withInstallDirective('px', {
 	mounted(el, binding) {
@@ -19,5 +20,4 @@ const vPx = withInstallDirective('px', {
 	}
 })
 
-export type * from '@/directives/px/px'
 export { Px, vPx, vPx as default }

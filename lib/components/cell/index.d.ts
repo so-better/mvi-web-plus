@@ -1,3 +1,4 @@
+export type * from './props';
 declare const Cell: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         icon: {
@@ -195,5 +196,4 @@ declare const Cell: import('../../utils').SFCWithInstall<{
         label?(_: {}): any;
     };
 })>;
-export type * from './props';
 export { Cell, Cell as default };
