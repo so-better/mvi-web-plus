@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Layer from './layer.vue'
+import { withInstall } from '@/utils'
+import layer from './layer.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Layer.name!, Layer)
-}
+const Layer = withInstall(layer)
 
-export { Layer, install as default }
+export type * from '@/components/layer/props'
+export { Layer, Layer as default }

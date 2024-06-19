@@ -8,7 +8,7 @@ export type AnchorOptionsType = {
 /**
  * 锚点定位
  */
-declare class Anchor {
+export default class Anchor {
     private $el;
     private $target?;
     private $root?;
@@ -16,8 +16,6 @@ declare class Anchor {
     private time?;
     private distance?;
     private hasInit;
-    static install: (...args: any) => void;
     constructor(element: HTMLElement, options: AnchorOptionsType);
     init(): void;
 }
-export default Anchor;

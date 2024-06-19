@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Image from './image.vue'
+import { withInstall } from '@/utils'
+import image from './image.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Image.name!, Image)
-}
+const Image = withInstall(image)
 
-export { Image, install as default }
+export type * from '@/components/image/props'
+export { Image, Image as default }

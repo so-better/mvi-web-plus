@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import Dap from 'dap-util'
 import { Icon } from '../icon'
-import { InputAutosizeType, InputProps } from './prop'
+import { InputAutosizeType, InputProps } from './props'
 import { computed, nextTick, onMounted, ref, useSlots, watch } from 'vue'
 import { IconPropsType } from '../icon/props'
 

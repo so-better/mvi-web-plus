@@ -1,7 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Loading from './loading.vue'
+import { withInstall } from '@/utils'
+import loading from './loading.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Loading.name!, Loading)
-}
-export { Loading, install as default }
+const Loading = withInstall(loading)
+
+export type * from '@/components/loading/props'
+export { Loading, Loading as default }

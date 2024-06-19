@@ -1,11 +1,12 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
+
 export declare const RadioProps: {
     disabled: {
         type: BooleanConstructor;
         default: boolean;
     };
     modelValue: {
-        type: (StringConstructor | NumberConstructor | BooleanConstructor | ObjectConstructor)[];
+        type: (BooleanConstructor | StringConstructor | NumberConstructor | ObjectConstructor)[];
         default: boolean;
     };
     label: {

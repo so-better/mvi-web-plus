@@ -1,7 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Tabbar from './tabbar.vue'
+import { withInstall } from '@/utils'
+import tabbar from './tabbar.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Tabbar.name!, Tabbar)
-}
-export { Tabbar, install as default }
+const Tabbar = withInstall(tabbar)
+
+export type * from '@/components/tabbar/props'
+export { Tabbar, Tabbar as default }

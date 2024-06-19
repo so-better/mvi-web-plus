@@ -1,11 +1,12 @@
 import { IconPropsType } from '../icon/props';
-declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
+
+declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     src: {
         type: StringConstructor;
         default: string;
     };
     fit: {
-        type: import("vue").PropType<import("./props").ImageFillType>;
+        type: import('vue').PropType<import('./props').ImageFillType>;
         default: string;
         validator(value: any): boolean;
     };
@@ -30,11 +31,11 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: null;
     };
     loadIcon: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: string;
     };
     errorIcon: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: string;
     };
     round: {
@@ -49,16 +50,16 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         type: StringConstructor;
         default: null;
     };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     success: (...args: any[]) => void;
     error: (...args: any[]) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     src: {
         type: StringConstructor;
         default: string;
     };
     fit: {
-        type: import("vue").PropType<import("./props").ImageFillType>;
+        type: import('vue').PropType<import('./props').ImageFillType>;
         default: string;
         validator(value: any): boolean;
     };
@@ -83,11 +84,11 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: null;
     };
     loadIcon: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: string;
     };
     errorIcon: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: string;
     };
     round: {
@@ -106,14 +107,14 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     onError?: ((...args: any[]) => any) | undefined;
     onSuccess?: ((...args: any[]) => any) | undefined;
 }, {
-    round: boolean;
-    width: string;
     height: string;
-    alt: string;
-    src: string;
+    width: string;
+    round: boolean;
     loadIcon: string | IconPropsType;
     root: string;
-    fit: import("./props").ImageFillType;
+    src: string;
+    fit: import('./props').ImageFillType;
+    alt: string;
     showError: boolean;
     showLoading: boolean;
     lazyLoad: boolean;

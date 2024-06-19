@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import RichImage from './rich-image.vue'
+import { withInstall } from '@/utils'
+import richImage from './rich-image.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(<string>RichImage.name, RichImage)
-}
+const RichImage = withInstall(richImage)
 
-export { RichImage, install as default }
+export type * from '@/components/rich-image/props'
+export { RichImage, RichImage as default }

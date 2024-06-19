@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import List from './list.vue'
+import { withInstall } from '@/utils'
+import list from './list.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(List.name!, List)
-}
+const List = withInstall(list)
 
-export { List, install as default }
+export type * from '@/components/list/props'
+export { List, List as default }

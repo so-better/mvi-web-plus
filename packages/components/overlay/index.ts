@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Overlay from './overlay.vue'
+import { withInstall } from '@/utils'
+import overlay from './overlay.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Overlay.name!, Overlay)
-}
+const Overlay = withInstall(overlay)
 
-export { Overlay, install as default }
+export type * from '@/components/overlay/props'
+export { Overlay, Overlay as default }

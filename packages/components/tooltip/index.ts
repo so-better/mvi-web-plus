@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Tooltip from './tooltip.vue'
+import { withInstall } from '@/utils'
+import tooltip from './tooltip.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Tooltip.name!, Tooltip)
-}
+const Tooltip = withInstall(tooltip)
 
-export { Tooltip, install as default }
+export type * from '@/components/tooltip/props'
+export { Tooltip, Tooltip as default }

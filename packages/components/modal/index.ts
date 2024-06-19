@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Modal from './modal.vue'
+import { withInstall } from '@/utils'
+import modal from './modal.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Modal.name!, Modal)
-}
+const Modal = withInstall(modal)
 
-export { Modal, install as default }
+export type * from '@/components/modal/props'
+export { Modal, Modal as default }

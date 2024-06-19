@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import CircleProgress from './circle-progress.vue'
+import { withInstall } from '@/utils'
+import circleProgress from './circle-progress.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(CircleProgress.name!, CircleProgress)
-}
+const CircleProgress = withInstall(circleProgress)
 
-export { CircleProgress, install as default }
+export type * from '@/components/circle-progress/props'
+export { CircleProgress, CircleProgress as default }

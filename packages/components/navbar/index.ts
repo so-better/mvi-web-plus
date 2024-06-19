@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Navbar from './navbar.vue'
+import { withInstall } from '@/utils'
+import navbar from './navbar.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Navbar.name!, Navbar)
-}
+const Navbar = withInstall(navbar)
 
-export { Navbar, install as default }
+export type * from '@/components/navbar/props'
+export { Navbar, Navbar as default }

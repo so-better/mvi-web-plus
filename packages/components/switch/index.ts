@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Switch from './switch.vue'
+import { withInstall } from '@/utils'
+import _switch from './switch.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Switch.name!, Switch)
-}
+const Switch = withInstall(_switch)
 
-export { Switch, install as default }
+export type * from '@/components/switch/props'
+export { Switch, Switch as default }

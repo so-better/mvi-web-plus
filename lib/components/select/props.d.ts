@@ -1,6 +1,7 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
 import { IconPropsType } from '../icon/props';
 import { LayerPropsType } from '../layer/props';
+
 export type SelectOptionsItemType = {
     label?: string;
     value?: any;

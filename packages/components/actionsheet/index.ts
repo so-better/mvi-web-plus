@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Actionsheet from './actionsheet.vue'
+import { withInstall } from '@/utils'
+import actionsheet from '@/components/actionsheet/actionsheet.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Actionsheet.name!, Actionsheet)
-}
+const Actionsheet = withInstall(actionsheet)
 
-export { Actionsheet, install as default }
+export type * from '@/components/actionsheet/props'
+export { Actionsheet, Actionsheet as default }

@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Popup from './popup.vue'
+import { withInstall } from '@/utils'
+import popup from './popup.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Popup.name!, Popup)
-}
+const Popup = withInstall(popup)
 
-export { Popup, install as default }
+export type * from '@/components/popup/props'
+export { Popup, Popup as default }

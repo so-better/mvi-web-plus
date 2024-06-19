@@ -1,4 +1,5 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
+
 export declare const StepperProps: {
     modelValue: {
         type: NumberConstructor;

@@ -37,9 +37,6 @@ class Ripple {
 	//水波纹容器数组
 	private rippleContainers: Array<HTMLElement> = []
 
-	//install函数
-	static install: (...args: any) => void
-
 	constructor(element: HTMLElement, options: RippleOptionsType) {
 		options = Dap.common.isObject(options) ? options : {}
 		this.$el = element

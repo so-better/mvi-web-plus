@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Field from './field.vue'
+import { withInstall } from '@/utils'
+import field from './field.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Field.name!, Field)
-}
+const Field = withInstall(field)
 
-export { Field, install as default }
+export type * from '@/components/field/props'
+export { Field, Field as default }

@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Select from './select.vue'
+import { withInstall } from '@/utils'
+import select from './select.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Select.name!, Select)
-}
+const Select = withInstall(select)
 
-export { Select, install as default }
+export type * from '@/components/select/props'
+export { Select, Select as default }

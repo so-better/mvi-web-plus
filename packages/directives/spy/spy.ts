@@ -34,9 +34,6 @@ class Spy {
 	//生成唯一标识符
 	private guid: number = this.createGuid()
 
-	//install函数
-	static install: (...args: any) => void
-
 	constructor(element: HTMLElement, options: SpyOptionsType) {
 		options = Dap.common.isObject(options) ? options : {}
 		this.$el = element

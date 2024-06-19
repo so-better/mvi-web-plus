@@ -1,5 +1,6 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
 import { IconPropsType } from '../icon/props';
+
 export declare const CellProps: {
     icon: {
         type: PropType<string | IconPropsType>;
@@ -30,7 +31,7 @@ export declare const CellProps: {
         default: null;
     };
     ellipsis: {
-        type: (NumberConstructor | BooleanConstructor)[];
+        type: (BooleanConstructor | NumberConstructor)[];
         default: null;
     };
     noWrap: {

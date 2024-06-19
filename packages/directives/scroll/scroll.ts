@@ -18,9 +18,6 @@ class Scroll {
 	//是否已经初始化
 	private hasInit: boolean = false
 
-	//install函数
-	static install: (...args: any) => void
-
 	constructor(element: HTMLElement, options: ScrollOptionsType) {
 		options = Dap.common.isObject(options) ? options : {}
 		this.$el = element

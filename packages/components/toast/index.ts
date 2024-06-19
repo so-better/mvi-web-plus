@@ -1,4 +1,4 @@
-import { App, ComponentInternalInstance, FunctionPlugin, createApp } from 'vue'
+import { App, ComponentInternalInstance, createApp } from 'vue'
 import Dap from 'dap-util'
 import ToastComponent from './toast.vue'
 import { ToastPropsType } from './props'
@@ -11,6 +11,7 @@ type ToastType = {
 	//组件实例
 	$vm?: ComponentInternalInstance
 	initParams: (options: string | ToastPropsType) => ToastPropsType
+	install: (app: App) => void
 	showToast: (options: string | ToastPropsType) => Promise<void>
 	hideToast: () => void
 }
@@ -36,6 +37,14 @@ const Toast: ToastType = {
 			opts.timeout = 1500
 		}
 		return opts
+	},
+
+	install: app => {
+		app.config.globalProperties.$showToast = Toast.showToast
+		app.provide('$showToast', Toast.showToast)
+
+		app.config.globalProperties.$hideToast = Toast.hideToast
+		app.provide('$hideToast', Toast.hideToast)
 	},
 
 	//显示toast
@@ -76,12 +85,5 @@ const Toast: ToastType = {
 	}
 }
 
-const install: FunctionPlugin = (app: App) => {
-	app.config.globalProperties.$showToast = Toast.showToast
-	app.provide('$showToast', Toast.showToast)
-
-	app.config.globalProperties.$hideToast = Toast.hideToast
-	app.provide('$hideToast', Toast.hideToast)
-}
-
-export { Toast, install as default }
+export type * from '@/components/toast/props'
+export { Toast, Toast as default }

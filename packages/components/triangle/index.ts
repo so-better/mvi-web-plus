@@ -1,7 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Triangle from './triangle.vue'
+import { withInstall } from '@/utils'
+import triangle from './triangle.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Triangle.name!, Triangle)
-}
-export { Triangle, install as default }
+const Triangle = withInstall(triangle)
+
+export type * from '@/components/triangle/props'
+export { Triangle, Triangle as default }

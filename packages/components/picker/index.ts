@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Picker from './picker.vue'
+import { withInstall } from '@/utils'
+import picker from './picker.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Picker.name!, Picker)
-}
+const Picker = withInstall(picker)
 
-export { Picker, install as default }
+export type * from '@/components/picker/props'
+export { Picker, Picker as default }

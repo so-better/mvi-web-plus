@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Progress from './progress.vue'
+import { withInstall } from '@/utils'
+import progress from './progress.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Progress.name!, Progress)
-}
+const Progress = withInstall(progress)
 
-export { Progress, install as default }
+export type * from '@/components/progress/props'
+export { Progress, Progress as default }

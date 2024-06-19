@@ -16,9 +16,6 @@ class Prop {
 	//生成唯一标识符
 	private guid: number = this.createGuid()
 
-	//install函数
-	static install: (...args: any) => void
-
 	constructor(element: HTMLElement, ratio: number) {
 		this.$el = element
 		this.ratio = ratio

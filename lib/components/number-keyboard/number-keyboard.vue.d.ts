@@ -1,4 +1,4 @@
-declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     showDecimal: {
         type: BooleanConstructor;
         default: boolean;
@@ -84,8 +84,10 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: boolean;
     };
 }, {
-    $$el: import("vue").ComputedRef<HTMLElement | null>;
-}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+    $$el: import('vue').ComputedRef<HTMLElement | null>;
+}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+    delete: (...args: any[]) => void;
+    input: (...args: any[]) => void;
     "update:modelValue": (...args: any[]) => void;
     show: (...args: any[]) => void;
     showing: (...args: any[]) => void;
@@ -93,11 +95,9 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     hide: (...args: any[]) => void;
     hidding: (...args: any[]) => void;
     hidden: (...args: any[]) => void;
-    input: (...args: any[]) => void;
-    delete: (...args: any[]) => void;
     complete: (...args: any[]) => void;
     "update:show": (...args: any[]) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     showDecimal: {
         type: BooleanConstructor;
         default: boolean;
@@ -195,6 +195,8 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     onDelete?: ((...args: any[]) => any) | undefined;
     onComplete?: ((...args: any[]) => any) | undefined;
 }, {
+    title: string;
+    border: boolean;
     mountEl: string;
     zIndex: number;
     modelValue: string | number;
@@ -202,10 +204,8 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     closable: boolean;
     usePadding: boolean;
     show: boolean;
-    title: string;
     overlayColor: string;
     active: boolean;
-    border: boolean;
     maxlength: number;
     showDecimal: boolean;
     showDelete: boolean;

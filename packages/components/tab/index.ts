@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Tab from './tab.vue'
+import { withInstall } from '@/utils'
+import tab from './tab.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Tab.name!, Tab)
-}
+const Tab = withInstall(tab)
 
-export { Tab, install as default }
+export type * from '@/components/tab/props'
+export { Tab, Tab as default }

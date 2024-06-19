@@ -12,7 +12,6 @@ declare class Px {
     private isAfter?;
     private isBefore?;
     private hasInit;
-    static install: (...args: any) => void;
     constructor(element: HTMLElement, options: PxOptionsType);
     private handle;
     private createGuid;

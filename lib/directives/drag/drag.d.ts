@@ -28,7 +28,6 @@ declare class Drag {
     private pageX;
     private pageY;
     private guid;
-    static install: (...args: any) => void;
     constructor(element: HTMLElement, options: DragOptionsType);
     private setOn;
     private resize;

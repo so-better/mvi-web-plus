@@ -1,4 +1,66 @@
-import { FunctionPlugin } from 'vue';
-import Switch from './switch.vue';
-declare const install: FunctionPlugin;
-export { Switch, install as default };
+declare const Switch: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
+    modelValue: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
+    loading: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
+    disabled: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
+    size: {
+        type: StringConstructor;
+        default: string;
+    };
+    activeColor: {
+        type: StringConstructor;
+        default: null;
+    };
+    inactiveColor: {
+        type: StringConstructor;
+        default: null;
+    };
+}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+    "update:modelValue": (...args: any[]) => void;
+    change: (...args: any[]) => void;
+}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+    modelValue: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
+    loading: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
+    disabled: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
+    size: {
+        type: StringConstructor;
+        default: string;
+    };
+    activeColor: {
+        type: StringConstructor;
+        default: null;
+    };
+    inactiveColor: {
+        type: StringConstructor;
+        default: null;
+    };
+}>> & {
+    "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
+    onChange?: ((...args: any[]) => any) | undefined;
+}, {
+    size: string;
+    modelValue: boolean;
+    disabled: boolean;
+    loading: boolean;
+    activeColor: string;
+    inactiveColor: string;
+}, {}>>;
+export type * from './props';
+export { Switch, Switch as default };

@@ -1,13 +1,15 @@
-import { App, ComponentInternalInstance, FunctionPlugin } from 'vue';
+import { App, ComponentInternalInstance } from 'vue';
 import { ToastPropsType } from './props';
+
 type ToastType = {
     $el?: HTMLElement;
     $instance?: App<Element>;
     $vm?: ComponentInternalInstance;
     initParams: (options: string | ToastPropsType) => ToastPropsType;
+    install: (app: App) => void;
     showToast: (options: string | ToastPropsType) => Promise<void>;
     hideToast: () => void;
 };
 declare const Toast: ToastType;
-declare const install: FunctionPlugin;
-export { Toast, install as default };
+export type * from './props';
+export { Toast, Toast as default };

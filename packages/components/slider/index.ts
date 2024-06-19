@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Slider from './slider.vue'
+import { withInstall } from '@/utils'
+import slider from './slider.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Slider.name!, Slider)
-}
+const Slider = withInstall(slider)
 
-export { Slider, install as default }
+export type * from '@/components/slider/props'
+export { Slider, Slider as default }

@@ -21,9 +21,6 @@ class Px {
 	//是否已经初始化了
 	private hasInit: boolean = false
 
-	//install函数
-	static install: (...args: any) => void
-
 	constructor(element: HTMLElement, options: PxOptionsType) {
 		options = Dap.common.isObject(options) ? options : {}
 		this.$el = element

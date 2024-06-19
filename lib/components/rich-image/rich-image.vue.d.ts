@@ -1,14 +1,14 @@
-declare const _default: import("vue").DefineComponent<{
+declare const _default: import('vue').DefineComponent<{
     src: {
         type: StringConstructor;
         default: string;
     };
     loadIcon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: null;
     };
     errorIcon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: null;
     };
     maxScale: {
@@ -25,7 +25,7 @@ declare const _default: import("vue").DefineComponent<{
     scaleUp: () => void;
     scaleDown: () => void;
     reset: () => void;
-}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     reset: (...args: any[]) => void;
     "double-touchstart": (...args: any[]) => void;
     "double-touchend": (...args: any[]) => void;
@@ -34,17 +34,17 @@ declare const _default: import("vue").DefineComponent<{
     "translate-mousedown": (...args: any[]) => void;
     "translate-mouseup": (...args: any[]) => void;
     "only-click": (...args: any[]) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     src: {
         type: StringConstructor;
         default: string;
     };
     loadIcon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: null;
     };
     errorIcon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: null;
     };
     maxScale: {
@@ -65,9 +65,9 @@ declare const _default: import("vue").DefineComponent<{
     "onTranslate-mouseup"?: ((...args: any[]) => any) | undefined;
     "onOnly-click"?: ((...args: any[]) => any) | undefined;
 }, {
+    loadIcon: string | import('../icon').IconPropsType;
     src: string;
-    loadIcon: string | import('../../index').IconPropsType;
-    errorIcon: string | import('../../index').IconPropsType;
+    errorIcon: string | import('../icon').IconPropsType;
     maxScale: number;
     minScale: number;
 }, {}>;

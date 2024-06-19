@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import TransitionSlide from './transition-slide.vue'
+import { withInstall } from '@/utils'
+import transitionSlide from './transition-slide.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(TransitionSlide.name!, TransitionSlide)
-}
+const TransitionSlide = withInstall(transitionSlide)
 
-export { TransitionSlide, install as default }
+export type * from '@/components/transition-slide/props'
+export { TransitionSlide, TransitionSlide as default }

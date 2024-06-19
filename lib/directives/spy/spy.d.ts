@@ -18,7 +18,6 @@ declare class Spy {
     private hasInit;
     private triggerTag;
     private guid;
-    static install: (...args: any) => void;
     constructor(element: HTMLElement, options: SpyOptionsType);
     private scrollHandle;
     private createGuid;

@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import NumberKeyboard from './number-keyboard.vue'
+import { withInstall } from '@/utils'
+import numberKeyboard from './number-keyboard.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(NumberKeyboard.name!, NumberKeyboard)
-}
+const NumberKeyboard = withInstall(numberKeyboard)
 
-export { NumberKeyboard, install as default }
+export type * from '@/components/number-keyboard/props'
+export { NumberKeyboard, NumberKeyboard as default }

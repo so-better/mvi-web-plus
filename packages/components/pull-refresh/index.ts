@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import PullRefresh from './pull-refresh.vue'
+import { withInstall } from '@/utils'
+import pullRefresh from './pull-refresh.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(PullRefresh.name!, PullRefresh)
-}
+const PullRefresh = withInstall(pullRefresh)
 
-export { PullRefresh, install as default }
+export type * from '@/components/pull-refresh/props'
+export { PullRefresh, PullRefresh as default }

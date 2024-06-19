@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Roll from './roll.vue'
+import { withInstall } from '@/utils'
+import roll from './roll.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Roll.name!, Roll)
-}
+const Roll = withInstall(roll)
 
-export { Roll, install as default }
+export type * from '@/components/roll/props'
+export { Roll, Roll as default }

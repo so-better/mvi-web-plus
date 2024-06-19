@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import DateNativePicker from './date-native-picker.vue'
+import { withInstall } from '@/utils'
+import dateNativePicker from './date-native-picker.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(DateNativePicker.name!, DateNativePicker)
-}
+const DateNativePicker = withInstall(dateNativePicker)
 
-export { DateNativePicker, install as default }
+export type * from '@/components/date-native-picker/props'
+export { DateNativePicker, DateNativePicker as default }

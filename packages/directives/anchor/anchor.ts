@@ -11,7 +11,7 @@ export type AnchorOptionsType = {
 /**
  * 锚点定位
  */
-class Anchor {
+export default class Anchor {
 	//点击的元素
 	private $el: HTMLElement
 	//锚点到的元素
@@ -26,9 +26,6 @@ class Anchor {
 	private distance?: number
 	//是否初始化了
 	private hasInit: boolean = false
-
-	//install函数
-	static install: (...args: any) => void
 
 	constructor(element: HTMLElement, options: AnchorOptionsType) {
 		options = Dap.common.isObject(options) ? options : {}
@@ -102,5 +99,3 @@ class Anchor {
 		}
 	}
 }
-
-export default Anchor

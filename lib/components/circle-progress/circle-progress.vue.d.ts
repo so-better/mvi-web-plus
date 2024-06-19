@@ -1,4 +1,4 @@
-declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     value: {
         type: NumberConstructor;
         default: number;
@@ -55,7 +55,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         type: BooleanConstructor;
         default: boolean;
     };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     value: {
         type: NumberConstructor;
         default: number;
@@ -113,15 +113,15 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: boolean;
     };
 }>>, {
+    size: number;
+    fill: string;
     color: string;
     timeout: number;
-    fill: string;
-    size: number;
     round: boolean;
     animation: boolean;
-    max: number;
-    min: number;
     value: number;
+    min: number;
+    max: number;
     trackColor: string;
     showTip: boolean;
     tipText: string;

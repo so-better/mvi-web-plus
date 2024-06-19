@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Divider from './divider.vue'
+import { withInstall } from '@/utils'
+import divider from './divider.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Divider.name!, Divider)
-}
+const Divider = withInstall(divider)
 
-export { Divider, install as default }
+export type * from '@/components/divider/props'
+export { Divider, Divider as default }

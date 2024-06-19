@@ -61,7 +61,6 @@ declare class Resize {
     private hasInit;
     private cursor;
     private guid;
-    static install: (...args: any) => void;
     constructor(element: HTMLElement, options: ResizeOptionsType);
     private getIsInRange;
     private down;

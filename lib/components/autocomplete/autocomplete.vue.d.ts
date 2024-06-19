@@ -1,6 +1,7 @@
 import { IconPropsType } from '../icon/props';
 import { LayerPropsType } from '../layer/props';
-declare const _default: import("vue").DefineComponent<{
+
+declare const _default: import('vue').DefineComponent<{
     modelValue: {
         type: StringConstructor;
         default: string;
@@ -10,16 +11,16 @@ declare const _default: import("vue").DefineComponent<{
         default: string;
     };
     size: {
-        type: import("vue").PropType<"small" | "medium" | "large">;
+        type: import('vue').PropType<"small" | "medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
     list: {
-        type: import("vue").PropType<string[]>;
+        type: import('vue').PropType<string[]>;
         default: () => never[];
     };
     activeType: {
-        type: import("vue").PropType<"info" | "success" | "warn" | "error" | "primary">;
+        type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
@@ -29,7 +30,7 @@ declare const _default: import("vue").DefineComponent<{
         validator(value: any): boolean;
     };
     filterMethod: {
-        type: import("vue").PropType<boolean | ((value: string, list: string[]) => string[])>;
+        type: import('vue').PropType<boolean | ((value: string, list: string[]) => string[])>;
         default: boolean;
     };
     clearable: {
@@ -41,7 +42,7 @@ declare const _default: import("vue").DefineComponent<{
         default: boolean;
     };
     layerProps: {
-        type: import("vue").PropType<LayerPropsType>;
+        type: import('vue').PropType<LayerPropsType>;
         default: () => {};
     };
     height: {
@@ -53,11 +54,11 @@ declare const _default: import("vue").DefineComponent<{
         default: null;
     };
     leftIcon: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: null;
     };
     rightIcon: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: null;
     };
     round: {
@@ -69,22 +70,22 @@ declare const _default: import("vue").DefineComponent<{
         default: boolean;
     };
     align: {
-        type: import("vue").PropType<"left" | "right" | "center">;
+        type: import('vue').PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
-    "update:modelValue": (...args: any[]) => void;
+}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+    clear: (...args: any[]) => void;
     input: (...args: any[]) => void;
     select: (...args: any[]) => void;
-    clear: (...args: any[]) => void;
+    "update:modelValue": (...args: any[]) => void;
     focus: (...args: any[]) => void;
     blur: (...args: any[]) => void;
     "left-click": (...args: any[]) => void;
     "right-click": (...args: any[]) => void;
     keydown: (...args: any[]) => void;
     keyup: (...args: any[]) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     modelValue: {
         type: StringConstructor;
         default: string;
@@ -94,16 +95,16 @@ declare const _default: import("vue").DefineComponent<{
         default: string;
     };
     size: {
-        type: import("vue").PropType<"small" | "medium" | "large">;
+        type: import('vue').PropType<"small" | "medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
     list: {
-        type: import("vue").PropType<string[]>;
+        type: import('vue').PropType<string[]>;
         default: () => never[];
     };
     activeType: {
-        type: import("vue").PropType<"info" | "success" | "warn" | "error" | "primary">;
+        type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
@@ -113,7 +114,7 @@ declare const _default: import("vue").DefineComponent<{
         validator(value: any): boolean;
     };
     filterMethod: {
-        type: import("vue").PropType<boolean | ((value: string, list: string[]) => string[])>;
+        type: import('vue').PropType<boolean | ((value: string, list: string[]) => string[])>;
         default: boolean;
     };
     clearable: {
@@ -125,7 +126,7 @@ declare const _default: import("vue").DefineComponent<{
         default: boolean;
     };
     layerProps: {
-        type: import("vue").PropType<LayerPropsType>;
+        type: import('vue').PropType<LayerPropsType>;
         default: () => {};
     };
     height: {
@@ -137,11 +138,11 @@ declare const _default: import("vue").DefineComponent<{
         default: null;
     };
     leftIcon: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: null;
     };
     rightIcon: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: null;
     };
     round: {
@@ -153,7 +154,7 @@ declare const _default: import("vue").DefineComponent<{
         default: boolean;
     };
     align: {
-        type: import("vue").PropType<"left" | "right" | "center">;
+        type: import('vue').PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
@@ -169,26 +170,27 @@ declare const _default: import("vue").DefineComponent<{
     "onLeft-click"?: ((...args: any[]) => any) | undefined;
     "onRight-click"?: ((...args: any[]) => any) | undefined;
 }, {
-    modelValue: string;
-    name: string;
-    disabled: boolean;
     size: "small" | "medium" | "large";
-    round: boolean;
-    height: string;
     align: "left" | "right" | "center";
-    list: string[];
+    height: string;
+    name: string;
+    modelValue: string;
+    disabled: boolean;
+    round: boolean;
     placeholder: string;
+    list: string[];
     activeType: "info" | "success" | "warn" | "error" | "primary";
     activeColor: string;
     filterMethod: boolean | ((value: string, list: string[]) => string[]);
     clearable: boolean;
     layerProps: {
+        border?: boolean | undefined;
+        width?: string | undefined;
         zIndex?: number | undefined;
         modelValue?: boolean | undefined;
         timeout?: number | undefined;
         closable?: boolean | undefined;
         placement?: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined;
-        width?: string | undefined;
         offset?: string | undefined;
         background?: string | undefined;
         borderColor?: string | undefined;
@@ -196,7 +198,6 @@ declare const _default: import("vue").DefineComponent<{
         showTriangle?: boolean | undefined;
         animation?: string | undefined;
         shadow?: boolean | undefined;
-        border?: boolean | undefined;
     };
     leftIcon: string | IconPropsType;
     rightIcon: string | IconPropsType;

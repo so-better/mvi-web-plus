@@ -1,4 +1,36 @@
-import { FunctionPlugin } from 'vue';
-import Sign from './sign.vue';
-declare const install: FunctionPlugin;
-export { Sign, install as default };
+declare const Sign: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
+    color: {
+        type: StringConstructor;
+        default: string;
+    };
+    background: {
+        type: StringConstructor;
+        default: string;
+    };
+    width: {
+        type: NumberConstructor;
+        default: number;
+    };
+}, {
+    getImage: () => string;
+    clear: () => void;
+}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+    color: {
+        type: StringConstructor;
+        default: string;
+    };
+    background: {
+        type: StringConstructor;
+        default: string;
+    };
+    width: {
+        type: NumberConstructor;
+        default: number;
+    };
+}>>, {
+    width: number;
+    color: string;
+    background: string;
+}, {}>>;
+export type * from './props';
+export { Sign, Sign as default };

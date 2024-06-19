@@ -1,4 +1,4 @@
-declare const _default: import("vue").DefineComponent<{
+declare const _default: import('vue').DefineComponent<{
     message: {
         type: StringConstructor;
         default: null;
@@ -24,10 +24,10 @@ declare const _default: import("vue").DefineComponent<{
         default: null;
     };
     __remove: {
-        type: import("vue").PropType<() => void>;
+        type: import('vue').PropType<() => void>;
         default: () => () => void;
     };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     message: {
         type: StringConstructor;
         default: null;
@@ -53,7 +53,7 @@ declare const _default: import("vue").DefineComponent<{
         default: null;
     };
     __remove: {
-        type: import("vue").PropType<() => void>;
+        type: import('vue').PropType<() => void>;
         default: () => () => void;
     };
 }>>, {

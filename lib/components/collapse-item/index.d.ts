@@ -1,4 +1,121 @@
-import { FunctionPlugin } from 'vue';
-import CollapseItem from './collapse-item.vue';
-declare const install: FunctionPlugin;
-export { CollapseItem, install as default };
+declare const CollapseItem: import('../../utils').SFCWithInstall<{
+    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
+        icon: {
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            default: null;
+        };
+        title: {
+            type: StringConstructor;
+            default: null;
+        };
+        label: {
+            type: StringConstructor;
+            default: null;
+        };
+        disabled: {
+            type: BooleanConstructor;
+            default: boolean;
+        };
+        content: {
+            type: StringConstructor;
+            default: string;
+        };
+    }>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
+        icon: {
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            default: null;
+        };
+        title: {
+            type: StringConstructor;
+            default: null;
+        };
+        label: {
+            type: StringConstructor;
+            default: null;
+        };
+        disabled: {
+            type: BooleanConstructor;
+            default: boolean;
+        };
+        content: {
+            type: StringConstructor;
+            default: string;
+        };
+    }>>, {
+        label: string;
+        title: string;
+        disabled: boolean;
+        icon: string | import('../icon').IconPropsType;
+        content: string;
+    }, true, {}, {}, {
+        P: {};
+        B: {};
+        D: {};
+        C: {};
+        M: {};
+        Defaults: {};
+    }, Readonly<import('vue').ExtractPropTypes<{
+        icon: {
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            default: null;
+        };
+        title: {
+            type: StringConstructor;
+            default: null;
+        };
+        label: {
+            type: StringConstructor;
+            default: null;
+        };
+        disabled: {
+            type: BooleanConstructor;
+            default: boolean;
+        };
+        content: {
+            type: StringConstructor;
+            default: string;
+        };
+    }>>, {}, {}, {}, {}, {
+        label: string;
+        title: string;
+        disabled: boolean;
+        icon: string | import('../icon').IconPropsType;
+        content: string;
+    }>;
+    __isFragment?: undefined;
+    __isTeleport?: undefined;
+    __isSuspense?: undefined;
+} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
+    icon: {
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
+        default: null;
+    };
+    title: {
+        type: StringConstructor;
+        default: null;
+    };
+    label: {
+        type: StringConstructor;
+        default: null;
+    };
+    disabled: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
+    content: {
+        type: StringConstructor;
+        default: string;
+    };
+}>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, {
+    label: string;
+    title: string;
+    disabled: boolean;
+    icon: string | import('../icon').IconPropsType;
+    content: string;
+}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
+    $slots: {
+        default?(_: {}): any;
+    };
+})>;
+export type * from './props';
+export { CollapseItem, CollapseItem as default };

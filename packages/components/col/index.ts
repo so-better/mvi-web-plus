@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Col from './col.vue'
+import { withInstall } from '@/utils'
+import col from './col.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Col.name!, Col)
-}
+const Col = withInstall(col)
 
-export { Col, install as default }
+export type * from '@/components/col/props'
+export { Col, Col as default }

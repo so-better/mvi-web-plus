@@ -1,4 +1,4 @@
-import { App, ComponentInternalInstance, FunctionPlugin, createApp } from 'vue'
+import { App, ComponentInternalInstance, createApp } from 'vue'
 import Dap from 'dap-util'
 import NotifyComponent from './notify.vue'
 import { NotifyPropsType } from './props'
@@ -11,6 +11,7 @@ type NotifyType = {
 	//组件实例
 	$vm?: ComponentInternalInstance
 	initParams: (options: string | NotifyPropsType) => NotifyPropsType
+	install: (app: App) => void
 	showNotify: (options: NotifyPropsType) => Promise<void>
 	hideNotify: () => void
 }
@@ -31,6 +32,15 @@ const Notify: NotifyType = {
 			opts.message = <string>options
 		}
 		return opts
+	},
+
+	//安装函数
+	install: app => {
+		app.config.globalProperties.$showNotify = Notify.showNotify
+		app.provide('$showNotify', Notify.showNotify)
+
+		app.config.globalProperties.$hideNotify = Notify.hideNotify
+		app.provide('$hideNotify', Notify.hideNotify)
 	},
 
 	//显示弹窗
@@ -71,12 +81,5 @@ const Notify: NotifyType = {
 	}
 }
 
-const install: FunctionPlugin = (app: App) => {
-	app.config.globalProperties.$showNotify = Notify.showNotify
-	app.provide('$showNotify', Notify.showNotify)
-
-	app.config.globalProperties.$hideNotify = Notify.hideNotify
-	app.provide('$hideNotify', Notify.hideNotify)
-}
-
-export { Notify, install as default }
+export type * from '@/components/notify/props'
+export { Notify, Notify as default }

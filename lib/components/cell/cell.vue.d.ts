@@ -1,7 +1,8 @@
 import { IconPropsType } from '../icon/props';
-declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
+
+declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     icon: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: null;
     };
     title: {
@@ -21,7 +22,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: null;
     };
     arrow: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: null;
     };
     active: {
@@ -29,16 +30,16 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: null;
     };
     ellipsis: {
-        type: (NumberConstructor | BooleanConstructor)[];
+        type: (BooleanConstructor | NumberConstructor)[];
         default: null;
     };
     noWrap: {
         type: BooleanConstructor;
         default: boolean;
     };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     icon: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: null;
     };
     title: {
@@ -58,7 +59,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: null;
     };
     arrow: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: null;
     };
     active: {
@@ -66,7 +67,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: null;
     };
     ellipsis: {
-        type: (NumberConstructor | BooleanConstructor)[];
+        type: (BooleanConstructor | NumberConstructor)[];
         default: null;
     };
     noWrap: {
@@ -76,9 +77,9 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
 }>>, {
     label: string;
     title: string;
+    border: boolean;
     icon: string | IconPropsType;
     active: boolean;
-    border: boolean;
     content: string;
     arrow: string | IconPropsType;
     ellipsis: number | boolean;

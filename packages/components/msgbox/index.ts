@@ -1,10 +1,11 @@
-import { App, FunctionPlugin, createApp } from 'vue'
+import { App, createApp } from 'vue'
 import Dap from 'dap-util'
 import MsgboxComponent from './msgbox.vue'
 import { MsgboxPropsType } from './props'
 
 type MsgboxType = {
 	initParams: (options: string | MsgboxPropsType) => MsgboxPropsType
+	install: (app: App) => void
 	msgbox: (options: string | MsgboxPropsType) => Promise<void>
 }
 
@@ -23,6 +24,12 @@ const Msgbox: MsgboxType = {
 			opts.message = <string>options
 		}
 		return opts
+	},
+
+	//安装函数
+	install: app => {
+		app.config.globalProperties.$msgbox = Msgbox.msgbox
+		app.provide('$msgbox', Msgbox.msgbox)
 	},
 
 	//弹窗调用
@@ -44,9 +51,5 @@ const Msgbox: MsgboxType = {
 	}
 }
 
-const install: FunctionPlugin = (app: App) => {
-	app.config.globalProperties.$msgbox = Msgbox.msgbox
-	app.provide('$msgbox', Msgbox.msgbox)
-}
-
-export { Msgbox, install as default }
+export type * from '@/components/msgbox/props'
+export { Msgbox, Msgbox as default }

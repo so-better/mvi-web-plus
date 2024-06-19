@@ -1,5 +1,7 @@
-import { ComponentInternalInstance, createApp, defineComponent, Ref } from 'vue'
+import { App, ComponentInternalInstance, createApp, Directive, Ref, defineComponent, Component } from 'vue'
 import Dap from 'dap-util'
+
+export type SFCWithInstall<T> = T & { install(app: App): void }
 
 /**
  * 判断组件默认插槽的内容是否都是指定的组件
@@ -40,4 +42,28 @@ export const parentIsMatch = (children: Ref<ComponentInternalInstance[]> | null,
 	if (!children || !parentInstance || parentInstance.type.name != parentName) {
 		throw new Error(`Component "${names[1]}" cannot be used alone and must be placed in the default slot of component "${names[0]}"`)
 	}
+}
+
+/**
+ * 给组件增加install属性
+ * @param component
+ * @returns
+ */
+export const withInstall = <T extends Component>(component: T) => {
+	;(component as SFCWithInstall<T>).install = (app: App) => {
+		app.component(component.name!, component)
+	}
+	return component as SFCWithInstall<typeof component>
+}
+
+/**
+ * 给指令增加install属性
+ * @param directive
+ * @param name
+ */
+export const withInstallDirective = <T extends Directive>(name: string, directive: T) => {
+	;(directive as SFCWithInstall<T>).install = (app: App) => {
+		app.directive(name, directive)
+	}
+	return directive as SFCWithInstall<typeof directive>
 }

@@ -21,7 +21,6 @@ declare class Ripple {
     private isSupportTouch;
     private guid;
     private rippleContainers;
-    static install: (...args: any) => void;
     constructor(element: HTMLElement, options: RippleOptionsType);
     private endDeal;
     private createRippleElement;

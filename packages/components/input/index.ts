@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Input from './input.vue'
+import { withInstall } from '@/utils'
+import input from './input.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Input.name!, Input)
-}
+const Input = withInstall(input)
 
-export { Input, install as default }
+export type * from '@/components/input/props'
+export { Input, Input as default }

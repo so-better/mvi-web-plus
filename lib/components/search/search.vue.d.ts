@@ -1,5 +1,6 @@
 import { IconPropsType } from '../icon/props';
-declare const _default: import("vue").DefineComponent<{
+
+declare const _default: import('vue').DefineComponent<{
     modelValue: {
         type: (StringConstructor | NumberConstructor)[];
         default: string;
@@ -45,16 +46,16 @@ declare const _default: import("vue").DefineComponent<{
         default: boolean;
     };
     align: {
-        type: import("vue").PropType<"left" | "right" | "center">;
+        type: import('vue').PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
     leftIcon: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: null;
     };
     rightIcon: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: null;
     };
     clearable: {
@@ -62,15 +63,15 @@ declare const _default: import("vue").DefineComponent<{
         default: boolean;
     };
     inputMode: {
-        type: import("vue").PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
+        type: import('vue').PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
         default: string;
         validator(value: any): boolean;
     };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
-    "update:modelValue": (...args: any[]) => void;
-    search: (...args: any[]) => void;
-    input: (...args: any[]) => void;
+}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     clear: (...args: any[]) => void;
+    input: (...args: any[]) => void;
+    search: (...args: any[]) => void;
+    "update:modelValue": (...args: any[]) => void;
     focus: (...args: any[]) => void;
     blur: (...args: any[]) => void;
     "left-click": (...args: any[]) => void;
@@ -78,7 +79,7 @@ declare const _default: import("vue").DefineComponent<{
     keydown: (...args: any[]) => void;
     keyup: (...args: any[]) => void;
     cancel: (...args: any[]) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     modelValue: {
         type: (StringConstructor | NumberConstructor)[];
         default: string;
@@ -124,16 +125,16 @@ declare const _default: import("vue").DefineComponent<{
         default: boolean;
     };
     align: {
-        type: import("vue").PropType<"left" | "right" | "center">;
+        type: import('vue').PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
     leftIcon: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: null;
     };
     rightIcon: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: null;
     };
     clearable: {
@@ -141,7 +142,7 @@ declare const _default: import("vue").DefineComponent<{
         default: boolean;
     };
     inputMode: {
-        type: import("vue").PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
+        type: import('vue').PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
         default: string;
         validator(value: any): boolean;
     };
@@ -158,14 +159,14 @@ declare const _default: import("vue").DefineComponent<{
     onCancel?: ((...args: any[]) => any) | undefined;
     onSearch?: ((...args: any[]) => any) | undefined;
 }, {
-    modelValue: string | number;
-    type: string;
     label: string;
+    align: "left" | "right" | "center";
+    type: string;
+    modelValue: string | number;
     disabled: boolean;
     round: boolean;
     showCancel: boolean;
     cancelText: string;
-    align: "left" | "right" | "center";
     placeholder: string;
     clearable: boolean;
     leftIcon: string | IconPropsType;

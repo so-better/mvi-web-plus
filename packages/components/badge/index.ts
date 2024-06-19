@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Badge from './badge.vue'
+import { withInstall } from '@/utils'
+import badge from '@/components/badge/badge.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Badge.name!, Badge)
-}
+const Badge = withInstall(badge)
 
-export { Badge, install as default }
+export type * from '@/components/badge/props'
+export { Badge, Badge as default }

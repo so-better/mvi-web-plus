@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Skeleton from './skeleton.vue'
+import { withInstall } from '@/utils'
+import skeleton from './skeleton.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Skeleton.name!, Skeleton)
-}
+const Skeleton = withInstall(skeleton)
 
-export { Skeleton, install as default }
+export type * from '@/components/skeleton/props'
+export { Skeleton, Skeleton as default }

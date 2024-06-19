@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import CellGroup from './cell-group.vue'
+import { withInstall } from '@/utils'
+import cellGroup from './cell-group.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(CellGroup.name!, CellGroup)
-}
+const CellGroup = withInstall(cellGroup)
 
-export { CellGroup, install as default }
+export type * from '@/components/cell-group/props'
+export { CellGroup, CellGroup as default }

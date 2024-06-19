@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import FormEl from './form-el.vue'
+import { withInstall } from '@/utils'
+import formEl from './form-el.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(FormEl.name!, FormEl)
-}
+const FormEl = withInstall(formEl)
 
-export { FormEl, install as default }
+export type * from '@/components/form-el/props'
+export { FormEl, FormEl as default }

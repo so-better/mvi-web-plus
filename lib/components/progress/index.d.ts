@@ -1,4 +1,275 @@
-import { FunctionPlugin } from 'vue';
-import Progress from './progress.vue';
-declare const install: FunctionPlugin;
-export { Progress, install as default };
+declare const Progress: import('../../utils').SFCWithInstall<{
+    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
+        value: {
+            type: NumberConstructor;
+            default: number;
+        };
+        max: {
+            type: NumberConstructor;
+            default: number;
+        };
+        min: {
+            type: NumberConstructor;
+            default: number;
+        };
+        strokeWidth: {
+            type: StringConstructor;
+            default: null;
+        };
+        showTip: {
+            type: BooleanConstructor;
+            default: boolean;
+        };
+        color: {
+            type: StringConstructor;
+            default: null;
+        };
+        tipColor: {
+            type: StringConstructor;
+            default: null;
+        };
+        trackColor: {
+            type: StringConstructor;
+            default: null;
+        };
+        tipText: {
+            type: StringConstructor;
+            default: null;
+        };
+        round: {
+            type: BooleanConstructor;
+            default: boolean;
+        };
+        square: {
+            type: BooleanConstructor;
+            default: boolean;
+        };
+        animation: {
+            type: BooleanConstructor;
+            default: boolean;
+        };
+        timeout: {
+            type: NumberConstructor;
+            default: number;
+        };
+    }>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
+        value: {
+            type: NumberConstructor;
+            default: number;
+        };
+        max: {
+            type: NumberConstructor;
+            default: number;
+        };
+        min: {
+            type: NumberConstructor;
+            default: number;
+        };
+        strokeWidth: {
+            type: StringConstructor;
+            default: null;
+        };
+        showTip: {
+            type: BooleanConstructor;
+            default: boolean;
+        };
+        color: {
+            type: StringConstructor;
+            default: null;
+        };
+        tipColor: {
+            type: StringConstructor;
+            default: null;
+        };
+        trackColor: {
+            type: StringConstructor;
+            default: null;
+        };
+        tipText: {
+            type: StringConstructor;
+            default: null;
+        };
+        round: {
+            type: BooleanConstructor;
+            default: boolean;
+        };
+        square: {
+            type: BooleanConstructor;
+            default: boolean;
+        };
+        animation: {
+            type: BooleanConstructor;
+            default: boolean;
+        };
+        timeout: {
+            type: NumberConstructor;
+            default: number;
+        };
+    }>>, {
+        color: string;
+        timeout: number;
+        round: boolean;
+        animation: boolean;
+        square: boolean;
+        value: number;
+        min: number;
+        max: number;
+        trackColor: string;
+        showTip: boolean;
+        tipText: string;
+        strokeWidth: string;
+        tipColor: string;
+    }, true, {}, {}, {
+        P: {};
+        B: {};
+        D: {};
+        C: {};
+        M: {};
+        Defaults: {};
+    }, Readonly<import('vue').ExtractPropTypes<{
+        value: {
+            type: NumberConstructor;
+            default: number;
+        };
+        max: {
+            type: NumberConstructor;
+            default: number;
+        };
+        min: {
+            type: NumberConstructor;
+            default: number;
+        };
+        strokeWidth: {
+            type: StringConstructor;
+            default: null;
+        };
+        showTip: {
+            type: BooleanConstructor;
+            default: boolean;
+        };
+        color: {
+            type: StringConstructor;
+            default: null;
+        };
+        tipColor: {
+            type: StringConstructor;
+            default: null;
+        };
+        trackColor: {
+            type: StringConstructor;
+            default: null;
+        };
+        tipText: {
+            type: StringConstructor;
+            default: null;
+        };
+        round: {
+            type: BooleanConstructor;
+            default: boolean;
+        };
+        square: {
+            type: BooleanConstructor;
+            default: boolean;
+        };
+        animation: {
+            type: BooleanConstructor;
+            default: boolean;
+        };
+        timeout: {
+            type: NumberConstructor;
+            default: number;
+        };
+    }>>, {}, {}, {}, {}, {
+        color: string;
+        timeout: number;
+        round: boolean;
+        animation: boolean;
+        square: boolean;
+        value: number;
+        min: number;
+        max: number;
+        trackColor: string;
+        showTip: boolean;
+        tipText: string;
+        strokeWidth: string;
+        tipColor: string;
+    }>;
+    __isFragment?: undefined;
+    __isTeleport?: undefined;
+    __isSuspense?: undefined;
+} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
+    value: {
+        type: NumberConstructor;
+        default: number;
+    };
+    max: {
+        type: NumberConstructor;
+        default: number;
+    };
+    min: {
+        type: NumberConstructor;
+        default: number;
+    };
+    strokeWidth: {
+        type: StringConstructor;
+        default: null;
+    };
+    showTip: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
+    color: {
+        type: StringConstructor;
+        default: null;
+    };
+    tipColor: {
+        type: StringConstructor;
+        default: null;
+    };
+    trackColor: {
+        type: StringConstructor;
+        default: null;
+    };
+    tipText: {
+        type: StringConstructor;
+        default: null;
+    };
+    round: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
+    square: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
+    animation: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
+    timeout: {
+        type: NumberConstructor;
+        default: number;
+    };
+}>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, {
+    color: string;
+    timeout: number;
+    round: boolean;
+    animation: boolean;
+    square: boolean;
+    value: number;
+    min: number;
+    max: number;
+    trackColor: string;
+    showTip: boolean;
+    tipText: string;
+    strokeWidth: string;
+    tipColor: string;
+}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
+    $slots: {
+        tip?(_: {
+            value: number;
+        }): any;
+    };
+})>;
+export type * from './props';
+export { Progress, Progress as default };

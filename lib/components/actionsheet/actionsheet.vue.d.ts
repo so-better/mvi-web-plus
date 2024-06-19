@@ -1,5 +1,6 @@
 import { ActionsheetOptionsItemType } from './props';
-declare const _default: import("vue").DefineComponent<{
+
+declare const _default: import('vue').DefineComponent<{
     modelValue: {
         type: BooleanConstructor;
         default: boolean;
@@ -29,7 +30,7 @@ declare const _default: import("vue").DefineComponent<{
         default: boolean;
     };
     options: {
-        type: import("vue").PropType<ActionsheetOptionsItemType[]>;
+        type: import('vue').PropType<ActionsheetOptionsItemType[]>;
         default: () => never[];
     };
     showCancel: {
@@ -57,16 +58,16 @@ declare const _default: import("vue").DefineComponent<{
         default: boolean;
     };
     size: {
-        type: import("vue").PropType<"medium" | "large">;
+        type: import('vue').PropType<"medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
 }, {
-    $$el: import("vue").ComputedRef<HTMLElement | null>;
-}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
-    "update:modelValue": (...args: any[]) => void;
+    $$el: import('vue').ComputedRef<HTMLElement | null>;
+}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     select: (...args: any[]) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+    "update:modelValue": (...args: any[]) => void;
+}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     modelValue: {
         type: BooleanConstructor;
         default: boolean;
@@ -96,7 +97,7 @@ declare const _default: import("vue").DefineComponent<{
         default: boolean;
     };
     options: {
-        type: import("vue").PropType<ActionsheetOptionsItemType[]>;
+        type: import('vue').PropType<ActionsheetOptionsItemType[]>;
         default: () => never[];
     };
     showCancel: {
@@ -124,7 +125,7 @@ declare const _default: import("vue").DefineComponent<{
         default: boolean;
     };
     size: {
-        type: import("vue").PropType<"medium" | "large">;
+        type: import('vue').PropType<"medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
@@ -132,14 +133,14 @@ declare const _default: import("vue").DefineComponent<{
     "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
     onSelect?: ((...args: any[]) => any) | undefined;
 }, {
+    size: "medium" | "large";
+    title: string;
     mountEl: string;
     zIndex: number;
     modelValue: boolean;
     timeout: number;
     closable: boolean;
     usePadding: boolean;
-    title: string;
-    size: "medium" | "large";
     overlayColor: string;
     round: boolean;
     options: ActionsheetOptionsItemType[];

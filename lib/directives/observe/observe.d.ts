@@ -18,7 +18,6 @@ declare class Observe {
     private attributesChange?;
     private childNodesChange?;
     private hasInit;
-    static install: (...args: any) => void;
     constructor(el: HTMLElement, options: ObserveOptionsType);
     init(): void;
 }

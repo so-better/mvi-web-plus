@@ -1,5 +1,6 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
 import { IconPropsType } from '../icon/props';
+
 export declare const ButtonProps: {
     type: {
         type: PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;

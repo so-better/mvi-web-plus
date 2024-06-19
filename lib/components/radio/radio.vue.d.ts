@@ -1,10 +1,10 @@
-declare const _default: import("vue").DefineComponent<{
+declare const _default: import('vue').DefineComponent<{
     disabled: {
         type: BooleanConstructor;
         default: boolean;
     };
     modelValue: {
-        type: (StringConstructor | NumberConstructor | BooleanConstructor | ObjectConstructor)[];
+        type: (BooleanConstructor | StringConstructor | NumberConstructor | ObjectConstructor)[];
         default: boolean;
     };
     label: {
@@ -24,7 +24,7 @@ declare const _default: import("vue").DefineComponent<{
         default: null;
     };
     placement: {
-        type: import("vue").PropType<"left" | "right">;
+        type: import('vue').PropType<"left" | "right">;
         default: string;
         validator(value: any): boolean;
     };
@@ -36,16 +36,16 @@ declare const _default: import("vue").DefineComponent<{
         type: StringConstructor;
         default: null;
     };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     change: (...args: any[]) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     disabled: {
         type: BooleanConstructor;
         default: boolean;
     };
     modelValue: {
-        type: (StringConstructor | NumberConstructor | BooleanConstructor | ObjectConstructor)[];
+        type: (BooleanConstructor | StringConstructor | NumberConstructor | ObjectConstructor)[];
         default: boolean;
     };
     label: {
@@ -65,7 +65,7 @@ declare const _default: import("vue").DefineComponent<{
         default: null;
     };
     placement: {
-        type: import("vue").PropType<"left" | "right">;
+        type: import('vue').PropType<"left" | "right">;
         default: string;
         validator(value: any): boolean;
     };
@@ -81,12 +81,12 @@ declare const _default: import("vue").DefineComponent<{
     "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
     onChange?: ((...args: any[]) => any) | undefined;
 }, {
+    size: string;
+    label: string;
+    name: string;
     color: string;
     modelValue: string | number | boolean | Record<string, any>;
-    name: string;
-    label: string;
     disabled: boolean;
-    size: string;
     placement: "left" | "right";
     round: boolean;
     value: string | number | Record<string, any>;

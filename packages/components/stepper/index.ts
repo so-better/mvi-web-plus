@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Stepper from './stepper.vue'
+import { withInstall } from '@/utils'
+import stepper from './stepper.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Stepper.name!, Stepper)
-}
+const Stepper = withInstall(stepper)
 
-export { Stepper, install as default }
+export type * from '@/components/stepper/props'
+export { Stepper, Stepper as default }

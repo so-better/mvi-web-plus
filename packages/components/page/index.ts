@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Page from './page.vue'
+import { withInstall } from '@/utils'
+import page from './page.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Page.name!, Page)
-}
+const Page = withInstall(page)
 
-export { Page, install as default }
+export type * from '@/components/page/props'
+export { Page, Page as default }

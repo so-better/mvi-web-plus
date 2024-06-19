@@ -1,5 +1,6 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
 import { IconPropsType } from '../icon/props';
+
 export type FieldAutosizeType = {
     maxRows?: number;
     minRows?: number;
@@ -22,7 +23,7 @@ export declare const FieldProps: {
         default: string;
     };
     type: {
-        type: PropType<"number" | "textarea" | "text" | "tel" | "password">;
+        type: PropType<"number" | "textarea" | "text" | "password" | "tel">;
         default: string;
         validator(value: any): boolean;
     };

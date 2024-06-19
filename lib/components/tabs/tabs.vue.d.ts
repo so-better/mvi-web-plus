@@ -1,6 +1,6 @@
-declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     type: {
-        type: import("vue").PropType<"default" | "card">;
+        type: import('vue').PropType<"default" | "card">;
         default: string;
         validator(value: any): boolean;
     };
@@ -9,7 +9,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: number;
     };
     animation: {
-        type: import("vue").PropType<"fade" | "none" | "slide">;
+        type: import('vue').PropType<"fade" | "none" | "slide">;
         default: string;
         validator(value: any): boolean;
     };
@@ -26,7 +26,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: boolean;
     };
     flex: {
-        type: import("vue").PropType<import("./props").TabsFlexType>;
+        type: import('vue').PropType<import('./props').TabsFlexType>;
         default: string;
     };
     offset: {
@@ -41,12 +41,12 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     setHeight: () => void;
     setSlider: () => void;
     to: (newValue: number, oldValue: number) => void;
-}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     change: (...args: any[]) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     type: {
-        type: import("vue").PropType<"default" | "card">;
+        type: import('vue').PropType<"default" | "card">;
         default: string;
         validator(value: any): boolean;
     };
@@ -55,7 +55,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: number;
     };
     animation: {
-        type: import("vue").PropType<"fade" | "none" | "slide">;
+        type: import('vue').PropType<"fade" | "none" | "slide">;
         default: string;
         validator(value: any): boolean;
     };
@@ -72,7 +72,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: boolean;
     };
     flex: {
-        type: import("vue").PropType<import("./props").TabsFlexType>;
+        type: import('vue').PropType<import('./props').TabsFlexType>;
         default: string;
     };
     offset: {
@@ -87,15 +87,15 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
     onChange?: ((...args: any[]) => any) | undefined;
 }, {
+    border: boolean;
+    type: "default" | "card";
     modelValue: number;
     timeout: number;
-    type: "default" | "card";
     offset: string;
     animation: "fade" | "none" | "slide";
-    border: boolean;
     activeColor: string;
     ellipsis: boolean;
-    flex: import("./props").TabsFlexType;
+    flex: import('./props').TabsFlexType;
 }, {}>, {
     default?(_: {}): any;
 }>;

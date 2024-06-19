@@ -106,9 +106,6 @@ class Resize {
 	//生成唯一标识符
 	private guid: number = this.createGuid()
 
-	//install函数
-	static install: (...args: any) => void
-
 	constructor(element: HTMLElement, options: ResizeOptionsType) {
 		options = Dap.common.isObject(options) ? options : {}
 		this.$el = element

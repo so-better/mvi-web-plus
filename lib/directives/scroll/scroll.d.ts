@@ -10,7 +10,6 @@ declare class Scroll {
     private top?;
     private bottom?;
     private hasInit;
-    static install: (...args: any) => void;
     constructor(element: HTMLElement, options: ScrollOptionsType);
     init(): void;
 }

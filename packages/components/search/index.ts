@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Search from './search.vue'
+import { withInstall } from '@/utils'
+import search from './search.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Search.name!, Search)
-}
+const Search = withInstall(search)
 
-export { Search, install as default }
+export type * from '@/components/search/props'
+export { Search, Search as default }

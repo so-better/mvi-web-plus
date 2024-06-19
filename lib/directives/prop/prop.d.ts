@@ -8,7 +8,6 @@ declare class Prop {
     private height;
     private hasInit;
     private guid;
-    static install: (...args: any) => void;
     constructor(element: HTMLElement, ratio: number);
     private createGuid;
     set(number?: number): void;

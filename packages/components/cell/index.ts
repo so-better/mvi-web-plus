@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Cell from './cell.vue'
+import { withInstall } from '@/utils'
+import cell from './cell.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Cell.name!, Cell)
-}
+const Cell = withInstall(cell)
 
-export { Cell, install as default }
+export type * from '@/components/cell/props'
+export { Cell, Cell as default }

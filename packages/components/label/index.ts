@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Label from './label.vue'
+import { withInstall } from '@/utils'
+import label from './label.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Label.name!, Label)
-}
+const Label = withInstall(label)
 
-export { Label, install as default }
+export type * from '@/components/label/props'
+export { Label, Label as default }

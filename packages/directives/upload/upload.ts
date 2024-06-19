@@ -72,9 +72,6 @@ class Upload {
 	//是否初始化
 	private hasInit: boolean = false
 
-	//install函数
-	static install: (...args: any) => void
-
 	constructor(element: HTMLElement, options: UploadOptionsType) {
 		options = Dap.common.isObject(options) ? options : {}
 		this.$el = element

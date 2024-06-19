@@ -1,5 +1,6 @@
 import { CarouselIndicatorsType } from './props';
-declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
+
+declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     modelValue: {
         type: NumberConstructor;
         default: number;
@@ -21,12 +22,12 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: number;
     };
     mode: {
-        type: import("vue").PropType<"fade" | "slide">;
+        type: import('vue').PropType<"fade" | "slide">;
         default: string;
         validator(value: any): boolean;
     };
     indicators: {
-        type: import("vue").PropType<boolean | CarouselIndicatorsType>;
+        type: import('vue').PropType<boolean | CarouselIndicatorsType>;
         default: boolean;
     };
     controls: {
@@ -44,10 +45,10 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
 }, {
     setPrev: () => void;
     setNext: () => void;
-}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     change: (...args: any[]) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     modelValue: {
         type: NumberConstructor;
         default: number;
@@ -69,12 +70,12 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: number;
     };
     mode: {
-        type: import("vue").PropType<"fade" | "slide">;
+        type: import('vue').PropType<"fade" | "slide">;
         default: string;
         validator(value: any): boolean;
     };
     indicators: {
-        type: import("vue").PropType<boolean | CarouselIndicatorsType>;
+        type: import('vue').PropType<boolean | CarouselIndicatorsType>;
         default: boolean;
     };
     controls: {
@@ -93,8 +94,8 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
     onChange?: ((...args: any[]) => any) | undefined;
 }, {
-    modelValue: number;
     mode: "fade" | "slide";
+    modelValue: number;
     autoplay: boolean;
     loop: boolean;
     speed: number;

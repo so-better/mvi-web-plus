@@ -30,9 +30,6 @@ class Observe {
 	//是否已经初始化
 	private hasInit: boolean = false
 
-	//install函数
-	static install: (...args: any) => void
-
 	constructor(el: HTMLElement, options: ObserveOptionsType) {
 		this.$el = el
 		options = Dap.common.isObject(options) ? options : {}

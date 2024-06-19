@@ -1,4 +1,5 @@
 import { ExtractPublicPropTypes } from 'vue';
+
 export declare const OverlayProps: {
     mountEl: {
         type: StringConstructor;

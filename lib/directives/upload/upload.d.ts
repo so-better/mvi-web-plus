@@ -43,7 +43,6 @@ declare class Upload {
     private $selectInput;
     private files;
     private hasInit;
-    static install: (...args: any) => void;
     constructor(element: HTMLElement, options: UploadOptionsType);
     private judgeSuffix;
     init(): void;

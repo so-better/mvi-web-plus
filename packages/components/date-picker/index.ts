@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import DatePicker from './date-picker.vue'
+import { withInstall } from '@/utils'
+import datePicker from './date-picker.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(DatePicker.name!, DatePicker)
-}
+const DatePicker = withInstall(datePicker)
 
-export { DatePicker, install as default }
+export type * from '@/components/date-picker/props'
+export { DatePicker, DatePicker as default }

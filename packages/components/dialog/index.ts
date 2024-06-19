@@ -1,4 +1,4 @@
-import { App, FunctionPlugin, createApp } from 'vue'
+import { App, createApp } from 'vue'
 import Dap from 'dap-util'
 import dialogComponent from './dialog.vue'
 import dialogPcComponent from './dialog-pc.vue'
@@ -6,6 +6,7 @@ import { DialogPcPropsType, DialogPropsType } from './props'
 
 export type DialogType = {
 	initParams: (type: DialogPropsType['type'] | DialogPcPropsType['type'], options: string | DialogPropsType | DialogPcPropsType) => DialogPropsType | DialogPcPropsType
+	install: (app: App) => void
 	alert: (options: string | DialogPropsType) => Promise<void>
 	confirm: (options: string | DialogPropsType) => Promise<boolean>
 	prompt: (options: string | DialogPropsType) => Promise<{ ok: boolean; value: string }>
@@ -45,6 +46,33 @@ const Dialog: DialogType = {
 		}
 		opts.type = type
 		return opts
+	},
+
+	//安装函数
+	install: app => {
+		//将提示框挂载到全局
+		app.config.globalProperties.$alert = Dialog.alert.bind(app)
+		app.provide('$alert', Dialog.alert.bind(app))
+
+		//将确认框挂载到全局
+		app.config.globalProperties.$confirm = Dialog.confirm.bind(app)
+		app.provide('$confirm', Dialog.confirm.bind(app))
+
+		//将信息输入框挂载到全局
+		app.config.globalProperties.$prompt = Dialog.prompt.bind(app)
+		app.provide('$prompt', Dialog.prompt.bind(app))
+
+		//将PC端提示框挂载到全局
+		app.config.globalProperties.$Alert = Dialog.Alert.bind(app)
+		app.provide('$Alert', Dialog.Alert.bind(app))
+
+		//将PC端确认框挂载到全局
+		app.config.globalProperties.$Confirm = Dialog.Confirm.bind(app)
+		app.provide('$Confirm', Dialog.Confirm.bind(app))
+
+		//将PC端信息输入框挂载到全局
+		app.config.globalProperties.$Prompt = Dialog.Prompt.bind(app)
+		app.provide('$Prompt', Dialog.Prompt.bind(app))
 	},
 
 	//提示框
@@ -199,30 +227,5 @@ const Dialog: DialogType = {
 	}
 }
 
-const install: FunctionPlugin = (app: App) => {
-	//将提示框挂载到全局
-	app.config.globalProperties.$alert = Dialog.alert.bind(app)
-	app.provide('$alert', Dialog.alert.bind(app))
-
-	//将确认框挂载到全局
-	app.config.globalProperties.$confirm = Dialog.confirm.bind(app)
-	app.provide('$confirm', Dialog.confirm.bind(app))
-
-	//将信息输入框挂载到全局
-	app.config.globalProperties.$prompt = Dialog.prompt.bind(app)
-	app.provide('$prompt', Dialog.prompt.bind(app))
-
-	//将PC端提示框挂载到全局
-	app.config.globalProperties.$Alert = Dialog.Alert.bind(app)
-	app.provide('$Alert', Dialog.Alert.bind(app))
-
-	//将PC端确认框挂载到全局
-	app.config.globalProperties.$Confirm = Dialog.Confirm.bind(app)
-	app.provide('$Confirm', Dialog.Confirm.bind(app))
-
-	//将PC端信息输入框挂载到全局
-	app.config.globalProperties.$Prompt = Dialog.Prompt.bind(app)
-	app.provide('$Prompt', Dialog.Prompt.bind(app))
-}
-
-export { Dialog, install as default }
+export type * from '@/components/dialog/props'
+export { Dialog, Dialog as default }

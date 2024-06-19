@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Carousel from './carousel.vue'
+import { withInstall } from '@/utils'
+import carousel from '@/components/carousel/carousel.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Carousel.name!, Carousel)
-}
+const Carousel = withInstall(carousel)
 
-export { Carousel, install as default }
+export type * from '@/components/carousel/props'
+export { Carousel, Carousel as default }

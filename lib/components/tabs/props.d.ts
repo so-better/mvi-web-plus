@@ -1,4 +1,5 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
+
 export type TabsFlexType = 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around';
 export declare const TabsProps: {
     type: {

@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Collapse from './collapse.vue'
+import { withInstall } from '@/utils'
+import collapse from './collapse.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Collapse.name!, Collapse)
-}
+const Collapse = withInstall(collapse)
 
-export { Collapse, install as default }
+export type * from '@/components/collapse/props'
+export { Collapse, Collapse as default }

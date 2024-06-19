@@ -1,8 +1,7 @@
-import { App, FunctionPlugin } from 'vue'
-import Sign from './sign.vue'
+import { withInstall } from '@/utils'
+import sign from './sign.vue'
 
-const install: FunctionPlugin = (app: App) => {
-	app.component(Sign.name!, Sign)
-}
+const Sign = withInstall(sign)
 
-export { Sign, install as default }
+export type * from '@/components/sign/props'
+export { Sign, Sign as default }
