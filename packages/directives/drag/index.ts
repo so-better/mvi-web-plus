@@ -2,7 +2,7 @@ import { withInstallDirective } from '@/utils'
 import Dap from 'dap-util'
 import Drag from './drag'
 
-const DragDirective = withInstallDirective('drag', {
+const vDrag = withInstallDirective('drag', {
 	mounted(el, binding) {
 		let options = {}
 		if (Dap.common.isObject(binding.value)) {
@@ -25,4 +25,4 @@ const DragDirective = withInstallDirective('drag', {
 })
 
 export type * from '@/directives/drag/drag'
-export { Drag, DragDirective, DragDirective as default }
+export { Drag, vDrag, vDrag as default }

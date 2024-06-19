@@ -2,7 +2,7 @@ import Dap from 'dap-util'
 import { withInstallDirective } from '@/utils'
 import Upload from './upload'
 
-const UploadDirective = withInstallDirective('upload', {
+const vUpload = withInstallDirective('upload', {
 	mounted(el, binding) {
 		let options = {}
 		if (Dap.common.isObject(binding.value)) {
@@ -17,4 +17,4 @@ const UploadDirective = withInstallDirective('upload', {
 })
 
 export type * from '@/directives/upload/upload'
-export { Upload, UploadDirective, UploadDirective as default }
+export { Upload, vUpload, vUpload as default }

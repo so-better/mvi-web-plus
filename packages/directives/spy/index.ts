@@ -2,7 +2,7 @@ import Dap from 'dap-util'
 import { withInstallDirective } from '@/utils'
 import Spy from './spy'
 
-const SpyDirective = withInstallDirective('spy', {
+const vSpy = withInstallDirective('spy', {
 	mounted(el, binding) {
 		let options = {}
 		if (Dap.common.isObject(binding.value)) {
@@ -24,4 +24,4 @@ const SpyDirective = withInstallDirective('spy', {
 })
 
 export type * from '@/directives/spy/spy'
-export { Spy, SpyDirective, SpyDirective as default }
+export { Spy, vSpy, vSpy as default }

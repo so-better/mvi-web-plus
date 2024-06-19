@@ -2,7 +2,7 @@ import Dap from 'dap-util'
 import { withInstallDirective } from '@/utils'
 import Px from './px'
 
-const PxDirective = withInstallDirective('px', {
+const vPx = withInstallDirective('px', {
 	mounted(el, binding) {
 		let options: any = {}
 		if (Dap.common.isObject(binding.value)) {
@@ -20,4 +20,4 @@ const PxDirective = withInstallDirective('px', {
 })
 
 export type * from '@/directives/px/px'
-export { Px, PxDirective, PxDirective as default }
+export { Px, vPx, vPx as default }

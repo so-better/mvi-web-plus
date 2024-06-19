@@ -2,7 +2,7 @@ import Dap from 'dap-util'
 import { withInstallDirective } from '@/utils'
 import Resize from './resize'
 
-const ResizeDirective = withInstallDirective('resize', {
+const vResize = withInstallDirective('resize', {
 	mounted(el, binding) {
 		let options = {}
 		if (Dap.common.isObject(binding.value)) {
@@ -25,4 +25,4 @@ const ResizeDirective = withInstallDirective('resize', {
 })
 
 export type * from '@/directives/resize/resize'
-export { Resize, ResizeDirective, ResizeDirective as default }
+export { Resize, vResize, vResize as default }

@@ -2,7 +2,7 @@ import Dap from 'dap-util'
 import { withInstallDirective } from '@/utils'
 import Observe from './observe'
 
-const ObserveDirective = withInstallDirective('observe', {
+const vObserve = withInstallDirective('observe', {
 	mounted(el, binding) {
 		let options = {}
 		if (Dap.common.isObject(binding.value)) {
@@ -14,4 +14,4 @@ const ObserveDirective = withInstallDirective('observe', {
 })
 
 export type * from '@/directives/observe/observe'
-export { Observe, ObserveDirective, ObserveDirective as default }
+export { Observe, vObserve, vObserve as default }

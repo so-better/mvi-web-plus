@@ -2,7 +2,7 @@ import Dap from 'dap-util'
 import { withInstallDirective } from '@/utils'
 import Ripple from './ripple'
 
-const RippleDirective = withInstallDirective('ripple', {
+const vRipple = withInstallDirective('ripple', {
 	mounted(el, binding) {
 		let options = {}
 		if (Dap.common.isObject(binding.value)) {
@@ -24,4 +24,4 @@ const RippleDirective = withInstallDirective('ripple', {
 })
 
 export type * from '@/directives/ripple/ripple'
-export { Ripple, RippleDirective, RippleDirective as default }
+export { Ripple, vRipple, vRipple as default }

@@ -2,7 +2,7 @@ import Dap from 'dap-util'
 import { withInstallDirective } from '@/utils'
 import Scroll from './scroll'
 
-const ScrollDirective = withInstallDirective('scroll', {
+const vScroll = withInstallDirective('scroll', {
 	mounted(el, binding) {
 		let options = {}
 		if (Dap.common.isObject(binding.value)) {
@@ -14,4 +14,4 @@ const ScrollDirective = withInstallDirective('scroll', {
 })
 
 export type * from '@/directives/scroll/scroll'
-export { Scroll, ScrollDirective, ScrollDirective as default }
+export { Scroll, vScroll, vScroll as default }
