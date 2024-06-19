@@ -49,6 +49,10 @@ declare const Table: import('../../utils').SFCWithInstall<{
             type: StringConstructor;
             default: null;
         };
+        tooltip: {
+            type: import('vue').PropType<import('../tooltip').TooltipPropsType>;
+            default: null;
+        };
     }>> & {
         onCheck?: ((...args: any[]) => any) | undefined;
         "onSort-cancel"?: ((...args: any[]) => any) | undefined;
@@ -110,6 +114,10 @@ declare const Table: import('../../utils').SFCWithInstall<{
             type: StringConstructor;
             default: null;
         };
+        tooltip: {
+            type: import('vue').PropType<import('../tooltip').TooltipPropsType>;
+            default: null;
+        };
     }>> & {
         onCheck?: ((...args: any[]) => any) | undefined;
         "onSort-cancel"?: ((...args: any[]) => any) | undefined;
@@ -123,6 +131,22 @@ declare const Table: import('../../utils').SFCWithInstall<{
         center: boolean;
         activeColor: string;
         loadText: string;
+        tooltip: {
+            title?: string | undefined;
+            width?: string | undefined;
+            zIndex?: number | undefined;
+            color?: string | undefined;
+            timeout?: number | undefined;
+            disabled?: boolean | undefined;
+            placement?: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined;
+            offset?: string | undefined;
+            borderColor?: string | undefined;
+            showTriangle?: boolean | undefined;
+            animation?: string | undefined;
+            block?: boolean | undefined;
+            trigger?: "click" | "hover" | "custom" | undefined;
+            textColor?: string | undefined;
+        };
         columns: import('./props').TableColumnType[];
         columnBorder: boolean;
         stripe: boolean;
@@ -184,6 +208,10 @@ declare const Table: import('../../utils').SFCWithInstall<{
             type: StringConstructor;
             default: null;
         };
+        tooltip: {
+            type: import('vue').PropType<import('../tooltip').TooltipPropsType>;
+            default: null;
+        };
     }>> & {
         onCheck?: ((...args: any[]) => any) | undefined;
         "onSort-cancel"?: ((...args: any[]) => any) | undefined;
@@ -199,6 +227,22 @@ declare const Table: import('../../utils').SFCWithInstall<{
         center: boolean;
         activeColor: string;
         loadText: string;
+        tooltip: {
+            title?: string | undefined;
+            width?: string | undefined;
+            zIndex?: number | undefined;
+            color?: string | undefined;
+            timeout?: number | undefined;
+            disabled?: boolean | undefined;
+            placement?: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined;
+            offset?: string | undefined;
+            borderColor?: string | undefined;
+            showTriangle?: boolean | undefined;
+            animation?: string | undefined;
+            block?: boolean | undefined;
+            trigger?: "click" | "hover" | "custom" | undefined;
+            textColor?: string | undefined;
+        };
         columns: import('./props').TableColumnType[];
         columnBorder: boolean;
         stripe: boolean;
@@ -257,6 +301,10 @@ declare const Table: import('../../utils').SFCWithInstall<{
         type: StringConstructor;
         default: null;
     };
+    tooltip: {
+        type: import('vue').PropType<import('../tooltip').TooltipPropsType>;
+        default: null;
+    };
 }>> & {
     onCheck?: ((...args: any[]) => any) | undefined;
     "onSort-cancel"?: ((...args: any[]) => any) | undefined;
@@ -277,6 +325,22 @@ declare const Table: import('../../utils').SFCWithInstall<{
     center: boolean;
     activeColor: string;
     loadText: string;
+    tooltip: {
+        title?: string | undefined;
+        width?: string | undefined;
+        zIndex?: number | undefined;
+        color?: string | undefined;
+        timeout?: number | undefined;
+        disabled?: boolean | undefined;
+        placement?: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined;
+        offset?: string | undefined;
+        borderColor?: string | undefined;
+        showTriangle?: boolean | undefined;
+        animation?: string | undefined;
+        block?: boolean | undefined;
+        trigger?: "click" | "hover" | "custom" | undefined;
+        textColor?: string | undefined;
+    };
     columns: import('./props').TableColumnType[];
     columnBorder: boolean;
     stripe: boolean;

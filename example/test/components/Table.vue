@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<m-table :data="data" :columns="columns" border columnBorder stripe activeColor="#f30"> </m-table>
+		<m-table :tooltip="{ color: '#f30' }" :data="data" :columns="columns" border columnBorder stripe activeColor="#f30"> </m-table>
 	</div>
 </template>
 <script setup lang="ts">

@@ -46,11 +46,11 @@
 										<slot name="custom" :row="row" :row-index="rowIndex" :column="column" :column-index="columnIndex"></slot>
 									</div>
 									<!-- 其他 -->
-									<Tooltip v-else class="mvi-table-column-tooltip" :disabled="!column.ellipsis || !tooltipTitle(row, column)" block :title="tooltipTitle(row, column)" trigger="hover" :placement="center ? 'bottom' : 'bottom-start'">
-										<div class="mvi-table-column-item" :class="{ center: center }">
+									<div v-else class="mvi-table-column-item" :class="{ center: center }">
+										<Tooltip :disabled="!column.ellipsis || !tooltipTitle(row, column)" :title="tooltipTitle(row, column)" trigger="hover" placement="bottom" :color="tooltip?.color" :text-color="tooltip?.textColor" :border-color="tooltip?.borderColor" :show-triangle="tooltip?.showTriangle" :animation="tooltip?.animation" :z-index="tooltip?.zIndex" :offset="tooltip?.offset" :timeout="tooltip?.timeout">
 											<div v-html="dataFormat(row, column)" :class="{ ellipsis: column.ellipsis }"></div>
-										</div>
-									</Tooltip>
+										</Tooltip>
+									</div>
 								</div>
 							</td>
 						</tr>

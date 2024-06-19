@@ -1,4 +1,5 @@
 import { ExtractPublicPropTypes, PropType } from 'vue'
+import { TooltipPropsType } from '../tooltip'
 
 export type TableSortOrderType = 'desc' | 'asc' | ''
 
@@ -79,6 +80,11 @@ export const TableProps = {
 	//主题色
 	activeColor: {
 		type: String,
+		default: null
+	},
+	//表格内tooltip的样式
+	tooltip: {
+		type: Object as PropType<TooltipPropsType>,
 		default: null
 	}
 }

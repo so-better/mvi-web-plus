@@ -49,6 +49,10 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         type: StringConstructor;
         default: null;
     };
+    tooltip: {
+        type: import('vue').PropType<import('../tooltip').TooltipPropsType>;
+        default: null;
+    };
 }, {
     doLayout: () => void;
 }, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
@@ -105,6 +109,10 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         type: StringConstructor;
         default: null;
     };
+    tooltip: {
+        type: import('vue').PropType<import('../tooltip').TooltipPropsType>;
+        default: null;
+    };
 }>> & {
     onCheck?: ((...args: any[]) => any) | undefined;
     "onSort-cancel"?: ((...args: any[]) => any) | undefined;
@@ -118,6 +126,22 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     center: boolean;
     activeColor: string;
     loadText: string;
+    tooltip: {
+        title?: string | undefined;
+        width?: string | undefined;
+        zIndex?: number | undefined;
+        color?: string | undefined;
+        timeout?: number | undefined;
+        disabled?: boolean | undefined;
+        placement?: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined;
+        offset?: string | undefined;
+        borderColor?: string | undefined;
+        showTriangle?: boolean | undefined;
+        animation?: string | undefined;
+        block?: boolean | undefined;
+        trigger?: "click" | "hover" | "custom" | undefined;
+        textColor?: string | undefined;
+    };
     columns: TableColumnType[];
     columnBorder: boolean;
     stripe: boolean;

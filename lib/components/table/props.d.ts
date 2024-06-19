@@ -1,4 +1,5 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
+import { TooltipPropsType } from '../tooltip';
 
 export type TableSortOrderType = 'desc' | 'asc' | '';
 export type TableColumnType = {
@@ -61,6 +62,10 @@ export declare const TableProps: {
     };
     activeColor: {
         type: StringConstructor;
+        default: null;
+    };
+    tooltip: {
+        type: PropType<TooltipPropsType>;
         default: null;
     };
 };

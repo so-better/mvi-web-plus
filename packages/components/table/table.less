@@ -131,16 +131,6 @@
 							white-space: normal;
 							word-break: break-all;
 
-							.mvi-table-column-tooltip {
-								width: 100%;
-
-								.ellipsis {
-									text-overflow: ellipsis;
-									overflow: hidden;
-									white-space: nowrap;
-								}
-							}
-
 							.mvi-table-column-item {
 								display: flex;
 								justify-content: flex-start;
@@ -149,6 +139,16 @@
 
 								&.center {
 									justify-content: center;
+								}
+
+								:deep(.mvi-tooltip) {
+									max-width: 100%;
+
+									.ellipsis {
+										text-overflow: ellipsis;
+										overflow: hidden;
+										white-space: nowrap;
+									}
 								}
 							}
 						}
