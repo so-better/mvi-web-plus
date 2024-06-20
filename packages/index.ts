@@ -249,7 +249,7 @@ const install = (app: App) => {
 }
 
 //版本号
-const version = '2.0.0'
+const version = '2.0.1'
 
 //导出
 export { install as default, install, version }

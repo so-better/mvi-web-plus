@@ -339,6 +339,8 @@ watch(
 	() => props.data,
 	newVal => {
 		rowData.value = deepClone(newVal)
+		checkedRows.value = []
+		selectAll.value = false
 		nextTick(() => {
 			doLayout()
 		})
