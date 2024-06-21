@@ -1,4 +1,4 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-page {
 	display: flex;
@@ -8,7 +8,7 @@
 	background-color: #fff;
 	width: fit-content;
 	height: @small-height;
-	border: 1px solid @border-color;
+	border: 1px solid var(--mvi-border-color);
 	font-size: @font-size-default;
 	border-radius: @radius-default;
 	overflow: hidden;
@@ -21,8 +21,8 @@
 		position: relative;
 		height: 100%;
 		padding: 0 @mp-md;
-		border-right: 1px solid @border-color;
-		color: @info-normal;
+		border-right: 1px solid var(--mvi-border-color);
+		color: var(--mvi-info-normal);
 		white-space: nowrap;
 		cursor: pointer;
 
@@ -31,7 +31,7 @@
 		}
 
 		&[disabled] {
-			color: @font-color-mute;
+			color: var(--mvi-font-color-mute);
 		}
 
 		.mvi-icon.margin-right {
@@ -47,8 +47,8 @@
 		position: relative;
 		height: 100%;
 		padding: 0 @mp-md;
-		border-left: 1px solid @border-color;
-		color: @info-normal;
+		border-left: 1px solid var(--mvi-border-color);
+		color: var(--mvi-info-normal);
 		white-space: nowrap;
 		cursor: pointer;
 
@@ -57,7 +57,7 @@
 		}
 
 		&[disabled] {
-			color: @font-color-mute;
+			color: var(--mvi-font-color-mute);
 		}
 
 		.mvi-icon.margin-left {
@@ -73,8 +73,8 @@
 		position: relative;
 		height: 100%;
 		padding: 0 @mp-md;
-		border-right: 1px solid @border-color;
-		color: @info-normal;
+		border-right: 1px solid var(--mvi-border-color);
+		color: var(--mvi-info-normal);
 		white-space: nowrap;
 		cursor: pointer;
 
@@ -83,7 +83,7 @@
 		}
 
 		&[disabled] {
-			color: @font-color-mute;
+			color: var(--mvi-font-color-mute);
 		}
 
 		.mvi-icon.margin-right {
@@ -99,8 +99,8 @@
 		position: relative;
 		height: 100%;
 		padding: 0 @mp-md;
-		border-left: 1px solid @border-color;
-		color: @info-normal;
+		border-left: 1px solid var(--mvi-border-color);
+		color: var(--mvi-info-normal);
 		white-space: nowrap;
 		cursor: pointer;
 
@@ -109,7 +109,7 @@
 		}
 
 		&[disabled] {
-			color: @font-color-mute;
+			color: var(--mvi-font-color-mute);
 		}
 
 		.mvi-icon.margin-left {
@@ -128,7 +128,7 @@
 			align-items: center;
 			width: 100%;
 			height: 100%;
-			color: @font-color-sub;
+			color: var(--mvi-font-color-sub);
 			vertical-align: middle;
 			padding: 0 @mp-lg;
 			white-space: nowrap;
@@ -151,8 +151,8 @@
 				align-items: center;
 				position: relative;
 				height: 100%;
-				border-right: 1px solid @border-color;
-				color: @info-normal;
+				border-right: 1px solid var(--mvi-border-color);
+				color: var(--mvi-info-normal);
 				white-space: nowrap;
 				cursor: pointer;
 
@@ -165,7 +165,7 @@
 				}
 
 				&.number-active {
-					background-color: @info-normal;
+					background-color: var(--mvi-info-normal);
 					color: #fff;
 				}
 			}

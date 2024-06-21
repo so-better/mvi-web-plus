@@ -1,14 +1,14 @@
-declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     modelValue: {
         type: BooleanConstructor;
         default: boolean;
     };
     images: {
-        type: import('vue').PropType<string[]>;
+        type: import("vue").PropType<string[]>;
         default: () => never[];
     };
     descriptions: {
-        type: import('vue').PropType<string[]>;
+        type: import("vue").PropType<string[]>;
         default: () => never[];
     };
     active: {
@@ -24,7 +24,7 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         default: number;
     };
     mode: {
-        type: import('vue').PropType<"fade" | "slide" | undefined>;
+        type: import("vue").PropType<"fade" | "slide" | undefined>;
         default: string;
     };
     controls: {
@@ -48,14 +48,14 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         default: boolean;
     };
     errorIcon: {
-        type: import('vue').PropType<string | import('../icon').IconPropsType>;
+        type: import("vue").PropType<string | import('../icon').IconPropsType>;
         default: {
             size: string;
             type: string;
         };
     };
     loadIcon: {
-        type: import('vue').PropType<string | import('../icon').IconPropsType>;
+        type: import("vue").PropType<string | import('../icon').IconPropsType>;
         default: () => {
             size: string;
             type: string;
@@ -70,21 +70,21 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         default: number;
     };
 }, {
-    $$el: import('vue').ComputedRef<HTMLElement | null>;
-}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+    $$el: import("vue").ComputedRef<HTMLElement | null>;
+}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     change: (...args: any[]) => void;
-}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     modelValue: {
         type: BooleanConstructor;
         default: boolean;
     };
     images: {
-        type: import('vue').PropType<string[]>;
+        type: import("vue").PropType<string[]>;
         default: () => never[];
     };
     descriptions: {
-        type: import('vue').PropType<string[]>;
+        type: import("vue").PropType<string[]>;
         default: () => never[];
     };
     active: {
@@ -100,7 +100,7 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         default: number;
     };
     mode: {
-        type: import('vue').PropType<"fade" | "slide" | undefined>;
+        type: import("vue").PropType<"fade" | "slide" | undefined>;
         default: string;
     };
     controls: {
@@ -124,14 +124,14 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         default: boolean;
     };
     errorIcon: {
-        type: import('vue').PropType<string | import('../icon').IconPropsType>;
+        type: import("vue").PropType<string | import('../icon').IconPropsType>;
         default: {
             size: string;
             type: string;
         };
     };
     loadIcon: {
-        type: import('vue').PropType<string | import('../icon').IconPropsType>;
+        type: import("vue").PropType<string | import('../icon').IconPropsType>;
         default: () => {
             size: string;
             type: string;

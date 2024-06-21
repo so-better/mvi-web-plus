@@ -1,18 +1,18 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-divider {
 	display: flex;
 	display: -webkit-flex;
 	justify-content: space-between;
 	align-items: center;
-	color: @font-color-mute;
+	color: var(--mvi-font-color-mute);
 	user-select: none;
 
 	.mvi-divider-left {
 		flex: 1;
 		display: block;
 		height: 0px;
-		border-top: 1px solid @border-color;
+		border-top: 1px solid var(--mvi-border-color);
 	}
 
 	.mvi-divider-center {
@@ -26,7 +26,7 @@
 		flex: 1;
 		display: block;
 		height: 0px;
-		border-top: 1px solid @border-color;
+		border-top: 1px solid var(--mvi-border-color);
 	}
 
 	&.dashed > .mvi-divider-left,

@@ -1,4 +1,4 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-navbar {
 	display: flex;
@@ -10,11 +10,11 @@
 	background-color: #fff;
 	padding: 0 @mp-sm;
 	position: relative;
-	color: @font-color-default;
+	color: var(--mvi-font-color-default);
 	font-size: @font-size-h6;
 
 	&.border {
-		border-bottom: 1px solid @border-color;
+		border-bottom: 1px solid var(--mvi-border-color);
 	}
 
 	&.fixed {

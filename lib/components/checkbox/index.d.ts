@@ -1,5 +1,5 @@
 export type * from './props';
-declare const Checkbox: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
+declare const Checkbox: import('../../utils').SFCWithInstall<import("vue").DefineComponent<{
     disabled: {
         type: BooleanConstructor;
         default: boolean;
@@ -25,7 +25,7 @@ declare const Checkbox: import('../../utils').SFCWithInstall<import('vue').Defin
         default: null;
     };
     placement: {
-        type: import('vue').PropType<"left" | "right">;
+        type: import("vue").PropType<"left" | "right">;
         default: string;
         validator(value: any): boolean;
     };
@@ -37,10 +37,10 @@ declare const Checkbox: import('../../utils').SFCWithInstall<import('vue').Defin
         type: StringConstructor;
         default: null;
     };
-}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     change: (...args: any[]) => void;
-}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     disabled: {
         type: BooleanConstructor;
         default: boolean;
@@ -66,7 +66,7 @@ declare const Checkbox: import('../../utils').SFCWithInstall<import('vue').Defin
         default: null;
     };
     placement: {
-        type: import('vue').PropType<"left" | "right">;
+        type: import("vue").PropType<"left" | "right">;
         default: string;
         validator(value: any): boolean;
     };

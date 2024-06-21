@@ -1,6 +1,5 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
 import { IconPropsType } from '../icon';
-
 export declare const CellProps: {
     icon: {
         type: PropType<string | IconPropsType>;

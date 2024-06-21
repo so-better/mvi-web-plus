@@ -1,5 +1,5 @@
 export type * from './props';
-declare const DatePicker: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
+declare const DatePicker: import('../../utils').SFCWithInstall<import("vue").DefineComponent<{
     modelValue: {
         type: DateConstructor;
         default: () => Date;
@@ -13,7 +13,7 @@ declare const DatePicker: import('../../utils').SFCWithInstall<import('vue').Def
         default: () => Date;
     };
     mode: {
-        type: import('vue').PropType<import('./props').DatePickerModeType>;
+        type: import("vue").PropType<import("./props").DatePickerModeType>;
         default: string;
         validator(value: any): boolean;
     };
@@ -46,15 +46,15 @@ declare const DatePicker: import('../../utils').SFCWithInstall<import('vue').Def
         default: string;
     };
     formatter: {
-        type: import('vue').PropType<(type: import('./props').DatePickerTimeType, val: number) => string>;
+        type: import("vue").PropType<(type: import("./props").DatePickerTimeType, val: number) => string>;
         default: null;
     };
-}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     cancel: (...args: any[]) => void;
     change: (...args: any[]) => void;
     confirm: (...args: any[]) => void;
-}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     modelValue: {
         type: DateConstructor;
         default: () => Date;
@@ -68,7 +68,7 @@ declare const DatePicker: import('../../utils').SFCWithInstall<import('vue').Def
         default: () => Date;
     };
     mode: {
-        type: import('vue').PropType<import('./props').DatePickerModeType>;
+        type: import("vue").PropType<import("./props").DatePickerModeType>;
         default: string;
         validator(value: any): boolean;
     };
@@ -101,7 +101,7 @@ declare const DatePicker: import('../../utils').SFCWithInstall<import('vue').Def
         default: string;
     };
     formatter: {
-        type: import('vue').PropType<(type: import('./props').DatePickerTimeType, val: number) => string>;
+        type: import("vue").PropType<(type: import("./props").DatePickerTimeType, val: number) => string>;
         default: null;
     };
 }>> & {
@@ -111,7 +111,7 @@ declare const DatePicker: import('../../utils').SFCWithInstall<import('vue').Def
     onConfirm?: ((...args: any[]) => any) | undefined;
 }, {
     title: string;
-    mode: import('./props').DatePickerModeType;
+    mode: import("./props").DatePickerModeType;
     modelValue: Date;
     loading: boolean;
     cancelText: string;
@@ -121,6 +121,6 @@ declare const DatePicker: import('../../utils').SFCWithInstall<import('vue').Def
     confirmText: string;
     visibleCounts: number;
     selectHeight: string;
-    formatter: (type: import('./props').DatePickerTimeType, val: number) => string;
+    formatter: (type: import("./props").DatePickerTimeType, val: number) => string;
 }, {}>>;
 export { DatePicker, DatePicker as default };

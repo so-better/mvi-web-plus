@@ -1,4 +1,4 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-switch {
 	display: inline-flex;
@@ -30,7 +30,7 @@
 	}
 
 	&.checked {
-		background-color: @info-normal;
+		background-color: var(--mvi-info-normal);
 	}
 
 	.mvi-switch-el {
@@ -38,11 +38,11 @@
 		display: -webkit-inline-flex;
 		justify-content: center;
 		align-items: center;
-		color: @info-normal;
+		color: var(--mvi-info-normal);
 		width: 0.4rem;
 		height: 0.4rem;
 		border-radius: @radius-circle;
-		box-shadow: @boxshadow;
+		box-shadow: var(--mvi-boxshadow);
 		background-color: #fff;
 		margin: 0;
 		padding: 0;

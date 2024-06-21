@@ -1,4 +1,4 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-label {
 	display: inline-flex;
@@ -22,68 +22,68 @@
 	}
 
 	&.default {
-		background-color: rgba(@border-color, 0.05);
-		border-color: @border-color;
-		color: @font-color-sub;
+		background-color: rgba(var(--mvi-border-color), 0.05);
+		border-color: var(--mvi-border-color);
+		color: var(--mvi-font-color-sub);
 	}
 
 	&.success {
-		background-color: @success-normal;
-		border-color: @success-normal;
+		background-color: var(--mvi-success-normal);
+		border-color: var(--mvi-success-normal);
 		color: #fff;
 
 		&.plain {
-			border-color: @success-normal;
-			color: @success-normal;
-			background-color: rgba(@success-normal, 0.05);
+			border-color: var(--mvi-success-normal);
+			color: var(--mvi-success-normal);
+			background-color: rgba(var(--mvi-success-normal), 0.05);
 		}
 	}
 
 	&.warn {
-		background-color: @warn-normal;
-		border-color: @warn-normal;
+		background-color: var(--mvi-warn-normal);
+		border-color: var(--mvi-warn-normal);
 		color: #fff;
 
 		&.plain {
-			background-color: rgba(@warn-normal, 0.05);
-			border-color: @warn-normal;
-			color: @warn-normal;
+			background-color: rgba(var(--mvi-warn-normal), 0.05);
+			border-color: var(--mvi-warn-normal);
+			color: var(--mvi-warn-normal);
 		}
 	}
 
 	&.error {
-		background-color: @error-normal;
-		border-color: @error-normal;
+		background-color: var(--mvi-error-normal);
+		border-color: var(--mvi-error-normal);
 		color: #fff;
 
 		&.plain {
-			background-color: rgba(@error-normal, 0.05);
-			border-color: @error-normal;
-			color: @error-normal;
+			background-color: rgba(var(--mvi-error-normal), 0.05);
+			border-color: var(--mvi-error-normal);
+			color: var(--mvi-error-normal);
 		}
 	}
 
 	&.info {
-		background-color: @info-normal;
-		border-color: @info-normal;
+		background-color: var(--mvi-info-normal);
+		border-color: var(--mvi-info-normal);
 		color: #fff;
 
 		&.plain {
-			background-color: rgba(@info-normal, 0.05);
-			border-color: @info-normal;
-			color: @info-normal;
+			background-color: rgba(var(--mvi-info-normal), 0.05);
+			border-color: var(--mvi-info-normal);
+			color: var(--mvi-info-normal);
 		}
 	}
 
 	&.primary {
-		background-color: @primary-normal;
-		border-color: @primary-normal;
+		background-color: var(--mvi-primary-normal);
+		border-color: var(--mvi-primary-normal);
 		color: #fff;
 
 		&.plain {
-			background-color: rgba(@primary-normal, 0.05);
-			border-color: @primary-normal;
-			color: @primary-normal;
+			background-color: rgba(var(--mvi-primary-normal), 0.05);
+			border-color: var(--mvi-primary-normal);
+			color: var(--mvi-primary-normal);
 		}
 	}
 

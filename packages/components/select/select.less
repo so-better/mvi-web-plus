@@ -1,4 +1,4 @@
-@import '../../css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-select {
 	display: flex;
@@ -7,10 +7,10 @@
 	width: 100%;
 	position: relative;
 	font-family: @font-family;
-	color: @font-color-default;
+	color: var(--mvi-font-color-default);
 	border-radius: @radius-default;
 	background-color: #fff;
-	border: 1px solid @border-color;
+	border: 1px solid var(--mvi-border-color);
 	transition: border-color 600ms, box-shadow 600ms;
 	box-shadow: none;
 
@@ -19,28 +19,28 @@
 	}
 
 	&.info {
-		border-color: @info-normal;
-		box-shadow: 0 0 0.16rem @info-shadow;
+		border-color: var(--mvi-info-normal);
+		box-shadow: 0 0 0.16rem var(--mvi-info-shadow);
 	}
 
 	&.success {
-		border-color: @success-normal;
-		box-shadow: 0 0 0.16rem @success-shadow;
+		border-color: var(--mvi-success-normal);
+		box-shadow: 0 0 0.16rem var(--mvi-success-shadow);
 	}
 
 	&.primary {
-		border-color: @primary-normal;
-		box-shadow: 0 0 0.16rem @primary-shadow;
+		border-color: var(--mvi-primary-normal);
+		box-shadow: 0 0 0.16rem var(--mvi-primary-shadow);
 	}
 
 	&.warn {
-		border-color: @warn-normal;
-		box-shadow: 0 0 0.16rem @warn-shadow;
+		border-color: var(--mvi-warn-normal);
+		box-shadow: 0 0 0.16rem var(--mvi-warn-shadow);
 	}
 
 	&.error {
-		border-color: @error-normal;
-		box-shadow: 0 0 0.16rem @error-shadow;
+		border-color: var(--mvi-error-normal);
+		box-shadow: 0 0 0.16rem var(--mvi-error-shadow);
 	}
 
 	.mvi-select-label {
@@ -148,7 +148,7 @@
 		display: block;
 		width: 100%;
 		text-align: center;
-		color: @font-color-mute;
+		color: var(--mvi-font-color-mute);
 	}
 
 	.mvi-select-option {
@@ -160,7 +160,7 @@
 
 		&:hover:not([disabled]) {
 			cursor: pointer;
-			background-color: @bg-color-default;
+			background-color: var(--mvi-bg-color-default);
 		}
 
 		&[disabled] {

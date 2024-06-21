@@ -1,4 +1,4 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-button {
 	position: relative;
@@ -24,86 +24,86 @@
 	cursor: pointer;
 
 	&.default {
-		color: @font-color-default;
-		border-color: @border-color;
+		color: var(--mvi-font-color-default);
+		border-color: var(--mvi-border-color);
 		background: #fff;
 	}
 
 	&.warn {
-		background: @warn-normal;
-		border-color: @warn-normal;
+		background: var(--mvi-warn-normal);
+		border-color: var(--mvi-warn-normal);
 		color: #fff;
 
 		&.plain {
-			color: @warn-normal;
-			border-color: @warn-normal;
+			color: var(--mvi-warn-normal);
+			border-color: var(--mvi-warn-normal);
 			background: #fff;
 
 			&.active:active::before {
-				.mvi-active(@warn-normal);
+				.mvi-active(var(--mvi-warn-normal));
 			}
 		}
 	}
 
 	&.error {
-		background: @error-normal;
-		border-color: @error-normal;
+		background: var(--mvi-error-normal);
+		border-color: var(--mvi-error-normal);
 		color: #fff;
 
 		&.plain {
-			color: @error-normal;
-			border-color: @error-normal;
+			color: var(--mvi-error-normal);
+			border-color: var(--mvi-error-normal);
 			background: #fff;
 
 			&.active:active::before {
-				.mvi-active(@error-normal);
+				.mvi-active(var(--mvi-error-normal));
 			}
 		}
 	}
 
 	&.success {
-		background: @success-normal;
-		border-color: @success-normal;
+		background: var(--mvi-success-normal);
+		border-color: var(--mvi-success-normal);
 		color: #fff;
 
 		&.plain {
-			color: @success-normal;
-			border-color: @success-normal;
+			color: var(--mvi-success-normal);
+			border-color: var(--mvi-success-normal);
 			background: #fff;
 
 			&.active:active::before {
-				.mvi-active(@success-normal);
+				.mvi-active(var(--mvi-success-normal));
 			}
 		}
 	}
 
 	&.info {
-		background: @info-normal;
-		border-color: @info-normal;
+		background: var(--mvi-info-normal);
+		border-color: var(--mvi-info-normal);
 		color: #fff;
 
 		&.plain {
-			color: @info-normal;
-			border-color: @info-normal;
+			color: var(--mvi-info-normal);
+			border-color: var(--mvi-info-normal);
 			background: #fff;
 
 			&.active:active::before {
-				.mvi-active(@info-normal);
+				.mvi-active(var(--mvi-info-normal));
 			}
 		}
 	}
 
 	&.primary {
-		background: @primary-normal;
-		border-color: @primary-normal;
+		background: var(--mvi-primary-normal);
+		border-color: var(--mvi-primary-normal);
 		color: #fff;
 
 		&.plain {
-			color: @primary-normal;
-			border-color: @primary-normal;
+			color: var(--mvi-primary-normal);
+			border-color: var(--mvi-primary-normal);
 			background: #fff;
 			&.active:active::before {
-				.mvi-active(@primary-normal);
+				.mvi-active(var(--mvi-primary-normal));
 			}
 		}
 	}

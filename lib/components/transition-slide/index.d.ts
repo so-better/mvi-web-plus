@@ -1,6 +1,6 @@
 export type * from './props';
 declare const TransitionSlide: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
+    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
         expand: {
             type: BooleanConstructor;
             default: boolean;
@@ -14,12 +14,12 @@ declare const TransitionSlide: import('../../utils').SFCWithInstall<{
         "onSlide-down"?: ((...args: any[]) => any) | undefined;
         "onBefore-slide-up"?: ((...args: any[]) => any) | undefined;
         "onSlide-up"?: ((...args: any[]) => any) | undefined;
-    }, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+    }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
         "before-slide-down": (...args: any[]) => void;
         "slide-down": (...args: any[]) => void;
         "before-slide-up": (...args: any[]) => void;
         "slide-up": (...args: any[]) => void;
-    }, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
+    }, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
         expand: {
             type: BooleanConstructor;
             default: boolean;
@@ -43,7 +43,7 @@ declare const TransitionSlide: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import('vue').ExtractPropTypes<{
+    }, Readonly<import("vue").ExtractPropTypes<{
         expand: {
             type: BooleanConstructor;
             default: boolean;
@@ -64,7 +64,7 @@ declare const TransitionSlide: import('../../utils').SFCWithInstall<{
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
+} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
     expand: {
         type: BooleanConstructor;
         default: boolean;
@@ -78,7 +78,7 @@ declare const TransitionSlide: import('../../utils').SFCWithInstall<{
     "onSlide-down"?: ((...args: any[]) => any) | undefined;
     "onBefore-slide-up"?: ((...args: any[]) => any) | undefined;
     "onSlide-up"?: ((...args: any[]) => any) | undefined;
-}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "before-slide-down": (...args: any[]) => void;
     "slide-down": (...args: any[]) => void;
     "before-slide-up": (...args: any[]) => void;
@@ -86,7 +86,7 @@ declare const TransitionSlide: import('../../utils').SFCWithInstall<{
 }, string, {
     timeout: number;
     expand: boolean;
-}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
+}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
     $slots: {
         default?(_: {}): any;
     };

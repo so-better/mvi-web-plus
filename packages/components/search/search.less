@@ -1,4 +1,4 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-search {
 	display: flex;
@@ -9,7 +9,7 @@
 	position: relative;
 	padding: @mp-sm;
 	background-color: #fff;
-	color: @font-color-default;
+	color: var(--mvi-font-color-default);
 	font-size: @font-size-default;
 
 	&[disabled] {
@@ -42,8 +42,8 @@
 		flex: 1;
 		height: 0.68rem;
 		border-radius: @radius-default;
-		background-color: @bg-color-default;
-		color: @font-color-default;
+		background-color: var(--mvi-bg-color-default);
+		color: var(--mvi-font-color-default);
 
 		&.round {
 			border-radius: @radius-round;

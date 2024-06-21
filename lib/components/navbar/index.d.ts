@@ -1,6 +1,6 @@
 export type * from './props';
 declare const Navbar: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
+    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
         title: {
             type: StringConstructor;
             default: null;
@@ -14,11 +14,11 @@ declare const Navbar: import('../../utils').SFCWithInstall<{
             default: null;
         };
         leftIcon: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         rightIcon: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         fixed: {
@@ -37,11 +37,11 @@ declare const Navbar: import('../../utils').SFCWithInstall<{
         "onLeft-click"?: ((...args: any[]) => any) | undefined;
         "onRight-click"?: ((...args: any[]) => any) | undefined;
         "onTitle-click"?: ((...args: any[]) => any) | undefined;
-    }, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+    }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
         "left-click": (...args: any[]) => void;
         "right-click": (...args: any[]) => void;
         "title-click": (...args: any[]) => void;
-    }, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
+    }, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
         title: {
             type: StringConstructor;
             default: null;
@@ -55,11 +55,11 @@ declare const Navbar: import('../../utils').SFCWithInstall<{
             default: null;
         };
         leftIcon: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         rightIcon: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         fixed: {
@@ -83,8 +83,8 @@ declare const Navbar: import('../../utils').SFCWithInstall<{
         border: boolean;
         zIndex: number;
         fixed: boolean;
-        leftIcon: string | import('../icon').IconPropsType;
-        rightIcon: string | import('../icon').IconPropsType;
+        leftIcon: string | import('../../index').IconPropsType;
+        rightIcon: string | import('../../index').IconPropsType;
         leftText: string;
         rightText: string;
     }, true, {}, {}, {
@@ -94,7 +94,7 @@ declare const Navbar: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import('vue').ExtractPropTypes<{
+    }, Readonly<import("vue").ExtractPropTypes<{
         title: {
             type: StringConstructor;
             default: null;
@@ -108,11 +108,11 @@ declare const Navbar: import('../../utils').SFCWithInstall<{
             default: null;
         };
         leftIcon: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         rightIcon: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         fixed: {
@@ -136,15 +136,15 @@ declare const Navbar: import('../../utils').SFCWithInstall<{
         border: boolean;
         zIndex: number;
         fixed: boolean;
-        leftIcon: string | import('../icon').IconPropsType;
-        rightIcon: string | import('../icon').IconPropsType;
+        leftIcon: string | import('../../index').IconPropsType;
+        rightIcon: string | import('../../index').IconPropsType;
         leftText: string;
         rightText: string;
     }>;
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
+} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
     title: {
         type: StringConstructor;
         default: null;
@@ -158,11 +158,11 @@ declare const Navbar: import('../../utils').SFCWithInstall<{
         default: null;
     };
     leftIcon: {
-        type: import('vue').PropType<string | import('../icon').IconPropsType>;
+        type: import("vue").PropType<string | import('../../index').IconPropsType>;
         default: null;
     };
     rightIcon: {
-        type: import('vue').PropType<string | import('../icon').IconPropsType>;
+        type: import("vue").PropType<string | import('../../index').IconPropsType>;
         default: null;
     };
     fixed: {
@@ -181,7 +181,7 @@ declare const Navbar: import('../../utils').SFCWithInstall<{
     "onLeft-click"?: ((...args: any[]) => any) | undefined;
     "onRight-click"?: ((...args: any[]) => any) | undefined;
     "onTitle-click"?: ((...args: any[]) => any) | undefined;
-}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "left-click": (...args: any[]) => void;
     "right-click": (...args: any[]) => void;
     "title-click": (...args: any[]) => void;
@@ -190,11 +190,11 @@ declare const Navbar: import('../../utils').SFCWithInstall<{
     border: boolean;
     zIndex: number;
     fixed: boolean;
-    leftIcon: string | import('../icon').IconPropsType;
-    rightIcon: string | import('../icon').IconPropsType;
+    leftIcon: string | import('../../index').IconPropsType;
+    rightIcon: string | import('../../index').IconPropsType;
     leftText: string;
     rightText: string;
-}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
+}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
     $slots: {
         left?(_: {}): any;
         title?(_: {}): any;

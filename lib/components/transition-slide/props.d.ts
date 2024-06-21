@@ -1,5 +1,4 @@
 import { ExtractPublicPropTypes } from 'vue';
-
 export declare const TransitionSlideProps: {
     expand: {
         type: BooleanConstructor;

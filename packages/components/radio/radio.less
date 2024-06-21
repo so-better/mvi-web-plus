@@ -1,4 +1,4 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-radio {
 	display: inline-flex;
@@ -27,7 +27,7 @@
 		position: relative;
 		margin: 0;
 		padding: @mp-xs / 5;
-		border: 1px solid @border-color;
+		border: 1px solid var(--mvi-border-color);
 		background-color: #fff;
 		font-size: @font-size-small;
 		border-radius: @radius-default / 2;
@@ -35,8 +35,8 @@
 		transition: border-color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46), background-color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46), color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46);
 
 		&.check {
-			background-color: @info-normal;
-			border-color: @info-normal;
+			background-color: var(--mvi-info-normal);
+			border-color: var(--mvi-info-normal);
 		}
 
 		&.round {
@@ -47,7 +47,7 @@
 	.mvi-radio-label {
 		vertical-align: middle;
 		font-size: @font-size-default;
-		color: @font-color-default;
+		color: var(--mvi-font-color-default);
 		user-select: none;
 
 		&[data-placement='left'] {
@@ -62,13 +62,13 @@
 	&[disabled] {
 		.mvi-radio-item,
 		.mvi-radio-item.check {
-			background-color: @bg-color-dark;
-			border-color: @border-color;
-			color: @font-color-mute;
+			background-color: var(--mvi-bg-color-dark);
+			border-color: var(--mvi-border-color);
+			color: var(--mvi-font-color-mute);
 		}
 
 		.mvi-radio-label {
-			color: @font-color-mute;
+			color: var(--mvi-font-color-mute);
 		}
 	}
 }

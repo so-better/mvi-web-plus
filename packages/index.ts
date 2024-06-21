@@ -1,6 +1,9 @@
 import Dap from 'dap-util'
 import { App } from 'vue'
 
+//引入颜色样式
+import '@/css/var.less'
+
 //解决ios系统下css伪类无效的问题
 Dap.event.on(window, 'touchstart.ios', () => {})
 
@@ -240,18 +243,23 @@ export type * from '@/components/rich-image'
 export type * from '@/components/image-preview'
 
 const plugins = { Anchor, Drag, Observe, Prop, Px, Resize, Ripple, Scroll, Spy, Upload, Icon, Badge, Button, Triangle, Layer, Label, Input, Loading, LoadingBar, Msgbox, Divider, Cell, CellGroup, Checkbox, Radio, Sign, Roll, Row, Col, Autocomplete, Overlay, Popup, Dropdown, Tooltip, TransitionSlide, Switch, Navbar, Notify, Actionsheet, Calendar, CircleProgress, Collapse, CollapseItem, DateChooser, DateNativePicker, Picker, Progress, Slider, DatePicker, Field, Form, FormEl, Image, ColorPicker, List, Modal, Page, Search, Select, Skeleton, Steps, Step, Stepper, NumberKeyboard, Toast, PullRefresh, Dialog, SwipeCell, Tabbar, Table, Tabs, Tab, Carousel, CarouselItem, RichImage, ImagePreview }
-
 //安装函数
 const install = (app: App) => {
 	Object.values(plugins).map(plugin => {
 		plugin.install(app)
 	})
 }
-
 //版本号
 const version = '2.0.1'
-
+//使用深色模式的方法
+const useDark = (dark: boolean) => {
+	if (dark) {
+		document.documentElement.setAttribute('data-mvi-dark', 'true')
+	} else {
+		document.documentElement.removeAttribute('data-mvi-dark')
+	}
+}
 //导出
-export { install as default, install, version }
+export { install as default, install, version, useDark }
 
 console.log(`%c mvi-web-plus %c v${version} `, 'padding: 2px 1px; border-radius: 3px 0 0 3px; color: #fff; background: #606060; font-weight: bold;', 'padding: 2px 1px; border-radius: 0 3px 3px 0; color: #fff; background: #42c02e; font-weight: bold;')

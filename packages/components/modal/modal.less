@@ -1,4 +1,4 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-modal {
 	display: block;
@@ -22,7 +22,7 @@
 		width: 100%;
 		background: #fff;
 		border-radius: @radius-default;
-		box-shadow: @boxshadow;
+		box-shadow: var(--mvi-boxshadow);
 		position: relative;
 	}
 
@@ -31,7 +31,7 @@
 		width: 100%;
 		font-weight: bold;
 		font-size: @font-size-h6;
-		color: @font-color-default;
+		color: var(--mvi-font-color-default);
 		padding: @mp-md;
 
 		&.ellipsis {
@@ -53,7 +53,7 @@
 		display: -webkit-flex;
 		justify-content: center;
 		align-items: center;
-		color: @font-color-mute;
+		color: var(--mvi-font-color-mute);
 		font-size: @font-size-small;
 		opacity: 0.8;
 
@@ -71,7 +71,7 @@
 		overflow-y: auto;
 		border-radius: inherit;
 		font-size: @font-size-default;
-		color: @font-color-default;
+		color: var(--mvi-font-color-default);
 	}
 
 	.mvi-modal-footer {
@@ -79,11 +79,11 @@
 		display: -webkit-flex;
 		justify-content: flex-end;
 		align-items: center;
-		border-top: 1px solid @border-color;
+		border-top: 1px solid var(--mvi-border-color);
 		padding: @mp-sm @mp-md;
 		text-align: right;
 		font-size: @font-size-default;
-		color: @font-color-sub;
+		color: var(--mvi-font-color-sub);
 	}
 }
 

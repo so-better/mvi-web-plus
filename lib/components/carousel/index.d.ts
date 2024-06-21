@@ -1,6 +1,6 @@
 export type * from './props';
 declare const Carousel: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
+    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
         modelValue: {
             type: NumberConstructor;
             default: number;
@@ -22,12 +22,12 @@ declare const Carousel: import('../../utils').SFCWithInstall<{
             default: number;
         };
         mode: {
-            type: import('vue').PropType<"fade" | "slide">;
+            type: import("vue").PropType<"fade" | "slide">;
             default: string;
             validator(value: any): boolean;
         };
         indicators: {
-            type: import('vue').PropType<boolean | import('./props').CarouselIndicatorsType>;
+            type: import("vue").PropType<boolean | import("./props").CarouselIndicatorsType>;
             default: boolean;
         };
         controls: {
@@ -48,10 +48,10 @@ declare const Carousel: import('../../utils').SFCWithInstall<{
     }, {
         setPrev: () => void;
         setNext: () => void;
-    }, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+    }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
         "update:modelValue": (...args: any[]) => void;
         change: (...args: any[]) => void;
-    }, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
+    }, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
         modelValue: {
             type: NumberConstructor;
             default: number;
@@ -73,12 +73,12 @@ declare const Carousel: import('../../utils').SFCWithInstall<{
             default: number;
         };
         mode: {
-            type: import('vue').PropType<"fade" | "slide">;
+            type: import("vue").PropType<"fade" | "slide">;
             default: string;
             validator(value: any): boolean;
         };
         indicators: {
-            type: import('vue').PropType<boolean | import('./props').CarouselIndicatorsType>;
+            type: import("vue").PropType<boolean | import("./props").CarouselIndicatorsType>;
             default: boolean;
         };
         controls: {
@@ -103,7 +103,7 @@ declare const Carousel: import('../../utils').SFCWithInstall<{
         loop: boolean;
         speed: number;
         interval: number;
-        indicators: boolean | import('./props').CarouselIndicatorsType;
+        indicators: boolean | import("./props").CarouselIndicatorsType;
         controls: boolean;
         vertical: boolean;
         touchable: boolean;
@@ -114,7 +114,7 @@ declare const Carousel: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import('vue').ExtractPropTypes<{
+    }, Readonly<import("vue").ExtractPropTypes<{
         modelValue: {
             type: NumberConstructor;
             default: number;
@@ -136,12 +136,12 @@ declare const Carousel: import('../../utils').SFCWithInstall<{
             default: number;
         };
         mode: {
-            type: import('vue').PropType<"fade" | "slide">;
+            type: import("vue").PropType<"fade" | "slide">;
             default: string;
             validator(value: any): boolean;
         };
         indicators: {
-            type: import('vue').PropType<boolean | import('./props').CarouselIndicatorsType>;
+            type: import("vue").PropType<boolean | import("./props").CarouselIndicatorsType>;
             default: boolean;
         };
         controls: {
@@ -169,7 +169,7 @@ declare const Carousel: import('../../utils').SFCWithInstall<{
         loop: boolean;
         speed: number;
         interval: number;
-        indicators: boolean | import('./props').CarouselIndicatorsType;
+        indicators: boolean | import("./props").CarouselIndicatorsType;
         controls: boolean;
         vertical: boolean;
         touchable: boolean;
@@ -177,7 +177,7 @@ declare const Carousel: import('../../utils').SFCWithInstall<{
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
+} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
     modelValue: {
         type: NumberConstructor;
         default: number;
@@ -199,12 +199,12 @@ declare const Carousel: import('../../utils').SFCWithInstall<{
         default: number;
     };
     mode: {
-        type: import('vue').PropType<"fade" | "slide">;
+        type: import("vue").PropType<"fade" | "slide">;
         default: string;
         validator(value: any): boolean;
     };
     indicators: {
-        type: import('vue').PropType<boolean | import('./props').CarouselIndicatorsType>;
+        type: import("vue").PropType<boolean | import("./props").CarouselIndicatorsType>;
         default: boolean;
     };
     controls: {
@@ -225,7 +225,7 @@ declare const Carousel: import('../../utils').SFCWithInstall<{
 }, {
     setPrev: () => void;
     setNext: () => void;
-}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     change: (...args: any[]) => void;
 }, string, {
@@ -235,11 +235,11 @@ declare const Carousel: import('../../utils').SFCWithInstall<{
     loop: boolean;
     speed: number;
     interval: number;
-    indicators: boolean | import('./props').CarouselIndicatorsType;
+    indicators: boolean | import("./props").CarouselIndicatorsType;
     controls: boolean;
     vertical: boolean;
     touchable: boolean;
-}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
+}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
     $slots: {
         default?(_: {}): any;
         indicators?(_: {

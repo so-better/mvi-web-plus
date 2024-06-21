@@ -1,4 +1,4 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-stepper {
 	display: inline-flex;
@@ -13,9 +13,9 @@
 		display: -webkit-inline-flex;
 		justify-content: center;
 		align-items: center;
-		background-color: @bg-color-dark;
+		background-color: var(--mvi-bg-color-dark);
 		border-radius: @radius-default;
-		color: @font-color-sub;
+		color: var(--mvi-font-color-sub);
 		position: relative;
 		cursor: pointer;
 		user-select: none;
@@ -27,7 +27,7 @@
 		}
 
 		&.border {
-			border: 1px solid @border-color;
+			border: 1px solid var(--mvi-border-color);
 		}
 
 		&[disabled] {
@@ -41,15 +41,15 @@
 
 	.mvi-stepper-input {
 		min-width: 0;
-		background-color: @bg-color-dark;
+		background-color: var(--mvi-bg-color-dark);
 		margin-right: @mp-xs;
 		border-radius: @radius-default;
 		width: 1.5rem;
-		color: @font-color-sub;
+		color: var(--mvi-font-color-sub);
 		padding: 0 @mp-sm;
 
 		&.border {
-			border: 1px solid @border-color;
+			border: 1px solid var(--mvi-border-color);
 		}
 
 		input {

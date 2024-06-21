@@ -1,4 +1,4 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-table {
 	display: block;
@@ -7,10 +7,10 @@
 	overflow-y: hidden;
 	background-color: #fff;
 	font-size: @font-size-default;
-	color: @font-color-default;
+	color: var(--mvi-font-color-default);
 
 	&.border {
-		border: 1px solid @border-color;
+		border: 1px solid var(--mvi-border-color);
 	}
 
 	.mvi-table-wrap {
@@ -30,17 +30,17 @@
 
 				tr {
 					width: 100%;
-					background: @bg-color-dark;
+					background: var(--mvi-bg-color-dark);
 
 					th {
 						font-weight: bold;
 						padding: @mp-sm 0;
 						text-align: left;
-						border-bottom: 1px solid @border-color;
+						border-bottom: 1px solid var(--mvi-border-color);
 						position: relative;
 
 						&.border {
-							border-right: 1px solid @border-color;
+							border-right: 1px solid var(--mvi-border-color);
 
 							&:last-child {
 								border-right: none;
@@ -67,14 +67,14 @@
 								flex-direction: column;
 								margin-left: @mp-xs;
 								font-size: @font-size-small;
-								color: @font-color-mute;
+								color: var(--mvi-font-color-mute);
 								transform: scale(0.8);
 
 								.mvi-icon {
 									cursor: pointer;
 
 									&.active {
-										color: @info-normal;
+										color: var(--mvi-info-normal);
 									}
 								}
 							}
@@ -107,17 +107,17 @@
 				tr {
 					width: 100%;
 					&.stripe:nth-child(2n) {
-						background: @bg-color-default;
+						background: var(--mvi-bg-color-default);
 					}
 
 					td {
 						padding: @mp-sm 0;
 						text-align: left;
-						border-bottom: 1px solid @border-color;
+						border-bottom: 1px solid var(--mvi-border-color);
 						position: relative;
 
 						&.border {
-							border-right: 1px solid @border-color;
+							border-right: 1px solid var(--mvi-border-color);
 
 							&:last-child {
 								border-right: none;
@@ -166,7 +166,7 @@
 				align-items: center;
 				width: 100%;
 				padding: @mp-lg 0;
-				color: @font-color-mute;
+				color: var(--mvi-font-color-mute);
 				font-size: @font-size-small;
 
 				& > span {
@@ -179,7 +179,7 @@
 				width: 100%;
 				text-align: center;
 				padding: @mp-lg 0;
-				color: @font-color-mute;
+				color: var(--mvi-font-color-mute);
 				font-size: @font-size-small;
 			}
 		}

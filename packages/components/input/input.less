@@ -1,4 +1,4 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 //输入框组件容器
 .mvi-input-container {
@@ -8,7 +8,7 @@
 	align-items: center;
 	position: relative;
 	background-color: #fff;
-	color: @font-color-default;
+	color: var(--mvi-font-color-default);
 	margin: 0;
 	vertical-align: middle;
 	width: 100%;
@@ -22,7 +22,7 @@
 		bottom: 0;
 		width: calc(~'100% - @{mp-sm}');
 		height: 0;
-		border-bottom: 1px solid @border-color;
+		border-bottom: 1px solid var(--mvi-border-color);
 		box-sizing: content-box;
 	}
 
@@ -37,7 +37,7 @@
 		align-items: center;
 		content: '*';
 		font-family: '宋体', 'SimSun';
-		color: @error-normal;
+		color: var(--mvi-error-normal);
 	}
 
 	&[disabled] {

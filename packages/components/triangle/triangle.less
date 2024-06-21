@@ -1,4 +1,4 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-triangle {
 	position: relative;
@@ -10,22 +10,22 @@
 
 	&[data-placement='top'] {
 		border-top: none;
-		border-bottom-color: @border-color;
+		border-bottom-color: var(--mvi-border-color);
 	}
 
 	&[data-placement='bottom'] {
 		border-bottom: none;
-		border-top-color: @border-color;
+		border-top-color: var(--mvi-border-color);
 	}
 
 	&[data-placement='left'] {
 		border-left: none;
-		border-right-color: @border-color;
+		border-right-color: var(--mvi-border-color);
 	}
 
 	&[data-placement='right'] {
 		border-right: none;
-		border-left-color: @border-color;
+		border-left-color: var(--mvi-border-color);
 	}
 }
 
@@ -40,7 +40,7 @@
 
 	&[data-placement='top'] {
 		border-top: none;
-		border-bottom-color: @bg-color-default;
+		border-bottom-color: var(--mvi-bg-color-default);
 		left: 1px;
 		top: 1.5px;
 		right: auto;
@@ -49,7 +49,7 @@
 
 	&[data-placement='bottom'] {
 		border-bottom: none;
-		border-top-color: @bg-color-default;
+		border-top-color: var(--mvi-bg-color-default);
 		left: 1px;
 		bottom: 1.5px;
 		top: auto;
@@ -58,7 +58,7 @@
 
 	&[data-placement='left'] {
 		border-left: none;
-		border-right-color: @bg-color-default;
+		border-right-color: var(--mvi-bg-color-default);
 		left: 1.5px;
 		top: 1px;
 		right: auto;
@@ -67,7 +67,7 @@
 
 	&[data-placement='right'] {
 		border-right: none;
-		border-left-color: @bg-color-default;
+		border-left-color: var(--mvi-bg-color-default);
 		right: 1.5px;
 		top: 1px;
 		bottom: auto;

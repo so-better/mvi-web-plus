@@ -1,4 +1,4 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-dropdown {
 	display: block;
@@ -13,10 +13,10 @@
 		position: relative;
 		width: 100%;
 		height: @medium-height;
-		border-bottom: 1px solid @border-color;
+		border-bottom: 1px solid var(--mvi-border-color);
 		padding: 0 @mp-sm;
 		font-size: @font-size-default;
-		color: @font-color-default;
+		color: var(--mvi-font-color-default);
 		cursor: pointer;
 		user-select: none;
 
@@ -25,11 +25,11 @@
 		}
 
 		&.checked {
-			color: @info-normal;
+			color: var(--mvi-info-normal);
 		}
 
 		&[disabled] {
-			color: @font-color-mute;
+			color: var(--mvi-font-color-mute);
 		}
 
 		&:last-child {

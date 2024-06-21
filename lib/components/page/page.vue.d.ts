@@ -1,6 +1,5 @@
 import { IconPropsType } from '../icon';
-
-declare const _default: import('vue').DefineComponent<{
+declare const _default: import("vue").DefineComponent<{
     modelValue: {
         type: NumberConstructor;
         default: number;
@@ -23,11 +22,11 @@ declare const _default: import('vue').DefineComponent<{
         default: null;
     };
     prevIcon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: string;
     };
     nextIcon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: string;
     };
     simple: {
@@ -43,11 +42,11 @@ declare const _default: import('vue').DefineComponent<{
         default: null;
     };
     firstIcon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: string;
     };
     lastIcon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: string;
     };
     color: {
@@ -58,10 +57,10 @@ declare const _default: import('vue').DefineComponent<{
         type: BooleanConstructor;
         default: boolean;
     };
-}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     change: (...args: any[]) => void;
-}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     modelValue: {
         type: NumberConstructor;
         default: number;
@@ -84,11 +83,11 @@ declare const _default: import('vue').DefineComponent<{
         default: null;
     };
     prevIcon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: string;
     };
     nextIcon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: string;
     };
     simple: {
@@ -104,11 +103,11 @@ declare const _default: import('vue').DefineComponent<{
         default: null;
     };
     firstIcon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: string;
     };
     lastIcon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: string;
     };
     color: {

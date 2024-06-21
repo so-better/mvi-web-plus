@@ -1,4 +1,4 @@
-declare const _default: import('vue').DefineComponent<{
+declare const _default: import("vue").DefineComponent<{
     modelValue: {
         type: NumberConstructor;
         default: number;
@@ -8,7 +8,7 @@ declare const _default: import('vue').DefineComponent<{
         default: number;
     };
     size: {
-        type: import('vue').PropType<"small" | "medium" | "large">;
+        type: import("vue").PropType<"small" | "medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
@@ -61,7 +61,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     inputAlign: {
-        type: import('vue').PropType<"left" | "right" | "center">;
+        type: import("vue").PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
@@ -69,10 +69,10 @@ declare const _default: import('vue').DefineComponent<{
         type: BooleanConstructor;
         default: boolean;
     };
-}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     change: (...args: any[]) => void;
-}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     modelValue: {
         type: NumberConstructor;
         default: number;
@@ -82,7 +82,7 @@ declare const _default: import('vue').DefineComponent<{
         default: number;
     };
     size: {
-        type: import('vue').PropType<"small" | "medium" | "large">;
+        type: import("vue").PropType<"small" | "medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
@@ -135,7 +135,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     inputAlign: {
-        type: import('vue').PropType<"left" | "right" | "center">;
+        type: import("vue").PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };

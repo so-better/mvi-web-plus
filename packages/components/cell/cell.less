@@ -1,10 +1,10 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-cell {
 	display: block;
 	width: 100%;
 	background-color: #fff;
-	color: @font-color-default;
+	color: var(--mvi-font-color-default);
 	padding: @mp-sm;
 	position: relative;
 
@@ -19,7 +19,7 @@
 		bottom: 0;
 		content: '';
 		height: 0;
-		border-bottom: 1px solid @border-color;
+		border-bottom: 1px solid var(--mvi-border-color);
 		width: calc(100% - @mp-sm);
 		box-sizing: content-box;
 	}
@@ -58,7 +58,7 @@
 			text-align: right;
 			overflow: hidden;
 			word-wrap: break-word;
-			color: @font-color-sub;
+			color: var(--mvi-font-color-sub);
 
 			&.nowrap {
 				text-overflow: ellipsis;
@@ -73,7 +73,7 @@
 
 		.mvi-cell-arrow {
 			margin-left: @mp-xs;
-			color: @font-color-sub;
+			color: var(--mvi-font-color-sub);
 		}
 	}
 
@@ -81,7 +81,7 @@
 		width: 100%;
 		margin-top: @mp-sm;
 		font-size: @font-size-small;
-		color: @font-color-mute;
+		color: var(--mvi-font-color-mute);
 		word-wrap: break-word;
 	}
 }

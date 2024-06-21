@@ -1,5 +1,4 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
-
 export declare const MsgboxProps: {
     message: {
         type: StringConstructor;

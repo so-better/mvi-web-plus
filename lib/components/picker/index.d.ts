@@ -1,7 +1,7 @@
 export type * from './props';
-declare const Picker: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
+declare const Picker: import('../../utils').SFCWithInstall<import("vue").DefineComponent<{
     options: {
-        type: import('vue').PropType<import('./props').PickerOptionsItemType | import('./props').PickerOptionsItemType[]>;
+        type: import("vue").PropType<import("./props").PickerOptionsItemType | import("./props").PickerOptionsItemType[]>;
         default: () => {
             values: never[];
             defaultIndex: number;
@@ -35,13 +35,13 @@ declare const Picker: import('../../utils').SFCWithInstall<import('vue').DefineC
         type: StringConstructor;
         default: string;
     };
-}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     cancel: (...args: any[]) => void;
     change: (...args: any[]) => void;
     confirm: (...args: any[]) => void;
-}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     options: {
-        type: import('vue').PropType<import('./props').PickerOptionsItemType | import('./props').PickerOptionsItemType[]>;
+        type: import("vue").PropType<import("./props").PickerOptionsItemType | import("./props").PickerOptionsItemType[]>;
         default: () => {
             values: never[];
             defaultIndex: number;
@@ -82,7 +82,7 @@ declare const Picker: import('../../utils').SFCWithInstall<import('vue').DefineC
 }, {
     title: string;
     loading: boolean;
-    options: import('./props').PickerOptionsItemType | import('./props').PickerOptionsItemType[];
+    options: import("./props").PickerOptionsItemType | import("./props").PickerOptionsItemType[];
     cancelText: string;
     showToolbar: boolean;
     confirmText: string;

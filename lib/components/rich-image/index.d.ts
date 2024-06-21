@@ -1,15 +1,15 @@
 export type * from './props';
-declare const RichImage: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
+declare const RichImage: import('../../utils').SFCWithInstall<import("vue").DefineComponent<{
     src: {
         type: StringConstructor;
         default: string;
     };
     loadIcon: {
-        type: import('vue').PropType<string | import('../icon').IconPropsType>;
+        type: import("vue").PropType<string | import('../../index').IconPropsType>;
         default: null;
     };
     errorIcon: {
-        type: import('vue').PropType<string | import('../icon').IconPropsType>;
+        type: import("vue").PropType<string | import('../../index').IconPropsType>;
         default: null;
     };
     maxScale: {
@@ -26,7 +26,7 @@ declare const RichImage: import('../../utils').SFCWithInstall<import('vue').Defi
     scaleUp: () => void;
     scaleDown: () => void;
     reset: () => void;
-}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     reset: (...args: any[]) => void;
     "double-touchstart": (...args: any[]) => void;
     "double-touchend": (...args: any[]) => void;
@@ -35,17 +35,17 @@ declare const RichImage: import('../../utils').SFCWithInstall<import('vue').Defi
     "translate-mousedown": (...args: any[]) => void;
     "translate-mouseup": (...args: any[]) => void;
     "only-click": (...args: any[]) => void;
-}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     src: {
         type: StringConstructor;
         default: string;
     };
     loadIcon: {
-        type: import('vue').PropType<string | import('../icon').IconPropsType>;
+        type: import("vue").PropType<string | import('../../index').IconPropsType>;
         default: null;
     };
     errorIcon: {
-        type: import('vue').PropType<string | import('../icon').IconPropsType>;
+        type: import("vue").PropType<string | import('../../index').IconPropsType>;
         default: null;
     };
     maxScale: {
@@ -66,9 +66,9 @@ declare const RichImage: import('../../utils').SFCWithInstall<import('vue').Defi
     "onTranslate-mouseup"?: ((...args: any[]) => any) | undefined;
     "onOnly-click"?: ((...args: any[]) => any) | undefined;
 }, {
-    loadIcon: string | import('../icon').IconPropsType;
+    loadIcon: string | import('../../index').IconPropsType;
     src: string;
-    errorIcon: string | import('../icon').IconPropsType;
+    errorIcon: string | import('../../index').IconPropsType;
     maxScale: number;
     minScale: number;
 }, {}>>;

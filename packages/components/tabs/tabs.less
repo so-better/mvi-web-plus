@@ -1,4 +1,4 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-tabs {
 	display: block;
@@ -21,7 +21,7 @@
 			height: 0.04rem;
 			transition: left 400ms, width 400ms;
 			border-radius: @radius-default;
-			background-color: @error-normal;
+			background-color: var(--mvi-error-normal);
 			z-index: 20;
 		}
 
@@ -33,7 +33,7 @@
 			align-items: center;
 			line-height: 1.5;
 			padding: @mp-xs @mp-sm;
-			color: @font-color-default;
+			color: var(--mvi-font-color-default);
 			font-size: @font-size-default;
 			cursor: pointer;
 			user-select: none;
@@ -51,7 +51,7 @@
 			}
 
 			&.active {
-				color: @error-normal;
+				color: var(--mvi-error-normal);
 			}
 
 			.mvi-tab-icon {
@@ -68,25 +68,25 @@
 		}
 
 		&.border {
-			border-bottom: 1px solid @border-color;
+			border-bottom: 1px solid var(--mvi-border-color);
 		}
 
 		&.card {
-			border: 0.02rem solid @error-normal;
+			border: 0.02rem solid var(--mvi-error-normal);
 			border-radius: @radius-default;
 			padding: 0;
 
 			.mvi-tab-header {
 				flex: 1;
 				justify-content: center;
-				border-right: 0.02rem solid @error-normal;
+				border-right: 0.02rem solid var(--mvi-error-normal);
 
 				&:last-child {
 					border-right: none;
 				}
 
 				&.active {
-					background-color: @error-normal;
+					background-color: var(--mvi-error-normal);
 					color: #fff;
 				}
 			}

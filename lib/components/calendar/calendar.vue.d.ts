@@ -1,20 +1,20 @@
-declare const _default: import('vue').DefineComponent<{
+declare const _default: import("vue").DefineComponent<{
     modelValue: {
         type: DateConstructor;
         default: () => Date;
     };
     view: {
-        type: import('vue').PropType<import('./props').CalendarViewType>;
+        type: import("vue").PropType<import("./props").CalendarViewType>;
         default: string;
         validator(value: any): boolean;
     };
     monthText: {
-        type: import('vue').PropType<string[]>;
+        type: import("vue").PropType<string[]>;
         default: () => string[];
         validator(value: any): any;
     };
     weekText: {
-        type: import('vue').PropType<string[]>;
+        type: import("vue").PropType<string[]>;
         default: () => string[];
         validator(value: any): any;
     };
@@ -35,32 +35,32 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     type: {
-        type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
+        type: import("vue").PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
-}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     "date-click": (...args: any[]) => void;
     "month-click": (...args: any[]) => void;
     "year-click": (...args: any[]) => void;
-}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     modelValue: {
         type: DateConstructor;
         default: () => Date;
     };
     view: {
-        type: import('vue').PropType<import('./props').CalendarViewType>;
+        type: import("vue").PropType<import("./props").CalendarViewType>;
         default: string;
         validator(value: any): boolean;
     };
     monthText: {
-        type: import('vue').PropType<string[]>;
+        type: import("vue").PropType<string[]>;
         default: () => string[];
         validator(value: any): any;
     };
     weekText: {
-        type: import('vue').PropType<string[]>;
+        type: import("vue").PropType<string[]>;
         default: () => string[];
         validator(value: any): any;
     };
@@ -81,7 +81,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     type: {
-        type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
+        type: import("vue").PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
@@ -93,7 +93,7 @@ declare const _default: import('vue').DefineComponent<{
 }, {
     type: "info" | "success" | "warn" | "error" | "primary";
     modelValue: Date;
-    view: import('./props').CalendarViewType;
+    view: import("./props").CalendarViewType;
     active: boolean;
     monthText: string[];
     weekText: string[];

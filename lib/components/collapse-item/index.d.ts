@@ -1,8 +1,8 @@
 export type * from './props';
 declare const CollapseItem: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
+    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
         icon: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         title: {
@@ -21,9 +21,9 @@ declare const CollapseItem: import('../../utils').SFCWithInstall<{
             type: StringConstructor;
             default: string;
         };
-    }>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
+    }>>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
         icon: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         title: {
@@ -46,7 +46,7 @@ declare const CollapseItem: import('../../utils').SFCWithInstall<{
         label: string;
         title: string;
         disabled: boolean;
-        icon: string | import('../icon').IconPropsType;
+        icon: string | import('../../index').IconPropsType;
         content: string;
     }, true, {}, {}, {
         P: {};
@@ -55,9 +55,9 @@ declare const CollapseItem: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import('vue').ExtractPropTypes<{
+    }, Readonly<import("vue").ExtractPropTypes<{
         icon: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         title: {
@@ -80,15 +80,15 @@ declare const CollapseItem: import('../../utils').SFCWithInstall<{
         label: string;
         title: string;
         disabled: boolean;
-        icon: string | import('../icon').IconPropsType;
+        icon: string | import('../../index').IconPropsType;
         content: string;
     }>;
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
+} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
     icon: {
-        type: import('vue').PropType<string | import('../icon').IconPropsType>;
+        type: import("vue").PropType<string | import('../../index').IconPropsType>;
         default: null;
     };
     title: {
@@ -107,13 +107,13 @@ declare const CollapseItem: import('../../utils').SFCWithInstall<{
         type: StringConstructor;
         default: string;
     };
-}>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, {
+}>>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, {
     label: string;
     title: string;
     disabled: boolean;
-    icon: string | import('../icon').IconPropsType;
+    icon: string | import('../../index').IconPropsType;
     content: string;
-}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
+}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
     $slots: {
         default?(_: {}): any;
     };

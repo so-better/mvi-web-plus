@@ -1,11 +1,11 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-progress {
 	position: relative;
 	display: block;
 	width: 100%;
 	height: 0.2rem;
-	background-color: @bg-color-dark;
+	background-color: var(--mvi-bg-color-dark);
 	border-radius: @radius-default;
 
 	&.square {
@@ -23,7 +23,7 @@
 		top: 0;
 		width: 100%;
 		height: 100%;
-		background-color: @info-normal;
+		background-color: var(--mvi-info-normal);
 		border-radius: inherit;
 		border-top-right-radius: 0;
 		border-bottom-right-radius: 0;

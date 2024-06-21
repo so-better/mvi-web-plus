@@ -1,4 +1,4 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-autocomplete {
 	display: flex;
@@ -6,10 +6,10 @@
 	align-items: center;
 	width: 100%;
 	border-radius: @radius-default;
-	color: @font-color-default;
+	color: var(--mvi-font-color-default);
 	position: relative;
 	background-color: #fff;
-	border: 1px solid @border-color;
+	border: 1px solid var(--mvi-border-color);
 	transition: border-color 600ms, box-shadow 600ms;
 	box-shadow: none;
 
@@ -86,28 +86,28 @@
 	}
 
 	&.info {
-		border-color: @info-normal;
-		box-shadow: 0 0 0.16rem @info-shadow;
+		border-color: var(--mvi-info-normal);
+		box-shadow: 0 0 0.16rem var(--mvi-info-shadow);
 	}
 
 	&.success {
-		border-color: @success-normal;
-		box-shadow: 0 0 0.16rem @success-shadow;
+		border-color: var(--mvi-success-normal);
+		box-shadow: 0 0 0.16rem var(--mvi-success-shadow);
 	}
 
 	&.primary {
-		border-color: @primary-normal;
-		box-shadow: 0 0 0.16rem @primary-shadow;
+		border-color: var(--mvi-primary-normal);
+		box-shadow: 0 0 0.16rem var(--mvi-primary-shadow);
 	}
 
 	&.warn {
-		border-color: @warn-normal;
-		box-shadow: 0 0 0.16rem @warn-shadow;
+		border-color: var(--mvi-warn-normal);
+		box-shadow: 0 0 0.16rem var(--mvi-warn-shadow);
 	}
 
 	&.error {
-		border-color: @error-normal;
-		box-shadow: 0 0 0.16rem @error-shadow;
+		border-color: var(--mvi-error-normal);
+		box-shadow: 0 0 0.16rem var(--mvi-error-shadow);
 	}
 
 	&.round {
@@ -185,7 +185,7 @@
 
 	.mvi-autocomplete-list:hover {
 		cursor: pointer;
-		background-color: @bg-color-default;
+		background-color: var(--mvi-bg-color-default);
 	}
 
 	&.small {

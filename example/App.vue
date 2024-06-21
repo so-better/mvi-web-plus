@@ -1,11 +1,22 @@
 <template>
 	<m-navbar :title="$route.meta.title" border class="navbar" :left-icon="$route.path == '/' ? null : 'angle-left'" @left-click="$router.go(-1)"></m-navbar>
 	<div class="body">
+		<m-button @click="dark = !dark">{{ dark ? '使用浅色模式' : '使用深色模式' }}</m-button>
 		<router-view></router-view>
 	</div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref, watch } from 'vue'
+import { useDark } from '../packages'
+
+const dark = ref(false)
+
+watch(
+	() => dark.value,
+	newVal => useDark(newVal)
+)
+</script>
 
 <style lang="less">
 html {

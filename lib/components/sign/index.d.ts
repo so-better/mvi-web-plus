@@ -1,5 +1,5 @@
 export type * from './props';
-declare const Sign: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
+declare const Sign: import('../../utils').SFCWithInstall<import("vue").DefineComponent<{
     color: {
         type: StringConstructor;
         default: string;
@@ -15,7 +15,7 @@ declare const Sign: import('../../utils').SFCWithInstall<import('vue').DefineCom
 }, {
     getImage: () => string;
     clear: () => void;
-}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     color: {
         type: StringConstructor;
         default: string;

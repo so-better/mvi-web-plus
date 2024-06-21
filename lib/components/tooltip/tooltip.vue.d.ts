@@ -1,10 +1,10 @@
-declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     title: {
         type: StringConstructor;
         default: string;
     };
     placement: {
-        type: import('vue').PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined>;
+        type: import("vue").PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined>;
         default: string;
     };
     disabled: {
@@ -28,7 +28,7 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         default: string;
     };
     trigger: {
-        type: import('vue').PropType<"click" | "hover" | "custom">;
+        type: import("vue").PropType<"click" | "hover" | "custom">;
         default: string;
         validator(value: any): boolean;
     };
@@ -59,13 +59,13 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
 }, {
     showTooltip: () => void;
     hideTooltip: () => void;
-}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     title: {
         type: StringConstructor;
         default: string;
     };
     placement: {
-        type: import('vue').PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined>;
+        type: import("vue").PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined>;
         default: string;
     };
     disabled: {
@@ -89,7 +89,7 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         default: string;
     };
     trigger: {
-        type: import('vue').PropType<"click" | "hover" | "custom">;
+        type: import("vue").PropType<"click" | "hover" | "custom">;
         default: string;
         validator(value: any): boolean;
     };

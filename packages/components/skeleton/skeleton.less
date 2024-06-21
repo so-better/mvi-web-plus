@@ -1,4 +1,4 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-skeleton-container {
 	display: block;
@@ -23,7 +23,7 @@
 				display: block;
 				width: 1rem;
 				height: 1rem;
-				background: @bg-color-dark;
+				background: var(--mvi-bg-color-dark);
 
 				&.round {
 					border-radius: 50%;
@@ -39,7 +39,7 @@
 				display: block;
 				width: 40%;
 				height: @medium-height / 2;
-				background-color: @bg-color-dark;
+				background-color: var(--mvi-bg-color-dark);
 				margin-bottom: @mp-md;
 
 				&.round {
@@ -51,7 +51,7 @@
 				display: block;
 				width: 100%;
 				height: @small-height / 2;
-				background-color: @bg-color-dark;
+				background-color: var(--mvi-bg-color-dark);
 				margin-bottom: @mp-sm;
 
 				&:last-of-type {

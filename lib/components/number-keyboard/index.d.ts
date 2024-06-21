@@ -1,6 +1,6 @@
 export type * from './props';
 declare const NumberKeyboard: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
+    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
         showDecimal: {
             type: BooleanConstructor;
             default: boolean;
@@ -98,8 +98,8 @@ declare const NumberKeyboard: import('../../utils').SFCWithInstall<{
         onDelete?: ((...args: any[]) => any) | undefined;
         onComplete?: ((...args: any[]) => any) | undefined;
     }, {
-        $$el: import('vue').ComputedRef<HTMLElement | null>;
-    }, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+        $$el: import("vue").ComputedRef<HTMLElement | null>;
+    }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
         delete: (...args: any[]) => void;
         input: (...args: any[]) => void;
         "update:modelValue": (...args: any[]) => void;
@@ -111,7 +111,7 @@ declare const NumberKeyboard: import('../../utils').SFCWithInstall<{
         hidden: (...args: any[]) => void;
         complete: (...args: any[]) => void;
         "update:show": (...args: any[]) => void;
-    }, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
+    }, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
         showDecimal: {
             type: BooleanConstructor;
             default: boolean;
@@ -237,7 +237,7 @@ declare const NumberKeyboard: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import('vue').ExtractPropTypes<{
+    }, Readonly<import("vue").ExtractPropTypes<{
         showDecimal: {
             type: BooleanConstructor;
             default: boolean;
@@ -335,7 +335,7 @@ declare const NumberKeyboard: import('../../utils').SFCWithInstall<{
         onDelete?: ((...args: any[]) => any) | undefined;
         onComplete?: ((...args: any[]) => any) | undefined;
     }, {
-        $$el: import('vue').ComputedRef<HTMLElement | null>;
+        $$el: import("vue").ComputedRef<HTMLElement | null>;
     }, {}, {}, {}, {
         title: string;
         border: boolean;
@@ -362,7 +362,7 @@ declare const NumberKeyboard: import('../../utils').SFCWithInstall<{
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
+} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
     showDecimal: {
         type: BooleanConstructor;
         default: boolean;
@@ -460,8 +460,8 @@ declare const NumberKeyboard: import('../../utils').SFCWithInstall<{
     onDelete?: ((...args: any[]) => any) | undefined;
     onComplete?: ((...args: any[]) => any) | undefined;
 }, {
-    $$el: import('vue').ComputedRef<HTMLElement | null>;
-}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+    $$el: import("vue").ComputedRef<HTMLElement | null>;
+}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     delete: (...args: any[]) => void;
     input: (...args: any[]) => void;
     "update:modelValue": (...args: any[]) => void;
@@ -495,7 +495,7 @@ declare const NumberKeyboard: import('../../utils').SFCWithInstall<{
     calibration: boolean;
     showX: boolean;
     random: boolean;
-}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
+}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
     $slots: {
         default?(_: {}): any;
         delete?(_: {}): any;

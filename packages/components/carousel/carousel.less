@@ -1,4 +1,4 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-carousel {
 	display: block;
@@ -42,7 +42,7 @@
 		display: block;
 		width: @small-height / 3;
 		height: @small-height / 3;
-		background: @border-color;
+		background: var(--mvi-border-color);
 		border-radius: 50%;
 		margin-right: @mp-sm;
 
@@ -51,7 +51,7 @@
 		}
 
 		&.current {
-			background: @info-normal;
+			background: var(--mvi-info-normal);
 		}
 
 		&:hover {

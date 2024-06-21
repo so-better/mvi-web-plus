@@ -11,7 +11,7 @@ export default defineConfig({
 		cssInjectedByJsPlugin({ topExecutionPriority: false }),
 		compileLessToCss({
 			outputDir: './lib',
-			include: ['./packages/css/mvi-default.less', './packages/css/mvi-support.less']
+			include: ['./packages/css/default.less', './packages/css/support.less']
 		})
 	],
 	resolve: {

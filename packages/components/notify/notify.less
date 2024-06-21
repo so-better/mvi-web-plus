@@ -1,4 +1,4 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-notify {
 	display: flex;
@@ -14,27 +14,27 @@
 	padding: 0 @mp-sm;
 
 	&.success {
-		background-color: @success-normal;
+		background-color: var(--mvi-success-normal);
 		color: #fff;
 	}
 
 	&.info {
-		background-color: @info-normal;
+		background-color: var(--mvi-info-normal);
 		color: #fff;
 	}
 
 	&.primary {
-		background-color: @primary-normal;
+		background-color: var(--mvi-primary-normal);
 		color: #fff;
 	}
 
 	&.error {
-		background-color: @error-normal;
+		background-color: var(--mvi-error-normal);
 		color: #fff;
 	}
 
 	&.warn {
-		background-color: @warn-normal;
+		background-color: var(--mvi-warn-normal);
 		color: #fff;
 	}
 

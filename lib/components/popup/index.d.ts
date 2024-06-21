@@ -1,6 +1,6 @@
 export type * from './props';
 declare const Popup: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
+    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
         modelValue: {
             type: BooleanConstructor;
             default: boolean;
@@ -22,7 +22,7 @@ declare const Popup: import('../../utils').SFCWithInstall<{
             default: number;
         };
         placement: {
-            type: import('vue').PropType<"left" | "top" | "bottom" | "right">;
+            type: import("vue").PropType<"left" | "top" | "bottom" | "right">;
             default: string;
             validator(value: any): boolean;
         };
@@ -39,7 +39,7 @@ declare const Popup: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         timesPlacement: {
-            type: import('vue').PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
+            type: import("vue").PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
             default: string;
             validator(value: any): boolean;
         };
@@ -64,8 +64,8 @@ declare const Popup: import('../../utils').SFCWithInstall<{
         onHidding?: ((...args: any[]) => any) | undefined;
         onHidden?: ((...args: any[]) => any) | undefined;
     }, {
-        $$el: import('vue').ComputedRef<HTMLElement | null>;
-    }, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+        $$el: import("vue").ComputedRef<HTMLElement | null>;
+    }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
         "update:modelValue": (...args: any[]) => void;
         show: (...args: any[]) => void;
         showing: (...args: any[]) => void;
@@ -73,7 +73,7 @@ declare const Popup: import('../../utils').SFCWithInstall<{
         hide: (...args: any[]) => void;
         hidding: (...args: any[]) => void;
         hidden: (...args: any[]) => void;
-    }, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
+    }, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
         modelValue: {
             type: BooleanConstructor;
             default: boolean;
@@ -95,7 +95,7 @@ declare const Popup: import('../../utils').SFCWithInstall<{
             default: number;
         };
         placement: {
-            type: import('vue').PropType<"left" | "top" | "bottom" | "right">;
+            type: import("vue").PropType<"left" | "top" | "bottom" | "right">;
             default: string;
             validator(value: any): boolean;
         };
@@ -112,7 +112,7 @@ declare const Popup: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         timesPlacement: {
-            type: import('vue').PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
+            type: import("vue").PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
             default: string;
             validator(value: any): boolean;
         };
@@ -157,7 +157,7 @@ declare const Popup: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import('vue').ExtractPropTypes<{
+    }, Readonly<import("vue").ExtractPropTypes<{
         modelValue: {
             type: BooleanConstructor;
             default: boolean;
@@ -179,7 +179,7 @@ declare const Popup: import('../../utils').SFCWithInstall<{
             default: number;
         };
         placement: {
-            type: import('vue').PropType<"left" | "top" | "bottom" | "right">;
+            type: import("vue").PropType<"left" | "top" | "bottom" | "right">;
             default: string;
             validator(value: any): boolean;
         };
@@ -196,7 +196,7 @@ declare const Popup: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         timesPlacement: {
-            type: import('vue').PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
+            type: import("vue").PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
             default: string;
             validator(value: any): boolean;
         };
@@ -221,7 +221,7 @@ declare const Popup: import('../../utils').SFCWithInstall<{
         onHidding?: ((...args: any[]) => any) | undefined;
         onHidden?: ((...args: any[]) => any) | undefined;
     }, {
-        $$el: import('vue').ComputedRef<HTMLElement | null>;
+        $$el: import("vue").ComputedRef<HTMLElement | null>;
     }, {}, {}, {}, {
         width: string;
         mountEl: string;
@@ -240,7 +240,7 @@ declare const Popup: import('../../utils').SFCWithInstall<{
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
+} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
     modelValue: {
         type: BooleanConstructor;
         default: boolean;
@@ -262,7 +262,7 @@ declare const Popup: import('../../utils').SFCWithInstall<{
         default: number;
     };
     placement: {
-        type: import('vue').PropType<"left" | "top" | "bottom" | "right">;
+        type: import("vue").PropType<"left" | "top" | "bottom" | "right">;
         default: string;
         validator(value: any): boolean;
     };
@@ -279,7 +279,7 @@ declare const Popup: import('../../utils').SFCWithInstall<{
         default: boolean;
     };
     timesPlacement: {
-        type: import('vue').PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
+        type: import("vue").PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
         default: string;
         validator(value: any): boolean;
     };
@@ -304,8 +304,8 @@ declare const Popup: import('../../utils').SFCWithInstall<{
     onHidding?: ((...args: any[]) => any) | undefined;
     onHidden?: ((...args: any[]) => any) | undefined;
 }, {
-    $$el: import('vue').ComputedRef<HTMLElement | null>;
-}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+    $$el: import("vue").ComputedRef<HTMLElement | null>;
+}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     show: (...args: any[]) => void;
     showing: (...args: any[]) => void;
@@ -327,7 +327,7 @@ declare const Popup: import('../../utils').SFCWithInstall<{
     showTimes: boolean;
     timesPlacement: "top-right" | "top-left" | "bottom-right" | "bottom-left";
     __contentPadding: boolean;
-}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
+}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
     $slots: {
         default?(_: {}): any;
     };

@@ -1,6 +1,5 @@
 import { ComponentInternalInstance, ExtractPublicPropTypes, PropType } from 'vue';
 import { IconPropsType } from '../icon/props';
-
 export declare const ToastProps: {
     type: {
         type: PropType<"loading" | "info" | "success" | "error">;

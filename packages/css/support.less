@@ -1,7 +1,8 @@
 /**
  * 常用的一些简单的样式辅助类配置，可以直接使用
  */
-@import "./mvi-basic.less";
+
+ @import './base.less';
 
 //Y轴回弹滚动效果
 .mvi-scrolling-touch {
@@ -11,31 +12,31 @@
 }
 //错误样式文本
 .mvi-text-error {
-	color: @error-normal !important;
+	color: var(--mvi-error-normal) !important;
 }
 //警告样式文本
 .mvi-text-warn {
-	color: @warn-normal !important;
+	color: var(--mvi-warn-normal) !important;
 }
 //普通信息文本
 .mvi-text-info {
-	color: @info-normal !important;
+	color: var(--mvi-info-normal) !important;
 }
 //成功样式文本
 .mvi-text-success {
-	color: @success-normal !important;
+	color: var(--mvi-success-normal) !important;
 }
 //首要样式文本
 .mvi-text-primary {
-	color: @primary-normal !important;
+	color: var(--mvi-primary-normal) !important;
 }
 //链接样式文本
 .mvi-text-link{
-	color: @font-color-link !important;
+	color: var(--mvi-font-color-link) !important;
 }
 //灰色样式文本
 .mvi-text-muted{
-	color: @font-color-mute !important;
+	color: var(--mvi-font-color-mute) !important;
 }
 //白色样式文本
 .mvi-text-white{
@@ -43,38 +44,38 @@
 }
 //副文本样式
 .mvi-text-sub{
-	color: @font-color-sub !important;
+	color: var(--mvi-font-color-sub) !important;
 }
 
 //成功样式的背景色
 .mvi-bg-success{
-	background-color: @light-success !important;
-	color: @success-normal !important;
+	background-color: var(--mvi-light-success) !important;
+	color: var(--mvi-success-normal) !important;
 }
 //警告样式的背景色
 .mvi-bg-warn {
-	background-color: @light-warn !important;
-	color: @warn-normal !important;
+	background-color: var(--mvi-light-warn) !important;
+	color: var(--mvi-warn-normal) !important;
 }
 //普通信息的背景色
 .mvi-bg-info {
-	background-color: @light-info !important;
-	color: @info-normal !important;
+	background-color: var(--mvi-light-info) !important;
+	color: var(--mvi-info-normal) !important;
 }
 //首要样式的背景色
 .mvi-bg-primary {
-	background-color: @light-primary !important;
+	background-color: var(--mvi-light-primary) !important;
 	color:#fff !important;
 }
 //错误样式的背景色
 .mvi-bg-error {
-	background-color: @light-error !important;
-	color: @error-normal !important;
+	background-color: var(--mvi-light-error) !important;
+	color: var(--mvi-error-normal) !important;
 }
 //柔和灰色的背景色
 .mvi-bg-muted {
-	background-color: @light-default !important;
-	color: @font-color-default !important;
+	background-color: var(--mvi-light-default) !important;
+	color: var(--mvi-font-color-default) !important;
 }
 
 //文本右对齐
@@ -373,8 +374,8 @@
 
 //阴影辅助类
 .mvi-shadow{
-	box-shadow: @boxshadow;
-	-webkit-box-shadow: @boxshadow;
+	box-shadow: var(--mvi-boxshadow);
+	-webkit-box-shadow: var(--mvi-boxshadow);
 }
 
 

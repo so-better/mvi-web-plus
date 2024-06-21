@@ -1,16 +1,16 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-dialog-title {
 	display: block;
 	width: 100%;
 	font-size: @font-size-h6;
-	color: @font-color-default;
+	color: var(--mvi-font-color-default);
 	font-weight: bold;
 	line-height: 1.5;
 }
 
 .mvi-dialog-content {
-	color: @font-color-default;
+	color: var(--mvi-font-color-default);
 	line-height: 1.5;
 	font-size: @font-size-default;
 	padding: @mp-md 0;
@@ -34,8 +34,8 @@
 		height: @medium-height;
 		line-height: 1.5;
 		border-radius: @radius-default;
-		border: 1px solid @border-color;
-		color: @font-color-default;
+		border: 1px solid var(--mvi-border-color);
+		color: var(--mvi-font-color-default);
 		font-size: @font-size-default;
 		background-color: #fff;
 		padding: 0 @mp-sm;
@@ -62,7 +62,7 @@
 	-webkit-transform: translateY(-50%);
 	-moz-transform: translateY(-50%);
 	-ms-transform: translateY(-50%);
-	color: @font-color-mute;
+	color: var(--mvi-font-color-mute);
 	cursor: pointer;
 }
 

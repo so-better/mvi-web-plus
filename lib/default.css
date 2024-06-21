@@ -3,7 +3,6 @@
  */
 /**
  * mvi组件库中常用的css样式配置
- * 主要包含边框、字体、颜色等基础信息
  */
 *,
 *::before,
@@ -17,7 +16,7 @@
 html,
 body {
   font-family: 'PingFang SC', 'Helvetica Neue', Helvetica, Roboto, 'Segoe UI', 'Microsoft YaHei', Arial, sans-serif;
-  color: #505050;
+  color: var(--mvi-font-color-default);
   margin: 0;
   padding: 0;
   width: 100%;
@@ -26,7 +25,7 @@ body {
   text-size-adjust: none;
 }
 body {
-  background-color: #f7f8fa;
+  background-color: var(--mvi-bg-color-default);
   font-size: 0.28rem !important;
   overflow: hidden;
   line-height: 1.5;
@@ -61,7 +60,7 @@ h6 {
 }
 a {
   text-decoration: none;
-  color: #0547c3;
+  color: var(--mvi-font-color-link);
 }
 ul,
 ol {

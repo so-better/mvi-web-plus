@@ -1,7 +1,8 @@
 /**
  * 这里是对HTML里的诸多元素进行默认样式设置的
  */
-@import './mvi-basic.less';
+
+@import './base.less';
 
 //盒模型
 *,
@@ -18,7 +19,7 @@
 html,
 body {
 	font-family: @font-family;
-	color: @font-color-default;
+	color: var(--mvi-font-color-default);
 	margin: 0;
 	padding: 0;
 	width: 100%;
@@ -30,7 +31,7 @@ body {
 }
 //单独的body样式设置
 body {
-	background-color: @bg-color-default;
+	background-color: var(--mvi-bg-color-default);
 	font-size: @font-size-default !important;
 	overflow: hidden;
 	line-height: 1.5;
@@ -70,7 +71,7 @@ h6 {
 //a标签默认样式修改
 a {
 	text-decoration: none;
-	color: @font-color-link;
+	color: var(--mvi-font-color-link);
 }
 
 //列表元素

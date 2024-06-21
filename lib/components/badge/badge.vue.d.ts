@@ -1,10 +1,10 @@
-declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     content: {
         type: (StringConstructor | NumberConstructor)[];
         default: null;
     };
     placement: {
-        type: import('vue').PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
+        type: import("vue").PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
         default: string;
         validator(value: any): boolean;
     };
@@ -17,7 +17,7 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         default: boolean;
     };
     offset: {
-        type: import('vue').PropType<string[]>;
+        type: import("vue").PropType<string[]>;
         default: () => null;
     };
     background: {
@@ -32,13 +32,13 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         type: BooleanConstructor;
         default: boolean;
     };
-}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     content: {
         type: (StringConstructor | NumberConstructor)[];
         default: null;
     };
     placement: {
-        type: import('vue').PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
+        type: import("vue").PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
         default: string;
         validator(value: any): boolean;
     };
@@ -51,7 +51,7 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         default: boolean;
     };
     offset: {
-        type: import('vue').PropType<string[]>;
+        type: import("vue").PropType<string[]>;
         default: () => null;
     };
     background: {

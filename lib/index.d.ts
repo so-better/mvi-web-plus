@@ -1,5 +1,5 @@
 import { App } from 'vue';
-
+import '@/css/var.less';
 /***** 按需导出 *****/
 export * from './directives/anchor';
 export * from './directives/drag';
@@ -155,4 +155,5 @@ export type * from './components/rich-image';
 export type * from './components/image-preview';
 declare const install: (app: App) => void;
 declare const version = "2.0.1";
-export { install as default, install, version };
+declare const useDark: (dark: boolean) => void;
+export { install as default, install, version, useDark };

@@ -1,8 +1,7 @@
 import { DialogInputType } from './props';
-
-declare const _default: import('vue').DefineComponent<{
+declare const _default: import("vue").DefineComponent<{
     type: {
-        type: import('vue').PropType<"confirm" | "alert" | "prompt">;
+        type: import("vue").PropType<"confirm" | "alert" | "prompt">;
         default: null;
     };
     title: {
@@ -37,7 +36,7 @@ declare const _default: import('vue').DefineComponent<{
         default: null;
     };
     input: {
-        type: import('vue').PropType<DialogInputType>;
+        type: import("vue").PropType<DialogInputType>;
         default: null;
     };
     usePadding: {
@@ -69,10 +68,10 @@ declare const _default: import('vue').DefineComponent<{
         default: () => () => void;
     };
 }, {
-    $$el: import('vue').ComputedRef<HTMLElement | null>;
-}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+    $$el: import("vue").ComputedRef<HTMLElement | null>;
+}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     type: {
-        type: import('vue').PropType<"confirm" | "alert" | "prompt">;
+        type: import("vue").PropType<"confirm" | "alert" | "prompt">;
         default: null;
     };
     title: {
@@ -107,7 +106,7 @@ declare const _default: import('vue').DefineComponent<{
         default: null;
     };
     input: {
-        type: import('vue').PropType<DialogInputType>;
+        type: import("vue").PropType<DialogInputType>;
         default: null;
     };
     usePadding: {

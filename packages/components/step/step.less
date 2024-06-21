@@ -1,4 +1,4 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-step-vertical {
 	display: block;
@@ -10,12 +10,12 @@
 		display: block;
 		width: 100%;
 		font-size: @font-size-small;
-		color: @font-color-mute;
+		color: var(--mvi-font-color-mute);
 		position: relative;
 		padding-left: @mp-sm;
 
 		&.finish {
-			color: @success-normal;
+			color: var(--mvi-success-normal);
 		}
 	}
 
@@ -42,10 +42,10 @@
 			display: block;
 			flex: 1;
 			width: 0;
-			border-right: 2px solid @font-color-mute;
+			border-right: 2px solid var(--mvi-font-color-mute);
 
 			&.finish {
-				border-right-color: @success-normal;
+				border-right-color: var(--mvi-success-normal);
 			}
 
 			&.last {
@@ -72,13 +72,13 @@
 	.mvi-step-label {
 		display: block;
 		font-size: @font-size-small;
-		color: @font-color-mute;
+		color: var(--mvi-font-color-mute);
 		transform: translateX(-50%);
 		-webkit-transform: translateX(-50%);
 		margin-left: 0.15rem;
 
 		&.finish {
-			color: @success-normal;
+			color: var(--mvi-success-normal);
 		}
 
 		&.first,
@@ -113,10 +113,10 @@
 			display: block;
 			flex: 1;
 			height: 0;
-			border-top: 2px solid @font-color-mute;
+			border-top: 2px solid var(--mvi-font-color-mute);
 
 			&.finish {
-				border-top-color: @success-normal;
+				border-top-color: var(--mvi-success-normal);
 			}
 
 			&.last {
@@ -127,14 +127,14 @@
 }
 
 .mvi-step-icon-active-el {
-	color: @success-normal;
+	color: var(--mvi-success-normal);
 }
 
 .mvi-step-icon-inactive-el {
-	color: @font-color-mute;
+	color: var(--mvi-font-color-mute);
 
 	&.finish {
-		color: @success-normal;
+		color: var(--mvi-success-normal);
 	}
 }
 
@@ -142,12 +142,12 @@
 	display: block;
 	width: 0.18rem;
 	height: 0.18rem;
-	background-color: @font-color-mute;
+	background-color: var(--mvi-font-color-mute);
 	border: none;
 	border-radius: @radius-circle;
 
 	&.finish {
-		background-color: @success-normal;
+		background-color: var(--mvi-success-normal);
 	}
 }
 
@@ -155,7 +155,7 @@
 	display: block;
 	width: 0.3rem;
 	height: 0.3rem;
-	background-color: @success-normal;
+	background-color: var(--mvi-success-normal);
 	border: none;
 	border-radius: @radius-circle;
 }

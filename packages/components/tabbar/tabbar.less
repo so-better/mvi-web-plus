@@ -1,4 +1,4 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-tabbar {
 	display: flex;
@@ -9,10 +9,10 @@
 	height: @mini-height * 2;
 	background-color: #fff;
 	padding: 0 @mp-xs;
-	color: @font-color-default;
+	color: var(--mvi-font-color-default);
 
 	&.border {
-		border-top: 1px solid @border-color;
+		border-top: 1px solid var(--mvi-border-color);
 	}
 
 	&.fixed {

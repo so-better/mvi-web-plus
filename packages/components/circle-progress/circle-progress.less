@@ -1,4 +1,4 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-circle-progress {
 	display: inline-block;
@@ -15,14 +15,14 @@
 
 .mvi-circle-progress-track {
 	fill: none;
-	stroke: @bg-color-dark;
+	stroke: var(--mvi-bg-color-dark);
 	margin: 0;
 	padding: 0;
 }
 
 .mvi-circle-progress-bar {
 	fill: none;
-	stroke: @info-normal;
+	stroke: var(--mvi-info-normal);
 	margin: 0;
 	padding: 0;
 	stroke-linecap: square;
@@ -37,7 +37,7 @@
 	-webkit-transform: translate(-50%, -50%);
 	width: 100%;
 	font-size: @font-size-default;
-	color: @font-color-sub;
+	color: var(--mvi-font-color-sub);
 	line-height: 1.5;
 	text-align: center;
 	z-index: 10;

@@ -3,7 +3,6 @@
  */
 /**
  * mvi组件库中常用的css样式配置
- * 主要包含边框、字体、颜色等基础信息
  */
 .mvi-scrolling-touch {
   overflow-x: hidden !important;
@@ -11,55 +10,55 @@
   -webkit-overflow-scrolling: touch !important;
 }
 .mvi-text-error {
-  color: #ec1a0a !important;
+  color: var(--mvi-error-normal) !important;
 }
 .mvi-text-warn {
-  color: #f90 !important;
+  color: var(--mvi-warn-normal) !important;
 }
 .mvi-text-info {
-  color: #03a8f3 !important;
+  color: var(--mvi-info-normal) !important;
 }
 .mvi-text-success {
-  color: #07c160 !important;
+  color: var(--mvi-success-normal) !important;
 }
 .mvi-text-primary {
-  color: #0b73de !important;
+  color: var(--mvi-primary-normal) !important;
 }
 .mvi-text-link {
-  color: #0547c3 !important;
+  color: var(--mvi-font-color-link) !important;
 }
 .mvi-text-muted {
-  color: #bbb !important;
+  color: var(--mvi-font-color-mute) !important;
 }
 .mvi-text-white {
   color: #fff !important;
 }
 .mvi-text-sub {
-  color: #808080 !important;
+  color: var(--mvi-font-color-sub) !important;
 }
 .mvi-bg-success {
-  background-color: #c2fdc4 !important;
-  color: #07c160 !important;
+  background-color: var(--mvi-light-success) !important;
+  color: var(--mvi-success-normal) !important;
 }
 .mvi-bg-warn {
-  background-color: #ffd6b6 !important;
-  color: #f90 !important;
+  background-color: var(--mvi-light-warn) !important;
+  color: var(--mvi-warn-normal) !important;
 }
 .mvi-bg-info {
-  background-color: #c3ebff !important;
-  color: #03a8f3 !important;
+  background-color: var(--mvi-light-info) !important;
+  color: var(--mvi-info-normal) !important;
 }
 .mvi-bg-primary {
-  background-color: #1eacf3 !important;
+  background-color: var(--mvi-light-primary) !important;
   color: #fff !important;
 }
 .mvi-bg-error {
-  background-color: #f9cec3 !important;
-  color: #ec1a0a !important;
+  background-color: var(--mvi-light-error) !important;
+  color: var(--mvi-error-normal) !important;
 }
 .mvi-bg-muted {
-  background-color: #e2e7ea !important;
-  color: #505050 !important;
+  background-color: var(--mvi-light-default) !important;
+  color: var(--mvi-font-color-default) !important;
 }
 .mvi-text-right {
   text-align: right !important;
@@ -1204,8 +1203,8 @@
   }
 }
 .mvi-shadow {
-  box-shadow: 0.01rem 0.04rem 0.2rem rgba(0, 0, 0, 0.1);
-  -webkit-box-shadow: 0.01rem 0.04rem 0.2rem rgba(0, 0, 0, 0.1);
+  box-shadow: var(--mvi-boxshadow);
+  -webkit-box-shadow: var(--mvi-boxshadow);
 }
 .mvi-transition-fade-enter-active,
 .mvi-transition-fade-leave-active {

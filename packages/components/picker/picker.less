@@ -1,10 +1,10 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-picker {
 	display: block;
 	width: 100%;
 	background-color: #fff;
-	color: @font-color-default;
+	color: var(--mvi-font-color-default);
 	font-size: @font-size-default;
 
 	.mvi-picker-loading {
@@ -22,7 +22,7 @@
 		justify-content: space-between;
 		align-items: center;
 		height: @medium-height;
-		border-bottom: 1px solid @border-color;
+		border-bottom: 1px solid var(--mvi-border-color);
 		padding: 0;
 
 		.mvi-picker-toolbar-confirm {
@@ -32,7 +32,7 @@
 			justify-content: center;
 			align-items: center;
 			font-size: @font-size-h6;
-			color: @primary-normal;
+			color: var(--mvi-primary-normal);
 			font-weight: bold;
 			height: 100%;
 			padding: 0 @mp-md;
@@ -47,7 +47,7 @@
 			justify-content: center;
 			align-items: center;
 			font-size: @font-size-h6;
-			color: @font-color-sub;
+			color: var(--mvi-font-color-sub);
 			height: 100%;
 			padding: 0 @mp-md;
 			cursor: pointer;
@@ -56,7 +56,7 @@
 
 		.mvi-picker-toolbar-title {
 			font-size: @font-size-default;
-			color: @font-color-default;
+			color: var(--mvi-font-color-default);
 			max-width: 50%;
 			line-height: 1;
 			overflow: hidden;
@@ -79,7 +79,7 @@
 			flex: 1;
 			height: 100%;
 			position: relative;
-			color: @font-color-default;
+			color: var(--mvi-font-color-default);
 			font-size: @font-size-default;
 			cursor: pointer;
 			user-select: none;
@@ -118,7 +118,7 @@
 				display: block;
 				width: 100%;
 				height: 0;
-				border-bottom: 1px solid @border-color;
+				border-bottom: 1px solid var(--mvi-border-color);
 				content: '';
 			}
 

@@ -1,5 +1,4 @@
 import { App, ComponentInternalInstance, Directive, Ref, Component } from 'vue';
-
 export type SFCWithInstall<T> = T & {
     install(app: App): void;
 };

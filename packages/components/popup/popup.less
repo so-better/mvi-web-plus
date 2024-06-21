@@ -1,4 +1,4 @@
-@import '@/css/mvi-basic.less';
+@import '@/css/base.less';
 
 .mvi-popup {
 	display: block;
@@ -6,7 +6,7 @@
 	background-color: #fff;
 	transition-timing-function: linear;
 	overflow: hidden;
-	color: @font-color-default;
+	color: var(--mvi-font-color-default);
 	font-size: @font-size-default;
 
 	&.padding-top {
@@ -82,7 +82,7 @@
 		padding: 0 @mp-sm;
 		cursor: pointer;
 		font-size: @font-size-default;
-		color: @font-color-mute;
+		color: var(--mvi-font-color-mute);
 		line-height: 1;
 		opacity: 0.8;
 
