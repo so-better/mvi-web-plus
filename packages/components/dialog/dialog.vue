@@ -13,8 +13,8 @@
 		</template>
 		<template #footer>
 			<div class="mvi-dialog-footer">
-				<div v-if="type != 'alert'" class="mvi-dialog-cancel" v-text="cmpBtnText[1]" @click="cancelFun" :style="{ color: cmpBtnColor[1] || '' }"></div>
-				<div class="mvi-dialog-ok" v-text="type == 'alert' ? cmpBtnText : cmpBtnText[0]" @click="okFun" :style="{ color: type == 'alert' ? <string>cmpBtnColor || '' : cmpBtnColor[0] || '' }"></div>
+				<div v-if="type != 'alert'" class="mvi-dialog-cancel" v-text="cmpBtnText[1]" @click="cancelFun" :style="{ color: cmpBtnColor[1] || '', borderBottomLeftRadius: cmpRadius }"></div>
+				<div class="mvi-dialog-ok" v-text="type == 'alert' ? cmpBtnText : cmpBtnText[0]" @click="okFun" :style="{ color: type == 'alert' ? <string>cmpBtnColor || '' : cmpBtnColor[0] || '', borderBottomRightRadius: cmpRadius  }"></div>
 			</div>
 		</template>
 	</Modal>
