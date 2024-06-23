@@ -67,12 +67,12 @@ export const LayerProps = {
 	//边框颜色
 	borderColor: {
 		type: String,
-		default: '#eee'
+		default: null
 	},
 	//背景色
 	background: {
 		type: String,
-		default: '#fff'
+		default: null
 	}
 }
 

@@ -8,7 +8,7 @@
 		</div>
 		<div>
 			<m-button @click="show2 = !show2" type="info" id="btn2">浮层的关联元素</m-button>
-			<m-layer v-model="show2" relate="#btn2" closable showTriangle background="#000" border border-color="#000">
+			<m-layer v-model="show2" relate="#btn2" closable showTriangle background="#f30" border border-color="#308af3">
 				<div class="layer"></div>
 			</m-layer>
 		</div>

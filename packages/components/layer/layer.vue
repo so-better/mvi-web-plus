@@ -3,7 +3,7 @@
 		<transition :name="animation || 'mvi-layer'" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @leave="leave" @before-leave="beforeLeave" @after-leave="afterLeave">
 			<div v-if="firstShow" v-show="layerShow" ref="layerRef" class="mvi-layer" :style="layerStyle" v-bind="$attrs">
 				<div class="mvi-layer-wrapper" :class="{ shadow: shadow, border: border }" :style="wrapperStyle">
-					<Triangle v-if="showTriangle" ref="triangleRef" class="mvi-layer-triangle" :placement="trianglePlacement" :background="background" :border-color="border && borderColor ? borderColor : background" size="0.14rem"></Triangle>
+					<Triangle v-if="showTriangle" ref="triangleRef" class="mvi-layer-triangle" :placement="trianglePlacement" :background="innerBackground" :border-color="border ? innerBorderColor : innerBackground" size="0.14rem"></Triangle>
 					<slot></slot>
 				</div>
 			</div>
@@ -15,6 +15,8 @@ import Dap from 'dap-util'
 import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch, nextTick } from 'vue'
 import { Triangle } from '@/components/triangle'
 import { LayerProps } from './props'
+import { isDark } from '@/utils'
+import { Observe } from '@/directives/observe'
 
 defineOptions({
 	inheritAttrs: false,
@@ -37,6 +39,13 @@ const realPlacement = ref<string>('bottom')
 const layerRef = ref<HTMLElement | null>(null)
 //三角元素
 const triangleRef = ref<InstanceType<typeof Triangle> | null>(null)
+//observe对象
+const observe = ref<Observe | null>(null)
+//内部边框色
+const innerBorderColor = ref<string>(props.borderColor || (isDark() ? '#2c2c2c' : '#eee'))
+//内部背景色
+const innerBackground = ref<string>(props.background || (isDark() ? '#1a1a1a' : '#fff'))
+
 //浮层元素导出对象
 const $$el = computed<HTMLElement | null>(() => {
 	return layerRef.value
@@ -59,11 +68,11 @@ const trianglePlacement = computed<'bottom' | 'top' | 'left' | 'right' | undefin
 //主体元素额外样式
 const wrapperStyle = computed<any>(() => {
 	let style: any = {}
-	if (props.border && props.borderColor) {
-		style.borderColor = props.borderColor
+	if (props.border && innerBorderColor.value) {
+		style.borderColor = innerBorderColor.value
 	}
-	if (props.background) {
-		style.background = props.background
+	if (innerBackground.value) {
+		style.background = innerBackground.value
 	}
 	if (props.width) {
 		style.width = props.width
@@ -926,6 +935,18 @@ onMounted(() => {
 			emits('update:modelValue', false)
 		}
 	})
+	//监听深色模式改动
+	observe.value = new Observe(document.documentElement, {
+		attributes: true,
+		childList: false,
+		subtree: false,
+		attributeNames: ['data-mvi-dark'],
+		attributesChange: () => {
+			innerBorderColor.value = props.borderColor || (isDark() ? '#222' : '#eee')
+			innerBackground.value = props.background || (isDark() ? '#1a1a1a' : '#fff')
+		}
+	})
+	observe.value.init()
 })
 
 //组件卸载后
@@ -933,6 +954,8 @@ onBeforeUnmount(() => {
 	//卸载滚动监听事件
 	removeScroll()
 	Dap.event.off(window, `resize.layer_${instance.uid} click.layer_${instance.uid}`)
+	//卸载深色模式监听
+	observe.value?.destroy()
 })
 
 //对外提供的属性和方法

@@ -1,7 +1,7 @@
 <template>
 	<div class="mvi-picker">
 		<div class="mvi-picker-loading" v-if="loading" :style="loadingStyle">
-			<Loading size="0.5rem" color="#ddd"></Loading>
+			<Loading size="0.5rem"></Loading>
 		</div>
 		<div v-if="showToolbar && !loading" class="mvi-picker-toolbar">
 			<div class="mvi-picker-toolbar-cancel" v-text="cancelText" @click="doCancel"></div>

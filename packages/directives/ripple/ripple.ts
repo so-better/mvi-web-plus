@@ -1,4 +1,6 @@
+import { isDark } from '@/utils'
 import Dap from 'dap-util'
+import { Observe } from '@/directives/observe'
 /**
  * 水波纹效果
  */
@@ -30,6 +32,10 @@ class Ripple {
 
 	//是否初始化了
 	private hasInit: boolean = false
+	//初始化的color
+	private initColor?: string = ''
+	//observe对象
+	private observe: Observe | null = null
 	//是否支持touch事件
 	private isSupportTouch: boolean = false
 	//生成唯一值
@@ -150,12 +156,13 @@ class Ripple {
 		if (this.hasInit) {
 			return
 		}
+		this.initColor = this.color
 		this.hasInit = true
 		if (!Dap.element.isElement(this.$el)) {
 			throw new TypeError('The bound element is not a node element')
 		}
 		if (typeof this.color != 'string') {
-			this.color = '#9f9f9f'
+			this.color = isDark() ? '#8b8b8b' : '#9f9f9f'
 		}
 		if (!Dap.number.isNumber(this.duration)) {
 			this.duration = 600
@@ -175,6 +182,19 @@ class Ripple {
 		if (Dap.element.getCssStyle(this.$el, 'position') != 'relative' && Dap.element.getCssStyle(this.$el, 'position') != 'absolute' && Dap.element.getCssStyle(this.$el, 'position') != 'fixed') {
 			this.$el.style.position = 'relative'
 		}
+		//进行深色模式改动的监听
+		this.observe = new Observe(document.documentElement, {
+			attributes: true,
+			childList: false,
+			subtree: false,
+			attributeNames: ['data-mvi-dark'],
+			attributesChange: () => {
+				if (!this.initColor) {
+					this.color = isDark() ? '#8b8b8b' : '#9f9f9f'
+				}
+			}
+		})
+		this.observe.init()
 
 		//鼠标按下或者手指按下函数
 		const downFn = (pageX: number, pageY: number) => {
@@ -239,8 +259,11 @@ class Ripple {
 		Dap.event.on(this.$el, `touchend.ripple`, upFn)
 	}
 
-	//api：移除documentElement上的拖动事件
+	//api：销毁
 	destroy() {
+		//移除深色模式监听
+		this.observe?.destroy()
+		//移除documentElement上的拖动事件
 		Dap.event.off(document.documentElement, `mouseup.ripple_${this.guid}`)
 	}
 }

@@ -25,17 +25,17 @@ export const TooltipProps = {
 	//边框颜色
 	borderColor: {
 		type: String,
-		default: '#333'
+		default: null
 	},
 	//背景色
 	color: {
 		type: String,
-		default: '#333'
+		default: null
 	},
 	//字体颜色
 	textColor: {
 		type: String,
-		default: '#fff'
+		default: null
 	},
 	//触发方式
 	trigger: {

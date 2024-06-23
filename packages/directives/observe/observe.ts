@@ -29,6 +29,8 @@ class Observe {
 	private childNodesChange?: (...args: any) => void
 	//是否已经初始化
 	private hasInit: boolean = false
+	//MutationObserver对象
+	private mutationObserver: MutationObserver | null = null
 
 	constructor(el: HTMLElement, options: ObserveOptionsType) {
 		this.$el = el
@@ -73,7 +75,7 @@ class Observe {
 			}
 
 			let MutationObserver = window.MutationObserver
-			let observer = new MutationObserver(mutationList => {
+			this.mutationObserver = new MutationObserver(mutationList => {
 				let length = mutationList.length
 				for (let i = 0; i < length; i++) {
 					//监听属性
@@ -97,7 +99,7 @@ class Observe {
 			})
 			if (this.attributes) {
 				if (this.attributeNames.length > 0) {
-					observer.observe(this.$el, {
+					this.mutationObserver.observe(this.$el, {
 						attributes: this.attributes,
 						attributeFilter: this.attributeNames,
 						attributeOldValue: true,
@@ -105,7 +107,7 @@ class Observe {
 						subtree: this.subtree
 					})
 				} else {
-					observer.observe(this.$el, {
+					this.mutationObserver.observe(this.$el, {
 						attributes: this.attributes,
 						attributeOldValue: true,
 						childList: this.childList,
@@ -113,7 +115,7 @@ class Observe {
 					})
 				}
 			} else {
-				observer.observe(this.$el, {
+				this.mutationObserver.observe(this.$el, {
 					attributes: this.attributes,
 					childList: this.childList,
 					subtree: this.subtree
@@ -121,6 +123,13 @@ class Observe {
 			}
 		} catch (e) {
 			throw new Error('Listening failed. Your browser may not support it, or childList and attributes are false, meaning there are no objects to listen on')
+		}
+	}
+
+	//api：销毁方法
+	destroy() {
+		if (this.mutationObserver) {
+			this.mutationObserver.disconnect()
 		}
 	}
 }

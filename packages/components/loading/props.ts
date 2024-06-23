@@ -12,7 +12,7 @@ export const LoadingProps = {
 	//颜色
 	color: {
 		type: String,
-		default: '#bbb'
+		default: null
 	},
 	//尺寸
 	size: {

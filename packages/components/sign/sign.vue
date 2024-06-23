@@ -5,6 +5,8 @@
 import Dap from 'dap-util'
 import { getCurrentInstance, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { SignProps } from './props'
+import { Observe } from '@/directives/observe'
+import { isDark } from '@/utils'
 
 defineOptions({
 	name: 'm-sign'
@@ -20,9 +22,14 @@ const props = defineProps(SignProps)
 const drawing = ref<boolean>(false)
 //鼠标是否在canvas中
 const inCanvas = ref<boolean>(false)
-
 //canvas元素
 const canvasRef = ref<HTMLCanvasElement | null>(null)
+//observe对象
+const observe = ref<Observe | null>(null)
+//颜色
+const innerColor = ref<string>(props.color || (isDark() ? '#fff' : '#505050'))
+//背景色
+const innerBackground = ref<string>(props.background || (isDark() ? '#1a1a1a' : '#fff'))
 
 //鼠标按下
 const canvasMouseDown = (e: MouseEvent) => {
@@ -39,7 +46,7 @@ const canvasMouseMove = (e: Event) => {
 		const ctx = canvasRef.value!.getContext('2d')!
 		const rect = Dap.element.getElementBounding(canvasRef.value!)
 		ctx.lineTo((<MouseEvent>e).pageX - rect.left, (<MouseEvent>e).pageY - rect.top)
-		ctx.strokeStyle = props.color
+		ctx.strokeStyle = innerColor.value
 		ctx.lineWidth = Dap.element.rem2px(props.width)
 		ctx.stroke()
 	}
@@ -83,7 +90,7 @@ const canvasTouchMove = (e: TouchEvent) => {
 	const ctx = canvasRef.value!.getContext('2d')!
 	const rect = Dap.element.getElementBounding(canvasRef.value!)
 	ctx.lineTo(e.targetTouches[0].pageX - rect.left, e.targetTouches[0].pageY - rect.top)
-	ctx.strokeStyle = props.color
+	ctx.strokeStyle = innerColor.value
 	ctx.lineWidth = Dap.element.rem2px(props.width)
 	ctx.stroke()
 }
@@ -98,7 +105,7 @@ const clear = () => {
 	ctx.beginPath()
 	ctx.clearRect(0, 0, canvasRef.value!.width, canvasRef.value!.height)
 	ctx.rect(0, 0, canvasRef.value!.width, canvasRef.value!.height)
-	ctx.fillStyle = props.background
+	ctx.fillStyle = innerBackground.value
 	ctx.fill()
 	ctx.closePath()
 }
@@ -118,7 +125,7 @@ const init = () => {
 }
 
 watch(
-	() => props.background,
+	() => innerBackground.value,
 	() => {
 		//背景色改变，则清除一次画布
 		clear()
@@ -126,12 +133,27 @@ watch(
 )
 
 onMounted(() => {
+	//深色模式监听
+	observe.value = new Observe(document.documentElement, {
+		attributes: true,
+		childList: false,
+		subtree: false,
+		attributeNames: ['data-mvi-dark'],
+		attributesChange: () => {
+			innerColor.value = props.color || (isDark() ? '#fff' : '#505050')
+			innerBackground.value = props.background || (isDark() ? '#1a1a1a' : '#fff')
+		}
+	})
+	observe.value.init()
+	//初始化
 	init()
 })
 
 onBeforeUnmount(() => {
 	//移除添加在documentElement上的鼠标事件
 	Dap.event.off(document.documentElement, `mousemove.sign_${instance.uid} mouseup.sign_${instance.uid}`)
+	//移除深色模式监听
+	observe.value?.destroy()
 })
 
 defineExpose({

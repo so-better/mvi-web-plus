@@ -67,3 +67,23 @@ export const withInstallDirective = <T extends Directive>(name: string, directiv
 	}
 	return directive as SFCWithInstall<typeof directive>
 }
+
+/**
+ * 使用深色模式/浅色模式
+ * @param dark
+ */
+export const useDark = (dark: boolean) => {
+	if (dark) {
+		document.documentElement.setAttribute('data-mvi-dark', 'true')
+	} else {
+		document.documentElement.removeAttribute('data-mvi-dark')
+	}
+}
+
+/**
+ * 当前是否深色模式
+ * @returns
+ */
+export const isDark = () => {
+	return !!document.documentElement.getAttribute('data-mvi-dark')
+}

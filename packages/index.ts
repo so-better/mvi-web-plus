@@ -251,15 +251,11 @@ const install = (app: App) => {
 }
 //版本号
 const version = '2.0.2'
-//使用深色模式的方法
-const useDark = (dark: boolean) => {
-	if (dark) {
-		document.documentElement.setAttribute('data-mvi-dark', 'true')
-	} else {
-		document.documentElement.removeAttribute('data-mvi-dark')
-	}
-}
+
+//导出深色模式方法
+export { isDark, useDark } from '@/utils'
+
 //导出
-export { install as default, install, version, useDark }
+export { install as default, install, version }
 
 console.log(`%c mvi-web-plus %c v${version} `, 'padding: 2px 1px; border-radius: 3px 0 0 3px; color: #fff; background: #606060; font-weight: bold;', 'padding: 2px 1px; border-radius: 0 3px 3px 0; color: #fff; background: #42c02e; font-weight: bold;')
