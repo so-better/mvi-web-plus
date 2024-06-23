@@ -58,7 +58,7 @@
 	color: var(--mvi-font-color-default);
 	font-size: @font-size-default;
 	padding: 0 @mp-sm 0 @mp-sm;
-	background-color: #fff;
+	background-color: var(--mvi-bg-color-common);
 	margin-left: 5%;
 
 	&::placeholder,
@@ -78,11 +78,8 @@
 .mvi-dialog-times {
 	position: absolute;
 	top: 50%;
-	right: ~'calc(5% + @{mp-sm})';
+	right: calc(5% + @mp-sm);
 	transform: translateY(-50%);
-	-webkit-transform: translateY(-50%);
-	-moz-transform: translateY(-50%);
-	-ms-transform: translateY(-50%);
 	color: var(--mvi-font-color-mute);
 	cursor: pointer;
 }
@@ -119,5 +116,5 @@
 
 .mvi-dialog-ok:active::before,
 .mvi-dialog-cancel:active::before {
-	.mvi-active();
+	.mvi-active(var(--mvi-bg-color-active));
 }

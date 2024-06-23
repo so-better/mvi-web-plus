@@ -10,8 +10,6 @@ const $showNotify = inject<(arg: any) => void>('$showNotify')!
 const showNotify = () => {
 	$showNotify({
 		message: '欢迎使用',
-		color: '#000',
-		background: '#bbb',
 		icon: 'success-o'
 	})
 }

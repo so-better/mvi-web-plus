@@ -2,7 +2,7 @@
 	<div class="mvi-p-2">
 		<div class="mvi-mb-2">
 			<m-button @click="show = !show" type="info" id="btn">浮层的关联元素</m-button>
-			<m-layer v-model="show" relate="#btn" closable showTriangle shadow>
+			<m-layer v-model="show" relate="#btn" closable border showTriangle shadow>
 				<div class="layer"></div>
 			</m-layer>
 		</div>

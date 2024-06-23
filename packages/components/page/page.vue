@@ -55,9 +55,6 @@ const pageStyle = computed<(item: number) => any>(() => {
 	return (item: number) => {
 		let style: any = {}
 		if (props.modelValue == item) {
-			if (elRef.value) {
-				style.color = Dap.element.getCssStyle(elRef.value, 'background-color')
-			}
 			style.backgroundColor = props.color || ''
 		} else {
 			style.color = props.color || ''

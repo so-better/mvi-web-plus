@@ -11,8 +11,8 @@ const show = () => {
 	$showToast({
 		type: 'loading',
 		message: '正在加载',
-		background: '#fff',
-		color: '#333',
+		// background: '#fff',
+		// color: '#333',
 		shadow: true
 	})
 }

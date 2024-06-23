@@ -1,6 +1,6 @@
 <template>
 	<div class="mvi-p-2">
-		<m-color-picker v-model="color" :showAlpha="false"></m-color-picker>
+		<m-color-picker v-model="color" :showAlpha="true"></m-color-picker>
 	</div>
 </template>
 <script setup lang="ts">

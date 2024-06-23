@@ -20,7 +20,7 @@
 			</div>
 		</div>
 		<div class="mvi-step-container">
-			<div class="mvi-step-icon" :class="{ last: stepIndex == stepChildren!.length - 1 }" :style="stepIconStyle">
+			<div class="mvi-step-icon" :class="{ last: stepIndex == stepChildren!.length - 1 }">
 				<Icon class="mvi-step-icon-active-el" v-if="steps!.props.active == stepIndex && (parseIcon(<string | IconPropsType>steps!.props.activeIcon).type || parseIcon(<string | IconPropsType>steps!.props.activeIcon).url)" :type="parseIcon(<string | IconPropsType>steps!.props.activeIcon).type" :url="parseIcon(<string | IconPropsType>steps!.props.activeIcon).url" :spin="parseIcon(<string | IconPropsType>steps!.props.activeIcon).spin" :size="parseIcon(<string | IconPropsType>steps!.props.activeIcon).size" :color="parseIcon(<string | IconPropsType>steps!.props.activeIcon).color" :style="activeIconStyle" />
 				<div class="mvi-step-circle-active" v-else-if="steps!.props.active == stepIndex" :style="activeCircleStyle"></div>
 				<Icon class="mvi-step-icon-inactive-el" :class="{ finish: stepIndex <= <number>steps!.props.active }" v-else-if="parseIcon(<string | IconPropsType>steps!.props.inactiveIcon).type || parseIcon(<string | IconPropsType>steps!.props.inactiveIcon).url" :type="parseIcon(<string | IconPropsType>steps!.props.inactiveIcon).type" :url="parseIcon(<string | IconPropsType>steps!.props.inactiveIcon).url" :spin="parseIcon(<string | IconPropsType>steps!.props.inactiveIcon).spin" :size="parseIcon(<string | IconPropsType>steps!.props.inactiveIcon).size" :color="parseIcon(<string | IconPropsType>steps!.props.inactiveIcon).color" :style="inactiveIconStyle" />
@@ -171,13 +171,6 @@ const lineStyle = computed<any>(() => {
 				style.borderTopColor = steps!.props.inactiveColor
 			}
 		}
-	}
-	return style
-})
-const stepIconStyle = computed<any>(() => {
-	let style: any = {}
-	if (elRef.value) {
-		style.backgroundColor = Dap.element.getCssStyle(steps!.proxy!.$el, 'background-color')
 	}
 	return style
 })

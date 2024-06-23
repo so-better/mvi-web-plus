@@ -26,7 +26,11 @@
 	&.default {
 		color: var(--mvi-font-color-default);
 		border-color: var(--mvi-border-color);
-		background: #fff;
+		background: var(--mvi-bg-color-common);
+
+		&.active:active::before {
+			.mvi-active(var(--mvi-bg-color-active));
+		}
 	}
 
 	&.warn {
@@ -37,7 +41,7 @@
 		&.plain {
 			color: var(--mvi-warn-normal);
 			border-color: var(--mvi-warn-normal);
-			background: #fff;
+			background: var(--mvi-bg-color-common);
 
 			&.active:active::before {
 				.mvi-active(var(--mvi-warn-normal));
@@ -53,7 +57,7 @@
 		&.plain {
 			color: var(--mvi-error-normal);
 			border-color: var(--mvi-error-normal);
-			background: #fff;
+			background: var(--mvi-bg-color-common);
 
 			&.active:active::before {
 				.mvi-active(var(--mvi-error-normal));
@@ -69,7 +73,7 @@
 		&.plain {
 			color: var(--mvi-success-normal);
 			border-color: var(--mvi-success-normal);
-			background: #fff;
+			background: var(--mvi-bg-color-common);
 
 			&.active:active::before {
 				.mvi-active(var(--mvi-success-normal));
@@ -85,7 +89,7 @@
 		&.plain {
 			color: var(--mvi-info-normal);
 			border-color: var(--mvi-info-normal);
-			background: #fff;
+			background: var(--mvi-bg-color-common);
 
 			&.active:active::before {
 				.mvi-active(var(--mvi-info-normal));
@@ -101,7 +105,8 @@
 		&.plain {
 			color: var(--mvi-primary-normal);
 			border-color: var(--mvi-primary-normal);
-			background: #fff;
+			background: var(--mvi-bg-color-common);
+
 			&.active:active::before {
 				.mvi-active(var(--mvi-primary-normal));
 			}
@@ -141,7 +146,7 @@
 	}
 
 	&.active:active::before {
-		.mvi-active();
+		.mvi-active(var(--mvi-bg-color-active));
 	}
 
 	&[disabled] {

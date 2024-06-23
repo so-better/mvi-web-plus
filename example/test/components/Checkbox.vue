@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div>
-			<m-checkbox @change="onChange" color="#f30" class="mvi-m-2" label="选项A" v-model="check"></m-checkbox>
+			<m-checkbox @change="onChange" color="#f30" class="mvi-m-2" label="选项A" v-model="check" disabled></m-checkbox>
 		</div>
 		<div class="mvi-mt-10">
 			{{ value }}

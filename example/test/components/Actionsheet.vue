@@ -13,7 +13,8 @@ const options = ref([
 		label: '分享给好友'
 	},
 	{
-		label: '分享到QQ'
+		label: '分享到QQ',
+		loading: true
 	},
 	{
 		label: '分享到微信朋友圈'

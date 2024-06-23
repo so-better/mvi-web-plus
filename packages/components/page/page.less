@@ -5,7 +5,7 @@
 	display: -webkit-flex;
 	justify-content: space-between;
 	align-items: center;
-	background-color: #fff;
+	background-color: var(--mvi-bg-color-common);
 	width: fit-content;
 	height: @small-height;
 	border: 1px solid var(--mvi-border-color);
@@ -27,7 +27,7 @@
 		cursor: pointer;
 
 		&.active:active::before {
-			.mvi-active();
+			.mvi-active(var(--mvi-bg-color-active));
 		}
 
 		&[disabled] {
@@ -53,7 +53,7 @@
 		cursor: pointer;
 
 		&.active:active::before {
-			.mvi-active();
+			.mvi-active(var(--mvi-bg-color-active));
 		}
 
 		&[disabled] {
@@ -79,7 +79,7 @@
 		cursor: pointer;
 
 		&.active:active::before {
-			.mvi-active();
+			.mvi-active(var(--mvi-bg-color-active));
 		}
 
 		&[disabled] {
@@ -105,7 +105,7 @@
 		cursor: pointer;
 
 		&.active:active::before {
-			.mvi-active();
+			.mvi-active(var(--mvi-bg-color-active));
 		}
 
 		&[disabled] {
@@ -161,7 +161,7 @@
 				}
 
 				&.active:active::before {
-					.mvi-active();
+					.mvi-active(var(--mvi-bg-color-active));
 				}
 
 				&.number-active {

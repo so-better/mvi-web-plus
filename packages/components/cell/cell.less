@@ -3,13 +3,13 @@
 .mvi-cell {
 	display: block;
 	width: 100%;
-	background-color: #fff;
+	background-color: var(--mvi-bg-color-common);
 	color: var(--mvi-font-color-default);
 	padding: @mp-sm;
 	position: relative;
 
 	&.active:active::before {
-		.mvi-active();
+		.mvi-active(var(--mvi-bg-color-active));
 	}
 
 	&.border::after {

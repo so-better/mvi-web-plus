@@ -17,8 +17,7 @@
 				$msgbox({
 					message: 'hello',
 					animation: 'scale',
-					background: '#fff',
-					color: '#000'
+					timeout: 10000
 				})
 			"
 			>按钮</m-button

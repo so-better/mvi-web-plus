@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div>
-			<m-radio @change="onChange" color="#f30" class="mvi-m-2" label="选项A" v-model="check"></m-radio>
+			<m-radio @change="onChange" color="#f30" class="mvi-m-2" label="选项A" v-model="check" disabled></m-radio>
 		</div>
 		<div class="mvi-mt-10">
 			{{ value }}

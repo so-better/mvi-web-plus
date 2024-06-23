@@ -10,11 +10,14 @@
 import { ref, watch } from 'vue'
 import { useDark } from '../packages'
 
-const dark = ref(false)
+const dark = ref(true)
 
 watch(
 	() => dark.value,
-	newVal => useDark(newVal)
+	newVal => useDark(newVal),
+	{
+		immediate: true
+	}
 )
 </script>
 

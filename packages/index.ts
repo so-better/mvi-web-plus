@@ -250,7 +250,7 @@ const install = (app: App) => {
 	})
 }
 //版本号
-const version = '2.0.1'
+const version = '2.0.2'
 //使用深色模式的方法
 const useDark = (dark: boolean) => {
 	if (dark) {

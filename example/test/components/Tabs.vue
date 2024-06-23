@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<m-tabs v-model="active" animation="slide" ellipsis border>
+		<m-tabs class="mvi-mb-10" v-model="active" animation="slide" ellipsis border>
 			<m-tab title="标签一标签一标签一标签一">
 				<p>愿你三冬暖，愿你春不寒；愿你天黑有灯，下雨有伞。愿你路上有良人相伴。</p>
 			</m-tab>
@@ -14,7 +14,7 @@
 				<p>纵然，从此一别两宽，各自欢喜，你也曾写进了他的生命里，虽非经久不衰，却最浓墨重彩。</p>
 			</m-tab>
 		</m-tabs>
-		<m-tabs v-model="active" type="card" activeColor="#000">
+		<m-tabs v-model="active" type="card">
 			<m-tab title="标签一">
 				<p>愿你三冬暖，愿你春不寒；愿你天黑有灯，下雨有伞。愿你路上有良人相伴。</p>
 			</m-tab>

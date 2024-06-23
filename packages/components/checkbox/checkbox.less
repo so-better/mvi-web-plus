@@ -28,15 +28,16 @@
 		margin: 0;
 		padding: @mp-xs / 5;
 		border: 1px solid var(--mvi-border-color);
-		background-color: #fff;
+		background-color: var(--mvi-bg-color-common);
 		font-size: @font-size-small;
 		border-radius: @radius-default / 2;
-		color: #fff;
+		color: var(--mvi-bg-color-common);
 		transition: border-color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46), background-color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46), color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46);
 
 		&.check {
 			background-color: var(--mvi-info-normal);
 			border-color: var(--mvi-info-normal);
+			color: #fff;
 		}
 
 		&.round {
