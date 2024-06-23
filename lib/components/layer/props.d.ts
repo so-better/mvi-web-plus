@@ -51,11 +51,11 @@ export declare const LayerProps: {
     };
     borderColor: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     background: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
 };
 export type LayerPropsType = ExtractPublicPropTypes<typeof LayerProps>;

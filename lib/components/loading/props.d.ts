@@ -7,7 +7,7 @@ export declare const LoadingProps: {
     };
     color: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     size: {
         type: StringConstructor;

@@ -17,15 +17,15 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     };
     borderColor: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     color: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     textColor: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     trigger: {
         type: import("vue").PropType<"click" | "hover" | "custom">;
@@ -78,15 +78,15 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     };
     borderColor: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     color: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     textColor: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     trigger: {
         type: import("vue").PropType<"click" | "hover" | "custom">;

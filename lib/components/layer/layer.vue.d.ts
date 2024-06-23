@@ -50,11 +50,11 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     };
     borderColor: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     background: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
 }, {
     $$el: import("vue").ComputedRef<HTMLElement | null>;
@@ -119,11 +119,11 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     };
     borderColor: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     background: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
 }>> & {
     "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;

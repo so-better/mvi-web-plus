@@ -2,11 +2,11 @@ import { ExtractPublicPropTypes } from 'vue';
 export declare const SignProps: {
     color: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     background: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     width: {
         type: NumberConstructor;

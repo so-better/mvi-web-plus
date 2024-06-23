@@ -18,6 +18,8 @@ declare class Ripple {
     private delay?;
     private disabled?;
     private hasInit;
+    private initColor?;
+    private observe;
     private isSupportTouch;
     private guid;
     private rippleContainers;

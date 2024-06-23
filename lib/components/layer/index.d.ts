@@ -52,11 +52,11 @@ declare const Layer: import('../../utils').SFCWithInstall<{
         };
         borderColor: {
             type: StringConstructor;
-            default: string;
+            default: null;
         };
         background: {
             type: StringConstructor;
-            default: string;
+            default: null;
         };
     }>> & {
         "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
@@ -129,11 +129,11 @@ declare const Layer: import('../../utils').SFCWithInstall<{
         };
         borderColor: {
             type: StringConstructor;
-            default: string;
+            default: null;
         };
         background: {
             type: StringConstructor;
-            default: string;
+            default: null;
         };
     }>> & {
         "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
@@ -217,11 +217,11 @@ declare const Layer: import('../../utils').SFCWithInstall<{
         };
         borderColor: {
             type: StringConstructor;
-            default: string;
+            default: null;
         };
         background: {
             type: StringConstructor;
-            default: string;
+            default: null;
         };
     }>> & {
         "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
@@ -305,11 +305,11 @@ declare const Layer: import('../../utils').SFCWithInstall<{
     };
     borderColor: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     background: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
 }>> & {
     "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;

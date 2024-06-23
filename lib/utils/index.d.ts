@@ -29,3 +29,13 @@ export declare const withInstall: <T extends Component>(component: T) => SFCWith
  * @param name
  */
 export declare const withInstallDirective: <T extends Directive>(name: string, directive: T) => SFCWithInstall<T>;
+/**
+ * 使用深色模式/浅色模式
+ * @param dark
+ */
+export declare const useDark: (dark: boolean) => void;
+/**
+ * 当前是否深色模式
+ * @returns
+ */
+export declare const isDark: () => boolean;

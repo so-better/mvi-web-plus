@@ -19,15 +19,15 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
         };
         borderColor: {
             type: StringConstructor;
-            default: string;
+            default: null;
         };
         color: {
             type: StringConstructor;
-            default: string;
+            default: null;
         };
         textColor: {
             type: StringConstructor;
-            default: string;
+            default: null;
         };
         trigger: {
             type: import("vue").PropType<"click" | "hover" | "custom">;
@@ -80,15 +80,15 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
         };
         borderColor: {
             type: StringConstructor;
-            default: string;
+            default: null;
         };
         color: {
             type: StringConstructor;
-            default: string;
+            default: null;
         };
         textColor: {
             type: StringConstructor;
-            default: string;
+            default: null;
         };
         trigger: {
             type: import("vue").PropType<"click" | "hover" | "custom">;
@@ -160,15 +160,15 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
         };
         borderColor: {
             type: StringConstructor;
-            default: string;
+            default: null;
         };
         color: {
             type: StringConstructor;
-            default: string;
+            default: null;
         };
         textColor: {
             type: StringConstructor;
-            default: string;
+            default: null;
         };
         trigger: {
             type: import("vue").PropType<"click" | "hover" | "custom">;
@@ -240,15 +240,15 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
     };
     borderColor: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     color: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     textColor: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     trigger: {
         type: import("vue").PropType<"click" | "hover" | "custom">;

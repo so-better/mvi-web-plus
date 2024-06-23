@@ -155,5 +155,5 @@ export type * from './components/rich-image';
 export type * from './components/image-preview';
 declare const install: (app: App) => void;
 declare const version = "2.0.2";
-declare const useDark: (dark: boolean) => void;
-export { install as default, install, version, useDark };
+export { isDark, useDark } from './utils';
+export { install as default, install, version };

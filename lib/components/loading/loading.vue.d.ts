@@ -6,7 +6,7 @@ declare const _default: import("vue").DefineComponent<{
     };
     color: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     size: {
         type: StringConstructor;
@@ -20,7 +20,7 @@ declare const _default: import("vue").DefineComponent<{
     };
     color: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     size: {
         type: StringConstructor;

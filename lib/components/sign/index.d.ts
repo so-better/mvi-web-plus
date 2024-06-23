@@ -2,11 +2,11 @@ export type * from './props';
 declare const Sign: import('../../utils').SFCWithInstall<import("vue").DefineComponent<{
     color: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     background: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     width: {
         type: NumberConstructor;
@@ -18,11 +18,11 @@ declare const Sign: import('../../utils').SFCWithInstall<import("vue").DefineCom
 }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     color: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     background: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     width: {
         type: NumberConstructor;

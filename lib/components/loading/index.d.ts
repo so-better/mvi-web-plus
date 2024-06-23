@@ -7,7 +7,7 @@ declare const Loading: import('../../utils').SFCWithInstall<import("vue").Define
     };
     color: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     size: {
         type: StringConstructor;
@@ -21,7 +21,7 @@ declare const Loading: import('../../utils').SFCWithInstall<import("vue").Define
     };
     color: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     size: {
         type: StringConstructor;

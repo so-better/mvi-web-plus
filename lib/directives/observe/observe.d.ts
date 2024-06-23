@@ -18,7 +18,9 @@ declare class Observe {
     private attributesChange?;
     private childNodesChange?;
     private hasInit;
+    private mutationObserver;
     constructor(el: HTMLElement, options: ObserveOptionsType);
     init(): void;
+    destroy(): void;
 }
 export default Observe;

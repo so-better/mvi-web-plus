@@ -18,15 +18,15 @@ export declare const TooltipProps: {
     };
     borderColor: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     color: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     textColor: {
         type: StringConstructor;
-        default: string;
+        default: null;
     };
     trigger: {
         type: PropType<"click" | "hover" | "custom">;
