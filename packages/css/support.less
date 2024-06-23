@@ -260,25 +260,21 @@
 //flex布局
 .mvi-flex-start{
 	display: flex !important;
-	display: -webkit-flex !important;
 	justify-content: flex-start !important;
 	align-items: center !important;
 }
 .mvi-flex-end{
 	display: flex !important;
-	display: -webkit-flex !important;
 	justify-content: flex-end !important;
 	align-items: center !important;
 }
 .mvi-flex-between{
 	display: flex !important;
-	display: -webkit-flex !important;
 	justify-content: space-between !important;
 	align-items: center !important;
 }
 .mvi-flex-around{
 	display: flex !important;
-	display: -webkit-flex !important;
 	justify-content: space-around !important;
 	align-items: center !important;
 }
@@ -375,7 +371,6 @@
 //阴影辅助类
 .mvi-shadow{
 	box-shadow: var(--mvi-boxshadow);
-	-webkit-box-shadow: var(--mvi-boxshadow);
 }
 
 
@@ -384,7 +379,6 @@
 //渐变
 .mvi-transition-fade-enter-active,.mvi-transition-fade-leave-active{
 	transition: opacity 300ms;
-	-webkit-transition: opacity 300ms;
 }
 .mvi-transition-fade-enter-from,.mvi-transition-fade-leave-to{
 	opacity: 0;
@@ -393,65 +387,53 @@
 //向上偏移
 .mvi-transition-up-enter-active,.mvi-transition-up-leave-active{
 	transition: transform 300ms, opacity 300ms;
-	-webkit-transition: transform 300ms, opacity 300ms;
 }
 .mvi-transition-up-enter-from,.mvi-transition-up-leave-to{
 	opacity: 0;
 	transform: translateY(1rem);
-	-webkit-transform: translateY(1rem);
 }
 
 //向下偏移
 .mvi-transition-down-enter-active,.mvi-transition-down-leave-active{
 	transition: transform 300ms, opacity 300ms;
-	-webkit-transition: transform 300ms, opacity 300ms;
 }
 .mvi-transition-down-enter-from,.mvi-transition-down-leave-to{
 	opacity: 0;
 	transform: translateY(-1rem);
-	-webkit-transform: translateY(-1rem);
 }
 
 //向右偏移
 .mvi-transition-right-enter-active,.mvi-transition-right-leave-active{
 	transition: transform 300ms, opacity 300ms;
-	-webkit-transition: transform 300ms, opacity 300ms;
 }
 .mvi-transition-right-enter-from,.mvi-transition-right-leave-to{
 	opacity: 0;
 	transform: translateX(-1rem);
-	-webkit-transform: translateX(-1rem);
 }
 
 //向左偏移
 .mvi-transition-left-enter-active,.mvi-transition-left-leave-active{
 	transition: transform 300ms, opacity 300ms;
-	-webkit-transition: transform 300ms, opacity 300ms;
 }
 .mvi-transition-left-enter-from,.mvi-transition-left-leave-to{
 	opacity: 0;
 	transform: translateX(1rem);
-	-webkit-transform: translateX(1rem);
 }
 
 //由小放大
 .mvi-transition-large-enter-active,.mvi-transition-large-leave-active{
 	transition: transform 300ms, opacity 300ms;
-	-webkit-transition: transform 300ms, opacity 300ms;
 }
 .mvi-transition-large-enter-from,.mvi-transition-large-leave-to{
 	opacity: 0;
 	transform: scale(.5);
-	-webkit-transform: scale(.5);
 }
 
 //由大缩小
 .mvi-transition-small-enter-active,.mvi-transition-small-leave-active{
 	transition: transform 300ms, opacity 300ms;
-	-webkit-transition: transform 300ms, opacity 300ms;
 }
 .mvi-transition-small-enter-from,.mvi-transition-small-leave-to{
 	opacity: 0;
 	transform: scale(2);
-	-webkit-transform: scale(2);
 }

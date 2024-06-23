@@ -2,7 +2,6 @@
 
 .mvi-switch {
 	display: inline-flex;
-	display: -webkit-inline-flex;
 	justify-content: flex-start;
 	align-items: center;
 	position: relative;
@@ -10,7 +9,6 @@
 	border-radius: @radius-round;
 	border: 1px solid var(--mvi-border-light-color);
 	transition: background-color 300ms;
-	-webkit-transition: background-color 300ms;
 	cursor: pointer;
 	vertical-align: middle;
 
@@ -35,7 +33,6 @@
 
 	.mvi-switch-el {
 		display: inline-flex;
-		display: -webkit-inline-flex;
 		justify-content: center;
 		align-items: center;
 		color: var(--mvi-info-normal);
@@ -47,11 +44,9 @@
 		margin: 0;
 		padding: 0;
 		transition: transform 0.3s cubic-bezier(0.3, 1.05, 0.4, 1.05);
-		-webkit-transition: transform 0.3s cubic-bezier(0.3, 1.05, 0.4, 1.05);
 
 		&.checked {
 			transform: translateX(100%);
-			-webkit-transform: translateX(100%);
 		}
 	}
 }
