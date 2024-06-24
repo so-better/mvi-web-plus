@@ -1,5 +1,5 @@
 export type * from './props';
-declare const ColorPicker: import('../../utils').SFCWithInstall<import("vue").DefineComponent<{
+declare const ColorPicker: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     modelValue: {
         type: StringConstructor;
         default: string;
@@ -8,10 +8,10 @@ declare const ColorPicker: import('../../utils').SFCWithInstall<import("vue").De
         type: BooleanConstructor;
         default: boolean;
     };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     change: (...args: any[]) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     modelValue: {
         type: StringConstructor;
         default: string;

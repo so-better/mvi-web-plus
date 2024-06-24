@@ -1,6 +1,7 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
 import { LayerPropsType } from '../layer';
 import { IconPropsType } from '../icon';
+
 export declare const AutocompleteProps: {
     modelValue: {
         type: StringConstructor;

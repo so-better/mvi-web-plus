@@ -1,16 +1,16 @@
 export type * from './props';
 declare const ImagePreview: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
+    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         modelValue: {
             type: BooleanConstructor;
             default: boolean;
         };
         images: {
-            type: import("vue").PropType<string[]>;
+            type: import('vue').PropType<string[]>;
             default: () => never[];
         };
         descriptions: {
-            type: import("vue").PropType<string[]>;
+            type: import('vue').PropType<string[]>;
             default: () => never[];
         };
         active: {
@@ -26,7 +26,7 @@ declare const ImagePreview: import('../../utils').SFCWithInstall<{
             default: number;
         };
         mode: {
-            type: import("vue").PropType<"fade" | "slide" | undefined>;
+            type: import('vue').PropType<"fade" | "slide" | undefined>;
             default: string;
         };
         controls: {
@@ -50,14 +50,14 @@ declare const ImagePreview: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         errorIcon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: {
                 size: string;
                 type: string;
             };
         };
         loadIcon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: () => {
                 size: string;
                 type: string;
@@ -75,21 +75,21 @@ declare const ImagePreview: import('../../utils').SFCWithInstall<{
         "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
         onChange?: ((...args: any[]) => any) | undefined;
     }, {
-        $$el: import("vue").ComputedRef<HTMLElement | null>;
-    }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+        $$el: import('vue').ComputedRef<HTMLElement | null>;
+    }, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
         "update:modelValue": (...args: any[]) => void;
         change: (...args: any[]) => void;
-    }, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
+    }, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
         modelValue: {
             type: BooleanConstructor;
             default: boolean;
         };
         images: {
-            type: import("vue").PropType<string[]>;
+            type: import('vue').PropType<string[]>;
             default: () => never[];
         };
         descriptions: {
-            type: import("vue").PropType<string[]>;
+            type: import('vue').PropType<string[]>;
             default: () => never[];
         };
         active: {
@@ -105,7 +105,7 @@ declare const ImagePreview: import('../../utils').SFCWithInstall<{
             default: number;
         };
         mode: {
-            type: import("vue").PropType<"fade" | "slide" | undefined>;
+            type: import('vue').PropType<"fade" | "slide" | undefined>;
             default: string;
         };
         controls: {
@@ -129,14 +129,14 @@ declare const ImagePreview: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         errorIcon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: {
                 size: string;
                 type: string;
             };
         };
         loadIcon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: () => {
                 size: string;
                 type: string;
@@ -160,10 +160,10 @@ declare const ImagePreview: import('../../utils').SFCWithInstall<{
         modelValue: boolean;
         usePadding: boolean;
         active: number;
-        loadIcon: string | import('../../index').IconPropsType;
+        loadIcon: string | import('../icon').IconPropsType;
         loop: boolean;
         controls: boolean;
-        errorIcon: string | import('../../index').IconPropsType;
+        errorIcon: string | import('../icon').IconPropsType;
         maxScale: number;
         minScale: number;
         images: string[];
@@ -177,17 +177,17 @@ declare const ImagePreview: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import("vue").ExtractPropTypes<{
+    }, Readonly<import('vue').ExtractPropTypes<{
         modelValue: {
             type: BooleanConstructor;
             default: boolean;
         };
         images: {
-            type: import("vue").PropType<string[]>;
+            type: import('vue').PropType<string[]>;
             default: () => never[];
         };
         descriptions: {
-            type: import("vue").PropType<string[]>;
+            type: import('vue').PropType<string[]>;
             default: () => never[];
         };
         active: {
@@ -203,7 +203,7 @@ declare const ImagePreview: import('../../utils').SFCWithInstall<{
             default: number;
         };
         mode: {
-            type: import("vue").PropType<"fade" | "slide" | undefined>;
+            type: import('vue').PropType<"fade" | "slide" | undefined>;
             default: string;
         };
         controls: {
@@ -227,14 +227,14 @@ declare const ImagePreview: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         errorIcon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: {
                 size: string;
                 type: string;
             };
         };
         loadIcon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: () => {
                 size: string;
                 type: string;
@@ -252,7 +252,7 @@ declare const ImagePreview: import('../../utils').SFCWithInstall<{
         "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
         onChange?: ((...args: any[]) => any) | undefined;
     }, {
-        $$el: import("vue").ComputedRef<HTMLElement | null>;
+        $$el: import('vue').ComputedRef<HTMLElement | null>;
     }, {}, {}, {}, {
         mode: "fade" | "slide" | undefined;
         mountEl: string;
@@ -260,10 +260,10 @@ declare const ImagePreview: import('../../utils').SFCWithInstall<{
         modelValue: boolean;
         usePadding: boolean;
         active: number;
-        loadIcon: string | import('../../index').IconPropsType;
+        loadIcon: string | import('../icon').IconPropsType;
         loop: boolean;
         controls: boolean;
-        errorIcon: string | import('../../index').IconPropsType;
+        errorIcon: string | import('../icon').IconPropsType;
         maxScale: number;
         minScale: number;
         images: string[];
@@ -274,17 +274,17 @@ declare const ImagePreview: import('../../utils').SFCWithInstall<{
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
+} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     modelValue: {
         type: BooleanConstructor;
         default: boolean;
     };
     images: {
-        type: import("vue").PropType<string[]>;
+        type: import('vue').PropType<string[]>;
         default: () => never[];
     };
     descriptions: {
-        type: import("vue").PropType<string[]>;
+        type: import('vue').PropType<string[]>;
         default: () => never[];
     };
     active: {
@@ -300,7 +300,7 @@ declare const ImagePreview: import('../../utils').SFCWithInstall<{
         default: number;
     };
     mode: {
-        type: import("vue").PropType<"fade" | "slide" | undefined>;
+        type: import('vue').PropType<"fade" | "slide" | undefined>;
         default: string;
     };
     controls: {
@@ -324,14 +324,14 @@ declare const ImagePreview: import('../../utils').SFCWithInstall<{
         default: boolean;
     };
     errorIcon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: {
             size: string;
             type: string;
         };
     };
     loadIcon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: () => {
             size: string;
             type: string;
@@ -349,8 +349,8 @@ declare const ImagePreview: import('../../utils').SFCWithInstall<{
     "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
     onChange?: ((...args: any[]) => any) | undefined;
 }, {
-    $$el: import("vue").ComputedRef<HTMLElement | null>;
-}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+    $$el: import('vue').ComputedRef<HTMLElement | null>;
+}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     change: (...args: any[]) => void;
 }, string, {
@@ -360,17 +360,17 @@ declare const ImagePreview: import('../../utils').SFCWithInstall<{
     modelValue: boolean;
     usePadding: boolean;
     active: number;
-    loadIcon: string | import('../../index').IconPropsType;
+    loadIcon: string | import('../icon').IconPropsType;
     loop: boolean;
     controls: boolean;
-    errorIcon: string | import('../../index').IconPropsType;
+    errorIcon: string | import('../icon').IconPropsType;
     maxScale: number;
     minScale: number;
     images: string[];
     descriptions: string[];
     showPage: boolean;
     useTools: boolean;
-}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
+}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
     $slots: {
         page?(_: {
             total: number;

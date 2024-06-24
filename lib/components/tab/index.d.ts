@@ -1,12 +1,12 @@
 export type * from './props';
 declare const Tab: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
+    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         title: {
             type: StringConstructor;
             default: string;
         };
         icon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: null;
         };
         disabled: {
@@ -14,7 +14,7 @@ declare const Tab: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         placement: {
-            type: import("vue").PropType<"left" | "right">;
+            type: import('vue').PropType<"left" | "right">;
             default: string;
             validator(value: any): boolean;
         };
@@ -22,13 +22,13 @@ declare const Tab: import('../../utils').SFCWithInstall<{
         show: boolean;
         firstShow: boolean;
         back: boolean;
-    }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
+    }, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
         title: {
             type: StringConstructor;
             default: string;
         };
         icon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: null;
         };
         disabled: {
@@ -36,14 +36,14 @@ declare const Tab: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         placement: {
-            type: import("vue").PropType<"left" | "right">;
+            type: import('vue').PropType<"left" | "right">;
             default: string;
             validator(value: any): boolean;
         };
     }>>, {
         title: string;
         disabled: boolean;
-        icon: string | import('../../index').IconPropsType;
+        icon: string | import('../icon').IconPropsType;
         placement: "left" | "right";
     }, true, {}, {}, {
         P: {};
@@ -52,13 +52,13 @@ declare const Tab: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import("vue").ExtractPropTypes<{
+    }, Readonly<import('vue').ExtractPropTypes<{
         title: {
             type: StringConstructor;
             default: string;
         };
         icon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: null;
         };
         disabled: {
@@ -66,7 +66,7 @@ declare const Tab: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         placement: {
-            type: import("vue").PropType<"left" | "right">;
+            type: import('vue').PropType<"left" | "right">;
             default: string;
             validator(value: any): boolean;
         };
@@ -77,19 +77,19 @@ declare const Tab: import('../../utils').SFCWithInstall<{
     }, {}, {}, {}, {
         title: string;
         disabled: boolean;
-        icon: string | import('../../index').IconPropsType;
+        icon: string | import('../icon').IconPropsType;
         placement: "left" | "right";
     }>;
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
+} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     title: {
         type: StringConstructor;
         default: string;
     };
     icon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: null;
     };
     disabled: {
@@ -97,7 +97,7 @@ declare const Tab: import('../../utils').SFCWithInstall<{
         default: boolean;
     };
     placement: {
-        type: import("vue").PropType<"left" | "right">;
+        type: import('vue').PropType<"left" | "right">;
         default: string;
         validator(value: any): boolean;
     };
@@ -105,12 +105,12 @@ declare const Tab: import('../../utils').SFCWithInstall<{
     show: boolean;
     firstShow: boolean;
     back: boolean;
-}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, {
+}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, {
     title: string;
     disabled: boolean;
-    icon: string | import('../../index').IconPropsType;
+    icon: string | import('../icon').IconPropsType;
     placement: "left" | "right";
-}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
+}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
     $slots: {
         default?(_: {}): any;
     };

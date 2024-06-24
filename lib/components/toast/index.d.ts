@@ -1,5 +1,6 @@
 import { App, ComponentInternalInstance } from 'vue';
 import { ToastPropsType } from './props';
+
 export type * from './props';
 type ToastType = {
     $el?: HTMLElement;

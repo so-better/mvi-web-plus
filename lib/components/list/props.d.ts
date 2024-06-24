@@ -1,4 +1,5 @@
 import { ExtractPublicPropTypes } from 'vue';
+
 export declare const ListProps: {
     loading: {
         type: BooleanConstructor;

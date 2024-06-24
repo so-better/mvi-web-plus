@@ -1,5 +1,5 @@
 export type * from './props';
-declare const Search: import('../../utils').SFCWithInstall<import("vue").DefineComponent<{
+declare const Search: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     modelValue: {
         type: (StringConstructor | NumberConstructor)[];
         default: string;
@@ -45,16 +45,16 @@ declare const Search: import('../../utils').SFCWithInstall<import("vue").DefineC
         default: boolean;
     };
     align: {
-        type: import("vue").PropType<"left" | "right" | "center">;
+        type: import('vue').PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
     leftIcon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: null;
     };
     rightIcon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: null;
     };
     clearable: {
@@ -62,11 +62,11 @@ declare const Search: import('../../utils').SFCWithInstall<import("vue").DefineC
         default: boolean;
     };
     inputMode: {
-        type: import("vue").PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
+        type: import('vue').PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
         default: string;
         validator(value: any): boolean;
     };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     clear: (...args: any[]) => void;
     input: (...args: any[]) => void;
     search: (...args: any[]) => void;
@@ -78,7 +78,7 @@ declare const Search: import('../../utils').SFCWithInstall<import("vue").DefineC
     keydown: (...args: any[]) => void;
     keyup: (...args: any[]) => void;
     cancel: (...args: any[]) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     modelValue: {
         type: (StringConstructor | NumberConstructor)[];
         default: string;
@@ -124,16 +124,16 @@ declare const Search: import('../../utils').SFCWithInstall<import("vue").DefineC
         default: boolean;
     };
     align: {
-        type: import("vue").PropType<"left" | "right" | "center">;
+        type: import('vue').PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
     leftIcon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: null;
     };
     rightIcon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: null;
     };
     clearable: {
@@ -141,7 +141,7 @@ declare const Search: import('../../utils').SFCWithInstall<import("vue").DefineC
         default: boolean;
     };
     inputMode: {
-        type: import("vue").PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
+        type: import('vue').PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
         default: string;
         validator(value: any): boolean;
     };
@@ -168,8 +168,8 @@ declare const Search: import('../../utils').SFCWithInstall<import("vue").DefineC
     cancelText: string;
     placeholder: string;
     clearable: boolean;
-    leftIcon: string | import('../../index').IconPropsType;
-    rightIcon: string | import('../../index').IconPropsType;
+    leftIcon: string | import('../icon').IconPropsType;
+    rightIcon: string | import('../icon').IconPropsType;
     inputMode: "search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric";
     maxlength: number;
     readonly: boolean;

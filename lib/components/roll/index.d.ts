@@ -1,12 +1,12 @@
 export type * from './props';
 declare const Roll: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
+    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         interval: {
             type: NumberConstructor;
             default: number;
         };
         direction: {
-            type: import("vue").PropType<"left" | "right" | "up" | "down">;
+            type: import('vue').PropType<"left" | "right" | "up" | "down">;
             default: string;
             validator(value: any): boolean;
         };
@@ -19,7 +19,7 @@ declare const Roll: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         animation: {
-            type: import("vue").PropType<"linear" | "ease" | "ease-in" | "ease-out" | "ease-in-out">;
+            type: import('vue').PropType<"linear" | "ease" | "ease-in" | "ease-out" | "ease-in-out">;
             default: string;
             validator(value: any): boolean;
         };
@@ -43,19 +43,19 @@ declare const Roll: import('../../utils').SFCWithInstall<{
         pause: () => void;
         stop: () => void;
         play: () => void;
-        isStopped: import("vue").ComputedRef<boolean>;
-        isPaused: import("vue").ComputedRef<boolean>;
-    }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+        isStopped: import('vue').ComputedRef<boolean>;
+        isPaused: import('vue').ComputedRef<boolean>;
+    }, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
         stop: (...args: any[]) => void;
         pause: (...args: any[]) => void;
         play: (...args: any[]) => void;
-    }, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
+    }, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
         interval: {
             type: NumberConstructor;
             default: number;
         };
         direction: {
-            type: import("vue").PropType<"left" | "right" | "up" | "down">;
+            type: import('vue').PropType<"left" | "right" | "up" | "down">;
             default: string;
             validator(value: any): boolean;
         };
@@ -68,7 +68,7 @@ declare const Roll: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         animation: {
-            type: import("vue").PropType<"linear" | "ease" | "ease-in" | "ease-out" | "ease-in-out">;
+            type: import('vue').PropType<"linear" | "ease" | "ease-in" | "ease-out" | "ease-in-out">;
             default: string;
             validator(value: any): boolean;
         };
@@ -104,13 +104,13 @@ declare const Roll: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import("vue").ExtractPropTypes<{
+    }, Readonly<import('vue').ExtractPropTypes<{
         interval: {
             type: NumberConstructor;
             default: number;
         };
         direction: {
-            type: import("vue").PropType<"left" | "right" | "up" | "down">;
+            type: import('vue').PropType<"left" | "right" | "up" | "down">;
             default: string;
             validator(value: any): boolean;
         };
@@ -123,7 +123,7 @@ declare const Roll: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         animation: {
-            type: import("vue").PropType<"linear" | "ease" | "ease-in" | "ease-out" | "ease-in-out">;
+            type: import('vue').PropType<"linear" | "ease" | "ease-in" | "ease-out" | "ease-in-out">;
             default: string;
             validator(value: any): boolean;
         };
@@ -147,8 +147,8 @@ declare const Roll: import('../../utils').SFCWithInstall<{
         pause: () => void;
         stop: () => void;
         play: () => void;
-        isStopped: import("vue").ComputedRef<boolean>;
-        isPaused: import("vue").ComputedRef<boolean>;
+        isStopped: import('vue').ComputedRef<boolean>;
+        isPaused: import('vue').ComputedRef<boolean>;
     }, {}, {}, {}, {
         animation: "linear" | "ease" | "ease-in" | "ease-out" | "ease-in-out";
         center: boolean;
@@ -162,13 +162,13 @@ declare const Roll: import('../../utils').SFCWithInstall<{
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
+} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     interval: {
         type: NumberConstructor;
         default: number;
     };
     direction: {
-        type: import("vue").PropType<"left" | "right" | "up" | "down">;
+        type: import('vue').PropType<"left" | "right" | "up" | "down">;
         default: string;
         validator(value: any): boolean;
     };
@@ -181,7 +181,7 @@ declare const Roll: import('../../utils').SFCWithInstall<{
         default: boolean;
     };
     animation: {
-        type: import("vue").PropType<"linear" | "ease" | "ease-in" | "ease-out" | "ease-in-out">;
+        type: import('vue').PropType<"linear" | "ease" | "ease-in" | "ease-out" | "ease-in-out">;
         default: string;
         validator(value: any): boolean;
     };
@@ -205,9 +205,9 @@ declare const Roll: import('../../utils').SFCWithInstall<{
     pause: () => void;
     stop: () => void;
     play: () => void;
-    isStopped: import("vue").ComputedRef<boolean>;
-    isPaused: import("vue").ComputedRef<boolean>;
-}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+    isStopped: import('vue').ComputedRef<boolean>;
+    isPaused: import('vue').ComputedRef<boolean>;
+}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     stop: (...args: any[]) => void;
     pause: (...args: any[]) => void;
     play: (...args: any[]) => void;
@@ -220,7 +220,7 @@ declare const Roll: import('../../utils').SFCWithInstall<{
     direction: "left" | "right" | "up" | "down";
     clickStop: boolean;
     hoverStop: boolean;
-}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
+}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
     $slots: {
         default?(_: {}): any;
     };

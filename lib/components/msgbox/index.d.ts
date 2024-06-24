@@ -1,5 +1,6 @@
 import { App } from 'vue';
 import { MsgboxPropsType } from './props';
+
 export type * from './props';
 type MsgboxType = {
     initParams: (options: string | MsgboxPropsType) => MsgboxPropsType;

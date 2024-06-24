@@ -1,12 +1,12 @@
 export type * from './props';
 declare const Badge: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
+    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         content: {
             type: (StringConstructor | NumberConstructor)[];
             default: null;
         };
         placement: {
-            type: import("vue").PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
+            type: import('vue').PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
             default: string;
             validator(value: any): boolean;
         };
@@ -19,7 +19,7 @@ declare const Badge: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         offset: {
-            type: import("vue").PropType<string[]>;
+            type: import('vue').PropType<string[]>;
             default: () => null;
         };
         background: {
@@ -34,13 +34,13 @@ declare const Badge: import('../../utils').SFCWithInstall<{
             type: BooleanConstructor;
             default: boolean;
         };
-    }>>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
+    }>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
         content: {
             type: (StringConstructor | NumberConstructor)[];
             default: null;
         };
         placement: {
-            type: import("vue").PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
+            type: import('vue').PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
             default: string;
             validator(value: any): boolean;
         };
@@ -53,7 +53,7 @@ declare const Badge: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         offset: {
-            type: import("vue").PropType<string[]>;
+            type: import('vue').PropType<string[]>;
             default: () => null;
         };
         background: {
@@ -84,13 +84,13 @@ declare const Badge: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import("vue").ExtractPropTypes<{
+    }, Readonly<import('vue').ExtractPropTypes<{
         content: {
             type: (StringConstructor | NumberConstructor)[];
             default: null;
         };
         placement: {
-            type: import("vue").PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
+            type: import('vue').PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
             default: string;
             validator(value: any): boolean;
         };
@@ -103,7 +103,7 @@ declare const Badge: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         offset: {
-            type: import("vue").PropType<string[]>;
+            type: import('vue').PropType<string[]>;
             default: () => null;
         };
         background: {
@@ -131,13 +131,13 @@ declare const Badge: import('../../utils').SFCWithInstall<{
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
+} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     content: {
         type: (StringConstructor | NumberConstructor)[];
         default: null;
     };
     placement: {
-        type: import("vue").PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
+        type: import('vue').PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
         default: string;
         validator(value: any): boolean;
     };
@@ -150,7 +150,7 @@ declare const Badge: import('../../utils').SFCWithInstall<{
         default: boolean;
     };
     offset: {
-        type: import("vue").PropType<string[]>;
+        type: import('vue').PropType<string[]>;
         default: () => null;
     };
     background: {
@@ -165,7 +165,7 @@ declare const Badge: import('../../utils').SFCWithInstall<{
         type: BooleanConstructor;
         default: boolean;
     };
-}>>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, {
+}>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, {
     color: string;
     show: boolean;
     placement: "top-right" | "top-left" | "bottom-right" | "bottom-left";
@@ -174,7 +174,7 @@ declare const Badge: import('../../utils').SFCWithInstall<{
     content: string | number;
     dot: boolean;
     block: boolean;
-}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
+}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
     $slots: {
         default?(_: {}): any;
     };

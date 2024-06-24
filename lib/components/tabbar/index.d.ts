@@ -1,11 +1,11 @@
 export type * from './props';
-declare const Tabbar: import('../../utils').SFCWithInstall<import("vue").DefineComponent<{
+declare const Tabbar: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     modelValue: {
         type: (StringConstructor | NumberConstructor | ObjectConstructor | ArrayConstructor)[];
         default: null;
     };
     tabs: {
-        type: import("vue").PropType<import("./props").TabbarItemPropsType[]>;
+        type: import('vue').PropType<import('./props').TabbarItemPropsType[]>;
         default: () => never[];
     };
     fixed: {
@@ -40,17 +40,17 @@ declare const Tabbar: import('../../utils').SFCWithInstall<import("vue").DefineC
         type: StringConstructor;
         default: null;
     };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     change: (...args: any[]) => void;
     "item-click": (...args: any[]) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     modelValue: {
         type: (StringConstructor | NumberConstructor | ObjectConstructor | ArrayConstructor)[];
         default: null;
     };
     tabs: {
-        type: import("vue").PropType<import("./props").TabbarItemPropsType[]>;
+        type: import('vue').PropType<import('./props').TabbarItemPropsType[]>;
         default: () => never[];
     };
     fixed: {
@@ -98,7 +98,7 @@ declare const Tabbar: import('../../utils').SFCWithInstall<import("vue").DefineC
     active: boolean;
     activeColor: string;
     inactiveColor: string;
-    tabs: import("./props").TabbarItemPropsType[];
+    tabs: import('./props').TabbarItemPropsType[];
     flex: string;
 }, {}>>;
 export { Tabbar, Tabbar as default };

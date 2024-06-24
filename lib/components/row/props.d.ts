@@ -1,4 +1,5 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
+
 export declare const RowProps: {
     justify: {
         type: PropType<"flex-start" | "flex-end" | "space-around" | "space-between">;
