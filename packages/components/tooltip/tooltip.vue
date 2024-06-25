@@ -10,7 +10,7 @@
 	</Layer>
 </template>
 <script setup lang="ts">
-import { getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue'
+import { getCurrentInstance, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { Layer } from '@/components/layer'
 import { TooltipProps } from './props'
 import { isDark } from '@/utils'
@@ -32,11 +32,11 @@ const show = ref<boolean>(false)
 //observe对象
 const observe = ref<Observe | null>(null)
 //边框颜色
-const innerBorderColor = ref<string>(props.borderColor || (isDark() ? '#fff' : '#1a1a1a'))
+const innerBorderColor = ref<string>('')
 //背景色
-const innerColor = ref<string>(props.color || (isDark() ? '#fff' : '#1a1a1a'))
+const innerColor = ref<string>('')
 //字体颜色
-const innerTextColor = ref<string>(props.textColor || (isDark() ? '#1a1a1a' : '#fff'))
+const innerTextColor = ref<string>('')
 
 //api：显示
 const showTooltip = () => {
@@ -74,6 +74,36 @@ const clickShowTooltip = () => {
 		}
 	}
 }
+
+watch(
+	() => props.borderColor,
+	newVal => {
+		innerBorderColor.value = newVal || (isDark() ? '#fff' : '#1a1a1a')
+	},
+	{
+		immediate: true
+	}
+)
+
+watch(
+	() => props.color,
+	newVal => {
+		innerColor.value = newVal || (isDark() ? '#fff' : '#1a1a1a')
+	},
+	{
+		immediate: true
+	}
+)
+
+watch(
+	() => props.textColor,
+	newVal => {
+		innerTextColor.value = newVal || (isDark() ? '#1a1a1a' : '#fff')
+	},
+	{
+		immediate: true
+	}
+)
 
 onMounted(() => {
 	//深色模式监听

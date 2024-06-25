@@ -42,9 +42,9 @@ const triangleRef = ref<InstanceType<typeof Triangle> | null>(null)
 //observe对象
 const observe = ref<Observe | null>(null)
 //内部边框色
-const innerBorderColor = ref<string>(props.borderColor || (isDark() ? '#2c2c2c' : '#eee'))
+const innerBorderColor = ref<string>('')
 //内部背景色
-const innerBackground = ref<string>(props.background || (isDark() ? '#1a1a1a' : '#fff'))
+const innerBackground = ref<string>('')
 
 //浮层元素导出对象
 const $$el = computed<HTMLElement | null>(() => {
@@ -897,6 +897,28 @@ watch(
 	() => props.placement,
 	() => {
 		update()
+	}
+)
+
+//监听borderColor变化
+watch(
+	() => props.borderColor,
+	newVal => {
+		innerBorderColor.value = newVal || (isDark() ? '#222' : '#eee')
+	},
+	{
+		immediate: true
+	}
+)
+
+//监听background变化
+watch(
+	() => props.background,
+	newVal => {
+		innerBackground.value = newVal || (isDark() ? '#1a1a1a' : '#fff')
+	},
+	{
+		immediate: true
 	}
 )
 

@@ -66,7 +66,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { LoadingProps } from './props'
 import { isDark } from '@/utils'
 import { Observe } from '@/directives/observe'
@@ -82,7 +82,7 @@ const instance = getCurrentInstance()!
 //observe对象
 const observe = ref<Observe | null>(null)
 //颜色
-const innerColor = ref<string>(props.color || (isDark() ? '#4a4a4a' : '#bbb'))
+const innerColor = ref<string>('')
 //default类型的加载样式
 const loadingStyle = computed<any>(() => {
 	let style: any = {}
@@ -93,6 +93,16 @@ const loadingStyle = computed<any>(() => {
 	style.webkitTransformOrigin = 'calc(' + props.size + '/40) calc(' + props.size + '/2)'
 	return style
 })
+
+watch(
+	() => props.color,
+	newVal => {
+		innerColor.value = newVal || (isDark() ? '#4a4a4a' : '#bbb')
+	},
+	{
+		immediate: true
+	}
+)
 
 onMounted(() => {
 	observe.value = new Observe(document.documentElement, {

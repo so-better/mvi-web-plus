@@ -27,9 +27,9 @@ const canvasRef = ref<HTMLCanvasElement | null>(null)
 //observe对象
 const observe = ref<Observe | null>(null)
 //颜色
-const innerColor = ref<string>(props.color || (isDark() ? '#fff' : '#505050'))
+const innerColor = ref<string>('')
 //背景色
-const innerBackground = ref<string>(props.background || (isDark() ? '#1a1a1a' : '#fff'))
+const innerBackground = ref<string>('')
 
 //鼠标按下
 const canvasMouseDown = (e: MouseEvent) => {
@@ -123,6 +123,26 @@ const init = () => {
 	//添加鼠标松开事件
 	Dap.event.on(document.documentElement, `mouseup.sign_${instance.uid}`, canvasMouseUp)
 }
+
+watch(
+	() => props.color,
+	newVal => {
+		innerColor.value = newVal || (isDark() ? '#fff' : '#505050')
+	},
+	{
+		immediate: true
+	}
+)
+
+watch(
+	() => props.background,
+	newVal => {
+		innerBackground.value = newVal || (isDark() ? '#1a1a1a' : '#fff')
+	},
+	{
+		immediate: true
+	}
+)
 
 watch(
 	() => innerBackground.value,
