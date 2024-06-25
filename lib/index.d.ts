@@ -154,6 +154,6 @@ export type * from './components/carousel-item';
 export type * from './components/rich-image';
 export type * from './components/image-preview';
 declare const install: (app: App) => void;
-declare const version = "2.0.7";
+declare const version = "2.0.8";
 export { isDark, useDark } from './utils';
 export { install as default, install, version };

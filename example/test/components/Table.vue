@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<m-table :tooltip="{ color: '#f30' }" :data="data" :columns="columns" border columnBorder stripe activeColor="#f30"> </m-table>
+		<m-table :data="data" :columns="columns" border columnBorder stripe activeColor="#f30"> </m-table>
 	</div>
 </template>
 <script setup lang="ts">
@@ -47,7 +47,12 @@ const columns = ref([
 	},
 	{
 		prop: 'score',
-		label: '分数'
+		label: '分数',
+		ellipsis: true,
+		width: '100px',
+		format: val => {
+			return `<span>这是一个很长的文字这是一个很长的文字</span><br/><span>这是一个很长的文字这是一个很长的文字</span><br/><span>这是一个很长的文字这是一个很长的文字</span>`
+		}
 	}
 ])
 </script>

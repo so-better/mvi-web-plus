@@ -47,7 +47,10 @@
 									</div>
 									<!-- 其他 -->
 									<div v-else class="mvi-table-column-item" :class="{ center: center }">
-										<Tooltip :disabled="!column.ellipsis || !tooltipTitle(row, column)" :title="tooltipTitle(row, column)" trigger="hover" placement="bottom" :color="tooltip?.color" :text-color="tooltip?.textColor" :border-color="tooltip?.borderColor" :show-triangle="tooltip?.showTriangle" :animation="tooltip?.animation" :z-index="tooltip?.zIndex" :offset="tooltip?.offset" :timeout="tooltip?.timeout">
+										<Tooltip :disabled="!column.ellipsis" trigger="hover" placement="bottom" :color="tooltip?.color" :text-color="tooltip?.textColor" :border-color="tooltip?.borderColor" :show-triangle="tooltip?.showTriangle" :animation="tooltip?.animation" :z-index="tooltip?.zIndex" :offset="tooltip?.offset" :timeout="tooltip?.timeout">
+											<template #title>
+												<div v-html="dataFormat(row, column)"></div>
+											</template>
 											<div v-html="dataFormat(row, column)" :class="{ ellipsis: column.ellipsis }"></div>
 										</Tooltip>
 									</div>
@@ -186,13 +189,6 @@ const cmpSelectable = computed<(row: any, rowIndex: number, column: TableColumnT
 			return column.selectable.apply(instance.proxy, [row, rowIndex])
 		}
 		return true
-	}
-})
-//工具提示内容
-const tooltipTitle = computed<(row: any, column: TableColumnType) => string>(() => {
-	return (row: any, column: TableColumnType) => {
-		const dom = <HTMLElement>Dap.element.string2dom(`<div>${dataFormat.value(row, column)}</div>`)
-		return dom.innerText
 	}
 })
 
