@@ -250,7 +250,7 @@ const install = (app: App) => {
 	})
 }
 //版本号
-const version = '2.0.8'
+const version = '2.0.9'
 
 //导出深色模式方法
 export { isDark, useDark } from '@/utils'

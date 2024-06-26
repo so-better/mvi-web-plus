@@ -7,7 +7,7 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-
+document.body.style.backgroundColor = '#1a1a1a'
 const val = ref('')
 const options = ref([
 	{
