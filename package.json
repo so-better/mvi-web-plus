@@ -1,12 +1,12 @@
 {
 	"name": "mvi-web-plus",
-	"version": "2.0.10",
+	"version": "2.0.11",
 	"private": false,
 	"sideEffects": [
 		"*.css"
 	],
 	"type": "module",
-	"author": "ling0523",
+	"author": "so-better",
 	"main": "lib/mvi.umd.js",
 	"module": "lib/mvi.es.js",
 	"types": "lib/index.d.ts",
@@ -17,8 +17,8 @@
 		"lib": "vue-tsc && vite build"
 	},
 	"dependencies": {
-		"animator-clip": "^1.4.1",
-		"dap-util": "^1.5.4",
+		"animator-clip": "^1.4.3",
+		"dap-util": "^1.5.7",
 		"dayjs": "^1.11.9",
 		"vue": "^3.4.19",
 		"vue-router": "^4.3.0"
@@ -43,6 +43,6 @@
 	],
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/ling0523/mvi-web-plus"
+		"url": "https://github.com/so-better/mvi-web-plus"
 	}
 }
