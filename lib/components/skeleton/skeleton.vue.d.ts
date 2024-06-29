@@ -1,4 +1,4 @@
-declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     loading: {
         type: BooleanConstructor;
         default: boolean;
@@ -9,7 +9,7 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         validator(value: number): boolean;
     };
     rowWidth: {
-        type: import('vue').PropType<string | string[]>;
+        type: import("vue").PropType<string | string[]>;
         default: null;
     };
     avatar: {
@@ -40,7 +40,7 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         type: BooleanConstructor;
         default: boolean;
     };
-}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     loading: {
         type: BooleanConstructor;
         default: boolean;
@@ -51,7 +51,7 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         validator(value: number): boolean;
     };
     rowWidth: {
-        type: import('vue').PropType<string | string[]>;
+        type: import("vue").PropType<string | string[]>;
         default: null;
     };
     avatar: {

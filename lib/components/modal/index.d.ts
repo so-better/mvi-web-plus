@@ -1,6 +1,6 @@
 export type * from './props';
 declare const Modal: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
+    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
         modelValue: {
             type: BooleanConstructor;
             default: boolean;
@@ -82,8 +82,8 @@ declare const Modal: import('../../utils').SFCWithInstall<{
         onHidding?: ((...args: any[]) => any) | undefined;
         onHidden?: ((...args: any[]) => any) | undefined;
     }, {
-        $$el: import('vue').ComputedRef<HTMLElement | null>;
-    }, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+        $$el: import("vue").ComputedRef<HTMLElement | null>;
+    }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
         "update:modelValue": (...args: any[]) => void;
         show: (...args: any[]) => void;
         showing: (...args: any[]) => void;
@@ -91,7 +91,7 @@ declare const Modal: import('../../utils').SFCWithInstall<{
         hide: (...args: any[]) => void;
         hidding: (...args: any[]) => void;
         hidden: (...args: any[]) => void;
-    }, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
+    }, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
         modelValue: {
             type: BooleanConstructor;
             default: boolean;
@@ -198,7 +198,7 @@ declare const Modal: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import('vue').ExtractPropTypes<{
+    }, Readonly<import("vue").ExtractPropTypes<{
         modelValue: {
             type: BooleanConstructor;
             default: boolean;
@@ -280,7 +280,7 @@ declare const Modal: import('../../utils').SFCWithInstall<{
         onHidding?: ((...args: any[]) => any) | undefined;
         onHidden?: ((...args: any[]) => any) | undefined;
     }, {
-        $$el: import('vue').ComputedRef<HTMLElement | null>;
+        $$el: import("vue").ComputedRef<HTMLElement | null>;
     }, {}, {}, {}, {
         footer: string;
         title: string;
@@ -304,7 +304,7 @@ declare const Modal: import('../../utils').SFCWithInstall<{
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
+} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
     modelValue: {
         type: BooleanConstructor;
         default: boolean;
@@ -386,8 +386,8 @@ declare const Modal: import('../../utils').SFCWithInstall<{
     onHidding?: ((...args: any[]) => any) | undefined;
     onHidden?: ((...args: any[]) => any) | undefined;
 }, {
-    $$el: import('vue').ComputedRef<HTMLElement | null>;
-}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+    $$el: import("vue").ComputedRef<HTMLElement | null>;
+}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     show: (...args: any[]) => void;
     showing: (...args: any[]) => void;
@@ -414,7 +414,7 @@ declare const Modal: import('../../utils').SFCWithInstall<{
     radius: string;
     fullScreen: boolean;
     __ignorePadding: boolean;
-}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
+}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
     $slots: {
         title?(_: {}): any;
         default?(_: {}): any;

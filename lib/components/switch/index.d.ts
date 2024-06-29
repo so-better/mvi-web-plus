@@ -1,5 +1,5 @@
 export type * from './props';
-declare const Switch: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
+declare const Switch: import('../../utils').SFCWithInstall<import("vue").DefineComponent<{
     modelValue: {
         type: BooleanConstructor;
         default: boolean;
@@ -24,10 +24,10 @@ declare const Switch: import('../../utils').SFCWithInstall<import('vue').DefineC
         type: StringConstructor;
         default: null;
     };
-}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     change: (...args: any[]) => void;
-}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     modelValue: {
         type: BooleanConstructor;
         default: boolean;

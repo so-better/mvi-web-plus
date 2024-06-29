@@ -1,6 +1,6 @@
 export type * from './props';
 declare const DateChooser: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
+    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
         modelValue: {
             type: DateConstructor;
             default: () => Date;
@@ -10,7 +10,7 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         layerProps: {
-            type: import('vue').PropType<import('../layer').LayerPropsType>;
+            type: import("vue").PropType<import('../../index').LayerPropsType>;
             default: () => {};
         };
         closable: {
@@ -18,21 +18,21 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         trigger: {
-            type: import('vue').PropType<"click" | "hover" | "custom">;
+            type: import("vue").PropType<"click" | "hover" | "custom">;
             default: string;
             validator(value: any): boolean;
         };
         mode: {
-            type: import('vue').PropType<import('../calendar').CalendarViewType>;
+            type: import("vue").PropType<import('../../index').CalendarViewType>;
             default: string;
             validator(value: any): boolean;
         };
         monthText: {
-            type: import('vue').PropType<string[]>;
+            type: import("vue").PropType<string[]>;
             default: () => string[];
         };
         weekText: {
-            type: import('vue').PropType<string[]>;
+            type: import("vue").PropType<string[]>;
             default: () => string[];
         };
         startDate: {
@@ -48,7 +48,7 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         type: {
-            type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
+            type: import("vue").PropType<"info" | "success" | "warn" | "error" | "primary">;
             default: string;
             validator(value: any): boolean;
         };
@@ -57,7 +57,7 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         headerFormatter: {
-            type: import('vue').PropType<(type: import('../calendar').CalendarViewType, val: number) => string>;
+            type: import("vue").PropType<(type: import('../../index').CalendarViewType, val: number) => string>;
             default: null;
         };
     }>> & {
@@ -66,10 +66,10 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
     }, {
         openCalendar: () => void;
         closeCalendar: () => void;
-    }, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+    }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
         "update:modelValue": (...args: any[]) => void;
         change: (...args: any[]) => void;
-    }, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
+    }, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
         modelValue: {
             type: DateConstructor;
             default: () => Date;
@@ -79,7 +79,7 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         layerProps: {
-            type: import('vue').PropType<import('../layer').LayerPropsType>;
+            type: import("vue").PropType<import('../../index').LayerPropsType>;
             default: () => {};
         };
         closable: {
@@ -87,21 +87,21 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         trigger: {
-            type: import('vue').PropType<"click" | "hover" | "custom">;
+            type: import("vue").PropType<"click" | "hover" | "custom">;
             default: string;
             validator(value: any): boolean;
         };
         mode: {
-            type: import('vue').PropType<import('../calendar').CalendarViewType>;
+            type: import("vue").PropType<import('../../index').CalendarViewType>;
             default: string;
             validator(value: any): boolean;
         };
         monthText: {
-            type: import('vue').PropType<string[]>;
+            type: import("vue").PropType<string[]>;
             default: () => string[];
         };
         weekText: {
-            type: import('vue').PropType<string[]>;
+            type: import("vue").PropType<string[]>;
             default: () => string[];
         };
         startDate: {
@@ -117,7 +117,7 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         type: {
-            type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
+            type: import("vue").PropType<"info" | "success" | "warn" | "error" | "primary">;
             default: string;
             validator(value: any): boolean;
         };
@@ -126,7 +126,7 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         headerFormatter: {
-            type: import('vue').PropType<(type: import('../calendar').CalendarViewType, val: number) => string>;
+            type: import("vue").PropType<(type: import('../../index').CalendarViewType, val: number) => string>;
             default: null;
         };
     }>> & {
@@ -134,7 +134,7 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
         onChange?: ((...args: any[]) => any) | undefined;
     }, {
         type: "info" | "success" | "warn" | "error" | "primary";
-        mode: import('../calendar').CalendarViewType;
+        mode: import('../../index').CalendarViewType;
         modelValue: Date;
         closable: boolean;
         disabled: boolean;
@@ -161,7 +161,7 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
         startDate: Date;
         endDate: Date;
         trigger: "click" | "hover" | "custom";
-        headerFormatter: (type: import('../calendar').CalendarViewType, val: number) => string;
+        headerFormatter: (type: import('../../index').CalendarViewType, val: number) => string;
     }, true, {}, {}, {
         P: {};
         B: {};
@@ -169,7 +169,7 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import('vue').ExtractPropTypes<{
+    }, Readonly<import("vue").ExtractPropTypes<{
         modelValue: {
             type: DateConstructor;
             default: () => Date;
@@ -179,7 +179,7 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         layerProps: {
-            type: import('vue').PropType<import('../layer').LayerPropsType>;
+            type: import("vue").PropType<import('../../index').LayerPropsType>;
             default: () => {};
         };
         closable: {
@@ -187,21 +187,21 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         trigger: {
-            type: import('vue').PropType<"click" | "hover" | "custom">;
+            type: import("vue").PropType<"click" | "hover" | "custom">;
             default: string;
             validator(value: any): boolean;
         };
         mode: {
-            type: import('vue').PropType<import('../calendar').CalendarViewType>;
+            type: import("vue").PropType<import('../../index').CalendarViewType>;
             default: string;
             validator(value: any): boolean;
         };
         monthText: {
-            type: import('vue').PropType<string[]>;
+            type: import("vue").PropType<string[]>;
             default: () => string[];
         };
         weekText: {
-            type: import('vue').PropType<string[]>;
+            type: import("vue").PropType<string[]>;
             default: () => string[];
         };
         startDate: {
@@ -217,7 +217,7 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         type: {
-            type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
+            type: import("vue").PropType<"info" | "success" | "warn" | "error" | "primary">;
             default: string;
             validator(value: any): boolean;
         };
@@ -226,7 +226,7 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         headerFormatter: {
-            type: import('vue').PropType<(type: import('../calendar').CalendarViewType, val: number) => string>;
+            type: import("vue").PropType<(type: import('../../index').CalendarViewType, val: number) => string>;
             default: null;
         };
     }>> & {
@@ -237,7 +237,7 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
         closeCalendar: () => void;
     }, {}, {}, {}, {
         type: "info" | "success" | "warn" | "error" | "primary";
-        mode: import('../calendar').CalendarViewType;
+        mode: import('../../index').CalendarViewType;
         modelValue: Date;
         closable: boolean;
         disabled: boolean;
@@ -264,12 +264,12 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
         startDate: Date;
         endDate: Date;
         trigger: "click" | "hover" | "custom";
-        headerFormatter: (type: import('../calendar').CalendarViewType, val: number) => string;
+        headerFormatter: (type: import('../../index').CalendarViewType, val: number) => string;
     }>;
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
+} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
     modelValue: {
         type: DateConstructor;
         default: () => Date;
@@ -279,7 +279,7 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
         default: boolean;
     };
     layerProps: {
-        type: import('vue').PropType<import('../layer').LayerPropsType>;
+        type: import("vue").PropType<import('../../index').LayerPropsType>;
         default: () => {};
     };
     closable: {
@@ -287,21 +287,21 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
         default: boolean;
     };
     trigger: {
-        type: import('vue').PropType<"click" | "hover" | "custom">;
+        type: import("vue").PropType<"click" | "hover" | "custom">;
         default: string;
         validator(value: any): boolean;
     };
     mode: {
-        type: import('vue').PropType<import('../calendar').CalendarViewType>;
+        type: import("vue").PropType<import('../../index').CalendarViewType>;
         default: string;
         validator(value: any): boolean;
     };
     monthText: {
-        type: import('vue').PropType<string[]>;
+        type: import("vue").PropType<string[]>;
         default: () => string[];
     };
     weekText: {
-        type: import('vue').PropType<string[]>;
+        type: import("vue").PropType<string[]>;
         default: () => string[];
     };
     startDate: {
@@ -317,7 +317,7 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
         default: boolean;
     };
     type: {
-        type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
+        type: import("vue").PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
@@ -326,7 +326,7 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
         default: boolean;
     };
     headerFormatter: {
-        type: import('vue').PropType<(type: import('../calendar').CalendarViewType, val: number) => string>;
+        type: import("vue").PropType<(type: import('../../index').CalendarViewType, val: number) => string>;
         default: null;
     };
 }>> & {
@@ -335,12 +335,12 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
 }, {
     openCalendar: () => void;
     closeCalendar: () => void;
-}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     change: (...args: any[]) => void;
 }, string, {
     type: "info" | "success" | "warn" | "error" | "primary";
-    mode: import('../calendar').CalendarViewType;
+    mode: import('../../index').CalendarViewType;
     modelValue: Date;
     closable: boolean;
     disabled: boolean;
@@ -367,8 +367,8 @@ declare const DateChooser: import('../../utils').SFCWithInstall<{
     startDate: Date;
     endDate: Date;
     trigger: "click" | "hover" | "custom";
-    headerFormatter: (type: import('../calendar').CalendarViewType, val: number) => string;
-}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
+    headerFormatter: (type: import('../../index').CalendarViewType, val: number) => string;
+}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
     $slots: {
         default?(_: {}): any;
     };

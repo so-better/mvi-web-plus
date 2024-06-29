@@ -1,6 +1,5 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
 import { IconPropsType } from '../icon';
-
 export type RichImageDoubleTouchType = {
     is: boolean;
     spacing?: number;

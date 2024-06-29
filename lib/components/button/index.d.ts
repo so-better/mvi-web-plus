@@ -1,13 +1,13 @@
 export type * from './props';
 declare const Button: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
+    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
         type: {
-            type: import('vue').PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
+            type: import("vue").PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
             default: string;
             validator(value: any): boolean;
         };
         size: {
-            type: import('vue').PropType<"small" | "medium" | "large" | "mini">;
+            type: import("vue").PropType<"small" | "medium" | "large" | "mini">;
             default: string;
             validator(value: any): boolean;
         };
@@ -16,7 +16,7 @@ declare const Button: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         nativeType: {
-            type: import('vue').PropType<"button" | "submit" | "reset">;
+            type: import("vue").PropType<"button" | "submit" | "reset">;
             default: string;
         };
         block: {
@@ -52,20 +52,20 @@ declare const Button: import('../../utils').SFCWithInstall<{
             default: string;
         };
         loadIcon: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: () => {
                 type: string;
                 spin: boolean;
             };
         };
-    }>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
+    }>>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
         type: {
-            type: import('vue').PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
+            type: import("vue").PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
             default: string;
             validator(value: any): boolean;
         };
         size: {
-            type: import('vue').PropType<"small" | "medium" | "large" | "mini">;
+            type: import("vue").PropType<"small" | "medium" | "large" | "mini">;
             default: string;
             validator(value: any): boolean;
         };
@@ -74,7 +74,7 @@ declare const Button: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         nativeType: {
-            type: import('vue').PropType<"button" | "submit" | "reset">;
+            type: import("vue").PropType<"button" | "submit" | "reset">;
             default: string;
         };
         block: {
@@ -110,7 +110,7 @@ declare const Button: import('../../utils').SFCWithInstall<{
             default: string;
         };
         loadIcon: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: () => {
                 type: string;
                 spin: boolean;
@@ -129,7 +129,7 @@ declare const Button: import('../../utils').SFCWithInstall<{
         tag: string;
         plain: boolean;
         loadText: string;
-        loadIcon: string | import('../icon').IconPropsType;
+        loadIcon: string | import('../../index').IconPropsType;
     }, true, {}, {}, {
         P: {};
         B: {};
@@ -137,14 +137,14 @@ declare const Button: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import('vue').ExtractPropTypes<{
+    }, Readonly<import("vue").ExtractPropTypes<{
         type: {
-            type: import('vue').PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
+            type: import("vue").PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
             default: string;
             validator(value: any): boolean;
         };
         size: {
-            type: import('vue').PropType<"small" | "medium" | "large" | "mini">;
+            type: import("vue").PropType<"small" | "medium" | "large" | "mini">;
             default: string;
             validator(value: any): boolean;
         };
@@ -153,7 +153,7 @@ declare const Button: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         nativeType: {
-            type: import('vue').PropType<"button" | "submit" | "reset">;
+            type: import("vue").PropType<"button" | "submit" | "reset">;
             default: string;
         };
         block: {
@@ -189,7 +189,7 @@ declare const Button: import('../../utils').SFCWithInstall<{
             default: string;
         };
         loadIcon: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: () => {
                 type: string;
                 spin: boolean;
@@ -208,19 +208,19 @@ declare const Button: import('../../utils').SFCWithInstall<{
         tag: string;
         plain: boolean;
         loadText: string;
-        loadIcon: string | import('../icon').IconPropsType;
+        loadIcon: string | import('../../index').IconPropsType;
     }>;
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
+} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
     type: {
-        type: import('vue').PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
+        type: import("vue").PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
     size: {
-        type: import('vue').PropType<"small" | "medium" | "large" | "mini">;
+        type: import("vue").PropType<"small" | "medium" | "large" | "mini">;
         default: string;
         validator(value: any): boolean;
     };
@@ -229,7 +229,7 @@ declare const Button: import('../../utils').SFCWithInstall<{
         default: boolean;
     };
     nativeType: {
-        type: import('vue').PropType<"button" | "submit" | "reset">;
+        type: import("vue").PropType<"button" | "submit" | "reset">;
         default: string;
     };
     block: {
@@ -265,13 +265,13 @@ declare const Button: import('../../utils').SFCWithInstall<{
         default: string;
     };
     loadIcon: {
-        type: import('vue').PropType<string | import('../icon').IconPropsType>;
+        type: import("vue").PropType<string | import('../../index').IconPropsType>;
         default: () => {
             type: string;
             spin: boolean;
         };
     };
-}>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, {
+}>>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, {
     size: "small" | "medium" | "large" | "mini";
     type: "default" | "info" | "success" | "warn" | "error" | "primary";
     disabled: boolean;
@@ -284,8 +284,8 @@ declare const Button: import('../../utils').SFCWithInstall<{
     tag: string;
     plain: boolean;
     loadText: string;
-    loadIcon: string | import('../icon').IconPropsType;
-}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
+    loadIcon: string | import('../../index').IconPropsType;
+}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
     $slots: {
         loading?(_: {}): any;
         default?(_: {}): any;

@@ -1,13 +1,12 @@
 import { IconPropsType } from '../icon';
 import { TabbarRouteType } from './props';
-
-declare const _default: import('vue').DefineComponent<{
+declare const _default: import("vue").DefineComponent<{
     route: {
-        type: import('vue').PropType<string | TabbarRouteType>;
+        type: import("vue").PropType<string | TabbarRouteType>;
         default: null;
     };
     icon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: null;
     };
     name: {
@@ -23,16 +22,16 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     badge: {
-        type: import('vue').PropType<import('../badge').BadgePropsType>;
+        type: import("vue").PropType<import('../badge').BadgePropsType>;
         default: null;
     };
-}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     route: {
-        type: import('vue').PropType<string | TabbarRouteType>;
+        type: import("vue").PropType<string | TabbarRouteType>;
         default: null;
     };
     icon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: null;
     };
     name: {
@@ -48,7 +47,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     badge: {
-        type: import('vue').PropType<import('../badge').BadgePropsType>;
+        type: import("vue").PropType<import('../badge').BadgePropsType>;
         default: null;
     };
 }>>, {

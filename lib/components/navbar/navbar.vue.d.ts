@@ -1,6 +1,5 @@
 import { IconPropsType } from '../icon';
-
-declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     title: {
         type: StringConstructor;
         default: null;
@@ -14,11 +13,11 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         default: null;
     };
     leftIcon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: null;
     };
     rightIcon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: null;
     };
     fixed: {
@@ -33,11 +32,11 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         type: NumberConstructor;
         default: number;
     };
-}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "left-click": (...args: any[]) => void;
     "right-click": (...args: any[]) => void;
     "title-click": (...args: any[]) => void;
-}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     title: {
         type: StringConstructor;
         default: null;
@@ -51,11 +50,11 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         default: null;
     };
     leftIcon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: null;
     };
     rightIcon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: null;
     };
     fixed: {

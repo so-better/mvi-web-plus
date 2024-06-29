@@ -1,4 +1,4 @@
-declare const _default: import('vue').DefineComponent<{
+declare const _default: import("vue").DefineComponent<{
     modelValue: {
         type: DateConstructor;
         default: () => Date;
@@ -12,7 +12,7 @@ declare const _default: import('vue').DefineComponent<{
         default: () => Date;
     };
     mode: {
-        type: import('vue').PropType<import('./props').DatePickerModeType>;
+        type: import("vue").PropType<import("./props").DatePickerModeType>;
         default: string;
         validator(value: any): boolean;
     };
@@ -45,15 +45,15 @@ declare const _default: import('vue').DefineComponent<{
         default: string;
     };
     formatter: {
-        type: import('vue').PropType<(type: import('./props').DatePickerTimeType, val: number) => string>;
+        type: import("vue").PropType<(type: import("./props").DatePickerTimeType, val: number) => string>;
         default: null;
     };
-}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     cancel: (...args: any[]) => void;
     change: (...args: any[]) => void;
     confirm: (...args: any[]) => void;
-}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     modelValue: {
         type: DateConstructor;
         default: () => Date;
@@ -67,7 +67,7 @@ declare const _default: import('vue').DefineComponent<{
         default: () => Date;
     };
     mode: {
-        type: import('vue').PropType<import('./props').DatePickerModeType>;
+        type: import("vue").PropType<import("./props").DatePickerModeType>;
         default: string;
         validator(value: any): boolean;
     };
@@ -100,7 +100,7 @@ declare const _default: import('vue').DefineComponent<{
         default: string;
     };
     formatter: {
-        type: import('vue').PropType<(type: import('./props').DatePickerTimeType, val: number) => string>;
+        type: import("vue").PropType<(type: import("./props").DatePickerTimeType, val: number) => string>;
         default: null;
     };
 }>> & {
@@ -110,7 +110,7 @@ declare const _default: import('vue').DefineComponent<{
     onConfirm?: ((...args: any[]) => any) | undefined;
 }, {
     title: string;
-    mode: import('./props').DatePickerModeType;
+    mode: import("./props").DatePickerModeType;
     modelValue: Date;
     loading: boolean;
     cancelText: string;
@@ -120,6 +120,6 @@ declare const _default: import('vue').DefineComponent<{
     confirmText: string;
     visibleCounts: number;
     selectHeight: string;
-    formatter: (type: import('./props').DatePickerTimeType, val: number) => string;
+    formatter: (type: import("./props").DatePickerTimeType, val: number) => string;
 }, {}>;
 export default _default;

@@ -1,8 +1,8 @@
 export type * from './props';
 declare const Cell: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
+    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
         icon: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         title: {
@@ -22,7 +22,7 @@ declare const Cell: import('../../utils').SFCWithInstall<{
             default: null;
         };
         arrow: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         active: {
@@ -37,9 +37,9 @@ declare const Cell: import('../../utils').SFCWithInstall<{
             type: BooleanConstructor;
             default: boolean;
         };
-    }>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
+    }>>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
         icon: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         title: {
@@ -59,7 +59,7 @@ declare const Cell: import('../../utils').SFCWithInstall<{
             default: null;
         };
         arrow: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         active: {
@@ -78,10 +78,10 @@ declare const Cell: import('../../utils').SFCWithInstall<{
         label: string;
         title: string;
         border: boolean;
-        icon: string | import('../icon').IconPropsType;
+        icon: string | import('../../index').IconPropsType;
         active: boolean;
         content: string;
-        arrow: string | import('../icon').IconPropsType;
+        arrow: string | import('../../index').IconPropsType;
         ellipsis: number | boolean;
         noWrap: boolean;
     }, true, {}, {}, {
@@ -91,9 +91,9 @@ declare const Cell: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import('vue').ExtractPropTypes<{
+    }, Readonly<import("vue").ExtractPropTypes<{
         icon: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         title: {
@@ -113,7 +113,7 @@ declare const Cell: import('../../utils').SFCWithInstall<{
             default: null;
         };
         arrow: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         active: {
@@ -132,19 +132,19 @@ declare const Cell: import('../../utils').SFCWithInstall<{
         label: string;
         title: string;
         border: boolean;
-        icon: string | import('../icon').IconPropsType;
+        icon: string | import('../../index').IconPropsType;
         active: boolean;
         content: string;
-        arrow: string | import('../icon').IconPropsType;
+        arrow: string | import('../../index').IconPropsType;
         ellipsis: number | boolean;
         noWrap: boolean;
     }>;
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
+} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
     icon: {
-        type: import('vue').PropType<string | import('../icon').IconPropsType>;
+        type: import("vue").PropType<string | import('../../index').IconPropsType>;
         default: null;
     };
     title: {
@@ -164,7 +164,7 @@ declare const Cell: import('../../utils').SFCWithInstall<{
         default: null;
     };
     arrow: {
-        type: import('vue').PropType<string | import('../icon').IconPropsType>;
+        type: import("vue").PropType<string | import('../../index').IconPropsType>;
         default: null;
     };
     active: {
@@ -179,17 +179,17 @@ declare const Cell: import('../../utils').SFCWithInstall<{
         type: BooleanConstructor;
         default: boolean;
     };
-}>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, {
+}>>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, {
     label: string;
     title: string;
     border: boolean;
-    icon: string | import('../icon').IconPropsType;
+    icon: string | import('../../index').IconPropsType;
     active: boolean;
     content: string;
-    arrow: string | import('../icon').IconPropsType;
+    arrow: string | import('../../index').IconPropsType;
     ellipsis: number | boolean;
     noWrap: boolean;
-}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
+}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
     $slots: {
         title?(_: {}): any;
         content?(_: {}): any;

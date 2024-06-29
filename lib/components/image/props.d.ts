@@ -1,6 +1,5 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
 import { IconPropsType } from '../icon';
-
 export type ImageFillType = 'fill' | 'cover' | 'contain' | 'response' | 'none';
 export declare const ImageProps: {
     src: {

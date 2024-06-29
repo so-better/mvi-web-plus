@@ -1,6 +1,5 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
 import { IconPropsType } from '../icon';
-
 export declare const SearchProps: {
     modelValue: {
         type: (StringConstructor | NumberConstructor)[];

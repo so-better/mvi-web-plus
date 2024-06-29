@@ -1,5 +1,4 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
-
 export declare const LabelProps: {
     type: {
         type: PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;

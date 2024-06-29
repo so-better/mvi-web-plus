@@ -1,13 +1,12 @@
 import { IconPropsType } from '../icon';
 import { LayerPropsType } from '../layer';
-
-declare const _default: import('vue').DefineComponent<{
+declare const _default: import("vue").DefineComponent<{
     modelValue: {
-        type: import('vue').PropType<any>;
+        type: import("vue").PropType<any>;
         default: null;
     };
     options: {
-        type: import('vue').PropType<any[]>;
+        type: import("vue").PropType<any[]>;
         default: never[];
     };
     placeholder: {
@@ -15,12 +14,12 @@ declare const _default: import('vue').DefineComponent<{
         default: string;
     };
     size: {
-        type: import('vue').PropType<"small" | "medium" | "large">;
+        type: import("vue").PropType<"small" | "medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
     layerProps: {
-        type: import('vue').PropType<LayerPropsType>;
+        type: import("vue").PropType<LayerPropsType>;
         default: () => {};
     };
     height: {
@@ -28,7 +27,7 @@ declare const _default: import('vue').DefineComponent<{
         default: null;
     };
     activeType: {
-        type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
+        type: import("vue").PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
@@ -62,7 +61,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     filterMethod: {
-        type: import('vue').PropType<(label: string | string[]) => string>;
+        type: import("vue").PropType<(label: string | string[]) => string>;
         default: null;
     };
     showSelected: {
@@ -70,7 +69,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     selectedIcon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: string;
     };
     clearable: {
@@ -78,7 +77,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     props: {
-        type: import('vue').PropType<import('./props').SelectOptionsItemPropsType>;
+        type: import("vue").PropType<import("./props").SelectOptionsItemPropsType>;
         default: () => {
             label: string;
             value: string;
@@ -88,17 +87,17 @@ declare const _default: import('vue').DefineComponent<{
         type: StringConstructor;
         default: string;
     };
-}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     clear: (...args: any[]) => void;
     "update:modelValue": (...args: any[]) => void;
     change: (...args: any[]) => void;
-}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     modelValue: {
-        type: import('vue').PropType<any>;
+        type: import("vue").PropType<any>;
         default: null;
     };
     options: {
-        type: import('vue').PropType<any[]>;
+        type: import("vue").PropType<any[]>;
         default: never[];
     };
     placeholder: {
@@ -106,12 +105,12 @@ declare const _default: import('vue').DefineComponent<{
         default: string;
     };
     size: {
-        type: import('vue').PropType<"small" | "medium" | "large">;
+        type: import("vue").PropType<"small" | "medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
     layerProps: {
-        type: import('vue').PropType<LayerPropsType>;
+        type: import("vue").PropType<LayerPropsType>;
         default: () => {};
     };
     height: {
@@ -119,7 +118,7 @@ declare const _default: import('vue').DefineComponent<{
         default: null;
     };
     activeType: {
-        type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
+        type: import("vue").PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
@@ -153,7 +152,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     filterMethod: {
-        type: import('vue').PropType<(label: string | string[]) => string>;
+        type: import("vue").PropType<(label: string | string[]) => string>;
         default: null;
     };
     showSelected: {
@@ -161,7 +160,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     selectedIcon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: string;
     };
     clearable: {
@@ -169,7 +168,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     props: {
-        type: import('vue').PropType<import('./props').SelectOptionsItemPropsType>;
+        type: import("vue").PropType<import("./props").SelectOptionsItemPropsType>;
         default: () => {
             label: string;
             value: string;
@@ -187,7 +186,7 @@ declare const _default: import('vue').DefineComponent<{
     size: "small" | "medium" | "large";
     height: string;
     name: string;
-    props: import('./props').SelectOptionsItemPropsType;
+    props: import("./props").SelectOptionsItemPropsType;
     modelValue: any;
     disabled: boolean;
     icon: string;

@@ -1,6 +1,5 @@
 import { App, ComponentInternalInstance } from 'vue';
 import { NotifyPropsType } from './props';
-
 export type * from './props';
 type NotifyType = {
     $el?: HTMLElement;

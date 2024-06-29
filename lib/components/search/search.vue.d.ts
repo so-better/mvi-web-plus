@@ -1,6 +1,5 @@
 import { IconPropsType } from '../icon';
-
-declare const _default: import('vue').DefineComponent<{
+declare const _default: import("vue").DefineComponent<{
     modelValue: {
         type: (StringConstructor | NumberConstructor)[];
         default: string;
@@ -46,16 +45,16 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     align: {
-        type: import('vue').PropType<"left" | "right" | "center">;
+        type: import("vue").PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
     leftIcon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: null;
     };
     rightIcon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: null;
     };
     clearable: {
@@ -63,11 +62,11 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     inputMode: {
-        type: import('vue').PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
+        type: import("vue").PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
         default: string;
         validator(value: any): boolean;
     };
-}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     clear: (...args: any[]) => void;
     input: (...args: any[]) => void;
     search: (...args: any[]) => void;
@@ -79,7 +78,7 @@ declare const _default: import('vue').DefineComponent<{
     keydown: (...args: any[]) => void;
     keyup: (...args: any[]) => void;
     cancel: (...args: any[]) => void;
-}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     modelValue: {
         type: (StringConstructor | NumberConstructor)[];
         default: string;
@@ -125,16 +124,16 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     align: {
-        type: import('vue').PropType<"left" | "right" | "center">;
+        type: import("vue").PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
     leftIcon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: null;
     };
     rightIcon: {
-        type: import('vue').PropType<string | IconPropsType>;
+        type: import("vue").PropType<string | IconPropsType>;
         default: null;
     };
     clearable: {
@@ -142,7 +141,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     inputMode: {
-        type: import('vue').PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
+        type: import("vue").PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
         default: string;
         validator(value: any): boolean;
     };

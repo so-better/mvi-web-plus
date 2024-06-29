@@ -1,6 +1,6 @@
 export type * from './props';
 declare const List: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
+    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
         loading: {
             type: BooleanConstructor;
             default: boolean;
@@ -41,11 +41,11 @@ declare const List: import('../../utils').SFCWithInstall<{
         onLoad?: ((...args: any[]) => any) | undefined;
         "onUpdate:loading"?: ((...args: any[]) => any) | undefined;
         "onUpdate:error"?: ((...args: any[]) => any) | undefined;
-    }, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+    }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
         load: (...args: any[]) => void;
         "update:loading": (...args: any[]) => void;
         "update:error": (...args: any[]) => void;
-    }, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
+    }, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
         loading: {
             type: BooleanConstructor;
             default: boolean;
@@ -103,7 +103,7 @@ declare const List: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import('vue').ExtractPropTypes<{
+    }, Readonly<import("vue").ExtractPropTypes<{
         loading: {
             type: BooleanConstructor;
             default: boolean;
@@ -158,7 +158,7 @@ declare const List: import('../../utils').SFCWithInstall<{
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
+} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
     loading: {
         type: BooleanConstructor;
         default: boolean;
@@ -199,7 +199,7 @@ declare const List: import('../../utils').SFCWithInstall<{
     onLoad?: ((...args: any[]) => any) | undefined;
     "onUpdate:loading"?: ((...args: any[]) => any) | undefined;
     "onUpdate:error"?: ((...args: any[]) => any) | undefined;
-}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     load: (...args: any[]) => void;
     "update:loading": (...args: any[]) => void;
     "update:error": (...args: any[]) => void;
@@ -213,7 +213,7 @@ declare const List: import('../../utils').SFCWithInstall<{
     finishedText: string;
     immediateLoad: boolean;
     scrollEl: string;
-}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
+}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
     $slots: {
         default?(_: {}): any;
         finished?(_: {}): any;

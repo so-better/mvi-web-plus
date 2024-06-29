@@ -1,6 +1,6 @@
 export type * from './props';
 declare const Field: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
+    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
         modelValue: {
             type: (StringConstructor | NumberConstructor)[];
             default: string;
@@ -18,12 +18,12 @@ declare const Field: import('../../utils').SFCWithInstall<{
             default: string;
         };
         type: {
-            type: import('vue').PropType<"number" | "textarea" | "text" | "password" | "tel">;
+            type: import("vue").PropType<"number" | "textarea" | "text" | "password" | "tel">;
             default: string;
             validator(value: any): boolean;
         };
         size: {
-            type: import('vue').PropType<"small" | "medium" | "large">;
+            type: import("vue").PropType<"small" | "medium" | "large">;
             default: string;
             validator(value: any): boolean;
         };
@@ -40,23 +40,23 @@ declare const Field: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         prefix: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         suffix: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         prepend: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         append: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         activeType: {
-            type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
+            type: import("vue").PropType<"info" | "success" | "warn" | "error" | "primary">;
             default: string;
             validator(value: any): boolean;
         };
@@ -70,7 +70,7 @@ declare const Field: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         align: {
-            type: import('vue').PropType<"left" | "right" | "center">;
+            type: import("vue").PropType<"left" | "right" | "center">;
             default: string;
             validator(value: any): boolean;
         };
@@ -83,7 +83,7 @@ declare const Field: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         inputMode: {
-            type: import('vue').PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
+            type: import("vue").PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
             default: string;
             validator(value: any): boolean;
         };
@@ -92,7 +92,7 @@ declare const Field: import('../../utils').SFCWithInstall<{
             default: number;
         };
         autosize: {
-            type: import('vue').PropType<boolean | import('./props').FieldAutosizeType>;
+            type: import("vue").PropType<boolean | import("./props").FieldAutosizeType>;
             default: boolean;
             validator(value: any): boolean;
         };
@@ -108,7 +108,7 @@ declare const Field: import('../../utils').SFCWithInstall<{
         "onPrefix-click"?: ((...args: any[]) => any) | undefined;
         "onAppend-click"?: ((...args: any[]) => any) | undefined;
         "onSuffix-click"?: ((...args: any[]) => any) | undefined;
-    }, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+    }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
         clear: (...args: any[]) => void;
         input: (...args: any[]) => void;
         "update:modelValue": (...args: any[]) => void;
@@ -120,7 +120,7 @@ declare const Field: import('../../utils').SFCWithInstall<{
         "prefix-click": (...args: any[]) => void;
         "append-click": (...args: any[]) => void;
         "suffix-click": (...args: any[]) => void;
-    }, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
+    }, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
         modelValue: {
             type: (StringConstructor | NumberConstructor)[];
             default: string;
@@ -138,12 +138,12 @@ declare const Field: import('../../utils').SFCWithInstall<{
             default: string;
         };
         type: {
-            type: import('vue').PropType<"number" | "textarea" | "text" | "password" | "tel">;
+            type: import("vue").PropType<"number" | "textarea" | "text" | "password" | "tel">;
             default: string;
             validator(value: any): boolean;
         };
         size: {
-            type: import('vue').PropType<"small" | "medium" | "large">;
+            type: import("vue").PropType<"small" | "medium" | "large">;
             default: string;
             validator(value: any): boolean;
         };
@@ -160,23 +160,23 @@ declare const Field: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         prefix: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         suffix: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         prepend: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         append: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         activeType: {
-            type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
+            type: import("vue").PropType<"info" | "success" | "warn" | "error" | "primary">;
             default: string;
             validator(value: any): boolean;
         };
@@ -190,7 +190,7 @@ declare const Field: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         align: {
-            type: import('vue').PropType<"left" | "right" | "center">;
+            type: import("vue").PropType<"left" | "right" | "center">;
             default: string;
             validator(value: any): boolean;
         };
@@ -203,7 +203,7 @@ declare const Field: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         inputMode: {
-            type: import('vue').PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
+            type: import("vue").PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
             default: string;
             validator(value: any): boolean;
         };
@@ -212,7 +212,7 @@ declare const Field: import('../../utils').SFCWithInstall<{
             default: number;
         };
         autosize: {
-            type: import('vue').PropType<boolean | import('./props').FieldAutosizeType>;
+            type: import("vue").PropType<boolean | import("./props").FieldAutosizeType>;
             default: boolean;
             validator(value: any): boolean;
         };
@@ -244,13 +244,13 @@ declare const Field: import('../../utils').SFCWithInstall<{
         inputMode: "search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric";
         maxlength: number;
         readonly: boolean;
-        prefix: string | import('../icon').IconPropsType;
-        suffix: string | import('../icon').IconPropsType;
-        prepend: string | import('../icon').IconPropsType;
-        append: string | import('../icon').IconPropsType;
+        prefix: string | import('../../index').IconPropsType;
+        suffix: string | import('../../index').IconPropsType;
+        prepend: string | import('../../index').IconPropsType;
+        append: string | import('../../index').IconPropsType;
         autofocus: boolean;
         rows: number;
-        autosize: boolean | import('./props').FieldAutosizeType;
+        autosize: boolean | import("./props").FieldAutosizeType;
     }, true, {}, {}, {
         P: {};
         B: {};
@@ -258,7 +258,7 @@ declare const Field: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import('vue').ExtractPropTypes<{
+    }, Readonly<import("vue").ExtractPropTypes<{
         modelValue: {
             type: (StringConstructor | NumberConstructor)[];
             default: string;
@@ -276,12 +276,12 @@ declare const Field: import('../../utils').SFCWithInstall<{
             default: string;
         };
         type: {
-            type: import('vue').PropType<"number" | "textarea" | "text" | "password" | "tel">;
+            type: import("vue").PropType<"number" | "textarea" | "text" | "password" | "tel">;
             default: string;
             validator(value: any): boolean;
         };
         size: {
-            type: import('vue').PropType<"small" | "medium" | "large">;
+            type: import("vue").PropType<"small" | "medium" | "large">;
             default: string;
             validator(value: any): boolean;
         };
@@ -298,23 +298,23 @@ declare const Field: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         prefix: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         suffix: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         prepend: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         append: {
-            type: import('vue').PropType<string | import('../icon').IconPropsType>;
+            type: import("vue").PropType<string | import('../../index').IconPropsType>;
             default: null;
         };
         activeType: {
-            type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
+            type: import("vue").PropType<"info" | "success" | "warn" | "error" | "primary">;
             default: string;
             validator(value: any): boolean;
         };
@@ -328,7 +328,7 @@ declare const Field: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         align: {
-            type: import('vue').PropType<"left" | "right" | "center">;
+            type: import("vue").PropType<"left" | "right" | "center">;
             default: string;
             validator(value: any): boolean;
         };
@@ -341,7 +341,7 @@ declare const Field: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         inputMode: {
-            type: import('vue').PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
+            type: import("vue").PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
             default: string;
             validator(value: any): boolean;
         };
@@ -350,7 +350,7 @@ declare const Field: import('../../utils').SFCWithInstall<{
             default: number;
         };
         autosize: {
-            type: import('vue').PropType<boolean | import('./props').FieldAutosizeType>;
+            type: import("vue").PropType<boolean | import("./props").FieldAutosizeType>;
             default: boolean;
             validator(value: any): boolean;
         };
@@ -382,18 +382,18 @@ declare const Field: import('../../utils').SFCWithInstall<{
         inputMode: "search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric";
         maxlength: number;
         readonly: boolean;
-        prefix: string | import('../icon').IconPropsType;
-        suffix: string | import('../icon').IconPropsType;
-        prepend: string | import('../icon').IconPropsType;
-        append: string | import('../icon').IconPropsType;
+        prefix: string | import('../../index').IconPropsType;
+        suffix: string | import('../../index').IconPropsType;
+        prepend: string | import('../../index').IconPropsType;
+        append: string | import('../../index').IconPropsType;
         autofocus: boolean;
         rows: number;
-        autosize: boolean | import('./props').FieldAutosizeType;
+        autosize: boolean | import("./props").FieldAutosizeType;
     }>;
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
+} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
     modelValue: {
         type: (StringConstructor | NumberConstructor)[];
         default: string;
@@ -411,12 +411,12 @@ declare const Field: import('../../utils').SFCWithInstall<{
         default: string;
     };
     type: {
-        type: import('vue').PropType<"number" | "textarea" | "text" | "password" | "tel">;
+        type: import("vue").PropType<"number" | "textarea" | "text" | "password" | "tel">;
         default: string;
         validator(value: any): boolean;
     };
     size: {
-        type: import('vue').PropType<"small" | "medium" | "large">;
+        type: import("vue").PropType<"small" | "medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
@@ -433,23 +433,23 @@ declare const Field: import('../../utils').SFCWithInstall<{
         default: boolean;
     };
     prefix: {
-        type: import('vue').PropType<string | import('../icon').IconPropsType>;
+        type: import("vue").PropType<string | import('../../index').IconPropsType>;
         default: null;
     };
     suffix: {
-        type: import('vue').PropType<string | import('../icon').IconPropsType>;
+        type: import("vue").PropType<string | import('../../index').IconPropsType>;
         default: null;
     };
     prepend: {
-        type: import('vue').PropType<string | import('../icon').IconPropsType>;
+        type: import("vue").PropType<string | import('../../index').IconPropsType>;
         default: null;
     };
     append: {
-        type: import('vue').PropType<string | import('../icon').IconPropsType>;
+        type: import("vue").PropType<string | import('../../index').IconPropsType>;
         default: null;
     };
     activeType: {
-        type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
+        type: import("vue").PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
@@ -463,7 +463,7 @@ declare const Field: import('../../utils').SFCWithInstall<{
         default: boolean;
     };
     align: {
-        type: import('vue').PropType<"left" | "right" | "center">;
+        type: import("vue").PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
@@ -476,7 +476,7 @@ declare const Field: import('../../utils').SFCWithInstall<{
         default: boolean;
     };
     inputMode: {
-        type: import('vue').PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
+        type: import("vue").PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
         default: string;
         validator(value: any): boolean;
     };
@@ -485,7 +485,7 @@ declare const Field: import('../../utils').SFCWithInstall<{
         default: number;
     };
     autosize: {
-        type: import('vue').PropType<boolean | import('./props').FieldAutosizeType>;
+        type: import("vue").PropType<boolean | import("./props").FieldAutosizeType>;
         default: boolean;
         validator(value: any): boolean;
     };
@@ -501,7 +501,7 @@ declare const Field: import('../../utils').SFCWithInstall<{
     "onPrefix-click"?: ((...args: any[]) => any) | undefined;
     "onAppend-click"?: ((...args: any[]) => any) | undefined;
     "onSuffix-click"?: ((...args: any[]) => any) | undefined;
-}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     clear: (...args: any[]) => void;
     input: (...args: any[]) => void;
     "update:modelValue": (...args: any[]) => void;
@@ -529,14 +529,14 @@ declare const Field: import('../../utils').SFCWithInstall<{
     inputMode: "search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric";
     maxlength: number;
     readonly: boolean;
-    prefix: string | import('../icon').IconPropsType;
-    suffix: string | import('../icon').IconPropsType;
-    prepend: string | import('../icon').IconPropsType;
-    append: string | import('../icon').IconPropsType;
+    prefix: string | import('../../index').IconPropsType;
+    suffix: string | import('../../index').IconPropsType;
+    prepend: string | import('../../index').IconPropsType;
+    append: string | import('../../index').IconPropsType;
     autofocus: boolean;
     rows: number;
-    autosize: boolean | import('./props').FieldAutosizeType;
-}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
+    autosize: boolean | import("./props").FieldAutosizeType;
+}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
     $slots: {
         prepend?(_: {}): any;
         prefix?(_: {}): any;

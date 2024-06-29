@@ -1,6 +1,5 @@
 import { App, ComponentInternalInstance } from 'vue';
 import { LoadingBarPropsType } from './props';
-
 export type * from './props';
 type LoadingBarType = {
     $el?: HTMLElement;

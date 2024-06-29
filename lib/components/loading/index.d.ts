@@ -1,7 +1,7 @@
 export type * from './props';
-declare const Loading: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
+declare const Loading: import('../../utils').SFCWithInstall<import("vue").DefineComponent<{
     type: {
-        type: import('vue').PropType<"default" | "circle" | "spin" | "dots" | "transfer">;
+        type: import("vue").PropType<"default" | "circle" | "spin" | "dots" | "transfer">;
         default: string;
         validator(value: any): boolean;
     };
@@ -13,9 +13,9 @@ declare const Loading: import('../../utils').SFCWithInstall<import('vue').Define
         type: StringConstructor;
         default: string;
     };
-}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     type: {
-        type: import('vue').PropType<"default" | "circle" | "spin" | "dots" | "transfer">;
+        type: import("vue").PropType<"default" | "circle" | "spin" | "dots" | "transfer">;
         default: string;
         validator(value: any): boolean;
     };

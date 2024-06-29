@@ -1,5 +1,4 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
-
 export type CarouselIndicatorsType = {
     show?: boolean;
     active?: string;
