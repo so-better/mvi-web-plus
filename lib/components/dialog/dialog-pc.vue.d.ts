@@ -1,7 +1,8 @@
 import { DialogInputType, DialogPcBtnsType } from './props';
-declare const _default: import("vue").DefineComponent<{
+
+declare const _default: import('vue').DefineComponent<{
     type: {
-        type: import("vue").PropType<"Confirm" | "Alert" | "Prompt">;
+        type: import('vue').PropType<"Confirm" | "Alert" | "Prompt">;
         default: null;
     };
     title: {
@@ -36,7 +37,7 @@ declare const _default: import("vue").DefineComponent<{
         default: null;
     };
     input: {
-        type: import("vue").PropType<DialogInputType>;
+        type: import('vue').PropType<DialogInputType>;
         default: null;
     };
     center: {
@@ -48,7 +49,7 @@ declare const _default: import("vue").DefineComponent<{
         default: null;
     };
     btns: {
-        type: import("vue").PropType<DialogPcBtnsType>;
+        type: import('vue').PropType<DialogPcBtnsType>;
         default: null;
     };
     showTimes: {
@@ -68,10 +69,10 @@ declare const _default: import("vue").DefineComponent<{
         default: () => () => void;
     };
 }, {
-    $$el: import("vue").ComputedRef<HTMLElement | null>;
-}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+    $$el: import('vue').ComputedRef<HTMLElement | null>;
+}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     type: {
-        type: import("vue").PropType<"Confirm" | "Alert" | "Prompt">;
+        type: import('vue').PropType<"Confirm" | "Alert" | "Prompt">;
         default: null;
     };
     title: {
@@ -106,7 +107,7 @@ declare const _default: import("vue").DefineComponent<{
         default: null;
     };
     input: {
-        type: import("vue").PropType<DialogInputType>;
+        type: import('vue').PropType<DialogInputType>;
         default: null;
     };
     center: {
@@ -118,7 +119,7 @@ declare const _default: import("vue").DefineComponent<{
         default: null;
     };
     btns: {
-        type: import("vue").PropType<DialogPcBtnsType>;
+        type: import('vue').PropType<DialogPcBtnsType>;
         default: null;
     };
     showTimes: {

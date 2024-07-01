@@ -1,6 +1,6 @@
 export type * from './props';
 declare const Layer: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
+    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         modelValue: {
             type: BooleanConstructor;
             default: boolean;
@@ -10,7 +10,7 @@ declare const Layer: import('../../utils').SFCWithInstall<{
             default: null;
         };
         placement: {
-            type: import("vue").PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
+            type: import('vue').PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
             default: string;
             validator(value: any): boolean;
         };
@@ -67,9 +67,9 @@ declare const Layer: import('../../utils').SFCWithInstall<{
         onHidding?: ((...args: any[]) => any) | undefined;
         onHidden?: ((...args: any[]) => any) | undefined;
     }, {
-        $$el: import("vue").ComputedRef<HTMLElement | null>;
+        $$el: import('vue').ComputedRef<HTMLElement | null>;
         update: () => void;
-    }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+    }, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
         "update:modelValue": (...args: any[]) => void;
         show: (...args: any[]) => void;
         showing: (...args: any[]) => void;
@@ -77,7 +77,7 @@ declare const Layer: import('../../utils').SFCWithInstall<{
         hide: (...args: any[]) => void;
         hidding: (...args: any[]) => void;
         hidden: (...args: any[]) => void;
-    }, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
+    }, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
         modelValue: {
             type: BooleanConstructor;
             default: boolean;
@@ -87,7 +87,7 @@ declare const Layer: import('../../utils').SFCWithInstall<{
             default: null;
         };
         placement: {
-            type: import("vue").PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
+            type: import('vue').PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
             default: string;
             validator(value: any): boolean;
         };
@@ -165,7 +165,7 @@ declare const Layer: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import("vue").ExtractPropTypes<{
+    }, Readonly<import('vue').ExtractPropTypes<{
         modelValue: {
             type: BooleanConstructor;
             default: boolean;
@@ -175,7 +175,7 @@ declare const Layer: import('../../utils').SFCWithInstall<{
             default: null;
         };
         placement: {
-            type: import("vue").PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
+            type: import('vue').PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
             default: string;
             validator(value: any): boolean;
         };
@@ -232,7 +232,7 @@ declare const Layer: import('../../utils').SFCWithInstall<{
         onHidding?: ((...args: any[]) => any) | undefined;
         onHidden?: ((...args: any[]) => any) | undefined;
     }, {
-        $$el: import("vue").ComputedRef<HTMLElement | null>;
+        $$el: import('vue').ComputedRef<HTMLElement | null>;
         update: () => void;
     }, {}, {}, {}, {
         border: boolean;
@@ -253,7 +253,7 @@ declare const Layer: import('../../utils').SFCWithInstall<{
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
+} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     modelValue: {
         type: BooleanConstructor;
         default: boolean;
@@ -263,7 +263,7 @@ declare const Layer: import('../../utils').SFCWithInstall<{
         default: null;
     };
     placement: {
-        type: import("vue").PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
+        type: import('vue').PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
         default: string;
         validator(value: any): boolean;
     };
@@ -320,9 +320,9 @@ declare const Layer: import('../../utils').SFCWithInstall<{
     onHidding?: ((...args: any[]) => any) | undefined;
     onHidden?: ((...args: any[]) => any) | undefined;
 }, {
-    $$el: import("vue").ComputedRef<HTMLElement | null>;
+    $$el: import('vue').ComputedRef<HTMLElement | null>;
     update: () => void;
-}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     show: (...args: any[]) => void;
     showing: (...args: any[]) => void;
@@ -345,7 +345,7 @@ declare const Layer: import('../../utils').SFCWithInstall<{
     showTriangle: boolean;
     animation: string;
     shadow: boolean;
-}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
+}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
     $slots: {
         default?(_: {}): any;
     };

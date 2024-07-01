@@ -1,6 +1,6 @@
 export type * from './props';
 declare const Skeleton: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
+    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         loading: {
             type: BooleanConstructor;
             default: boolean;
@@ -11,7 +11,7 @@ declare const Skeleton: import('../../utils').SFCWithInstall<{
             validator(value: number): boolean;
         };
         rowWidth: {
-            type: import("vue").PropType<string | string[]>;
+            type: import('vue').PropType<string | string[]>;
             default: null;
         };
         avatar: {
@@ -42,7 +42,7 @@ declare const Skeleton: import('../../utils').SFCWithInstall<{
             type: BooleanConstructor;
             default: boolean;
         };
-    }>>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
+    }>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
         loading: {
             type: BooleanConstructor;
             default: boolean;
@@ -53,7 +53,7 @@ declare const Skeleton: import('../../utils').SFCWithInstall<{
             validator(value: number): boolean;
         };
         rowWidth: {
-            type: import("vue").PropType<string | string[]>;
+            type: import('vue').PropType<string | string[]>;
             default: null;
         };
         avatar: {
@@ -102,7 +102,7 @@ declare const Skeleton: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import("vue").ExtractPropTypes<{
+    }, Readonly<import('vue').ExtractPropTypes<{
         loading: {
             type: BooleanConstructor;
             default: boolean;
@@ -113,7 +113,7 @@ declare const Skeleton: import('../../utils').SFCWithInstall<{
             validator(value: number): boolean;
         };
         rowWidth: {
-            type: import("vue").PropType<string | string[]>;
+            type: import('vue').PropType<string | string[]>;
             default: null;
         };
         avatar: {
@@ -159,7 +159,7 @@ declare const Skeleton: import('../../utils').SFCWithInstall<{
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
+} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     loading: {
         type: BooleanConstructor;
         default: boolean;
@@ -170,7 +170,7 @@ declare const Skeleton: import('../../utils').SFCWithInstall<{
         validator(value: number): boolean;
     };
     rowWidth: {
-        type: import("vue").PropType<string | string[]>;
+        type: import('vue').PropType<string | string[]>;
         default: null;
     };
     avatar: {
@@ -201,7 +201,7 @@ declare const Skeleton: import('../../utils').SFCWithInstall<{
         type: BooleanConstructor;
         default: boolean;
     };
-}>>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, {
+}>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, {
     title: boolean;
     round: boolean;
     loading: boolean;
@@ -212,7 +212,7 @@ declare const Skeleton: import('../../utils').SFCWithInstall<{
     titleWidth: string;
     avatarSize: string;
     avatarRound: boolean;
-}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
+}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
     $slots: {
         default?(_: {}): any;
     };

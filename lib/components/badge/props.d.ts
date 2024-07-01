@@ -1,4 +1,5 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
+
 export declare const BadgeProps: {
     content: {
         type: (StringConstructor | NumberConstructor)[];

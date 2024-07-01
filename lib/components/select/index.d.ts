@@ -1,11 +1,11 @@
 export type * from './props';
-declare const Select: import('../../utils').SFCWithInstall<import("vue").DefineComponent<{
+declare const Select: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     modelValue: {
-        type: import("vue").PropType<any>;
+        type: import('vue').PropType<any>;
         default: null;
     };
     options: {
-        type: import("vue").PropType<any[]>;
+        type: import('vue').PropType<any[]>;
         default: never[];
     };
     placeholder: {
@@ -13,12 +13,12 @@ declare const Select: import('../../utils').SFCWithInstall<import("vue").DefineC
         default: string;
     };
     size: {
-        type: import("vue").PropType<"small" | "medium" | "large">;
+        type: import('vue').PropType<"small" | "medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
     layerProps: {
-        type: import("vue").PropType<import('../../index').LayerPropsType>;
+        type: import('vue').PropType<import('../layer').LayerPropsType>;
         default: () => {};
     };
     height: {
@@ -26,7 +26,7 @@ declare const Select: import('../../utils').SFCWithInstall<import("vue").DefineC
         default: null;
     };
     activeType: {
-        type: import("vue").PropType<"info" | "success" | "warn" | "error" | "primary">;
+        type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
@@ -60,7 +60,7 @@ declare const Select: import('../../utils').SFCWithInstall<import("vue").DefineC
         default: boolean;
     };
     filterMethod: {
-        type: import("vue").PropType<(label: string | string[]) => string>;
+        type: import('vue').PropType<(label: string | string[]) => string>;
         default: null;
     };
     showSelected: {
@@ -68,7 +68,7 @@ declare const Select: import('../../utils').SFCWithInstall<import("vue").DefineC
         default: boolean;
     };
     selectedIcon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: string;
     };
     clearable: {
@@ -76,7 +76,7 @@ declare const Select: import('../../utils').SFCWithInstall<import("vue").DefineC
         default: boolean;
     };
     props: {
-        type: import("vue").PropType<import("./props").SelectOptionsItemPropsType>;
+        type: import('vue').PropType<import('./props').SelectOptionsItemPropsType>;
         default: () => {
             label: string;
             value: string;
@@ -86,17 +86,17 @@ declare const Select: import('../../utils').SFCWithInstall<import("vue").DefineC
         type: StringConstructor;
         default: string;
     };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     clear: (...args: any[]) => void;
     "update:modelValue": (...args: any[]) => void;
     change: (...args: any[]) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     modelValue: {
-        type: import("vue").PropType<any>;
+        type: import('vue').PropType<any>;
         default: null;
     };
     options: {
-        type: import("vue").PropType<any[]>;
+        type: import('vue').PropType<any[]>;
         default: never[];
     };
     placeholder: {
@@ -104,12 +104,12 @@ declare const Select: import('../../utils').SFCWithInstall<import("vue").DefineC
         default: string;
     };
     size: {
-        type: import("vue").PropType<"small" | "medium" | "large">;
+        type: import('vue').PropType<"small" | "medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
     layerProps: {
-        type: import("vue").PropType<import('../../index').LayerPropsType>;
+        type: import('vue').PropType<import('../layer').LayerPropsType>;
         default: () => {};
     };
     height: {
@@ -117,7 +117,7 @@ declare const Select: import('../../utils').SFCWithInstall<import("vue").DefineC
         default: null;
     };
     activeType: {
-        type: import("vue").PropType<"info" | "success" | "warn" | "error" | "primary">;
+        type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
@@ -151,7 +151,7 @@ declare const Select: import('../../utils').SFCWithInstall<import("vue").DefineC
         default: boolean;
     };
     filterMethod: {
-        type: import("vue").PropType<(label: string | string[]) => string>;
+        type: import('vue').PropType<(label: string | string[]) => string>;
         default: null;
     };
     showSelected: {
@@ -159,7 +159,7 @@ declare const Select: import('../../utils').SFCWithInstall<import("vue").DefineC
         default: boolean;
     };
     selectedIcon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: string;
     };
     clearable: {
@@ -167,7 +167,7 @@ declare const Select: import('../../utils').SFCWithInstall<import("vue").DefineC
         default: boolean;
     };
     props: {
-        type: import("vue").PropType<import("./props").SelectOptionsItemPropsType>;
+        type: import('vue').PropType<import('./props').SelectOptionsItemPropsType>;
         default: () => {
             label: string;
             value: string;
@@ -185,7 +185,7 @@ declare const Select: import('../../utils').SFCWithInstall<import("vue").DefineC
     size: "small" | "medium" | "large";
     height: string;
     name: string;
-    props: import("./props").SelectOptionsItemPropsType;
+    props: import('./props').SelectOptionsItemPropsType;
     modelValue: any;
     disabled: boolean;
     icon: string;
@@ -213,7 +213,7 @@ declare const Select: import('../../utils').SFCWithInstall<import("vue").DefineC
         shadow?: boolean | undefined;
     };
     square: boolean;
-    selectedIcon: string | import('../../index').IconPropsType;
+    selectedIcon: string | import('../icon').IconPropsType;
     multiple: boolean;
     showSelected: boolean;
     emptyText: string;

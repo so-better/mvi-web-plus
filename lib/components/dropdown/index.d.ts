@@ -1,5 +1,5 @@
 export type * from './props';
-declare const Dropdown: import('../../utils').SFCWithInstall<import("vue").DefineComponent<{
+declare const Dropdown: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     modelValue: {
         type: (StringConstructor | NumberConstructor | ObjectConstructor | ArrayConstructor)[];
         default: null;
@@ -9,7 +9,7 @@ declare const Dropdown: import('../../utils').SFCWithInstall<import("vue").Defin
         default: null;
     };
     options: {
-        type: import("vue").PropType<import("./props").DropdownOptionsItemType[]>;
+        type: import('vue').PropType<import('./props').DropdownOptionsItemType[]>;
         default: () => never[];
     };
     selectedClose: {
@@ -17,7 +17,7 @@ declare const Dropdown: import('../../utils').SFCWithInstall<import("vue").Defin
         default: boolean;
     };
     selectedIcon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: string;
     };
     show: {
@@ -41,7 +41,7 @@ declare const Dropdown: import('../../utils').SFCWithInstall<import("vue").Defin
         default: boolean;
     };
     placement: {
-        type: import("vue").PropType<"left" | "top" | "bottom" | "right" | undefined>;
+        type: import('vue').PropType<"left" | "top" | "bottom" | "right" | undefined>;
         default: string;
     };
     closable: {
@@ -61,8 +61,8 @@ declare const Dropdown: import('../../utils').SFCWithInstall<import("vue").Defin
         default: boolean;
     };
 }, {
-    $$el: import("vue").ComputedRef<HTMLElement | null>;
-}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+    $$el: import('vue').ComputedRef<HTMLElement | null>;
+}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     select: (...args: any[]) => void;
     "update:modelValue": (...args: any[]) => void;
     show: (...args: any[]) => void;
@@ -72,7 +72,7 @@ declare const Dropdown: import('../../utils').SFCWithInstall<import("vue").Defin
     hidding: (...args: any[]) => void;
     hidden: (...args: any[]) => void;
     "update:show": (...args: any[]) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     modelValue: {
         type: (StringConstructor | NumberConstructor | ObjectConstructor | ArrayConstructor)[];
         default: null;
@@ -82,7 +82,7 @@ declare const Dropdown: import('../../utils').SFCWithInstall<import("vue").Defin
         default: null;
     };
     options: {
-        type: import("vue").PropType<import("./props").DropdownOptionsItemType[]>;
+        type: import('vue').PropType<import('./props').DropdownOptionsItemType[]>;
         default: () => never[];
     };
     selectedClose: {
@@ -90,7 +90,7 @@ declare const Dropdown: import('../../utils').SFCWithInstall<import("vue").Defin
         default: boolean;
     };
     selectedIcon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: string;
     };
     show: {
@@ -114,7 +114,7 @@ declare const Dropdown: import('../../utils').SFCWithInstall<import("vue").Defin
         default: boolean;
     };
     placement: {
-        type: import("vue").PropType<"left" | "top" | "bottom" | "right" | undefined>;
+        type: import('vue').PropType<"left" | "top" | "bottom" | "right" | undefined>;
         default: string;
     };
     closable: {
@@ -154,10 +154,10 @@ declare const Dropdown: import('../../utils').SFCWithInstall<import("vue").Defin
     overlayColor: string;
     placement: "left" | "top" | "bottom" | "right" | undefined;
     round: boolean;
-    options: import("./props").DropdownOptionsItemType[];
+    options: import('./props').DropdownOptionsItemType[];
     active: boolean;
     activeColor: string;
     selectedClose: boolean;
-    selectedIcon: string | import('../../index').IconPropsType;
+    selectedIcon: string | import('../icon').IconPropsType;
 }, {}>>;
 export { Dropdown, Dropdown as default };

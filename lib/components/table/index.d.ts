@@ -1,12 +1,12 @@
 export type * from './props';
 declare const Table: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
+    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         data: {
-            type: import("vue").PropType<any[]>;
+            type: import('vue').PropType<any[]>;
             default: () => never[];
         };
         columns: {
-            type: import("vue").PropType<import("./props").TableColumnType[]>;
+            type: import('vue').PropType<import('./props').TableColumnType[]>;
             default: () => never[];
         };
         border: {
@@ -42,7 +42,7 @@ declare const Table: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         cellClass: {
-            type: import("vue").PropType<(row: any, rowIndex: number, column: import("./props").TableColumnType, columnIndex: number) => string>;
+            type: import('vue').PropType<(row: any, rowIndex: number, column: import('./props').TableColumnType, columnIndex: number) => string>;
             default: null;
         };
         activeColor: {
@@ -50,7 +50,7 @@ declare const Table: import('../../utils').SFCWithInstall<{
             default: null;
         };
         tooltip: {
-            type: import("vue").PropType<import('../../index').TooltipPropsType>;
+            type: import('vue').PropType<import('../tooltip').TooltipPropsType>;
             default: null;
         };
     }>> & {
@@ -60,18 +60,18 @@ declare const Table: import('../../utils').SFCWithInstall<{
         "onSort-desc"?: ((...args: any[]) => any) | undefined;
     }, {
         doLayout: () => void;
-    }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+    }, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
         check: (...args: any[]) => void;
         "sort-cancel": (...args: any[]) => void;
         "sort-asc": (...args: any[]) => void;
         "sort-desc": (...args: any[]) => void;
-    }, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
+    }, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
         data: {
-            type: import("vue").PropType<any[]>;
+            type: import('vue').PropType<any[]>;
             default: () => never[];
         };
         columns: {
-            type: import("vue").PropType<import("./props").TableColumnType[]>;
+            type: import('vue').PropType<import('./props').TableColumnType[]>;
             default: () => never[];
         };
         border: {
@@ -107,7 +107,7 @@ declare const Table: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         cellClass: {
-            type: import("vue").PropType<(row: any, rowIndex: number, column: import("./props").TableColumnType, columnIndex: number) => string>;
+            type: import('vue').PropType<(row: any, rowIndex: number, column: import('./props').TableColumnType, columnIndex: number) => string>;
             default: null;
         };
         activeColor: {
@@ -115,7 +115,7 @@ declare const Table: import('../../utils').SFCWithInstall<{
             default: null;
         };
         tooltip: {
-            type: import("vue").PropType<import('../../index').TooltipPropsType>;
+            type: import('vue').PropType<import('../tooltip').TooltipPropsType>;
             default: null;
         };
     }>> & {
@@ -147,11 +147,11 @@ declare const Table: import('../../utils').SFCWithInstall<{
             trigger?: "click" | "hover" | "custom" | undefined;
             textColor?: string | undefined;
         };
-        columns: import("./props").TableColumnType[];
+        columns: import('./props').TableColumnType[];
         columnBorder: boolean;
         stripe: boolean;
         noDataMsg: string;
-        cellClass: (row: any, rowIndex: number, column: import("./props").TableColumnType, columnIndex: number) => string;
+        cellClass: (row: any, rowIndex: number, column: import('./props').TableColumnType, columnIndex: number) => string;
     }, true, {}, {}, {
         P: {};
         B: {};
@@ -159,13 +159,13 @@ declare const Table: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import("vue").ExtractPropTypes<{
+    }, Readonly<import('vue').ExtractPropTypes<{
         data: {
-            type: import("vue").PropType<any[]>;
+            type: import('vue').PropType<any[]>;
             default: () => never[];
         };
         columns: {
-            type: import("vue").PropType<import("./props").TableColumnType[]>;
+            type: import('vue').PropType<import('./props').TableColumnType[]>;
             default: () => never[];
         };
         border: {
@@ -201,7 +201,7 @@ declare const Table: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         cellClass: {
-            type: import("vue").PropType<(row: any, rowIndex: number, column: import("./props").TableColumnType, columnIndex: number) => string>;
+            type: import('vue').PropType<(row: any, rowIndex: number, column: import('./props').TableColumnType, columnIndex: number) => string>;
             default: null;
         };
         activeColor: {
@@ -209,7 +209,7 @@ declare const Table: import('../../utils').SFCWithInstall<{
             default: null;
         };
         tooltip: {
-            type: import("vue").PropType<import('../../index').TooltipPropsType>;
+            type: import('vue').PropType<import('../tooltip').TooltipPropsType>;
             default: null;
         };
     }>> & {
@@ -243,22 +243,22 @@ declare const Table: import('../../utils').SFCWithInstall<{
             trigger?: "click" | "hover" | "custom" | undefined;
             textColor?: string | undefined;
         };
-        columns: import("./props").TableColumnType[];
+        columns: import('./props').TableColumnType[];
         columnBorder: boolean;
         stripe: boolean;
         noDataMsg: string;
-        cellClass: (row: any, rowIndex: number, column: import("./props").TableColumnType, columnIndex: number) => string;
+        cellClass: (row: any, rowIndex: number, column: import('./props').TableColumnType, columnIndex: number) => string;
     }>;
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
+} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     data: {
-        type: import("vue").PropType<any[]>;
+        type: import('vue').PropType<any[]>;
         default: () => never[];
     };
     columns: {
-        type: import("vue").PropType<import("./props").TableColumnType[]>;
+        type: import('vue').PropType<import('./props').TableColumnType[]>;
         default: () => never[];
     };
     border: {
@@ -294,7 +294,7 @@ declare const Table: import('../../utils').SFCWithInstall<{
         default: boolean;
     };
     cellClass: {
-        type: import("vue").PropType<(row: any, rowIndex: number, column: import("./props").TableColumnType, columnIndex: number) => string>;
+        type: import('vue').PropType<(row: any, rowIndex: number, column: import('./props').TableColumnType, columnIndex: number) => string>;
         default: null;
     };
     activeColor: {
@@ -302,7 +302,7 @@ declare const Table: import('../../utils').SFCWithInstall<{
         default: null;
     };
     tooltip: {
-        type: import("vue").PropType<import('../../index').TooltipPropsType>;
+        type: import('vue').PropType<import('../tooltip').TooltipPropsType>;
         default: null;
     };
 }>> & {
@@ -312,7 +312,7 @@ declare const Table: import('../../utils').SFCWithInstall<{
     "onSort-desc"?: ((...args: any[]) => any) | undefined;
 }, {
     doLayout: () => void;
-}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     check: (...args: any[]) => void;
     "sort-cancel": (...args: any[]) => void;
     "sort-asc": (...args: any[]) => void;
@@ -341,12 +341,12 @@ declare const Table: import('../../utils').SFCWithInstall<{
         trigger?: "click" | "hover" | "custom" | undefined;
         textColor?: string | undefined;
     };
-    columns: import("./props").TableColumnType[];
+    columns: import('./props').TableColumnType[];
     columnBorder: boolean;
     stripe: boolean;
     noDataMsg: string;
-    cellClass: (row: any, rowIndex: number, column: import("./props").TableColumnType, columnIndex: number) => string;
-}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
+    cellClass: (row: any, rowIndex: number, column: import('./props').TableColumnType, columnIndex: number) => string;
+}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
     $slots: {
         custom?(_: {
             row: any;
@@ -359,9 +359,9 @@ declare const Table: import('../../utils').SFCWithInstall<{
                 className?: string | undefined;
                 hidden?: boolean | undefined;
                 sortable?: boolean | undefined;
-                format?: ((val: any, row: any, column: import("./props").TableColumnType) => string) | undefined;
+                format?: ((val: any, row: any, column: import('./props').TableColumnType) => string) | undefined;
                 selectable?: ((row: any, rowIndex: number) => boolean) | undefined;
-                sortMethod?: ((sortOrder: import("./props").TableSortOrderType, sortBy: string, rows: any, column: import("./props").TableColumnType) => void) | undefined;
+                sortMethod?: ((sortOrder: import('./props').TableSortOrderType, sortBy: string, rows: any, column: import('./props').TableColumnType) => void) | undefined;
                 ellipsis?: boolean | undefined;
             };
             columnIndex: number;

@@ -1,4 +1,5 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
+
 export type CalendarDayType = {
     date?: Date;
     nonCurrent?: boolean;

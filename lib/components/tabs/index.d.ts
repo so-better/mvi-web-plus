@@ -1,8 +1,8 @@
 export type * from './props';
 declare const Tabs: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
+    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         type: {
-            type: import("vue").PropType<"default" | "card">;
+            type: import('vue').PropType<"default" | "card">;
             default: string;
             validator(value: any): boolean;
         };
@@ -11,7 +11,7 @@ declare const Tabs: import('../../utils').SFCWithInstall<{
             default: number;
         };
         animation: {
-            type: import("vue").PropType<"fade" | "none" | "slide">;
+            type: import('vue').PropType<"fade" | "none" | "slide">;
             default: string;
             validator(value: any): boolean;
         };
@@ -28,7 +28,7 @@ declare const Tabs: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         flex: {
-            type: import("vue").PropType<import("./props").TabsFlexType>;
+            type: import('vue').PropType<import('./props').TabsFlexType>;
             default: string;
         };
         offset: {
@@ -46,12 +46,12 @@ declare const Tabs: import('../../utils').SFCWithInstall<{
         setHeight: () => void;
         setSlider: () => void;
         to: (newValue: number, oldValue: number) => void;
-    }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+    }, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
         "update:modelValue": (...args: any[]) => void;
         change: (...args: any[]) => void;
-    }, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
+    }, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
         type: {
-            type: import("vue").PropType<"default" | "card">;
+            type: import('vue').PropType<"default" | "card">;
             default: string;
             validator(value: any): boolean;
         };
@@ -60,7 +60,7 @@ declare const Tabs: import('../../utils').SFCWithInstall<{
             default: number;
         };
         animation: {
-            type: import("vue").PropType<"fade" | "none" | "slide">;
+            type: import('vue').PropType<"fade" | "none" | "slide">;
             default: string;
             validator(value: any): boolean;
         };
@@ -77,7 +77,7 @@ declare const Tabs: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         flex: {
-            type: import("vue").PropType<import("./props").TabsFlexType>;
+            type: import('vue').PropType<import('./props').TabsFlexType>;
             default: string;
         };
         offset: {
@@ -100,7 +100,7 @@ declare const Tabs: import('../../utils').SFCWithInstall<{
         animation: "fade" | "none" | "slide";
         activeColor: string;
         ellipsis: boolean;
-        flex: import("./props").TabsFlexType;
+        flex: import('./props').TabsFlexType;
     }, true, {}, {}, {
         P: {};
         B: {};
@@ -108,9 +108,9 @@ declare const Tabs: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import("vue").ExtractPropTypes<{
+    }, Readonly<import('vue').ExtractPropTypes<{
         type: {
-            type: import("vue").PropType<"default" | "card">;
+            type: import('vue').PropType<"default" | "card">;
             default: string;
             validator(value: any): boolean;
         };
@@ -119,7 +119,7 @@ declare const Tabs: import('../../utils').SFCWithInstall<{
             default: number;
         };
         animation: {
-            type: import("vue").PropType<"fade" | "none" | "slide">;
+            type: import('vue').PropType<"fade" | "none" | "slide">;
             default: string;
             validator(value: any): boolean;
         };
@@ -136,7 +136,7 @@ declare const Tabs: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         flex: {
-            type: import("vue").PropType<import("./props").TabsFlexType>;
+            type: import('vue').PropType<import('./props').TabsFlexType>;
             default: string;
         };
         offset: {
@@ -163,14 +163,14 @@ declare const Tabs: import('../../utils').SFCWithInstall<{
         animation: "fade" | "none" | "slide";
         activeColor: string;
         ellipsis: boolean;
-        flex: import("./props").TabsFlexType;
+        flex: import('./props').TabsFlexType;
     }>;
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
+} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     type: {
-        type: import("vue").PropType<"default" | "card">;
+        type: import('vue').PropType<"default" | "card">;
         default: string;
         validator(value: any): boolean;
     };
@@ -179,7 +179,7 @@ declare const Tabs: import('../../utils').SFCWithInstall<{
         default: number;
     };
     animation: {
-        type: import("vue").PropType<"fade" | "none" | "slide">;
+        type: import('vue').PropType<"fade" | "none" | "slide">;
         default: string;
         validator(value: any): boolean;
     };
@@ -196,7 +196,7 @@ declare const Tabs: import('../../utils').SFCWithInstall<{
         default: boolean;
     };
     flex: {
-        type: import("vue").PropType<import("./props").TabsFlexType>;
+        type: import('vue').PropType<import('./props').TabsFlexType>;
         default: string;
     };
     offset: {
@@ -214,7 +214,7 @@ declare const Tabs: import('../../utils').SFCWithInstall<{
     setHeight: () => void;
     setSlider: () => void;
     to: (newValue: number, oldValue: number) => void;
-}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     change: (...args: any[]) => void;
 }, string, {
@@ -226,8 +226,8 @@ declare const Tabs: import('../../utils').SFCWithInstall<{
     animation: "fade" | "none" | "slide";
     activeColor: string;
     ellipsis: boolean;
-    flex: import("./props").TabsFlexType;
-}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
+    flex: import('./props').TabsFlexType;
+}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
     $slots: {
         default?(_: {}): any;
     };

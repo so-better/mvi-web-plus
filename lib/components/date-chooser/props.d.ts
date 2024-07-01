@@ -1,6 +1,7 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
 import { LayerPropsType } from '../layer';
 import { CalendarViewType } from '../calendar';
+
 export declare const DateChooserProps: {
     modelValue: {
         type: DateConstructor;

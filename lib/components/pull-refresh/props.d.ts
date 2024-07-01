@@ -1,5 +1,6 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
 import { IconPropsType } from '../icon';
+
 export type PullRefreshStatusType = 0 | 1 | 2;
 export declare const PullRefreshProps: {
     pullingText: {

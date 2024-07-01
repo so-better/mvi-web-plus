@@ -1,5 +1,5 @@
 export type * from './props';
-declare const Autocomplete: import('../../utils').SFCWithInstall<import("vue").DefineComponent<{
+declare const Autocomplete: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     modelValue: {
         type: StringConstructor;
         default: string;
@@ -9,16 +9,16 @@ declare const Autocomplete: import('../../utils').SFCWithInstall<import("vue").D
         default: string;
     };
     size: {
-        type: import("vue").PropType<"small" | "medium" | "large">;
+        type: import('vue').PropType<"small" | "medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
     list: {
-        type: import("vue").PropType<string[]>;
+        type: import('vue').PropType<string[]>;
         default: () => never[];
     };
     activeType: {
-        type: import("vue").PropType<"info" | "success" | "warn" | "error" | "primary">;
+        type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
@@ -28,7 +28,7 @@ declare const Autocomplete: import('../../utils').SFCWithInstall<import("vue").D
         validator(value: any): boolean;
     };
     filterMethod: {
-        type: import("vue").PropType<boolean | ((value: string, list: string[]) => string[])>;
+        type: import('vue').PropType<boolean | ((value: string, list: string[]) => string[])>;
         default: boolean;
     };
     clearable: {
@@ -40,7 +40,7 @@ declare const Autocomplete: import('../../utils').SFCWithInstall<import("vue").D
         default: boolean;
     };
     layerProps: {
-        type: import("vue").PropType<import('../../index').LayerPropsType>;
+        type: import('vue').PropType<import('../layer').LayerPropsType>;
         default: () => {};
     };
     height: {
@@ -52,11 +52,11 @@ declare const Autocomplete: import('../../utils').SFCWithInstall<import("vue").D
         default: null;
     };
     leftIcon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: null;
     };
     rightIcon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: null;
     };
     round: {
@@ -68,11 +68,11 @@ declare const Autocomplete: import('../../utils').SFCWithInstall<import("vue").D
         default: boolean;
     };
     align: {
-        type: import("vue").PropType<"left" | "right" | "center">;
+        type: import('vue').PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     clear: (...args: any[]) => void;
     input: (...args: any[]) => void;
     select: (...args: any[]) => void;
@@ -83,7 +83,7 @@ declare const Autocomplete: import('../../utils').SFCWithInstall<import("vue").D
     "right-click": (...args: any[]) => void;
     keydown: (...args: any[]) => void;
     keyup: (...args: any[]) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     modelValue: {
         type: StringConstructor;
         default: string;
@@ -93,16 +93,16 @@ declare const Autocomplete: import('../../utils').SFCWithInstall<import("vue").D
         default: string;
     };
     size: {
-        type: import("vue").PropType<"small" | "medium" | "large">;
+        type: import('vue').PropType<"small" | "medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
     list: {
-        type: import("vue").PropType<string[]>;
+        type: import('vue').PropType<string[]>;
         default: () => never[];
     };
     activeType: {
-        type: import("vue").PropType<"info" | "success" | "warn" | "error" | "primary">;
+        type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
@@ -112,7 +112,7 @@ declare const Autocomplete: import('../../utils').SFCWithInstall<import("vue").D
         validator(value: any): boolean;
     };
     filterMethod: {
-        type: import("vue").PropType<boolean | ((value: string, list: string[]) => string[])>;
+        type: import('vue').PropType<boolean | ((value: string, list: string[]) => string[])>;
         default: boolean;
     };
     clearable: {
@@ -124,7 +124,7 @@ declare const Autocomplete: import('../../utils').SFCWithInstall<import("vue").D
         default: boolean;
     };
     layerProps: {
-        type: import("vue").PropType<import('../../index').LayerPropsType>;
+        type: import('vue').PropType<import('../layer').LayerPropsType>;
         default: () => {};
     };
     height: {
@@ -136,11 +136,11 @@ declare const Autocomplete: import('../../utils').SFCWithInstall<import("vue").D
         default: null;
     };
     leftIcon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: null;
     };
     rightIcon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: null;
     };
     round: {
@@ -152,7 +152,7 @@ declare const Autocomplete: import('../../utils').SFCWithInstall<import("vue").D
         default: boolean;
     };
     align: {
-        type: import("vue").PropType<"left" | "right" | "center">;
+        type: import('vue').PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
@@ -197,8 +197,8 @@ declare const Autocomplete: import('../../utils').SFCWithInstall<import("vue").D
         animation?: string | undefined;
         shadow?: boolean | undefined;
     };
-    leftIcon: string | import('../../index').IconPropsType;
-    rightIcon: string | import('../../index').IconPropsType;
+    leftIcon: string | import('../icon').IconPropsType;
+    rightIcon: string | import('../icon').IconPropsType;
     square: boolean;
 }, {}>>;
 export { Autocomplete, Autocomplete as default };

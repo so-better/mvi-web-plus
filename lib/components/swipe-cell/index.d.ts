@@ -1,6 +1,6 @@
 export type * from './props';
 declare const SwipeCell: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
+    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         disabled: {
             type: BooleanConstructor;
             default: boolean;
@@ -15,10 +15,10 @@ declare const SwipeCell: import('../../utils').SFCWithInstall<{
     }, {
         open: (placement?: "left" | "right") => void;
         close: () => void;
-    }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+    }, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
         close: (...args: any[]) => void;
         open: (...args: any[]) => void;
-    }, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
+    }, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
         disabled: {
             type: BooleanConstructor;
             default: boolean;
@@ -40,7 +40,7 @@ declare const SwipeCell: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import("vue").ExtractPropTypes<{
+    }, Readonly<import('vue').ExtractPropTypes<{
         disabled: {
             type: BooleanConstructor;
             default: boolean;
@@ -62,7 +62,7 @@ declare const SwipeCell: import('../../utils').SFCWithInstall<{
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
+} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     disabled: {
         type: BooleanConstructor;
         default: boolean;
@@ -77,13 +77,13 @@ declare const SwipeCell: import('../../utils').SFCWithInstall<{
 }, {
     open: (placement?: "left" | "right") => void;
     close: () => void;
-}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     close: (...args: any[]) => void;
     open: (...args: any[]) => void;
 }, string, {
     disabled: boolean;
     centerClose: boolean;
-}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
+}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
     $slots: {
         left?(_: {}): any;
         default?(_: {}): any;

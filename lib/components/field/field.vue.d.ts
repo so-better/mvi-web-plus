@@ -1,6 +1,7 @@
 import { IconPropsType } from '../icon';
 import { FieldAutosizeType } from './props';
-declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
+
+declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     modelValue: {
         type: (StringConstructor | NumberConstructor)[];
         default: string;
@@ -18,12 +19,12 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: string;
     };
     type: {
-        type: import("vue").PropType<"number" | "textarea" | "text" | "password" | "tel">;
+        type: import('vue').PropType<"number" | "textarea" | "text" | "password" | "tel">;
         default: string;
         validator(value: any): boolean;
     };
     size: {
-        type: import("vue").PropType<"small" | "medium" | "large">;
+        type: import('vue').PropType<"small" | "medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
@@ -40,23 +41,23 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: boolean;
     };
     prefix: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: null;
     };
     suffix: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: null;
     };
     prepend: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: null;
     };
     append: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: null;
     };
     activeType: {
-        type: import("vue").PropType<"info" | "success" | "warn" | "error" | "primary">;
+        type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
@@ -70,7 +71,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: boolean;
     };
     align: {
-        type: import("vue").PropType<"left" | "right" | "center">;
+        type: import('vue').PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
@@ -83,7 +84,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: boolean;
     };
     inputMode: {
-        type: import("vue").PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
+        type: import('vue').PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
         default: string;
         validator(value: any): boolean;
     };
@@ -92,11 +93,11 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: number;
     };
     autosize: {
-        type: import("vue").PropType<boolean | FieldAutosizeType>;
+        type: import('vue').PropType<boolean | FieldAutosizeType>;
         default: boolean;
         validator(value: any): boolean;
     };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     clear: (...args: any[]) => void;
     input: (...args: any[]) => void;
     "update:modelValue": (...args: any[]) => void;
@@ -108,7 +109,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     "prefix-click": (...args: any[]) => void;
     "append-click": (...args: any[]) => void;
     "suffix-click": (...args: any[]) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     modelValue: {
         type: (StringConstructor | NumberConstructor)[];
         default: string;
@@ -126,12 +127,12 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: string;
     };
     type: {
-        type: import("vue").PropType<"number" | "textarea" | "text" | "password" | "tel">;
+        type: import('vue').PropType<"number" | "textarea" | "text" | "password" | "tel">;
         default: string;
         validator(value: any): boolean;
     };
     size: {
-        type: import("vue").PropType<"small" | "medium" | "large">;
+        type: import('vue').PropType<"small" | "medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
@@ -148,23 +149,23 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: boolean;
     };
     prefix: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: null;
     };
     suffix: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: null;
     };
     prepend: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: null;
     };
     append: {
-        type: import("vue").PropType<string | IconPropsType>;
+        type: import('vue').PropType<string | IconPropsType>;
         default: null;
     };
     activeType: {
-        type: import("vue").PropType<"info" | "success" | "warn" | "error" | "primary">;
+        type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
@@ -178,7 +179,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: boolean;
     };
     align: {
-        type: import("vue").PropType<"left" | "right" | "center">;
+        type: import('vue').PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
@@ -191,7 +192,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: boolean;
     };
     inputMode: {
-        type: import("vue").PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
+        type: import('vue').PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
         default: string;
         validator(value: any): boolean;
     };
@@ -200,7 +201,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: number;
     };
     autosize: {
-        type: import("vue").PropType<boolean | FieldAutosizeType>;
+        type: import('vue').PropType<boolean | FieldAutosizeType>;
         default: boolean;
         validator(value: any): boolean;
     };

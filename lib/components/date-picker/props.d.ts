@@ -1,4 +1,5 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
+
 export type DatePickerModeType = 'date' | 'datetime' | 'time' | 'month' | 'year';
 export type DatePickerTimeType = 'year' | 'month' | 'date' | 'hour' | 'minute';
 export declare const DatePickerProps: {

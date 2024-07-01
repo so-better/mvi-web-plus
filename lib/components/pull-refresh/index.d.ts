@@ -1,6 +1,6 @@
 export type * from './props';
 declare const PullRefresh: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
+    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         pullingText: {
             type: StringConstructor;
             default: string;
@@ -18,15 +18,15 @@ declare const PullRefresh: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         pullingIcon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: string;
         };
         loosingIcon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: string;
         };
         loadingIcon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: () => {
                 type: string;
                 spin: boolean;
@@ -43,10 +43,10 @@ declare const PullRefresh: import('../../utils').SFCWithInstall<{
     }>> & {
         "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
         onRefresh?: ((...args: any[]) => any) | undefined;
-    }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+    }, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
         "update:modelValue": (...args: any[]) => void;
         refresh: (...args: any[]) => void;
-    }, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
+    }, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
         pullingText: {
             type: StringConstructor;
             default: string;
@@ -64,15 +64,15 @@ declare const PullRefresh: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         pullingIcon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: string;
         };
         loosingIcon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: string;
         };
         loadingIcon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: () => {
                 type: string;
                 spin: boolean;
@@ -95,9 +95,9 @@ declare const PullRefresh: import('../../utils').SFCWithInstall<{
         loadingText: string;
         pullingText: string;
         loosingText: string;
-        pullingIcon: string | import('../../index').IconPropsType;
-        loosingIcon: string | import('../../index').IconPropsType;
-        loadingIcon: string | import('../../index').IconPropsType;
+        pullingIcon: string | import('../icon').IconPropsType;
+        loosingIcon: string | import('../icon').IconPropsType;
+        loadingIcon: string | import('../icon').IconPropsType;
         distance: number;
     }, true, {}, {}, {
         P: {};
@@ -106,7 +106,7 @@ declare const PullRefresh: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import("vue").ExtractPropTypes<{
+    }, Readonly<import('vue').ExtractPropTypes<{
         pullingText: {
             type: StringConstructor;
             default: string;
@@ -124,15 +124,15 @@ declare const PullRefresh: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         pullingIcon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: string;
         };
         loosingIcon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: string;
         };
         loadingIcon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: () => {
                 type: string;
                 spin: boolean;
@@ -155,15 +155,15 @@ declare const PullRefresh: import('../../utils').SFCWithInstall<{
         loadingText: string;
         pullingText: string;
         loosingText: string;
-        pullingIcon: string | import('../../index').IconPropsType;
-        loosingIcon: string | import('../../index').IconPropsType;
-        loadingIcon: string | import('../../index').IconPropsType;
+        pullingIcon: string | import('../icon').IconPropsType;
+        loosingIcon: string | import('../icon').IconPropsType;
+        loadingIcon: string | import('../icon').IconPropsType;
         distance: number;
     }>;
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
+} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     pullingText: {
         type: StringConstructor;
         default: string;
@@ -181,15 +181,15 @@ declare const PullRefresh: import('../../utils').SFCWithInstall<{
         default: boolean;
     };
     pullingIcon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: string;
     };
     loosingIcon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: string;
     };
     loadingIcon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: () => {
             type: string;
             spin: boolean;
@@ -206,7 +206,7 @@ declare const PullRefresh: import('../../utils').SFCWithInstall<{
 }>> & {
     "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
     onRefresh?: ((...args: any[]) => any) | undefined;
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     "update:modelValue": (...args: any[]) => void;
     refresh: (...args: any[]) => void;
 }, string, {
@@ -215,14 +215,14 @@ declare const PullRefresh: import('../../utils').SFCWithInstall<{
     loadingText: string;
     pullingText: string;
     loosingText: string;
-    pullingIcon: string | import('../../index').IconPropsType;
-    loosingIcon: string | import('../../index').IconPropsType;
-    loadingIcon: string | import('../../index').IconPropsType;
+    pullingIcon: string | import('../icon').IconPropsType;
+    loosingIcon: string | import('../icon').IconPropsType;
+    loadingIcon: string | import('../icon').IconPropsType;
     distance: number;
-}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
+}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
     $slots: {
         el?(_: {
-            status: import("./props").PullRefreshStatusType;
+            status: import('./props').PullRefreshStatusType;
         }): any;
         default?(_: {}): any;
     };

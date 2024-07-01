@@ -123,7 +123,7 @@ const beforeEnter = (el: Element) => {
 	Dap.data.set(<HTMLElement>el, 'mvi-modal-beforeEnter-trigger', true)
 	emits('show', el)
 	if (typeof instance.appContext.config.globalProperties.modalComponentWatch == 'function') {
-		instance.appContext.config.globalProperties.apply(instance.proxy, ['show', el])
+		instance.appContext.config.globalProperties.modalComponentWatch.apply(instance.proxy, ['show', el])
 	}
 }
 //弹出层显示时
@@ -136,14 +136,14 @@ const enter = (el: Element) => {
 	modalSize()
 	emits('showing', el)
 	if (typeof instance.appContext.config.globalProperties.modalComponentWatch == 'function') {
-		instance.appContext.config.globalProperties.apply(instance.proxy, ['showing', el])
+		instance.appContext.config.globalProperties.modalComponentWatch.apply(instance.proxy, ['showing', el])
 	}
 }
 //弹出层显示后
 const afterEnter = (el: Element) => {
 	emits('shown', el)
 	if (typeof instance.appContext.config.globalProperties.modalComponentWatch == 'function') {
-		instance.appContext.config.globalProperties.apply(instance.proxy, ['shown', el])
+		instance.appContext.config.globalProperties.modalComponentWatch.apply(instance.proxy, ['shown', el])
 	}
 }
 //弹出层隐藏前

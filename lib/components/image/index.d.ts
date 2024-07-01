@@ -1,12 +1,12 @@
 export type * from './props';
 declare const Image: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
+    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         src: {
             type: StringConstructor;
             default: string;
         };
         fit: {
-            type: import("vue").PropType<import("./props").ImageFillType>;
+            type: import('vue').PropType<import('./props').ImageFillType>;
             default: string;
             validator(value: any): boolean;
         };
@@ -31,11 +31,11 @@ declare const Image: import('../../utils').SFCWithInstall<{
             default: null;
         };
         loadIcon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: string;
         };
         errorIcon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: string;
         };
         round: {
@@ -53,16 +53,16 @@ declare const Image: import('../../utils').SFCWithInstall<{
     }>> & {
         onError?: ((...args: any[]) => any) | undefined;
         onSuccess?: ((...args: any[]) => any) | undefined;
-    }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+    }, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
         success: (...args: any[]) => void;
         error: (...args: any[]) => void;
-    }, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
+    }, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
         src: {
             type: StringConstructor;
             default: string;
         };
         fit: {
-            type: import("vue").PropType<import("./props").ImageFillType>;
+            type: import('vue').PropType<import('./props').ImageFillType>;
             default: string;
             validator(value: any): boolean;
         };
@@ -87,11 +87,11 @@ declare const Image: import('../../utils').SFCWithInstall<{
             default: null;
         };
         loadIcon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: string;
         };
         errorIcon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: string;
         };
         round: {
@@ -113,15 +113,15 @@ declare const Image: import('../../utils').SFCWithInstall<{
         height: string;
         width: string;
         round: boolean;
-        loadIcon: string | import('../../index').IconPropsType;
+        loadIcon: string | import('../icon').IconPropsType;
         root: string;
         src: string;
-        fit: import("./props").ImageFillType;
+        fit: import('./props').ImageFillType;
         alt: string;
         showError: boolean;
         showLoading: boolean;
         lazyLoad: boolean;
-        errorIcon: string | import('../../index').IconPropsType;
+        errorIcon: string | import('../icon').IconPropsType;
     }, true, {}, {}, {
         P: {};
         B: {};
@@ -129,13 +129,13 @@ declare const Image: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import("vue").ExtractPropTypes<{
+    }, Readonly<import('vue').ExtractPropTypes<{
         src: {
             type: StringConstructor;
             default: string;
         };
         fit: {
-            type: import("vue").PropType<import("./props").ImageFillType>;
+            type: import('vue').PropType<import('./props').ImageFillType>;
             default: string;
             validator(value: any): boolean;
         };
@@ -160,11 +160,11 @@ declare const Image: import('../../utils').SFCWithInstall<{
             default: null;
         };
         loadIcon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: string;
         };
         errorIcon: {
-            type: import("vue").PropType<string | import('../../index').IconPropsType>;
+            type: import('vue').PropType<string | import('../icon').IconPropsType>;
             default: string;
         };
         round: {
@@ -186,26 +186,26 @@ declare const Image: import('../../utils').SFCWithInstall<{
         height: string;
         width: string;
         round: boolean;
-        loadIcon: string | import('../../index').IconPropsType;
+        loadIcon: string | import('../icon').IconPropsType;
         root: string;
         src: string;
-        fit: import("./props").ImageFillType;
+        fit: import('./props').ImageFillType;
         alt: string;
         showError: boolean;
         showLoading: boolean;
         lazyLoad: boolean;
-        errorIcon: string | import('../../index').IconPropsType;
+        errorIcon: string | import('../icon').IconPropsType;
     }>;
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
+} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     src: {
         type: StringConstructor;
         default: string;
     };
     fit: {
-        type: import("vue").PropType<import("./props").ImageFillType>;
+        type: import('vue').PropType<import('./props').ImageFillType>;
         default: string;
         validator(value: any): boolean;
     };
@@ -230,11 +230,11 @@ declare const Image: import('../../utils').SFCWithInstall<{
         default: null;
     };
     loadIcon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: string;
     };
     errorIcon: {
-        type: import("vue").PropType<string | import('../../index').IconPropsType>;
+        type: import('vue').PropType<string | import('../icon').IconPropsType>;
         default: string;
     };
     round: {
@@ -252,23 +252,23 @@ declare const Image: import('../../utils').SFCWithInstall<{
 }>> & {
     onError?: ((...args: any[]) => any) | undefined;
     onSuccess?: ((...args: any[]) => any) | undefined;
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+}, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     success: (...args: any[]) => void;
     error: (...args: any[]) => void;
 }, string, {
     height: string;
     width: string;
     round: boolean;
-    loadIcon: string | import('../../index').IconPropsType;
+    loadIcon: string | import('../icon').IconPropsType;
     root: string;
     src: string;
-    fit: import("./props").ImageFillType;
+    fit: import('./props').ImageFillType;
     alt: string;
     showError: boolean;
     showLoading: boolean;
     lazyLoad: boolean;
-    errorIcon: string | import('../../index').IconPropsType;
-}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
+    errorIcon: string | import('../icon').IconPropsType;
+}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
     $slots: {
         loading?(_: {}): any;
         error?(_: {}): any;

@@ -1,12 +1,12 @@
 export type * from './props';
 declare const Tooltip: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
+    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         title: {
             type: StringConstructor;
             default: string;
         };
         placement: {
-            type: import("vue").PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined>;
+            type: import('vue').PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined>;
             default: string;
         };
         disabled: {
@@ -30,7 +30,7 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
             default: null;
         };
         trigger: {
-            type: import("vue").PropType<"click" | "hover" | "custom">;
+            type: import('vue').PropType<"click" | "hover" | "custom">;
             default: string;
             validator(value: any): boolean;
         };
@@ -61,13 +61,13 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
     }>>, {
         showTooltip: () => void;
         hideTooltip: () => void;
-    }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
+    }, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
         title: {
             type: StringConstructor;
             default: string;
         };
         placement: {
-            type: import("vue").PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined>;
+            type: import('vue').PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined>;
             default: string;
         };
         disabled: {
@@ -91,7 +91,7 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
             default: null;
         };
         trigger: {
-            type: import("vue").PropType<"click" | "hover" | "custom">;
+            type: import('vue').PropType<"click" | "hover" | "custom">;
             default: string;
             validator(value: any): boolean;
         };
@@ -141,13 +141,13 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import("vue").ExtractPropTypes<{
+    }, Readonly<import('vue').ExtractPropTypes<{
         title: {
             type: StringConstructor;
             default: string;
         };
         placement: {
-            type: import("vue").PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined>;
+            type: import('vue').PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined>;
             default: string;
         };
         disabled: {
@@ -171,7 +171,7 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
             default: null;
         };
         trigger: {
-            type: import("vue").PropType<"click" | "hover" | "custom">;
+            type: import('vue').PropType<"click" | "hover" | "custom">;
             default: string;
             validator(value: any): boolean;
         };
@@ -221,13 +221,13 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
+} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     title: {
         type: StringConstructor;
         default: string;
     };
     placement: {
-        type: import("vue").PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined>;
+        type: import('vue').PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined>;
         default: string;
     };
     disabled: {
@@ -251,7 +251,7 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
         default: null;
     };
     trigger: {
-        type: import("vue").PropType<"click" | "hover" | "custom">;
+        type: import('vue').PropType<"click" | "hover" | "custom">;
         default: string;
         validator(value: any): boolean;
     };
@@ -282,7 +282,7 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
 }>>, {
     showTooltip: () => void;
     hideTooltip: () => void;
-}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, {
+}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, {
     title: string;
     width: string;
     zIndex: number;
@@ -297,7 +297,7 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
     block: boolean;
     trigger: "click" | "hover" | "custom";
     textColor: string;
-}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
+}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
     $slots: {
         default?(_: {}): any;
         title?(_: {}): any;

@@ -1,5 +1,5 @@
 export type * from './props';
-declare const Actionsheet: import('../../utils').SFCWithInstall<import("vue").DefineComponent<{
+declare const Actionsheet: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     modelValue: {
         type: BooleanConstructor;
         default: boolean;
@@ -29,7 +29,7 @@ declare const Actionsheet: import('../../utils').SFCWithInstall<import("vue").De
         default: boolean;
     };
     options: {
-        type: import("vue").PropType<import("./props").ActionsheetOptionsItemType[]>;
+        type: import('vue').PropType<import('./props').ActionsheetOptionsItemType[]>;
         default: () => never[];
     };
     showCancel: {
@@ -57,16 +57,16 @@ declare const Actionsheet: import('../../utils').SFCWithInstall<import("vue").De
         default: boolean;
     };
     size: {
-        type: import("vue").PropType<"medium" | "large">;
+        type: import('vue').PropType<"medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
 }, {
-    $$el: import("vue").ComputedRef<HTMLElement | null>;
-}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+    $$el: import('vue').ComputedRef<HTMLElement | null>;
+}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     select: (...args: any[]) => void;
     "update:modelValue": (...args: any[]) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     modelValue: {
         type: BooleanConstructor;
         default: boolean;
@@ -96,7 +96,7 @@ declare const Actionsheet: import('../../utils').SFCWithInstall<import("vue").De
         default: boolean;
     };
     options: {
-        type: import("vue").PropType<import("./props").ActionsheetOptionsItemType[]>;
+        type: import('vue').PropType<import('./props').ActionsheetOptionsItemType[]>;
         default: () => never[];
     };
     showCancel: {
@@ -124,7 +124,7 @@ declare const Actionsheet: import('../../utils').SFCWithInstall<import("vue").De
         default: boolean;
     };
     size: {
-        type: import("vue").PropType<"medium" | "large">;
+        type: import('vue').PropType<"medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
@@ -142,7 +142,7 @@ declare const Actionsheet: import('../../utils').SFCWithInstall<import("vue").De
     usePadding: boolean;
     overlayColor: string;
     round: boolean;
-    options: import("./props").ActionsheetOptionsItemType[];
+    options: import('./props').ActionsheetOptionsItemType[];
     showCancel: boolean;
     cancelText: string;
     active: boolean;

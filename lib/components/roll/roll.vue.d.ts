@@ -1,10 +1,10 @@
-declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     interval: {
         type: NumberConstructor;
         default: number;
     };
     direction: {
-        type: import("vue").PropType<"left" | "right" | "up" | "down">;
+        type: import('vue').PropType<"left" | "right" | "up" | "down">;
         default: string;
         validator(value: any): boolean;
     };
@@ -17,7 +17,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: boolean;
     };
     animation: {
-        type: import("vue").PropType<"linear" | "ease" | "ease-in" | "ease-out" | "ease-in-out">;
+        type: import('vue').PropType<"linear" | "ease" | "ease-in" | "ease-out" | "ease-in-out">;
         default: string;
         validator(value: any): boolean;
     };
@@ -37,19 +37,19 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     pause: () => void;
     stop: () => void;
     play: () => void;
-    isStopped: import("vue").ComputedRef<boolean>;
-    isPaused: import("vue").ComputedRef<boolean>;
-}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+    isStopped: import('vue').ComputedRef<boolean>;
+    isPaused: import('vue').ComputedRef<boolean>;
+}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     stop: (...args: any[]) => void;
     pause: (...args: any[]) => void;
     play: (...args: any[]) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     interval: {
         type: NumberConstructor;
         default: number;
     };
     direction: {
-        type: import("vue").PropType<"left" | "right" | "up" | "down">;
+        type: import('vue').PropType<"left" | "right" | "up" | "down">;
         default: string;
         validator(value: any): boolean;
     };
@@ -62,7 +62,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: boolean;
     };
     animation: {
-        type: import("vue").PropType<"linear" | "ease" | "ease-in" | "ease-out" | "ease-in-out">;
+        type: import('vue').PropType<"linear" | "ease" | "ease-in" | "ease-out" | "ease-in-out">;
         default: string;
         validator(value: any): boolean;
     };

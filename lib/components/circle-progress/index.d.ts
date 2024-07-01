@@ -1,6 +1,6 @@
 export type * from './props';
 declare const CircleProgress: import('../../utils').SFCWithInstall<{
-    new (...args: any[]): import("vue").CreateComponentPublicInstance<Readonly<import("vue").ExtractPropTypes<{
+    new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         value: {
             type: NumberConstructor;
             default: number;
@@ -57,7 +57,7 @@ declare const CircleProgress: import('../../utils').SFCWithInstall<{
             type: BooleanConstructor;
             default: boolean;
         };
-    }>>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & Readonly<import("vue").ExtractPropTypes<{
+    }>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
         value: {
             type: NumberConstructor;
             default: number;
@@ -136,7 +136,7 @@ declare const CircleProgress: import('../../utils').SFCWithInstall<{
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly<import("vue").ExtractPropTypes<{
+    }, Readonly<import('vue').ExtractPropTypes<{
         value: {
             type: NumberConstructor;
             default: number;
@@ -212,7 +212,7 @@ declare const CircleProgress: import('../../utils').SFCWithInstall<{
     __isFragment?: undefined;
     __isTeleport?: undefined;
     __isSuspense?: undefined;
-} & import("vue").ComponentOptionsBase<Readonly<import("vue").ExtractPropTypes<{
+} & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     value: {
         type: NumberConstructor;
         default: number;
@@ -269,7 +269,7 @@ declare const CircleProgress: import('../../utils').SFCWithInstall<{
         type: BooleanConstructor;
         default: boolean;
     };
-}>>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, {
+}>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, {
     size: number;
     fill: string;
     color: string;
@@ -284,7 +284,7 @@ declare const CircleProgress: import('../../utils').SFCWithInstall<{
     tipText: string;
     strokeWidth: number;
     clockWise: boolean;
-}, {}, string, {}> & import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps & (new () => {
+}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
     $slots: {
         tip?(_: {
             value: number;
