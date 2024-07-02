@@ -80,7 +80,7 @@ class Observe {
 				for (let i = 0; i < length; i++) {
 					//监听属性
 					if (mutationList[i].type == 'attributes' && this.attributes) {
-						this.attributesChange!.apply(this, [mutationList[i].attributeName, this.$el.getAttribute(mutationList[i].attributeName!), mutationList[i].oldValue])
+						this.attributesChange!.apply(this, [mutationList[i].target as HTMLElement, mutationList[i].attributeName, (mutationList[i].target as HTMLElement).getAttribute(mutationList[i].attributeName!), mutationList[i].oldValue])
 					}
 					//监听子节点变动
 					else if (mutationList[i].type == 'childList' && this.childList) {

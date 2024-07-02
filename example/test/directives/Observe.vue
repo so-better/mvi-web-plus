@@ -16,8 +16,8 @@ const observeOpt = ref({
 	attributes: true,
 	childList: true,
 	subtree: true,
-	attributesChange: (attrName: string, newVal: string, oldVal: string) => {
-		console.log(`属性 ${attrName} 发生变更，新值为 ${newVal}，旧值为 ${oldVal}`)
+	attributesChange: (node: HTMLElement, attrName: string, newVal: string, oldVal: string) => {
+		console.log(node, `属性 ${attrName} 发生变更，新值为 ${newVal}，旧值为 ${oldVal}`)
 	},
 	childNodesChange: (addNode: Node, removeNode: Node) => {
 		if (addNode) {
@@ -33,6 +33,9 @@ const addNode = () => {
 	node.innerText = '新加入的按钮' + index
 	document.body.querySelector('.example')!.appendChild(node)
 	index++
+	setTimeout(() => {
+		node.setAttribute('aaa', 'aaa')
+	}, 1000)
 }
 const removeNode = () => {
 	const parent = document.body.querySelector('.example')!
