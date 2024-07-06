@@ -1,4 +1,5 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
+import { CarouselPropsType } from '../carousel';
 import { IconPropsType } from '../icon';
 
 export declare const ImagePreviewProps: {
@@ -27,7 +28,7 @@ export declare const ImagePreviewProps: {
         default: number;
     };
     mode: {
-        type: PropType<"fade" | "slide" | undefined>;
+        type: PropType<CarouselPropsType["mode"]>;
         default: string;
     };
     controls: {

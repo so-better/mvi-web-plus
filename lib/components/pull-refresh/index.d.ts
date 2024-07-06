@@ -160,9 +160,9 @@ declare const PullRefresh: import('../../utils').SFCWithInstall<{
         loadingIcon: string | import('../icon').IconPropsType;
         distance: number;
     }>;
-    __isFragment?: undefined;
-    __isTeleport?: undefined;
-    __isSuspense?: undefined;
+    __isFragment?: never;
+    __isTeleport?: never;
+    __isSuspense?: never;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     pullingText: {
         type: StringConstructor;

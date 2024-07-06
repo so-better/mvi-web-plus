@@ -1,6 +1,6 @@
 declare const _default: import('vue').DefineComponent<{
     type: {
-        type: import('vue').PropType<"time" | "date" | "month" | "datetime">;
+        type: import('vue').PropType<"date" | "datetime" | "month" | "time">;
         default: string;
         validator(value: any): boolean;
     };
@@ -24,7 +24,7 @@ declare const _default: import('vue').DefineComponent<{
     change: (...args: any[]) => void;
 }, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     type: {
-        type: import('vue').PropType<"time" | "date" | "month" | "datetime">;
+        type: import('vue').PropType<"date" | "datetime" | "month" | "time">;
         default: string;
         validator(value: any): boolean;
     };
@@ -45,8 +45,8 @@ declare const _default: import('vue').DefineComponent<{
     onChange?: ((...args: any[]) => any) | undefined;
     onError?: ((...args: any[]) => any) | undefined;
 }, {
-    type: "time" | "date" | "month" | "datetime";
     modelValue: Date;
+    type: "time" | "date" | "month" | "datetime";
     min: Date;
     max: Date;
 }, {}>;

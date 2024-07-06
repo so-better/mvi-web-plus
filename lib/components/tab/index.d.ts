@@ -42,9 +42,9 @@ declare const Tab: import('../../utils').SFCWithInstall<{
         };
     }>>, {
         title: string;
-        disabled: boolean;
         icon: string | import('../icon').IconPropsType;
         placement: "left" | "right";
+        disabled: boolean;
     }, true, {}, {}, {
         P: {};
         B: {};
@@ -76,13 +76,13 @@ declare const Tab: import('../../utils').SFCWithInstall<{
         back: boolean;
     }, {}, {}, {}, {
         title: string;
-        disabled: boolean;
         icon: string | import('../icon').IconPropsType;
         placement: "left" | "right";
+        disabled: boolean;
     }>;
-    __isFragment?: undefined;
-    __isTeleport?: undefined;
-    __isSuspense?: undefined;
+    __isFragment?: never;
+    __isTeleport?: never;
+    __isSuspense?: never;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     title: {
         type: StringConstructor;
@@ -107,9 +107,9 @@ declare const Tab: import('../../utils').SFCWithInstall<{
     back: boolean;
 }, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, {
     title: string;
-    disabled: boolean;
     icon: string | import('../icon').IconPropsType;
     placement: "left" | "right";
+    disabled: boolean;
 }, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
     $slots: {
         default?(_: {}): any;

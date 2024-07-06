@@ -6,7 +6,7 @@ export declare const BadgeProps: {
         default: null;
     };
     placement: {
-        type: PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
+        type: PropType<"top-right" | "top-left" | "bottom-left" | "bottom-right">;
         default: string;
         validator(value: any): boolean;
     };

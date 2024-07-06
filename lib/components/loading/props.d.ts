@@ -2,7 +2,7 @@ import { ExtractPublicPropTypes, PropType } from 'vue';
 
 export declare const LoadingProps: {
     type: {
-        type: PropType<"default" | "circle" | "spin" | "dots" | "transfer">;
+        type: PropType<"default" | "circle" | "dots" | "spin" | "transfer">;
         default: string;
         validator(value: any): boolean;
     };

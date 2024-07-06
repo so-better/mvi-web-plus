@@ -58,8 +58,8 @@ declare const Switch: import('../../utils').SFCWithInstall<import('vue').DefineC
 }, {
     size: string;
     modelValue: boolean;
-    disabled: boolean;
     loading: boolean;
+    disabled: boolean;
     activeColor: string;
     inactiveColor: string;
 }, {}>>;

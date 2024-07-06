@@ -18,7 +18,7 @@ declare const Input: import('../../utils').SFCWithInstall<{
             default: null;
         };
         labelAlign: {
-            type: import('vue').PropType<"left" | "right" | "center">;
+            type: import('vue').PropType<"left" | "center" | "right">;
             default: string;
             validator(value: any): boolean;
         };
@@ -27,7 +27,7 @@ declare const Input: import('../../utils').SFCWithInstall<{
             default: null;
         };
         type: {
-            type: import('vue').PropType<"number" | "textarea" | "text" | "password" | "tel">;
+            type: import('vue').PropType<"text" | "password" | "number" | "tel" | "textarea">;
             default: string;
             validator(value: any): boolean;
         };
@@ -90,12 +90,12 @@ declare const Input: import('../../utils').SFCWithInstall<{
             validator(value: any): boolean;
         };
         align: {
-            type: import('vue').PropType<"left" | "right" | "center">;
+            type: import('vue').PropType<"left" | "center" | "right">;
             default: string;
             validator(value: any): boolean;
         };
         inputMode: {
-            type: import('vue').PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
+            type: import('vue').PropType<"none" | "text" | "decimal" | "numeric" | "tel" | "search" | "email" | "url">;
             default: string;
             validator(value: any): boolean;
         };
@@ -137,7 +137,7 @@ declare const Input: import('../../utils').SFCWithInstall<{
             default: null;
         };
         labelAlign: {
-            type: import('vue').PropType<"left" | "right" | "center">;
+            type: import('vue').PropType<"left" | "center" | "right">;
             default: string;
             validator(value: any): boolean;
         };
@@ -146,7 +146,7 @@ declare const Input: import('../../utils').SFCWithInstall<{
             default: null;
         };
         type: {
-            type: import('vue').PropType<"number" | "textarea" | "text" | "password" | "tel">;
+            type: import('vue').PropType<"text" | "password" | "number" | "tel" | "textarea">;
             default: string;
             validator(value: any): boolean;
         };
@@ -209,12 +209,12 @@ declare const Input: import('../../utils').SFCWithInstall<{
             validator(value: any): boolean;
         };
         align: {
-            type: import('vue').PropType<"left" | "right" | "center">;
+            type: import('vue').PropType<"left" | "center" | "right">;
             default: string;
             validator(value: any): boolean;
         };
         inputMode: {
-            type: import('vue').PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
+            type: import('vue').PropType<"none" | "text" | "decimal" | "numeric" | "tel" | "search" | "email" | "url">;
             default: string;
             validator(value: any): boolean;
         };
@@ -231,16 +231,16 @@ declare const Input: import('../../utils').SFCWithInstall<{
     }, {
         size: "medium" | "large";
         label: string;
-        align: "left" | "right" | "center";
-        border: boolean;
         name: string;
-        type: "number" | "textarea" | "text" | "password" | "tel";
         modelValue: string | number;
-        disabled: boolean;
+        type: "number" | "textarea" | "text" | "password" | "tel";
         left: string | import('../icon').IconPropsType;
         right: string | import('../icon').IconPropsType;
+        disabled: boolean;
+        border: boolean;
         placeholder: string;
         clearable: boolean;
+        align: "left" | "right" | "center";
         inputMode: "search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric";
         maxlength: number;
         readonly: boolean;
@@ -277,7 +277,7 @@ declare const Input: import('../../utils').SFCWithInstall<{
             default: null;
         };
         labelAlign: {
-            type: import('vue').PropType<"left" | "right" | "center">;
+            type: import('vue').PropType<"left" | "center" | "right">;
             default: string;
             validator(value: any): boolean;
         };
@@ -286,7 +286,7 @@ declare const Input: import('../../utils').SFCWithInstall<{
             default: null;
         };
         type: {
-            type: import('vue').PropType<"number" | "textarea" | "text" | "password" | "tel">;
+            type: import('vue').PropType<"text" | "password" | "number" | "tel" | "textarea">;
             default: string;
             validator(value: any): boolean;
         };
@@ -349,12 +349,12 @@ declare const Input: import('../../utils').SFCWithInstall<{
             validator(value: any): boolean;
         };
         align: {
-            type: import('vue').PropType<"left" | "right" | "center">;
+            type: import('vue').PropType<"left" | "center" | "right">;
             default: string;
             validator(value: any): boolean;
         };
         inputMode: {
-            type: import('vue').PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
+            type: import('vue').PropType<"none" | "text" | "decimal" | "numeric" | "tel" | "search" | "email" | "url">;
             default: string;
             validator(value: any): boolean;
         };
@@ -371,16 +371,16 @@ declare const Input: import('../../utils').SFCWithInstall<{
     }, {}, {}, {}, {}, {
         size: "medium" | "large";
         label: string;
-        align: "left" | "right" | "center";
-        border: boolean;
         name: string;
-        type: "number" | "textarea" | "text" | "password" | "tel";
         modelValue: string | number;
-        disabled: boolean;
+        type: "number" | "textarea" | "text" | "password" | "tel";
         left: string | import('../icon').IconPropsType;
         right: string | import('../icon').IconPropsType;
+        disabled: boolean;
+        border: boolean;
         placeholder: string;
         clearable: boolean;
+        align: "left" | "right" | "center";
         inputMode: "search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric";
         maxlength: number;
         readonly: boolean;
@@ -393,9 +393,9 @@ declare const Input: import('../../utils').SFCWithInstall<{
         required: boolean;
         showWordLimit: boolean;
     }>;
-    __isFragment?: undefined;
-    __isTeleport?: undefined;
-    __isSuspense?: undefined;
+    __isFragment?: never;
+    __isTeleport?: never;
+    __isSuspense?: never;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     modelValue: {
         type: (StringConstructor | NumberConstructor)[];
@@ -414,7 +414,7 @@ declare const Input: import('../../utils').SFCWithInstall<{
         default: null;
     };
     labelAlign: {
-        type: import('vue').PropType<"left" | "right" | "center">;
+        type: import('vue').PropType<"left" | "center" | "right">;
         default: string;
         validator(value: any): boolean;
     };
@@ -423,7 +423,7 @@ declare const Input: import('../../utils').SFCWithInstall<{
         default: null;
     };
     type: {
-        type: import('vue').PropType<"number" | "textarea" | "text" | "password" | "tel">;
+        type: import('vue').PropType<"text" | "password" | "number" | "tel" | "textarea">;
         default: string;
         validator(value: any): boolean;
     };
@@ -486,12 +486,12 @@ declare const Input: import('../../utils').SFCWithInstall<{
         validator(value: any): boolean;
     };
     align: {
-        type: import('vue').PropType<"left" | "right" | "center">;
+        type: import('vue').PropType<"left" | "center" | "right">;
         default: string;
         validator(value: any): boolean;
     };
     inputMode: {
-        type: import('vue').PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
+        type: import('vue').PropType<"none" | "text" | "decimal" | "numeric" | "tel" | "search" | "email" | "url">;
         default: string;
         validator(value: any): boolean;
     };
@@ -518,16 +518,16 @@ declare const Input: import('../../utils').SFCWithInstall<{
 }, string, {
     size: "medium" | "large";
     label: string;
-    align: "left" | "right" | "center";
-    border: boolean;
     name: string;
-    type: "number" | "textarea" | "text" | "password" | "tel";
     modelValue: string | number;
-    disabled: boolean;
+    type: "number" | "textarea" | "text" | "password" | "tel";
     left: string | import('../icon').IconPropsType;
     right: string | import('../icon').IconPropsType;
+    disabled: boolean;
+    border: boolean;
     placeholder: string;
     clearable: boolean;
+    align: "left" | "right" | "center";
     inputMode: "search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric";
     maxlength: number;
     readonly: boolean;

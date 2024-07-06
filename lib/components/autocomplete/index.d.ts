@@ -28,7 +28,7 @@ declare const Autocomplete: import('../../utils').SFCWithInstall<import('vue').D
         validator(value: any): boolean;
     };
     filterMethod: {
-        type: import('vue').PropType<boolean | ((value: string, list: string[]) => string[])>;
+        type: import('vue').PropType<((value: string, list: string[]) => string[]) | boolean>;
         default: boolean;
     };
     clearable: {
@@ -112,7 +112,7 @@ declare const Autocomplete: import('../../utils').SFCWithInstall<import('vue').D
         validator(value: any): boolean;
     };
     filterMethod: {
-        type: import('vue').PropType<boolean | ((value: string, list: string[]) => string[])>;
+        type: import('vue').PropType<((value: string, list: string[]) => string[]) | boolean>;
         default: boolean;
     };
     clearable: {
@@ -169,12 +169,11 @@ declare const Autocomplete: import('../../utils').SFCWithInstall<import('vue').D
     "onRight-click"?: ((...args: any[]) => any) | undefined;
 }, {
     size: "small" | "medium" | "large";
-    align: "left" | "right" | "center";
-    height: string;
     name: string;
     modelValue: string;
-    disabled: boolean;
     round: boolean;
+    height: string;
+    disabled: boolean;
     placeholder: string;
     list: string[];
     activeType: "info" | "success" | "warn" | "error" | "primary";
@@ -182,13 +181,12 @@ declare const Autocomplete: import('../../utils').SFCWithInstall<import('vue').D
     filterMethod: boolean | ((value: string, list: string[]) => string[]);
     clearable: boolean;
     layerProps: {
-        border?: boolean | undefined;
-        width?: string | undefined;
         zIndex?: number | undefined;
         modelValue?: boolean | undefined;
         timeout?: number | undefined;
         closable?: boolean | undefined;
         placement?: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined;
+        width?: string | undefined;
         offset?: string | undefined;
         background?: string | undefined;
         borderColor?: string | undefined;
@@ -196,9 +194,11 @@ declare const Autocomplete: import('../../utils').SFCWithInstall<import('vue').D
         showTriangle?: boolean | undefined;
         animation?: string | undefined;
         shadow?: boolean | undefined;
+        border?: boolean | undefined;
     };
     leftIcon: string | import('../icon').IconPropsType;
     rightIcon: string | import('../icon').IconPropsType;
     square: boolean;
+    align: "left" | "right" | "center";
 }, {}>>;
 export { Autocomplete, Autocomplete as default };

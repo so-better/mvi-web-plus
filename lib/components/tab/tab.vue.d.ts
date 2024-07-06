@@ -1,4 +1,7 @@
-declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
+declare function __VLS_template(): {
+    default?(_: {}): any;
+};
+declare const __VLS_component: import('vue').DefineComponent<{
     title: {
         type: StringConstructor;
         default: string;
@@ -40,12 +43,11 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     };
 }>>, {
     title: string;
-    disabled: boolean;
     icon: string | import('../icon').IconPropsType;
     placement: "left" | "right";
-}, {}>, {
-    default?(_: {}): any;
-}>;
+    disabled: boolean;
+}, {}>;
+declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
 export default _default;
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {

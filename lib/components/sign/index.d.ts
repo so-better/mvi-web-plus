@@ -29,8 +29,8 @@ declare const Sign: import('../../utils').SFCWithInstall<import('vue').DefineCom
         default: number;
     };
 }>>, {
-    width: number;
     color: string;
+    width: number;
     background: string;
 }, {}>>;
 export { Sign, Sign as default };

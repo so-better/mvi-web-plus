@@ -1,4 +1,7 @@
-declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
+declare function __VLS_template(): {
+    default?(_: {}): any;
+};
+declare const __VLS_component: import('vue').DefineComponent<{
     modelValue: {
         type: BooleanConstructor;
         default: boolean;
@@ -127,7 +130,6 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     onHidding?: ((...args: any[]) => any) | undefined;
     onHidden?: ((...args: any[]) => any) | undefined;
 }, {
-    width: string;
     mountEl: string;
     zIndex: number;
     modelValue: boolean;
@@ -137,12 +139,12 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     overlayColor: string;
     placement: "left" | "top" | "bottom" | "right";
     round: boolean;
+    width: string;
     showTimes: boolean;
     timesPlacement: "top-right" | "top-left" | "bottom-right" | "bottom-left";
     __contentPadding: boolean;
-}, {}>, {
-    default?(_: {}): any;
-}>;
+}, {}>;
+declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
 export default _default;
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {

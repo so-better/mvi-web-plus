@@ -13,7 +13,7 @@ declare const Triangle: import('../../utils').SFCWithInstall<import('vue').Defin
         default: string;
     };
     placement: {
-        type: import('vue').PropType<"left" | "top" | "bottom" | "right">;
+        type: import('vue').PropType<"top" | "left" | "right" | "bottom">;
         default: string;
         validator(value: any): boolean;
     };
@@ -31,7 +31,7 @@ declare const Triangle: import('../../utils').SFCWithInstall<import('vue').Defin
         default: string;
     };
     placement: {
-        type: import('vue').PropType<"left" | "top" | "bottom" | "right">;
+        type: import('vue').PropType<"top" | "left" | "right" | "bottom">;
         default: string;
         validator(value: any): boolean;
     };

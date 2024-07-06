@@ -210,7 +210,6 @@ declare const NumberKeyboard: import('../../utils').SFCWithInstall<{
         onComplete?: ((...args: any[]) => any) | undefined;
     }, {
         title: string;
-        border: boolean;
         mountEl: string;
         zIndex: number;
         modelValue: string | number;
@@ -220,6 +219,7 @@ declare const NumberKeyboard: import('../../utils').SFCWithInstall<{
         show: boolean;
         overlayColor: string;
         active: boolean;
+        border: boolean;
         maxlength: number;
         showDecimal: boolean;
         showDelete: boolean;
@@ -338,7 +338,6 @@ declare const NumberKeyboard: import('../../utils').SFCWithInstall<{
         $$el: import('vue').ComputedRef<HTMLElement | null>;
     }, {}, {}, {}, {
         title: string;
-        border: boolean;
         mountEl: string;
         zIndex: number;
         modelValue: string | number;
@@ -348,6 +347,7 @@ declare const NumberKeyboard: import('../../utils').SFCWithInstall<{
         show: boolean;
         overlayColor: string;
         active: boolean;
+        border: boolean;
         maxlength: number;
         showDecimal: boolean;
         showDelete: boolean;
@@ -359,9 +359,9 @@ declare const NumberKeyboard: import('../../utils').SFCWithInstall<{
         showX: boolean;
         random: boolean;
     }>;
-    __isFragment?: undefined;
-    __isTeleport?: undefined;
-    __isSuspense?: undefined;
+    __isFragment?: never;
+    __isTeleport?: never;
+    __isSuspense?: never;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     showDecimal: {
         type: BooleanConstructor;
@@ -475,7 +475,6 @@ declare const NumberKeyboard: import('../../utils').SFCWithInstall<{
     "update:show": (...args: any[]) => void;
 }, string, {
     title: string;
-    border: boolean;
     mountEl: string;
     zIndex: number;
     modelValue: string | number;
@@ -485,6 +484,7 @@ declare const NumberKeyboard: import('../../utils').SFCWithInstall<{
     show: boolean;
     overlayColor: string;
     active: boolean;
+    border: boolean;
     maxlength: number;
     showDecimal: boolean;
     showDelete: boolean;

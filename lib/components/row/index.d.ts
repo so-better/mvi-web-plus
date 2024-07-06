@@ -7,7 +7,7 @@ declare const Row: import('../../utils').SFCWithInstall<{
             validator(value: any): boolean;
         };
         align: {
-            type: import('vue').PropType<"center" | "flex-start" | "flex-end">;
+            type: import('vue').PropType<"flex-start" | "flex-end" | "center">;
             default: string;
             validator(value: any): boolean;
         };
@@ -22,7 +22,7 @@ declare const Row: import('../../utils').SFCWithInstall<{
             validator(value: any): boolean;
         };
         align: {
-            type: import('vue').PropType<"center" | "flex-start" | "flex-end">;
+            type: import('vue').PropType<"flex-start" | "flex-end" | "center">;
             default: string;
             validator(value: any): boolean;
         };
@@ -48,7 +48,7 @@ declare const Row: import('../../utils').SFCWithInstall<{
             validator(value: any): boolean;
         };
         align: {
-            type: import('vue').PropType<"center" | "flex-start" | "flex-end">;
+            type: import('vue').PropType<"flex-start" | "flex-end" | "center">;
             default: string;
             validator(value: any): boolean;
         };
@@ -61,9 +61,9 @@ declare const Row: import('../../utils').SFCWithInstall<{
         tag: string;
         justify: "flex-start" | "flex-end" | "space-around" | "space-between";
     }>;
-    __isFragment?: undefined;
-    __isTeleport?: undefined;
-    __isSuspense?: undefined;
+    __isFragment?: never;
+    __isTeleport?: never;
+    __isSuspense?: never;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     justify: {
         type: import('vue').PropType<"flex-start" | "flex-end" | "space-around" | "space-between">;
@@ -71,7 +71,7 @@ declare const Row: import('../../utils').SFCWithInstall<{
         validator(value: any): boolean;
     };
     align: {
-        type: import('vue').PropType<"center" | "flex-start" | "flex-end">;
+        type: import('vue').PropType<"flex-start" | "flex-end" | "center">;
         default: string;
         validator(value: any): boolean;
     };

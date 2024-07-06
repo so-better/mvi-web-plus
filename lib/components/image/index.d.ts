@@ -110,9 +110,9 @@ declare const Image: import('../../utils').SFCWithInstall<{
         onError?: ((...args: any[]) => any) | undefined;
         onSuccess?: ((...args: any[]) => any) | undefined;
     }, {
-        height: string;
-        width: string;
         round: boolean;
+        width: string;
+        height: string;
         loadIcon: string | import('../icon').IconPropsType;
         root: string;
         src: string;
@@ -183,9 +183,9 @@ declare const Image: import('../../utils').SFCWithInstall<{
         onError?: ((...args: any[]) => any) | undefined;
         onSuccess?: ((...args: any[]) => any) | undefined;
     }, {}, {}, {}, {}, {
-        height: string;
-        width: string;
         round: boolean;
+        width: string;
+        height: string;
         loadIcon: string | import('../icon').IconPropsType;
         root: string;
         src: string;
@@ -196,9 +196,9 @@ declare const Image: import('../../utils').SFCWithInstall<{
         lazyLoad: boolean;
         errorIcon: string | import('../icon').IconPropsType;
     }>;
-    __isFragment?: undefined;
-    __isTeleport?: undefined;
-    __isSuspense?: undefined;
+    __isFragment?: never;
+    __isTeleport?: never;
+    __isSuspense?: never;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     src: {
         type: StringConstructor;
@@ -256,9 +256,9 @@ declare const Image: import('../../utils').SFCWithInstall<{
     success: (...args: any[]) => void;
     error: (...args: any[]) => void;
 }, string, {
-    height: string;
-    width: string;
     round: boolean;
+    width: string;
+    height: string;
     loadIcon: string | import('../icon').IconPropsType;
     root: string;
     src: string;

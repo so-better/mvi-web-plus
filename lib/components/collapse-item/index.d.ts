@@ -45,8 +45,8 @@ declare const CollapseItem: import('../../utils').SFCWithInstall<{
     }>>, {
         label: string;
         title: string;
-        disabled: boolean;
         icon: string | import('../icon').IconPropsType;
+        disabled: boolean;
         content: string;
     }, true, {}, {}, {
         P: {};
@@ -79,13 +79,13 @@ declare const CollapseItem: import('../../utils').SFCWithInstall<{
     }>>, {}, {}, {}, {}, {
         label: string;
         title: string;
-        disabled: boolean;
         icon: string | import('../icon').IconPropsType;
+        disabled: boolean;
         content: string;
     }>;
-    __isFragment?: undefined;
-    __isTeleport?: undefined;
-    __isSuspense?: undefined;
+    __isFragment?: never;
+    __isTeleport?: never;
+    __isSuspense?: never;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     icon: {
         type: import('vue').PropType<string | import('../icon').IconPropsType>;
@@ -110,8 +110,8 @@ declare const CollapseItem: import('../../utils').SFCWithInstall<{
 }>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, {
     label: string;
     title: string;
-    disabled: boolean;
     icon: string | import('../icon').IconPropsType;
+    disabled: boolean;
     content: string;
 }, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
     $slots: {

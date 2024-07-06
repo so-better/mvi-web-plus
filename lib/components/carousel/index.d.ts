@@ -22,7 +22,7 @@ declare const Carousel: import('../../utils').SFCWithInstall<{
             default: number;
         };
         mode: {
-            type: import('vue').PropType<"fade" | "slide">;
+            type: import('vue').PropType<"slide" | "fade">;
             default: string;
             validator(value: any): boolean;
         };
@@ -73,7 +73,7 @@ declare const Carousel: import('../../utils').SFCWithInstall<{
             default: number;
         };
         mode: {
-            type: import('vue').PropType<"fade" | "slide">;
+            type: import('vue').PropType<"slide" | "fade">;
             default: string;
             validator(value: any): boolean;
         };
@@ -136,7 +136,7 @@ declare const Carousel: import('../../utils').SFCWithInstall<{
             default: number;
         };
         mode: {
-            type: import('vue').PropType<"fade" | "slide">;
+            type: import('vue').PropType<"slide" | "fade">;
             default: string;
             validator(value: any): boolean;
         };
@@ -174,9 +174,9 @@ declare const Carousel: import('../../utils').SFCWithInstall<{
         vertical: boolean;
         touchable: boolean;
     }>;
-    __isFragment?: undefined;
-    __isTeleport?: undefined;
-    __isSuspense?: undefined;
+    __isFragment?: never;
+    __isTeleport?: never;
+    __isSuspense?: never;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     modelValue: {
         type: NumberConstructor;
@@ -199,7 +199,7 @@ declare const Carousel: import('../../utils').SFCWithInstall<{
         default: number;
     };
     mode: {
-        type: import('vue').PropType<"fade" | "slide">;
+        type: import('vue').PropType<"slide" | "fade">;
         default: string;
         validator(value: any): boolean;
     };

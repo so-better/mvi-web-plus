@@ -1,4 +1,9 @@
-declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
+declare function __VLS_template(): {
+    tip?(_: {
+        value: number;
+    }): any;
+};
+declare const __VLS_component: import('vue').DefineComponent<{
     value: {
         type: NumberConstructor;
         default: number;
@@ -118,11 +123,8 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     tipText: string;
     strokeWidth: string;
     tipColor: string;
-}, {}>, {
-    tip?(_: {
-        value: number;
-    }): any;
-}>;
+}, {}>;
+declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
 export default _default;
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {

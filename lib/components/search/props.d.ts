@@ -47,7 +47,7 @@ export declare const SearchProps: {
         default: boolean;
     };
     align: {
-        type: PropType<"left" | "right" | "center">;
+        type: PropType<"left" | "center" | "right">;
         default: string;
         validator(value: any): boolean;
     };
@@ -64,7 +64,7 @@ export declare const SearchProps: {
         default: boolean;
     };
     inputMode: {
-        type: PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
+        type: PropType<"none" | "text" | "decimal" | "numeric" | "tel" | "search" | "email" | "url">;
         default: string;
         validator(value: any): boolean;
     };

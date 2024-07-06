@@ -80,9 +80,9 @@ declare const Navbar: import('../../utils').SFCWithInstall<{
         "onTitle-click"?: ((...args: any[]) => any) | undefined;
     }, {
         title: string;
-        border: boolean;
         zIndex: number;
         fixed: boolean;
+        border: boolean;
         leftIcon: string | import('../icon').IconPropsType;
         rightIcon: string | import('../icon').IconPropsType;
         leftText: string;
@@ -133,17 +133,17 @@ declare const Navbar: import('../../utils').SFCWithInstall<{
         "onTitle-click"?: ((...args: any[]) => any) | undefined;
     }, {}, {}, {}, {}, {
         title: string;
-        border: boolean;
         zIndex: number;
         fixed: boolean;
+        border: boolean;
         leftIcon: string | import('../icon').IconPropsType;
         rightIcon: string | import('../icon').IconPropsType;
         leftText: string;
         rightText: string;
     }>;
-    __isFragment?: undefined;
-    __isTeleport?: undefined;
-    __isSuspense?: undefined;
+    __isFragment?: never;
+    __isTeleport?: never;
+    __isSuspense?: never;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     title: {
         type: StringConstructor;
@@ -187,9 +187,9 @@ declare const Navbar: import('../../utils').SFCWithInstall<{
     "title-click": (...args: any[]) => void;
 }, string, {
     title: string;
-    border: boolean;
     zIndex: number;
     fixed: boolean;
+    border: boolean;
     leftIcon: string | import('../icon').IconPropsType;
     rightIcon: string | import('../icon').IconPropsType;
     leftText: string;

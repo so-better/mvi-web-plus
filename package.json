@@ -18,7 +18,7 @@
 	},
 	"dependencies": {
 		"animator-clip": "^1.4.3",
-		"dap-util": "^1.5.7",
+		"dap-util": "^1.5.8",
 		"dayjs": "^1.11.9",
 		"vue": "^3.4.19",
 		"vue-router": "^4.3.0"
@@ -34,7 +34,7 @@
 		"vite": "^5.2.8",
 		"vite-plugin-css-injected-by-js": "^3.5.1",
 		"vite-plugin-dts": "^3.7.3",
-		"vue-tsc": "^1.8.27"
+		"vue-tsc": "^2.0.26"
 	},
 	"browserslist": [
 		"> 1%",

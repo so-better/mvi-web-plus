@@ -1,6 +1,11 @@
 import { IconPropsType } from '../icon';
 
-declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
+declare function __VLS_template(): {
+    left?(_: {}): any;
+    title?(_: {}): any;
+    right?(_: {}): any;
+};
+declare const __VLS_component: import('vue').DefineComponent<{
     title: {
         type: StringConstructor;
         default: null;
@@ -76,18 +81,15 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     "onTitle-click"?: ((...args: any[]) => any) | undefined;
 }, {
     title: string;
-    border: boolean;
     zIndex: number;
     fixed: boolean;
+    border: boolean;
     leftIcon: string | IconPropsType;
     rightIcon: string | IconPropsType;
     leftText: string;
     rightText: string;
-}, {}>, {
-    left?(_: {}): any;
-    title?(_: {}): any;
-    right?(_: {}): any;
-}>;
+}, {}>;
+declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
 export default _default;
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {

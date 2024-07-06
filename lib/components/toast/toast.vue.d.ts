@@ -2,7 +2,7 @@ import { IconPropsType } from '../icon';
 
 declare const _default: import('vue').DefineComponent<{
     type: {
-        type: import('vue').PropType<"loading" | "info" | "success" | "error">;
+        type: import('vue').PropType<"success" | "error" | "loading" | "info">;
         default: null;
     };
     message: {
@@ -58,7 +58,7 @@ declare const _default: import('vue').DefineComponent<{
     show: import('vue').Ref<boolean>;
 }, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     type: {
-        type: import('vue').PropType<"loading" | "info" | "success" | "error">;
+        type: import('vue').PropType<"success" | "error" | "loading" | "info">;
         default: null;
     };
     message: {
@@ -110,12 +110,12 @@ declare const _default: import('vue').DefineComponent<{
         default: () => () => void;
     };
 }>>, {
-    type: "loading" | "info" | "success" | "error";
     mountEl: string;
     zIndex: number;
     color: string;
     timeout: number;
     usePadding: boolean;
+    type: "loading" | "info" | "success" | "error";
     icon: string | IconPropsType;
     overlayColor: string;
     background: string;

@@ -86,9 +86,9 @@ declare const _default: import('vue').DefineComponent<{
     name: string;
     color: string;
     modelValue: boolean | unknown[];
-    disabled: boolean;
     placement: "left" | "right";
     round: boolean;
+    disabled: boolean;
     value: string | number | Record<string, any> | unknown[];
 }, {}>;
 export default _default;

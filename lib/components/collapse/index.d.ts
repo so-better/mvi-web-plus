@@ -81,8 +81,8 @@ declare const Collapse: import('../../utils').SFCWithInstall<{
         "onSlide-up"?: ((...args: any[]) => any) | undefined;
     }, {
         modelValue: number | unknown[];
-        disabled: boolean;
         active: boolean;
+        disabled: boolean;
         noWrap: boolean;
         accordion: boolean;
         inBorder: boolean;
@@ -132,16 +132,16 @@ declare const Collapse: import('../../utils').SFCWithInstall<{
         "onSlide-up"?: ((...args: any[]) => any) | undefined;
     }, {}, {}, {}, {}, {
         modelValue: number | unknown[];
-        disabled: boolean;
         active: boolean;
+        disabled: boolean;
         noWrap: boolean;
         accordion: boolean;
         inBorder: boolean;
         outBorder: boolean;
     }>;
-    __isFragment?: undefined;
-    __isTeleport?: undefined;
-    __isSuspense?: undefined;
+    __isFragment?: never;
+    __isTeleport?: never;
+    __isSuspense?: never;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     modelValue: {
         type: (NumberConstructor | ArrayConstructor)[];
@@ -187,8 +187,8 @@ declare const Collapse: import('../../utils').SFCWithInstall<{
     "slide-up": (...args: any[]) => void;
 }, string, {
     modelValue: number | unknown[];
-    disabled: boolean;
     active: boolean;
+    disabled: boolean;
     noWrap: boolean;
     accordion: boolean;
     inBorder: boolean;

@@ -1,4 +1,5 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
+import { LayerPropsType } from '../layer';
 
 export declare const TooltipProps: {
     title: {
@@ -6,7 +7,7 @@ export declare const TooltipProps: {
         default: string;
     };
     placement: {
-        type: PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined>;
+        type: PropType<LayerPropsType["placement"]>;
         default: string;
     };
     disabled: {
@@ -30,7 +31,7 @@ export declare const TooltipProps: {
         default: null;
     };
     trigger: {
-        type: PropType<"click" | "hover" | "custom">;
+        type: PropType<"hover" | "click" | "custom">;
         default: string;
         validator(value: any): boolean;
     };

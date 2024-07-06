@@ -59,9 +59,9 @@ declare const SwipeCell: import('../../utils').SFCWithInstall<{
         disabled: boolean;
         centerClose: boolean;
     }>;
-    __isFragment?: undefined;
-    __isTeleport?: undefined;
-    __isSuspense?: undefined;
+    __isFragment?: never;
+    __isTeleport?: never;
+    __isSuspense?: never;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     disabled: {
         type: BooleanConstructor;

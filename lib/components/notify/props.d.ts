@@ -3,7 +3,7 @@ import { IconPropsType } from '../icon';
 
 export declare const NotifyProps: {
     type: {
-        type: PropType<"info" | "success" | "warn" | "error" | "primary">;
+        type: PropType<"success" | "info" | "primary" | "error" | "warn">;
         default: null;
     };
     message: {

@@ -77,9 +77,9 @@ declare const Cell: import('../../utils').SFCWithInstall<{
     }>>, {
         label: string;
         title: string;
-        border: boolean;
         icon: string | import('../icon').IconPropsType;
         active: boolean;
+        border: boolean;
         content: string;
         arrow: string | import('../icon').IconPropsType;
         ellipsis: number | boolean;
@@ -131,17 +131,17 @@ declare const Cell: import('../../utils').SFCWithInstall<{
     }>>, {}, {}, {}, {}, {
         label: string;
         title: string;
-        border: boolean;
         icon: string | import('../icon').IconPropsType;
         active: boolean;
+        border: boolean;
         content: string;
         arrow: string | import('../icon').IconPropsType;
         ellipsis: number | boolean;
         noWrap: boolean;
     }>;
-    __isFragment?: undefined;
-    __isTeleport?: undefined;
-    __isSuspense?: undefined;
+    __isFragment?: never;
+    __isTeleport?: never;
+    __isSuspense?: never;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     icon: {
         type: import('vue').PropType<string | import('../icon').IconPropsType>;
@@ -182,9 +182,9 @@ declare const Cell: import('../../utils').SFCWithInstall<{
 }>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, {
     label: string;
     title: string;
-    border: boolean;
     icon: string | import('../icon').IconPropsType;
     active: boolean;
+    border: boolean;
     content: string;
     arrow: string | import('../icon').IconPropsType;
     ellipsis: number | boolean;

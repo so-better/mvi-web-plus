@@ -3,12 +3,12 @@ import { IconPropsType } from '../icon';
 
 export declare const ButtonProps: {
     type: {
-        type: PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
+        type: PropType<"default" | "info" | "success" | "error" | "warn" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
     size: {
-        type: PropType<"small" | "medium" | "large" | "mini">;
+        type: PropType<"mini" | "small" | "medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
@@ -17,7 +17,7 @@ export declare const ButtonProps: {
         default: boolean;
     };
     nativeType: {
-        type: PropType<"button" | "submit" | "reset">;
+        type: PropType<HTMLButtonElement["type"]>;
         default: string;
     };
     block: {
@@ -66,12 +66,12 @@ declare const publicButtonProps: {
         default: string;
     };
     type: {
-        type: PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
+        type: PropType<"default" | "info" | "success" | "error" | "warn" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
     size: {
-        type: PropType<"small" | "medium" | "large" | "mini">;
+        type: PropType<"mini" | "small" | "medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
@@ -80,7 +80,7 @@ declare const publicButtonProps: {
         default: boolean;
     };
     nativeType: {
-        type: PropType<"button" | "submit" | "reset">;
+        type: PropType<HTMLButtonElement["type"]>;
         default: string;
     };
     block: {

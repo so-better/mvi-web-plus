@@ -30,7 +30,7 @@ declare const _default: import('vue').DefineComponent<{
         validator(value: any): boolean;
     };
     filterMethod: {
-        type: import('vue').PropType<boolean | ((value: string, list: string[]) => string[])>;
+        type: import('vue').PropType<((value: string, list: string[]) => string[]) | boolean>;
         default: boolean;
     };
     clearable: {
@@ -114,7 +114,7 @@ declare const _default: import('vue').DefineComponent<{
         validator(value: any): boolean;
     };
     filterMethod: {
-        type: import('vue').PropType<boolean | ((value: string, list: string[]) => string[])>;
+        type: import('vue').PropType<((value: string, list: string[]) => string[]) | boolean>;
         default: boolean;
     };
     clearable: {
@@ -171,12 +171,11 @@ declare const _default: import('vue').DefineComponent<{
     "onRight-click"?: ((...args: any[]) => any) | undefined;
 }, {
     size: "small" | "medium" | "large";
-    align: "left" | "right" | "center";
-    height: string;
     name: string;
     modelValue: string;
-    disabled: boolean;
     round: boolean;
+    height: string;
+    disabled: boolean;
     placeholder: string;
     list: string[];
     activeType: "info" | "success" | "warn" | "error" | "primary";
@@ -184,13 +183,12 @@ declare const _default: import('vue').DefineComponent<{
     filterMethod: boolean | ((value: string, list: string[]) => string[]);
     clearable: boolean;
     layerProps: {
-        border?: boolean | undefined;
-        width?: string | undefined;
         zIndex?: number | undefined;
         modelValue?: boolean | undefined;
         timeout?: number | undefined;
         closable?: boolean | undefined;
         placement?: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined;
+        width?: string | undefined;
         offset?: string | undefined;
         background?: string | undefined;
         borderColor?: string | undefined;
@@ -198,9 +196,11 @@ declare const _default: import('vue').DefineComponent<{
         showTriangle?: boolean | undefined;
         animation?: string | undefined;
         shadow?: boolean | undefined;
+        border?: boolean | undefined;
     };
     leftIcon: string | IconPropsType;
     rightIcon: string | IconPropsType;
     square: boolean;
+    align: "left" | "right" | "center";
 }, {}>;
 export default _default;

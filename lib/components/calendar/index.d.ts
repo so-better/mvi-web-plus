@@ -36,7 +36,7 @@ declare const Calendar: import('../../utils').SFCWithInstall<import('vue').Defin
         default: boolean;
     };
     type: {
-        type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
+        type: import('vue').PropType<"info" | "primary" | "error" | "warn" | "success">;
         default: string;
         validator(value: any): boolean;
     };
@@ -82,7 +82,7 @@ declare const Calendar: import('../../utils').SFCWithInstall<import('vue').Defin
         default: boolean;
     };
     type: {
-        type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
+        type: import('vue').PropType<"info" | "primary" | "error" | "warn" | "success">;
         default: string;
         validator(value: any): boolean;
     };
@@ -92,8 +92,8 @@ declare const Calendar: import('../../utils').SFCWithInstall<import('vue').Defin
     "onMonth-click"?: ((...args: any[]) => any) | undefined;
     "onYear-click"?: ((...args: any[]) => any) | undefined;
 }, {
-    type: "info" | "success" | "warn" | "error" | "primary";
     modelValue: Date;
+    type: "info" | "success" | "warn" | "error" | "primary";
     view: import('./props').CalendarViewType;
     active: boolean;
     monthText: string[];

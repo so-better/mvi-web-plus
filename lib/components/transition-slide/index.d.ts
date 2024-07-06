@@ -61,9 +61,9 @@ declare const TransitionSlide: import('../../utils').SFCWithInstall<{
         timeout: number;
         expand: boolean;
     }>;
-    __isFragment?: undefined;
-    __isTeleport?: undefined;
-    __isSuspense?: undefined;
+    __isFragment?: never;
+    __isTeleport?: never;
+    __isSuspense?: never;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     expand: {
         type: BooleanConstructor;

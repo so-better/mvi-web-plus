@@ -125,21 +125,21 @@ declare const Table: import('../../utils').SFCWithInstall<{
         "onSort-desc"?: ((...args: any[]) => any) | undefined;
     }, {
         data: any[];
-        border: boolean;
-        height: string;
         loading: boolean;
+        height: string;
+        border: boolean;
         center: boolean;
         activeColor: string;
         loadText: string;
         tooltip: {
             title?: string | undefined;
-            width?: string | undefined;
             zIndex?: number | undefined;
             color?: string | undefined;
             timeout?: number | undefined;
-            disabled?: boolean | undefined;
             placement?: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined;
+            width?: string | undefined;
             offset?: string | undefined;
+            disabled?: boolean | undefined;
             borderColor?: string | undefined;
             showTriangle?: boolean | undefined;
             animation?: string | undefined;
@@ -221,21 +221,21 @@ declare const Table: import('../../utils').SFCWithInstall<{
         doLayout: () => void;
     }, {}, {}, {}, {
         data: any[];
-        border: boolean;
-        height: string;
         loading: boolean;
+        height: string;
+        border: boolean;
         center: boolean;
         activeColor: string;
         loadText: string;
         tooltip: {
             title?: string | undefined;
-            width?: string | undefined;
             zIndex?: number | undefined;
             color?: string | undefined;
             timeout?: number | undefined;
-            disabled?: boolean | undefined;
             placement?: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined;
+            width?: string | undefined;
             offset?: string | undefined;
+            disabled?: boolean | undefined;
             borderColor?: string | undefined;
             showTriangle?: boolean | undefined;
             animation?: string | undefined;
@@ -249,9 +249,9 @@ declare const Table: import('../../utils').SFCWithInstall<{
         noDataMsg: string;
         cellClass: (row: any, rowIndex: number, column: import('./props').TableColumnType, columnIndex: number) => string;
     }>;
-    __isFragment?: undefined;
-    __isTeleport?: undefined;
-    __isSuspense?: undefined;
+    __isFragment?: never;
+    __isTeleport?: never;
+    __isSuspense?: never;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     data: {
         type: import('vue').PropType<any[]>;
@@ -319,21 +319,21 @@ declare const Table: import('../../utils').SFCWithInstall<{
     "sort-desc": (...args: any[]) => void;
 }, string, {
     data: any[];
-    border: boolean;
-    height: string;
     loading: boolean;
+    height: string;
+    border: boolean;
     center: boolean;
     activeColor: string;
     loadText: string;
     tooltip: {
         title?: string | undefined;
-        width?: string | undefined;
         zIndex?: number | undefined;
         color?: string | undefined;
         timeout?: number | undefined;
-        disabled?: boolean | undefined;
         placement?: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined;
+        width?: string | undefined;
         offset?: string | undefined;
+        disabled?: boolean | undefined;
         borderColor?: string | undefined;
         showTriangle?: boolean | undefined;
         animation?: string | undefined;
@@ -352,17 +352,17 @@ declare const Table: import('../../utils').SFCWithInstall<{
             row: any;
             rowIndex: number;
             column: {
-                type?: "default" | "custom" | "selection" | undefined;
-                label?: string | undefined;
+                type?: "selection" | "custom" | "default";
+                label?: string;
                 prop: string;
-                width?: string | number | undefined;
-                className?: string | undefined;
-                hidden?: boolean | undefined;
-                sortable?: boolean | undefined;
-                format?: ((val: any, row: any, column: import('./props').TableColumnType) => string) | undefined;
-                selectable?: ((row: any, rowIndex: number) => boolean) | undefined;
-                sortMethod?: ((sortOrder: import('./props').TableSortOrderType, sortBy: string, rows: any, column: import('./props').TableColumnType) => void) | undefined;
-                ellipsis?: boolean | undefined;
+                width?: string | number;
+                className?: string;
+                hidden?: boolean;
+                sortable?: boolean;
+                format?: (val: any, row: any, column: import('./props').TableColumnType) => string;
+                selectable?: (row: any, rowIndex: number) => boolean;
+                sortMethod?: (sortOrder: import('./props').TableSortOrderType, sortBy: string, rows: any, column: import('./props').TableColumnType) => void;
+                ellipsis?: boolean;
             };
             columnIndex: number;
         }): any;

@@ -12,7 +12,7 @@ declare const _default: import('vue').DefineComponent<{
         default: string;
     };
     placement: {
-        type: import('vue').PropType<"left" | "top" | "bottom" | "right">;
+        type: import('vue').PropType<"top" | "left" | "right" | "bottom">;
         default: string;
         validator(value: any): boolean;
     };
@@ -30,7 +30,7 @@ declare const _default: import('vue').DefineComponent<{
         default: string;
     };
     placement: {
-        type: import('vue').PropType<"left" | "top" | "bottom" | "right">;
+        type: import('vue').PropType<"top" | "left" | "right" | "bottom">;
         default: string;
         validator(value: any): boolean;
     };

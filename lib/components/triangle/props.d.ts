@@ -14,7 +14,7 @@ export declare const TriangleProps: {
         default: string;
     };
     placement: {
-        type: PropType<"left" | "top" | "bottom" | "right">;
+        type: PropType<"top" | "left" | "right" | "bottom">;
         default: string;
         validator(value: any): boolean;
     };

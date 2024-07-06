@@ -1,6 +1,10 @@
 import { IconPropsType } from '../icon';
 
-declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
+declare function __VLS_template(): {
+    loading?(_: {}): any;
+    error?(_: {}): any;
+};
+declare const __VLS_component: import('vue').DefineComponent<{
     src: {
         type: StringConstructor;
         default: string;
@@ -107,9 +111,9 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     onError?: ((...args: any[]) => any) | undefined;
     onSuccess?: ((...args: any[]) => any) | undefined;
 }, {
-    height: string;
-    width: string;
     round: boolean;
+    width: string;
+    height: string;
     loadIcon: string | IconPropsType;
     root: string;
     src: string;
@@ -119,10 +123,8 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     showLoading: boolean;
     lazyLoad: boolean;
     errorIcon: string | IconPropsType;
-}, {}>, {
-    loading?(_: {}): any;
-    error?(_: {}): any;
-}>;
+}, {}>;
+declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
 export default _default;
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {

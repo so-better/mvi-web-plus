@@ -28,8 +28,8 @@ declare const _default: import('vue').DefineComponent<{
         default: number;
     };
 }>>, {
-    width: number;
     color: string;
+    width: number;
     background: string;
 }, {}>;
 export default _default;

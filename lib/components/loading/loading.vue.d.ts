@@ -1,6 +1,6 @@
 declare const _default: import('vue').DefineComponent<{
     type: {
-        type: import('vue').PropType<"default" | "circle" | "spin" | "dots" | "transfer">;
+        type: import('vue').PropType<"default" | "circle" | "dots" | "spin" | "transfer">;
         default: string;
         validator(value: any): boolean;
     };
@@ -14,7 +14,7 @@ declare const _default: import('vue').DefineComponent<{
     };
 }, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     type: {
-        type: import('vue').PropType<"default" | "circle" | "spin" | "dots" | "transfer">;
+        type: import('vue').PropType<"default" | "circle" | "dots" | "spin" | "transfer">;
         default: string;
         validator(value: any): boolean;
     };
@@ -28,7 +28,7 @@ declare const _default: import('vue').DefineComponent<{
     };
 }>>, {
     size: string;
-    type: "default" | "circle" | "spin" | "dots" | "transfer";
     color: string;
+    type: "default" | "circle" | "spin" | "dots" | "transfer";
 }, {}>;
 export default _default;

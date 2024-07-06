@@ -1,4 +1,7 @@
-declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
+declare function __VLS_template(): {
+    default?(_: {}): any;
+};
+declare const __VLS_component: import('vue').DefineComponent<{
     modelValue: {
         type: BooleanConstructor;
         default: boolean;
@@ -8,7 +11,7 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         default: null;
     };
     placement: {
-        type: import('vue').PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
+        type: import('vue').PropType<"top" | "left" | "right" | "bottom" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
         default: string;
         validator(value: any): boolean;
     };
@@ -77,7 +80,7 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         default: null;
     };
     placement: {
-        type: import('vue').PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
+        type: import('vue').PropType<"top" | "left" | "right" | "bottom" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
         default: string;
         validator(value: any): boolean;
     };
@@ -134,13 +137,12 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     onHidding?: ((...args: any[]) => any) | undefined;
     onHidden?: ((...args: any[]) => any) | undefined;
 }, {
-    border: boolean;
-    width: string;
     zIndex: number;
     modelValue: boolean;
     timeout: number;
     closable: boolean;
     placement: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end";
+    width: string;
     offset: string;
     background: string;
     borderColor: string;
@@ -148,9 +150,9 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     showTriangle: boolean;
     animation: string;
     shadow: boolean;
-}, {}>, {
-    default?(_: {}): any;
-}>;
+    border: boolean;
+}, {}>;
+declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
 export default _default;
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {

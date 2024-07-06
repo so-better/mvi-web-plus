@@ -137,7 +137,6 @@ declare const Popup: import('../../utils').SFCWithInstall<{
         onHidding?: ((...args: any[]) => any) | undefined;
         onHidden?: ((...args: any[]) => any) | undefined;
     }, {
-        width: string;
         mountEl: string;
         zIndex: number;
         modelValue: boolean;
@@ -147,6 +146,7 @@ declare const Popup: import('../../utils').SFCWithInstall<{
         overlayColor: string;
         placement: "left" | "top" | "bottom" | "right";
         round: boolean;
+        width: string;
         showTimes: boolean;
         timesPlacement: "top-right" | "top-left" | "bottom-right" | "bottom-left";
         __contentPadding: boolean;
@@ -223,7 +223,6 @@ declare const Popup: import('../../utils').SFCWithInstall<{
     }, {
         $$el: import('vue').ComputedRef<HTMLElement | null>;
     }, {}, {}, {}, {
-        width: string;
         mountEl: string;
         zIndex: number;
         modelValue: boolean;
@@ -233,13 +232,14 @@ declare const Popup: import('../../utils').SFCWithInstall<{
         overlayColor: string;
         placement: "left" | "top" | "bottom" | "right";
         round: boolean;
+        width: string;
         showTimes: boolean;
         timesPlacement: "top-right" | "top-left" | "bottom-right" | "bottom-left";
         __contentPadding: boolean;
     }>;
-    __isFragment?: undefined;
-    __isTeleport?: undefined;
-    __isSuspense?: undefined;
+    __isFragment?: never;
+    __isTeleport?: never;
+    __isSuspense?: never;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     modelValue: {
         type: BooleanConstructor;
@@ -314,7 +314,6 @@ declare const Popup: import('../../utils').SFCWithInstall<{
     hidding: (...args: any[]) => void;
     hidden: (...args: any[]) => void;
 }, string, {
-    width: string;
     mountEl: string;
     zIndex: number;
     modelValue: boolean;
@@ -324,6 +323,7 @@ declare const Popup: import('../../utils').SFCWithInstall<{
     overlayColor: string;
     placement: "left" | "top" | "bottom" | "right";
     round: boolean;
+    width: string;
     showTimes: boolean;
     timesPlacement: "top-right" | "top-left" | "bottom-right" | "bottom-left";
     __contentPadding: boolean;

@@ -45,7 +45,7 @@ declare const Search: import('../../utils').SFCWithInstall<import('vue').DefineC
         default: boolean;
     };
     align: {
-        type: import('vue').PropType<"left" | "right" | "center">;
+        type: import('vue').PropType<"left" | "center" | "right">;
         default: string;
         validator(value: any): boolean;
     };
@@ -62,7 +62,7 @@ declare const Search: import('../../utils').SFCWithInstall<import('vue').DefineC
         default: boolean;
     };
     inputMode: {
-        type: import('vue').PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
+        type: import('vue').PropType<"none" | "text" | "decimal" | "numeric" | "tel" | "search" | "email" | "url">;
         default: string;
         validator(value: any): boolean;
     };
@@ -124,7 +124,7 @@ declare const Search: import('../../utils').SFCWithInstall<import('vue').DefineC
         default: boolean;
     };
     align: {
-        type: import('vue').PropType<"left" | "right" | "center">;
+        type: import('vue').PropType<"left" | "center" | "right">;
         default: string;
         validator(value: any): boolean;
     };
@@ -141,7 +141,7 @@ declare const Search: import('../../utils').SFCWithInstall<import('vue').DefineC
         default: boolean;
     };
     inputMode: {
-        type: import('vue').PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
+        type: import('vue').PropType<"none" | "text" | "decimal" | "numeric" | "tel" | "search" | "email" | "url">;
         default: string;
         validator(value: any): boolean;
     };
@@ -159,17 +159,17 @@ declare const Search: import('../../utils').SFCWithInstall<import('vue').DefineC
     onSearch?: ((...args: any[]) => any) | undefined;
 }, {
     label: string;
-    align: "left" | "right" | "center";
-    type: string;
     modelValue: string | number;
-    disabled: boolean;
+    type: string;
     round: boolean;
     showCancel: boolean;
     cancelText: string;
+    disabled: boolean;
     placeholder: string;
     clearable: boolean;
     leftIcon: string | import('../icon').IconPropsType;
     rightIcon: string | import('../icon').IconPropsType;
+    align: "left" | "right" | "center";
     inputMode: "search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric";
     maxlength: number;
     readonly: boolean;

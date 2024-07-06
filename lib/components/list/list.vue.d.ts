@@ -1,4 +1,11 @@
-declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
+declare function __VLS_template(): {
+    default?(_: {}): any;
+    finished?(_: {}): any;
+    loading?(_: {}): any;
+    error?(_: {}): any;
+    content?(_: {}): any;
+};
+declare const __VLS_component: import('vue').DefineComponent<{
     loading: {
         type: BooleanConstructor;
         default: boolean;
@@ -90,13 +97,8 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     finishedText: string;
     immediateLoad: boolean;
     scrollEl: string;
-}, {}>, {
-    default?(_: {}): any;
-    finished?(_: {}): any;
-    loading?(_: {}): any;
-    error?(_: {}): any;
-    content?(_: {}): any;
-}>;
+}, {}>;
+declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
 export default _default;
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {

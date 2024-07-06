@@ -62,7 +62,7 @@ declare const Stepper: import('../../utils').SFCWithInstall<import('vue').Define
         default: boolean;
     };
     inputAlign: {
-        type: import('vue').PropType<"left" | "right" | "center">;
+        type: import('vue').PropType<"left" | "center" | "right">;
         default: string;
         validator(value: any): boolean;
     };
@@ -136,7 +136,7 @@ declare const Stepper: import('../../utils').SFCWithInstall<import('vue').Define
         default: boolean;
     };
     inputAlign: {
-        type: import('vue').PropType<"left" | "right" | "center">;
+        type: import('vue').PropType<"left" | "center" | "right">;
         default: string;
         validator(value: any): boolean;
     };
@@ -149,10 +149,10 @@ declare const Stepper: import('../../utils').SFCWithInstall<import('vue').Define
     onChange?: ((...args: any[]) => any) | undefined;
 }, {
     size: "small" | "medium" | "large";
-    border: boolean;
     modelValue: number;
-    disabled: boolean;
     active: boolean;
+    disabled: boolean;
+    border: boolean;
     min: number;
     max: number;
     step: number;

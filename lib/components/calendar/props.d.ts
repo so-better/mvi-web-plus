@@ -42,7 +42,7 @@ export declare const CalendarProps: {
         default: boolean;
     };
     type: {
-        type: PropType<"info" | "success" | "warn" | "error" | "primary">;
+        type: PropType<"info" | "primary" | "error" | "warn" | "success">;
         default: string;
         validator(value: any): boolean;
     };

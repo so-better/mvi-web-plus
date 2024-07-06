@@ -1,13 +1,17 @@
 import { IconPropsType } from '../icon';
 
-declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
+declare function __VLS_template(): {
+    loading?(_: {}): any;
+    default?(_: {}): any;
+};
+declare const __VLS_component: import('vue').DefineComponent<{
     type: {
-        type: import('vue').PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
+        type: import('vue').PropType<"default" | "info" | "success" | "error" | "warn" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
     size: {
-        type: import('vue').PropType<"small" | "medium" | "large" | "mini">;
+        type: import('vue').PropType<"mini" | "small" | "medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
@@ -16,7 +20,7 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         default: boolean;
     };
     nativeType: {
-        type: import('vue').PropType<"button" | "submit" | "reset">;
+        type: import('vue').PropType<HTMLButtonElement["type"]>;
         default: string;
     };
     block: {
@@ -60,12 +64,12 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     };
 }, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     type: {
-        type: import('vue').PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
+        type: import('vue').PropType<"default" | "info" | "success" | "error" | "warn" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
     size: {
-        type: import('vue').PropType<"small" | "medium" | "large" | "mini">;
+        type: import('vue').PropType<"mini" | "small" | "medium" | "large">;
         default: string;
         validator(value: any): boolean;
     };
@@ -74,7 +78,7 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
         default: boolean;
     };
     nativeType: {
-        type: import('vue').PropType<"button" | "submit" | "reset">;
+        type: import('vue').PropType<HTMLButtonElement["type"]>;
         default: string;
     };
     block: {
@@ -119,21 +123,19 @@ declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
 }>>, {
     size: "small" | "medium" | "large" | "mini";
     type: "default" | "info" | "success" | "warn" | "error" | "primary";
-    disabled: boolean;
     round: boolean;
     loading: boolean;
     active: boolean;
+    disabled: boolean;
     square: boolean;
     block: boolean;
-    nativeType: "button" | "submit" | "reset";
+    nativeType: "button" | "reset" | "submit";
     tag: string;
     plain: boolean;
     loadText: string;
     loadIcon: string | IconPropsType;
-}, {}>, {
-    loading?(_: {}): any;
-    default?(_: {}): any;
-}>;
+}, {}>;
+declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
 export default _default;
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {

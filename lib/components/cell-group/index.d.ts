@@ -28,8 +28,8 @@ declare const CellGroup: import('../../utils').SFCWithInstall<{
         };
     }>>, {
         title: string;
-        border: boolean;
         active: boolean;
+        border: boolean;
     }, true, {}, {}, {
         P: {};
         B: {};
@@ -52,12 +52,12 @@ declare const CellGroup: import('../../utils').SFCWithInstall<{
         };
     }>>, {}, {}, {}, {}, {
         title: string;
-        border: boolean;
         active: boolean;
+        border: boolean;
     }>;
-    __isFragment?: undefined;
-    __isTeleport?: undefined;
-    __isSuspense?: undefined;
+    __isFragment?: never;
+    __isTeleport?: never;
+    __isSuspense?: never;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     title: {
         type: StringConstructor;
@@ -73,8 +73,8 @@ declare const CellGroup: import('../../utils').SFCWithInstall<{
     };
 }>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, {
     title: string;
-    border: boolean;
     active: boolean;
+    border: boolean;
 }, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
     $slots: {
         default?(_: {}): any;

@@ -90,12 +90,12 @@ declare const Tabbar: import('../../utils').SFCWithInstall<import('vue').DefineC
     onChange?: ((...args: any[]) => any) | undefined;
     "onItem-click"?: ((...args: any[]) => any) | undefined;
 }, {
-    border: boolean;
     zIndex: number;
     modelValue: string | number | Record<string, any> | unknown[];
     fixed: boolean;
     offset: string;
     active: boolean;
+    border: boolean;
     activeColor: string;
     inactiveColor: string;
     tabs: import('./props').TabbarItemPropsType[];
