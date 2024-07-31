@@ -85,10 +85,11 @@ export default () => {
 					fs.writeFileSync(
 						filePath,
 						`<template>
-                <div>组件测试页面</div>
-             </template>
-             <script setup lang="ts"></script>
-             <style lang="less" scoped></style>`,
+	<div>组件测试页面</div>
+</template>
+<script setup lang="ts"></script>
+<style lang="less" scoped></style>
+`,
 						'utf-8'
 					)
 				}
@@ -107,10 +108,11 @@ export default () => {
 					fs.writeFileSync(
 						filePath,
 						`<template>
-                <div>指令测试页面</div>
-             </template>
-             <script setup lang="ts"></script>
-             <style lang="less" scoped></style>`,
+	<div>指令测试页面</div>
+</template>
+<script setup lang="ts"></script>
+<style lang="less" scoped></style>
+`,
 						'utf-8'
 					)
 				}
