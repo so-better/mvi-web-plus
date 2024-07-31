@@ -20,7 +20,7 @@ export declare const DateChooserProps: {
         default: boolean;
     };
     trigger: {
-        type: PropType<"hover" | "click" | "custom">;
+        type: PropType<"click" | "hover" | "custom">;
         default: string;
         validator(value: any): boolean;
     };
@@ -50,7 +50,7 @@ export declare const DateChooserProps: {
         default: boolean;
     };
     type: {
-        type: PropType<"info" | "primary" | "error" | "warn" | "success">;
+        type: PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };

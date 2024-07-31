@@ -156,9 +156,9 @@ declare const Skeleton: import('../../utils').SFCWithInstall<{
         avatarSize: string;
         avatarRound: boolean;
     }>;
-    __isFragment?: never;
-    __isTeleport?: never;
-    __isSuspense?: never;
+    __isFragment?: undefined;
+    __isTeleport?: undefined;
+    __isSuspense?: undefined;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     loading: {
         type: BooleanConstructor;

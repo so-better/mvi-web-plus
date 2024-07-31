@@ -87,9 +87,9 @@ declare const Checkbox: import('../../utils').SFCWithInstall<import('vue').Defin
     name: string;
     color: string;
     modelValue: boolean | unknown[];
+    disabled: boolean;
     placement: "left" | "right";
     round: boolean;
-    disabled: boolean;
     value: string | number | Record<string, any> | unknown[];
 }, {}>>;
 export { Checkbox, Checkbox as default };

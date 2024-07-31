@@ -2,7 +2,7 @@ import { PickerOptionsItemType } from './props';
 
 declare const _default: import('vue').DefineComponent<{
     options: {
-        type: import('vue').PropType<PickerOptionsItemType[] | PickerOptionsItemType>;
+        type: import('vue').PropType<PickerOptionsItemType | PickerOptionsItemType[]>;
         default: () => {
             values: never[];
             defaultIndex: number;
@@ -42,7 +42,7 @@ declare const _default: import('vue').DefineComponent<{
     confirm: (...args: any[]) => void;
 }, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     options: {
-        type: import('vue').PropType<PickerOptionsItemType[] | PickerOptionsItemType>;
+        type: import('vue').PropType<PickerOptionsItemType | PickerOptionsItemType[]>;
         default: () => {
             values: never[];
             defaultIndex: number;

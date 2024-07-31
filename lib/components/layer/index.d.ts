@@ -10,7 +10,7 @@ declare const Layer: import('../../utils').SFCWithInstall<{
             default: null;
         };
         placement: {
-            type: import('vue').PropType<"top" | "left" | "right" | "bottom" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
+            type: import('vue').PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
             default: string;
             validator(value: any): boolean;
         };
@@ -87,7 +87,7 @@ declare const Layer: import('../../utils').SFCWithInstall<{
             default: null;
         };
         placement: {
-            type: import('vue').PropType<"top" | "left" | "right" | "bottom" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
+            type: import('vue').PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
             default: string;
             validator(value: any): boolean;
         };
@@ -144,12 +144,13 @@ declare const Layer: import('../../utils').SFCWithInstall<{
         onHidding?: ((...args: any[]) => any) | undefined;
         onHidden?: ((...args: any[]) => any) | undefined;
     }, {
+        border: boolean;
+        width: string;
         zIndex: number;
         modelValue: boolean;
         timeout: number;
         closable: boolean;
         placement: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end";
-        width: string;
         offset: string;
         background: string;
         borderColor: string;
@@ -157,7 +158,6 @@ declare const Layer: import('../../utils').SFCWithInstall<{
         showTriangle: boolean;
         animation: string;
         shadow: boolean;
-        border: boolean;
     }, true, {}, {}, {
         P: {};
         B: {};
@@ -175,7 +175,7 @@ declare const Layer: import('../../utils').SFCWithInstall<{
             default: null;
         };
         placement: {
-            type: import('vue').PropType<"top" | "left" | "right" | "bottom" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
+            type: import('vue').PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
             default: string;
             validator(value: any): boolean;
         };
@@ -235,12 +235,13 @@ declare const Layer: import('../../utils').SFCWithInstall<{
         $$el: import('vue').ComputedRef<HTMLElement | null>;
         update: () => void;
     }, {}, {}, {}, {
+        border: boolean;
+        width: string;
         zIndex: number;
         modelValue: boolean;
         timeout: number;
         closable: boolean;
         placement: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end";
-        width: string;
         offset: string;
         background: string;
         borderColor: string;
@@ -248,11 +249,10 @@ declare const Layer: import('../../utils').SFCWithInstall<{
         showTriangle: boolean;
         animation: string;
         shadow: boolean;
-        border: boolean;
     }>;
-    __isFragment?: never;
-    __isTeleport?: never;
-    __isSuspense?: never;
+    __isFragment?: undefined;
+    __isTeleport?: undefined;
+    __isSuspense?: undefined;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     modelValue: {
         type: BooleanConstructor;
@@ -263,7 +263,7 @@ declare const Layer: import('../../utils').SFCWithInstall<{
         default: null;
     };
     placement: {
-        type: import('vue').PropType<"top" | "left" | "right" | "bottom" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
+        type: import('vue').PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
         default: string;
         validator(value: any): boolean;
     };
@@ -331,12 +331,13 @@ declare const Layer: import('../../utils').SFCWithInstall<{
     hidding: (...args: any[]) => void;
     hidden: (...args: any[]) => void;
 }, string, {
+    border: boolean;
+    width: string;
     zIndex: number;
     modelValue: boolean;
     timeout: number;
     closable: boolean;
     placement: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end";
-    width: string;
     offset: string;
     background: string;
     borderColor: string;
@@ -344,7 +345,6 @@ declare const Layer: import('../../utils').SFCWithInstall<{
     showTriangle: boolean;
     animation: string;
     shadow: boolean;
-    border: boolean;
 }, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
     $slots: {
         default?(_: {}): any;

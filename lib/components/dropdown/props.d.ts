@@ -1,6 +1,5 @@
 import { ExtractPublicPropTypes, PropType } from 'vue';
 import { IconPropsType } from '../icon';
-import { PopupPropsType } from '../popup';
 
 export type DropdownOptionsItemType = {
     label?: string;
@@ -50,7 +49,7 @@ export declare const DropdownProps: {
         default: boolean;
     };
     placement: {
-        type: PropType<PopupPropsType["placement"]>;
+        type: PropType<"left" | "top" | "bottom" | "right" | undefined>;
         default: string;
     };
     closable: {

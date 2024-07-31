@@ -1,9 +1,4 @@
-declare function __VLS_template(): {
-    default?(_: {}): any;
-    delete?(_: {}): any;
-    complete?(_: {}): any;
-};
-declare const __VLS_component: import('vue').DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     showDecimal: {
         type: BooleanConstructor;
         default: boolean;
@@ -201,6 +196,7 @@ declare const __VLS_component: import('vue').DefineComponent<{
     onComplete?: ((...args: any[]) => any) | undefined;
 }, {
     title: string;
+    border: boolean;
     mountEl: string;
     zIndex: number;
     modelValue: string | number;
@@ -210,7 +206,6 @@ declare const __VLS_component: import('vue').DefineComponent<{
     show: boolean;
     overlayColor: string;
     active: boolean;
-    border: boolean;
     maxlength: number;
     showDecimal: boolean;
     showDelete: boolean;
@@ -221,8 +216,11 @@ declare const __VLS_component: import('vue').DefineComponent<{
     calibration: boolean;
     showX: boolean;
     random: boolean;
-}, {}>;
-declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
+}, {}>, {
+    default?(_: {}): any;
+    delete?(_: {}): any;
+    complete?(_: {}): any;
+}>;
 export default _default;
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {

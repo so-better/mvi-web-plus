@@ -6,7 +6,7 @@ declare const Badge: import('../../utils').SFCWithInstall<{
             default: null;
         };
         placement: {
-            type: import('vue').PropType<"top-right" | "top-left" | "bottom-left" | "bottom-right">;
+            type: import('vue').PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
             default: string;
             validator(value: any): boolean;
         };
@@ -40,7 +40,7 @@ declare const Badge: import('../../utils').SFCWithInstall<{
             default: null;
         };
         placement: {
-            type: import('vue').PropType<"top-right" | "top-left" | "bottom-left" | "bottom-right">;
+            type: import('vue').PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
             default: string;
             validator(value: any): boolean;
         };
@@ -90,7 +90,7 @@ declare const Badge: import('../../utils').SFCWithInstall<{
             default: null;
         };
         placement: {
-            type: import('vue').PropType<"top-right" | "top-left" | "bottom-left" | "bottom-right">;
+            type: import('vue').PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
             default: string;
             validator(value: any): boolean;
         };
@@ -128,16 +128,16 @@ declare const Badge: import('../../utils').SFCWithInstall<{
         dot: boolean;
         block: boolean;
     }>;
-    __isFragment?: never;
-    __isTeleport?: never;
-    __isSuspense?: never;
+    __isFragment?: undefined;
+    __isTeleport?: undefined;
+    __isSuspense?: undefined;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     content: {
         type: (StringConstructor | NumberConstructor)[];
         default: null;
     };
     placement: {
-        type: import('vue').PropType<"top-right" | "top-left" | "bottom-left" | "bottom-right">;
+        type: import('vue').PropType<"top-right" | "top-left" | "bottom-right" | "bottom-left">;
         default: string;
         validator(value: any): boolean;
     };

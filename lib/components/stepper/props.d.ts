@@ -63,7 +63,7 @@ export declare const StepperProps: {
         default: boolean;
     };
     inputAlign: {
-        type: PropType<"left" | "center" | "right">;
+        type: PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };

@@ -53,8 +53,8 @@ declare const _default: import('vue').DefineComponent<{
     };
 }>>, {
     name: string;
-    icon: string | IconPropsType;
     disabled: boolean;
+    icon: string | IconPropsType;
     value: string | number | Record<string, any> | unknown[];
     badge: {
         color?: string | undefined;

@@ -1,9 +1,4 @@
-declare function __VLS_template(): {
-    left?(_: {}): any;
-    default?(_: {}): any;
-    right?(_: {}): any;
-};
-declare const __VLS_component: import('vue').DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     disabled: {
         type: BooleanConstructor;
         default: boolean;
@@ -33,8 +28,11 @@ declare const __VLS_component: import('vue').DefineComponent<{
 }, {
     disabled: boolean;
     centerClose: boolean;
-}, {}>;
-declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
+}, {}>, {
+    left?(_: {}): any;
+    default?(_: {}): any;
+    right?(_: {}): any;
+}>;
 export default _default;
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {

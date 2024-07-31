@@ -175,6 +175,7 @@ declare const Modal: import('../../utils').SFCWithInstall<{
     }, {
         footer: string;
         title: string;
+        width: string;
         mountEl: string;
         zIndex: number;
         modelValue: boolean;
@@ -182,7 +183,6 @@ declare const Modal: import('../../utils').SFCWithInstall<{
         closable: boolean;
         usePadding: boolean;
         overlayColor: string;
-        width: string;
         showTimes: boolean;
         animation: string;
         center: boolean;
@@ -284,6 +284,7 @@ declare const Modal: import('../../utils').SFCWithInstall<{
     }, {}, {}, {}, {
         footer: string;
         title: string;
+        width: string;
         mountEl: string;
         zIndex: number;
         modelValue: boolean;
@@ -291,7 +292,6 @@ declare const Modal: import('../../utils').SFCWithInstall<{
         closable: boolean;
         usePadding: boolean;
         overlayColor: string;
-        width: string;
         showTimes: boolean;
         animation: string;
         center: boolean;
@@ -301,9 +301,9 @@ declare const Modal: import('../../utils').SFCWithInstall<{
         fullScreen: boolean;
         __ignorePadding: boolean;
     }>;
-    __isFragment?: never;
-    __isTeleport?: never;
-    __isSuspense?: never;
+    __isFragment?: undefined;
+    __isTeleport?: undefined;
+    __isSuspense?: undefined;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     modelValue: {
         type: BooleanConstructor;
@@ -398,6 +398,7 @@ declare const Modal: import('../../utils').SFCWithInstall<{
 }, string, {
     footer: string;
     title: string;
+    width: string;
     mountEl: string;
     zIndex: number;
     modelValue: boolean;
@@ -405,7 +406,6 @@ declare const Modal: import('../../utils').SFCWithInstall<{
     closable: boolean;
     usePadding: boolean;
     overlayColor: string;
-    width: string;
     showTimes: boolean;
     animation: string;
     center: boolean;

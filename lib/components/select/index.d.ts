@@ -26,7 +26,7 @@ declare const Select: import('../../utils').SFCWithInstall<import('vue').DefineC
         default: null;
     };
     activeType: {
-        type: import('vue').PropType<"info" | "success" | "warn" | "primary" | "error">;
+        type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
@@ -60,7 +60,7 @@ declare const Select: import('../../utils').SFCWithInstall<import('vue').DefineC
         default: boolean;
     };
     filterMethod: {
-        type: import('vue').PropType<(label: string[] | string) => string>;
+        type: import('vue').PropType<(label: string | string[]) => string>;
         default: null;
     };
     showSelected: {
@@ -117,7 +117,7 @@ declare const Select: import('../../utils').SFCWithInstall<import('vue').DefineC
         default: null;
     };
     activeType: {
-        type: import('vue').PropType<"info" | "success" | "warn" | "primary" | "error">;
+        type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
@@ -151,7 +151,7 @@ declare const Select: import('../../utils').SFCWithInstall<import('vue').DefineC
         default: boolean;
     };
     filterMethod: {
-        type: import('vue').PropType<(label: string[] | string) => string>;
+        type: import('vue').PropType<(label: string | string[]) => string>;
         default: null;
     };
     showSelected: {
@@ -183,26 +183,27 @@ declare const Select: import('../../utils').SFCWithInstall<import('vue').DefineC
     onClear?: ((...args: any[]) => any) | undefined;
 }, {
     size: "small" | "medium" | "large";
-    props: import('./props').SelectOptionsItemPropsType;
+    height: string;
     name: string;
+    props: import('./props').SelectOptionsItemPropsType;
     modelValue: any;
+    disabled: boolean;
     icon: string;
     round: boolean;
-    height: string;
     options: any[];
-    disabled: boolean;
     placeholder: string;
     activeType: "info" | "success" | "warn" | "error" | "primary";
     activeColor: string;
-    filterMethod: (label: string[] | string) => string;
+    filterMethod: (label: string | string[]) => string;
     clearable: boolean;
     layerProps: {
+        border?: boolean | undefined;
+        width?: string | undefined;
         zIndex?: number | undefined;
         modelValue?: boolean | undefined;
         timeout?: number | undefined;
         closable?: boolean | undefined;
         placement?: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined;
-        width?: string | undefined;
         offset?: string | undefined;
         background?: string | undefined;
         borderColor?: string | undefined;
@@ -210,7 +211,6 @@ declare const Select: import('../../utils').SFCWithInstall<import('vue').DefineC
         showTriangle?: boolean | undefined;
         animation?: string | undefined;
         shadow?: boolean | undefined;
-        border?: boolean | undefined;
     };
     square: boolean;
     selectedIcon: string | import('../icon').IconPropsType;

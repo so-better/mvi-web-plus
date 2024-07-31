@@ -7,9 +7,9 @@ declare const Step: import('../../utils').SFCWithInstall<{
         M: {};
         Defaults: {};
     }, Readonly<import('vue').ExtractPropTypes<{}>>, {}, {}, {}, {}, {}>;
-    __isFragment?: never;
-    __isTeleport?: never;
-    __isSuspense?: never;
+    __isFragment?: undefined;
+    __isTeleport?: undefined;
+    __isSuspense?: undefined;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{}>>, {}, {}, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, {}, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {
     $slots: {
         default?(_: {}): any;

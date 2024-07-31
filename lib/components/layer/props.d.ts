@@ -10,7 +10,7 @@ export declare const LayerProps: {
         default: null;
     };
     placement: {
-        type: PropType<"top" | "left" | "right" | "bottom" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
+        type: PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end">;
         default: string;
         validator(value: any): boolean;
     };

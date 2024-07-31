@@ -1,7 +1,7 @@
 export type * from './props';
 declare const DateNativePicker: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     type: {
-        type: import('vue').PropType<"date" | "datetime" | "month" | "time">;
+        type: import('vue').PropType<"time" | "date" | "month" | "datetime">;
         default: string;
         validator(value: any): boolean;
     };
@@ -25,7 +25,7 @@ declare const DateNativePicker: import('../../utils').SFCWithInstall<import('vue
     change: (...args: any[]) => void;
 }, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     type: {
-        type: import('vue').PropType<"date" | "datetime" | "month" | "time">;
+        type: import('vue').PropType<"time" | "date" | "month" | "datetime">;
         default: string;
         validator(value: any): boolean;
     };
@@ -46,8 +46,8 @@ declare const DateNativePicker: import('../../utils').SFCWithInstall<import('vue
     onChange?: ((...args: any[]) => any) | undefined;
     onError?: ((...args: any[]) => any) | undefined;
 }, {
-    modelValue: Date;
     type: "time" | "date" | "month" | "datetime";
+    modelValue: Date;
     min: Date;
     max: Date;
 }, {}>>;

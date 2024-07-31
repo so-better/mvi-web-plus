@@ -41,9 +41,9 @@ declare const Divider: import('../../utils').SFCWithInstall<{
         color: string;
         dashed: boolean;
     }>;
-    __isFragment?: never;
-    __isTeleport?: never;
-    __isSuspense?: never;
+    __isFragment?: undefined;
+    __isTeleport?: undefined;
+    __isSuspense?: undefined;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     dashed: {
         type: BooleanConstructor;

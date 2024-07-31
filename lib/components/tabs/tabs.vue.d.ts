@@ -1,7 +1,4 @@
-declare function __VLS_template(): {
-    default?(_: {}): any;
-};
-declare const __VLS_component: import('vue').DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     type: {
         type: import('vue').PropType<"default" | "card">;
         default: string;
@@ -12,7 +9,7 @@ declare const __VLS_component: import('vue').DefineComponent<{
         default: number;
     };
     animation: {
-        type: import('vue').PropType<"none" | "slide" | "fade">;
+        type: import('vue').PropType<"fade" | "none" | "slide">;
         default: string;
         validator(value: any): boolean;
     };
@@ -58,7 +55,7 @@ declare const __VLS_component: import('vue').DefineComponent<{
         default: number;
     };
     animation: {
-        type: import('vue').PropType<"none" | "slide" | "fade">;
+        type: import('vue').PropType<"fade" | "none" | "slide">;
         default: string;
         validator(value: any): boolean;
     };
@@ -90,17 +87,18 @@ declare const __VLS_component: import('vue').DefineComponent<{
     "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
     onChange?: ((...args: any[]) => any) | undefined;
 }, {
+    border: boolean;
+    type: "default" | "card";
     modelValue: number;
     timeout: number;
-    type: "default" | "card";
     offset: string;
     animation: "fade" | "none" | "slide";
-    border: boolean;
     activeColor: string;
     ellipsis: boolean;
     flex: import('./props').TabsFlexType;
-}, {}>;
-declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
+}, {}>, {
+    default?(_: {}): any;
+}>;
 export default _default;
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {

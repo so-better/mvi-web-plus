@@ -26,7 +26,7 @@ declare const ImagePreview: import('../../utils').SFCWithInstall<{
             default: number;
         };
         mode: {
-            type: import('vue').PropType<import('../carousel').CarouselPropsType["mode"]>;
+            type: import('vue').PropType<"fade" | "slide" | undefined>;
             default: string;
         };
         controls: {
@@ -105,7 +105,7 @@ declare const ImagePreview: import('../../utils').SFCWithInstall<{
             default: number;
         };
         mode: {
-            type: import('vue').PropType<import('../carousel').CarouselPropsType["mode"]>;
+            type: import('vue').PropType<"fade" | "slide" | undefined>;
             default: string;
         };
         controls: {
@@ -203,7 +203,7 @@ declare const ImagePreview: import('../../utils').SFCWithInstall<{
             default: number;
         };
         mode: {
-            type: import('vue').PropType<import('../carousel').CarouselPropsType["mode"]>;
+            type: import('vue').PropType<"fade" | "slide" | undefined>;
             default: string;
         };
         controls: {
@@ -271,9 +271,9 @@ declare const ImagePreview: import('../../utils').SFCWithInstall<{
         showPage: boolean;
         useTools: boolean;
     }>;
-    __isFragment?: never;
-    __isTeleport?: never;
-    __isSuspense?: never;
+    __isFragment?: undefined;
+    __isTeleport?: undefined;
+    __isSuspense?: undefined;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     modelValue: {
         type: BooleanConstructor;
@@ -300,7 +300,7 @@ declare const ImagePreview: import('../../utils').SFCWithInstall<{
         default: number;
     };
     mode: {
-        type: import('vue').PropType<import('../carousel').CarouselPropsType["mode"]>;
+        type: import('vue').PropType<"fade" | "slide" | undefined>;
         default: string;
     };
     controls: {

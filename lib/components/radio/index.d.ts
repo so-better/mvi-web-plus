@@ -87,9 +87,9 @@ declare const Radio: import('../../utils').SFCWithInstall<import('vue').DefineCo
     name: string;
     color: string;
     modelValue: string | number | boolean | Record<string, any>;
+    disabled: boolean;
     placement: "left" | "right";
     round: boolean;
-    disabled: boolean;
     value: string | number | Record<string, any>;
 }, {}>>;
 export { Radio, Radio as default };

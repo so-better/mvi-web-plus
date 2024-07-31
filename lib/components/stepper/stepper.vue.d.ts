@@ -61,7 +61,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     inputAlign: {
-        type: import('vue').PropType<"left" | "center" | "right">;
+        type: import('vue').PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
@@ -135,7 +135,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     inputAlign: {
-        type: import('vue').PropType<"left" | "center" | "right">;
+        type: import('vue').PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
@@ -148,10 +148,10 @@ declare const _default: import('vue').DefineComponent<{
     onChange?: ((...args: any[]) => any) | undefined;
 }, {
     size: "small" | "medium" | "large";
-    modelValue: number;
-    active: boolean;
-    disabled: boolean;
     border: boolean;
+    modelValue: number;
+    disabled: boolean;
+    active: boolean;
     min: number;
     max: number;
     step: number;

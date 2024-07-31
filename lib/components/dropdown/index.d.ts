@@ -41,7 +41,7 @@ declare const Dropdown: import('../../utils').SFCWithInstall<import('vue').Defin
         default: boolean;
     };
     placement: {
-        type: import('vue').PropType<import('../popup').PopupPropsType["placement"]>;
+        type: import('vue').PropType<"left" | "top" | "bottom" | "right" | undefined>;
         default: string;
     };
     closable: {
@@ -114,7 +114,7 @@ declare const Dropdown: import('../../utils').SFCWithInstall<import('vue').Defin
         default: boolean;
     };
     placement: {
-        type: import('vue').PropType<import('../popup').PopupPropsType["placement"]>;
+        type: import('vue').PropType<"left" | "top" | "bottom" | "right" | undefined>;
         default: string;
     };
     closable: {

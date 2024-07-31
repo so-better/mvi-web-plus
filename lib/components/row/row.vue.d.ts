@@ -1,14 +1,11 @@
-declare function __VLS_template(): {
-    default?(_: {}): any;
-};
-declare const __VLS_component: import('vue').DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     justify: {
         type: import('vue').PropType<"flex-start" | "flex-end" | "space-around" | "space-between">;
         default: string;
         validator(value: any): boolean;
     };
     align: {
-        type: import('vue').PropType<"flex-start" | "flex-end" | "center">;
+        type: import('vue').PropType<"center" | "flex-start" | "flex-end">;
         default: string;
         validator(value: any): boolean;
     };
@@ -23,7 +20,7 @@ declare const __VLS_component: import('vue').DefineComponent<{
         validator(value: any): boolean;
     };
     align: {
-        type: import('vue').PropType<"flex-start" | "flex-end" | "center">;
+        type: import('vue').PropType<"center" | "flex-start" | "flex-end">;
         default: string;
         validator(value: any): boolean;
     };
@@ -35,8 +32,9 @@ declare const __VLS_component: import('vue').DefineComponent<{
     align: "center" | "flex-start" | "flex-end";
     tag: string;
     justify: "flex-start" | "flex-end" | "space-around" | "space-between";
-}, {}>;
-declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
+}, {}>, {
+    default?(_: {}): any;
+}>;
 export default _default;
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {

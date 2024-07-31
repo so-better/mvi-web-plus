@@ -23,13 +23,13 @@ export declare const parentIsMatch: (children: Ref<ComponentInternalInstance[]> 
  * @param component
  * @returns
  */
-export declare const withInstall: <T extends Component>(component: T) => SFCWithInstall<typeof component>;
+export declare const withInstall: <T extends Component>(component: T) => SFCWithInstall<T>;
 /**
  * 给指令增加install属性
  * @param directive
  * @param name
  */
-export declare const withInstallDirective: <T extends Directive>(name: string, directive: T) => SFCWithInstall<typeof directive>;
+export declare const withInstallDirective: <T extends Directive>(name: string, directive: T) => SFCWithInstall<T>;
 /**
  * 使用深色模式/浅色模式
  * @param dark

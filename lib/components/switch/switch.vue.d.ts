@@ -57,8 +57,8 @@ declare const _default: import('vue').DefineComponent<{
 }, {
     size: string;
     modelValue: boolean;
-    loading: boolean;
     disabled: boolean;
+    loading: boolean;
     activeColor: string;
     inactiveColor: string;
 }, {}>;

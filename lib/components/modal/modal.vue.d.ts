@@ -1,9 +1,4 @@
-declare function __VLS_template(): {
-    title?(_: {}): any;
-    default?(_: {}): any;
-    footer?(_: {}): any;
-};
-declare const __VLS_component: import('vue').DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     modelValue: {
         type: BooleanConstructor;
         default: boolean;
@@ -170,6 +165,7 @@ declare const __VLS_component: import('vue').DefineComponent<{
 }, {
     footer: string;
     title: string;
+    width: string;
     mountEl: string;
     zIndex: number;
     modelValue: boolean;
@@ -177,7 +173,6 @@ declare const __VLS_component: import('vue').DefineComponent<{
     closable: boolean;
     usePadding: boolean;
     overlayColor: string;
-    width: string;
     showTimes: boolean;
     animation: string;
     center: boolean;
@@ -186,8 +181,11 @@ declare const __VLS_component: import('vue').DefineComponent<{
     radius: string;
     fullScreen: boolean;
     __ignorePadding: boolean;
-}, {}>;
-declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
+}, {}>, {
+    title?(_: {}): any;
+    default?(_: {}): any;
+    footer?(_: {}): any;
+}>;
 export default _default;
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {

@@ -51,8 +51,8 @@ declare const Form: import('../../utils').SFCWithInstall<{
             default: null;
         };
     }>>, {
-        width: string;
         align: string;
+        width: string;
         block: boolean;
         labelBlock: boolean;
         labelWidth: string;
@@ -90,16 +90,16 @@ declare const Form: import('../../utils').SFCWithInstall<{
             default: null;
         };
     }>>, {}, {}, {}, {}, {
-        width: string;
         align: string;
+        width: string;
         block: boolean;
         labelBlock: boolean;
         labelWidth: string;
         labelOffset: string;
     }>;
-    __isFragment?: never;
-    __isTeleport?: never;
-    __isSuspense?: never;
+    __isFragment?: undefined;
+    __isTeleport?: undefined;
+    __isSuspense?: undefined;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     width: {
         type: StringConstructor;
@@ -126,8 +126,8 @@ declare const Form: import('../../utils').SFCWithInstall<{
         default: null;
     };
 }>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, {
-    width: string;
     align: string;
+    width: string;
     block: boolean;
     labelBlock: boolean;
     labelWidth: string;

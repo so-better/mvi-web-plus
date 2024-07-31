@@ -97,9 +97,9 @@ declare const Steps: import('../../utils').SFCWithInstall<{
         inactiveIcon: string | import('../icon').IconPropsType;
         inactiveColor: string;
     }>;
-    __isFragment?: never;
-    __isTeleport?: never;
-    __isSuspense?: never;
+    __isFragment?: undefined;
+    __isTeleport?: undefined;
+    __isSuspense?: undefined;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     active: {
         type: NumberConstructor;

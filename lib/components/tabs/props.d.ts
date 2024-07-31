@@ -12,7 +12,7 @@ export declare const TabsProps: {
         default: number;
     };
     animation: {
-        type: PropType<"none" | "slide" | "fade">;
+        type: PropType<"fade" | "none" | "slide">;
         default: string;
         validator(value: any): boolean;
     };

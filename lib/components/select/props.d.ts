@@ -38,7 +38,7 @@ export declare const SelectProps: {
         default: null;
     };
     activeType: {
-        type: PropType<"info" | "success" | "warn" | "primary" | "error">;
+        type: PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };

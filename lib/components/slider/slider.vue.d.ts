@@ -1,7 +1,4 @@
-declare function __VLS_template(): {
-    button?(_: {}): any;
-};
-declare const __VLS_component: import('vue').DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     modelValue: {
         type: NumberConstructor;
         default: number;
@@ -92,16 +89,17 @@ declare const __VLS_component: import('vue').DefineComponent<{
 }, {
     color: string;
     modelValue: number;
-    round: boolean;
     disabled: boolean;
+    round: boolean;
     square: boolean;
     vertical: boolean;
     min: number;
     max: number;
     trackColor: string;
     strokeWidth: string;
-}, {}>;
-declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
+}, {}>, {
+    button?(_: {}): any;
+}>;
 export default _default;
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {

@@ -1,15 +1,4 @@
-declare function __VLS_template(): {
-    page?(_: {
-        total: number;
-        current: number;
-    }): any;
-    tools?(_: {}): any;
-    descriptions?(_: {
-        total: number;
-        current: number;
-    }): any;
-};
-declare const __VLS_component: import('vue').DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     modelValue: {
         type: BooleanConstructor;
         default: boolean;
@@ -35,7 +24,7 @@ declare const __VLS_component: import('vue').DefineComponent<{
         default: number;
     };
     mode: {
-        type: import('vue').PropType<import('../carousel').CarouselPropsType["mode"]>;
+        type: import('vue').PropType<"fade" | "slide" | undefined>;
         default: string;
     };
     controls: {
@@ -111,7 +100,7 @@ declare const __VLS_component: import('vue').DefineComponent<{
         default: number;
     };
     mode: {
-        type: import('vue').PropType<import('../carousel').CarouselPropsType["mode"]>;
+        type: import('vue').PropType<"fade" | "slide" | undefined>;
         default: string;
     };
     controls: {
@@ -176,8 +165,17 @@ declare const __VLS_component: import('vue').DefineComponent<{
     descriptions: string[];
     showPage: boolean;
     useTools: boolean;
-}, {}>;
-declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
+}, {}>, {
+    page?(_: {
+        total: number;
+        current: number;
+    }): any;
+    tools?(_: {}): any;
+    descriptions?(_: {
+        total: number;
+        current: number;
+    }): any;
+}>;
 export default _default;
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {

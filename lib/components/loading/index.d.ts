@@ -1,7 +1,7 @@
 export type * from './props';
 declare const Loading: import('../../utils').SFCWithInstall<import('vue').DefineComponent<{
     type: {
-        type: import('vue').PropType<"default" | "circle" | "dots" | "spin" | "transfer">;
+        type: import('vue').PropType<"default" | "circle" | "spin" | "dots" | "transfer">;
         default: string;
         validator(value: any): boolean;
     };
@@ -15,7 +15,7 @@ declare const Loading: import('../../utils').SFCWithInstall<import('vue').Define
     };
 }, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<{
     type: {
-        type: import('vue').PropType<"default" | "circle" | "dots" | "spin" | "transfer">;
+        type: import('vue').PropType<"default" | "circle" | "spin" | "dots" | "transfer">;
         default: string;
         validator(value: any): boolean;
     };
@@ -29,7 +29,7 @@ declare const Loading: import('../../utils').SFCWithInstall<import('vue').Define
     };
 }>>, {
     size: string;
-    color: string;
     type: "default" | "circle" | "spin" | "dots" | "transfer";
+    color: string;
 }, {}>>;
 export { Loading, Loading as default };

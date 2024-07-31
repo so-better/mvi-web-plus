@@ -3,7 +3,7 @@ import { IconPropsType } from '../icon/props';
 
 export declare const ToastProps: {
     type: {
-        type: PropType<"success" | "error" | "loading" | "info">;
+        type: PropType<"loading" | "info" | "success" | "error">;
         default: null;
     };
     message: {

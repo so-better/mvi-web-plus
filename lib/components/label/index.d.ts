@@ -2,7 +2,7 @@ export type * from './props';
 declare const Label: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         type: {
-            type: import('vue').PropType<"default" | "error" | "info" | "primary" | "success" | "warn">;
+            type: import('vue').PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
             default: string;
             validator(value: any): boolean;
         };
@@ -33,7 +33,7 @@ declare const Label: import('../../utils').SFCWithInstall<{
         };
     }>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
         type: {
-            type: import('vue').PropType<"default" | "error" | "info" | "primary" | "success" | "warn">;
+            type: import('vue').PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
             default: string;
             validator(value: any): boolean;
         };
@@ -65,9 +65,9 @@ declare const Label: import('../../utils').SFCWithInstall<{
     }>>, {
         size: "medium" | "large";
         mark: boolean;
+        type: "default" | "info" | "success" | "warn" | "error" | "primary";
         reverse: boolean;
         closable: boolean;
-        type: "default" | "info" | "success" | "warn" | "error" | "primary";
         round: boolean;
         plain: boolean;
     }, true, {}, {}, {
@@ -79,7 +79,7 @@ declare const Label: import('../../utils').SFCWithInstall<{
         Defaults: {};
     }, Readonly<import('vue').ExtractPropTypes<{
         type: {
-            type: import('vue').PropType<"default" | "error" | "info" | "primary" | "success" | "warn">;
+            type: import('vue').PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
             default: string;
             validator(value: any): boolean;
         };
@@ -111,18 +111,18 @@ declare const Label: import('../../utils').SFCWithInstall<{
     }>>, {}, {}, {}, {}, {
         size: "medium" | "large";
         mark: boolean;
+        type: "default" | "info" | "success" | "warn" | "error" | "primary";
         reverse: boolean;
         closable: boolean;
-        type: "default" | "info" | "success" | "warn" | "error" | "primary";
         round: boolean;
         plain: boolean;
     }>;
-    __isFragment?: never;
-    __isTeleport?: never;
-    __isSuspense?: never;
+    __isFragment?: undefined;
+    __isTeleport?: undefined;
+    __isSuspense?: undefined;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     type: {
-        type: import('vue').PropType<"default" | "error" | "info" | "primary" | "success" | "warn">;
+        type: import('vue').PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
@@ -154,9 +154,9 @@ declare const Label: import('../../utils').SFCWithInstall<{
 }>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, {
     size: "medium" | "large";
     mark: boolean;
+    type: "default" | "info" | "success" | "warn" | "error" | "primary";
     reverse: boolean;
     closable: boolean;
-    type: "default" | "info" | "success" | "warn" | "error" | "primary";
     round: boolean;
     plain: boolean;
 }, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {

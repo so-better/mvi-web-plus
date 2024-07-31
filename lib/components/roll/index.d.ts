@@ -159,9 +159,9 @@ declare const Roll: import('../../utils').SFCWithInstall<{
         clickStop: boolean;
         hoverStop: boolean;
     }>;
-    __isFragment?: never;
-    __isTeleport?: never;
-    __isSuspense?: never;
+    __isFragment?: undefined;
+    __isTeleport?: undefined;
+    __isSuspense?: undefined;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     interval: {
         type: NumberConstructor;

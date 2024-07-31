@@ -42,8 +42,8 @@ declare const _default: import('vue').DefineComponent<{
     };
 }>>, {
     size: string;
-    color: string;
     type: string;
+    color: string;
     spin: boolean;
     url: string;
 }, {}>;

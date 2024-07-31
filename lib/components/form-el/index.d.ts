@@ -44,8 +44,8 @@ declare const FormEl: import('../../utils').SFCWithInstall<{
         };
     }>>, {
         label: string;
-        width: string;
         align: string;
+        width: string;
         labelWidth: string;
         labelOffset: string;
     }, true, {}, {}, {
@@ -78,14 +78,14 @@ declare const FormEl: import('../../utils').SFCWithInstall<{
         };
     }>>, {}, {}, {}, {}, {
         label: string;
-        width: string;
         align: string;
+        width: string;
         labelWidth: string;
         labelOffset: string;
     }>;
-    __isFragment?: never;
-    __isTeleport?: never;
-    __isSuspense?: never;
+    __isFragment?: undefined;
+    __isTeleport?: undefined;
+    __isSuspense?: undefined;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     align: {
         type: StringConstructor;
@@ -109,8 +109,8 @@ declare const FormEl: import('../../utils').SFCWithInstall<{
     };
 }>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, {
     label: string;
-    width: string;
     align: string;
+    width: string;
     labelWidth: string;
     labelOffset: string;
 }, {}, string, {}> & import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & (new () => {

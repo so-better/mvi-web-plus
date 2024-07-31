@@ -31,7 +31,7 @@ export declare const AutocompleteProps: {
         validator(value: any): boolean;
     };
     filterMethod: {
-        type: PropType<((value: string, list: string[]) => string[]) | boolean>;
+        type: PropType<boolean | ((value: string, list: string[]) => string[])>;
         default: boolean;
     };
     clearable: {

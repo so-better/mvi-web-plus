@@ -43,8 +43,8 @@ declare const Icon: import('../../utils').SFCWithInstall<import('vue').DefineCom
     };
 }>>, {
     size: string;
-    color: string;
     type: string;
+    color: string;
     spin: boolean;
     url: string;
 }, {}>>;

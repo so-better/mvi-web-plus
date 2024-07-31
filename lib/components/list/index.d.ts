@@ -155,9 +155,9 @@ declare const List: import('../../utils').SFCWithInstall<{
         immediateLoad: boolean;
         scrollEl: string;
     }>;
-    __isFragment?: never;
-    __isTeleport?: never;
-    __isSuspense?: never;
+    __isFragment?: undefined;
+    __isTeleport?: undefined;
+    __isSuspense?: undefined;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     loading: {
         type: BooleanConstructor;

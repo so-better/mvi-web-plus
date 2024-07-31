@@ -23,7 +23,7 @@ export declare const InputProps: {
         default: null;
     };
     labelAlign: {
-        type: PropType<"left" | "center" | "right">;
+        type: PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
@@ -32,7 +32,7 @@ export declare const InputProps: {
         default: null;
     };
     type: {
-        type: PropType<"text" | "password" | "number" | "tel" | "textarea">;
+        type: PropType<"number" | "textarea" | "text" | "password" | "tel">;
         default: string;
         validator(value: any): boolean;
     };
@@ -95,12 +95,12 @@ export declare const InputProps: {
         validator(value: any): boolean;
     };
     align: {
-        type: PropType<"left" | "center" | "right">;
+        type: PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
     inputMode: {
-        type: PropType<"none" | "text" | "decimal" | "numeric" | "tel" | "search" | "email" | "url">;
+        type: PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
         default: string;
         validator(value: any): boolean;
     };

@@ -2,7 +2,7 @@ import { ExtractPublicPropTypes, PropType } from 'vue';
 
 export declare const LabelProps: {
     type: {
-        type: PropType<"default" | "error" | "info" | "primary" | "success" | "warn">;
+        type: PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };

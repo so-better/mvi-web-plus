@@ -7,7 +7,7 @@ export declare const RowProps: {
         validator(value: any): boolean;
     };
     align: {
-        type: PropType<"flex-start" | "flex-end" | "center">;
+        type: PropType<"center" | "flex-start" | "flex-end">;
         default: string;
         validator(value: any): boolean;
     };

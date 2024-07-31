@@ -1,15 +1,6 @@
 import { CarouselIndicatorsType } from './props';
 
-declare function __VLS_template(): {
-    default?(_: {}): any;
-    indicators?(_: {
-        total: number;
-    }): any;
-    controls?(_: {
-        total: number;
-    }): any;
-};
-declare const __VLS_component: import('vue').DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     modelValue: {
         type: NumberConstructor;
         default: number;
@@ -31,7 +22,7 @@ declare const __VLS_component: import('vue').DefineComponent<{
         default: number;
     };
     mode: {
-        type: import('vue').PropType<"slide" | "fade">;
+        type: import('vue').PropType<"fade" | "slide">;
         default: string;
         validator(value: any): boolean;
     };
@@ -79,7 +70,7 @@ declare const __VLS_component: import('vue').DefineComponent<{
         default: number;
     };
     mode: {
-        type: import('vue').PropType<"slide" | "fade">;
+        type: import('vue').PropType<"fade" | "slide">;
         default: string;
         validator(value: any): boolean;
     };
@@ -113,8 +104,15 @@ declare const __VLS_component: import('vue').DefineComponent<{
     controls: boolean;
     vertical: boolean;
     touchable: boolean;
-}, {}>;
-declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
+}, {}>, {
+    default?(_: {}): any;
+    indicators?(_: {
+        total: number;
+    }): any;
+    controls?(_: {
+        total: number;
+    }): any;
+}>;
 export default _default;
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {

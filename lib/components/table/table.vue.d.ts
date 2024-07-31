@@ -1,26 +1,6 @@
 import { TableColumnType, TableSortOrderType } from './props';
 
-declare function __VLS_template(): {
-    custom?(_: {
-        row: any;
-        rowIndex: number;
-        column: {
-            type?: "selection" | "custom" | "default";
-            label?: string;
-            prop: string;
-            width?: string | number;
-            className?: string;
-            hidden?: boolean;
-            sortable?: boolean;
-            format?: (val: any, row: any, column: TableColumnType) => string;
-            selectable?: (row: any, rowIndex: number) => boolean;
-            sortMethod?: (sortOrder: TableSortOrderType, sortBy: string, rows: any, column: TableColumnType) => void;
-            ellipsis?: boolean;
-        };
-        columnIndex: number;
-    }): any;
-};
-declare const __VLS_component: import('vue').DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     data: {
         type: import('vue').PropType<any[]>;
         default: () => never[];
@@ -140,21 +120,21 @@ declare const __VLS_component: import('vue').DefineComponent<{
     "onSort-desc"?: ((...args: any[]) => any) | undefined;
 }, {
     data: any[];
-    loading: boolean;
-    height: string;
     border: boolean;
+    height: string;
+    loading: boolean;
     center: boolean;
     activeColor: string;
     loadText: string;
     tooltip: {
         title?: string | undefined;
+        width?: string | undefined;
         zIndex?: number | undefined;
         color?: string | undefined;
         timeout?: number | undefined;
-        placement?: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined;
-        width?: string | undefined;
-        offset?: string | undefined;
         disabled?: boolean | undefined;
+        placement?: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined;
+        offset?: string | undefined;
         borderColor?: string | undefined;
         showTriangle?: boolean | undefined;
         animation?: string | undefined;
@@ -167,8 +147,26 @@ declare const __VLS_component: import('vue').DefineComponent<{
     stripe: boolean;
     noDataMsg: string;
     cellClass: (row: any, rowIndex: number, column: TableColumnType, columnIndex: number) => string;
-}, {}>;
-declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
+}, {}>, {
+    custom?(_: {
+        row: any;
+        rowIndex: number;
+        column: {
+            type?: "default" | "custom" | "selection" | undefined;
+            label?: string | undefined;
+            prop: string;
+            width?: string | number | undefined;
+            className?: string | undefined;
+            hidden?: boolean | undefined;
+            sortable?: boolean | undefined;
+            format?: ((val: any, row: any, column: TableColumnType) => string) | undefined;
+            selectable?: ((row: any, rowIndex: number) => boolean) | undefined;
+            sortMethod?: ((sortOrder: TableSortOrderType, sortBy: string, rows: any, column: TableColumnType) => void) | undefined;
+            ellipsis?: boolean | undefined;
+        };
+        columnIndex: number;
+    }): any;
+}>;
 export default _default;
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {

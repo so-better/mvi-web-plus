@@ -164,9 +164,9 @@ declare const Overlay: import('../../utils').SFCWithInstall<{
         closable: boolean;
         usePadding: boolean;
     }>;
-    __isFragment?: never;
-    __isTeleport?: never;
-    __isSuspense?: never;
+    __isFragment?: undefined;
+    __isTeleport?: undefined;
+    __isSuspense?: undefined;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     mountEl: {
         type: StringConstructor;

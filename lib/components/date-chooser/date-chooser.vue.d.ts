@@ -1,10 +1,7 @@
 import { LayerPropsType } from '../layer';
 import { CalendarViewType } from '../calendar';
 
-declare function __VLS_template(): {
-    default?(_: {}): any;
-};
-declare const __VLS_component: import('vue').DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     modelValue: {
         type: DateConstructor;
         default: () => Date;
@@ -22,7 +19,7 @@ declare const __VLS_component: import('vue').DefineComponent<{
         default: boolean;
     };
     trigger: {
-        type: import('vue').PropType<"hover" | "click" | "custom">;
+        type: import('vue').PropType<"click" | "hover" | "custom">;
         default: string;
         validator(value: any): boolean;
     };
@@ -52,7 +49,7 @@ declare const __VLS_component: import('vue').DefineComponent<{
         default: boolean;
     };
     type: {
-        type: import('vue').PropType<"info" | "primary" | "error" | "warn" | "success">;
+        type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
@@ -88,7 +85,7 @@ declare const __VLS_component: import('vue').DefineComponent<{
         default: boolean;
     };
     trigger: {
-        type: import('vue').PropType<"hover" | "click" | "custom">;
+        type: import('vue').PropType<"click" | "hover" | "custom">;
         default: string;
         validator(value: any): boolean;
     };
@@ -118,7 +115,7 @@ declare const __VLS_component: import('vue').DefineComponent<{
         default: boolean;
     };
     type: {
-        type: import('vue').PropType<"info" | "primary" | "error" | "warn" | "success">;
+        type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
@@ -134,19 +131,20 @@ declare const __VLS_component: import('vue').DefineComponent<{
     "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
     onChange?: ((...args: any[]) => any) | undefined;
 }, {
+    type: "info" | "success" | "warn" | "error" | "primary";
     mode: CalendarViewType;
     modelValue: Date;
     closable: boolean;
-    type: "info" | "success" | "warn" | "error" | "primary";
-    active: boolean;
     disabled: boolean;
+    active: boolean;
     layerProps: {
+        border?: boolean | undefined;
+        width?: string | undefined;
         zIndex?: number | undefined;
         modelValue?: boolean | undefined;
         timeout?: number | undefined;
         closable?: boolean | undefined;
         placement?: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined;
-        width?: string | undefined;
         offset?: string | undefined;
         background?: string | undefined;
         borderColor?: string | undefined;
@@ -154,7 +152,6 @@ declare const __VLS_component: import('vue').DefineComponent<{
         showTriangle?: boolean | undefined;
         animation?: string | undefined;
         shadow?: boolean | undefined;
-        border?: boolean | undefined;
     };
     block: boolean;
     monthText: string[];
@@ -163,8 +160,9 @@ declare const __VLS_component: import('vue').DefineComponent<{
     endDate: Date;
     trigger: "click" | "hover" | "custom";
     headerFormatter: (type: CalendarViewType, val: number) => string;
-}, {}>;
-declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
+}, {}>, {
+    default?(_: {}): any;
+}>;
 export default _default;
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {

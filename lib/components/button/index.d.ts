@@ -2,12 +2,12 @@ export type * from './props';
 declare const Button: import('../../utils').SFCWithInstall<{
     new (...args: any[]): import('vue').CreateComponentPublicInstance<Readonly<import('vue').ExtractPropTypes<{
         type: {
-            type: import('vue').PropType<"default" | "info" | "success" | "error" | "warn" | "primary">;
+            type: import('vue').PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
             default: string;
             validator(value: any): boolean;
         };
         size: {
-            type: import('vue').PropType<"mini" | "small" | "medium" | "large">;
+            type: import('vue').PropType<"small" | "medium" | "large" | "mini">;
             default: string;
             validator(value: any): boolean;
         };
@@ -16,7 +16,7 @@ declare const Button: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         nativeType: {
-            type: import('vue').PropType<HTMLButtonElement["type"]>;
+            type: import('vue').PropType<"button" | "submit" | "reset">;
             default: string;
         };
         block: {
@@ -60,12 +60,12 @@ declare const Button: import('../../utils').SFCWithInstall<{
         };
     }>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, import('vue').VNodeProps & import('vue').AllowedComponentProps & import('vue').ComponentCustomProps & Readonly<import('vue').ExtractPropTypes<{
         type: {
-            type: import('vue').PropType<"default" | "info" | "success" | "error" | "warn" | "primary">;
+            type: import('vue').PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
             default: string;
             validator(value: any): boolean;
         };
         size: {
-            type: import('vue').PropType<"mini" | "small" | "medium" | "large">;
+            type: import('vue').PropType<"small" | "medium" | "large" | "mini">;
             default: string;
             validator(value: any): boolean;
         };
@@ -74,7 +74,7 @@ declare const Button: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         nativeType: {
-            type: import('vue').PropType<HTMLButtonElement["type"]>;
+            type: import('vue').PropType<"button" | "submit" | "reset">;
             default: string;
         };
         block: {
@@ -119,13 +119,13 @@ declare const Button: import('../../utils').SFCWithInstall<{
     }>>, {
         size: "small" | "medium" | "large" | "mini";
         type: "default" | "info" | "success" | "warn" | "error" | "primary";
+        disabled: boolean;
         round: boolean;
         loading: boolean;
         active: boolean;
-        disabled: boolean;
         square: boolean;
         block: boolean;
-        nativeType: "button" | "reset" | "submit";
+        nativeType: "button" | "submit" | "reset";
         tag: string;
         plain: boolean;
         loadText: string;
@@ -139,12 +139,12 @@ declare const Button: import('../../utils').SFCWithInstall<{
         Defaults: {};
     }, Readonly<import('vue').ExtractPropTypes<{
         type: {
-            type: import('vue').PropType<"default" | "info" | "success" | "error" | "warn" | "primary">;
+            type: import('vue').PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
             default: string;
             validator(value: any): boolean;
         };
         size: {
-            type: import('vue').PropType<"mini" | "small" | "medium" | "large">;
+            type: import('vue').PropType<"small" | "medium" | "large" | "mini">;
             default: string;
             validator(value: any): boolean;
         };
@@ -153,7 +153,7 @@ declare const Button: import('../../utils').SFCWithInstall<{
             default: boolean;
         };
         nativeType: {
-            type: import('vue').PropType<HTMLButtonElement["type"]>;
+            type: import('vue').PropType<"button" | "submit" | "reset">;
             default: string;
         };
         block: {
@@ -198,29 +198,29 @@ declare const Button: import('../../utils').SFCWithInstall<{
     }>>, {}, {}, {}, {}, {
         size: "small" | "medium" | "large" | "mini";
         type: "default" | "info" | "success" | "warn" | "error" | "primary";
+        disabled: boolean;
         round: boolean;
         loading: boolean;
         active: boolean;
-        disabled: boolean;
         square: boolean;
         block: boolean;
-        nativeType: "button" | "reset" | "submit";
+        nativeType: "button" | "submit" | "reset";
         tag: string;
         plain: boolean;
         loadText: string;
         loadIcon: string | import('../icon').IconPropsType;
     }>;
-    __isFragment?: never;
-    __isTeleport?: never;
-    __isSuspense?: never;
+    __isFragment?: undefined;
+    __isTeleport?: undefined;
+    __isSuspense?: undefined;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     type: {
-        type: import('vue').PropType<"default" | "info" | "success" | "error" | "warn" | "primary">;
+        type: import('vue').PropType<"default" | "info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
     size: {
-        type: import('vue').PropType<"mini" | "small" | "medium" | "large">;
+        type: import('vue').PropType<"small" | "medium" | "large" | "mini">;
         default: string;
         validator(value: any): boolean;
     };
@@ -229,7 +229,7 @@ declare const Button: import('../../utils').SFCWithInstall<{
         default: boolean;
     };
     nativeType: {
-        type: import('vue').PropType<HTMLButtonElement["type"]>;
+        type: import('vue').PropType<"button" | "submit" | "reset">;
         default: string;
     };
     block: {
@@ -274,13 +274,13 @@ declare const Button: import('../../utils').SFCWithInstall<{
 }>>, {}, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, {
     size: "small" | "medium" | "large" | "mini";
     type: "default" | "info" | "success" | "warn" | "error" | "primary";
+    disabled: boolean;
     round: boolean;
     loading: boolean;
     active: boolean;
-    disabled: boolean;
     square: boolean;
     block: boolean;
-    nativeType: "button" | "reset" | "submit";
+    nativeType: "button" | "submit" | "reset";
     tag: string;
     plain: boolean;
     loadText: string;

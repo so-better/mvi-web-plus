@@ -17,7 +17,7 @@ export type DialogPcBtnsType = {
 };
 export declare const DialogProps: {
     type: {
-        type: PropType<"alert" | "confirm" | "prompt">;
+        type: PropType<"confirm" | "alert" | "prompt">;
         default: null;
     };
     title: {
@@ -86,7 +86,7 @@ export declare const DialogProps: {
 };
 export declare const DialogPcProps: {
     type: {
-        type: PropType<"Alert" | "Confirm" | "Prompt">;
+        type: PropType<"Confirm" | "Alert" | "Prompt">;
         default: null;
     };
     title: {

@@ -94,8 +94,8 @@ declare const Slider: import('../../utils').SFCWithInstall<{
     }, {
         color: string;
         modelValue: number;
-        round: boolean;
         disabled: boolean;
+        round: boolean;
         square: boolean;
         vertical: boolean;
         min: number;
@@ -156,8 +156,8 @@ declare const Slider: import('../../utils').SFCWithInstall<{
     }, {}, {}, {}, {}, {
         color: string;
         modelValue: number;
-        round: boolean;
         disabled: boolean;
+        round: boolean;
         square: boolean;
         vertical: boolean;
         min: number;
@@ -165,9 +165,9 @@ declare const Slider: import('../../utils').SFCWithInstall<{
         trackColor: string;
         strokeWidth: string;
     }>;
-    __isFragment?: never;
-    __isTeleport?: never;
-    __isSuspense?: never;
+    __isFragment?: undefined;
+    __isTeleport?: undefined;
+    __isSuspense?: undefined;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     modelValue: {
         type: NumberConstructor;
@@ -218,8 +218,8 @@ declare const Slider: import('../../utils').SFCWithInstall<{
 }, string, {
     color: string;
     modelValue: number;
-    round: boolean;
     disabled: boolean;
+    round: boolean;
     square: boolean;
     vertical: boolean;
     min: number;

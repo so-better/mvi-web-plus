@@ -209,9 +209,9 @@ declare const CircleProgress: import('../../utils').SFCWithInstall<{
         strokeWidth: number;
         clockWise: boolean;
     }>;
-    __isFragment?: never;
-    __isTeleport?: never;
-    __isSuspense?: never;
+    __isFragment?: undefined;
+    __isTeleport?: undefined;
+    __isSuspense?: undefined;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     value: {
         type: NumberConstructor;

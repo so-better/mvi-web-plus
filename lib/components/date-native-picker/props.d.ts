@@ -2,7 +2,7 @@ import { ExtractPublicPropTypes, PropType } from 'vue';
 
 export declare const DateNativePickerProps: {
     type: {
-        type: PropType<"date" | "datetime" | "month" | "time">;
+        type: PropType<"time" | "date" | "month" | "datetime">;
         default: string;
         validator(value: any): boolean;
     };

@@ -1,9 +1,4 @@
-declare function __VLS_template(): {
-    tip?(_: {
-        value: number;
-    }): any;
-};
-declare const __VLS_component: import('vue').DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     value: {
         type: NumberConstructor;
         default: number;
@@ -132,8 +127,11 @@ declare const __VLS_component: import('vue').DefineComponent<{
     tipText: string;
     strokeWidth: number;
     clockWise: boolean;
-}, {}>;
-declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
+}, {}>, {
+    tip?(_: {
+        value: number;
+    }): any;
+}>;
 export default _default;
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {

@@ -1,11 +1,7 @@
 import { IconPropsType } from '../icon';
 import { InputAutosizeType } from './props';
 
-declare function __VLS_template(): {
-    left?(_: {}): any;
-    right?(_: {}): any;
-};
-declare const __VLS_component: import('vue').DefineComponent<{
+declare const _default: __VLS_WithTemplateSlots<import('vue').DefineComponent<{
     modelValue: {
         type: (StringConstructor | NumberConstructor)[];
         default: string;
@@ -23,7 +19,7 @@ declare const __VLS_component: import('vue').DefineComponent<{
         default: null;
     };
     labelAlign: {
-        type: import('vue').PropType<"left" | "center" | "right">;
+        type: import('vue').PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
@@ -32,7 +28,7 @@ declare const __VLS_component: import('vue').DefineComponent<{
         default: null;
     };
     type: {
-        type: import('vue').PropType<"text" | "password" | "number" | "tel" | "textarea">;
+        type: import('vue').PropType<"number" | "textarea" | "text" | "password" | "tel">;
         default: string;
         validator(value: any): boolean;
     };
@@ -95,12 +91,12 @@ declare const __VLS_component: import('vue').DefineComponent<{
         validator(value: any): boolean;
     };
     align: {
-        type: import('vue').PropType<"left" | "center" | "right">;
+        type: import('vue').PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
     inputMode: {
-        type: import('vue').PropType<"none" | "text" | "decimal" | "numeric" | "tel" | "search" | "email" | "url">;
+        type: import('vue').PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
         default: string;
         validator(value: any): boolean;
     };
@@ -132,7 +128,7 @@ declare const __VLS_component: import('vue').DefineComponent<{
         default: null;
     };
     labelAlign: {
-        type: import('vue').PropType<"left" | "center" | "right">;
+        type: import('vue').PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
@@ -141,7 +137,7 @@ declare const __VLS_component: import('vue').DefineComponent<{
         default: null;
     };
     type: {
-        type: import('vue').PropType<"text" | "password" | "number" | "tel" | "textarea">;
+        type: import('vue').PropType<"number" | "textarea" | "text" | "password" | "tel">;
         default: string;
         validator(value: any): boolean;
     };
@@ -204,12 +200,12 @@ declare const __VLS_component: import('vue').DefineComponent<{
         validator(value: any): boolean;
     };
     align: {
-        type: import('vue').PropType<"left" | "center" | "right">;
+        type: import('vue').PropType<"left" | "right" | "center">;
         default: string;
         validator(value: any): boolean;
     };
     inputMode: {
-        type: import('vue').PropType<"none" | "text" | "decimal" | "numeric" | "tel" | "search" | "email" | "url">;
+        type: import('vue').PropType<"search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric">;
         default: string;
         validator(value: any): boolean;
     };
@@ -226,16 +222,16 @@ declare const __VLS_component: import('vue').DefineComponent<{
 }, {
     size: "medium" | "large";
     label: string;
+    align: "left" | "right" | "center";
+    border: boolean;
     name: string;
-    modelValue: string | number;
     type: "number" | "textarea" | "text" | "password" | "tel";
+    modelValue: string | number;
+    disabled: boolean;
     left: string | IconPropsType;
     right: string | IconPropsType;
-    disabled: boolean;
-    border: boolean;
     placeholder: string;
     clearable: boolean;
-    align: "left" | "right" | "center";
     inputMode: "search" | "text" | "url" | "none" | "email" | "tel" | "decimal" | "numeric";
     maxlength: number;
     readonly: boolean;
@@ -247,8 +243,10 @@ declare const __VLS_component: import('vue').DefineComponent<{
     labelAlign: "left" | "right" | "center";
     required: boolean;
     showWordLimit: boolean;
-}, {}>;
-declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
+}, {}>, {
+    left?(_: {}): any;
+    right?(_: {}): any;
+}>;
 export default _default;
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {

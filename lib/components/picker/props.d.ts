@@ -14,7 +14,7 @@ export type PickerCrisisType = {
 };
 export declare const PickerProps: {
     options: {
-        type: PropType<PickerOptionsItemType[] | PickerOptionsItemType>;
+        type: PropType<PickerOptionsItemType | PickerOptionsItemType[]>;
         default: () => {
             values: never[];
             defaultIndex: number;

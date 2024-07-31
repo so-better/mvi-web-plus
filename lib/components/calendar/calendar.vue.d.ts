@@ -35,7 +35,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     type: {
-        type: import('vue').PropType<"info" | "primary" | "error" | "warn" | "success">;
+        type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
@@ -81,7 +81,7 @@ declare const _default: import('vue').DefineComponent<{
         default: boolean;
     };
     type: {
-        type: import('vue').PropType<"info" | "primary" | "error" | "warn" | "success">;
+        type: import('vue').PropType<"info" | "success" | "warn" | "error" | "primary">;
         default: string;
         validator(value: any): boolean;
     };
@@ -91,8 +91,8 @@ declare const _default: import('vue').DefineComponent<{
     "onMonth-click"?: ((...args: any[]) => any) | undefined;
     "onYear-click"?: ((...args: any[]) => any) | undefined;
 }, {
-    modelValue: Date;
     type: "info" | "success" | "warn" | "error" | "primary";
+    modelValue: Date;
     view: import('./props').CalendarViewType;
     active: boolean;
     monthText: string[];

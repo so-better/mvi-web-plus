@@ -6,7 +6,7 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
             default: string;
         };
         placement: {
-            type: import('vue').PropType<import('../layer').LayerPropsType["placement"]>;
+            type: import('vue').PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined>;
             default: string;
         };
         disabled: {
@@ -30,7 +30,7 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
             default: null;
         };
         trigger: {
-            type: import('vue').PropType<"hover" | "click" | "custom">;
+            type: import('vue').PropType<"click" | "hover" | "custom">;
             default: string;
             validator(value: any): boolean;
         };
@@ -67,7 +67,7 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
             default: string;
         };
         placement: {
-            type: import('vue').PropType<import('../layer').LayerPropsType["placement"]>;
+            type: import('vue').PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined>;
             default: string;
         };
         disabled: {
@@ -91,7 +91,7 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
             default: null;
         };
         trigger: {
-            type: import('vue').PropType<"hover" | "click" | "custom">;
+            type: import('vue').PropType<"click" | "hover" | "custom">;
             default: string;
             validator(value: any): boolean;
         };
@@ -121,13 +121,13 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
         };
     }>>, {
         title: string;
+        width: string;
         zIndex: number;
         color: string;
         timeout: number;
-        placement: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined;
-        width: string;
-        offset: string;
         disabled: boolean;
+        placement: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined;
+        offset: string;
         borderColor: string;
         showTriangle: boolean;
         animation: string;
@@ -147,7 +147,7 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
             default: string;
         };
         placement: {
-            type: import('vue').PropType<import('../layer').LayerPropsType["placement"]>;
+            type: import('vue').PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined>;
             default: string;
         };
         disabled: {
@@ -171,7 +171,7 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
             default: null;
         };
         trigger: {
-            type: import('vue').PropType<"hover" | "click" | "custom">;
+            type: import('vue').PropType<"click" | "hover" | "custom">;
             default: string;
             validator(value: any): boolean;
         };
@@ -204,13 +204,13 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
         hideTooltip: () => void;
     }, {}, {}, {}, {
         title: string;
+        width: string;
         zIndex: number;
         color: string;
         timeout: number;
-        placement: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined;
-        width: string;
-        offset: string;
         disabled: boolean;
+        placement: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined;
+        offset: string;
         borderColor: string;
         showTriangle: boolean;
         animation: string;
@@ -218,16 +218,16 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
         trigger: "click" | "hover" | "custom";
         textColor: string;
     }>;
-    __isFragment?: never;
-    __isTeleport?: never;
-    __isSuspense?: never;
+    __isFragment?: undefined;
+    __isTeleport?: undefined;
+    __isSuspense?: undefined;
 } & import('vue').ComponentOptionsBase<Readonly<import('vue').ExtractPropTypes<{
     title: {
         type: StringConstructor;
         default: string;
     };
     placement: {
-        type: import('vue').PropType<import('../layer').LayerPropsType["placement"]>;
+        type: import('vue').PropType<"left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined>;
         default: string;
     };
     disabled: {
@@ -251,7 +251,7 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
         default: null;
     };
     trigger: {
-        type: import('vue').PropType<"hover" | "click" | "custom">;
+        type: import('vue').PropType<"click" | "hover" | "custom">;
         default: string;
         validator(value: any): boolean;
     };
@@ -284,13 +284,13 @@ declare const Tooltip: import('../../utils').SFCWithInstall<{
     hideTooltip: () => void;
 }, unknown, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, {
     title: string;
+    width: string;
     zIndex: number;
     color: string;
     timeout: number;
-    placement: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined;
-    width: string;
-    offset: string;
     disabled: boolean;
+    placement: "left" | "top" | "bottom" | "right" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end" | "bottom-start" | "bottom-end" | undefined;
+    offset: string;
     borderColor: string;
     showTriangle: boolean;
     animation: string;

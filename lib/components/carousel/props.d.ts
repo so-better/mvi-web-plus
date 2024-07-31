@@ -27,7 +27,7 @@ export declare const CarouselProps: {
         default: number;
     };
     mode: {
-        type: PropType<"slide" | "fade">;
+        type: PropType<"fade" | "slide">;
         default: string;
         validator(value: any): boolean;
     };
