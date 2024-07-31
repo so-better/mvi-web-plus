@@ -4,6 +4,7 @@ import dts from 'vite-plugin-dts'
 import path from 'path'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 import compileLessToCss from './vite-plugin-compile-less-to-css'
+import routerAutocreate from './vite-plugin-router-autocreate'
 export default defineConfig({
 	plugins: [
 		vue(),
@@ -12,7 +13,8 @@ export default defineConfig({
 		compileLessToCss({
 			outputDir: './lib',
 			include: ['./packages/css/default.less', './packages/css/support.less']
-		})
+		}),
+		routerAutocreate()
 	],
 	resolve: {
 		alias: {

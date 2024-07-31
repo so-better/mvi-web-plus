@@ -35,7 +35,7 @@ export default (options: PluginOptionType) => {
 	}
 	return <Plugin>{
 		name: 'vite-plugin-compile-less-to-css',
-		buildEnd() {
+		buildStart() {
 			//遍历less文件地址数组
 			include.forEach(lessPath => {
 				//获取文件名（不带扩展名）
