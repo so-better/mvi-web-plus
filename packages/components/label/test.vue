@@ -1,1 +1,8 @@
-<template><div>组件测试页面</div></template><script setup></script><style lang="less" scoped></style>
+<template>
+	<div>
+		<m-label>标签</m-label>
+		<m-label type="info">标签</m-label>
+	</div>
+</template>
+<script setup lang="ts"></script>
+<style lang="less" scoped></style>

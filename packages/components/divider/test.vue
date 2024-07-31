@@ -1,1 +1,7 @@
-<template><div>组件测试页面</div></template><script setup></script><style lang="less" scoped></style>
+<template>
+	<div>
+		<m-divider>已经到头了</m-divider>
+	</div>
+</template>
+<script setup lang="ts"></script>
+<style lang="less" scoped></style>

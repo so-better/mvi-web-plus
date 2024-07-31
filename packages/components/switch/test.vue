@@ -1,1 +1,11 @@
-<template><div>组件测试页面</div></template><script setup></script><style lang="less" scoped></style>
+<template>
+	<div>
+		<m-switch v-model="checked"></m-switch>
+	</div>
+</template>
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const checked = ref(false)
+</script>
+<style lang="less" scoped></style>

@@ -1,1 +1,7 @@
-<template><div>组件测试页面</div></template><script setup></script><style lang="less" scoped></style>
+<template>
+	<div>
+		<m-progress :value="40"></m-progress>
+	</div>
+</template>
+<script setup lang="ts"></script>
+<style lang="less" scoped></style>
