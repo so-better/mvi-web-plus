@@ -5,19 +5,19 @@ export type * from './resize'
 
 const vResize = withInstallDirective('resize', {
 	mounted(el, binding) {
-		let options = {}
+		const options = {}
 		if (Dap.common.isObject(binding.value)) {
 			Object.assign(options, binding.value)
 		}
-		let resize = new Resize(el, options)
+		const resize = new Resize(el, options)
+		//初始化
 		resize.init()
-
 		//将对象记录在元素里
 		Dap.data.set(el, 'directive:resize', resize)
 	},
 	beforeUnmount(el) {
 		//获取对象
-		let resize = Dap.data.get(el, 'directive:resize')
+		const resize: Resize = Dap.data.get(el, 'directive:resize')
 		if (resize) {
 			//移除绑定在documentElement上的事件
 			resize.destroy()

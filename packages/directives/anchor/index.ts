@@ -5,11 +5,11 @@ export type * from './anchor'
 
 const vAnchor = withInstallDirective('anchor', {
 	mounted(el, binding) {
-		let options: any = {}
+		const options: any = {}
 		if (Dap.common.isObject(binding.value)) {
 			Object.assign(options, binding.value)
 		}
-		let anchor = new Anchor(el, options)
+		const anchor = new Anchor(el, options)
 		anchor.init()
 	}
 })

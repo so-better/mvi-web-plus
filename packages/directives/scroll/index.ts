@@ -5,11 +5,11 @@ export type * from './scroll'
 
 const vScroll = withInstallDirective('scroll', {
 	mounted(el, binding) {
-		let options = {}
+		const options = {}
 		if (Dap.common.isObject(binding.value)) {
 			Object.assign(options, binding.value)
 		}
-		let scroll = new Scroll(el, options)
+		const scroll = new Scroll(el, options)
 		scroll.init()
 	}
 })

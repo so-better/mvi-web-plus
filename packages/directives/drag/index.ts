@@ -5,11 +5,11 @@ export type * from './drag'
 
 const vDrag = withInstallDirective('drag', {
 	mounted(el, binding) {
-		let options = {}
+		const options = {}
 		if (Dap.common.isObject(binding.value)) {
 			Object.assign(options, binding.value)
 		}
-		let drag = new Drag(el, options)
+		const drag = new Drag(el, options)
 		//初始化
 		drag.init()
 		//将对象记录在元素里
@@ -17,7 +17,7 @@ const vDrag = withInstallDirective('drag', {
 	},
 	beforeUnmount(el) {
 		//获取对象
-		let drag = Dap.data.get(el, 'directive:drag')
+		const drag: Drag = Dap.data.get(el, 'directive:drag')
 		if (drag) {
 			//移除绑定在documentElement上的事件
 			drag.destroy()

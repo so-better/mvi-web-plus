@@ -5,7 +5,7 @@ export type * from './px'
 
 const vPx = withInstallDirective('px', {
 	mounted(el, binding) {
-		let options: any = {}
+		const options: any = {}
 		if (Dap.common.isObject(binding.value)) {
 			Object.assign(options, binding.value)
 		}
@@ -15,7 +15,7 @@ const vPx = withInstallDirective('px', {
 		if (binding.arg) {
 			options.attr = binding.arg
 		}
-		let px = new Px(el, options)
+		const px = new Px(el, options)
 		px.init()
 	}
 })

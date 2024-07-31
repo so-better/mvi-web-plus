@@ -5,14 +5,14 @@ export type * from './upload'
 
 const vUpload = withInstallDirective('upload', {
 	mounted(el, binding) {
-		let options = {}
+		const options = {}
 		if (Dap.common.isObject(binding.value)) {
 			Object.assign(options, binding.value)
 		}
 		if (Dap.common.isObject(binding.modifiers)) {
 			Object.assign(options, binding.modifiers)
 		}
-		let upload = new Upload(el, options)
+		const upload = new Upload(el, options)
 		upload.init()
 	}
 })
