@@ -1,6 +1,5 @@
 import { Plugin } from 'vite'
-import path, { resolve, parse, dirname } from 'path'
-import { RouteRecordRaw } from 'vue-router'
+import path from 'path'
 import fs from 'fs'
 
 export default () => {
@@ -82,6 +81,17 @@ export default () => {
       `
 			componentList.forEach(item => {
 				const filePath = path.resolve(__dirname, `./packages/components/${item}/test.vue`)
+				if (!fs.existsSync(filePath)) {
+					fs.writeFileSync(
+						filePath,
+						`<template>
+                <div>组件测试页面</div>
+             </template>
+             <script setup lang="ts"></script>
+             <style lang="less" scoped></style>`,
+						'utf-8'
+					)
+				}
 				routes += `{ 
             path:'/component/${item}',
             name:'component-${item}',
@@ -93,6 +103,17 @@ export default () => {
 			})
 			directiveList.forEach((item, index) => {
 				const filePath = path.resolve(__dirname, `./packages/directives/${item}/test.vue`)
+				if (!fs.existsSync(filePath)) {
+					fs.writeFileSync(
+						filePath,
+						`<template>
+                <div>指令测试页面</div>
+             </template>
+             <script setup lang="ts"></script>
+             <style lang="less" scoped></style>`,
+						'utf-8'
+					)
+				}
 				routes += `{ 
             path:'/directive/${item}',
             name:'directive-${item}',
